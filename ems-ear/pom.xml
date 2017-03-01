@@ -12,7 +12,7 @@
 
     <groupId>com.gam.nocr.ems</groupId>
     <artifactId>ems-ear</artifactId>
-    <version>${nocr.ems-ear.version}</version>
+    <version>2.3.4</version>
     <name>EMS EAR</name>
 
     <dependencies>

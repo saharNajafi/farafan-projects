@@ -631,7 +631,7 @@
 		</repository> <repository> <id>ZK EE Evaluation</id> <url>http://mavensync.zkoss.org/zk/ee-eval</url> 
 		</repository> </repositories> -->
 
-	<distributionManagement>
+<!--	<distributionManagement>
 		<repository>
 			<id>Releases</id>
 			<name>ICT Releases</name>
@@ -642,7 +642,7 @@
 			<name>ICT Snapshots</name>
 			<url>http://10.102.1.18:8081/nexus/content/repositories/ICT_Snapshots/</url>
 		</snapshotRepository>
-	</distributionManagement>
+	</distributionManagement>-->
 
 
 

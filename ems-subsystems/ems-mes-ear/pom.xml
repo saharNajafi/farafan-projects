@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.gam.nocr.ems.subsystems</groupId>
     <artifactId>ems-mes-ear</artifactId>
-    <version>${nocr.ems-mes.version}</version>
+    <version>1.0.1.5</version>
     <packaging>ear</packaging>
 
     <name>EMS MES EAR</name>

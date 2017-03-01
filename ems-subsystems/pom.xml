@@ -11,6 +11,7 @@
 
     <groupId>com.gam.nocr.ems</groupId>
     <artifactId>ems-subsystems</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>EMS-SUBSYSTEMS</name>
 

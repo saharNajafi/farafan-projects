@@ -9,7 +9,7 @@
 
     <groupId>com.gam.nocr.ems.subsystems</groupId>
     <artifactId>ems-software</artifactId>
-    <version>${nocr.ems-software.version}</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
     <name>EMS SOFTWARE Web</name>
 

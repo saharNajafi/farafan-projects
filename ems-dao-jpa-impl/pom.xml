@@ -11,7 +11,7 @@
 
     <groupId>com.gam.nocr.ems</groupId>
     <artifactId>ems-dao-jpa-impl</artifactId>
-    <version>${nocr.ems-dao-jpa-impl.version}</version>
+    <version>2.3.4</version>
     <packaging>ejb</packaging>
     <name>EMS DAO JPA Implementation</name>
 
