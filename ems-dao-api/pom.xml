@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ems</artifactId>
+        <groupId>com.gam.nocr</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gam.nocr.ems</groupId>
+    <artifactId>ems-dao-api</artifactId>
+    <version>${nocr.ems-dao-api.version}</version>
+    <name>EMS DAO API</name>
+
+    <dependencies>
+        <!-- geronimo -->
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-ejb_3.1_spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jpa_2.0_spec</artifactId>
+        </dependency>
+        <!-- geronimo -->
+
+        <!-- hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tangosol-coherence</groupId>
+            <artifactId>coherence-hibernate</artifactId>
+        </dependency>
+        <!-- hibernate -->
+
+        <!-- javax -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+        </dependency>
+        <!-- javax -->
+
+        <!-- database connector-->
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+        </dependency>
+        <!-- database connector-->
+
+        <!-- inner module dependency -->
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-stateprovider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-autocomplete</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-commons</artifactId>
+        </dependency>
+        <!-- inner module dependency -->
+
+        <!-- jaxws -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+        </dependency>
+        <!-- jaxws -->
+
+        <!-- external module dependency -->
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>cms-stub</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>portal-stub</artifactId>
+        </dependency>
+
+        <dependency>
+        	<groupId>com.gam.ems-externals</groupId>
+        	<artifactId>emks-stub</artifactId>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <ems-commons.version>1.0.0</ems-commons.version>
+    </properties>
+
+</project>

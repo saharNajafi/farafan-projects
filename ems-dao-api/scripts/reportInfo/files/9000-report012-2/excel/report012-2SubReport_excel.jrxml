@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report010-2SubReport" pageWidth="484" pageHeight="60" whenNoDataType="AllSectionsNoDetail" columnWidth="484" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="092d3723-b426-4520-9ad2-54185ae24bc0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select  DISTINCT DEP.DEP_NAME depName,
+                DEP.DEP_CODE depCode,
+	(select count(box.box_id) from emst_box box, emst_dispatch_info inf,
+	emst_department dep
+	where inf.dpi_container_id = box.box_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is not null
+	and box.box_state = 'MISSED'
+	and dep.dep_id =$P{departmentId}
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')) loseBoxCount,
+
+	(select count(bat.bat_id) from emst_batch bat,emst_dispatch_info inf,	emst_department dep
+	where inf.dpi_container_id = bat.bat_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and bat.bat_state = 'MISSED'
+	and dep.dep_id = $P{departmentId}
+	and (inf.dpi_detail_receive_date is not null
+	and inf.dpi_detail_lost_date is not null
+	and inf.dpi_lost_date is null
+	and inf.dpi_receive_date is null
+	and inf.dpi_detail_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_detail_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+	or (inf.dpi_detail_receive_date is null
+	and inf.dpi_detail_lost_date is null
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is not null
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))) loseBatchCount,
+	(select count(crd_id) from emst_card crd,emst_batch batch,emst_dispatch_info inf,emst_department dep
+	where crd_state = 'MISSED'
+	and batch.bat_state != 'MISSED'
+	and crd.crd_batch_id = batch.bat_id
+	and inf.dpi_container_id = batch.bat_id
+	and inf.dpi_receiver_dep_id = dep.dep_id
+	and crd_receive_date is not null
+	and crd_lost_date is not null
+	and dep.dep_id = $P{departmentId}
+	and crd.crd_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and crd.crd_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')) loseCardCount,
+
+	(select count(box.box_id) from emst_box box, emst_dispatch_info inf,	emst_department dep
+	where inf.dpi_container_id = box.box_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is null
+	and box.box_state = 'MISSED'
+	and dep.dep_id = $P{departmentId}
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')) notReceiveBoxCount,
+
+ 	(select count(bat.bat_id) from emst_batch bat,emst_dispatch_info inf,emst_department dep
+	where inf.dpi_container_id = bat.bat_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and bat.bat_state = 'MISSED'
+	and dep.dep_id = $P{departmentId}
+	and (inf.dpi_detail_receive_date is not null
+	and inf.dpi_detail_lost_date is null
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is null
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+	or (inf.dpi_detail_receive_date is null
+	and inf.dpi_detail_lost_date is not null
+	and inf.dpi_lost_date is null
+	and inf.dpi_receive_date is null
+	and inf.dpi_detail_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_detail_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))) notReceiveBatchCount,
+
+	(select count(crd_id) from emst_card crd,emst_batch batch,emst_dispatch_info inf,emst_department dep
+	where crd_state = 'MISSED'
+	and batch.bat_state != 'MISSED'
+	and crd.crd_batch_id = batch.bat_id
+	and inf.dpi_container_id = batch.bat_id
+	and inf.dpi_receiver_dep_id = dep.dep_id
+	and crd_receive_date is null
+	and crd_lost_date is not null
+	and dep.dep_id = $P{departmentId}
+	and crd.crd_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and crd.crd_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')) notReceiveCardCount,
+
+(select
+(select count(crd.crd_id) from emst_batch bat,emst_card crd,emst_box box, emst_dispatch_info inf,emst_department dep
+	where inf.dpi_container_id = box.box_id
+  and bat.bat_box_id = box.box_id
+  and crd.crd_batch_id = bat.bat_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is not null
+	and box.box_state = 'MISSED'
+	and dep.dep_id =$P{departmentId}
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+  +
+  (select count(crd.crd_id) from emst_card crd,emst_batch bat,emst_dispatch_info inf,emst_department dep
+	where inf.dpi_container_id = bat.bat_id
+  and crd.crd_batch_id = bat.bat_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and bat.bat_state = 'MISSED'
+	and dep.dep_id = $P{departmentId}
+	and (inf.dpi_detail_receive_date is not null
+	and inf.dpi_detail_lost_date is not null
+	and inf.dpi_lost_date is null
+	and inf.dpi_receive_date is null
+	and inf.dpi_detail_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_detail_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+	or (inf.dpi_detail_receive_date is null
+	and inf.dpi_detail_lost_date is null
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is not null
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')))
+  +
+  (select count(crd_id) from emst_card crd,emst_batch batch,emst_dispatch_info inf,emst_department dep
+	where crd_state = 'MISSED'
+  and batch.bat_state != 'MISSED'
+	and crd.crd_batch_id = batch.bat_id
+	and inf.dpi_container_id = batch.bat_id
+	and inf.dpi_receiver_dep_id = dep.dep_id
+	and crd_receive_date is not null
+	and crd_lost_date is not null
+	and dep.dep_id = $P{departmentId}
+	and crd.crd_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and crd.crd_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+  +
+  (select count(crd.crd_id) from emst_batch bat,emst_card crd,emst_box box, emst_dispatch_info inf,emst_department dep
+	where inf.dpi_container_id = box.box_id
+  and bat.bat_box_id = box.box_id
+  and crd.crd_batch_id = bat.bat_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is null
+	and box.box_state = 'MISSED'
+	and dep.dep_id = $P{departmentId}
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+	+
+  (select count(crd.crd_id) from emst_card crd,emst_batch bat,emst_dispatch_info inf,emst_department dep
+	where inf.dpi_container_id = bat.bat_id
+  and crd.crd_batch_id = bat.bat_id
+	and dep.dep_id = inf.dpi_receiver_dep_id
+	and bat.bat_state = 'MISSED'
+	and dep.dep_id = $P{departmentId}
+	and (inf.dpi_detail_receive_date is not null
+	and inf.dpi_detail_lost_date is null
+	and inf.dpi_lost_date is not null
+	and inf.dpi_receive_date is null
+	and inf.dpi_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD'))
+	or (inf.dpi_detail_receive_date is null
+	and inf.dpi_detail_lost_date is not null
+	and inf.dpi_lost_date is null
+	and inf.dpi_receive_date is null
+	and inf.dpi_detail_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+	and inf.dpi_detail_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')))
+	+
+  (select count(crd_id) from emst_card crd,emst_batch batch,emst_dispatch_info inf,emst_department dep
+	where crd_state = 'MISSED'
+  and batch.bat_state != 'MISSED'
+	and crd.crd_batch_id = batch.bat_id
+	and inf.dpi_container_id = batch.bat_id
+	and inf.dpi_receiver_dep_id = dep.dep_id
+	and crd_receive_date is null
+	and crd_lost_date is not null
+	and dep.dep_id = $P{departmentId}
+	and crd.crd_lost_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and crd.crd_lost_date < to_date($P{nocrToDate},'YYYY/MM/DD')) from dual) totalCount
+
+FROM  Emst_Department DEP
+   where DEP.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="DEPNAME" class="java.lang.String"/>
+	<field name="DEPCODE" class="java.lang.String"/>
+	<field name="LOSEBOXCOUNT" class="java.math.BigDecimal"/>
+	<field name="LOSEBATCHCOUNT" class="java.math.BigDecimal"/>
+	<field name="LOSECARDCOUNT" class="java.math.BigDecimal"/>
+	<field name="NOTRECEIVEBOXCOUNT" class="java.math.BigDecimal"/>
+	<field name="NOTRECEIVEBATCHCOUNT" class="java.math.BigDecimal"/>
+	<field name="NOTRECEIVECARDCOUNT" class="java.math.BigDecimal"/>
+	<field name="TOTALCOUNT" class="java.math.BigDecimal"/>
+	<variable name="loseBoxCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{LOSEBOXCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="loseBatchCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{LOSEBATCHCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="loseCardCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{LOSECARDCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="notReceiveBoxCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{NOTRECEIVEBOXCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="notReceiveBatchCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{NOTRECEIVEBATCHCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="notReceiveCardCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{NOTRECEIVECARDCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="totalCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOUNT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="416" y="0" width="68" height="30" uuid="d3ce2484-77b9-409a-a28e-762bfa3342f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{loseBoxCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="0" width="68" height="30" uuid="c42fc13a-acc9-44dd-ba9b-b81ba300a4a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{loseBatchCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="68" height="30" uuid="53829a39-c67e-4201-a2fd-037d817d6743"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{loseCardCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="0" width="68" height="30" uuid="6826c1dd-06bc-40ce-a5ce-8d6d8dd9f8df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{notReceiveBoxCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="144" y="0" width="68" height="30" uuid="639a09c3-0485-402b-9838-a968316fc3a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{notReceiveBatchCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="0" width="68" height="30" uuid="ed7035ae-9b78-4c48-9641-3eb08c225767"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{notReceiveCardCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="76" height="30" uuid="2d28a162-1a12-42d2-a02a-8bf68da387bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<autocomplete-config>
+	<handlers>
+		<handler name="department"
+			type="com.gam.nocr.ems.web.autocomplete.DepartmentAutocomplete" />
+		<handler name="enrollment"
+			type="com.gam.nocr.ems.web.autocomplete.EnrollmentAutocomplete" />
+		<handler name="nocr"
+			type="com.gam.nocr.ems.web.autocomplete.NOCRAutocomplete" />
+		<handler name="personDepartment"
+			type="com.gam.nocr.ems.web.autocomplete.PersonDepartmentAutocomplete" />
+		<handler name="personOffice"
+			type="com.gam.nocr.ems.web.autocomplete.PersonOfficeAutocomplete" />
+		<handler name="province"
+			type="com.gam.nocr.ems.web.autocomplete.ProvinceAutocomplete" />
+		<handler name="nonEnrollmentDepartment"
+			type="com.gam.nocr.ems.web.autocomplete.NonEnrollmentDepartmentAutocomplete" />
+		<handler name="roles"
+			type="com.gam.nocr.ems.web.autocomplete.RolesAutocomplete" />
+		<handler name="permissions"
+			type="com.gam.nocr.ems.web.autocomplete.PermissionsAutocomplete" />
+		<handler name="person"
+			type="com.gam.nocr.ems.web.autocomplete.PersonAutocomplete" />
+		<handler name="rating"
+			type="com.gam.nocr.ems.web.autocomplete.RatingAutocomplete" />
+		<handler name="location"
+			type="com.gam.nocr.ems.web.autocomplete.LocationAutocomplete" />
+		<handler name="locationPro"
+			type="com.gam.nocr.ems.web.autocomplete.LocationProAutocomplete" />
+		<handler name="departmentWithParams"
+			type="com.gam.nocr.ems.web.autocomplete.DepartmentWithParamsAutocomplete" />
+		<handler name="personBaseOnDepartments"
+			type="com.gam.nocr.ems.web.autocomplete.PersonBaseOnDepartmentAutocomplete" />
+		<handler name="enrollmentOfficeByProvince"
+			type="com.gam.nocr.ems.web.autocomplete.EnrollmentOfficeByProvinceAutocomplete" />
+		<handler name="office"
+			type="com.gam.nocr.ems.web.autocomplete.OfficeAutocomplete" />
+	</handlers>
+</autocomplete-config>

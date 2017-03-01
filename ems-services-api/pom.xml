@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ems</artifactId>
+        <groupId>com.gam.nocr</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gam.nocr.ems</groupId>
+    <artifactId>ems-services-api</artifactId>
+    <version>${nocr.ems-services-api.version}</version>
+    <name>EMS Services API</name>
+
+    <dependencies>
+
+        <!-- inner module dependency -->
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-scheduler</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-stateprovider</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-autocomplete</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-api</artifactId>
+        </dependency>
+        <!-- inner module dependency -->
+		<dependency>
+			<groupId>com.oracle.weblogic</groupId>
+			<artifactId>weblogic</artifactId>
+		</dependency>
+    </dependencies>
+
+    <properties>
+        <ems-commons.version>1.0.0</ems-commons.version>
+        <ems-dao-api.version>1.0.0</ems-dao-api.version>
+    </properties>
+
+</project>

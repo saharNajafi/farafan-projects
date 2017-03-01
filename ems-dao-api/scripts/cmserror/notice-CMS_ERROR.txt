@@ -1,0 +1,42 @@
+1 - add column cms_request_id to card_request table for cms retrying (as below)
+alter table emst_card_request add CRQ_CMS_REQ_ID  CHAR(16 BYTE)
+
+2 - create outgoing_sms_refer procedure 
+
+3 - update outgoing_sms procedure ( type flag and filled it with 0)
+
+4 - add column refer_to_ccos to msgt_outgoing_sms table(as below)
+alter table msgt_outgoing_sms add OSM_TYPE NUMBER(*,0)
+
+5- add these command to db
+Insert into INFT_PROFILE_KEY (PRF_ID,PRF_PARENT_ID,PRF_SYS_ID,PRF_NAME,PRF_PRIORITY_CHAIN,PRF_STATUS,PRF_ICON_CLASS,PRF_PER_ACCESS,PRF_DEP_ACCESS,PRF_SYS_ACCESS) values (401,3,1,'nocr.ems.profile.smsBodyDocumentAuthenticate','S,D,P','H',null,null,null,null);
+Insert into INFT_PROFILE_KEY (PRF_ID,PRF_PARENT_ID,PRF_SYS_ID,PRF_NAME,PRF_PRIORITY_CHAIN,PRF_STATUS,PRF_ICON_CLASS,PRF_PER_ACCESS,PRF_DEP_ACCESS,PRF_SYS_ACCESS) values (402,3,1,'nocr.ems.profile.smsBodyRepealed','S,D,P','H',null,null,null,null);
+Insert into INFT_SYSTEM_PROFILE (SPF_ID,SPF_PRF_ID,SPF_DATE) values (256,401,null);
+Insert into INFT_SYSTEM_PROFILE (SPF_ID,SPF_PRF_ID,SPF_DATE) values (257,402,null);
+commit;
+
+6- update (EMS-Trigger) RTIR_BU_EMST_CARD_REQ_STATE trigger as below :
+when  :old.crq_state ='CMS_PRODUCTION_ERROR' and :new.crq_state   in  ('CMS_PRODUCTION_ERROR','DOCUMENT_AUTHENTICATED' , 'APPROVED_BY_AFIS',''REPEALED'')  then  return ;
+
+7- add where clause in hossein-queries in cmserrorevaluateList part
+
+where crh.crh_action = 'PRODUCTION_ERROR' and cr.crq_state = 'CMS_PRODUCTION_ERROR'
+
+
+8- update(EMS-Trigger) RTIR_BU_EMST_CARD_REQ_STATE trigger as below :
+
+ when  :old.crq_state ='REPEALED' and :new.crq_state   in  ('RECEIVED_BY_EMS','REPEALED','STOPPED','RESERVED')  then  return ; 
+ 
+9- update (Portal-Trigger) RTIR_BU_PRTL_CARD_REQ_STATE trigger as below: ( add REPEALED to the list)
+
+when  :old.CRQ_CARD_REQUEST_STATUS ='CMS_PRODUCTION_ERROR' and :new.CRQ_CARD_REQUEST_STATUS   in  ('CMS_PRODUCTION_ERROR', 'DOCUMENT_AUTHENTICATED','APPROVED','SENT_TO_AFIS','APPROVED_BY_AFIS'
+																															,'REVOKED_BY_AFIS','PENDING_ISSUANCE','ISSUED','READY_TO_DELIVER','PENDING_TO_DELIVER_BY_CMS','DELIVERED'
+																															,'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE','UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC','NOT_DELIVERED'
+10 -update (Portal-Trigger) RTIR_BU_PRTL_CARD_REQ_STATE trigger as below: ( add VERIFIED_IMS to the list)	
+when  :old.CRQ_CARD_REQUEST_STATUS ='REPEALED' and :new.CRQ_CARD_REQUEST_STATUS   in  ('REGISTERED','REPEALED','STOPPED','VERIFIED_IMS')  then  return ;																														,'STOPPED','CMS_ERROR','CMS_PRODUCTION_ERROR','REPEALED')  then  return ;
+
+11-Add  gaas permission
+Insert into GAST_ACCESS (ACS_ID,ACS_NAME,ACS_ENABLED,ACS_COMMENT) values (3023,'ems_cmsErrorProduction','Y','مدیریت کارتابل خطاهای سیستم صدور کارت');
+
+
+

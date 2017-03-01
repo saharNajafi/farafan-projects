@@ -1,0 +1,72 @@
+{
+    "description": null,
+    "messageInfo": {
+        "arguments": null,
+        "autoShow": true,
+        "callbackButtons": null,
+        "confirmationType": null,
+        "detailsToken": null,
+        "icon": "Info",
+        "manner": 0,
+        "message": null,
+        "priority": "Low"
+    },
+    "personId": null,
+    "reason": null,
+    "records": [
+        {
+            "birthCertNum": "3243242322",
+            "birthCertSeries": "666222",
+            "cPassword": null,
+            "clientId": null,
+            "departmentId": "8",
+            "departmentName": "دفتر شماره 1 کهک",
+            "acId": "8",
+            "acName": "دفتر شماره 1 کهک",
+            "email": "foo@bar.com",
+            "entityState": 0,
+            "fatherName": "یاسر احمد",
+            "firstName": "اصغریلبل خوش صدا باحال",
+            "id": 12,
+            "lStatus": null,
+            "lastLogin": null,
+            "lastName": "علی پور",
+            "mobilePhone": null,
+            "nid": "0042342333",
+            "password": null,
+            "permissionList": [
+                {
+                    "id": 2614,
+                    "name": "تحویل توکن"
+                },
+                {
+                    "id": 2618,
+                    "name": "افزودن ایستگاه کاری"
+                },
+                {
+                    "id": 2625,
+                    "name": "اعلام دریافت مرسوله"
+                }
+            ],
+            "permissions": "2625,2618,2614",
+            "phone": null,
+            "requestStatusString": null,
+            "roleList": [
+                {
+                    "id": 3,
+                    "name": "مدیریت توزیع"
+                },
+                {
+                    "id": 4,
+                    "name": "مدیریت ایستگاههای کاری"
+                }
+            ],
+            "roles": "4,3",
+            "userName": "akbar"
+        }
+    ],
+    "success": true,
+    "tokenId": null,
+    "tokenType": null,
+    "validTokenTypes": null
+}

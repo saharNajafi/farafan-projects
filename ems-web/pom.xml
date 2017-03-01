@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ems</artifactId>
+        <groupId>com.gam.nocr</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gam.nocr.ems</groupId>
+    <artifactId>ems-web</artifactId>
+    <version>${nocr.ems-web.version}</version>
+    <packaging>war</packaging>
+    <name>EMS Web</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!-- aspectj -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- aspectj -->
+
+        <!-- GAM -->
+        <dependency>
+            <groupId>com.gam</groupId>
+            <artifactId>gamtools</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam</groupId>
+            <artifactId>displaytag</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam</groupId>
+            <artifactId>gamcasclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-listreader</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-stateprovider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-autocomplete</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- GAM -->
+
+        <!-- javax -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- javax -->
+
+        <!-- jaxws -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!-- jaxws -->
+
+        <!--Struts-->
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-json-plugin</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--Struts-->
+
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+
+        <!-- inner module dependency -->
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-jpa-impl</artifactId>
+            <type>ejb</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-mail</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-services-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-services-ejb-impl</artifactId>
+            <type>ejb</type>
+            <scope>provided</scope>
+        </dependency>
+        <!-- inner module dependency -->
+    </dependencies>
+
+    <build>
+        <plugins>
+        	<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+        		<artifactId>aspectj-maven-plugin</artifactId>
+        	</plugin>
+        	<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <endorseddirs>${endorsed.dir}</endorseddirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <archive>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${endorsed.dir}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>javax</groupId>
+                                    <artifactId>javaee-endorsed-api</artifactId>
+                                    <version>6.0</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- WebLogic Server 12c Maven Plugin -->
+            <!--To use this, first go to weblogic console
+                              Servers -> Protocols -> Http -> Enable Tunneling (checked)
+                              ((Save))
+                            -->
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <goalPrefix>wls</goalPrefix>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.oracle.weblogic</groupId>
+                <artifactId>wls-maven-plugin</artifactId>
+                <version>12.1.1.0</version>
+                <configuration>
+                    <middlewareHome>${env.MW_HOME}</middlewareHome>
+                    <weblogicHome>${env.WL_SERVER}</weblogicHome>
+                    <domainHome>${env.WL_DOMAIN}</domainHome>
+                    <adminurl>${env.WL_URL}</adminurl>
+
+                    <user>weblogic</user>
+                    <password>admin123</password>
+                </configuration>
+            </plugin>
+            <!-- WebLogic Server 12c Maven Plugin -->
+
+            <!-- jaxws-maven-plugin -->
+            <!--<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <configuration>
+                    &lt;!&ndash; CCOS webservice generation&ndash;&gt;
+                    <sei>
+                        com.gam.nocr.ems.web.ws.RegistrationWS
+                    </sei>
+                    <sei>
+                        com.gam.nocr.ems.web.ws.CardWS
+                    </sei>
+                    &lt;!&ndash; CCOS webservice generation&ndash;&gt;
+
+                    &lt;!&ndash; CMS webservice generation&ndash;&gt;
+                    <sei>
+                        com.gam.nocr.ems.web.ws.CMSWS
+                    </sei>
+                    &lt;!&ndash; CMS webservice generation&ndash;&gt;
+
+                    &lt;!&ndash;for demo purpose only, the webapp does not&ndash;&gt;
+                    &lt;!&ndash;need the generated wsdl files&ndash;&gt;
+                    <genWsdl>true</genWsdl>
+                    <keep>true</keep>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsgen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+            <!-- jaxws-maven-plugin -->
+
+        </plugins>
+    </build>
+
+    <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>

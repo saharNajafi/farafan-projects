@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+ <constant name="struts.multipart.maxSize" value="5242880" />
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+
+    <package name="scp-state-provider" extends="gam-state-provider">
+        <action name="*" class="com.gam.nocr.ems.web.action.StateProviderController" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="user" extends="gam-json-default" namespace="/extJsController/user">
+        <action name="*" class="com.gam.nocr.ems.web.action.PersonAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    
+    <package name="userToken" extends="gam-json-default" namespace="/extJsController/token">
+        <action name="*" class="com.gam.nocr.ems.web.action.PersonTokenAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="currentUser" extends="gam-json-default" namespace="/extJsController/currentUser">
+        <action name="*" class="com.gam.nocr.ems.web.action.UserAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="personRequest" extends="gam-json-default" namespace="/extJsController/userRequest">
+        <action name="*" class="com.gam.nocr.ems.web.action.PersonAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="enrollment-office" extends="gam-json-default" namespace="/extJsController/office">
+        <action name="*" class="com.gam.nocr.ems.web.action.EnrollmentOfficeAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="manage-report" extends="gam-json-default" namespace="/extJsController/managereports">
+        <action name="*" class="com.gam.nocr.ems.web.action.ReportManagementAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="report-result-download" extends="gam-json-default" namespace="/extJsController/reportresult" >
+        <action name="loadGeneratedReport" class="com.gam.nocr.ems.web.action.ReportRequestAction" method="loadGeneratedReport">
+            <result name="success" type="stream">
+                <param name="contentType">${contentType}</param>
+                <param name="contentDisposition">attachment;filename="${resultFileName}"</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+                <param name="allowCaching">false</param>
+            </result>
+        </action>
+    </package>
+
+    <package name="report-request" extends="gam-json-default" namespace="/extJsController/reportrequest">
+        <action name="*" class="com.gam.nocr.ems.web.action.ReportRequestAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="card-requests" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
+        <action name="*" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    
+    <package name="estelam2False" extends="gam-json-default" namespace="/extJsController/estelam2falselist">
+        <action name="*" class="com.gam.nocr.ems.web.action.Estelam2FalseListAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    
+    <package name="cmsErrorEvaluate" extends="gam-json-default" namespace="/extJsController/cmserrorevaluatelist">
+        <action name="*" class="com.gam.nocr.ems.web.action.CmsErrorEvaluateListAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    
+
+    <package name="workstation" extends="gam-json-default" namespace="/extJsController/workstation">
+        <action name="*" class="com.gam.nocr.ems.web.action.WorkstationAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    <package name="holiday" extends="gam-json-default" namespace="/extJsController/holidaylist">
+        <action name="*" class="com.gam.nocr.ems.web.action.HolidayListAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    <package name="dispatching" extends="gam-json-default" namespace="/extJsController/dispatch">
+        <action name="*" class="com.gam.nocr.ems.web.action.DispatchingAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="department" extends="gam-json-default" namespace="/extJsController/department">
+        <action name="*" class="com.gam.nocr.ems.web.action.DepartmentAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="rating" extends="gam-json-default" namespace="/extJsController/rating">
+        <action name="*" class="com.gam.nocr.ems.web.action.RatingInfoAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+     <package name="about" extends="gam-json-default" namespace="/extJsController/about">
+        <action name="*" class="com.gam.nocr.ems.web.action.AboutAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="blacklist" extends="gam-json-default" namespace="/extJsController/blacklist">
+        <action name="*" class="com.gam.nocr.ems.web.action.BlackListAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+    
+     <package name="helplist" extends="gam-json-default" namespace="/extJsController/helpfilelist">
+        <action name="*" class="com.gam.nocr.ems.web.action.HelpAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json">
+            <param name="contentType">text/html</param> 
+            </result>
+            <result name="failure" type="gam-json">
+            <param name="contentType">text/html</param>
+            
+            </result>
+        </action>
+    </package>
+    
+    <package name="downloadHelplist" extends="gam-json-default" namespace="/extJsController/downloadfile">
+    	<action name="downloadHelpFile" class="com.gam.nocr.ems.web.action.HelpAction" method="downloadHelpFile">
+            <result name="success" type="stream">
+                <param name="contentType">contentType</param>
+                <param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+                <param name="allowCaching">false</param>
+            </result>
+        </action>
+    </package>
+    
+    <!-- <package name="downloadHelplist" extends="gam-json-default" namespace="/extJsController/helpfilelist">
+        
+    </package> -->
+
+
+    <package name="bizlog" extends="gam-json-default" namespace="/extJsController/bizlog">
+        <action name="*" class="com.gam.nocr.ems.web.action.BusinessLogAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="doctype" extends="gam-json-default" namespace="/extJsController/doctype">
+        <action name="*" class="com.gam.nocr.ems.web.action.DocTypeAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="jobs" extends="gam-json-default" namespace="/extJsController/jobs">
+        <action name="*" class="com.gam.nocr.ems.web.action.JobAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="logout" extends="gam-json-default" namespace="/extJsController/sessionClearForLogout">
+        <action name="*" class="com.gam.nocr.ems.web.action.LogoutAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="systemprofile" extends="gam-json-default" namespace="/extJsController/systemProfile">
+        <action name="*" class="com.gam.nocr.ems.web.action.SystemProfileAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+     <package name="message" extends="gam-json-default" namespace="/extJsController/messages">
+        <action name="*" class="com.gam.nocr.ems.web.action.PreparedMessageAction" method="{1}">
+               <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json">
+            <param name="contentType">text/html</param> 
+            </result>
+            <result name="failure" type="gam-json">
+            <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+	<package name="lostcard" extends="gam-json-default" namespace="/extJsController/lostcard">
+		<action name="*" class="com.gam.nocr.ems.web.action.LostCardAction"
+			method="{1}">
+			<interceptor-ref name="jsonValidationWorkflowStack" />
+			<interceptor-ref name="gam-json" />
+			<result name="success" type="gam-json" />
+			<result name="failure" type="gam-json" />
+		</action>
+	</package>
+    <package name="lostbatch" extends="gam-json-default" namespace="/extJsController/lostbatch">
+        <action name="*" class="com.gam.nocr.ems.web.action.LostBatchAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>   
+    <package name="downloadMessageAttached" extends="gam-json-default" namespace="/extJsController/downloadMessageAttached">
+    	<action name="downloadAttachedFile" class="com.gam.nocr.ems.web.action.PreparedMessageAction" method="downloadAttachedFile">
+            <result name="success" type="stream">
+                <param name="contentType">contentType</param>
+                <param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+                <param name="allowCaching">false</param>
+            </result>
+        </action>
+    </package>
+    
+    
+    
+
+</struts>

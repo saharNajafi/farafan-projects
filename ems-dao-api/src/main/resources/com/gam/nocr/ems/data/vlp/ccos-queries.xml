@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+    <!-- Card Request List -->
+    <list>
+        <list-name>cardRequestList</list-name>
+        <query>
+            <prefix-query>
+                select
+                y.*,
+                citpost.ctz_id ctzId,
+                rqpost.crq_tracking_id trackingId,
+                citpost.ctz_national_id nationalId,
+                cinfpost.czi_birth_date_greg birthDate,
+                rqpost.crq_requested_action,
+                cinfpost.czi_first_name_en firstNameEN,
+                cinfpost.czi_surname_en sureNameEN,
+                cinfpost.czi_birth_cert_id birthCertId,
+                cinfpost.czi_birth_date_lun birthDateHijri,
+                cinfpost.czi_gender gender,
+                rqpost.crq_type requestType,
+                cinfpost.czi_religion_id religionId,
+                cinfpost.czi_postcode postCode,
+                cinfpost.czi_email email,
+                cinfpost.czi_birth_cert_prv_id birthCertPrvId,
+                (select l.loc_name from emst_location l where l.loc_id=cinfpost.czi_birth_cert_prv_id) birthCertPrvName,
+                cinfpost.czi_living_prv_id livingPrvId,
+                (select l.loc_name from emst_location l where l.loc_id=cinfpost.czi_living_prv_id) livingPrvName,
+                cinfpost.czi_living_city_id livingCityId,
+                (select l.loc_name from emst_location l where l.loc_id=cinfpost.czi_living_city_id) livingCityName,
+                cinfpost.czi_birth_cert_series birthCertSerial,
+                cinfpost.czi_father_first_name_en fatherFirstNameEN,
+                cinfpost.czi_father_father_name fatherFatherName,
+                cinfpost.czi_father_sure_name fatherSureName,
+                cinfpost.czi_father_national_id fatherNationalId,
+                cinfpost.czi_father_birth_date_sol fatherBirthDate,
+                cinfpost.czi_father_birth_cert_id fatherBirthCertId,
+                cinfpost.czi_father_birth_cert_series fatherBirthCertSeries,
+                cinfpost.czi_mother_first_name_fa motherFirstNameFA,
+                cinfpost.czi_mother_surename motherSureName,
+                cinfpost.czi_mother_national_id motherNationalId,
+                cinfpost.czi_mother_birth_date_sol motherBirthDate,
+                cinfpost.czi_mother_father_name motherFatherName,
+                cinfpost.czi_mother_birth_cert_id motherBirthCertId,
+                cinfpost.czi_mother_birth_cert_series motherBirthCertSeries,
+                cinfpost.czi_address address,
+                cinfpost.czi_phone phone,
+                cinfpost.czi_mobile mobile,
+                rqpost.crq_authenticity,
+                (select count(*) from emst_doc_type dt, emst_service_document_type sdt
+                where dt.dct_id=sdt.sdt_doc_type_id and sdt.sdt_service_id = (select (CASE
+                when rqpost.crq_type = 'FIRST_CARD' then 1
+                when rqpost.crq_type = 'REPLICA' then 2
+                when rqpost.crq_type = 'EXTEND' then 3
+                when rqpost.crq_type = 'REPLACE' then 4
+                ELSE 0 end) from dual)) docTypeCnt
+                from
+            </prefix-query>
+            <main-query alias="y">
+                <part name="count">
+                    select
+                    count(*) cnt
+                </part>
+                <part name="main">
+                    select a.*,b.*
+                </part>
+                from
+                (select r.*
+                from
+                (
+                select t.* ,
+                <![CDATA[
+                            (case
+                                   when t.enrolledDate is null then 1
+                                   when t.crq_state='REFERRED_TO_CCOS' then 2
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=0 and bitand(t.flag,2)=0 and bitand(t.flag,4)=0 then 3
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=0 and bitand(t.flag,2)=0 and bitand(t.flag,4)=4 then 4
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=1 and bitand(t.flag,2)=0 and bitand(t.flag,4)=0 then 5
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=0 and bitand(t.flag,2)=2 and bitand(t.flag,4)=0 then 6
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=1 and bitand(t.flag,2)=0 and bitand(t.flag,4)=4 then 7
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=0 and bitand(t.flag,2)=2 and bitand(t.flag,4)=4 then 8
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=1 and bitand(t.flag,2)=2 and bitand(t.flag,4)=0 then 9
+                                   when t.crq_state='DOCUMENT_AUTHENTICATED' and bitand(t.flag,1)=1 and bitand(t.flag,2)=2 and bitand(t.flag,4)=4 then 10
+                                   when t.crq_state='APPROVED' or t.crq_state='SENT_TO_AFIS' or t.crq_state='APPROVED_BY_AFIS' or t.crq_state='PENDING_ISSUANCE' or t.crq_state='ISSUED' then 11
+                                   when t.crq_state='DELIVERED' and t.cardState='REVOKED' then 12
+                                   when t.crq_state='DELIVERED' and t.cardState='LOST' then 13
+                                   else 0
+                             end) state
+                        ]]>
+                from
+                (
+                select
+                rq.crq_id requestId,
+                rq.crq_state,
+                (select cd.crd_state from emst_card cd where cd.crd_id = crq_card_id) cardState,
+                (select ba.BAT_CMS_ID from emst_card cd, emst_batch ba where cd.crd_id = crq_card_id and cd.CRD_BATCH_ID = ba.BAT_ID) batchCode,
+                rq.crq_flag flag,
+                rq.crq_origin,
+                rq.crq_original_enroll_office_id,
+                (select ed.dep_name from emst_department ed where ed.dep_id = rq.crq_original_enroll_office_id)
+                original_office_name,
+                cit.ctz_first_name_fa firstNameFA,
+                cit.ctz_surname_fa sureNameFA,
+                cinf.czi_father_first_name_fa fatherFirstNameFA,
+                rq.crq_enrolled_date enrolledDate,
+                rq.crq_rsv_date rsv_date
+                from
+                (select * from emst_card_request where crq_state in
+                ('RESERVED','REFERRED_TO_CCOS','DOCUMENT_AUTHENTICATED','APPROVED','SENT_TO_AFIS',
+                'APPROVED_BY_AFIS','PENDING_ISSUANCE','ISSUED','DELIVERED','READY_TO_DELIVER')) rq,
+                emst_citizen cit,
+                emst_citizen_info cinf
+                where
+                rq.crq_citizen_id=cit.ctz_id
+                and cit.ctz_id=cinf.czi_id (+)
+                <part name="cartable">
+                    and (
+                    1=0
+                    <part name="office">
+                        or (
+                        <part name="cartableFilter">
+                            (
+                            1=0
+                            <part name="notTransferred">
+                                or (rq.crq_enroll_office_id in (<dependency name="personDirectDepartment"/>) and
+                                rq.crq_original_enroll_office_id is null)
+                            </part>
+                            <part name="transferred">
+                                or (
+                                ((select eo.eof_type from emst_enrollment_office eo where eo.eof_id in
+                                (<dependency name="personDirectDepartment"/>)) = 'OFFICE' and
+                                (rq.crq_original_enroll_office_id in
+                                (<dependency name="personDirectDepartment"/>)))
+                                or
+                                ((select eo.eof_type from emst_enrollment_office eo where eo.eof_id in
+                                (<dependency name="personDirectDepartment"/>)) = 'NOCR' and (rq.crq_enroll_office_id in
+                                (<dependency name="personDirectDepartment"/>) and rq.crq_original_enroll_office_id is
+                                not
+                                null))
+                                )
+                            </part>
+                            ) and (
+                            1=0
+                            <part name="repealed">
+                                or (rq.crq_state = 'REPEALED' or rq.crq_requested_action in
+                                ('REPEALING','REPEAL_ACCEPTED'))
+                            </part>
+                            <part name="notRepealed">
+                                or (rq.crq_state not in ('REPEALED') and rq.crq_requested_action is null)
+                            </part>
+                            )
+                            and
+                        </part>
+                        <part name="noneCartableFilter">
+                            rq.crq_delivered_office_id in (<dependency name="personDepartmentWithSuperior"/>)
+                            and
+                        </part>
+                        (
+                        1=0
+                        <part name="reserve">
+                            or
+                            ( 1=0
+                            <part name="todayReservation">
+                                or trunc(rq.crq_rsv_date)=trunc(sysdate)
+                            </part>
+                            <part name="pastReservation">
+                                or trunc(rq.crq_rsv_date) between trunc(current_date - {reservationRange}) and
+                                trunc(current_date - 1)
+                            </part>
+                            <part name="futureReservation">
+                                or trunc(rq.crq_rsv_date) between trunc(current_date) and trunc(current_date +
+                                {reservationRange})
+                            </part>
+                            )
+                        </part>
+                        <part name="today">
+                            or trunc(rq.crq_enrolled_date)=trunc(sysdate)
+                        </part>
+                        <part name="last3Day">
+                            <![CDATA[
+                                                            or trunc(rq.crq_enrolled_date)>=trunc(sysdate-3)
+                                                          ]]>
+                        </part>
+                        <part name="last30Day">
+                            <![CDATA[
+                                                                or trunc(rq.crq_enrolled_date)>=trunc(sysdate-30)
+                                                              ]]>
+                        </part>
+                        <part name="reEnrolledAfter30Day">
+                            or rq.crq_reenrolled_date between (current_date - 30) and current_date
+                        </part>
+                        <part name="underIssuance">
+                            or (rq.crq_state in
+                            ('APPROVED','SENT_TO_AFIS','APPROVED_BY_AFIS','PENDING_ISSUANCE','ISSUED')
+                            and rq.crq_origin not in ('M'))
+                        </part>
+                        <part name="readyToDeliver">
+                            or
+                            rq.crq_state in ('READY_TO_DELIVER')
+                            and
+                            exists (
+                            select btt.bat_id from emst_batch btt, emst_card crdd
+                            where crdd.crd_id = rq.crq_card_id
+                            and crdd.crd_batch_id = btt.bat_id
+                            and btt.bat_state = 'RECEIVED'
+                            and crdd.crd_lost_date is null
+                            )
+                        </part>
+                        )
+                        )
+                    </part>
+                    <part name="delivered">
+                        or rq.crq_state in ('DELIVERED')
+                    </part>
+                    )
+                </part>
+                <part name="firstName">
+                    and cit.ctz_first_name_fa like {firstName}
+                </part>
+                <part name="lastName">
+                    and cit.ctz_surname_fa like {lastName}
+                </part>
+                <part name="nationalId">
+                    and cit.ctz_national_id={nationalId}
+                </part>
+                <part name="trackingId">
+                    and rq.crq_tracking_id={trackingId}
+                </part>
+                <part name="enrollmentDate">
+                    and trunc(rq.crq_enrolled_date) between trunc({fromEnrollmentDate}) and trunc({toEnrollmentDate})
+                </part>
+                <part name="birthDate">
+                    and trunc(cinf.czi_birth_date_greg) = to_date({birthDate}, 'YYYY/MM/DD')
+                </part>
+                ) t
+                ) r
+                <part name="states">
+                    where (0=1
+                    <part name="notMES">
+                        or
+                        (
+                        1=0
+                        <part name="reserve">
+                            or state in (1)
+                        </part>
+                        <part name="readyToScan">
+                            or state in (3,5,6,9)
+                        </part>
+                        <part name="readyToFing">
+                            or state in (3,4,5,7)
+                        </part>
+                        <part name="readyToFace">
+                            or state in (3,4,6,8)
+                        </part>
+                        <part name="readyToAuth">
+                            or state in (2)
+                        </part>
+                        <part name="readyToApprove">
+                            or state in (10)
+                        </part>
+                        <part name="underIssuance">
+                            or state in (11)
+                        </part>
+                        and r.crq_origin not in ('M')
+                        )
+                    </part>
+                    <part name="readyToDeliver">
+                        or state in (0)
+                    </part>
+                    <part name="delivered">
+                        or state in (12,13,0)
+                    </part>
+                    )
+                </part>
+                ) a,
+                (select
+                rq.crq_id requestId_b
+                from emst_card_request rq,
+                emst_citizen cit,
+                emst_citizen_info cinf
+                where rq.crq_citizen_id = cit.ctz_id
+                and cit.ctz_id = cinf.czi_id(+)
+                ) b
+                where a.requestId=b.requestId_b
+                <order-by>
+                    a.requestId
+                </order-by>
+            </main-query>
+            <postfix-query>
+                , emst_card_request rqpost,
+                emst_citizen citpost,
+                emst_citizen_info cinfpost
+                where
+                y.requestId = rqpost.crq_id
+                and rqpost.crq_citizen_id = citpost.ctz_id
+                and citpost.ctz_id = cinfpost.czi_id(+)
+            </postfix-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.CitizenWTO</dto-class>
+            <dto-fields>
+                <field name="requestId" column="requestId"/>
+                <field name="id" column="ctzId"/>
+                <field name="firstNameFA" column="firstNameFA"/>
+                <field name="sureNameFA" column="sureNameFA"/>
+                <field name="nationalId" column="nationalId"/>
+                <field name="firstNameEN" column="firstNameEN"/>
+                <field name="sureNameEN" column="sureNameEN"/>
+                <field name="birthCertId" column="birthCertId"/>
+                <field name="birthDate" column="birthDate"/>
+                <field name="birthDateHijri" column="birthDateHijri"/>
+                <field name="gender" column="gender"/>
+                <field name="stringType" column="requestType"/>
+                <field name="religionId" column="religionId"/>
+                <field name="postCode" column="postCode"/>
+                <field name="email" column="email"/>
+                <field name="birthCertPrvId" column="birthCertPrvId"/>
+                <field name="birthCertPrvName" column="birthCertPrvName"/>
+                <field name="livingPrvId" column="livingPrvId"/>
+                <field name="livingPrvName" column="livingPrvName"/>
+                <field name="livingCityId" column="livingCityId"/>
+                <field name="livingCityName" column="livingCityName"/>
+                <field name="birthCertSerial" column="birthCertSerial"/>
+                <field name="fatherFirstNameFA" column="fatherFirstNameFA"/>
+                <field name="fatherFirstNameEN" column="fatherFirstNameEN"/>
+                <field name="fatherFatherName" column="fatherFatherName"/>
+                <field name="fatherSureName" column="fatherSureName"/>
+                <field name="fatherNationalId" column="fatherNationalId"/>
+                <field name="fatherBirthDate" column="fatherBirthDate"/>
+                <field name="fatherBirthCertId" column="fatherBirthCertId"/>
+                <field name="fatherBirthCertSeries" column="fatherBirthCertSeries"/>
+                <field name="motherFirstNameFA" column="motherFirstNameFA"/>
+                <field name="motherSureName" column="motherSureName"/>
+                <field name="motherNationalId" column="motherNationalId"/>
+                <field name="motherBirthDate" column="motherBirthDate"/>
+                <field name="motherFatherName" column="motherFatherName"/>
+                <field name="motherBirthCertId" column="motherBirthCertId"/>
+                <field name="motherBirthCertSeries" column="motherBirthCertSeries"/>
+                <field name="address" column="address"/>
+                <field name="enrolledDate" column="enrolledDate"/>
+                <field name="trackingId" column="trackingId"/>
+                <field name="phone" column="phone"/>
+                <field name="mobile" column="mobile"/>
+                <field name="state" column="state"/>
+                <field name="requestedAction" column="crq_requested_action"/>
+                <field name="reservationDate" column="rsv_date"/>
+                <field name="originalOfficeId" column="crq_original_enroll_office_id"/>
+                <field name="originalOfficeName" column="original_office_name"/>
+                <field name="cmsBatchID" column="batchCode"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>batchDispatchList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*) cnt
+                </part>
+                <part name="main">
+                    <dependency name="mainDispatchListSelect"/>
+                </part>
+                <dependency name="mainDispatchListBody"/>
+                <order-by>
+                    ct.dpi_id
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.DispatchInfoWTO</dto-class>
+            <dto-fields>
+                <field name="id" column="DPI_ID"/>
+                <field name="cmsId" column="CMS_ID"/>
+                <field name="containerId" column="CNT_ID"/>
+                <field name="receivedType" column="REC_TYPE"/>
+                <field name="sendType" column="SEND_TYPE"/>
+                <field name="itemCount" column="ITEM_CNT"/>
+                <field name="dispatchSentDate" column="DPI_SEND_DATE"/>
+                <field name="dispatchReceiveDate" column="DPI_RECEIVE_DATE"/>
+                <field name="dispatchLostDate" column="DPI_LOST_DATE"/>
+                <field name="mySendDate" column="MY_SEND_DATE"/>
+                <field name="nextReceiverId" column="NXT_RECEIVER_ID"/>
+                <field name="nextReceiverName" column="NXT_RECEIVER_NAME"/>
+                <field name="nextReceiverReceiveDate" column="NXT_RECEIVER_RECEIVE_DATE"/>
+                <field name="status" column="state"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- Card Dispatch List -->
+    <list>
+        <list-name>cardDispatchList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select
+                    count(*) cnt
+                </part>
+                <part name="main">
+                    select
+                    cd.crd_id,
+                    ctz.ctz_first_name_fa,
+                    ctz.ctz_surname_fa,
+                    ctz.ctz_national_id,
+                    cd.crd_crn,
+                    cd.crd_receive_date,
+                    cd.crd_lost_date,
+                    bat.bat_cms_id
+                </part>
+                from
+                emst_batch bat,
+                emst_card cd,
+                emst_card_request rq,
+                emst_citizen ctz
+                where
+                bat.bat_id=cd.crd_batch_id and
+                cd.crd_id=rq.crq_card_id and
+                rq.crq_citizen_id=ctz.ctz_id and
+                <part name="card">
+                    rq.crq_delivered_office_id in (<dependency name="personDirectDepartment"/>) and
+                </part>
+                cd.crd_state not in ('DELIVERED','DESTROYED','REVOKED','LOST','MISSED') and
+                rq.crq_state not in ('PENDING_TO_DELIVER_BY_CMS','DELIVERED') and
+                (
+                <part name="ccosBatchContent">
+                    (cd.crd_receive_date is null and cd.crd_lost_date is null) or
+                </part>
+                (cd.crd_receive_date is not null and cd.crd_lost_date is null) or
+                (cd.crd_receive_date is null and cd.crd_lost_date is not null) or
+                (cd.crd_receive_date is not null and cd.crd_lost_date is not null)
+                )
+                <part name="batch">
+                    and cd.crd_batch_id={batchid}
+                </part>
+                <part name="batchCmsId">
+                    and bat.bat_cms_id like {batchCmsId}
+                </part>
+                <part name="firstName">
+                    and ctz.ctz_first_name_fa like {firstName}
+                </part>
+                <part name="lastName">
+                    and ctz.ctz_surname_fa like {lastName}
+                </part>
+                <part name="nationalId">
+                    and ctz.ctz_national_id like {nationalId}
+                </part>
+                <part name="crdCrn">
+                    and cd.crd_crn like {crdCrn}
+                </part>
+                   <part name="lostConfirmed">
+                    and (cd.crd_lostconfirm is null or cd.crd_lostconfirm=0)
+                </part>
+                <order-by>
+                    cd.crd_id
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.CardDispatchInfoWTO</dto-class>
+            <dto-fields>
+                <field name="id" column="CRD_ID"/>
+                <field name="firstNameFA" column="CTZ_FIRST_NAME_FA"/>
+                <field name="sureNameFA" column="CTZ_SURNAME_FA"/>
+                <field name="nationalId" column="CTZ_NATIONAL_ID"/>
+                <field name="cardSerialNum" column="CRD_CRN"/>
+                <field name="cardReceiveDate" column="CRD_RECEIVE_DATE"/>
+                <field name="cardLostDate" column="CRD_LOST_DATE"/>
+                <field name="cmsBatchId" column="BAT_CMS_ID"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <!-- Person List -->
+    <list>
+        <list-name>ccosPersonList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*) cnt
+                </part>
+                <part name="main">
+                    SELECT
+                    EP.PER_ID,
+                    EP.PER_FIRST_NAME,
+                    EP.PER_LAST_NAME,
+                    EP.PER_NID,
+                    EP.PER_BIRTH_CERT_NO,
+                    EP.PER_BIRTH_CERT_SERIES,
+                    EP.PER_FATHER_NAME,
+                    EP.PER_EMAIL,
+                    EP.PER_REQUEST_STATE
+                </part>
+                FROM
+                EMST_PERSON EP
+                WHERE EP.PER_DEP_ID in (<dependency name="personDirectDepartment"/>)
+                <order-by>
+                    EP.PER_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.PersonWTO</dto-class>
+            <dto-fields>
+                <field name="id" column="PER_ID"/>
+                <field name="firstName" column="PER_FIRST_NAME"/>
+                <field name="lastName" column="PER_LAST_NAME"/>
+                <field name="nid" column="PER_NID"/>
+                <field name="fatherName" column="PER_FATHER_NAME"/>
+                <field name="birthCertNum" column="PER_BIRTH_CERT_NO"/>
+                <field name="birthCertSeries" column="PER_BIRTH_CERT_SERIES"/>
+                <field name="email" column="PER_EMAIL"/>
+                <field name="requestState" column="PER_REQUEST_STATE"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- Person List -->
+
+    <!-- Workstation List -->
+    <list>
+        <list-name>ccosWorkstationList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    SELECT
+                    EW.WST_ID,
+                    EW.WST_CODE,
+                    EW.WST_ACTIVATION_CODE,
+                    ED.DEP_ID,
+                    EW.WST_STATUS
+                </part>
+                FROM
+                EMST_WORKSTATION EW,
+                EMST_DEPARTMENT ED
+                WHERE
+                EW.WST_ENROLLMENT_ID = ED.DEP_ID
+                AND ED.DEP_ID = EW.WST_ENROLLMENT_ID
+                AND EW.WST_ENROLLMENT_ID in (<dependency name="personDirectDepartment"/>)
+                <order-by>
+                    EW.WST_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.WorkstationWTO</dto-class>
+            <dto-fields>
+                <field name="id" column="WST_ID"/>
+                <field name="code" column="WST_CODE"/>
+                <field name="activationCode" column="WST_ACTIVATION_CODE"/>
+                <field name="enrollmentOfficeId" column="DEP_ID"/>
+                <field name="status" column="WST_STATUS"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- Workstation List -->
+    
+            <!-- help List -->
+    <list>
+        <list-name>ccosHelpList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    SELECT
+                    HP.HLP_ID,
+                    HP.HLP_TITLE,
+                    HP.HLP_CONTENT_TYPE,
+                    HP.HLP_CREATE_DATE
+                </part>
+                FROM
+                EMST_HELP HP
+                <order-by>
+                    HP.HLP_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.HelpWTO</dto-class>
+            <dto-fields>
+                <field name="helpId" column="HLP_ID"/>
+                <field name="helpTitle" column="HLP_TITLE"/>
+                 <field name="helpDate" column="HLP_CREATE_DATE"/>
+                 <field name="helpExtention" column="HLP_CONTENT_TYPE"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- help List -->
+    
+            <!-- messages List -->
+	<list>
+		<list-name>messageCcosList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select * 
+				</part>
+				
+				from
+				(
+				SELECT mg.MESS_TITLE, mg.MESS_ID,mg.MESS_CREATE_DATE,mp.MESSPER_READ_STATE,
+				 <![CDATA[
+                            (case
+                                   when mg.MESS_PRIORTY='IMPORTANT' then '1'
+                                   when mg.MESS_PRIORTY='NOT_IMPORTANT' then '0'
+                             end) priority
+                        ]]>
+			FROM emst_message mg ,emst_message_person mp
+      where mp.messper_person_id in ({perid}) AND mg.mess_id=mp.messper_message_id
+      ) temp
+		where 1=1
+			<part name="read">
+                    and temp.MESSPER_READ_STATE ='R'
+                </part>
+                <part name="unread">
+                    and temp.MESSPER_READ_STATE ='U'
+                </part>
+                <part name="highPriority">
+                    and temp.priority ='1'
+                </part>
+                <part name="lowPriority">
+                    and temp.priority ='0'
+                </part>
+                <part name="createDate">
+					and temp.MESS_CREATE_DATE between
+					to_date({fromCreateDate},
+					'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toCreateDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				<order-by>
+					temp.MESS_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.ws.MessageWTO</dto-class>
+			<dto-fields>
+				<field name="id" column="MESS_ID" />
+				<field name="msgSubject" column="MESS_TITLE" />
+				<field name="msgDate" column="MESS_CREATE_DATE" />
+				<field name="msgPriority" column="priority" />
+				<field name="msgUnread" column="MESSPER_READ_STATE" />
+			</dto-fields>
+		</dto>
+	</list>
+    
+    <!-- messages List -->
+
+    <!-- Token List -->
+    <list>
+        <list-name>tokenList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    SELECT
+                    PT.PTK_ID,
+                    PT.PTK_REQUEST_DATE,
+                    PT.PTK_ISSUANCE_DATE,
+                    <![CDATA[(case
+                                   when PT.PTK_TYPE = 'SIGNATURE' then 'امضا'
+                                   when PT.PTK_TYPE = 'AUTHENTICATION' then 'احراز هویت'
+                                   when PT.PTK_TYPE = 'ENCRYPTION' then 'رمز'
+                                   else 'شبکه'
+                             end) tokenType,
+                             (case 
+                             	when PT.PTK_STATE = 'READY_TO_ISSUE' then 'آماده برای صدور'
+                             	when PT.PTK_STATE = 'PENDING_TO_ISSUE' then 'در انتظار صدور'
+                             	when PT.PTK_STATE = 'READY_TO_DELIVER' then 'آماده برای تحویل'
+                             	when PT.PTK_STATE = 'DELIVERED' then 'تحویل داده شده'
+                             	when PT.PTK_STATE = 'REVOKED' then 'لغو شده'
+                             	when PT.PTK_STATE = 'PKI_ERROR' then 'خطای صدور'
+                             	
+                             	when PT.PTK_STATE = 'PENDING_FOR_EMS' then 'در انتظار تائید مرکز'
+                             	when PT.PTK_STATE = 'PENDING_TO_RENEWAL_ISSUE' then 'در انتظار صدور تمدید'
+                             	when PT.PTK_STATE = 'EMS_REJECT' then 'رد شده از مرکز'
+                             	when PT.PTK_STATE = 'SUSPENDED' then 'معلق شده'
+                             	
+                             	when PT.PTK_STATE = 'PROCESSED' then 'پردازش شده'
+                             	when PT.PTK_STATE = 'WAITING_FOR_PICKUP' then 'WAITING_FOR_PICKUP'
+                             	when PT.PTK_STATE = 'PICKUP_IN_PROGRESS' then 'PICKUP_IN_PROGRESS'
+                             	end) tokenState
+                              ]]>
+                </part>
+                FROM
+                EMST_PERSON_TOKEN PT
+                WHERE
+                PT.PTK_PERSON_ID = {perid}
+                <part name="tokenType">
+                    and PT.PTK_TYPE = {tokenType}
+                </part>
+                <part name="tokenState">
+                    and PT.PTK_STATE = {tokenState}
+                </part>
+                <order-by>
+                    PT.PTK_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.PersonTokenWTO</dto-class>
+            <dto-fields>
+                <field name="id" column="PTK_ID"/>
+                <field name="tokenState" column="tokenState"/>
+                <field name="tokenType" column="tokenType"/>
+                <field name="requestDate" column="PTK_REQUEST_DATE"/>
+                <field name="issuanceDate" column="PTK_ISSUANCE_DATE"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- Token List -->
+   
+</lists>

@@ -1,0 +1,19 @@
+{
+    'success': true,
+    'records': [
+        {
+            id: 1,
+            firstName: 'علی',
+            lastName: 'یاری',
+            nid: '4353245123'
+
+        },
+        {
+            id: 2,
+            firstName: 'اصغر',
+            lastName: 'طلا',
+            nid: '675426456'
+
+        }
+    ]
+}

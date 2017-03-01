@@ -1,0 +1,28 @@
+{
+    'success': true,
+    'showMessage': false,
+    'messageArguments': null,
+    'messageDetail': null,
+    'messageFormat': null,
+
+    'records': [
+        {
+            officeName: 'درسا',
+            worksationID: '897897d86798sdf',
+            checkUnCheck: 1
+        },
+        {
+            officeName: 'گستان',
+            worksationID: '897987sdf87df',
+            checkUnCheck: 0
+        },
+        {
+            officeName: 'نیستان',
+            worksationID: '98789sdfsdf78',
+            checkUnCheck: 1
+        }
+
+    ]
+}
+
+

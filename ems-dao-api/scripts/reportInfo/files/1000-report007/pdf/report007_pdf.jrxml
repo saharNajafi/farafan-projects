@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report007" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" scriptletClass="Scriptlet" uuid="d698a1d1-e2b2-4b9c-ac17-e1a3b815997f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#C8AE8C">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#E6DCCF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F1EAE2"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="username" class="java.lang.String"/>
+	<parameter name="userFullName" class="java.lang.String"/>
+	<parameter name="nocrDep" class="java.lang.String">
+		<property name="label" value="محدوده"/>
+		<property name="ui" value="DEP_COMBO"/>
+	</parameter>
+	<parameter name="nocrDepName" class="java.lang.String"/>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="imagesPath" class="java.lang.String"/>
+	<parameter name="nocrVALIDATOR" class="java.lang.String">
+		<property name="type" value="FUNCTION"/>
+		<property name="label" value=""/>
+		<property name="default" value="function (params) {var result = {success: true};var dateParts = params.nocrToDate.split(&quot;/&quot;);var toDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);if (params.nocrFromDate &gt; params.nocrToDate) {result.success = false;result.message = &apos;EMS_S_RRS_030&apos;;} else if (toDate &gt; new Date()) {result.success = false;result.message = &apos;EMS_S_RRS_031&apos;;}return result;}"/>
+		<property name="ui" value="NONE"/>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["G:\\940407\\report007\\pdf\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subReport1" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="subReportConnection" class="java.sql.Connection" isForPrompting="false"/>
+	<parameter name="nocrFromBirthDate" class="java.lang.String">
+		<property name="default" value="1374"/>
+		<property name="ui" value="BIRTH_DATE"/>
+		<property name="label" value="شروع تاریخ تولد"/>
+	</parameter>
+	<parameter name="nocrToBirthDate" class="java.lang.String">
+		<property name="default" value="1379"/>
+		<property name="ui" value="BIRTH_DATE"/>
+		<property name="label" value="پایان تاریخ تولد"/>
+	</parameter>
+	<parameter name="nocrRange" class="java.lang.String">
+		<property name="default" value="5"/>
+		<property name="ui" value="RANGE"/>
+		<property name="label" value="بازه گروه سنی"/>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT PPDEP.DEP_ID PPDEP_ID, PPDEP.DEP_NAME PPDEP_NAME, PDEP.DEP_ID PDEP_ID, PDEP.DEP_NAME PDEP_NAME, PDEP.DEP_CODE PDEP_CODE
+  FROM EMST_DEPARTMENT PDEP,
+       (SELECT * FROM EMST_DEPARTMENT D WHERE D.DEP_ID = 1) PPDEP
+ WHERE PDEP.DEP_PARENT_DEP_ID = PPDEP.DEP_ID
+AND PDEP.DEP_ID = $P{nocrDep}]]>
+	</queryString>
+	<field name="PPDEP_ID" class="java.math.BigDecimal"/>
+	<field name="PPDEP_NAME" class="java.lang.String"/>
+	<field name="PDEP_ID" class="java.math.BigDecimal"/>
+	<field name="PDEP_NAME" class="java.lang.String"/>
+	<field name="PDEP_CODE" class="java.lang.String"/>
+	<variable name="totalCitizenCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="totalMaleCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="totalFemaleCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="totalMuslimCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="totalChristianCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalZoroastianCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalJewCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalOtherCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="CenterGroup">
+		<groupExpression><![CDATA[$F{PPDEP_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="68">
+				<printWhenExpression><![CDATA[$F{PPDEP_ID} != null]]></printWhenExpression>
+				<rectangle>
+					<reportElement x="1" y="1" width="554" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="7666e03b-ed19-45b3-89a7-3ef2634baadb">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="459" y="1" width="94" height="15" uuid="8af172bf-06c0-4491-838a-bb733b6f3bd4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="B Nazanin"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PDEP_NAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="235" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="70b3da9c-cf3c-405c-ab6a-af1780c52f4c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[مسلمان]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="178" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="6522da9c-e502-494e-8fb4-150422c1da25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[مسیحی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="10" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="9db55758-86a0-4b9d-8b72-007bdf3ca6a8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[سایر]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="348" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="5d44cd44-f285-440e-8f7a-ec2dc1a84cd6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[مرد]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="462" y="20" width="87" height="28" backcolor="#CCCCCC" uuid="5f275dc2-9fdd-4d31-ada0-c96b6c6dd9f1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[گروه سنی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="291" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="bb5c7d8b-4d6e-4911-8e93-a4577883476e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[زن]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="405" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="ee29b46b-eea8-4691-b633-aec1d0cedb32"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[تعداد]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="66" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="89376a83-a40e-49d9-bc46-01af0c5dc430"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[کلیمی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="122" y="20" width="51" height="28" backcolor="#CCCCCC" uuid="2757555e-0c0f-4d97-8d3e-8938ea67e971"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" isBold="true"/>
+					</textElement>
+					<text><![CDATA[زرتشتی]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="1" y="16" width="555" height="4" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="a1f1e3f1-d79c-46f2-b632-d09125042170">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0" lineColor="#808080"/>
+					</graphicElement>
+				</rectangle>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="NoResultGroup">
+		<groupHeader>
+			<band height="47">
+				<printWhenExpression><![CDATA[$F{PPDEP_ID} == null]]></printWhenExpression>
+				<textField>
+					<reportElement x="190" y="8" width="184" height="20" backcolor="#808080" uuid="b187de54-6e9d-451f-852d-755aa4be6d34"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" size="14" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["داده ای برای نمایش یافت نشد"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="149" splitType="Stretch">
+			<textField>
+				<reportElement x="183" y="10" width="222" height="32" uuid="25c2ea65-6b7b-4a51-8356-1750f445e9ae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Titr Bold" size="16" isBold="false" pdfFontName="B Titr Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["گزارش آماری ثبت نام کننده گان به تفکیک جنسیت، دین و گروه سنی"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="93" y="2" width="90" height="20" uuid="98deb8fe-10fc-4847-9a6d-5a1efee1ea4d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[تاریخ گزارش گیری: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="22" width="90" height="20" uuid="d6148cb0-e201-4dff-8207-b1b62a2bc3a5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[زمان گزارش گیری: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="42" width="90" height="26" uuid="026e944a-5004-43f2-8bd4-7c1a9595a29d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[نام کاربر: ]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement x="2" y="22" width="90" height="20" uuid="ef8af0bb-e594-4570-96cd-f7a44ddaea97">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="2" width="90" height="20" uuid="3dbacae3-ea5c-48fe-96ee-907aeebd1b70"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.toPersianNumericLRE($P{REPORT_SCRIPTLET}.toPersianDate(new java.util.Date())).substring(0,11)]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement mode="Opaque" x="505" y="10" width="50" height="50" uuid="b57e2d37-8e21-4344-b5ff-4a0d8164620d"/>
+				<imageExpression><![CDATA[$P{imagesPath} + "/nocr_small.png"]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="-1" y="97" width="554" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="34beae37-6080-40ba-81b9-0a5f643b9c21">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement mode="Opaque" x="478" y="82" width="75" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="04dc6fc3-578f-42d5-a8d0-6d6a0a696571">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["شرایط گزارش"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="184" y="98" width="155" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="8a13551d-387c-430e-ae5a-a8338d96acc5">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["محدوده"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="419" y="98" width="55" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="1ba5b89c-af00-4cfa-9243-49da28be282d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["از تاریخ"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="178" y="112" width="157" height="15" uuid="33fd068b-af31-4ff3-b907-a6ff6d4327b6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nocrDepName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="349" y="98" width="55" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="dfd4633c-21cb-4550-908f-96f23b89b5a7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تا تاریخ"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="-1" y="112" width="554" height="15" uuid="38acee82-9fe9-4a2f-8fac-28476d7e0e7f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField evaluationTime="Report">
+				<reportElement x="344" y="112" width="60" height="15" uuid="9c1ecff9-cb2b-47d5-99a6-29ecd46757bd"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.toPersianNumericLRE($P{REPORT_SCRIPTLET}.toPersianDate($P{nocrToDate})).substring(0,11)]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="414" y="113" width="60" height="14" uuid="8326b1ed-9de6-4273-9115-f49aee2396ee"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.toPersianNumericLRE($P{REPORT_SCRIPTLET}.toPersianDate($P{nocrFromDate})).substring(0,11)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="40" width="90" height="28" uuid="d94d96f3-0f81-47e9-88d5-c4f3085cc7d9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="B Nazanin" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userFullName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="79" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
+			<textField>
+				<reportElement x="186" y="0" width="183" height="30" uuid="6dcaab13-5d44-48ed-bf3a-e9b11d7fa853"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Titr Bold" size="12" isBold="false" pdfFontName="B Titr Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["گزارش آماری ثبت نام کننده گان به تفکیک جنسیت، دین و گروه سنی"]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="2" y="25" width="109" height="20" uuid="3a01cdfb-dfc2-480d-bd99-1b2ffa57d7f1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="111" y="25" width="76" height="20" uuid="a8cffb2d-c93b-4f63-9e68-439c96c0faf6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[زمان گزارش گیری: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="45" width="76" height="20" uuid="1bd8cc2b-c0e7-4387-bd61-3d51321538b3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[نام کاربر: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="5" width="76" height="20" uuid="c149ae5d-bcb8-4d43-9379-bbf984277178"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[تاریخ گزارش گیری: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="5" width="109" height="20" uuid="a349e371-61c5-4945-9a04-3e119380e297"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.toPersianNumericLRE($P{REPORT_SCRIPTLET}.toPersianDate(new java.util.Date())).substring(0,11)]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="71" width="555" height="1" uuid="ef573209-f157-4941-86c1-8619820d35b1"/>
+			</line>
+			<textField>
+				<reportElement x="2" y="45" width="109" height="20" uuid="30d38b01-c95f-4dbf-836b-630010dc1cea"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="B Nazanin" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userFullName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<subreport>
+				<reportElement x="9" y="0" width="446" height="20" uuid="f9ec8e3f-2de9-4252-86d0-1ff8c1e89063"/>
+				<subreportParameter name="toBirthDate">
+					<subreportParameterExpression><![CDATA[$P{nocrToBirthDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nocrToDate">
+					<subreportParameterExpression><![CDATA[$P{nocrToDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="intervals">
+					<subreportParameterExpression><![CDATA[$P{nocrRange}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="departmentId">
+					<subreportParameterExpression><![CDATA[$F{PDEP_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fromBirthDate">
+					<subreportParameterExpression><![CDATA[$P{nocrFromBirthDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nocrFromDate">
+					<subreportParameterExpression><![CDATA[$P{nocrFromDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalCitizenCount" toVariable="totalCitizenCount"/>
+				<returnValue subreportVariable="totalMaleCount" toVariable="totalMaleCount"/>
+				<returnValue subreportVariable="totalFemaleCount" toVariable="totalFemaleCount"/>
+				<returnValue subreportVariable="totalMuslimCount" toVariable="totalMuslimCount"/>
+				<returnValue subreportVariable="totalChristianCount" toVariable="totalChristianCount"/>
+				<returnValue subreportVariable="totalZoroastianCount" toVariable="totalZoroastianCount"/>
+				<returnValue subreportVariable="totalJewCount" toVariable="totalJewCount"/>
+				<returnValue subreportVariable="totalOtherCount" toVariable="totalOtherCount"/>
+				<subreportExpression><![CDATA[$P{subReport1}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="51" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="24" width="555" height="1" backcolor="#000000" uuid="f44b08d2-4c23-4977-9ea2-c09adb339e58">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField evaluationTime="Report">
+				<reportElement x="271" y="27" width="75" height="20" uuid="7d28c370-057c-4982-8779-b794f44a777a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="14" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="27" width="5" height="20" uuid="be0349ba-2c1d-4114-b7f4-bb1bbe69974f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="14" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="27" width="75" height="20" uuid="176ae16a-dd55-4064-9ee1-ad4cf0ec3f78"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="14" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="2" width="554" height="15" forecolor="#000000" backcolor="#DEDEFE" uuid="6651a341-6d92-4689-a8d7-9294a4ad6232">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement x="461" y="2" width="85" height="15" uuid="79d455c0-76be-4163-8f2b-574eb3c1df58"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مجموع"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="2" width="51" height="15" uuid="092866bf-ee59-4fc3-9c11-5b8711c28b60"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCitizenCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="347" y="2" width="51" height="15" uuid="c31f951c-c20b-4108-b00c-f8d0bfb05b25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalMaleCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="2" width="51" height="15" uuid="78a2745b-e470-4971-85ad-7c5a8700cb07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalFemaleCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="2" width="51" height="15" uuid="32312765-572c-41cc-8999-222a358bfedf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalMuslimCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="2" width="51" height="15" uuid="43c8706b-e2eb-4467-8803-8c54a39f3434"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalChristianCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="121" y="2" width="51" height="15" uuid="e8992104-4a8d-40f1-832f-eaa9cb49ffbc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalZoroastianCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="2" width="51" height="15" uuid="773de86e-1d30-42b1-9252-e50614e3230c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalJewCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="9" y="2" width="51" height="15" uuid="61a4ca05-d330-4f67-9af8-da15ccff614c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalOtherCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

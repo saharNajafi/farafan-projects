@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="001SubReport" pageWidth="900" pageHeight="30" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="092d3723-b426-4520-9ad2-54185ae24bc0">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS_MAIN"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="parentDepartmentId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT (SELECT COUNT(CRQ.CRQ_ID)
+          FROM EMST_CARD_REQUEST CRQ,
+               (SELECT DEP1.DEP_ID
+                  FROM EMST_DEPARTMENT DEP1
+                 WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) DEP
+         WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID) enrolledCount,
+       (SELECT COUNT(*)
+          FROM EMST_CARD_REQUEST CRQ,
+               (SELECT CRH1.CRH_CARD_REQUEST_ID REQ_ID
+                  FROM EMST_CARD_REQUEST_HISTORY CRH1
+                 WHERE CRH1.CRH_ACTION IN ('DELIVERED_TO_CITIZEN')
+                 GROUP BY CRH1.CRH_CARD_REQUEST_ID) CRH,
+               (SELECT DEP1.DEP_ID
+                  FROM EMST_DEPARTMENT DEP1
+                 WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) DEP
+         WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+           AND CRQ.CRQ_ID = CRH.REQ_ID) deliveredCount,
+       
+       (SELECT COUNT(*)
+          FROM EMST_CARD_REQUEST CRQ,
+               (SELECT CRH1.CRH_CARD_REQUEST_ID REQ_ID
+                  FROM EMST_CARD_REQUEST_HISTORY CRH1
+                 WHERE CRH1.CRH_RESULT like 'crn=%'
+                 GROUP BY CRH1.CRH_CARD_REQUEST_ID) CRH,
+               (SELECT DEP1.DEP_ID
+                  FROM EMST_DEPARTMENT DEP1
+                 WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) DEP
+         WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+           AND CRQ.CRQ_ID = CRH.REQ_ID) issuedCount,
+       
+       (SELECT COUNT(*)
+          FROM EMST_CARD_REQUEST CRQ,
+               EMST_CARD CRD,
+               EMST_BATCH BAT,
+               EMST_BOX BOX,
+               EMST_DISPATCH_INFO DIS,
+               (SELECT CRH1.CRH_CARD_REQUEST_ID REQ_ID
+                  FROM EMST_CARD_REQUEST_HISTORY CRH1
+                 WHERE CRH1.CRH_RESULT like 'crn=%'
+                 GROUP BY CRH1.CRH_CARD_REQUEST_ID) CRH,
+               (SELECT DEP1.DEP_ID
+                  FROM EMST_DEPARTMENT DEP1
+                 WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) DEP
+         WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+           AND CRQ.CRQ_ID = CRH.REQ_ID
+           AND BOX.BOX_ID = BAT.BAT_BOX_ID
+           AND BAT.BAT_ID = CRD.CRD_BATCH_ID
+           AND CRD.CRD_ID = CRQ.CRQ_CARD_ID
+           AND DIS.DPI_CONTAINER_TYPE = 'BOX'
+           AND DIS.DPI_CONTAINER_ID = BOX.BOX_ID
+           AND DIS.DPI_RECEIVE_DATE IS NOT NULL) deliveredByNOCRCount,
+       
+       (SELECT COUNT(*)
+          FROM EMST_CARD_REQUEST CRQ,
+               (SELECT CRH1.CRH_CARD_REQUEST_ID REQ_ID
+                  FROM EMST_CARD_REQUEST_HISTORY CRH1
+                 WHERE CRH1.CRH_ACTION IN ('NOTIFY_CARD_DELIVER')
+                 GROUP BY CRH1.CRH_CARD_REQUEST_ID) CRH,
+               (SELECT DEP1.DEP_ID
+                  FROM EMST_DEPARTMENT DEP1
+                 WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) DEP
+         WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+           AND CRQ.CRQ_ID = CRH.REQ_ID) activedCardCount,
+       
+       (SELECT COUNT(*)
+          FROM EMST_CARD_REQUEST CRQ,
+               (SELECT CRH1.CRH_CARD_REQUEST_ID REQ_ID
+                  FROM EMST_CARD_REQUEST_HISTORY CRH1
+                 WHERE CRH1.CRH_ACTION IN
+                       ('UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE',
+                        'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC',
+                        'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE')
+                 GROUP BY CRH1.CRH_CARD_REQUEST_ID) CRH,
+               (SELECT DEP1.DEP_ID
+                  FROM EMST_DEPARTMENT DEP1
+                 WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) DEP
+         WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+           AND CRQ.CRQ_ID = CRH.REQ_ID) unsuccessfulDeliveryCount
+
+  FROM DUAL]]>
+	</queryString>
+	<field name="enrolledCount" class="java.math.BigDecimal"/>
+	<field name="deliveredCount" class="java.math.BigDecimal"/>
+	<field name="issuedCount" class="java.math.BigDecimal"/>
+	<field name="deliveredByNOCRCount" class="java.math.BigDecimal"/>
+	<field name="activedCardCount" class="java.math.BigDecimal"/>
+	<field name="unsuccessfulDeliveryCount" class="java.math.BigDecimal"/>
+	<variable name="enrolledCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{enrolledCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="deliveredCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{deliveredCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="issuedCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{issuedCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="deliveredByNOCRCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{deliveredByNOCRCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="activedCardCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{activedCardCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="unsuccessfulDeliveryCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{unsuccessfulDeliveryCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement uuid="af3581af-0aab-4cb1-915a-a10f6c6a7c35" x="600" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{deliveredCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f04a38a0-7c23-4f9d-86fa-1770bbb7ce30" x="450" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{issuedCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4a0955fc-7b37-4d95-957b-2c931c993762" x="150" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{activedCardCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="650c4d86-4e6d-457b-b396-20da0e8aaa93" x="300" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{deliveredByNOCRCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ecbe40f3-88b7-4b73-86af-988b22a2bdf1" x="0" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{unsuccessfulDeliveryCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="49005108-2827-453c-9a0c-1401711e3a70" x="750" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{enrolledCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

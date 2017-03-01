@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="r02Sub" pageWidth="1350" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="1350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="47486cc6-281c-4fb8-a3c0-47028fff6cee">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="nocrFromDate" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT Y.CRH_ACTOR ACTOR,
+                PRS.PER_FIRST_NAME,
+                PRS.PER_LAST_NAME,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN ('COMPLETE_REGISTRATION')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) completeRegistrationCount,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN ('AUTHENTICATE_DOCUMENT')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) authenticateDocumentCount,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN ('DOCUMENT_SCAN')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) documentScanCount,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN ('FINGER_SCAN')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) fingerScanCount,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN ('FACE_SCAN')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) faceScanCount,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN ('MANAGER_APPROVAL')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) managerApprovalCount,
+                (SELECT COUNT(*)
+                   FROM EMST_CARD_REQUEST_HISTORY CRH, EMST_CARD_REQUEST CRQ
+                  where CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND (CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+                        CRQ.CRQ_ORIGINAL_ENROLL_OFFICE_ID =
+                        $P{departmentId})
+                    AND crh.CRH_ACTION IN
+                        ('COMPLETE_REGISTRATION',
+                         'AUTHENTICATE_DOCUMENT',
+                         'DOCUMENT_SCAN',
+                         'FINGER_SCAN',
+                         'FACE_SCAN',
+                         'MANAGER_APPROVAL')
+                    AND crh.CRH_ACTOR = Y.CRH_ACTOR
+                    AND TRUNC(crh.CRH_DATE) BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) countInRow
+  from EMST_CARD_REQUEST_HISTORY Y, EMST_PERSON PRS, EMST_CARD_REQUEST CR
+ where Y.CRH_ACTOR IS NOT NULL
+   AND y.CRH_ACTOR = PRS.PER_USERNAME(+)
+   AND PRS.PER_DEP_ID = $P{departmentId}
+   AND CR.CRQ_ID = Y.CRH_CARD_REQUEST_ID
+   AND (CR.CRQ_ENROLL_OFFICE_ID = $P{departmentId} OR
+       CR.CRQ_ORIGINAL_ENROLL_OFFICE_ID = $P{departmentId})
+   AND y.CRH_ACTION IN ('COMPLETE_REGISTRATION',
+                        'AUTHENTICATE_DOCUMENT',
+                        'DOCUMENT_SCAN',
+                        'FINGER_SCAN',
+                        'FACE_SCAN',
+                        'MANAGER_APPROVAL')
+   AND TRUNC(Y.CRH_DATE) BETWEEN TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+       (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)]]>
+	</queryString>
+	<field name="completeRegistrationCount" class="java.lang.Long"/>
+	<field name="authenticateDocumentCount" class="java.lang.Long"/>
+	<field name="documentScanCount" class="java.lang.Long"/>
+	<field name="fingerScanCount" class="java.lang.Long"/>
+	<field name="faceScanCount" class="java.lang.Long"/>
+	<field name="managerApprovalCount" class="java.lang.Long"/>
+	<field name="countInRow" class="java.lang.Long"/>
+	<field name="ACTOR" class="java.lang.String"/>
+	<field name="PER_FIRST_NAME" class="java.lang.String"/>
+	<field name="PER_LAST_NAME" class="java.lang.String"/>
+	<variable name="zeroValue" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[0]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="nullValue" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA["----"]]></variableExpression>
+		<initialValueExpression><![CDATA["----"]]></initialValueExpression>
+	</variable>
+	<variable name="summaryHallmark" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{countInRow}]]></variableExpression>
+	</variable>
+	<variable name="countInRow" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{countInRow}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="completeRegistrationCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{completeRegistrationCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="authenticateDocumentCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{authenticateDocumentCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="documentScanCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{documentScanCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="fingerScanCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{fingerScanCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="faceScanCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{faceScanCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="managerApprovalCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{managerApprovalCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="firstName" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{PER_FIRST_NAME}]]></variableExpression>
+		<initialValueExpression><![CDATA["----"]]></initialValueExpression>
+	</variable>
+	<variable name="lastName" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{PER_LAST_NAME}]]></variableExpression>
+		<initialValueExpression><![CDATA["----"]]></initialValueExpression>
+	</variable>
+	<variable name="actor" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{ACTOR}]]></variableExpression>
+		<initialValueExpression><![CDATA["----"]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement uuid="802db811-239f-4a04-9835-0295966d4063" x="300" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fingerScanCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40ea1163-0764-4d91-8db3-46184d486183" x="1050" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{lastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2054a142-f778-449f-94fe-3980dfc151b4" x="1200" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{firstName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09d2acdb-f953-4b74-bdad-b5a4ff119f1c" x="150" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{faceScanCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b0843e7b-be2b-4e39-ad73-e127b11543ea" x="600" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{authenticateDocumentCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d9fe7bc9-52c6-435d-a5cc-0d94e18e6784" x="0" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{managerApprovalCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="792adfd9-3473-4dcc-8149-21725bb523ba" x="900" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Tahoma" size="12" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{actor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3290489c-4c8b-4a38-ad68-b417e70bf8d9" x="450" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentScanCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="689da48f-364f-4f1e-8928-701df86356e8" x="750" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{completeRegistrationCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$V{summaryHallmark} == null]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="ae8428dd-b9a4-450b-a48f-4f803aaff414" x="0" y="0" width="150" height="30">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9134839f-9fa2-4215-b86f-23bacdc526ec" x="150" y="0" width="150" height="30">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d9d06f74-ea04-452f-8fcf-01facc61a163" x="300" y="0" width="150" height="30">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b6728200-3783-493d-bcee-c87d40fb8bbf" x="450" y="0" width="150" height="30">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8c7d3aca-da86-4aa6-ba56-794d67e2ffe5" x="600" y="0" width="150" height="30">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1f3dc6ab-2bb6-4db9-8adc-1946922020b9" x="750" y="0" width="150" height="30">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f5d57d8c-358e-4149-a843-f48e14e69e4f" x="900" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Tahoma" size="12" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{nullValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e22b4878-6ba1-4851-aa19-f79295071c91" x="1050" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Tahoma" size="12" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{nullValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e20e2231-41d4-40be-ab88-ad285945b66c" x="1200" y="0" width="150" height="30">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{nullValue}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

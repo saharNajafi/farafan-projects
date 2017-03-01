@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report008-2SubReport_pdf" pageWidth="842" pageHeight="50" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="b7830328-bcba-429f-97bf-052256037b35">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT DEP1.DEP_NAME depName,
+                DEP1.DEP_CODE depCode,
+
+	(select rat.rat_size from emst_rating_info rat
+  inner join emst_enrollment_office eof on rat.rat_id = eof.eof_rat_id
+  where eof.eof_id = $P{departmentId}) ratsize,
+
+	(select count(wst.wst_id) from emst_workstation wst
+	inner join emst_department dep on wst.wst_enrollment_id = dep.dep_id
+	where dep.dep_id = $P{departmentId}) workstationcount,
+
+	(select count(per.per_id) from emst_person per
+	inner join emst_department dep on per.per_dep_id = dep.dep_id
+	where dep.dep_id = $P{departmentId}) personcount,
+
+  (select count(*) from emst_card_request_history his,
+  emst_card_request req,emst_department dep
+  where his.crh_card_request_id = req.crq_id
+  and req.crq_enroll_office_id = dep.dep_id
+  and dep.dep_id = $P{departmentId} and his.crh_action = 'MANAGER_APPROVAL') managerAprovalCount
+
+  from emst_department dep1 where DEP1.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="DEPNAME" class="java.lang.String"/>
+	<field name="DEPCODE" class="java.lang.String"/>
+	<field name="RATSIZE" class="java.lang.Long"/>
+	<field name="WORKSTATIONCOUNT" class="java.lang.Long"/>
+	<field name="PERSONCOUNT" class="java.lang.Long"/>
+	<field name="MANAGERAPROVALCOUNT" class="java.lang.Long"/>
+	<variable name="ratSize" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{RATSIZE}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="workstationCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{WORKSTATIONCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="personCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERSONCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="activateDep" class="java.lang.String">
+		<variableExpression><![CDATA[($F{MANAGERAPROVALCOUNT}.intValue() != 0 ? ($F{RATSIZE}.intValue() != 0 ? "فعال" : "غیرفعال موقت") : "غیرفعال")]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="242" y="4" width="80" height="15" uuid="0f597331-771d-4381-89c4-bd4c87d84a1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ratSize}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="67" y="4" width="85" height="15" uuid="d7c426ba-a4f4-4cf5-95b3-420346884da1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{workstationCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="4" width="80" height="15" uuid="f5e2e878-c7f7-429f-b188-43582d2ca13b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{personCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-18" y="4" width="80" height="15" uuid="db6e6bf0-d19c-4f28-b206-8f88a6788904"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{activateDep}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

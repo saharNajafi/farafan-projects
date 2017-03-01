@@ -1,0 +1,43 @@
+<!--<?xml version='1.0' encoding='UTF-8'?>-->
+<!--<weblogic-application xmlns="http://xmlns.oracle.com/weblogic/weblogic-application"-->
+<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-application-->
+<!--http://xmlns.oracle.com/weblogic/weblogic-application/1.4/weblogic-application.xsd">-->
+<!--&lt;!&ndash; server-version: 12.1.1 &ndash;&gt;-->
+<!--<application-param>-->
+<!--<param-name>webapp.encoding.default</param-name>-->
+<!--<param-value>UTF-8</param-value>-->
+<!--</application-param>-->
+
+<!--<prefer-application-packages>-->
+<!--<package-name>antlr.*</package-name>-->
+<!--<package-name>org.quartz.*</package-name>-->
+<!--<package-name>gampooya.tools.*</package-name>-->
+<!--<package-name>org.slf4j</package-name>-->
+<!--<package-name>org.apache.xerces.*</package-name>-->
+<!--<package-name>org.bouncycastle.*</package-name>-->
+<!--<package-name>net.sf.jasperreports.*</package-name>-->
+<!--<package-name>com.lowagie.*</package-name>-->
+<!--</prefer-application-packages>-->
+<!--<fast-swap>-->
+<!--<enabled>true</enabled>-->
+<!--</fast-swap>-->
+<!--</weblogic-application>-->
+
+<weblogic-application xmlns="http://www.bea.com/ns/weblogic/90"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.bea.com/ns/weblogic/90
+                      http://www.bea.com/ns/weblogic/90/weblogic-application.xsd">
+
+    <prefer-application-packages>
+        <package-name>antlr.*</package-name>
+        <package-name>org.quartz.*</package-name>
+        <package-name>gampooya.tools.*</package-name>
+        <package-name>org.slf4j</package-name>
+        <package-name>org.apache.xerces.*</package-name>
+        <package-name>org.bouncycastle.*</package-name>
+        <package-name>net.sf.jasperreports.*</package-name>
+        <package-name>com.lowagie.*</package-name>
+        <package-name>org.mozilla.*</package-name>
+    </prefer-application-packages>
+</weblogic-application>

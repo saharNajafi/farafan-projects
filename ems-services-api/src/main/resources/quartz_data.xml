@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_2_0.xsd"
+	version="2.0">
+
+	<!--<pre-processing-commands> <remove-jobs-in-group>*</remove-jobs-in-group> 
+		&lt;!&ndash; clear all jobs in scheduler &ndash;&gt; <remove-triggers-in-group>*</remove-triggers-in-group> 
+		&lt;!&ndash; clear all triggers in scheduler &ndash;&gt; </pre-processing-commands> -->
+
+	<processing-directives>
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+			file), overwrite them -->
+		<overwrite-existing-data>false</overwrite-existing-data>
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+			file), and over-write is false, ignore them rather than generating an error -->
+		<ignore-duplicates>true</ignore-duplicates>
+	</processing-directives>
+
+	<schedule>
+		<!-- CardIssuanceRequest -->
+		<job>
+			<name>ارسال درخواست جهت صدور کارت</name>
+			<group>CardIssuanceRequestJobGroup</group>
+			<description>ارسال درخواست های تائید شده توسط AFIS ، به سامانه ی CMS جهت صدور کارت</description>
+			<job-class>com.gam.nocr.ems.biz.job.CardIssuanceRequestJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+			<!--<job-data-map> <entry> <key>someKey1</key> <value>someValue</value> 
+				</entry> </job-data-map> -->
+		</job>
+
+		<trigger>
+			<cron>
+				<name>CardIssuanceRequestTrigger</name>
+				<group>CardIssuanceRequestJobGroup</group>
+				<job-name>ارسال درخواست جهت صدور کارت</job-name>
+				<job-group>CardIssuanceRequestJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+				<!--<misfire-instruction>MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY</misfire-instruction> -->
+				<!--<misfire-instruction>MISFIRE_INSTRUCTION_DO_NOTHING</misfire-instruction> -->
+				<!--<misfire-instruction>MISFIRE_INSTRUCTION_FIRE_NOW</misfire-instruction> -->
+				<!--<job-data-map> <entry> <key>someKey</key> <value>overriddenValue</value> 
+					</entry> </job-data-map> -->
+				<cron-expression>0 30 03 ? * *</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- CardIssuanceRequest -->
+
+		<!-- VerifyReadyToIssueTokens -->
+		<job>
+			<name>درخواست صدور توکن از PKI</name>
+			<group>VerifyReadyToIssueTokensJobGroup</group>
+			<description>ارسال درخواست های صدور توکن به سامانه PKI</description>
+			<job-class>com.gam.nocr.ems.biz.job.VerifyReadyToIssueTokensJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>VerifyReadyToIssueTokensTrigger</name>
+				<group>VerifyReadyToIssueTokensJobGroup</group>
+				<job-name>درخواست صدور توکن از PKI</job-name>
+				<job-group>VerifyReadyToIssueTokensJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 3 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- VerifyReadyToIssueTokens -->
+
+		<!-- VerifyReadyToIssueTokens -->
+		<job>
+			<name>دریافت نتیجه درخواست صدور توکن</name>
+			<group>VerifyPendingToIssueTokensJobGroup</group>
+			<description>ارسال درخواست به سامانه ی PKI ، جهت دریافت نتیجه درخواست صدور توکن</description>
+			<job-class>com.gam.nocr.ems.biz.job.VerifyPendingToIssueTokensJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>VerifyPendingToIssueTokensTrigger</name>
+				<group>VerifyPendingToIssueTokensJobGroup</group>
+				<job-name>دریافت نتیجه درخواست صدور توکن</job-name>
+				<job-group>VerifyPendingToIssueTokensJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 3 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- VerifyReadyToIssueTokens -->
+
+		<!-- CardHandingOutNotificationJob -->
+		<job>
+			<name>اعلام کارت های تحویل شده به CMS</name>
+			<group>CardHandingOutNotificationJobGroup</group>
+			<description>اعلام تحویل کارت به سامانه CMS</description>
+			<job-class>com.gam.nocr.ems.biz.job.CardHandingOutNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>CardHandingOutNotificationJobTrigger</name>
+				<group>CardHandingOutNotificationJobGroup</group>
+				<job-name>اعلام کارت های تحویل شده به CMS</job-name>
+				<job-group>CardHandingOutNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 2 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- CardHandingOutNotificationJob -->
+
+		<!-- BatchMissedNotificationJob -->
+		<job>
+			<!--<name>BatchMissedNotificationJob</name> -->
+			<name>اعلام گم شدن دسته ها</name>
+			<group>BatchMissedNotificationJobGroup</group>
+			<!--<description> The job 'BatchMissedNotificationJob' is used to calling 
+				the service of notifyMissedBatches regularly </description> -->
+			<description>اعلام دسته های گم شده به CMS جهت صدور مجدد</description>
+			<job-class>com.gam.nocr.ems.biz.job.BatchMissedNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>BatchMissedNotificationJobTrigger</name>
+				<group>BatchMissedNotificationJobGroup</group>
+				<job-name>اعلام گم شدن دسته ها</job-name>
+				<!--<job-name>BatchMissedNotificationJob</job-name> -->
+				<job-group>BatchMissedNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 4 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- BatchMissedNotificationJob -->
+
+		<!-- BatchReceivedNotificationJob -->
+		<job>
+			<name>اعلام وصول دسته ها</name>
+			<group>BatchReceivedNotificationJobGroup</group>
+			<description>اعلام وصول دسته ها به CMS</description>
+			<job-class>com.gam.nocr.ems.biz.job.BatchReceivedNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>BatchReceivedNotificationJobTrigger</name>
+				<group>BatchReceivedNotificationJobGroup</group>
+				<job-name>اعلام وصول دسته ها</job-name>
+				<job-group>BatchReceivedNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0/30 * * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- BatchReceivedNotificationJob -->
+
+		<!-- BoxMissedNotificationJob -->
+		<!-- <job>
+			<name>اعلام گم شدن جعبه ها</name>
+			<group>BoxMissedNotificationJobGroup</group>
+			<description>اطلاع رسانی جهت گم شدن جعبه ها</description>
+			<job-class>com.gam.nocr.ems.biz.job.BoxMissedNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>BoxMissedNotificationJobTrigger</name>
+				<group>BoxMissedNotificationJobGroup</group>
+				<job-name>اعلام گم شدن جعبه ها</job-name>
+				<job-group>BoxMissedNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time> -->
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<!-- <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 4 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- BoxMissedNotificationJob -->
+
+		<!-- CardMissedNotificationJob -->
+		<job>
+			<name>اعلام گم شدن کارت ها</name>
+			<group>CardMissedNotificationJobGroup</group>
+			<description>اعلام گم شدن کارت ها به CMSجهت صدور مجدد</description>
+			<job-class>com.gam.nocr.ems.biz.job.CardMissedNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>CardMissedNotificationJobTrigger</name>
+				<group>CardMissedNotificationJobGroup</group>
+				<job-name>اعلام گم شدن کارت ها</job-name>
+				<job-group>CardMissedNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- CardMissedNotificationJob -->
+
+		<!-- IMSUpdateCitizensInfoJob -->
+		<job>
+			<name>ارسال به AFIS</name>
+			<group>IMSUpdateCitizensInfoJobGroup</group>
+			<description>ارسال درخواست های تائید شده توسط مدیر به سامانه AFIS</description>
+			<job-class>com.gam.nocr.ems.biz.job.IMSUpdateCitizensInfoJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>IMSUpdateCitizensInfoJobTrigger</name>
+				<group>IMSUpdateCitizensInfoJobGroup</group>
+				<job-name>ارسال به AFIS</job-name>
+				<job-group>IMSUpdateCitizensInfoJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 01 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- IMSUpdateCitizensInfoJob -->
+
+		<!-- IMSGetUpdatedCitizensResultJob -->
+		<job>
+			<name>دریافت نتیجه از AFIS</name>
+			<group>IMSGetUpdatedCitizensResultJobGroup</group>
+			<description>دریافت نتیجه به روز رسانی اطلاعات شهروند از سامانه ی AFIS (تائید شده های AFIS)</description>
+			<job-class>com.gam.nocr.ems.biz.job.IMSGetUpdatedCitizensResultJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>IMSGetUpdatedCitizensResultJobTrigger</name>
+				<group>IMSGetUpdatedCitizensResultJobGroup</group>
+				<job-name>دریافت نتیجه از AFIS</job-name>
+				<job-group>IMSGetUpdatedCitizensResultJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 2 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- IMSGetUpdatedCitizensResultJob -->
+
+		<!-- UnsuccessfulDeliveryRequestJob -->
+		<job>
+			<name>اعلام عدم تحویل کارت</name>
+			<group>UnsuccessfulDeliveryRequestJobGroup</group>
+			<description>اعلام عدم تحویل کارت به CMS</description>
+			<job-class>com.gam.nocr.ems.biz.job.UnsuccessfulDeliveryRequestJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>UnsuccessfulDeliveryRequestJobTrigger</name>
+				<group>UnsuccessfulDeliveryRequestJobGroup</group>
+				<job-name>اعلام عدم تحویل کارت</job-name>
+				<job-group>UnsuccessfulDeliveryRequestJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 03 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- UnsuccessfulDeliveryRequestJob -->
+
+		<!-- PortalFetchingCardRequestsJob -->
+		<!-- <job>
+			<name>ارسال درخواست های ثبت شده در پرتال</name>
+			<group>PortalFetchingCardRequestsJobGroup</group>
+			<description>جمع آوری و ارسال درخواست های ثبت شده در سامانه پرتال به سامانه خدمات شهروندی</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalFetchingCardRequestsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalFetchingCardRequestsJobTrigger</name>
+				<group>PortalFetchingCardRequestsJobGroup</group>
+				<job-name>ارسال درخواست های ثبت شده در پرتال</job-name>
+				<job-group>PortalFetchingCardRequestsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time> -->
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<!-- <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 * * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- PortalFetchingCardRequestsJob -->
+
+		<!-- PortalUpdateCardRequestsStateJob -->
+		<job>
+			<name>به روز رسانی وضعیت درخواست ها</name>
+			<group>PortalUpdateCardRequestsStateJobGroup</group>
+			<description>به روز رسانی وضعیت کلیه درخواست ها از سامانه ی EMS به سامانه ی پورتال</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalUpdateCardRequestsStateJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalUpdateCardRequestsStateJobTrigger</name>
+				<group>PortalUpdateCardRequestsStateJobGroup</group>
+				<job-name>به روز رسانی وضعیت درخواست ها</job-name>
+				<job-group>PortalUpdateCardRequestsStateJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0/5 * * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PortalUpdateCardRequestsStateJob -->
+
+		<!-- PortalReservationsJob -->
+		<job>
+			<name>انتقال نوبت ها</name>
+			<group>PortalReservationsJobGroup</group>
+			<description>انتقال نوبتهای گرفته شده از پورتال به خدمات شهروندی</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalReservationsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalReservationsJobTrigger</name>
+				<group>PortalReservationsJobGroup</group>
+				<job-name>انتقال نوبت ها</job-name>
+				<job-group>PortalReservationsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0/30 * * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PortalReservationsJob -->
+
+		<!-- EnrollmentOfficesUpdatingNotificationJob -->
+		<job>
+			<name>اعمال تغییرات دفاتر ثبت نام</name>
+			<group>EnrollmentOfficesUpdatingNotificationJobGroup</group>
+			<description>اعمال تغییرات انجام شده و انتقال آن به سامانه ی پورتال و CMS</description>
+			<job-class>com.gam.nocr.ems.biz.job.EnrollmentOfficesUpdatingNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>EnrollmentOfficesUpdatingNotificationJobTrigger</name>
+				<group>EnrollmentOfficesUpdatingNotificationJobGroup</group>
+				<job-name>اعمال تغییرات دفاتر ثبت نام</job-name>
+				<job-group>EnrollmentOfficesUpdatingNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 01 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- EnrollmentOfficesUpdatingNotificationJob -->
+
+		<!-- PortalUpdateCcosAndVerifiedMESCardRequestsJob -->
+		<job>
+			<name>انتقال درخواست های تائید شده توسط برنامهCCOS و MES به سامانه ی پورتال</name>
+			<group>PortalUpdateCcosAndVerifiedMESCardRequestsJobGroup</group>
+			<description>انتقال کلیه درخواستهای ثبت نام شده ازطریق برنامه CCOS وMES که موردتایید IMS قرار گرفتند به سامانه پورتال</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalUpdateCcosAndVerifiedMESCardRequestsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalUpdateCcosAndVerifiedMESCardRequestsJobTrigger</name>
+				<group>PortalUpdateCcosAndVerifiedMESCardRequestsJobGroup</group>
+				<job-name>انتقال درخواست های تائید شده توسط برنامهCCOS و MES به سامانه ی پورتال</job-name>
+				<job-group>PortalUpdateCcosAndVerifiedMESCardRequestsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 3 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PortalUpdateCcosAndVerifiedMESCardRequestsJob -->
+
+		<!-- PortalUpdateForNotVerifiedMESRequestsJob -->
+		<job>
+			<name>انتقال درخواستهای تائید نشدهMES (عدم تاییدIMS) به پورتال</name>
+			<group>PortalUpdateForNotVerifiedMESRequestsJobGroup</group>
+			<description>انتقال درخواستهای تائید نشده MESبه سامانه پورتال</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalUpdateForNotVerifiedMESRequestsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalUpdateForNotVerifiedMESRequestsJobTrigger</name>
+				<group>PortalUpdateForNotVerifiedMESRequestsJobGroup</group>
+				<job-name>انتقال درخواستهای تائید نشدهMES (عدم تاییدIMS) به پورتال</job-name>
+				<job-group>PortalUpdateForNotVerifiedMESRequestsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 3 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PortalUpdateForNotVerifiedMESRequestsJob -->
+
+		<!-- IMSBatchEnquiryRequestJob -->
+		<!-- <job>
+			<name>استعلام دسته ای اطلاعات شهروندان</name>
+			<group>IMSBatchEnquiryRequestJobGroup</group>
+			<description>
+				ارسال درخواست استعلام دسته ای اطلاعات شهروندان به سامانه ثبت احوال
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.IMSBatchEnquiryRequestJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>IMSBatchEnquiryRequestJobTrigger</name>
+				<group>IMSBatchEnquiryRequestJobGroup</group>
+				<job-name>استعلام دسته ای اطلاعات شهروندان</job-name>
+				<job-group>IMSBatchEnquiryRequestJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time> -->
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+<!-- 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0/30 * * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- IMSBatchEnquiryRequestJob -->
+
+		<!--IMSBatchEnquiryRequestJobForIMSPending -->
+	<!-- 	<job>
+			<name>استعلام دسته ای مجدد شهروندان</name>
+			<group>IMSBatchEnquiryRequestJobForIMSPendingGroup</group>
+			<description>
+				ارسال درخواست مجدد استعلام دسته ای اطلاعات شهروندانی که نتیجه استعلام
+				اولیه آن ها دریافت نشده است
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.IMSBatchEnquiryRequestJobForIMSPending</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>IMSBatchEnquiryRequestJobForIMSPendingTrigger</name>
+				<group>IMSBatchEnquiryRequestJobForIMSPendingGroup</group>
+				<job-name>استعلام دسته ای مجدد شهروندان</job-name>
+				<job-group>IMSBatchEnquiryRequestJobForIMSPendingGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time> -->
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<!-- <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0/2 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- IMSBatchEnquiryRequestJobForIMSPending -->
+
+		<!-- IMSBatchEnquiryResultJob -->
+		<!-- <job>
+			<name>دریافت نتیجه استعلام دسته ای</name>
+			<group>IMSBatchEnquiryResultJobGroup</group>
+			<description>
+				ارسال درخواست به سامانه ثبت احوال جهت دریافت نتیجه استعلام دسته ای
+				اطلاعات شهروندان
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.IMSBatchEnquiryResultJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>IMSBatchEnquiryResultJobTrigger</name>
+				<group>IMSBatchEnquiryResultJobGroup</group>
+				<job-name>دریافت نتیجه استعلام دسته ای</job-name>
+				<job-group>IMSBatchEnquiryResultJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time> -->
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<!-- <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0/30 * * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- IMSBatchEnquiryResultJob -->
+
+		<!-- PortalRatingInfoNotificationJob -->
+		<job>
+			<name>اعمال به روز رسانی رتبه های دفاتر در کارتابل رتبه</name>
+			<group>PortalRatingInfoNotificationJobGroup</group>
+			<description>
+				ااعمال تغییرات رتبه های دفاتر ثبت نام در پورتال
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalRatingInfoNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalRatingInfoNotificationJobTrigger</name>
+				<group>PortalRatingInfoNotificationJobGroup</group>
+				<job-name>اعمال به روز رسانی رتبه های دفاتر در کارتابل رتبه</job-name>
+				<job-group>PortalRatingInfoNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PortalRatingInfoNotificationJob -->
+
+		<!-- PortalLocationsNotificationJob -->
+		<job>
+			<name>اعلام درج و به روز رسانی استان ها</name>
+			<group>PortalLocationsNotificationJobGroup</group>
+			<description>
+				اعمال تغییرات استان ها به سامانه ی پورتال
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalLocationsNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalLocationsNotificationJobTrigger</name>
+				<group>PortalLocationsNotificationJobGroup</group>
+				<job-name>اعلام درج و به روز رسانی استان ها</job-name>
+				<job-group>PortalLocationsNotificationJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 * * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PortalLocationsNotificationJob -->
+
+		<!-- PortalRequestedSmsJob -->
+		<!-- <job>
+			<name>دریافت درخواست های فراموشی کد رهگیری از پرتال</name>
+			<group>PortalRequestedSmsJobGroup</group>
+			<description>
+				دریافت درخواست های فراموشی کد رهگیری از پرتال
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalRequestedSmsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>PortalRequestedSmsJobTrigger</name>
+				<group>PortalRequestedSmsJobGroup</group>
+				<job-name>دریافت درخواست های فراموشی کد رهگیری از پرتال</job-name>
+				<job-group>PortalRequestedSmsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time> -->
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<!-- <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- PortalRequestedSmsJob -->
+
+		<!-- ProcessSmsJob -->
+		<!-- <job>
+			<name>ارسال کد رهگیری</name>
+			<group>ProcessSmsJobGroup</group>
+			<description>
+				دریافت درخواست های فراموشی کد رهگیری به ثبت احوال
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.ProcessSmsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessSmsJobTrigger</name>
+				<group>ProcessSmsJobGroup</group>
+				<job-name>ارسال کد رهگیری</job-name>
+				<job-group>ProcessSmsJobGroup</job-group> -->
+				<!-- <start-time>2010-02-09T18:00:00</start-time>
+				<end-time>2013-02-09T19:00:00</end-time>
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger> -->
+		<!-- ProcessSmsJob -->
+
+
+		<!-- ProcessReferToCCOSSmsJob -->
+		<job>
+			<name>ارسال پیامک خطاهای صدور</name>
+			<group>ProcessReferToCCOSSmsJobGroup</group>
+			<description>
+				ارسال پیامک جهت اطلاع رسانی به شهروندانی که کارت آنها در مرحله ی صدور  با خطا مواجه شده است
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.ProcessReferToCCOSSmsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessReferToCCOSSmsJobTrigger</name>
+				<group>ProcessReferToCCOSSmsJobGroup</group>
+				<job-name>ارسال پیامک خطاهای صدور</job-name>
+				<job-group>ProcessReferToCCOSSmsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessReferToCCOSSmsJob -->
+
+        <!-- RepealedCardRequestJobGroup -->
+        <job>
+            <name>تائید درخواست های ابطال شده</name>
+            <group>RepealedCardRequestJobGroup</group>
+            <description>اعمال درخواست های تائید ابطال شده</description>
+            <job-class>com.gam.nocr.ems.biz.job.RepealedCardRequestJob</job-class>
+            <durability>true</durability>
+            <recover>true</recover>
+        </job>
+        <trigger>
+            <cron>
+                <name>RepealedCardRequestJobTrigger</name>
+                <group>RepealedCardRequestJobGroup</group>
+                <job-name>تائید درخواست های ابطال شده</job-name>
+                <job-group>RepealedCardRequestJobGroup</job-group>
+                <start-time>2010-02-09T18:00:00</start-time>
+                <!--<end-time>2013-02-09T19:00:00</end-time>-->
+                <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- RepealedCardRequestJobGroup -->
+
+		<!-- ProcessRequestedReportsJob -->
+		<job>
+			<name>تهیه گزارشات ثبت شده در تاریخ مشخص</name>
+			<group>ProcessRequestedReportsJobGroup</group>
+			<description>انجام درخواست گزارش برحسب تاریخ</description>
+			<job-class>com.gam.nocr.ems.biz.job.ProcessRequestedReportsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessRequestedReportsJobTrigger</name>
+				<group>ProcessRequestedReportsJobGroup</group>
+				<job-name>تهیه گزارشات ثبت شده در تاریخ مشخص</job-name>
+				<job-group>ProcessRequestedReportsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessRequestedReportsJob -->
+        
+        
+               <!-- Estelam3 job -->
+        <job>
+            <name>دریافت اطلاعات شهروند از IMS</name>
+            <group>Estelam3JobGroup</group>
+            <description>
+                به روزرسانی تمامی اطلاعات شهروندتوسطims
+            </description>
+            <job-class>com.gam.nocr.ems.biz.job.Estelam3Job</job-class>
+            <durability>true</durability>
+            <recover>true</recover>
+        </job>
+        <trigger>
+            <cron>
+                <name>Estelam3JobTrigger</name>
+                <group>Estelam3JobGroup</group>
+                <job-name>دریافت اطلاعات شهروند از IMS</job-name>
+                <job-group>Estelam3JobGroup</job-group>
+                <start-time>2010-02-09T18:00:00</start-time>
+                <!--<end-time>2013-02-09T19:00:00</end-time>-->
+                <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+                <cron-expression>0 0/30 * * * ?</cron-expression>
+                <time-zone>Asia/Tehran</time-zone>
+            </cron>
+        </trigger>
+        <!-- Estelam2 job -->
+
+		<!-- ProcessHolidayJob -->
+		<job>
+			<name>پردازش تعطیلات</name>
+			<group>ProcessHolidayJobGroup</group>
+			<description>
+				اعمال روزهای تعطیلی در پورتال
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalHolidayNotificationJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessHolidayJobTrigger</name>
+				<group>ProcessHolidayJobGroup</group>
+				<job-name>پردازش تعطیلات</job-name>
+				<job-group>ProcessHolidayJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessHolidayJob -->
+		
+		
+		<!-- ProcessPortalReservationFreeTimeJob -->
+		<job>
+			<name>به روزرسانی روزهای خالی دفاترثبت نام پورتال</name>
+			<group>ProcessPortalReservationFreeTimeJobGroup</group>
+			<description>
+				به روزرسانی نمایش روزهای خالی دفاتر ثبت نام در فرم نوبت دهی
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.PortalReservationFreeTimeJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessPortalReservationFreeTimeJobTrigger</name>
+				<group>ProcessPortalReservationFreeTimeJobGroup</group>
+				<job-name>به روزرسانی روزهای خالی دفاترثبت نام پورتال</job-name>
+				<job-group>ProcessPortalReservationFreeTimeJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessPortalReservationFreeTimeJob -->
+
+		<!-- ProcessReservedSmsJob -->
+		<job>
+			<name>ارسال پیامک نوبت گیری</name>
+			<group>ProcessReservedSmsJobGroup</group>
+			<description>
+				ارسال پیامک به منظور یادآوری تاریخ نوبت گیری
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.ProcessReservedSmsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessReservedSmsJobTrigger</name>
+				<group>ProcessReservedSmsJobGroup</group>
+				<job-name>ارسال پیامک نوبت گیری</job-name>
+				<job-group>ProcessReservedSmsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessReservedSmsJob -->
+		
+		
+		<!-- ReservedSmsJob -->
+		<job>
+			<name> جمع آوری درخواست های نوبت گیری شده برای ارسال پیام اطلاع رسانی</name>
+			<group>ReservedSmsJobGroup</group>
+			<description>
+			جمع آوری درخواست هایی که تاریخ نوبت گیری آن ها در بازه زمانی مشخص شده است.
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.ReservedSmsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ReservedSmsJobTrigger</name>
+				<group>ReservedSmsJobGroup</group>
+				<job-name>جمع آوری درخواست های نوبت گیری شده برای ارسال پیام اطلاع رسانی</job-name>
+				<job-group>ReservedSmsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ReservedSmsJob -->
+		
+		<!-- ProcessMessageJob -->
+		<job>
+			<name>فرآیند تولید پیام جهت ارسال به کاربران</name>
+			<group>ProcessMessageJobGroup</group>
+			<description>
+			فرآیند تولید پیام جهت ارسال به کاربران
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.ProcessMessageJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessMessageJobTrigger</name>
+				<group>ProcessMessageJobGroup</group>
+				<job-name>فرآیند تولید پیام جهت ارسال به کاربران</job-name>
+				<job-group>ProcessMessageJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessMessageJob  -->
+		
+		<!-- ProcessCardDeliverySmsJob -->
+		<job>
+			<name>ارسال پیامک تحویل کارت</name>
+			<group>ProcessCardDeliverySmsJobGroup</group>
+			<description>
+				ارسال پیامک به منظور مراجعه به دفتر جهت تحویل کارت
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.ProcessCardDeliverySmsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessCardDeliverySmsJobTrigger</name>
+				<group>ProcessCardDeliverySmsJobGroup</group>
+				<job-name>ارسال پیامک تحویل کارت</job-name>
+				<job-group>ProcessCardDeliverySmsJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- ProcessCardDeliverySmsJob -->
+
+
+
+
+	</schedule>
+
+
+</job-scheduling-data>

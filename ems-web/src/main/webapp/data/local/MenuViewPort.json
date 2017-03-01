@@ -1,0 +1,98 @@
+{
+    'success': true,
+    'results': [
+        {
+            id: 'User',
+            title: 'مدیریت کاربران',
+            iconCls: 'toolbar-user',
+            module: 'User'
+        },
+        {
+            id: 'Office',
+            title: 'مدیریت دفاتر',
+            iconCls: 'toolbar-office',
+            module: 'Office'
+        },
+        {
+            id: 'Workstation',
+            title: 'مديريت<br/>ايستگاه کاری',
+            iconCls: 'toolbar-workstation',
+            module: 'Workstation'
+        },
+        {
+            id: 'Dispatch',
+            title: 'مديريت توزيع',
+            iconCls: 'toolbar-sushi',
+            module: 'Dispatch'
+        },
+        {
+            id: 'Rating',
+            title: 'تعریف  رتبه',
+            iconCls: 'toolbar-rating',
+            module: 'Rating'
+        },
+        {
+            id: 'Department',
+            title: 'تعریف جایگاه سازمانی',
+            iconCls: 'toolbar-department',
+            module: 'Department'
+        },
+        {
+            id: 'DocType',
+            title: 'تعریف انواع سند',
+            iconCls: 'toolbar-docType',
+            module: 'DocType'
+        },
+        {
+            id: 'BlackList',
+            title: 'فهرست سیاه',
+            iconCls: 'toolbar-blacklist',
+            module: 'BlackList'
+        },
+        {
+            id: 'BizLog',
+            title: 'مدیریت رویدادها',
+            iconCls: 'toolbar-bizLog',
+            module: 'BizLog'
+        }/*,{
+         id: 'SystemManagement',
+         title: 'نظارت بر عملکرد سیستم',
+         iconCls: 'toolbar-systemManagement',
+         module: 'SystemManagement'
+         }*/,
+        {
+            id: 'Report',
+            title: 'گزارشات',
+            iconCls: 'toolbar-report',
+            module: 'Report'
+        }
+    ]
+}
+
+/*
+ {
+ id:1,
+ //id:'User',
+ //title: 'مدیریت کاربران',
+ title:'modiriate Karbaran',
+ iconCls: 'toolbar-user',
+ module: 'userFormGrid'
+ },{
+ //id: 'Office',
+ //title: 'مدیریت دفاتر',
+ title:'offic',
+ iconCls: 'toolbar-office',
+ module: 'officeFromGrid'
+ },{
+ //id: 'Workstation',
+ //text: 'مديريت<br/>ايستگاه کاری',
+ title:'workStation',
+ iconCls: 'toolbar-workstation'
+ module: 'Workstation'
+ },{
+ //id: 'Dispatch',
+ //text: 'مديريت توزيع',
+ title:'tozih'
+ iconCls: 'toolbar-sushi',
+ module: 'DispatchForm'
+ }*/

@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report010_excel" pageWidth="1250" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="1210" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" scriptletClass="Scriptlet" uuid="08d2d217-47f4-47ce-9a7d-b011942c56e7">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS_MAIN"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="18"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#C8AE8C">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#E6DCCF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F1EAE2"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="username" class="java.lang.String"/>
+	<parameter name="userFullName" class="java.lang.String"/>
+	<parameter name="imagesPath" class="java.lang.String"/>
+	<parameter name="subReportConnection" class="java.sql.Connection" isForPrompting="false"/>
+	<parameter name="subReport1" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["G:\\940407\\report012\\excel\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT PPDEP.DEP_ID PPDEP_ID, PPDEP.DEP_NAME PPDEP_NAME, PDEP.DEP_ID PDEP_ID, PDEP.DEP_NAME PDEP_NAME, PDEP.DEP_CODE PDEP_CODE
+  FROM EMST_DEPARTMENT PDEP,
+       (SELECT * FROM EMST_DEPARTMENT D WHERE D.DEP_ID = 1) PPDEP
+ WHERE PDEP.DEP_PARENT_DEP_ID = PPDEP.DEP_ID
+ ORDER BY PDEP.DEP_NAME]]>
+	</queryString>
+	<field name="PDEP_ID" class="java.math.BigDecimal"/>
+	<field name="PDEP_NAME" class="java.lang.String"/>
+	<field name="PDEP_CODE" class="java.lang.String"/>
+	<field name="PPDEP_ID" class="java.math.BigDecimal"/>
+	<field name="PPDEP_NAME" class="java.lang.String"/>
+	<variable name="totalRowCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="totalLoseBoxCount" class="java.lang.Long" calculation="Sum">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalLoseBatchCount" class="java.lang.Long" calculation="Sum">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalLoseCardCount" class="java.lang.Long" calculation="Sum">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalNotReceiveBoxCount" class="java.lang.Long" calculation="Sum">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalNotReceiveBatchCount" class="java.lang.Long" calculation="Sum">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalNotReceiveCardCount" class="java.lang.Long" calculation="Sum">
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="rowCount" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{COLUMN_COUNT}]]></variableExpression>
+	</variable>
+	<group name="CenterGroup" keepTogether="true">
+		<groupExpression><![CDATA[$F{PPDEP_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="11">
+				<printWhenExpression><![CDATA[$F{PPDEP_ID} != null]]></printWhenExpression>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="NOCROfficeGroup" keepTogether="true">
+		<groupExpression><![CDATA[$F{PDEP_ID}]]></groupExpression>
+	</group>
+	<group name="NoResultGroup">
+		<groupHeader>
+			<band height="30">
+				<property name="local_mesure_unitheight" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<printWhenExpression><![CDATA[$F{PPDEP_ID} == null]]></printWhenExpression>
+				<textField>
+					<reportElement x="510" y="0" width="230" height="30" forecolor="#000000" backcolor="#808080" uuid="d93721ac-6771-43c8-a65d-00f3f7d4b530">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitx" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="local_mesure_unity" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="B Nazanin" size="14" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["داده ای برای نمایش یافت نشد"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="151" splitType="Stretch">
+			<staticText>
+				<reportElement x="210" y="0" width="230" height="20" uuid="b6633852-d658-40ea-98dc-7d966726b354"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[تاریخ گزارش گیری: ]]></text>
+			</staticText>
+			<image onErrorType="Icon">
+				<reportElement mode="Opaque" x="1140" y="0" width="70" height="70" uuid="604114f8-8de9-422c-96f6-edd6fb335252">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{imagesPath} + "/nocr_small.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="440" y="0" width="300" height="70" uuid="acafd9e3-c386-4db9-8813-341f944b03d8">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Titr Bold" size="14" isBold="false" pdfFontName="B Titr Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["گزارش آماری کارت های گم شده و دریافت نشده به تفکیک استان"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="20" width="230" height="20" uuid="da9cb363-f3dd-48b9-92db-b24787ad6696"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[زمان گزارش گیری: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="40" width="210" height="30" uuid="2fe9effc-a4bf-4281-b23c-04f7a08e9283"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{userFullName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="40" width="230" height="30" uuid="d106b546-0d26-43d9-a862-54cdf46daf38"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[نام کاربر: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="210" height="20" uuid="07cc0bb6-32af-47c4-8c02-42d5b0404f95">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_SCRIPTLET}.toPersianNumericLRE($P{REPORT_SCRIPTLET}.toPersianDate(new java.util.Date())).substring(0,11)]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="0" y="20" width="210" height="20" uuid="f71f4de2-6747-408e-a4a2-24c2f25c060c">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="355" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="27a48234-b4aa-4c66-88fd-ceadd2d6c83c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[عدم دریافت جعبه]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="970" y="101" width="240" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="a508d699-9d93-48d4-aff9-fa3af91909f0">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[نام اداره کل استان]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="237" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="491233db-4a1b-47ea-83dc-2596087f4f51">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[عدم دریافت دسته]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="119" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="ce8cf7d7-4b1b-492f-8cb5-0973ab5200e2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[عدم دریافت کارت]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="473" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="8b801e0c-3e50-4654-afa6-a5c93a04bd01">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[گم شدن کارت]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="827" y="101" width="143" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="c6a3b504-919c-4fa6-a3d1-bbf427d009c6">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[کد اداره کل استان]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="740" y="0" width="400" height="70" uuid="3e63c03c-4713-44ae-8492-8020ea816221"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font fontName="B Nazanin" size="10" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[""]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="50279cc2-d0a6-46cd-a450-b26831371c96">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[مجموع کارت های گم شده و دریافت نشده]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="591" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="9cb32baf-1e09-4569-9146-92da69fbef48">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[گم شدن دسته]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="709" y="101" width="118" height="50" forecolor="#000000" backcolor="#CCCCCC" uuid="be962004-972d-4445-87e8-f701685fd92e">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font fontName="B Nazanin" size="12" isBold="false" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[گم شدن جعبه]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="970" y="0" width="240" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="56239500-de08-4230-9675-6870f23b8a12">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PDEP_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="827" y="0" width="143" height="30" forecolor="#000000" backcolor="#FFFFFF" uuid="ed896758-f2bf-4963-a0b8-5bc37c13acff">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PDEP_CODE}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="1" y="0" width="826" height="30" uuid="ec4e3ce7-13ec-41da-aecd-be2bcce7bb57"/>
+				<subreportParameter name="parentDepartmentId">
+					<subreportParameterExpression><![CDATA[$F{PDEP_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nocrToDate">
+					<subreportParameterExpression><![CDATA[$P{nocrToDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nocrFromDate">
+					<subreportParameterExpression><![CDATA[$P{nocrFromDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalCount" toVariable="totalRowCount" calculation="Sum"/>
+				<returnValue subreportVariable="loseBoxCount" toVariable="totalLoseBoxCount" calculation="Sum"/>
+				<returnValue subreportVariable="loseBatchCount" toVariable="totalLoseBatchCount" calculation="Sum"/>
+				<returnValue subreportVariable="loseCardCount" toVariable="totalLoseCardCount" calculation="Sum"/>
+				<returnValue subreportVariable="notReceiveBoxCount" toVariable="totalNotReceiveBoxCount" calculation="Sum"/>
+				<returnValue subreportVariable="notReceiveBatchCount" toVariable="totalNotReceiveBatchCount" calculation="Sum"/>
+				<returnValue subreportVariable="notReceiveCardCount" toVariable="totalNotReceiveCardCount" calculation="Sum"/>
+				<subreportExpression><![CDATA[$P{subReport1}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="6" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{PPDEP_ID} != null]]></printWhenExpression>
+			<textField>
+				<reportElement mode="Opaque" x="354" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="ace23c15-8bf0-4c83-9a72-18395812fe5e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalNotReceiveBoxCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="472" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="61af0fa4-169a-45a7-9fda-fc3c6bb25125">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalLoseCardCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="236" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="8c9a726f-e84e-4bb3-be10-a71a1b9369f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalNotReceiveBatchCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="826" y="0" width="384" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="ce614bc4-9a63-4bd7-9054-1287d16b92b1">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["جمع کل: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="118" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="a8ffe254-121b-4e56-913e-f056c5055188">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalNotReceiveCardCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="ebe9bff9-59d2-4571-a194-fe83474f342f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRowCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="590" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="5e09a113-4360-45cb-9b28-3ca0f7a18d65">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalLoseBatchCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="708" y="0" width="118" height="30" forecolor="#000000" backcolor="#CCCCCC" uuid="9af9c900-dc0d-4714-a3b0-fe55f071d0e7">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="11" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalLoseBoxCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

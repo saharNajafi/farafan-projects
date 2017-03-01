@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+    <list>
+        <list-name>dummy</list-name>
+        <query>
+            <main-query>
+                select t.crq_id number_of_result, t.crq_state title
+                from emst_card_request t
+                where t.crq_id = -1
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <!-- ****************************************************** -->
+    <!-- ****************************************************** -->
+    <list>
+        <list-name>todayReservationCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'todayReserves' from dual) title
+                from (select count(req.crq_id) c
+                from (select ecr.crq_id
+                from emst_card_request ecr
+                where ecr.crq_state in ('RESERVED')) req,
+                (select er.rsv_card_request_id
+                from emst_reservation er
+                where to_char(er.rsv_date, 'yyyy/mm/dd') = to_char(sysdate, 'yyyy/mm/dd')) rsv
+                where req.crq_id = rsv.rsv_card_request_id)
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <list>
+        <list-name>referredToCcosCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'referredToCCOS' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state = 'REFERRED_TO_CCOS')
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>documentAuthenticatedCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'documentAuthenticated' from dual) title
+                from (select count(req.crq_id) c
+                from (select crq.crq_id
+                from emst_card_request crq
+                where crq.crq_state = 'DOCUMENT_AUTHENTICATED') req,
+                (select ecr.crq_id,
+                (select count(*)
+                from emst_document ed
+                where ed.doc_citizen_info_id = eci.czi_id) docCnt,
+                (select count(*)
+                from emst_biometric eb
+                where eb.bim_citizen_info_id = eci.czi_id
+                and eb.bim_type like '%FACE%') faceCnt,
+                (select count(*)
+                from emst_biometric eb
+                where eb.bim_citizen_info_id = eci.czi_id
+                and eb.bim_type like '%FIN%') fingCnt
+                from emst_citizen_info eci, emst_card_request ecr
+                where eci.czi_id = ecr.crq_citizen_id) docs
+                where req.crq_id = docs.crq_id
+                and (docs.docCnt = 0 or docs.faceCnt = 0 or docs.fingCnt = 0))
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>readyToApproveCount</list-name>
+        <query>
+            <main-query>
+                <![CDATA[
+                union
+                select c number_of_result, (select 'readyToApprove' from dual) title
+                from (select count(req.crq_id) c
+                from (select crq.crq_id
+                from emst_card_request crq
+                where crq.crq_state = 'DOCUMENT_AUTHENTICATED') req,
+                (select eci.czi_id,
+                ecr.crq_id,
+                (select count(*)
+                from emst_document ed
+                where ed.doc_citizen_info_id = eci.czi_id) docCnt,
+                (select count(*)
+                from emst_biometric eb
+                where eb.bim_citizen_info_id = eci.czi_id
+                and eb.bim_type like '%FACE%') faceCnt,
+                (select count(*)
+                from emst_biometric eb
+                where eb.bim_citizen_info_id = eci.czi_id
+                and eb.bim_type like '%FIN%') fingCnt
+                from emst_citizen_info eci, emst_card_request ecr
+                where eci.czi_id = ecr.crq_citizen_id) docs
+                where req.crq_id = docs.crq_id
+                and (docs.docCnt > 0 and docs.faceCnt > 0 and docs.fingCnt > 0))
+                ]]>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>approvedCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'approved' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state = 'APPROVED')
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>issuanceProcessCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'issuanceProcess' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state in ('SENT_TO_AFIS',
+                'APPROVED_BY_AFIS',
+                'REVOKED_BY_AFIS',
+                'PENDING_ISSUANCE'))
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- ****************************************************** -->
+    <!-- ****************************************************** -->
+
+
+    <!-- ****************************************************** -->
+    <!-- ****************************************************** -->
+    <list>
+        <list-name>receivedByEmsCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'receivedByEms' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state = 'RECEIVED_BY_EMS')
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>pendingImsCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'pendingIms' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state = 'PENDING_IMS')
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>verifiedImsCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'verifiedIms' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state = 'VERIFIED_IMS')
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>notVerifiedByImsCount</list-name>
+        <query>
+            <main-query>
+                union
+                select c number_of_result, (select 'notVerifiedByIms' from dual) title
+                from (select count(crq.crq_id) c
+                from emst_card_request crq
+                where crq.crq_state = 'NOT_VERIFIED_BY_IMS')
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>overdueReservesCount</list-name>
+        <query>
+            <main-query>
+                <![CDATA[
+                union
+
+                select c number_of_result, (select 'overdueReserves' from dual) title
+                  from (select count(req.crq_id) c
+                          from (select ecr.crq_id
+                                  from emst_card_request ecr
+                                 where ecr.crq_state in ('RESERVED')) req,
+                               (select er.rsv_card_request_id
+                                  from emst_reservation er
+                                 where to_char(er.rsv_date, 'yyyy/mm/dd') < to_char(sysdate, 'yyyy/mm/dd')) rsv
+                         where req.crq_id = rsv.rsv_card_request_id)
+
+                ]]>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>reservesCount</list-name>
+        <query>
+            <main-query>
+                <![CDATA[
+                union
+                select c number_of_result, (select 'reservesCount' from dual) title
+                from (select count(req.crq_id) c
+                from (select ecr.crq_id
+                from emst_card_request ecr
+                where ecr.crq_state in ('RESERVED')) req,
+                (select er.rsv_card_request_id
+                from emst_reservation er
+                where er.rsv_date > current_date) rsv
+                where req.crq_id = rsv.rsv_card_request_id)
+                ]]>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="numberOfResult" column="number_of_result"/>
+                <field name="title" column="title"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <!-- Test Queries -->
+    <list>
+        <list-name>list</list-name>
+        <query>
+            <main-query>
+                SELECT * FROM
+                EMST_CITIZEN CTZ
+                <![CDATA[WHERE CTZ.CTZ_ID < 1000 ORDER BY CTZ.CTZ_ID]]>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.CitizenTO</dto-class>
+            <dto-fields>
+                <field name="CTZ_ID" column="CTZ_ID"/>
+                <field name="CTZ_FIRST_NAME_FA" column="CTZ_FIRST_NAME_FA"/>
+                <field name="CTZ_NATIONAL_ID" column="CTZ_NATIONAL_ID"/>
+                <field name="CTZ_SURNAME_FA" column="CTZ_SURNAME_FA"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <list>
+        <list-name>citizenList</list-name>
+        <query>
+            <main-query>
+                SELECT * FROM
+                EMST_CITIZEN CTZ
+                <![CDATA[WHERE CTZ.CTZ_ID < {citizenId}]]>
+                <order-by>
+                    CTZ.CTZ_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.CitizenTO</dto-class>
+            <dto-fields>
+                <field name="CTZ_ID" column="CTZ_ID"/>
+                <field name="CTZ_FIRST_NAME_FA" column="CTZ_FIRST_NAME_FA"/>
+                <field name="CTZ_NATIONAL_ID" column="CTZ_NATIONAL_ID"/>
+                <field name="CTZ_SURNAME_FA" column="CTZ_SURNAME_FA"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <!-- Test Queries -->
+    <!-- ****************************************************** -->
+    <!-- ****************************************************** -->
+</lists>

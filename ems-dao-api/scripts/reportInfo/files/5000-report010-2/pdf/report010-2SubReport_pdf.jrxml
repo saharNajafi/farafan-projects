@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report010-2SubReport_pdf" pageWidth="842" pageHeight="29" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="b7830328-bcba-429f-97bf-052256037b35">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="nocrFromDate" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT DEP.DEP_NAME depName,
+                DEP.DEP_CODE depCode,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+  	and req.crq_enroll_office_id = $P{departmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('TRANSFER_RESERVE')) verifiedRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+  	and req.crq_enroll_office_id = $P{departmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('COMPLETE_REGISTRATION')) reservedRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+  	and req.crq_enroll_office_id = $P{departmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('AUTHENTICATE_DOCUMENT','FACE_SCAN' , 'FINGER_SCAN' , 'DOCUMENT_SCAN','TRANSFER_TO_SUPERIOR_OFFICE','UNDO_TRANSFER_FROM_SUPERIOR_OFFICE')) completeRegRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+  	and req.crq_enroll_office_id = $P{departmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('MANAGER_APPROVAL')) managerRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+  	and req.crq_enroll_office_id = $P{departmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('COMPLETE_REGISTRATION','AUTHENTICATE_DOCUMENT','FACE_SCAN' , 'FINGER_SCAN' , 'DOCUMENT_SCAN',
+	'TRANSFER_TO_SUPERIOR_OFFICE','UNDO_TRANSFER_FROM_SUPERIOR_OFFICE','TRANSFER_RESERVE' ,'MANAGER_APPROVAL')) countInRow
+
+ FROM EMST_CARD_REQUEST CRQ, Emst_Department DEP
+ WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+   AND DEP.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="DEPNAME" class="java.lang.String"/>
+	<field name="DEPCODE" class="java.lang.String"/>
+	<field name="VERIFIEDREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="RESERVEDREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="COMPLETEREGREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="MANAGERREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="COUNTINROW" class="java.math.BigDecimal"/>
+	<variable name="verifiedRepealCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{VERIFIEDREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="reservedRepealCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{RESERVEDREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="completeRegRepealCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{COMPLETEREGREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="managerRepealCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{MANAGERREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="countInRow" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{COUNTINROW}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="261" y="5" width="65" height="15" uuid="d7c426ba-a4f4-4cf5-95b3-420346884da1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{verifiedRepealCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="193" y="5" width="65" height="15" uuid="f5e2e878-c7f7-429f-b188-43582d2ca13b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{reservedRepealCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="5" width="65" height="15" uuid="9b1be29a-8b58-4ae1-87b2-2e7f445ccf86"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{completeRegRepealCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="5" width="65" height="15" uuid="5aa03c1c-4855-4e00-b58a-ba0436fc0b0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{managerRepealCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-17" y="5" width="65" height="15" uuid="cb1cbce2-f704-41cb-a148-fde351234adb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{countInRow}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

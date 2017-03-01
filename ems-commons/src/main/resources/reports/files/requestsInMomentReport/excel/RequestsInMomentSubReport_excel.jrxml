@@ -1,0 +1,144 @@
+RequestsInMomentReport_pdf.jasper
+RequestsInMomentReport_pdf.jrxml
+RequestsInMomentSubReport_pdf.jasper
+RequestsInMomentSubReport_pdf.jrxml<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RequestsInMomentSubReport" pageWidth="600" pageHeight="30" columnWidth="600" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="092d3723-b426-4520-9ad2-54185ae24bc0">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<parameter name="parentDepartmentId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT (SELECT COUNT(CRQ.CRQ_ID)
+          FROM EMST_CARD_REQUEST CRQ
+         WHERE CRQ.CRQ_STATE IN
+               ('REFERED_TO_CCOS', 'DOCUMENT_AUTHENTICATED')
+           AND CRQ.CRQ_FLAG < 7 AND CRQ.CRQ_FLAG >= 0      
+           AND CRQ.CRQ_ENROLL_OFFICE_ID IN
+               (SELECT DEP.DEP_ID
+                  FROM EMST_DEPARTMENT DEP
+                 WHERE DEP.DEP_PARENT_DEP_ID = $P{parentDepartmentId})) completeRegistrationCount,
+       (SELECT COUNT(CRQ.CRQ_ID)
+          FROM EMST_CARD_REQUEST CRQ
+         WHERE CRQ.CRQ_FLAG = 7
+           AND CRQ.CRQ_STATE IN ('DOCUMENT_AUTHENTICATED') 
+           AND CRQ.CRQ_ENROLL_OFFICE_ID IN
+               (SELECT DEP.DEP_ID
+                  FROM EMST_DEPARTMENT DEP
+                 WHERE DEP.DEP_PARENT_DEP_ID = $P{parentDepartmentId})) waitForManagerApprovalCount,
+       (SELECT COUNT(CRQ.CRQ_ID)
+          FROM EMST_CARD_REQUEST CRQ
+         WHERE CRQ.CRQ_STATE IN ('PENDING_ISSUANCE')
+           AND CRQ.CRQ_ENROLL_OFFICE_ID IN
+               (SELECT DEP.DEP_ID
+                  FROM EMST_DEPARTMENT DEP
+                 WHERE DEP.DEP_PARENT_DEP_ID = $P{parentDepartmentId})) pendingIssuanceCount,
+       (SELECT COUNT(CRD.CRD_ID)
+          FROM EMST_CARD CRD
+         WHERE CRD.CRD_BATCH_ID IN
+               (SELECT BAT.BAT_ID
+                  FROM EMST_BATCH BAT
+                 WHERE BAT.BAT_BOX_ID IN
+                       (SELECT BOX.BOX_ID
+                          FROM EMST_BOX BOX
+                         WHERE BOX.BOX_ID IN
+                               (SELECT DPI.DPI_CONTAINER_ID
+                                  FROM EMST_DISPATCH_INFO DPI
+                                 WHERE DPI.DPI_RECEIVER_DEP_ID = $P{parentDepartmentId}
+                                   AND DPI.DPI_RECEIVE_DATE IS NOT NULL)))
+           AND CRD.CRD_STATE = 'SHIPPED') receivedByNOCRCount
+  FROM DUAL]]>
+	</queryString>
+	<field name="completeRegistrationCount" class="java.math.BigDecimal"/>
+	<field name="waitForManagerApprovalCount" class="java.math.BigDecimal"/>
+	<field name="pendingIssuanceCount" class="java.math.BigDecimal"/>
+	<field name="receivedByNOCRCount" class="java.math.BigDecimal"/>
+	<variable name="completeRegistrationCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{completeRegistrationCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="waitForManagerApprovalCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{waitForManagerApprovalCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="pendingIssuanceCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{pendingIssuanceCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="receivedByNOCRCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{receivedByNOCRCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement uuid="af3581af-0aab-4cb1-915a-a10f6c6a7c35" x="300" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{waitForManagerApprovalCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f04a38a0-7c23-4f9d-86fa-1770bbb7ce30" x="0" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pendingIssuanceCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4a0955fc-7b37-4d95-957b-2c931c993762" x="450" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{completeRegistrationCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="650c4d86-4e6d-457b-b396-20da0e8aaa93" x="150" y="0" width="150" height="30" forecolor="#000000" backcolor="#FFFFFF">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{receivedByNOCRCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

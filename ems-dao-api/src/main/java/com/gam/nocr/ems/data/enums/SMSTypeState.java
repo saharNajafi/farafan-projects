@@ -1,0 +1,12 @@
+package com.gam.nocr.ems.data.enums;
+
+public enum SMSTypeState {
+	
+	DOCUMENT_AUTHENTICATED,
+	REPEALED_FIRST_CARD,
+	REPEALED_OTHERS,
+	IMS_DELETE_FACE,
+	IMS_DELETE_DOC,
+	IMS_DELETE_FINGER
+
+}

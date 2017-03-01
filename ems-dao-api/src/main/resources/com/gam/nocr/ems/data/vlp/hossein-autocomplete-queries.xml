@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<lists>
+	<!-- Location autocomplete -->
+	<list>
+		<list-name>hosseinLocationAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select t.loc_name , t.loc_id , t.loc_type,
+					p.loc_name as provinceName
+				</part>
+				from emst_location t join emst_location p on t.loc_province_id =
+				p.loc_id WHERE 1=1
+
+				<part name="provinceName">
+					AND p.loc_name like {provinceName}
+				</part>
+
+				<part name="name">
+					AND t.loc_name like {name}
+				</part>
+
+
+				<part name="type">
+					AND t.loc_type = {type}
+				</part>
+
+				<order-by>
+					t.loc_name asc
+				</order-by>
+
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.LocationVTO</dto-class>
+			<dto-fields>
+				<field name="type" column="LOC_TYPE" />
+				<field name="id" column="LOC_ID" />
+				<field name="name" column="LOC_NAME" />
+				<field name="provinceName" column="provinceName" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Location autocomplete -->
+
+
+	<!-- Content autocomplete -->
+	<list>
+		<list-name>hosseinContentAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select t.ctn_page , t.ctn_id , t.ctn_position,
+					t.ctn_content
+				</part>
+				from emst_content t WHERE 1=1
+
+				<part name="contentPage">
+					AND t.ctn_page like {contentPage}
+				</part>
+
+				<part name="position">
+					AND t.ctn_position like {position}
+				</part>
+
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.ContentTO</dto-class>
+			<dto-fields>
+				<field name="id" column="ctn_id" />
+				<field name="contentPage" column="ctn_page" />
+				<field name="position" column="ctn_position" />
+				<field name="content" column="ctn_content" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Content autocomplete -->
+
+
+	<!-- Holiday autocomplete -->
+	<list>
+		<list-name>hosseinHolidayAC</list-name>
+		<query>
+			<main-query>
+
+				<part name="count">
+					select count(*)
+				</part>
+
+				<part name="main">
+					select t.hol_holiday , t.hol_id 
+				</part>
+				from emst_Holiday t WHERE t.hol_flag !=2
+				<order-by>
+					t.hol_holiday
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.HolidayTO</dto-class>
+			<dto-fields>
+				<field name="id" column="hol_id" />
+				<field name="holiday" column="hol_holiday" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Holiday autocomplete -->
+
+
+	<!-- CMS ERROR EVALUATE List -->
+	<list>
+		<list-name>cmserrorevaluateList</list-name>
+		<query>
+			<main-query>
+				<part name="count"> 
+					select count(*)
+				</part>
+				<part name="main">
+					select (select dep_name from emst_department where
+					dep_id = cr.crq_enroll_office_id ) as officeName , cit.ctz_first_name_fa as
+					firstname , cit.ctz_surname_fa as lastname , cit.ctz_national_id as
+					nationalId ,crh.crh_result as cmsresult , crh.crh_date as backDate
+					, cit.ctz_id as citizenId , cr.crq_id as requestId
+				</part>
+				from emst_card_request_history crh join emst_card_request cr on
+				crh_card_request_id = crq_id join emst_citizen cit on
+				cr.crq_citizen_id = cit.ctz_id where crh.crh_id = (select
+				max(crh_id) from emst_card_request_history where crh_card_request_id
+				= cr.crq_id and crh_action = 'PRODUCTION_ERROR') and
+				cr.crq_state =
+				'CMS_PRODUCTION_ERROR'
+				<part name="allDepartmentWithSubDepartment">
+					and cr.crq_enroll_office_id in
+					(
+					<dependency name="personAllDepartmentWithSubDepartment" />
+					)
+				</part>
+				
+				<part name="citizenFirstName">
+					and cit.ctz_first_name_fa like {citizenFirstName}
+				</part>
+				<part name="citizenSurname">
+					and cit.ctz_surname_fa like {citizenSurname}
+				</part>
+				<part name="citizenNId">
+					and cit.ctz_national_id like {citizenNId}
+				</part>
+				<part name="enrollmentOfficeName">
+					and officeName like {enrollmentOfficeName}
+				</part>
+				
+				<part name="backDate">
+					and crh.crh_date between
+					to_date({fromBackDate},
+					'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toBackDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.CmsErrorEvaluateVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="requestId" />
+				<field name="citizenFirstName" column="firstname" />
+				<field name="citizenSurname" column="lastname" />
+				<field name="citizenNId" column="nationalId" />
+				<field name="result" column="cmsresult" />
+				<field name="citizenId" column="citizenId" />
+				<field name="cardRequestId" column="requestId" />
+				<field name="officeName" column="officeName" />				
+				<field name="backDate" column="backDate" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- CMS ERROR EVALUATE List -->
+
+	<!-- availableReferToCCOSSms List -->
+	<list>
+		<list-name>availableReferToCCOSSmsList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT T.*
+				</part>
+                <![CDATA[
+                    FROM (
+                        SELECT
+                            MOS.OSM_ID
+                            , MOS.OSM_REQUEST_DATE
+                            , MOS.OSM_CELL_NO
+                            , MOS.OSM_MESSAGE_BODY
+                            , MOS.OSM_LAST_TRY_DATE
+                            , MOS.OSM_RETRY_COUNT
+                            , MOS.OSM_PRIORITY
+                            , MOS.OSM_SENT_DATE
+                            , (CASE WHEN MOS.OSM_RETRY_DURATION IS NULL OR MOS.OSM_RETRY_DURATION = 0 THEN {retryDuration} ELSE MOS.OSM_RETRY_DURATION END) OSM_RETRY_DURATION
+                            , (CASE WHEN MOS.OSM_RETRY_LIMIT IS NULL THEN {maxRetryCount} ELSE MOS.OSM_RETRY_LIMIT END) OSM_RETRY_LIMIT
+                        FROM
+                            MSGT_OUTGOING_SMS MOS
+                        WHERE
+                            (MOS.OSM_CELL_NO <> '0' AND LENGTH(MOS.OSM_CELL_NO) >= 11)
+                            AND (MOS.OSM_REQUEST_DATE < CURRENT_DATE)
+                            AND ((MOS.OSM_RETRY_LIMIT IS NOT NULL
+                            AND MOS.OSM_RETRY_LIMIT > 0)
+                            AND MOS.OSM_RETRY_LIMIT > MOS.OSM_RETRY_COUNT)
+                            AND (MOS.OSM_SENT_DATE IS NULL)
+                            AND MOS.OSM_TYPE = 1
+                        ) T
+                    WHERE
+                        ((T.OSM_RETRY_DURATION IS NOT NULL
+                        AND T.OSM_RETRY_DURATION > 0)
+                        AND ((T.OSM_REQUEST_DATE + INTERVAL '2' MINUTE) < CURRENT_DATE))
+                ]]>
+				<order-by>
+					 T.OSM_PRIORITY DESC
+					, T.OSM_REQUEST_DATE ASC
+					, T.OSM_ID ASC
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.OutgoingSMSTO</dto-class>
+			<dto-fields>
+				<field name="id" column="OSM_ID" />
+				<field name="requestDate" column="OSM_REQUEST_DATE" />
+				<field name="cellNo" column="OSM_CELL_NO" />
+				<field name="messageBody" column="OSM_MESSAGE_BODY" />
+				<field name="lastTryDate" column="OSM_LAST_TRY_DATE" />
+				<field name="retryCount" column="OSM_RETRY_COUNT" />
+				<field name="priority" column="OSM_PRIORITY" />
+				<field name="retryLimit" column="OSM_RETRY_LIMIT" />
+				<field name="retryDuration" column="OSM_RETRY_DURATION" />
+				<field name="sentDate" column="OSM_SENT_DATE" />
+			</dto-fields>
+		</dto>
+
+	</list>
+	<!-- availableReferToCCOSSms List -->
+
+
+	<!-- estelam 2 false List -->
+	<list>
+		<list-name>estelam2falseList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select cr.crq_id, ci.ctz_first_name_fa ,
+					ci.ctz_surname_fa , ci.ctz_national_id , cif.czi_birth_date_sol ,
+					cr.crq_tracking_id , cr.crq_state , cr.crq_rsv_date, dep.dep_name
+				</part>
+
+				from emst_card_request cr join emst_citizen ci on cr.crq_citizen_id
+				= ci.ctz_id join emst_citizen_info cif on ci.ctz_id = cif.czi_id
+				join emst_department dep on cr.crq_enroll_office_id = dep.dep_id
+				where cr.crq_estelam2_flag = 'N'
+
+				<part name="citizenNId">
+					AND ci.ctz_national_id like {citizenNId}
+				</part>
+
+				<part name="cardRequestState">
+					AND cr.crq_state = {cardRequestState}
+				</part>
+
+				<part name="trackingId">
+					AND cr.crq_tracking_id = {trackingId}
+				</part>
+
+
+				<part name="allDepartmentWithSubDepartment">
+					and cr.crq_enroll_office_id in
+					(
+					<dependency name="personAllDepartmentWithSubDepartment" />
+					)
+				</part>
+
+			</main-query>
+
+
+
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.EstelamFalseVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="crq_id" />
+				<field name="citizenFirstName" column="ctz_first_name_fa" />
+				<field name="citizenSurname" column="ctz_surname_fa" />
+				<field name="citizenNId" column="ctz_national_id" />
+				<field name="birthDateSolar" column="czi_birth_date_sol" />
+				<field name="trackingId" column="crq_tracking_id" />
+				<field name="cardRequestState" column="crq_state" />
+				<field name="reservationDate" column="crq_rsv_date" />
+				<field name="officeName" column="dep_name" />
+
+			</dto-fields>
+		</dto>
+	</list>
+
+
+
+	<list>
+		<list-name>estelam2LogList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select efl.esl_id, efl.esl_create_Date,
+					efl.esl_type, efl.esl_description
+				</part>
+				from emst_estelam2_failure_log efl join emst_citizen ci on
+				efl.esl_national_id = ci.ctz_national_id join emst_card_request cr
+				on cr.crq_citizen_id = ci.ctz_id where cr.crq_id = {estelam2falseId}
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.Estelam2FailureLogVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="esl_id" />
+				<field name="createDate" column="esl_create_Date" />
+				<field name="perName" column="esl_type" />
+				<field name="action" column="esl_description" />
+			</dto-fields>
+		</dto>
+	</list>
+
+	<!-- estelam 2 false List -->
+	
+	<list>
+		<list-name>availableSms</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT T.*
+				</part>
+                <![CDATA[
+                    FROM (
+                        SELECT
+                            MOS.OSM_ID
+                            , MOS.OSM_REQUEST_DATE
+                            , MOS.OSM_CELL_NO
+                            , MOS.OSM_MESSAGE_BODY
+                            , MOS.OSM_LAST_TRY_DATE
+                            , MOS.OSM_RETRY_COUNT
+                            , MOS.OSM_PRIORITY
+                            , MOS.OSM_SENT_DATE
+                            , MOS.OSM_TYPE
+                            , (CASE WHEN MOS.OSM_RETRY_DURATION IS NULL OR MOS.OSM_RETRY_DURATION = 0 THEN {retryDuration} ELSE MOS.OSM_RETRY_DURATION END) OSM_RETRY_DURATION
+                            , (CASE WHEN MOS.OSM_RETRY_LIMIT IS NULL THEN {maxRetryCount} ELSE MOS.OSM_RETRY_LIMIT END) OSM_RETRY_LIMIT
+                        FROM
+                            MSGT_OUTGOING_SMS MOS
+                        WHERE
+                            (MOS.OSM_CELL_NO <> '0' AND LENGTH(MOS.OSM_CELL_NO) >= 11)
+                            AND (MOS.OSM_REQUEST_DATE < CURRENT_DATE)
+                            AND ((MOS.OSM_RETRY_LIMIT IS NOT NULL
+                            AND MOS.OSM_RETRY_LIMIT > 0)
+                            AND MOS.OSM_RETRY_LIMIT > MOS.OSM_RETRY_COUNT)
+                            AND (MOS.OSM_SENT_DATE IS NULL)
+                            AND (MOS.OSM_TYPE = {smsType})
+                        ) T
+                    WHERE
+                        ((T.OSM_RETRY_DURATION IS NOT NULL
+                        AND T.OSM_RETRY_DURATION > 0)
+                        AND ((T.OSM_REQUEST_DATE + INTERVAL '2' MINUTE) < CURRENT_DATE))
+                ]]>
+				<order-by>
+					  T.OSM_PRIORITY DESC
+					, T.OSM_REQUEST_DATE ASC
+					, T.OSM_ID ASC
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.OutgoingSMSTO</dto-class>
+			<dto-fields>
+				<field name="id" column="OSM_ID" />
+				<field name="requestDate" column="OSM_REQUEST_DATE" />
+				<field name="cellNo" column="OSM_CELL_NO" />
+				<field name="messageBody" column="OSM_MESSAGE_BODY" />
+				<field name="lastTryDate" column="OSM_LAST_TRY_DATE" />
+				<field name="retryCount" column="OSM_RETRY_COUNT" />
+				<field name="priority" column="OSM_PRIORITY" />
+				<field name="retryLimit" column="OSM_RETRY_LIMIT" />
+				<field name="retryDuration" column="OSM_RETRY_DURATION" />
+				<field name="sentDate" column="OSM_SENT_DATE" />
+			</dto-fields>
+		</dto>
+
+	</list>
+
+
+</lists>

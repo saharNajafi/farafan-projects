@@ -1,0 +1,20 @@
+imsOnlineEndPoint = http://172.30.2.55:7001/iws/Estelam?WSDL
+imsOnlineKeyhanSerial = 1
+imsOnlineKeyhanUserName = 1
+imsOnlineUsername = niloo
+
+
+imsNewServicesEndpoint = http://172.30.2.55:7001/ImsServiceService?WSDL
+imsNewservicesNamespace = http://ims.nocr.org
+imsNewServicesPassword = demo
+imsNewServicesUsername = demo
+
+FetchLimits :
+
+numberOfRequestForEstelamFetchLimit
+numberOfRequestForUpdateAFISFetchLimit
+numberOfRequestForAfisResultFetchLimit
+
+2091
+3111
+

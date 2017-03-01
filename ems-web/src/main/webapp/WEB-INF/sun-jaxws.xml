@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints
+        xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
+        version="2.0">
+
+
+    <endpoint
+            name="CardWS"
+            implementation="com.gam.nocr.ems.web.ws.CardWS"
+            url-pattern="/services/card"/>
+
+    <endpoint
+            name="RegistrationWS"
+            implementation="com.gam.nocr.ems.web.ws.RegistrationWS"
+            url-pattern="/services/registration"/>
+   	<endpoint
+            name="RegistrationVipWS"
+            implementation="com.gam.nocr.ems.web.ws.RegistrationVipWS"
+            url-pattern="/services/registrationvip"/>
+
+    <endpoint
+            name="UserManagementWS"
+            implementation="com.gam.nocr.ems.web.ws.UserManagementWS"
+            url-pattern="/services/usermanagement"/>
+    <endpoint
+            name="EmksWS"
+            implementation="com.gam.nocr.ems.web.ws.EmksWS"
+            url-pattern="/services/emks"/>         
+
+    <endpoint
+            name="ListWS"
+            implementation="com.gam.nocr.ems.web.ws.ListServiceWS"
+            url-pattern="/services/list"/>
+
+    <endpoint
+            name="StateProviderWS"
+            implementation="com.gam.nocr.ems.web.ws.StateProviderWS"
+            url-pattern="/services/stateprovider"/>
+
+    <endpoint
+            name="DispatchWS"
+            implementation="com.gam.nocr.ems.web.ws.DispatchWS"
+            url-pattern="/services/DispatchWS"/>
+
+    <endpoint
+            name="EMSBasicInfoWS"
+            implementation="com.gam.nocr.ems.web.ws.EMSBasicInfoWS"
+            url-pattern="/services/basicInfoWS"/>
+
+    <endpoint
+            name="CMSWS"
+            implementation="com.gam.nocr.ems.web.ws.CMSWS"
+            url-pattern="/cmsws/*"/>
+
+    <endpoint
+            name="RequestWS"
+            implementation="com.gam.nocr.ems.web.ws.RequestWS"
+            url-pattern="/services/requestws/*"/>
+
+    <endpoint
+            name="ReportWS"
+            implementation="com.gam.nocr.ems.web.ws.ReportWS"
+            url-pattern="/services/reportws/*"/>
+    <endpoint
+            name="HelpWS"
+            implementation="com.gam.nocr.ems.web.ws.HelpWS"
+            url-pattern="/services/help"/>
+     <endpoint name="MessageWS" implementation="com.gam.nocr.ems.web.ws.MessageWS"
+		url-pattern="/services/message" />       
+    <endpoint
+            name="TokenWS"
+            implementation="com.gam.nocr.ems.web.ws.TokenWS"
+            url-pattern="/services/tokenws/*"/>
+
+</endpoints>

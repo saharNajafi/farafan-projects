@@ -1,0 +1,1 @@
+update emst_department set dep_last_modified_date = sysdate where dep_dispatch_send_type = 'CARD' and dep_last_sync_date is not null;

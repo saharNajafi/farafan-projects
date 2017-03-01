@@ -1,0 +1,42 @@
+ create or replace
+FUNCTION "GETHIJRIDATE" (date1 in timestamp)
+  return varchar2
+    AS LANGUAGE JAVA
+      Name 'net.ictcert.oracle.util.date.CalenderUtil.getHijriDate(java.util.Date) return String';
+      
+      
+create or replace
+FUNCTION "SHA512Base64" (date1 in varchar2)
+  return varchar2
+    AS LANGUAGE JAVA
+      Name 'net.ictcert.oracle.util.hash.HashUtil.getSHA512Base64(java.lang.String) return String';
+
+
+
+
+select 'insert into emst_ims_citizen_info(ICI_ID, ICI_BIRTH_DATE, ICI_GENDER, ICI_BIRTH_CERT_ID, ICI_BIRTH_CERT_SERIAL, ICI_NATIONAL_ID, ICI_FIRST_NAME, ICI_SUR_NAME, ICI_FATHER_NAME) values('
+|| id || ',' || BIRTH_DATE || ', 0,' || BIRTH_CERT_NO || ',' || BIRTH_CERT_SERIAL || ',' || NATIONAL_ID || ',"'
+|| FIRST_NAME || '","' || LAST_NAME || '","' || FATHER_NAME || '");' from sample_data_citizen_m;
+
+
+select 'insert into emst_ims_citizen_info(ICI_ID, ICI_BIRTH_DATE, ICI_GENDER, ICI_BIRTH_CERT_ID, ICI_BIRTH_CERT_SERIAL, ICI_NATIONAL_ID, ICI_FIRST_NAME, ICI_SUR_NAME, ICI_FATHER_NAME) values('
+|| (id+1000) || ',' || gethijridate(BIRTH_DATE) || ', 0,' || BIRTH_CERT_NO || ',' || BIRTH_CERT_SERIAL || ',' || NATIONAL_ID || ',"'
+|| FIRST_NAME || '","' || LAST_NAME || '","' || FATHER_NAME || '");' from sample_data_citizen_m;
+
+select 'insert into emst_ims_citizen_info(ICI_ID, ICI_BIRTH_DATE, ICI_GENDER, ICI_BIRTH_CERT_ID, ICI_BIRTH_CERT_SERIAL, ICI_NATIONAL_ID, ICI_FIRST_NAME, ICI_SUR_NAME, ICI_FATHER_NAME) values('
+|| (id+2000) || ',' || gethijridate(BIRTH_DATE) || ', 1,' || BIRTH_CERT_NO || ',' || BIRTH_CERT_SERIAL || ',' || NATIONAL_ID || ',"'
+|| FIRST_NAME || '","' || LAST_NAME || '","' || FATHER_NAME || '");' from sample_data_citizen_f;
+
+select 'insert into emst_ims_citizen_info(ICI_ID, ICI_BIRTH_DATE, ICI_GENDER, ICI_BIRTH_CERT_ID, ICI_BIRTH_CERT_SERIAL, ICI_NATIONAL_ID, ICI_FIRST_NAME, ICI_SUR_NAME, ICI_FATHER_NAME) values('
+|| (id+3000) || ',' || gethijridate(BIRTH_DATE) || ', 1,' || BIRTH_CERT_NO || ',' || BIRTH_CERT_SERIAL || ',' || NATIONAL_ID || ',"'
+|| FIRST_NAME || '","' || LAST_NAME || '","' || FATHER_NAME || '");' from sample_data_children;
+
+
+select 'insert into emst_ims_citizen_info(ICI_ID, ICI_BIRTH_DATE, ICI_GENDER, ICI_BIRTH_CERT_ID, ICI_BIRTH_CERT_SERIAL, ICI_NATIONAL_ID, ICI_FIRST_NAME, ICI_SUR_NAME, ICI_FATHER_NAME) values('
+|| (id+4000) || ',' || gethijridate(BIRTH_DATE) || ', 0,' || BIRTH_CERT_NO || ',' || BIRTH_CERT_SERIAL || ',' || NATIONAL_ID || ',"'
+|| FIRST_NAME || '","' || LAST_NAME || '","' || FATHER_NAME || '");' from sample_data_father;
+
+
+select 'insert into emst_ims_citizen_info(ICI_ID, ICI_BIRTH_DATE, ICI_GENDER, ICI_BIRTH_CERT_ID, ICI_BIRTH_CERT_SERIAL, ICI_NATIONAL_ID, ICI_FIRST_NAME, ICI_SUR_NAME, ICI_FATHER_NAME) values('
+|| (id+5000) || ',' || gethijridate(BIRTH_DATE) || ', 1,' || BIRTH_CERT_NO || ',' || BIRTH_CERT_SERIAL || ',' || NATIONAL_ID || ',"'
+|| FIRST_NAME || '","' || LAST_NAME || '","' || FATHER_NAME || '");' from sample_data_mother;

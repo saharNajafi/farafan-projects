@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.gam.nocr.ems</groupId>
+        <artifactId>ems-subsystems</artifactId>
+        <version>2.0.0</version>
+    </parent>
+    <groupId>com.gam.nocr.ems.subsystems</groupId>
+    <artifactId>ems-ccos-ear</artifactId>
+    <version>${nocr.ems-ccos.version}</version>
+    <packaging>ear</packaging>
+
+    <name>EMS CCOS EAR</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.gam.nocr.ems.subsystems</groupId>
+            <artifactId>ems-ccos-web</artifactId>
+            <version>${nocr.ems-ccos.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <version>6</version>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <modules>
+                        <webModule>
+                            <groupId>com.gam.nocr.ems.subsystems</groupId>
+                            <artifactId>ems-ccos-web</artifactId>
+                            <contextRoot>/ccos-update</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

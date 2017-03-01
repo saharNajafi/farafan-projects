@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report008Subreport_excel" language="groovy" pageWidth="801" pageHeight="30" columnWidth="801" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b28f82e0-47ed-4d59-996b-32e1d85d970c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="20"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parentDepartmentId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+ 	 inner join emst_department dep
+ 	 on dep.dep_id = req.crq_enroll_office_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+  	and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('TRANSFER_RESERVE')) verifiedRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+  	inner join emst_department dep
+ 	 on dep.dep_id = req.crq_enroll_office_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('COMPLETE_REGISTRATION')) reservedRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+  	inner join emst_department dep
+ 	 on dep.dep_id = req.crq_enroll_office_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('AUTHENTICATE_DOCUMENT','FACE_SCAN' , 'FINGER_SCAN' , 'DOCUMENT_SCAN','TRANSFER_TO_SUPERIOR_OFFICE','UNDO_TRANSFER_FROM_SUPERIOR_OFFICE')) completeRegRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+  	inner join emst_department dep
+ 	 on dep.dep_id = req.crq_enroll_office_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('MANAGER_APPROVAL')) managerAprrovalRepealCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his1
+	on req.crq_id = his1.crh_card_request_id
+	inner join emst_card_request_history his2
+	on req.crq_id = his2.crh_card_request_id
+  	inner join emst_department dep
+ 	 on dep.dep_id = req.crq_enroll_office_id
+	where his1.crh_action = 'REPEAL_CARD_REQUEST' and his1.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his1.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+ 	 and his2.crh_id =
+	(select max(crh_id) from emst_card_request_history where crh_card_request_id = req.crq_id and crh_date < his1.crh_date)
+	and
+	his2.crh_action in ('COMPLETE_REGISTRATION','AUTHENTICATE_DOCUMENT','FACE_SCAN' , 'FINGER_SCAN' , 'DOCUMENT_SCAN',
+	'TRANSFER_TO_SUPERIOR_OFFICE','UNDO_TRANSFER_FROM_SUPERIOR_OFFICE','TRANSFER_RESERVE' ,'MANAGER_APPROVAL')) countInRow
+
+from dual]]>
+	</queryString>
+	<field name="VERIFIEDREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="RESERVEDREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="COMPLETEREGREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="MANAGERAPRROVALREPEALCOUNT" class="java.math.BigDecimal"/>
+	<field name="COUNTINROW" class="java.math.BigDecimal"/>
+	<variable name="afterReserveCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{VERIFIEDREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="referToCCOSCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{RESERVEDREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="completeRegCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{COMPLETEREGREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="managerApprovalCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{MANAGERAPRROVALREPEALCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="countInRow" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{COUNTINROW}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="641" y="0" width="160" height="30" uuid="bf215c02-f3c0-42e8-8ba4-b39f9e7399d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{afterReserveCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="481" y="0" width="160" height="30" uuid="ce21c7b8-1eed-408c-bd98-b316da0054b1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{referToCCOSCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="321" y="0" width="160" height="30" uuid="39043487-3182-4f93-9a97-cd642916953e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{completeRegCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="0" width="160" height="30" uuid="128a2fc2-aa8d-4eb7-a81a-f0c9979872bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{managerApprovalCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="160" height="30" uuid="d09124cc-a877-40f7-a802-6ba5dddc220e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{countInRow}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

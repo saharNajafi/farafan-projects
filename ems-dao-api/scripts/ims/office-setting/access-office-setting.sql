@@ -1,0 +1,1 @@
+insert into gast_access values(3112,'ems_viewAndChangeOfficeSetting','Y','تغییر و مشاهده تنظیمات دفاتر');

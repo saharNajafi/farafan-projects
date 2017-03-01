@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3Sub" pageWidth="842" pageHeight="50" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="1" bottomMargin="0" uuid="d3040293-e384-43dc-87ae-4cba3fa75918">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="nocrFromDate" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT DEP.DEP_NAME depName,
+                DEP.DEP_CODE depCode,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'BATCH_PRODUCTION'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) issuedCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'READY_TO_DELIVER'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) readyToDeliverCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'NOTIFY_CARD_DELIVER'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) deliveredCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'DELIVERED_TO_CITIZEN'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) pendToDeliverByCMSCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION =
+                        'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) damagedUnsuccessfulDelCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION =
+                        'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) bioUnsuccessfulDelCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION =
+                        'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) idChangeUnsuccessfulDelCount,        
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'CMS_ERROR'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) cmsErrorCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'PRODUCTION_ERROR'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) productionErrorCount,
+                (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION IN
+                        ('BATCH_PRODUCTION',
+                         'NOTIFY_CARD_DELIVER',
+                         'DELIVERED_TO_CITIZEN',
+                         'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE',
+                         'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC',
+                         'CMS_ERROR', 
+                         'PRODUCTION_ERROR')
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) countInRow
+  FROM EMST_CARD_REQUEST CRQ, Emst_Department DEP
+ WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+   AND DEP.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="depName" class="java.lang.String"/>
+	<field name="depCode" class="java.lang.String"/>
+	<field name="issuedCount" class="java.math.BigDecimal"/>
+	<field name="readyToDeliverCount" class="java.math.BigDecimal"/>
+	<field name="deliveredCount" class="java.math.BigDecimal"/>
+	<field name="pendToDeliverByCMSCount" class="java.math.BigDecimal"/>
+	<field name="damagedUnsuccessfulDelCount" class="java.math.BigDecimal"/>
+	<field name="bioUnsuccessfulDelCount" class="java.math.BigDecimal"/>
+	<field name="idChangeUnsuccessfulDelCount" class="java.math.BigDecimal"/>
+	<field name="cmsErrorCount" class="java.math.BigDecimal"/>
+	<field name="productionErrorCount" class="java.math.BigDecimal"/>
+	<field name="countInRow" class="java.math.BigDecimal"/>
+	<variable name="zeroValue" class="java.lang.String">
+		<variableExpression><![CDATA["0"]]></variableExpression>
+		<initialValueExpression><![CDATA["0"]]></initialValueExpression>
+	</variable>
+	<variable name="summaryHallmark" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{countInRow}]]></variableExpression>
+	</variable>
+	<variable name="countInRow" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{countInRow}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="issuedCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{issuedCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="readyToDeliverCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{readyToDeliverCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="deliveredCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{deliveredCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="pendToDeliverByCMSCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{pendToDeliverByCMSCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="damagedUnsuccessfulDelCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{damagedUnsuccessfulDelCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="bioUnsuccessfulDelCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{bioUnsuccessfulDelCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="idChangeUnsuccessfulDelCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{idChangeUnsuccessfulDelCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="cmsErrorCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cmsErrorCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="productionErrorCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{productionErrorCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement uuid="8c3f7b8d-d48e-482a-9731-3d324847e8b2" x="540" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issuedCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="88fb00c4-7045-47ae-bf09-743774caa425" x="494" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{readyToDeliverCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="74167f13-b519-4402-9a8d-e98b7fd83ab7" x="429" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pendToDeliverByCMSCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="87dd1973-6138-42e2-9aca-88f265cd5bb0" x="365" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deliveredCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2afa8a24-ccc9-40d5-8457-de9464a4ece9" x="307" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{damagedUnsuccessfulDelCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="62cf6b49-b13b-4893-8c7d-cd5676820fb8" x="235" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bioUnsuccessfulDelCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="21208acb-9be5-4a00-869c-c6bbdddf733b" x="102" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cmsErrorCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6fd863f2-6396-4eae-8ece-ae7a5bb56af2" x="52" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productionErrorCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="083cbe70-ecd8-46a1-b4c0-6c7a41164155" x="0" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{countInRow}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9dede419-bbe5-456c-bf92-054e3d18701c" x="160" y="2" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idChangeUnsuccessfulDelCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="25">
+			<printWhenExpression><![CDATA[$V{summaryHallmark} == null]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="ccbd1304-661c-4d8a-9dd1-27074b5d2143" x="540" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b2716073-3f03-4ea1-845e-01d24e89a63a" x="102" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2ca14c61-f8cb-4980-87c0-d1ae3eb42740" x="52" y="0" width="40" height="20">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ab8430f4-6fce-4325-affb-32f58d7edff6" x="365" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1dec646a-4dfc-47f7-9223-effdd7d6e6b9" x="0" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e7393242-65bb-4a23-b6f8-6bf88167c17d" x="429" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ebcccb59-b2b3-40aa-bb3b-f2fdeab4d7be" x="235" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="33f6bf3d-c579-4d1e-8b0e-f37cbff1e9a2" x="307" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ff668351-329f-461f-8554-b1192a62a46b" x="494" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0b04f6df-f008-4c7b-a149-2868968c1924" x="160" y="2" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zeroValue}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

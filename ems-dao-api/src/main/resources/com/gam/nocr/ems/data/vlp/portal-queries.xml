@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+    <!-- CardRequestStateList -->
+    <list>
+        <list-name>cardRequestStateList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    SELECT /* INDEX(IX_CRQ_LAST_MODIFIED_DATE) */
+                    CRQ.CRQ_PORTAL_REQUEST_ID,
+                    CRQ.CRQ_STATE,
+                    CRQ.CRQ_ENROLL_OFFICE_ID,
+                    CRQ.CRQ_METADATA
+                </part>
+                FROM
+                EMST_CARD_REQUEST CRQ
+                WHERE
+                (CRQ.CRQ_LAST_SYNC_DATE is NULL OR CRQ.CRQ_LAST_MODIFIED_DATE > CRQ.CRQ_LAST_SYNC_DATE)
+                AND CRQ.CRQ_PORTAL_REQUEST_ID is NOT NULL
+                <![CDATA[
+                AND (CRQ.CRQ_LOCK_DATE is null or CRQ.CRQ_LOCK_DATE <= (sysdate - INTERVAL '600' minute))
+                ]]>
+                <order-by>
+                    CRQ.CRQ_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO</dto-class>
+            <dto-fields>
+                <field name="id" column="CRQ_PORTAL_REQUEST_ID"/>
+                <field name="cardRequestState" column="CRQ_STATE"/>
+                <field name="cardEnrollmentOfficeId" column="CRQ_ENROLL_OFFICE_ID"/>
+                <field name="cardRequestMetadata" column="CRQ_METADATA"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- CardRequestStateList -->
+
+    <!-- availableSmsList -->
+    <list>
+        <list-name>availableSmsList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    SELECT T.*
+                </part>
+                <![CDATA[
+                    FROM (
+                        SELECT
+                            MOS.OSM_ID
+                            , MOS.OSM_REQUEST_DATE
+                            , MOS.OSM_CELL_NO
+                            , MOS.OSM_MESSAGE_BODY
+                            , MOS.OSM_LAST_TRY_DATE
+                            , MOS.OSM_RETRY_COUNT
+                            , MOS.OSM_PRIORITY
+                            , MOS.OSM_SENT_DATE
+                            , (CASE WHEN MOS.OSM_RETRY_DURATION IS NULL OR MOS.OSM_RETRY_DURATION = 0 THEN {retryDuration} ELSE MOS.OSM_RETRY_DURATION END) OSM_RETRY_DURATION
+                            , (CASE WHEN MOS.OSM_RETRY_LIMIT IS NULL THEN {maxRetryCount} ELSE MOS.OSM_RETRY_LIMIT END) OSM_RETRY_LIMIT
+                        FROM
+                            MSGT_OUTGOING_SMS MOS
+                        WHERE
+                            (MOS.OSM_CELL_NO <> '0' AND LENGTH(MOS.OSM_CELL_NO) >= 11)
+                            AND (MOS.OSM_REQUEST_DATE < CURRENT_DATE)
+                            AND ((MOS.OSM_RETRY_LIMIT IS NOT NULL
+                            AND MOS.OSM_RETRY_LIMIT > 0)
+                            AND MOS.OSM_RETRY_LIMIT > MOS.OSM_RETRY_COUNT)
+                            AND (MOS.OSM_SENT_DATE IS NULL)
+                        ) T
+                    WHERE
+                        ((T.OSM_RETRY_DURATION IS NOT NULL
+                        AND T.OSM_RETRY_DURATION > 0)
+                        AND ((T.OSM_REQUEST_DATE + INTERVAL '2' MINUTE) < CURRENT_DATE))
+                ]]>
+                <order-by>
+                    T.OSM_PRIORITY DESC
+                    , T.OSM_REQUEST_DATE ASC
+                    , T.OSM_ID ASC
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.OutgoingSMSTO</dto-class>
+            <dto-fields>
+                <field name="id" column="OSM_ID"/>
+                <field name="requestDate" column="OSM_REQUEST_DATE"/>
+                <field name="cellNo" column="OSM_CELL_NO"/>
+                <field name="messageBody" column="OSM_MESSAGE_BODY"/>
+                <field name="lastTryDate" column="OSM_LAST_TRY_DATE"/>
+                <field name="retryCount" column="OSM_RETRY_COUNT"/>
+                <field name="priority" column="OSM_PRIORITY"/>
+                <field name="retryLimit" column="OSM_RETRY_LIMIT"/>
+                <field name="retryDuration" column="OSM_RETRY_DURATION"/>
+                <field name="sentDate" column="OSM_SENT_DATE"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- availableSmsList -->
+</lists>

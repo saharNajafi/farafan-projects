@@ -1,0 +1,29 @@
+{
+    'success': true,
+    'showMessage': false,
+    'messageArguments': null,
+    'messageDetail': null,
+    'messageFormat': null,
+    'records': [
+        {
+            id: 1,
+            code: '1',
+            name: 'جایگاه سازمانی 1'
+        },
+        {
+            id: 2,
+            code: '2',
+            name: 'جایگاه سازمانی 2'
+        },
+        {
+            id: 3,
+            code: '3',
+            name: 'جایگاه سازمانی 3'
+        },
+        {
+            id: 4,
+            code: '4',
+            name: 'جایگاه سازمانی 4'
+        }
+    ]
+}

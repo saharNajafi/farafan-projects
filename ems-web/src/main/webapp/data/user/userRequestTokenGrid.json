@@ -1,0 +1,23 @@
+{
+    'success': true,
+    'records': [
+        {
+            id: 1,
+            code: 0,
+            tokenStatus: 1,
+            deleteToken: 0
+        },
+        {
+            id: 2,
+            code: 1,
+            tokenStatus: 2,
+            deleteToken: 0
+        },
+        {
+            id: 3,
+            code: 2,
+            tokenStatus: 3,
+            deleteToken: 0
+        }
+    ]
+}

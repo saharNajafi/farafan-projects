@@ -1,0 +1,1564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+	<!-- User List -->
+	<list>
+        <list-name>userList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    SELECT
+                    EP.PER_ID,
+                    EP.PER_FIRST_NAME,
+                    EP.PER_LAST_NAME,
+                    EP.PER_NID,
+                    EP.PER_USERNAME,
+                    EP.PER_USERID,
+                    (SELECT GU.USR_LASTLOGINTIME FROM GAST_USER GU WHERE GU.USR_PERID = EP.PER_ID) PER_LAST_LOGIN,
+                    EP.PER_BIRTH_CERT_NO,
+                    EP.PER_BIRTH_CERT_SERIES,
+                    EP.PER_FATHER_NAME,
+                    EP.PER_DEP_ID,
+                    EP.PER_MOBILE_PHONE,
+                    EP.PER_PHONE,
+                    (SELECT ED.DEP_NAME FROM EMST_DEPARTMENT ED WHERE ED.DEP_ID = EP.PER_DEP_ID) PER_DEPARTMENT_NAME,
+                    EP.PER_STATUS,
+                    EP.PER_REQUEST_STATE,
+                    (case
+                    when (select count(*) from emst_person ep, emst_enrollment_office eo
+                    where ep.per_id = eo.eof_manager_id and ep.per_id = 7404) > 0 then 'T'
+                    when (select count(*) from emst_person ep, emst_enrollment_office eo
+                    where ep.per_id = eo.eof_manager_id and ep.per_id = 7404) = 0 then 'F'
+                    end) ADMIN
+                </part>
+                FROM
+                EMST_PERSON EP
+                WHERE 1=1
+                <part name="requestStatus">
+                    AND EP.PER_REQUEST_STATE in ({requestStatus})
+                </part>
+                <part name="firstName">
+                    AND EP.PER_FIRST_NAME LIKE {firstName}
+                </part>
+                <part name="lastName">
+                    AND EP.PER_LAST_NAME LIKE {lastName}
+                </part>
+                <part name="nid">
+                    AND EP.PER_NID LIKE {nid}
+                </part>
+                <part name="userName">
+                    AND EP.PER_USERNAME LIKE {userName}
+                </part>
+                <part name="departmentName">
+                    AND EP.PER_DEP_ID IN (SELECT ED.DEP_ID FROM EMST_DEPARTMENT ED WHERE ED.DEP_NAME LIKE
+                    {departmentName})
+                </part>
+                <part name="lastLogin">
+                    AND EP.PER_LAST_LOGIN between to_date({fromDate},'YYYY/MM/DD HH24:MI') and
+                    to_date({toDate},'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="lStatus">
+                    AND EP.PER_STATUS = {lStatus}
+                </part>
+                <part name="perId">
+                    AND EP.PER_ID = {personId}
+                </part>
+                <order-by>
+                    EP.PER_ID
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.PersonTO</dto-class>
+            <dto-fields>
+                <field name="id" column="PER_ID"/>
+                <field name="firstName" column="PER_FIRST_NAME"/>
+                <field name="lastName" column="PER_LAST_NAME"/>
+                <field name="nid" column="PER_NID"/>
+                <field name="userName" column="PER_USERNAME"/>
+                <field name="userId" column="PER_USERID"/>
+                <field name="lastLogin" column="PER_LAST_LOGIN"/>
+                <field name="birthCertNum" column="PER_BIRTH_CERT_NO"/>
+                <field name="birthCertSeries" column="PER_BIRTH_CERT_SERIES"/>
+                <field name="fatherName" column="PER_FATHER_NAME"/>
+                <field name="departmentId" column="PER_DEP_ID"/>
+                <field name="departmentName" column="PER_DEPARTMENT_NAME"/>
+                <field name="mobilePhone" column="PER_MOBILE_PHONE"/>
+                <field name="phone" column="PER_PHONE"/>
+                <field name="lStatus" column="PER_STATUS"/>
+                <field name="requestStatusString" column="PER_REQUEST_STATE"/>
+                <field name="admin" column="ADMIN"/>
+            </dto-fields>
+        </dto>
+    </list>
+	<!-- User List -->
+
+	<!-- Enrollment List -->
+	<list>
+		<list-name>enrollmentList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					lp.loc_name PROVINCE_NAME,
+					d.dep_id,
+					d.dep_address,
+					d.dep_code,
+					to_number(d.dep_code) codeNum,
+					d.dep_name,
+					d.dep_postal_code,
+					d.dep_parent_dep_id,
+					d.dep_location_id,
+					d.dep_dn || '.' ||
+					d.dep_parent_dn fqdn,
+					(select dp.dep_name from emst_department dp
+					where
+					dp.dep_id=d.dep_parent_dep_id) parent_name,
+					(case
+					when
+					l.loc_type = 1 then l.loc_name || ' (شهرستان ' || (select
+					l2.loc_name from
+					emst_location l2 where l2.loc_id = l.loc_county_id)
+					|| ')'
+					when l.loc_type = 2 then l.loc_name || ' (دهستان ' || (select
+					l2.loc_name from
+					emst_location l2 where l2.loc_id =
+					l.loc_district_id) || ')'
+					else l.loc_name
+					end) location_name,
+					e.eof_working_hours_from,
+					e.eof_working_hours_to,
+					e.eof_phone,
+					e.eof_rat_id,
+					e.eof_type,
+					 e.eof_calender_type,
+					e.eof_khosusi_type,
+					e.eof_deliver_type,
+					(select r.rat_class from emst_rating_info r where
+					r.rat_id=e.eof_rat_id)
+					rate,
+					e.eof_manager_id,
+					p.per_first_name || ' '
+					|| p.per_last_name manager_name,
+					p.per_phone,
+					p.per_mobile_phone,
+					e.eof_area,
+					e.eof_fax,
+					e.eof_superior_office,
+					(select ed.dep_name from
+					emst_department ed where
+					ed.dep_id=e.eof_superior_office)
+					eof_superior_office_name,
+					ost.ost_upload_photo upload_photo,
+                    ost.ost_finger_scan_single_mode finger_scan_single_mode,
+					ost.ost_disability_mode disability_mode,
+					ost.ost_reissue_request reissue_request,
+					ost.ost_elderly_mode elderly_mode,
+					ost.ost_nmoc_generation nmoc_generation,
+					ost.ost_amputation_announcment amputation_announcment,
+					ost.ost_allow_edit_background allow_edit_background,
+					ost.ost_use_scanner_ui use_scanner_ui
+				</part>
+				    from
+                emst_location l,
+                emst_location lp,
+                emst_department d,
+                emst_enrollment_office e,
+                emst_office_setting ost,
+                emst_person p
+                where
+                l.loc_id = d.dep_location_id and
+                l.loc_province_id=lp.loc_id and
+                d.dep_id=e.eof_id and
+                ost.OST_ENROLL_OFFICE_ID = e.eof_id and
+                e.eof_manager_id=p.per_id(+) and
+				e.eof_id in (
+				<dependency name="personAllDepartmentWithSubDepartment" />
+				)
+				<part name="name">
+					and d.dep_name like {name}
+				</part>
+				<part name="manager">
+					and e.eof_manager_id in (select p.per_id from
+					emst_person p where
+					p.per_first_name || ' ' ||
+					p.per_last_name like
+					{managerName})
+				</part>
+				<part name="parentName">
+					and d.dep_parent_dep_id in (select dp.dep_id from
+					emst_department dp
+					where dp.dep_name like {parentName})
+				</part>
+				<part name="code">
+					and d.dep_code like {code}
+				</part>
+				<part name="address">
+					and d.dep_address like {address}
+				</part>
+				<part name="phone">
+					and e.eof_phone like {phone}
+				</part>
+				<part name="rate">
+					and e.eof_rat_id in (select ri.rat_id from
+					emst_rating_info ri where
+					ri.rat_class like {rate})
+				</part>
+				<part name="officeType">
+					and e.eof_type = {officeType}
+				</part>
+				<part name="khosusiType">
+					and e.eof_khosusi_type = {khosusiType}
+				</part>
+				<part name="officeDeliver">
+					and e.eof_deliver_type = {officeDeliver}
+				</part>
+				<part name="locName">
+					and d.dep_location_id = {locName}
+				</part>
+				<part name="workingHoursStart">
+					and e.eof_working_hours_from = {workingHoursStart}
+				</part>
+				<part name="workingHoursFinish">
+					and e.eof_working_hours_to = {workingHoursFinish}
+				</part>
+				<part name="superiorOfficeName">
+					and e.eof_superior_office = {superiorOfficeName}
+				</part>
+				<part name="fqdn">
+					and (d.dep_dn || '.' || d.dep_parent_dn) like {fqdn}
+				</part>
+				<part name="province">
+					and lp.loc_name like {province}
+				</part>
+				<order-by>
+					d.dep_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="DEP_ID" />
+				<field name="name" column="DEP_NAME" />
+				<field name="address" column="DEP_ADDRESS" />
+				<field name="zip" column="DEP_POSTAL_CODE" />
+				<field name="phone" column="EOF_PHONE" />
+				<field name="fax" column="EOF_FAX" />
+				<field name="code" column="DEP_CODE" />
+				<field name="codeNum" column="codeNum" />
+				<field name="parentId" column="DEP_PARENT_DEP_ID" />
+				<field name="parentName" column="PARENT_NAME" />
+				<field name="area" column="EOF_AREA" />
+				<field name="rateId" column="EOF_RAT_ID" />
+				<field name="rate" column="RATE" />
+				<field name="managerMobile" column="PER_MOBILE_PHONE" />
+				<field name="managerPhone" column="PER_PHONE" />
+				<field name="managerId" column="EOF_MANAGER_ID" />
+				<field name="managerName" column="MANAGER_NAME" />
+				<field name="substitutionOfficeId" column="eof_substitution_office_id" />
+				<field name="substitutionOfficeName" column="eof_substitution_office_name" />
+				<field name="locId" column="DEP_LOCATION_ID" />
+				<field name="locName" column="LOCATION_NAME" />
+				<field name="provinceName" column="PROVINCE_NAME" />
+				<field name="workingHoursStart" column="EOF_WORKING_HOURS_FROM" />
+				<field name="workingHoursFinish" column="EOF_WORKING_HOURS_TO" />
+				<field name="officeType" column="EOF_TYPE" />
+				<field name="khosusiType" column="EOF_KHOSUSI_TYPE" />
+				<field name="officeDeliver" column="EOF_DELIVER_TYPE" />
+				<field name="superiorOfficeId" column="EOF_SUPERIOR_OFFICE" />
+				<field name="superiorOfficeName" column="EOF_SUPERIOR_OFFICE_NAME" />
+				<field name="fqdn" column="fqdn" />
+				<field name="calenderType" column="EOF_CALENDER_TYPE"/>
+				<field name="fingerScanSingleMode" column="FINGER_SCAN_SINGLE_MODE"/>
+                <field name="uploadPhoto" column="UPLOAD_PHOTO"/>
+                <field name="disabilityMode" column="DISABILITY_MODE"/>
+                <field name="reIssueRequest" column="REISSUE_REQUEST"/>
+                <field name="nMocGeneration" column="NMOC_GENERATION"/>
+                <field name="amputationAnnouncment" column="AMPUTATION_ANNOUNCMENT"/>
+                <field name="elderlyMode" column="ELDERLY_MODE"/>
+                <field name="allowEditBackground" column="ALLOW_EDIT_BACKGROUND"/>
+                <field name="useScannerUI" column="USE_SCANNER_UI"/>
+                <field name="officeSettingType" column="OST_TYPE"/>
+                <field name="substitutionOfficeId" column="EOF_SUBSTITUTION_OFFICE_ID"/>
+                <field name="substitutionOfficeName" column="EOF_SUBSTITUTION_OFFICE_NAME"/>
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Enrollment List -->
+
+	<!-- Workstation List -->
+	<list>
+		<list-name>workstationList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT
+					EW.WST_ID,
+					EW.WST_CODE,
+					EW.WST_ACTIVATION_CODE,
+					ED.DEP_NAME,
+					EW.WST_STATUS,
+					ED.DEP_ID,
+					ED.DEP_CODE,
+					ELP.LOC_NAME
+				</part>
+				FROM
+				EMST_WORKSTATION EW,
+				EMST_DEPARTMENT ED,
+				EMST_LOCATION EL,
+				EMST_LOCATION ELP
+				WHERE
+				EW.WST_ENROLLMENT_ID = ED.DEP_ID
+				AND
+				ED.DEP_LOCATION_ID=EL.LOC_ID
+				AND EL.LOC_PROVINCE_ID=ELP.LOC_ID
+				AND
+				EW.WST_ENROLLMENT_ID in (
+				<dependency name="personAllDepartmentWithSubDepartment" />
+				)
+				<part name="officeName">
+					AND ED.DEP_NAME like {officeName}
+				</part>
+				<part name="officeId">
+					AND EW.WST_ENROLLMENT_ID = {officeId}
+				</part>
+				<part name="officeCode">
+					AND ED.DEP_CODE = {officeCode}
+				</part>
+				<part name="managerId">
+					AND EW.WST_ENROLLMENT_ID in (
+					<dependency name="personDirectDepartment" />
+					)
+				</part>
+				<part name="workstationCode">
+					AND EW.WST_CODE LIKE {code}
+				</part>
+				<part name="workstationActivationCode">
+					AND EW.WST_ACTIVATION_CODE LIKE {activationCode}
+				</part>
+				<part name="state">
+					AND EW.WST_STATUS LIKE {lState}
+				</part>
+				<part name="province">
+					AND ELP.LOC_NAME LIKE {province}
+				</part>
+				<order-by>
+					EW.WST_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.WorkstationTO</dto-class>
+			<dto-fields>
+				<field name="id" column="WST_ID" />
+				<field name="code" column="WST_CODE" />
+				<field name="activationCode" column="WST_ACTIVATION_CODE" />
+				<field name="enrollmentOfficeName" column="DEP_NAME" />
+				<field name="enrollmentOfficeId" column="DEP_ID" />
+				<field name="enrollmentOfficeCode" column="DEP_CODE" />
+				<field name="lState" column="WST_STATUS" />
+				<field name="provinceName" column="LOC_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Workstation List -->
+
+	<!-- Token List -->
+	<list>
+		<list-name>personTokenList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT
+					PT.PTK_ID,
+					PT.PTK_STATE,
+					PT.PTK_TYPE
+				</part>
+				FROM
+				EMST_PERSON_TOKEN PT
+				WHERE
+				PT.PTK_PERSON_ID = {perid}
+				<part name="tokenType">
+					and PT.PTK_TYPE = {tokenType}
+				</part>
+				<part name="tokenState">
+					and PT.PTK_STATE = {tokenState}
+				</part>
+				<order-by>
+					PT.PTK_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.PersonTokenTO</dto-class>
+			<dto-fields>
+				<field name="id" column="PTK_ID" />
+				<field name="tokenState" column="PTK_STATE" />
+				<field name="tokenType" column="PTK_TYPE" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Token List -->
+
+	<!-- Token Renewal Request List -->
+	<list>
+		<list-name>tokenRenewalRequestList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT
+					PT.PTK_ID,
+					PT.PTK_STATE,
+					PT.PTK_TYPE,
+					PT.PTK_ISSUANCE_DATE,
+					PT.PTK_REQUEST_DATE,
+					PT.PTK_DELIVER_DATE,
+					PER.PER_FIRST_NAME ||' '|| PER.PER_LAST_NAME adminName,
+					DEP.DEP_NAME
+				</part>
+				FROM
+				EMST_PERSON_TOKEN PT,EMST_DEPARTMENT DEP, EMST_PERSON PER
+				WHERE
+				PER.PER_ID =PT.PTK_PERSON_ID
+				AND DEP.DEP_ID = PER.PER_DEP_ID AND
+				PT.PTK_STATE IN ('PENDING_FOR_EMS', 'EMS_REJECT', 'SUSPENDED',
+				'READY_TO_RENEWAL_DELIVER')
+				AND PT.PTK_TYPE = 'SIGNATURE'
+				AND
+				DEP.DEP_ID in (
+				<dependency name="personAllDepartmentWithSubDepartment" />
+				)
+
+				<part name="departmentName">
+					AND DEP.DEP_NAME LIKE {departmentName}
+				</part>
+				<part name="tokenState">
+					AND PT.PTK_STATE = {tokenState}
+				</part>
+				<part name="tokenType">
+					AND PT.PTK_TYPE = {tokenType}
+				</part>
+				<part name="adminName">
+					AND (PER.PER_FIRST_NAME LIKE {adminName} or
+					PER.PER_LAST_NAME LIKE
+					{adminName} )
+				</part>
+				<part name="requestDate">
+					and PT.PTK_REQUEST_DATE between
+					to_date({fromDateRequestDate},
+					'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toDateRequestDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				<part name="deliverDate">
+					and PT.PTK_DELIVER_DATE between
+					to_date({fromDateDeliverDate},
+					'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toDateDeliverDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				<part name="issuanceDate">
+					and PT.PTK_ISSUANCE_DATE between
+					to_date({fromDateIssuanceDate},
+					'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toDateIssuanceDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+
+				<order-by>
+					PT.PTK_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.PersonTokenVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="PTK_ID" />
+				<field name="tokenState" column="PTK_STATE" />
+				<field name="tokenType" column="PTK_TYPE" />
+				<field name="issuanceDate" column="PTK_ISSUANCE_DATE" />
+				<field name="requestDate" column="PTK_REQUEST_DATE" />
+				<field name="deliverDate" column="PTK_DELIVER_DATE" />
+				<field name="adminName" column="adminName" />
+				<field name="departmentName" column="DEP_NAME" />
+
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Token List -->
+
+	<!-- Department List -->
+ <list>
+        <list-name>departmentList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    select
+                    lp.loc_name province_name,
+                    d.dep_id,
+                    d.dep_name,
+                    d.dep_code,
+                    d.dep_address,
+                    d.dep_postal_code,
+                    d.dep_dispatch_send_type,
+                    d.dep_dn,
+                    d.dep_parent_dn,
+                    d.dep_parent_dep_id,
+                    (select dp.dep_name from emst_department dp where dp.dep_id=d.dep_parent_dep_id) parent_dep_name,
+                    d.dep_location_id,
+                    (case
+                    when l.loc_type = 1 then l.loc_name || ' (شهرستان ' || (select l2.loc_name from
+                    emst_location l2 where l2.loc_id = l.loc_county_id) || ')'
+                    when l.loc_type = 2 then l.loc_name || ' (دهستان ' || (select l2.loc_name from
+                    emst_location l2 where l2.loc_id = l.loc_district_id) || ')'
+                    else l.loc_name
+                    end) loc_name
+                </part>
+                FROM
+                emst_department d, emst_location l,emst_location lp
+                WHERE
+                d.dep_location_id = l.loc_id and
+                l.loc_province_id=lp.loc_id and
+                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo) and
+                d.dep_id in (<dependency name="personAllDepartmentWithSubDepartment"/>)
+                <part name="address">
+                    and d.dep_address like {address}
+                </part>
+                <part name="code">
+                    and d.dep_code like {code}
+                </part>
+                <part name="sendType">
+                    and d.dep_dispatch_send_type like {sendType}
+                </part>
+                <part name="dn">
+                    and d.dep_dn like {dn}
+                </part>
+                <part name="name">
+                    and d.dep_name like {name}
+                </part>
+                <part name="zip">
+                    and d.dep_postal_code like {zip}
+                </part>
+                <part name="parentName">
+                    and d.dep_parent_dep_id in (select pd.dep_id from emst_department pd where pd.dep_name like
+                    {parentName})
+                </part>
+                <part name="province">
+                    and lp.loc_name like {province}
+                </part>
+                <part name="locName">
+                    and d.dep_location_id in (select loc2.loc_id from emst_location loc2
+                    where loc2.loc_name like {locName}
+                    and loc2.loc_TYPE in (1,2)
+                    and loc2.loc_STATE not in ('I'))
+                </part>
+                <order-by>
+                    d.dep_id
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.DepartmentTO</dto-class>
+            <dto-fields>
+                <field name="id" column="dep_id"/>
+                <field name="code" column="dep_code"/>
+                <field name="name" column="dep_name"/>
+                <field name="address" column="dep_address"/>
+                <field name="postalCode" column="dep_postal_code"/>
+                <field name="dn" column="dep_dn"/>
+                <field name="parentDN" column="dep_parent_dn"/>
+                <field name="sendType" column="dep_dispatch_send_type"/>
+                <field name="parentName" column="parent_dep_name"/>
+                <field name="parentId" column="dep_parent_dep_id"/>
+                <field name="locName" column="loc_name"/>
+                <field name="locId" column="dep_location_id"/>
+                <field name="provinceName" column="PROVINCE_NAME"/>
+            </dto-fields>
+        </dto>
+    </list>
+	<!-- Department List -->
+	<!-- Department User List -->
+	<list>
+		<list-name>departmentUserList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					p.per_id,
+					p.per_first_name,
+					p.per_last_name,
+					p.per_nid,
+					p.per_username,
+					p.PER_REQUEST_STATE
+				</part>
+				FROM
+				emst_person p
+				WHERE
+				p.per_dep_id in ({depId})
+				<order-by>
+					p.per_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.PersonTO</dto-class>
+			<dto-fields>
+				<field name="id" column="per_id" />
+				<field name="firstName" column="per_first_name" />
+				<field name="lastName" column="per_last_name" />
+				<field name="nid" column="per_nid" />
+				<field name="userName" column="per_username" />
+				<field name="requestStatusString" column="PER_REQUEST_STATE" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Department User List -->
+	<!-- RatingInfo List -->
+	<list>
+		<list-name>ratingInfoList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					r.rat_id,
+					r.rat_class,
+					r.rat_size
+				</part>
+				from emst_rating_info r
+				where 1=1
+				<part name="clazz">
+					and r.rat_class like {clazz}
+				</part>
+				<part name="size">
+					and r.rat_size = {size}
+				</part>
+				<order-by>
+					r.rat_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.RatingInfoTO</dto-class>
+			<dto-fields>
+				<field name="id" column="rat_id" />
+				<field name="clazz" column="rat_class" />
+				<field name="size" column="rat_size" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- RatingInfo List -->
+	<!-- BizLog List -->
+	<list>
+		<list-name>bizLogList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					b.bzl_id,
+					b.bzl_action,
+					b.bzl_actor,
+					b.bzl_additional_data,
+					b.bzl_date,
+					b.bzl_digest,
+					b.bzl_edited_value,
+					b.bzl_entity_id,
+					b.bzl_entity_name
+				</part>
+				from emst_bizlog b
+				where 1=1
+				<part name="action">
+					and b.bzl_action = {action}
+				</part>
+				<part name="actor">
+					and b.bzl_actor like {actor}
+				</part>
+				<part name="adData">
+					and b.bzl_additional_data like {adData}
+				</part>
+				<part name="date">
+					and b.bzl_date between
+					to_date({fromDate},'YYYY/MM/DD HH24:MI') and
+					to_date({toDate},'YYYY/MM/DD
+					HH24:MI')
+				</part>
+				<part name="entityID">
+					and b.bzl_entity_id = {entityID}
+				</part>
+				<part name="entityName">
+					and b.bzl_entity_name = {entityName}
+				</part>
+				<order-by>
+					b.bzl_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.BusinessLogTO</dto-class>
+			<dto-fields>
+				<field name="id" column="bzl_id" />
+				<field name="date" column="bzl_date" />
+				<field name="actor" column="bzl_actor" />
+				<field name="actionNameStr" column="bzl_action" />
+				<field name="entityNameStr" column="bzl_entity_name" />
+				<field name="entityID" column="bzl_entity_id" />
+				<field name="editedValue" column="bzl_edited_value" />
+				<field name="additionalData" column="bzl_additional_data" />
+				<field name="digest" column="bzl_digest" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- BizLog List -->
+	<!-- BizLog Action List -->
+	<list>
+		<list-name>bizLogActionList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select distinct
+					b.bzl_action
+				</part>
+				from emst_bizlog b
+				where 1=1
+				<part name="actor">
+					and b.bzl_actor like {actor}
+				</part>
+				<part name="adData">
+					and b.bzl_additional_data like {adData}
+				</part>
+				<part name="date">
+					and b.bzl_date between to_date({fromDate},
+					'YYYY/MM/DD HH24:MI') and
+					to_date({toDate}, 'YYYY/MM/DD
+					HH24:MI')
+				</part>
+				<part name="id">
+					and b.bzl_entity_id = {id}
+				</part>
+				<part name="entity">
+					and b.bzl_entity_name = {entity}
+				</part>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.BusinessLogTO</dto-class>
+			<dto-fields>
+				<field name="action" column="bzl_action" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- BizLog Action List -->
+	<!-- BlackList List -->
+	<list>
+		<list-name>blackList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					bl.blk_id,
+					bl.blk_first_name,
+					bl.blk_surname,
+					bl.blk_national_id
+				</part>
+				from
+				EMST_BLACK_LIST bl
+				where 1=1
+				<part name="firstName">
+					and bl.blk_first_name like {firstName}
+				</part>
+				<part name="surname">
+					and bl.blk_surname like {surname}
+				</part>
+				<part name="nationalId">
+					and bl.blk_national_id like {nationalId}
+				</part>
+				<order-by>
+					bl.blk_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.BlackListTO</dto-class>
+			<dto-fields>
+				<field name="id" column="blk_id" />
+				<field name="firstName" column="blk_first_name" />
+				<field name="surname" column="blk_surname" />
+				<field name="nationalId" column="blk_national_id" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- BlackList List -->
+	<!-- DocType List -->
+	<list>
+		<list-name>docTypeList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					dt.dct_id,
+					dt.dct_name,
+					pack_ems.get_service_document(dt.dct_id) services
+				</part>
+				from
+				emst_doc_type dt
+				where
+				1=1
+				<part name="docType">
+					and dt.dct_name like {name}
+				</part>
+				<order-by>
+					dt.dct_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.DocumentTypeTO</dto-class>
+			<dto-fields>
+				<field name="id" column="dct_id" />
+				<field name="name" column="dct_name" />
+				<field name="services" column="services" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- DocType List -->
+
+	<!-- CardRequest List -->
+	<list>
+		<list-name>emsCardRequestList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					cr.crq_id,
+					cz.ctz_first_name_fa,
+					cz.ctz_surname_fa,
+					cz.ctz_national_id,
+					d.dep_name,
+					cr.crq_enrolled_date,
+					cr.crq_portal_enrolled_date,
+					cr.crq_state,
+					cr.crq_type,
+					c.crd_state,
+					cr.crq_tracking_id,
+					cr.crq_requested_action,
+					cr.crq_origin,
+					cr.crq_rsv_date,
+					cr.crq_flag,
+					(select dep.dep_name from emst_department dep
+					where dep.dep_id =
+					cr.crq_delivered_office_id) crq_delivered_office_name
+				</part>
+				from
+				emst_card_request cr,
+				emst_citizen cz,
+				emst_card c,
+				emst_department d
+				where
+				cr.crq_citizen_id = cz.ctz_id and
+				cr.crq_card_id=c.crd_id(+) and
+				cr.crq_enroll_office_id=d.dep_id(+)
+				<part name="allDepartmentWithSubDepartment">
+					and cr.crq_enroll_office_id in
+					(
+					<dependency name="personAllDepartmentWithSubDepartment" />
+					)
+				</part>
+
+				<part name="citizenFirstName">
+					and cz.ctz_first_name_fa like {citizenFirstName}
+				</part>
+				<part name="citizenSurname">
+					and cz.ctz_surname_fa like {citizenSurname}
+				</part>
+				<part name="citizenNId">
+					and cz.ctz_national_id like {citizenNId}
+				</part>
+				<part name="enrollmentOfficeName">
+					and d.dep_name like {enrollmentOfficeName}
+				</part>
+				<part name="enrolledDate">
+					and cr.crq_enrolled_date between
+					to_date({fromEnrolledDate},
+					'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toEnrolledDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				<part name="portalEnrolledDate">
+					and cr.crq_portal_enrolled_date between
+					to_date({fromPortalEnrolledDate}, 'YYYY/MM/DD HH24:MI')
+					and
+					to_date({toPortalEnrolledDate}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				<part name="cardRequestState">
+					and cr.crq_state in ({cardRequestState})
+				</part>
+				<part name="cardType">
+					and cr.crq_type in ({cardType})
+				</part>
+				<part name="cardState">
+					and c.crd_state in ({cardState})
+				</part>
+				<part name="requestedAction">
+					and cr.crq_requested_action in ({requestedAction})
+				</part>
+				<part name="trackingId">
+					and cr.crq_tracking_id like {trackingId}
+				</part>
+				<part name="deliveredOfficeName">
+					and (select dep.dep_name from emst_department dep
+					where dep.dep_id = cr.crq_delivered_office_id) like
+					{deliveredOfficeName}
+				</part>
+				<part name="reservationDate">
+					and cr.crq_rsv_date between
+					to_date({reservationDateFrom}, 'YYYY/MM/DD
+					HH24:MI')
+					and
+					to_date({reservationDateTo}, 'YYYY/MM/DD HH24:MI')
+				</part>
+				<part name="documentFlagTrue">
+					and bitand(cr.crq_flag, 4) = 4
+				</part>
+				<part name="documentFlagFalse">
+					and bitand(cr.crq_flag, 4) != 4
+				</part>
+				<part name="faceFlagTrue">
+					and bitand(cr.crq_flag, 1) = 1
+				</part>
+				<part name="faceFlagFalse">
+					and bitand(cr.crq_flag, 1) != 1
+				</part>
+				<part name="fingerFlagTrue">
+					and bitand(cr.crq_flag, 2) = 2
+				</part>
+				<part name="fingerFlagFalse">
+					and bitand(cr.crq_flag, 2) != 2
+				</part>
+				<order-by>
+					cr.crq_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.CardRequestVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="crq_id" />
+				<field name="citizenFirstName" column="ctz_first_name_fa" />
+				<field name="citizenSurname" column="ctz_surname_fa" />
+				<field name="citizenNId" column="ctz_national_id" />
+				<field name="enrollmentOfficeName" column="dep_name" />
+				<field name="enrolledDate" column="crq_enrolled_date" />
+				<field name="portalEnrolledDate" column="crq_portal_enrolled_date" />
+				<field name="cardRequestState" column="crq_state" />
+				<field name="cardType" column="crq_type" />
+				<field name="cardState" column="crd_state" />
+				<field name="trackingId" column="crq_tracking_id" />
+				<field name="requestedAction" column="crq_requested_action" />
+				<field name="requestOrigin" column="crq_origin" />
+				<field name="deliveredOfficeName" column="crq_delivered_office_name" />
+				<field name="flag" column="crq_flag" />
+				<field name="reservationDate" column="crq_rsv_date" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- CardRequest List -->
+	
+    <!-- CardRequestHistory List -->
+    <list>
+        <list-name>emsCardRequestHistoryList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*)
+                </part>
+                <part name="main">
+                    select
+                    crh.crh_id,
+                    crh.crh_result,
+                    crh.crh_date,
+                    crh_system_id,
+                    crh.crh_request_id,
+                    crh.crh_card_request_id,
+                    crh.crh_action,
+                    crh.crh_actor
+                </part>
+                from
+                emst_card_request_history crh
+                where
+                crh.crh_card_request_id = {cardRequestId}
+                <part name="result">
+                    and crh.crh_result in {result}
+                </part>
+                <part name="date">
+                    and crh.crh_date between {fromDate}, 'YYYY/MM/DD HH24:MI') and to_date({toDate}, 'YYYY/MM/DD
+                    HH24:MI')
+                </part>
+                <part name="systemId">
+                    and crh.crh_system_id in {systemId}
+                </part>
+                <part name="cmsRequestId">
+                    and crh.crh_request_id in {cmsRequestId}
+                </part>
+                <order-by>
+                    crh.crh_id
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.vol.CardRequestHistoryVTO</dto-class>
+            <dto-fields>
+                <field name="id" column="crh_id"/>
+                <field name="result" column="crh_result"/>
+                <field name="date" column="crh_date"/>
+                <field name="systemId" column="crh_system_id"/>
+                <field name="cmsRequestId" column="crh_request_id"/>
+                <field name="cardRequestId" column="crh_card_request_id"/>
+                <field name="action" column="crh_action"/>
+                <field name="actor" column="crh_actor"/>
+            </dto-fields>
+        </dto>
+    </list>
+	
+	<!-- CardRequestHistory List -->
+
+
+	<!-- IMS Batch Enquiry List -->
+	<list>
+		<list-name>imsBatchEnquiryList</list-name>
+		<query>
+			<prefix-query>
+				select a.* , pack_ems.get_ims_ctz_info(a.CRQ_ID)
+				CTZ_INFO from
+			</prefix-query>
+			<main-query alias="a">
+				<part name="count">
+					SELECT COUNT(*)
+				</part>
+				<part name="main">
+					SELECT CRQ.CRQ_ID
+				</part>
+				FROM
+				EMST_CARD_REQUEST CRQ
+				WHERE
+				CRQ.CRQ_STATE = {requestState} OR
+				(CRQ.CRQ_STATE = {mesRequestState} AND CRQ.CRQ_ORIGIN = {mesOrigin})
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.IMSEnquiryVTO</dto-class>
+			<dto-fields>
+				<field name="requestId" column="CRQ_ID" />
+				<field name="citizenInfo" column="CTZ_INFO" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- IMS Batch Enquiry List -->
+	<!-- IMS Enquiry List By RequestId -->
+	<list>
+		<list-name>imsEnquiryListByRequestId</list-name>
+		<query>
+			<prefix-query>
+				select a.* , pack_ems.get_ims_ctz_info(a.CRQ_ID)
+				CTZ_INFO from
+			</prefix-query>
+			<main-query alias="a">
+				<part name="count">
+					SELECT COUNT(*)
+				</part>
+				<part name="main">
+					SELECT CRQ.CRQ_ID
+				</part>
+				FROM
+				EMST_CARD_REQUEST CRQ
+				WHERE
+				CRQ.CRQ_ID = {requestId}
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.IMSEnquiryVTO</dto-class>
+			<dto-fields>
+				<field name="requestId" column="CRQ_ID" />
+				<field name="citizenInfo" column="CTZ_INFO" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- IMS Enquiry List By RequestId -->
+	<!-- IMS Batch Enquiry List For IMS_Pending requests -->
+	<list>
+		<list-name>imsBatchEnquiryListForPendingIMSRequests</list-name>
+		<query>
+			<prefix-query>
+				select a.*, pack_ems.get_ims_ctz_info(a.crq_id)
+				ctz_info from
+			</prefix-query>
+			<main-query alias="a">
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select crq.crq_id
+				</part>
+				from
+				emst_card_request crq
+				where crq.crq_state = 'PENDING_IMS'
+				and <![CDATA[crq.crq_last_enquiry_date < sysdate - NUMTODSINTERVAL({interval}, {intervalType})]]>
+				<order-by>
+					crq.crq_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.IMSEnquiryVTO</dto-class>
+			<dto-fields>
+				<field name="requestId" column="CRQ_ID" />
+				<field name="citizenInfo" column="CTZ_INFO" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- IMS Batch Enquiry List For IMS_Pending requests -->
+
+	<!-- System Profile List -->
+	<list>
+		<list-name>systemProfileList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					SELECT COUNT(*)
+				</part>
+				<part name="main">
+					select
+					pk.prf_id,
+					pk.prf_name,
+					(select p.prf_name from
+					inft_profile_key p where
+					p.prf_id=pk.prf_parent_id) parent_name,
+					pc.pkc_caption,
+					s.spf_clob,
+					(select count(p.prf_id) from
+					inft_profile_key p where
+					p.prf_parent_id=pk.prf_id) childCount
+				</part>
+				from
+				inft_profile_key pk,
+				(select * from inft_profile_key_caption kc
+				where kc.pkc_lang in
+				('fa','FA','Fa') ) pc,
+				inft_system_profile s
+				where
+				pk.prf_id=s.spf_prf_id(+) and
+				pk.prf_id=pc.pkc_prf_id(+) and
+				pk.prf_priority_chain like '%S%'
+				<part name="keyName">
+					and pk.prf_name like {keyName}
+				</part>
+				<part name="caption">
+					and pc.pkc_caption like {caption}
+				</part>
+				<order-by>
+					pk.prf_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.SystemProfileVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="prf_id" />
+				<field name="keyName" column="prf_name" />
+				<field name="parentKeyName" column="parent_name" />
+				<field name="caption" column="pkc_caption" />
+				<field name="value" column="spf_clob" />
+				<field name="childCount" column="childCount" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- System Profile List -->
+
+	<!-- Report Result List -->
+	<list>
+		<list-name>reportResultList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select *
+				</part>
+				from (
+				<dependency name="dummy" />
+				<part name="part1">
+					<dependency name="receivedByEmsCount" />
+					<dependency name="pendingImsCount" />
+					<dependency name="verifiedImsCount" />
+					<dependency name="notVerifiedByImsCount" />
+					<dependency name="overdueReservesCount" />
+					<dependency name="reservesCount" />
+				</part>
+				<part name="part2">
+					<dependency name="todayReservationCount" />
+					<dependency name="referredToCcosCount" />
+					<dependency name="documentAuthenticatedCount" />
+					<dependency name="readyToApproveCount" />
+					<dependency name="approvedCount" />
+					<dependency name="issuanceProcessCount" />
+				</part>
+				)
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.ReportResultVTO</dto-class>
+			<dto-fields>
+				<field name="title" column="title" />
+				<field name="count" column="number_of_result" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Report Result List -->
+
+	<!-- Location List -->
+	<list>
+		<list-name>provinceList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					loc1.loc_id,
+					(case
+					when loc1.loc_type = 1 then
+					loc1.loc_name || ' (شهرستان ' || (select
+					loc2.loc_name from
+					emst_location loc2 where loc2.loc_id = loc1.loc_county_id) || ')'
+					when loc1.loc_type = 2 then loc1.loc_name || ' (دهستان ' || (select
+					loc2.loc_name from
+					emst_location loc2 where loc2.loc_id =
+					loc1.loc_district_id) || ')'
+					when loc1.loc_type = 4 then
+					loc1.loc_name
+					when loc1.loc_type = 5 then loc1.loc_name
+					else
+					loc1.loc_name
+					end) loc_name,
+					(case
+					when loc1.loc_type = 1 then
+					loc1.loc_county_id || ''
+					when loc1.loc_type = 2 then
+					loc1.loc_county_id || ''
+					when loc1.loc_type = 4 then null
+					when
+					loc1.loc_type = 5 then loc1.loc_province_id || ''
+					else loc1.loc_id
+					|| ''
+					end) loc_pid
+				</part>
+				from
+				emst_location loc1
+				where
+				loc1.loc_TYPE not in (3,6,7)
+				and
+				loc1.loc_STATE not in ('I')
+				<part name="locations">
+					and
+					(1=0
+					<part name="state">
+						or
+						(loc1.loc_type = 4)
+					</part>
+					<part name="city">
+						or
+						(loc1.loc_type = 1 and loc1.loc_county_id =
+						{parentId})
+						or
+						(loc1.loc_type = 2 and loc1.loc_county_id =
+						{parentId})
+						or
+						(loc1.loc_type = 5 and loc1.loc_province_id =
+						{parentId})
+					</part>
+					)
+				</part>
+				<order-by>
+					loc1.loc_name
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.ws.ProvinceWTO</dto-class>
+			<dto-fields>
+				<field name="id" column="loc_id" />
+				<field name="name" column="loc_name" />
+				<field name="parentId" column="loc_pid" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Location List -->
+
+	<!-- birthCertIssPlace List -->
+	<list>
+		<list-name>birthCertIssPlaceList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					bc.bcip_id,
+					bc.bcip_dep_name,
+					bc.bcip_code_from,
+					bc.bcip_code_to
+				</part>
+				from
+				emst_birth_cert_iss_place bc
+				where
+				{nationalID} between
+				to_number(bc.bcip_code_from) and to_number(bc.bcip_code_to)
+				<order-by>
+					bc.bcip_id
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.BirthCertIssPlaceVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="bcip_id" />
+				<field name="depName" column="bcip_dep_name" />
+				<field name="codeFrom" column="bcip_code_from" />
+				<field name="codeTo" column="bcip_code_to" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- birthCertIssPlace List -->
+
+	<!-- ReportManagement List -->
+	<list>
+		<list-name>reportManagementList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					SELECT COUNT(*)
+				</part>
+				<part name="main">
+					SELECT RPT.*
+				</part>
+				FROM
+				EMST_REPORT RPT
+				<order-by>
+					RPT.RPT_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.ReportVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="RPT_ID" />
+				<field name="name" column="RPT_NAME" />
+				<field name="comment" column="RPT_COMMENT" />
+				<field name="createDate" column="RPT_CREATE_DATE" />
+				<field name="permission" column="RPT_PERMISSION" />
+				<field name="activationFlag" column="RPT_ACTIVATION_FLAG" />
+				<field name="scope" column="RPT_SCOPE" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- ReportManagement List -->
+
+	<!-- ReportRequest List -->
+	<list>
+		<list-name>reportRequestList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					SELECT COUNT(*)
+				</part>
+				<part name="main">
+					SELECT RPT.*
+				</part>
+				FROM
+				EMST_REPORT RPT
+				WHERE RPT.RPT_ACTIVATION_FLAG = 'T'
+				<part name="ems">
+					AND (RPT.RPT_SCOPE LIKE 'ALL' OR RPT.RPT_SCOPE LIKE
+					'EMS')
+				</part>
+				<part name="ccos">
+					AND (RPT.RPT_SCOPE LIKE 'ALL' OR RPT.RPT_SCOPE LIKE
+					'CCOS')
+				</part>
+				<part name="all">
+					AND (RPT.RPT_SCOPE LIKE 'ALL' OR RPT.RPT_SCOPE LIKE
+					'EMS' OR
+					RPT.RPT_SCOPE LIKE 'CCOS')
+				</part>
+				<order-by>
+					RPT.RPT_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.ReportVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="RPT_ID" />
+				<field name="name" column="RPT_NAME" />
+				<field name="comment" column="RPT_COMMENT" />
+				<field name="createDate" column="RPT_CREATE_DATE" />
+				<field name="permission" column="RPT_PERMISSION" />
+				<field name="activationFlag" column="RPT_ACTIVATION_FLAG" />
+				<field name="scope" column="RPT_SCOPE" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- ReportRequest List -->
+
+	<!-- ReportResult List -->
+	<list>
+		<list-name>reportResultsList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					SELECT COUNT(*)
+				</part>
+				<part name="main">
+					SELECT RRQ.*, R.RPT_NAME
+				</part>
+				FROM
+				EMST_REPORT_REQUEST RRQ, EMST_REPORT R
+				WHERE RRQ.RRQ_REPORT_ID =
+				R.RPT_ID and RRQ.RRQ_PERSON_ID = {personID}
+				<order-by>
+					RRQ.RRQ_REQUEST_DATE desc
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.ReportRequestVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="RRQ_ID" />
+				<field name="requestDate" column="RRQ_REQUEST_DATE" />
+				<field name="requestState" column="RRQ_STATE" />
+				<field name="reportName" column="RPT_NAME" />
+				<field name="generateDate" column="RRQ_GENERATE_DATE" />
+				<field name="jobScheduleDate" column="RRQ_JOB_SCHEDULE_DATE" />
+				<field name="requestOutputType" column="RRQ_TYPE" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- ReportRequest List -->
+
+	<!-- help List -->
+	<list>
+		<list-name>emsHelpFilesList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT HP.* , PR.PER_USERNAME as USERNAME
+				</part>
+				FROM
+				EMST_HELP HP , EMST_PERSON PR WHERE HP.HLP_PERSON_ID=PR.PER_ID
+				<order-by>
+					HP.HLP_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.HelpVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="HLP_ID" />
+				<field name="title" column="HLP_TITLE" />
+				<field name="createDateHelp" column="HLP_CREATE_DATE" />
+				<field name="creator" column="USERNAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- help List -->
+	<!-- messages List -->
+	<list>
+		<list-name>messageList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+
+					SELECT ME.PRE_MESS_ID , ME.PRE_MESS_TITLE,ME.PRE_MESS_Sender_Username ,ME.PRE_MESS_CREATE_DATE , ME.PRE_MESS_HAS_FILE , ME.PRE_MESS_STATE
+				</part>
+				FROM EMST_PREPARED_MESSAGE ME WHERE 1=1
+				 <part name="subject">
+                    and ME.PRE_MESS_TITLE like {subject}
+                </part>
+
+                 <part name="createDate">
+                    and ME.PRE_MESS_CREATE_DATE between to_date({fromDate}, 'YYYY/MM/DD HH24:MI')
+                    and to_date({toDate}, 'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="state">
+                    and ME.PRE_MESS_STATE like {state}
+                </part>
+                <part name="senderUsername">
+                    and ME.PRE_MESS_Sender_Username like {senderUsername}
+                </part>
+				<order-by>
+					ME.PRE_MESS_ID
+				</order-by>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.PreparedMessageVTO</dto-class>
+			<dto-fields>
+				<field name="id" column="PRE_MESS_ID" />
+				<field name="title" column="PRE_MESS_TITLE" />
+				<field name="senderUsername" column="PRE_MESS_Sender_Username" />
+				<field name="createDate" column="PRE_MESS_CREATE_DATE" />
+				<field name="hasFile" column="PRE_MESS_HAS_FILE" />
+				<field name="preparedState" column="PRE_MESS_STATE" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- destionation List -->
+
+</lists>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ems</artifactId>
+        <groupId>com.gam.nocr</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gam.nocr.ems</groupId>
+    <artifactId>ems-services-ejb-impl</artifactId>
+    <version>${nocr.ems-services-ejb-impl.version}</version>
+    <packaging>ejb</packaging>
+    <name>EMS Services EJB Implementation</name>
+
+
+    <dependencies>
+
+        <!-- jasperreport -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>bouncycastle</groupId>
+                    <artifactId>bcmail-jdk14</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>bouncycastle</groupId>
+                    <artifactId>bcprov-jdk14</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>bouncycastle</groupId>
+                    <artifactId>bctsp-jdk14</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- jasperreport -->
+
+        <!--reportfonts-->
+        <dependency>
+            <groupId>com.gam</groupId>
+            <artifactId>fonts</artifactId>
+        </dependency>
+        <!--reportfonts-->
+
+        <!-- poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <!-- poi -->
+
+        <!-- aspectj -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <!-- aspectj -->
+
+        <!-- jaxws -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+        </dependency>
+        <!-- jaxws -->
+
+        <!-- inner module dependency -->
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.commons</groupId>
+            <artifactId>gam-commons-autocomplete</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-services-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-jpa-impl</artifactId>
+            <type>ejb</type>
+        </dependency>
+        <!-- inner module dependency -->
+
+        <!-- external module dependency -->
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>cms-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>pki-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>gaas-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>portal-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>emks-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ims-stub</groupId>
+            <artifactId>offline</artifactId>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>ims-stub</groupId>-->
+        <!--<artifactId>online</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>ims-stub</groupId>
+            <artifactId>online-sc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ims-stub</groupId>
+            <artifactId>ims-new-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>gam-ims-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>matiran-ims-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.ems-externals</groupId>
+            <artifactId>nocr-sms-stub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle.weblogic</groupId>
+            <artifactId>weblogic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam</groupId>
+            <artifactId>nocr-utils</artifactId>
+        </dependency>
+        
+        <dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+		</dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+        	<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+        		<artifactId>aspectj-maven-plugin</artifactId>
+        	</plugin>
+        	<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <endorseddirs>${endorsed.dir}</endorseddirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <ejbVersion>3.1</ejbVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${endorsed.dir}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>javax</groupId>
+                                    <artifactId>javaee-endorsed-api</artifactId>
+                                    <version>6.0</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <executions>
+                    &lt;!&ndash; TODO : Do not remove this commented part. It's the CMS stub wsdl url&ndash;&gt;
+                   &lt;!&ndash; <execution>
+                        <id>cmsWsdl</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <wsdlUrl>
+                                    http://localhost:8080/gto-iran-cms-ems-stub-war-1.0.4/cpm-ws-input/DocumentRequestWS?wsdl
+                                </wsdlUrl>
+                            </wsdlUrls>
+                            <staleFile>${project.build.directory}/jaxws/stale/wsdl.cmsWsdl.done</staleFile>
+                            <bindingDirectory>${project.build.directory}/jaxws/</bindingDirectory>
+                            <packageName>
+                                com.gam.nocr.ems.biz.service.external.client.cms
+                            </packageName>
+                        </configuration>
+                    </execution>&ndash;&gt;
+
+                    <execution>
+                        <id>pkiWsdl</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <wsdlUrl>
+                                    https://ra-ws.keynectis.net/WsOperator/batchRegistration?wsdl
+                                </wsdlUrl>
+                            </wsdlUrls>
+                            <staleFile>${project.build.directory}/jaxws/stale/wsdl.pkiWsdl.done</staleFile>
+                            <packageName>
+                                com.gam.nocr.ems.biz.service.external.client.pki
+                            </packageName>
+                            <destDir>${project.build.outputDirectory}</destDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package-wsclient-jars</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classesDirectory>
+                                target/jaxws/wsimport/java/com/gam/nocr/ems/biz/service/external/client
+                            </classesDirectory>
+                            <classifier>wsclient</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+        </plugins>
+    </build>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+
+        <ems-services-api.version>1.0.0</ems-services-api.version>
+    </properties>
+
+</project>

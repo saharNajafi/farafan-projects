@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+
+    <!-- This query fetches the department assigned to specific person directly or
+         departments which are revoked and his/her office is substitute with them. -->
+    <list>
+        <list-name>personAllDepartment</list-name>
+        <query>
+            <main-query>
+                select
+                pr.per_dep_id
+                from
+                emst_person pr
+                where
+                pr.per_id={perid}
+                union
+                select
+                e.eof_id
+                from
+                emst_enrollment_office e
+                connect by prior e.eof_id=e.eof_superior_office
+                start with e.eof_id in (select p.per_dep_id from emst_person p where p.per_id={perid})
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="per_dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <list>
+        <list-name>personDepartmentWithSuperior</list-name>
+        <query>
+            <main-query>
+                select e.eof_id
+                from emst_enrollment_office e,
+                (select pr.per_dep_id from emst_person pr where pr.per_id = {perid}) t
+                where e.eof_id = t.per_dep_id
+                or e.eof_superior_office = t.per_dep_id
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="per_dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <!-- This query fetches the department assigned to specific person directly. -->
+    <list>
+        <list-name>personDirectDepartment</list-name>
+        <query>
+            <main-query>
+                select pr.per_dep_id from emst_person pr where pr.per_id={perid}
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="per_dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <!-- This query fetches the department and all related sub departments assigned to specific person directly or
+         departments which are revoked and his/her office is substitute with them. -->
+    <list>
+        <list-name>personAllDepartmentWithSubDepartment</list-name>
+        <query>
+            <main-query>
+                select dp.dep_id
+                from emst_department dp
+                connect by prior dp.dep_id=dp.dep_parent_dep_id
+                start with dp.dep_id in (<dependency name="personAllDepartment"/>)
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+    <list>
+        <list-name>departmentWithAllChildDepartments</list-name>
+        <query>
+            <main-query>
+                select t.dep_id from emst_department t
+                connect by prior t.dep_id = t.dep_parent_dep_id
+                start with t.dep_id in ({depId})
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+
+</lists>

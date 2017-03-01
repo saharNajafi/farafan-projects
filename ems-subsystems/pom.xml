@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.gam.nocr</groupId>
+        <artifactId>ems</artifactId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gam.nocr.ems</groupId>
+    <artifactId>ems-subsystems</artifactId>
+    <packaging>pom</packaging>
+    <name>EMS-SUBSYSTEMS</name>
+
+    <modules>
+        <module>ems-ccos-web</module>
+        <module>ems-ccos-ear</module>
+        <module>ems-mes-web</module>
+        <module>ems-mes-ear</module>
+        <module>ems-software</module>
+        <!--<module>ems-gam-ims-web</module>-->
+        <!--<module>ems-gam-ims-ear</module>-->
+        <!--<module>online-sc</module>-->      
+        <!--<module>gaas-stub</module>-->
+    </modules>
+
+    <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>

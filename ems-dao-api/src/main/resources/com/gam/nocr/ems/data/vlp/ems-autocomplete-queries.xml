@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+	<!-- Department autocomplete -->
+	<list>
+		<list-name>departmentAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					ED.DEP_ID,
+					ED.DEP_NAME
+					<part name="enrollment">
+						,'ENRO' type
+					</part>
+					<part name="department">
+						,'DEPT' type
+					</part>
+					<part name="nonEnrollment">
+						,'DEPT' type
+					</part>		
+
+				</part>
+				FROM EMST_DEPARTMENT ED
+				WHERE DEP_NAME like {depName}
+				<part name="enrollment">
+					AND
+					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
+					where eo.eof_id = ed.dep_id
+					<part name="officeType">
+						and eo.eof_type in ({type})
+					</part>
+					<part name="superior">
+						and eo.eof_id in (select eo2.eof_superior_office from
+						emst_enrollment_office eo2
+						where eo2.eof_id = {officeId})
+					</part>
+					<part name="otherNocr">
+						and eo.eof_id not in ({officeId})
+					</part>
+					)
+					<part name="parentDepId">
+						and ed.dep_parent_dep_id = {superDepartmentID}
+					</part>
+				</part>
+				<part name="nonEnrollment">
+					AND
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+				</part>			
+
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acType" column="type" />
+				<field name="acId" column="DEP_ID" />
+				<field name="acName" column="DEP_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+
+	<!-- Returns list of all departments which given person has access to (including 
+		its own department) -->
+	<list>
+		<list-name>personDepartmentAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					ED.DEP_ID,
+					ED.DEP_NAME
+				</part>
+				FROM EMST_DEPARTMENT ED
+				WHERE
+				<part name="enrollment">
+					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
+					where eo.eof_id = ed.dep_id)
+					AND
+				</part>
+				DEP_NAME like {depName}
+				connect by prior ed.dep_id = ed.dep_parent_dep_id
+				start with ed.dep_id in (
+				<dependency name="personDirectDepartment" />
+				)
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acId" column="DEP_ID" />
+				<field name="acName" column="DEP_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+
+	<!-- Department autocomplete -->
+	<!-- Person autocomplete -->
+	<list>
+		<list-name>personAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					p.per_id,
+					p.per_first_name || ' ' || p.per_last_name || ' (' || p.per_nid || ')' per_name,
+					'PER' per_type,
+					p.per_phone,
+					p.per_mobile_phone
+				</part>
+				FROM emst_person p
+				WHERE
+				p.per_userid is not null and
+				(
+				(p.per_first_name || ' ' || p.per_last_name) like {perName} or
+				p.per_nid like {perNID}
+				)
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.autocomplete.PersonAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acType" column="per_type" />
+				<field name="acId" column="per_id" />
+				<field name="id" column="per_id" />
+				<field name="acName" column="per_name" />
+				<field name="phone" column="per_phone" />
+				<field name="mobile" column="per_mobile_phone" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Person autocomplete -->
+	<!-- Rating autocomplete -->
+	<list>
+		<list-name>ratingAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					r.rat_id,
+					r.rat_class,
+					'RATE' rat_type
+				</part>
+				FROM emst_rating_info r
+				WHERE 1=1
+				<part name="search">
+					AND
+					r.rat_class like {clsName}
+				</part>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acType" column="rat_type" />
+				<field name="acId" column="rat_id" />
+				<field name="acName" column="rat_class" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Rating autocomplete -->
+	<!-- Location autocomplete -->
+	<list>
+		<list-name>locationAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					t.loc_id,
+					(case
+					when t.loc_type = 1 then t.loc_name || ' (شهرستان ' || (select
+					loc3.loc_name from
+					emst_location loc3 where loc3.loc_id = t.loc_county_id) || ')'
+					when t.loc_type = 2 then t.loc_name || ' (دهستان ' || (select
+					loc3.loc_name from
+					emst_location loc3 where loc3.loc_id = t.loc_district_id) || ')'
+					when t.loc_type = 4 then 'استان ' || t.loc_name
+					when t.loc_type = 5 then 'شهرستان ' || t.loc_name || ' (استان ' ||
+					(select loc3.loc_name from
+					emst_location loc3 where loc3.loc_id = t.loc_township_id) || ')'
+					else t.loc_name
+					end) loc_name,
+					'LOC' loc_type
+				</part>
+				from (
+				select * from
+				emst_location loc1
+				where
+				loc1.loc_TYPE not in (3,4,6,7)
+				and loc1.loc_STATE not in ('I')
+				and
+				(
+				<part name="allCities">
+					(loc1.loc_type = 1)
+				</part>
+				<part name="cityAndVillage">
+					(loc1.loc_type = 1 and loc1.loc_county_id in (select distinct loc2.loc_county_id
+					from emst_location
+					loc2
+					where loc2.loc_county_id is not null and loc2.loc_province_id =
+					(select loc3.loc_province_id from emst_location
+					loc3,emst_department ed
+					where loc3.loc_id = ed.dep_location_id and ed.dep_id =
+					{superDepartmentID})))
+					)
+					union
+					select * from
+					emst_location loc1
+					where
+					loc1.loc_TYPE not in (3,4,6,7)
+					and loc1.loc_STATE not in ('I')
+					and
+					(
+					(loc1.loc_type = 2 and loc1.loc_township_id in (select distinct
+					loc2.loc_township_id from
+					emst_location loc2
+					where loc2.loc_township_id is not null and loc2.loc_province_id =
+					(select loc3.loc_province_id from emst_location
+					loc3,emst_department ed
+					where loc3.loc_id = ed.dep_location_id and ed.dep_id =
+					{superDepartmentID})))
+				</part>
+				)
+				) t
+				where t.loc_name like {name}
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acType" column="LOC_TYPE" />
+				<field name="acId" column="LOC_ID" />
+				<field name="acName" column="LOC_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Location autocomplete -->
+	<!-- message -->
+	<!-- Person autocomplete -->
+	<list>
+		<list-name>personByLocationIdAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					p.per_id,
+					p.per_first_name || ' ' || p.per_last_name || ' (' || p.per_nid || ')' per_name,
+					'PER' per_type
+				</part>
+				FROM emst_person p
+				WHERE
+				p.per_userid is not null and
+				(
+				(p.per_first_name || ' ' || p.per_last_name) like {perName}
+				)
+				and p.PER_DEP_ID IN (SELECT ED.DEP_ID FROM
+				EMST_DEPARTMENT ED WHERE
+				ED.DEP_LOCATION_ID in
+				(select lo.LOC_ID from EMST_LOCATION lo where lo.LOC_PROVINCE_ID in
+				({locationId})))
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.PersonTO</dto-class>
+			<dto-fields>
+				<field name="id" column="PER_ID" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Person autocomplete -->
+	<!-- Location autocomplete -->
+	<list>
+		<list-name>locationProAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					select
+					t.loc_id,
+					t.loc_name
+				</part>
+				from
+				emst_location t
+				where
+				t.loc_TYPE ='4'
+				and t.loc_STATE not in ('I')
+				and t.loc_name like {name}
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acId" column="LOC_ID" />
+				<field name="id" column="LOC_ID" />
+				<field name="acName" column="LOC_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- Location autocomplete -->
+	<!-- departmentBaseOnLocationAC -->
+	<list>
+		<list-name>departmentBaseOnLocationAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					ED.DEP_ID,
+					ED.DEP_NAME,
+					LO.LOC_ID,
+					LO.LOC_PROVINCE_ID
+
+				</part>
+				FROM EMST_DEPARTMENT ED,EMST_LOCATION LO
+				WHERE DEP_NAME like {depName}
+				<part name="nonEnrollment">
+					AND
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+				</part>
+				<part name="nocroffice">
+					AND
+					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
+					WHERE
+					eo.eof_type in ('NOCR')) AND ed.dep_parent_dep_id = {nocrId}
+				</part>
+				<part name="office">
+					AND
+					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
+					WHERE
+					eo.eof_type in ('OFFICE')
+					AND
+					eo.EOF_SUPERIOR_OFFICE in ({nocrId}))
+				</part>
+				<part name="location">
+					AND
+					ED.DEP_LOCATION_ID = LO.LOC_ID
+					AND
+					LO.LOC_PROVINCE_ID in ({location})
+				</part>
+
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acId" column="DEP_ID" />
+				<field name="acName" column="DEP_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- departmentBaseOnLocationAC -->
+	<!-- Person autocomplete -->
+	<list>
+		<list-name>personByDepartmentIdAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					p.per_id,
+					p.per_first_name || ' ' || p.per_last_name || ' (' || p.per_nid || ')' per_name,
+					'PER' per_type,
+					p.per_phone,
+					p.per_mobile_phone
+				</part>
+				FROM emst_person p
+				WHERE
+				p.per_userid is not null and
+				(
+				(p.per_first_name || ' ' || p.per_last_name) like {perName}
+				)
+				and p.PER_DEP_ID in ({departmentId})
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.autocomplete.PersonAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acType" column="per_type" />
+				<field name="acId" column="per_id" />
+				<field name="id" column="per_id" />
+				<field name="acName" column="per_name" />
+				<field name="phone" column="per_phone" />
+				<field name="mobile" column="per_mobile_phone" />
+			</dto-fields>
+		</dto>
+	</list>
+	
+	<list>
+		<list-name>NOCRAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					ED.DEP_ID,
+					ED.DEP_NAME
+					<part name="enrollment">
+						,'ENRO' type
+					</part>
+					<part name="department">
+						,'DEPT' type
+					</part>
+					<part name="nonEnrollment">
+						,'DEPT' type
+					</part>
+					<part name="provice">
+						,'DEPT' type
+					</part>
+				</part>
+				FROM EMST_DEPARTMENT ED
+				WHERE DEP_NAME like {depName}
+				<part name="enrollment">
+					AND
+					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
+					where eo.eof_id = ed.dep_id and eo.eof_type = 'NOCR'
+					<part name="superior">
+						and eo.eof_id in (select eo2.eof_superior_office from
+						emst_enrollment_office eo2
+						where eo2.eof_id = {officeId})
+					</part>
+					<part name="otherNocr">
+						and eo.eof_id not in ({officeId})
+					</part>
+					)
+					<part name="parentDepId">
+						and ed.dep_parent_dep_id = {superDepartmentID}
+					</part>
+				</part>
+				<part name="nonEnrollment">
+					AND
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+				</part>
+				<part name="province">
+					AND
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+					AND
+					ED.dep_parent_dep_id is not null
+					
+				</part>
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acType" column="type" />
+				<field name="acId" column="DEP_ID" />
+				<field name="acName" column="DEP_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	
+	<!-- Person autocomplete -->
+	<!-- message -->
+
+<!-- 	<list> -->
+<!-- 		<list-name>provinceAC</list-name> -->
+<!-- 		<query> -->
+<!-- 			<main-query> -->
+<!-- 				<part name="count"> -->
+<!-- 					select count(*) -->
+<!-- 				</part> -->
+<!-- 				<part name="main"> -->
+<!-- 					SELECT distinct -->
+<!-- 					ED.DEP_ID, -->
+<!-- 					ED.DEP_NAME -->
+<!-- 				</part> -->
+<!-- 				FROM EMST_DEPARTMENT ED -->
+<!-- 				WHERE DEP_NAME like {depName} -->
+<!-- 				<part name="province"> -->
+<!-- 					AND -->
+<!-- 					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo) -->
+<!-- 					AND -->
+<!-- 					ED.dep_parent_dep_id is not null -->
+<!-- 				</part> -->
+<!-- 			</main-query> -->
+<!-- 		</query> -->
+<!-- 		<dto> -->
+<!-- 			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class> -->
+<!-- 			<dto-fields> -->
+<!-- 				<field name="acId" column="DEP_ID" /> -->
+<!-- 				<field name="acName" column="DEP_NAME" /> -->
+<!-- 			</dto-fields> -->
+<!-- 		</dto> -->
+<!-- 	</list> -->
+
+<!-- EnrollmentOfficeByProvince -->
+<list>
+		<list-name>enrollmentOfficeByProvince</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					DEP_ID,
+					DEP_NAME
+				</part>
+				from EMST_ENROLLMENT_OFFICE join EMST_DEPARTMENT on eof_id = dep_id join emst_location on DEP_LOCATION_ID = loc_id where loc_province_id = {provinceId} and DEP_NAME like {officeName}
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="acId" column="DEP_ID" />
+				<field name="id" column="DEP_ID" />
+				<field name="acName" column="DEP_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- EnrollmentOfficeByProvince -->
+
+
+</lists>

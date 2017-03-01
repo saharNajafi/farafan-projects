@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<listreader-config>
+    <processors default='ems-base-vlp-list-processor'>
+        <processor name='ems-base-vlp-list-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.EMSVLPListProcessor'/>
+        <processor name='person-processor' type='com.gam.nocr.ems.web.listreader.processor.PersonProcessor'/>
+        <processor name='enrollment-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.EnrollmentOfficeProcessor'/>
+        <processor name='workstation-processor' type='com.gam.nocr.ems.web.listreader.processor.WorkStationProcessor'/>
+        <processor name='holiday-processor'
+			type='com.gam.nocr.ems.web.listreader.processor.HolidayProcessor' />
+        <processor name='mainDispatch-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.MainDispatchProcessor'/>
+        <processor name='detailDispatch-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.DetailDispatchProcessor'/>
+        <processor name='cardDispatch-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.CardDispatchProcessor'/>
+        <processor name='personToken-processor' type='com.gam.nocr.ems.web.listreader.processor.PersonTokenProcessor'/>
+        <processor name='cardRequest-processor' type='com.gam.nocr.ems.web.listreader.processor.CardRequestProcessor'/>
+        <processor name='token-processor' type='com.gam.nocr.ems.web.listreader.processor.TokenProcessor'/>
+		<processor name='tokenRenewalRequest-processor' type='com.gam.nocr.ems.web.listreader.processor.TokenRenewalRequestProcessor'/>
+        <processor name='estelam2False-processor' type='com.gam.nocr.ems.web.listreader.processor.Estelam2FalseProcessor'/>
+        
+        <processor name='estelam2Log-processor' type='com.gam.nocr.ems.web.listreader.processor.Estelam2LogProcessor'/>
+        
+        <processor name='cmsErrorEvaluate-processor' type='com.gam.nocr.ems.web.listreader.processor.CmsErrorEvaluateProcessor'/>
+        <processor name='department-processor' type='com.gam.nocr.ems.web.listreader.processor.DepartmentProcessor'/>
+        <processor name='departmentUser-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.DepartmentUserProcessor'/>
+        <processor name='ratingInfo-processor' type='com.gam.nocr.ems.web.listreader.processor.RatingInfoProcessor'/>
+        <processor name='bizLog-processor' type='com.gam.nocr.ems.web.listreader.processor.BizLogProcessor'/>
+        <processor name='blackList-processor' type='com.gam.nocr.ems.web.listreader.processor.BlackListProcessor'/>
+        <processor name='helpList-processor' type='com.gam.nocr.ems.web.listreader.processor.HelpProcessor'/>
+        <processor name='docTypeList-processor' type='com.gam.nocr.ems.web.listreader.processor.DocTypeProcessor'/>
+        <processor name='emsCardRequest-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.EmsCardRequestProcessor'/>
+        <processor name='emsCardRequestHistory-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.EmsCardRequestHistoryProcessor'/>
+        <processor name='job-processor' type='com.gam.nocr.ems.web.listreader.processor.JobProcessor'/>
+        <processor name='systemProfile-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.SystemProfileProcessor'/>
+        <processor name='ccos-person-processor' type='com.gam.nocr.ems.web.listreader.processor.CcosPersonProcessor'/>
+         <processor name='ccos-help-processor' type='com.gam.nocr.ems.web.listreader.processor.CcosHelpProcessor'/>
+        <processor name='reportResult-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.ReportResultProcessor'/>
+        <processor name='province-processor' type='com.gam.nocr.ems.web.listreader.processor.ProvinceProcessor'/>
+        <processor name='report-management-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.ReportManagementProcessor'/>
+        <processor name='report-request-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.ReportRequestProcessor'/>
+        <processor name='report-results-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.ReportResultsProcessor'/>
+        <processor name='preparedMessages-processor'
+			type='com.gam.nocr.ems.web.listreader.processor.PreparedMessageProcessor' />           
+        <processor name='messages-processor'
+			type='com.gam.nocr.ems.web.listreader.processor.MessageProcessor' />   
+			<processor name='card-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.CardProcessor'/>  
+		<processor name='batch-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.BatchProcessor'/>  
+            
+    </processors>
+    <wrappers>
+        <wrapper name='card-request-wrapper' type='com.gam.nocr.ems.web.listreader.wrapper.CardRequestWrapper'/>
+    </wrappers>
+    <lists permissionClass="com.gam.nocr.ems.config.EMSAccesses" superPermission="IS_ADMIN">
+        <list name='userList' processor='person-processor'>
+            <access permission="EMS_VIEW_USER_LIST"/>
+        </list>
+        <list name='requestedUserList' processor='person-processor'>
+            <access permission="EMS_VIEW_USER_LIST"/>
+        </list>
+        <list name='enrollmentList' processor='enrollment-processor'>
+            <access permission="EMS_VIEW_ENROLLMENT_OFFICE_LIST"/>
+        </list>
+        <list name='workstationList' processor='workstation-processor'>
+            <access permission="EMS_VIEW_WORKSTATION_LIST"/>
+        </list>
+        <list name='mainDispatchList' processor='mainDispatch-processor'>
+            <access permission="EMS_VIEW_DISPATCH_LIST"/>
+        </list>
+        <list name='batchDispatchList' processor='mainDispatch-processor'>
+            <access permission="EMS_VIEW_DISPATCH_LIST"/>
+        </list>
+        <list name='detailDispatchList' processor='detailDispatch-processor'>
+            <access permission="EMS_VIEW_DISPATCH_LIST"/>
+        </list>
+        <list name='cardDispatchList' processor='cardDispatch-processor'>
+            <access permission="EMS_VIEW_DISPATCH_LIST"/>
+        </list>
+        <list name='personTokenList' processor='personToken-processor'>
+            <access permission="EMS_VIEW_PERSON_TOKEN_LIST"/>
+        </list>
+        <list name='tokenRenewalRequestList' processor='tokenRenewalRequest-processor'>
+            <access permission="EMS_VIEW_PERSON_TOKEN_LIST"/>
+        </list>
+        <list name='tokenRequest' processor='token-processor'>
+            <access permission="EMS_VIEW_PERSON_TOKEN_LIST"/>
+        </list>
+        <list name='cardRequestList' processor='cardRequest-processor'>
+            <access permission="EMS_VIEW_CARD_REQUEST_LIST"/>
+        </list>
+
+        <list name='estelam2falseList' processor='estelam2False-processor'>
+            <access permission="EMS_VIEW_ESTELAM2_FALSE_LIST"/>
+        </list>
+                
+        <list name='estelam2LogList' processor='estelam2Log-processor'>
+            <access permission="EMS_VIEW_ESTELAM2_FALSE_LIST"/>
+        </list>
+                
+        <list name='cmserrorevaluateList' processor='cmsErrorEvaluate-processor'>
+            <access permission="EMS_VIEW_CMS_PRODUCTION_ERROR_LIST"/>
+        </list>
+        
+        <list name='holidayList' processor='holiday-processor'>
+			<access permission="EMS_VIEW_HOLIDAY_LIST" />
+		</list>
+		
+        <list name='departmentList' processor='department-processor'>
+            <access permission="EMS_VIEW_DEPARTMENT_LIST"/>
+        </list>
+        <list name='departmentUserList' processor='departmentUser-processor'>
+            <access permission="EMS_VIEW_DEPARTMENT_USER_LIST"/>
+        </list>
+        <list name='ratingInfoList' processor='ratingInfo-processor'>
+            <access permission="EMS_VIEW_RATING_LIST"/>
+        </list>
+        <list name='bizLogList' processor='bizLog-processor'>
+            <access permission="EMS_VIEW_BIZ_LOG_LIST"/>
+        </list>
+        <list name='blackList' processor='blackList-processor'>
+            <access permission="EMS_VIEW_BLACK_LIST"/>
+        </list>
+        <list name='helpList' processor='helpList-processor'>
+            <access permission="EMS_VIEW_HELP_LIST"/>
+        </list>
+        
+        <list name='docTypeList' processor='docTypeList-processor'>
+            <access permission="EMS_VIEW_DOC_TYPE_LIST"/>
+        </list>
+        <list name='ccosPersonList' processor='ccos-person-processor'>
+            <access permission="EMS_VIEW_CCOS_USER_LIST"/>
+         </list>
+         <list name='ccosHelpList' processor='ccos-help-processor'>
+            <access permission="EMS_VIEW_CCOS_HELP_LIST"/>
+        </list>
+        
+        <list name='ccosWorkstationList' processor='workstation-processor'>
+            <access permission="EMS_VIEW_CCOS_WORKSTATION_LIST"/>
+        </list>
+        <list name='emsCardRequestList' processor='emsCardRequest-processor' wrapper="card-request-wrapper">
+            <access permission="EMS_VIEW_EMS_CARD_REQUEST_LIST"/>
+        </list>
+        <list name='emsCardRequestHistoryList' processor='emsCardRequestHistory-processor'>
+            <access permission="EMS_VIEW_EMS_CARD_REQUEST_LIST"/>
+        </list>
+        <list name='jobList' processor='job-processor'>
+            <access permission="EMS_VIEW_JOB_LIST"/>
+        </list>
+        <list name='systemProfileList' processor='systemProfile-processor'>
+            <access permission="EMS_VIEW_SYSTEM_PROFILE_LIST"/>
+        </list>
+        <list name='reportResultList' processor='reportResult-processor'>
+            <access permission="EMS_VIEW_REPORT_RESULT_LIST"/>
+        </list>
+        <list name='provinceList' processor='province-processor'>
+            <access permission="EMS_VIEW_PROVINCE_LIST"/>
+        </list>
+        <list name='reportManagementList' processor='report-management-processor'>
+            <access permission="EMS_VIEW_REPORT_MANAGEMENT_LIST"/>
+        </list>
+        <list name='reportRequestList' processor='report-request-processor'>
+            <access permission="EMS_VIEW_REPORT_REQUEST_LIST"/>
+        </list>
+        <list name='reportResultsList' processor="report-results-processor">
+            <access permission="EMS_VIEW_REPORT_RESULT_LIST"/>
+        </list>
+		<list name='messageList' processor="preparedMessages-processor">
+			<access permission="EMS_VIEW_MESSAGE_LIST" />
+		</list>
+		<list name='messageCcosList' processor="messages-processor">
+			<access permission="EMS_CCOS_VIEW_MESSAGE_LIST" />
+		</list>
+		<list name='locationLivingList' processor='province-processor'>
+            <access permission="EMS_VIEW_PROVINCE_LIST"/>
+        </list>
+		<list name='lostCardList' processor="card-processor">
+			<access permission="EMS_LOST_CARD_LIST" />
+		</list>
+		<list name='lostBatchList' processor="batch-processor">
+			<access permission="EMS_LOST_CARD_LIST" />
+		</list>
+    </lists>
+</listreader-config>

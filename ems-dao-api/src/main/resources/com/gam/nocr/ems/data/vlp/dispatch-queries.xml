@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lists>
+    <list>
+        <list-name>mainDispatchListSelect</list-name>
+        <query>
+            <main-query>
+                select
+                ct.cnt_id,
+                ct.dpi_id,
+                ct.cms_id,
+                ct.rec_type,
+                ct.send_type,
+                ct.item_cnt,
+                ct.dpi_send_date,
+                ct.dpi_receive_date,
+                ct.dpi_lost_date,
+                (case
+                when rec_count>1 then null
+                when rec_count=1 then (select odi.dpi_send_date from emst_dispatch_info odi where
+                odi.dpi_parent_id=ct.dpi_id)
+                else null
+                end
+                ) my_send_date,
+                (case
+                when rec_count>1 then null
+                when rec_count=1 then (select odi.dpi_receiver_dep_id from emst_dispatch_info odi where
+                odi.dpi_parent_id=ct.dpi_id)
+                else null
+                end
+                ) nxt_receiver_id,
+                (case
+                when rec_count>1 then null
+                when rec_count=1 then (select dd.dep_name from emst_dispatch_info odi,emst_department dd where
+                odi.dpi_receiver_dep_id=dd.dep_id and odi.dpi_parent_id=ct.dpi_id)
+                else null
+                end
+                ) nxt_receiver_name,
+                (case
+                when rec_count>1 then null
+                when rec_count=1 then (select odi.dpi_receive_date from emst_dispatch_info odi where
+                odi.dpi_parent_id=ct.dpi_id)
+                else null
+                end
+                ) nxt_receiver_receive_date,
+                (case
+                when ct.ready_to_receive_cnt > 0 then '0'
+                when ct.not_receive_cnt > 0 then '2'
+                when ct.lost_cnt > 0 then '4'
+                when ct.received_cnt > 0 then '1'
+                when ct.sent_cnt > 0 then '3'
+                when ct.received_in_office_cnt > 0 then '5'
+                else '-1'
+                end) state
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="per_dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <list>
+        <list-name>mainDispatchListBody</list-name>
+        <query>
+            <main-query>
+                from
+                (
+                select bx.box_id cnt_id,
+                ed.dpi_id,
+                bx.box_cms_id cms_id,
+                ed.dpi_container_type rec_type,
+                (select dep.dep_dispatch_send_type from emst_department dep where dep.dep_id in (<dependency
+                    name="personDirectDepartment"/>)) send_type,
+                (select count(*) from emst_batch eb where eb.bat_box_id=bx.box_id) item_cnt,
+                ed.dpi_send_date,
+                ed.dpi_receive_date,
+                ed.dpi_lost_date,
+                (select count(*) from emst_dispatch_info idi where idi.dpi_parent_id=ed.dpi_id) rec_count,
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null)) ready_to_receive_cnt,
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null)) received_cnt,
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is null and
+                idi.dpi_detail_lost_date is not null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null)) not_receive_cnt,
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is not null and
+                idi.dpi_receive_date is null)) sent_cnt,
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is not null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null)) lost_cnt,
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is not null and
+                idi.dpi_receive_date is not null)) received_in_office_cnt
+                from
+                emst_box bx,
+                (
+                select *
+                from emst_dispatch_info di
+                where di.dpi_container_type='BOX' and
+                di.dpi_receiver_dep_id in (<dependency name="personAllDepartment"/>) and
+                di.dpi_send_date is not null and
+                di.dpi_hidden='F'
+                ) ed
+                where bx.box_id=ed.dpi_container_id
+                <part name="cmsId">
+                    and bx.box_cms_id like {cmsId}
+                </part>
+                <part name="sendDate">
+                    and ed.dpi_send_date between to_date({fromDispatchSentDate}, 'YYYY/MM/DD HH24:MI') and
+                    to_date({toDispatchSentDate}, 'YYYY/MM/DD HH24:MI')
+                </part>
+                union all
+                select bt.bat_id,
+                ed.dpi_id,
+                bt.bat_cms_id,
+                ed.dpi_container_type ,
+                (select dep.dep_dispatch_send_type from emst_department dep where dep.dep_id in (<dependency
+                    name="personDirectDepartment"/>)) ,
+                (select count(*) from emst_card cd where cd.crd_batch_id=bt.bat_id) ,
+                ed.dpi_send_date,
+                ed.dpi_receive_date,
+                ed.dpi_lost_date,
+                (select count(*) from emst_dispatch_info idi where idi.dpi_parent_id=ed.dpi_id) rec_count,
+                (case when ed.parentId is not null then
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null))
+                else (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_id = ed.dpi_id
+                and (idi.dpi_receive_date is null and
+                idi.dpi_lost_date is null))
+                end) ready_to_receive_cnt,
+                (case when ed.parentId is not null then
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null))
+                else
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_id = ed.dpi_id
+                and (idi.dpi_receive_date is not null and
+                idi.dpi_lost_date is null))
+                end) received_cnt,
+                (case when ed.parentId is not null then
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is null and
+                idi.dpi_detail_lost_date is not null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null))
+                else
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_id = ed.dpi_id
+                and (idi.dpi_receive_date is null and
+                idi.dpi_lost_date is not null))
+                end) not_receive_cnt,
+                (case when ed.parentId is not null then
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is not null and
+                idi.dpi_receive_date is null))
+                else 0
+                end) sent_cnt,
+                (case when ed.parentId is not null then
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is not null and
+                idi.dpi_send_date is null and
+                idi.dpi_receive_date is null))
+                else
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_id = ed.dpi_id
+                and (idi.dpi_receive_date is not null and
+                idi.dpi_lost_date is not null))
+                end) lost_cnt,
+                (case when ed.parentId is not null then
+                (select count(*)
+                from emst_dispatch_info idi
+                where idi.dpi_parent_id = ed.dpi_id
+                and (idi.dpi_detail_receive_date is not null and
+                idi.dpi_detail_lost_date is null and
+                idi.dpi_send_date is not null and
+                idi.dpi_receive_date is not null))
+                else 0
+                end) received_in_office_cnt
+                from
+                emst_batch bt,
+                (
+                select di.*,
+                (select pdi.dpi_id from emst_dispatch_info pdi where pdi.dpi_parent_id = di.dpi_id) parentId
+                from emst_dispatch_info di
+                where di.dpi_container_type='BATCH' and
+                di.dpi_receiver_dep_id in (<dependency name="personAllDepartment"/>) and
+                di.dpi_send_date is not null and
+                di.dpi_hidden='F'
+                ) ed
+                where bt.bat_id=ed.dpi_container_id
+                <part name="cmsId">
+                    and bt.bat_cms_id like {cmsId}
+                </part>
+                <part name="sendDate">
+                    and ed.dpi_send_date between to_date({fromDispatchSentDate}, 'YYYY/MM/DD HH24:MI') and
+                    to_date({toDispatchSentDate}, 'YYYY/MM/DD HH24:MI')
+                </part>
+                ) ct
+            </main-query>
+        </query>
+        <dto>
+            <dto-class></dto-class>
+            <dto-fields>
+                <field name="id" column="per_dep_id"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- Main Dispatch List -->
+    <list>
+        <list-name>mainDispatchList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*) cnt from
+                </part>
+                <part name="main">
+                    select * from
+                </part>
+                (select * from (
+                <dependency name="mainDispatchListSelect"/>
+                <dependency name="mainDispatchListBody"/>
+                ) md
+                WHERE 1=1
+                <part name="cmsId">
+                    and md.cms_id LIKE {cmsId}
+                </part>
+                <part name="itemCount">
+                    and md.ITEM_CNT = {itemCount}
+                </part>
+                <part name="receiver">
+                    and md.nxt_receiver_name LIKE {nextReceiverName}
+                </part>
+                <part name="dispatchSentDate">
+                    and md.DPI_SEND_DATE between to_date({fromSentDate}, 'YYYY/MM/DD HH24:MI') and to_date({toSendDate},
+                    'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="dispatchReceiveDate">
+                    and md.DPI_RECEIVE_DATE between to_date({fromReceiveDate},'YYYY/MM/DD HH24:MI') and
+                    to_date({toReceiveDate},'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="status">
+                    and md.state = {statusId}
+                </part>
+                )
+                <order-by>
+                    dpi_id desc
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.vol.DispatchInfoVTO</dto-class>
+            <dto-fields>
+                <field name="id" column="DPI_ID"/>
+                <field name="cmsId" column="CMS_ID"/>
+                <field name="containerId" column="CNT_ID"/>
+                <field name="receivedType" column="REC_TYPE"/>
+                <field name="sendType" column="SEND_TYPE"/>
+                <field name="itemCount" column="ITEM_CNT"/>
+                <field name="dispatchSentDate" column="DPI_SEND_DATE"/>
+                <field name="dispatchReceiveDate" column="DPI_RECEIVE_DATE"/>
+                <field name="dispatchLostDate" column="DPI_LOST_DATE"/>
+                <field name="mySendDate" column="MY_SEND_DATE"/>
+                <field name="nextReceiverId" column="NXT_RECEIVER_ID"/>
+                <field name="nextReceiverName" column="NXT_RECEIVER_NAME"/>
+                <field name="nextReceiverReceiveDate" column="NXT_RECEIVER_RECEIVE_DATE"/>
+                <field name="status" column="state"/>
+            </dto-fields>
+        </dto>
+    </list>
+    <!-- Detail Dispatch List -->
+    <list>
+        <list-name>detailDispatchList</list-name>
+        <query>
+            <main-query>
+                <part name="count">
+                    select count(*) cnt
+                </part>
+                <part name="main">
+                    select ct.*
+                </part>
+                from (
+                select bx.box_id cnt_id,
+                ed.dpi_id,
+                bx.box_cms_id cms_id,
+                ed.dpi_container_type rec_type,
+                (select dep.dep_dispatch_send_type from emst_department dep where dep.dep_id in (<dependency
+                    name="personDirectDepartment"/>)) send_type,
+                (select count(*) from emst_batch eb where eb.bat_box_id=bx.box_id) item_cnt,
+                (select odi.dpi_send_date from emst_dispatch_info odi where odi.dpi_id=ed.dpi_parent_id) dpi_send_date,
+                ed.dpi_send_date my_send_date ,
+                ed.dpi_detail_receive_date dpi_receive_date,
+                (case
+                when ed.dpi_detail_lost_date is null then ed.dpi_lost_date
+                when ed.dpi_lost_date is null then ed.dpi_detail_lost_date
+                else null
+                end) dpi_lost_date,
+                (select count(*) from emst_dispatch_info idi where idi.dpi_parent_id=ed.dpi_id) rec_count,
+                (select dep.dep_name from emst_department dep where dep.dep_id=ed.dpi_receiver_dep_id)
+                nxt_receiver_name,
+                ed.dpi_receiver_dep_id nxt_receiver_id,
+                ed.dpi_receive_date nxt_receiver_receive_date,
+                bx.box_state,
+                (case
+                when ed.dpi_detail_receive_date is null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '0'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '1'
+                when ed.dpi_detail_receive_date is null and
+                ed.dpi_detail_lost_date is not null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '2'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is not null and
+                ed.dpi_receive_date is null then
+                '3'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is not null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '4'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is not null and
+                ed.dpi_receive_date is not null then
+                '5'
+                else
+                '-1'
+                end) state
+                from
+                emst_box bx,
+                (
+                select *
+                from emst_dispatch_info di
+                where di.dpi_parent_id={parid} and di.dpi_container_type='BOX'
+                ) ed
+                where bx.box_id=ed.dpi_container_id
+                union all
+                select bt.bat_id,
+                ed.dpi_id,
+                bt.bat_cms_id,
+                ed.dpi_container_type ,
+                (select dep.dep_dispatch_send_type from emst_department dep where dep.dep_id in (<dependency
+                    name="personDirectDepartment"/>)) ,
+                (select count(*) from emst_card cd where cd.crd_batch_id=bt.bat_id) ,
+                (select odi.dpi_send_date from emst_dispatch_info odi where odi.dpi_id=ed.dpi_parent_id) ,
+                ed.dpi_send_date ,
+                ed.dpi_detail_receive_date dpi_receive_date,
+                (case
+                when ed.dpi_detail_lost_date is null then ed.dpi_lost_date
+                when ed.dpi_lost_date is null then ed.dpi_detail_lost_date
+                else null
+                end) dpi_lost_date,
+                (select count(*) from emst_dispatch_info idi where idi.dpi_parent_id=ed.dpi_id) rec_count,
+                (select dep.dep_name from emst_department dep where dep.dep_id=ed.dpi_receiver_dep_id)
+                nxt_receiver_name,
+                ed.dpi_receiver_dep_id nxt_receiver_id,
+                ed.dpi_receive_date nxt_receiver_receive_date,
+                bt.bat_state,
+                (case
+                when ed.dpi_detail_receive_date is null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '0'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '1'
+                when ed.dpi_detail_receive_date is null and
+                ed.dpi_detail_lost_date is not null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '2'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is not null and
+                ed.dpi_receive_date is null then
+                '3'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is not null and
+                ed.dpi_send_date is null and
+                ed.dpi_receive_date is null then
+                '4'
+                when ed.dpi_detail_receive_date is not null and
+                ed.dpi_detail_lost_date is null and
+                ed.dpi_send_date is not null and
+                ed.dpi_receive_date is not null then
+                '5'
+                else
+                '-1'
+                end) state
+                from
+                emst_batch bt,
+                (
+                select *
+                from emst_dispatch_info di
+                where di.dpi_parent_id={parid} and di.dpi_container_type='BATCH'
+                ) ed
+                where bt.bat_id=ed.dpi_container_id
+                )ct
+                where 1=1
+                <part name="cmsId">
+                    and ct.cmd_id LIKE {cmsId}
+                </part>
+                <part name="itemCount">
+                    and ct.ITEM_CNT = {itemCount}
+                </part>
+                <part name="receiver">
+                    and ct.nxt_receiver_name LIKE {nextReceiverName}
+                </part>
+                <part name="dispatchSentDate">
+                    and ct.DPI_SEND_DATE between to_date({fromSentDate}, 'YYYY/MM/DD HH24:MI') and to_date({toSendDate},
+                    'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="dispatchReceiveDate">
+                    and ct.DPI_RECEIVE_DATE between to_date({fromReceiveDate}, 'YYYY/MM/DD HH24:MI') and
+                    to_date({toReceiveDate}, 'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="mySendDate">
+                    and ct.MY_SEND_DATE between to_date({fromMySendDate}, 'YYYY/MM/DD HH24:MI') and
+                    to_date({toMySendDate}, 'YYYY/MM/DD HH24:MI')
+                </part>
+                <part name="status">
+                    and ct.state = {statusId}
+                </part>
+                <order-by>
+                    ct.dpi_id desc
+                </order-by>
+            </main-query>
+        </query>
+        <dto>
+            <dto-class>com.gam.nocr.ems.data.domain.vol.DispatchInfoVTO</dto-class>
+            <dto-fields>
+                <field name="id" column="DPI_ID"/>
+                <field name="cmsId" column="CMS_ID"/>
+                <field name="containerId" column="CNT_ID"/>
+                <field name="receivedType" column="REC_TYPE"/>
+                <field name="sendType" column="SEND_TYPE"/>
+                <field name="itemCount" column="ITEM_CNT"/>
+                <field name="dispatchSentDate" column="DPI_SEND_DATE"/>
+                <field name="dispatchReceiveDate" column="DPI_RECEIVE_DATE"/>
+                <field name="dispatchLostDate" column="DPI_LOST_DATE"/>
+                <field name="mySendDate" column="MY_SEND_DATE"/>
+                <field name="nextReceiverId" column="NXT_RECEIVER_ID"/>
+                <field name="nextReceiverName" column="NXT_RECEIVER_NAME"/>
+                <field name="nextReceiverReceiveDate" column="NXT_RECEIVER_RECEIVE_DATE"/>
+                <field name="status" column="state"/>
+            </dto-fields>
+        </dto>
+    </list>
+</lists>

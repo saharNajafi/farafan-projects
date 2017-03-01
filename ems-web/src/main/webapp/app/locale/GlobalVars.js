@@ -1,0 +1,2 @@
+var cardRequestTimeOut;
+var helpFileContent;

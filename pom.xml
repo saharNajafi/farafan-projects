@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.gam</groupId>
+		<artifactId>gam-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.gam.nocr</groupId>
+	<artifactId>ems</artifactId>
+	<version>2.0.0</version>
+	<packaging>pom</packaging>
+	<name>EMS</name>
+
+	<modules>
+		<module>ems-commons</module>
+		<module>ems-dao-api</module>
+		<module>ems-dao-jpa-impl</module>
+		<module>ems-ear</module>
+		<module>ems-web</module>
+		<module>ems-services-api</module>
+		<module>ems-services-ejb-impl</module>
+		<module>ems-subsystems</module>
+		<module>ems-gam-ims-web</module>
+		<module>ems-gam-ims-ear</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${JUnit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- GAM -->
+		<!-- WebLogic Client : This dependency is used for lookup by exterior clients -->
+		<dependency>
+			<groupId>com.gam</groupId>
+			<artifactId>wlclient</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- GAM -->
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- aspectj -->
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>${aspectj.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<!-- aspectj -->
+
+			<!-- flexjson -->
+			<dependency>
+				<groupId>net.sf.flexjson</groupId>
+				<artifactId>flexjson</artifactId>
+				<version>${flexJSON.version}</version>
+			</dependency>
+			<!-- flexjson -->
+
+			<!-- com.google.code.gson -->
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
+			</dependency>
+			<!-- com.google.code.gson -->
+
+			<!-- JSONObject -->
+			<dependency>
+				<groupId>org.json</groupId>
+				<artifactId>json</artifactId>
+				<version>${jsonObject.version}</version>
+			</dependency>
+			<!-- JSONObject -->
+
+
+			<!-- JSONObject -->
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>2.2.0</version>
+			</dependency>
+			<!-- JSONObject -->
+
+			<!-- jasperreport -->
+			<dependency>
+				<groupId>net.sf.jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>${jasperReport.version}</version>
+			</dependency>
+			<!-- jasperreport -->
+
+			<!--reportfonts -->
+			<dependency>
+				<groupId>com.gam</groupId>
+				<artifactId>fonts</artifactId>
+				<version>${reportFonts.version}</version>
+			</dependency>
+			<!--reportfonts -->
+
+			<!-- poi -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+			<!-- poi -->
+
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-ejb_3.1_spec</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jpa_2.0_spec</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibenate-core.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate-entitymanager.version}</version>
+			</dependency>
+
+			<!-- GAM -->
+			<dependency>
+				<groupId>com.gam</groupId>
+				<artifactId>gamtools</artifactId>
+				<version>${gamtools.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.gam</groupId>
+				<artifactId>nocr-utils</artifactId>
+				<version>${nocr-utils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-listreader</artifactId>
+				<version>${gam-commons-listreader.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-autocomplete</artifactId>
+				<version>${gam-commons-autocomplete.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-stateprovider</artifactId>
+				<version>${gam-commons-stateprovider.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-scheduler</artifactId>
+				<version>${gam-commons-scheduler.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-security</artifactId>
+				<version>${gam-commons-security.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam</groupId>
+				<artifactId>displaytag</artifactId>
+				<version>${displaytag.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gam</groupId>
+				<artifactId>gamcasclient</artifactId>
+				<version>${gamcasclient.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- GAM -->
+
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>xalan</artifactId>
+				<version>2.7.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.8.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.6</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>1.2.4</version>
+			</dependency>
+
+			<!--Struts -->
+			<dependency>
+				<groupId>org.apache.struts</groupId>
+				<artifactId>struts2-core</artifactId>
+				<version>${struts2-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.struts</groupId>
+				<artifactId>struts2-json-plugin</artifactId>
+				<version>${struts2-core.version}</version>
+			</dependency>
+			<!--Struts -->
+
+			<!-- coherence -->
+			<dependency>
+				<groupId>tangosol-coherence</groupId>
+				<artifactId>coherence-hibernate</artifactId>
+				<version>${coherence.version}</version>
+			</dependency>
+			<!-- coherence -->
+
+			<!-- javax -->
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>${javaee-api.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-web-api</artifactId>
+				<version>6.0</version>
+				<scope>compile</scope>
+			</dependency>
+			<!-- javax -->
+
+			<!-- database connector -->
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>${oracle.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
+			</dependency>
+			<!-- database connector -->
+
+			<!-- jaxws -->
+			<dependency>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-rt</artifactId>
+				<version>${jaxws.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.sun.xml.messaging.saaj</groupId>
+						<artifactId>saaj-impl</artifactId>
+					</exclusion>
+				</exclusions>
+				<scope>compile</scope>
+			</dependency>
+			<!-- jaxws -->
+
+			<!-- inner module dependency -->
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-core</artifactId>
+				<version>${gam-commons-core.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.commons</groupId>
+				<artifactId>gam-commons-mail</artifactId>
+				<version>${gam-commons-mail.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.nocr.ems</groupId>
+				<artifactId>ems-commons</artifactId>
+				<version>${nocr.ems-commons.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.nocr.ems</groupId>
+				<artifactId>ems-dao-api</artifactId>
+				<version>${nocr.ems-dao-api.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.nocr.ems</groupId>
+				<artifactId>ems-dao-jpa-impl</artifactId>
+				<version>${nocr.ems-dao-jpa-impl.version}</version>
+				<type>ejb</type>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.nocr.ems</groupId>
+				<artifactId>ems-services-api</artifactId>
+				<version>${nocr.ems-services-api.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.nocr.ems</groupId>
+				<artifactId>ems-services-ejb-impl</artifactId>
+				<version>${nocr.ems-services-ejb-impl.version}</version>
+				<type>ejb</type>
+			</dependency>
+			<dependency>
+				<groupId>com.gam.nocr.ems</groupId>
+				<artifactId>ems-web</artifactId>
+				<version>${nocr.ems-web.version}</version>
+				<type>war</type>
+			</dependency>
+			<!-- inner module dependency -->
+
+			<!-- external module dependency -->
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>cms-stub</artifactId>
+				<version>${external-cms.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>pki-stub</artifactId>
+				<version>${external-pki.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>gaas-stub</artifactId>
+				<version>${external-gaas.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>portal-stub</artifactId>
+				<version>${external-portal.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>emks-stub</artifactId>
+				<version>${external-emks.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ims-stub</groupId>
+				<artifactId>offline</artifactId>
+				<version>${ims.version}</version>
+			</dependency>
+
+			<!--<dependency> -->
+			<!--<groupId>ims-stub</groupId> -->
+			<!--<artifactId>online</artifactId> -->
+			<!--<version>${ims.version}</version> -->
+			<!--</dependency> -->
+
+			<dependency>
+				<groupId>ims-stub</groupId>
+				<artifactId>online-sc</artifactId>
+				<version>${ims.online.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ims-stub</groupId>
+				<artifactId>ims-new-services</artifactId>
+				<version>${ims.new.services.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>gam-ims-stub</artifactId>
+				<version>${external-gam-ims.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>matiran-ims-stub</artifactId>
+				<version>${external-matiran-ims.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>nocr-sms-stub</artifactId>
+				<version>${external-nocr-sms.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.oracle.weblogic</groupId>
+				<artifactId>weblogic</artifactId>
+				<version>${weblogic.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- external module dependency -->
+
+			<dependency>
+				<groupId>org.mozilla</groupId>
+				<artifactId>rhino</artifactId>
+				<version>1.7R4</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.zeroturnaround</groupId>
+				<artifactId>jrebel-maven-plugin</artifactId>
+				<version>1.1.3</version>
+				<executions>
+					<execution>
+						<id>generate-jrebel-xml</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+							<goal>generate-liverebel-xml</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--<plugin> -->
+			<!--<groupId>org.apache.maven.plugins</groupId> -->
+			<!--<artifactId>maven-eclipse-plugin</artifactId> -->
+			<!--<version>2.9</version> -->
+			<!--<configuration> -->
+			<!--<buildCommand> -->
+			<!--<name>org.eclipse.ajdt.core.ajbuilder</name> -->
+			<!--</buildCommand> -->
+			<!--<ajdtVersion>1.5</ajdtVersion> -->
+			<!--<additionalProjectnatures> -->
+			<!--<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature> -->
+			<!--</additionalProjectnatures> -->
+			<!--</configuration> -->
+			<!--</plugin> -->
+			<!-- aspectj plugins -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.1</version>
+				<configuration>
+					<!-- Default configuration for all reports -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>aggregate</id>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<phase>site</phase>
+						<configuration>
+							<!-- Specific configuration for the aggregate report -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.zeroturnaround
+										</groupId>
+										<artifactId>
+											jrebel-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.1.3,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
+											<goal>
+												generate-liverebel-xml
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>aspectj-maven-plugin</artifactId>
+					<version>1.4</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjrt</artifactId>
+							<version>${aspectj.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjtools</artifactId>
+							<version>${aspectj.version}</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<!-- <weaveDependencies> <weaveDependency> <groupId>com.gam.commons</groupId> 
+							<artifactId>gam-commons-core</artifactId> </weaveDependency> </weaveDependencies> -->
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<!-- use this goal to weave all your main classes -->
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<scm>
+		<connection>scm:svn:http://SVN.gamelectronics.com:9999/svn/nocr/trunk</connection>
+		<developerConnection>scm:svn:http://SVN.gamelectronics.com:9999/svn/nocr/trunk</developerConnection>
+		<url>scm:svn:http://SVN.gamelectronics.com:9999/svn/nocr/trunk</url>
+	</scm>
+
+	<!-- Added these repositories to nexus -->
+	<!--<repositories> <repository> <id>zk repository</id> <url>http://mavensync.zkoss.org/maven2</url> 
+		</repository> <repository> <id>ZK EE Evaluation</id> <url>http://mavensync.zkoss.org/zk/ee-eval</url> 
+		</repository> </repositories> -->
+
+	<distributionManagement>
+		<repository>
+			<id>Releases</id>
+			<name>ICT Releases</name>
+			<url>http://10.102.1.18:8081/nexus/content/repositories/ICT_Releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>Snapshots</id>
+			<name>ICT Snapshots</name>
+			<url>http://10.102.1.18:8081/nexus/content/repositories/ICT_Snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+
+    <properties>
+        <!-- ============= NOCR module Version ============== -->
+        <nocr.ems.version>2.3.4</nocr.ems.version>
+        <nocr.ems-commons.version>2.3.4</nocr.ems-commons.version>
+        <nocr.ems-dao-api.version>2.3.4</nocr.ems-dao-api.version>
+        <nocr.ems-dao-jpa-impl.version>2.3.4</nocr.ems-dao-jpa-impl.version>
+        <nocr.ems-ear.version>2.3.4</nocr.ems-ear.version>
+        <nocr.ems-services-api.version>2.3.4</nocr.ems-services-api.version>
+        <nocr.ems-services-ejb-impl.version>2.3.4</nocr.ems-services-ejb-impl.version>
+        <nocr.ems-web.version>2.3.4</nocr.ems-web.version>
+        <nocr.ems-ccos.version>2.7.0.4</nocr.ems-ccos.version>
+        <nocr.ems-mes.version>1.0.1.5</nocr.ems-mes.version>
+        <nocr.ems-software.version>1.0.0</nocr.ems-software.version>
+        <nocr.ems-gam-ims.version>1.0.0-SNAPSHOT</nocr.ems-gam-ims.version>
+
+        <!-- ============= External Module Version ============== -->
+        <external-cms.version>1.0.0-SNAPSHOT</external-cms.version>
+        <external-pki.version>1.0.0-SNAPSHOT</external-pki.version>
+        <external-gaas.version>2.0.0-SNAPSHOT</external-gaas.version>
+        <external-portal.version>5.0.0-SNAPSHOT</external-portal.version>
+        <external-emks.version>1.0.0-SNAPSHOT</external-emks.version>
+        <external-gam-ims.version>1.0.0-SNAPSHOT</external-gam-ims.version>
+        <external-matiran-ims.version>1.0.0</external-matiran-ims.version>
+        <external-nocr-sms.version>1.0.0-SNAPSHOT</external-nocr-sms.version>
+        <ims.version>1.0</ims.version>
+        <ims.online.version>3.0</ims.online.version>
+        <ims.new.services.version>1_0.4.6</ims.new.services.version>
+        <ims-stub.version>1.0.0-SNAPSHOT</ims-stub.version>
+        <weblogic.version>12.1.1.0</weblogic.version>
+
+		<!-- ============= Component Version ============== -->
+		<gamtools.version>1.5.2</gamtools.version>
+		<gamcasclient.version>1.0</gamcasclient.version>
+		<nocr-utils.version>2.0.0</nocr-utils.version>
+		<displaytag.version>1.0</displaytag.version>
+		<JUnit.version>4.10</JUnit.version>
+		<easymock.version>3.1</easymock.version>
+		<JavaMail.version>1.4.5</JavaMail.version>
+		<quartzScheduler.version>2.1.5</quartzScheduler.version>
+		<hsqldb.version>1.8.0.7</hsqldb.version>
+		<hibenate-core.version>3.6.8.Final</hibenate-core.version>
+		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
+		<hibernate-entitymanager.version>3.6.8.Final</hibernate-entitymanager.version>
+		<validation-api.version>1.0.0.GA</validation-api.version>
+		<javaee-api.version>6.0</javaee-api.version>
+		<slf4j.version>1.6.3</slf4j.version>
+		<log4j.version>1.2.16</log4j.version>
+		<infrastructure.version>1.0.1</infrastructure.version>
+		<orm.version>1.0.0</orm.version>
+		<json.version>20090211</json.version>
+		<coherence.version>3.7.1.0</coherence.version>
+		<javaee-web-api.version>6.0</javaee-web-api.version>
+		<jaxws.version>2.2.5</jaxws.version>
+		<struts2-core.version>2.3.4</struts2-core.version>
+		<oracle.version>11.2.0</oracle.version>
+		<mysql.version>5.1.9</mysql.version>
+		<postgresql.version>8.4-702.jdbc4</postgresql.version>
+		<pkcs11wrapper.version>1.2.18</pkcs11wrapper.version>
+		<pkcs11provider.version>1.3</pkcs11provider.version>
+		<iaikjce.version>1.0</iaikjce.version>
+		<iaikxsect.version>1.0</iaikxsect.version>
+		<xmlapis.version>1.3.04</xmlapis.version>
+		<xalanserializer.version>2.7.1</xalanserializer.version>
+		<aspectj.version>1.6.11</aspectj.version>
+		<zk.version>6.0.1</zk.version>
+		<joda.version>2.1</joda.version>
+		<flexJSON.version>2.0</flexJSON.version>
+		<jsonObject.version>20090211</jsonObject.version>
+		<gson.version>2.2.2</gson.version>
+		<jasperReport.version>5.1.0</jasperReport.version>
+		<reportFonts.version>1.0.0</reportFonts.version>
+		<poi.version>3.9</poi.version>
+
+		<!-- ============= GAM commons module Version ============== -->
+		<gam-commons-core.version>5.0.0</gam-commons-core.version>
+		<gam-commons-mail.version>1.0.0</gam-commons-mail.version>
+		<gam-commons-listreader.version>1.0.1</gam-commons-listreader.version>
+		<gam-commons-stateprovider.version>1.0.0</gam-commons-stateprovider.version>
+		<gam-commons-scheduler.version>1.0.0</gam-commons-scheduler.version>
+		<gam-commons-security.version>1.0.3</gam-commons-security.version>
+		<gam-commons-autocomplete.version>1.1.0</gam-commons-autocomplete.version>
+
+
+		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+</project>

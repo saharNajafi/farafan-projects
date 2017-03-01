@@ -1,0 +1,1 @@
+alter table msgt_outgoing_sms add OSM_TYPE NUMBER(9,0)

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entries>
+    <data-source>jdbc/GamNocrEmsOracleDS</data-source>
+    <entry name="ReferenceQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/reference-queries.xml"/>
+    <entry name="NOCRQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/ems-queries.xml"/>
+	<entry name="HosseinAutoCompleteQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/hossein-autocomplete-queries.xml"/>
+    <entry name="AutoCompleteQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/ems-autocomplete-queries.xml"/>
+    <entry name="DispatchQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/dispatch-queries.xml"/>
+    <entry name="CCOSQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/ccos-queries.xml"/>
+    <entry name="PortalQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/portal-queries.xml"/>
+    <entry name="ReportQueries"
+           reader="gampooya.tools.vlp.FileLoader"
+           src="com/gam/nocr/ems/data/vlp/report-queries.xml"/>
+    <entry name="TableBasedQueries"
+           reader="gampooya.tools.vlp.DatabaseLoader"
+           src="INFT_Queries"/>
+</entries>

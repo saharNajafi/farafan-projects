@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport013_pdf" pageWidth="555" pageHeight="802" columnWidth="515" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="3426ed98-c0d8-441b-9553-ff59e7f924b8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parentDepartmentId" class="java.lang.Long"/>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	(select Count(req.crq_id) from emst_card_request req,emst_department dep where 	req.crq_type in ('FIRST_CARD' )
+	and req.crq_enroll_office_id = dep.dep_id
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+	and req.crq_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+  	and req.crq_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')) firstCardCount,
+
+	(select Count(req.crq_id) from emst_card_request req,emst_department dep where req.crq_type in ('REPLICA')
+	and req.crq_enroll_office_id = dep.dep_id
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+	and req.crq_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+  	and req.crq_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')) replicaCount,
+
+	(select Count(req.crq_id) from emst_card_request req,emst_department dep where req.crq_type in ('EXTEND')
+	and req.crq_enroll_office_id = dep.dep_id
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+	and req.crq_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+  	and req.crq_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')) extendCount,
+
+	(select count(distinct(req.crq_id)) from emst_card_request req,emst_department dep where req.crq_type in ('REPLACE')
+	and req.crq_enroll_office_id = dep.dep_id
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+  	and req.crq_reason = 'DESTROYED'
+	and req.crq_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+  	and req.crq_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')) replaceDesCount,
+
+	(select count(distinct(req.crq_id)) from emst_card_request req,emst_department dep where req.crq_type in ('REPLACE')
+	and req.crq_enroll_office_id = dep.dep_id
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+  	and req.crq_reason = 'IDENTITY_CHANGED'
+	and req.crq_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+ 	and req.crq_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')) replaceIdeCount,
+
+	(select Count(req.crq_id) from emst_card_request req,emst_department dep where req.crq_type in ('FIRST_CARD','REPLICA','EXTEND','REPLACE')
+	and req.crq_enroll_office_id = dep.dep_id
+	and dep.dep_parent_dep_id = $P{parentDepartmentId}
+	and req.crq_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+  	and req.crq_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')) countInRow
+
+from DUAL]]>
+	</queryString>
+	<field name="FIRSTCARDCOUNT" class="java.math.BigDecimal"/>
+	<field name="REPLICACOUNT" class="java.math.BigDecimal"/>
+	<field name="EXTENDCOUNT" class="java.math.BigDecimal"/>
+	<field name="REPLACEDESCOUNT" class="java.math.BigDecimal"/>
+	<field name="REPLACEIDECOUNT" class="java.math.BigDecimal"/>
+	<field name="COUNTINROW" class="java.math.BigDecimal"/>
+	<variable name="firstCardCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{FIRSTCARDCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="replicaCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{REPLICACOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="extendCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{EXTENDCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="replaceIdeCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{REPLACEIDECOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="replaceDesCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{REPLACEDESCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="countInRow" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{COUNTINROW}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="237" y="4" width="49" height="15" uuid="84613193-d699-440f-8208-c6c964a0f288"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{firstCardCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="4" width="49" height="15" uuid="e6becdd3-9350-4ce3-b2e3-7aa3f2d3675e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{replicaCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="131" y="4" width="49" height="15" uuid="f312c41b-3065-419c-9d64-a6c96dbba24c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{extendCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="4" width="49" height="15" uuid="546edf78-d3d7-47e9-beaf-1b3826bf8b5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{replaceIdeCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="4" width="49" height="15" uuid="0dd5139a-c01d-4fd5-888f-43f0d2ca74de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{replaceDesCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-29" y="4" width="49" height="15" uuid="8ca8d748-b163-4763-a0db-6a18b1dce8ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{countInRow}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

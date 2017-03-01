@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report008Subreport_excel" language="groovy" pageWidth="900" pageHeight="30" columnWidth="900" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b28f82e0-47ed-4d59-996b-32e1d85d970c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parentDepartmentId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) bioCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) idChangeCount,
+
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) damageCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION in ('UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC','UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE','UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE')
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) totalCount
+
+from dual]]>
+	</queryString>
+	<field name="BIOCOUNT" class="java.math.BigDecimal"/>
+	<field name="IDCHANGECOUNT" class="java.math.BigDecimal"/>
+	<field name="DAMAGECOUNT" class="java.math.BigDecimal"/>
+	<field name="TOTALCOUNT" class="java.math.BigDecimal"/>
+	<variable name="bioImageCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="bioFingerCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{BIOCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="idChangeCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{IDCHANGECOUNT}]]></variableExpression>
+	</variable>
+	<variable name="damageCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{DAMAGECOUNT}]]></variableExpression>
+	</variable>
+	<variable name="totalCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOUNT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="720" y="0" width="180" height="30" uuid="ce21c7b8-1eed-408c-bd98-b316da0054b1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="540" y="0" width="180" height="30" uuid="39043487-3182-4f93-9a97-cd642916953e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{bioFingerCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="180" height="30" uuid="128a2fc2-aa8d-4eb7-a81a-f0c9979872bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{idChangeCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="180" height="30" uuid="293a1a02-1a36-4e2f-a3d8-dcce2b53d11d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{damageCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="180" height="30" uuid="d09124cc-a877-40f7-a802-6ba5dddc220e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

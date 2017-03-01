@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report008Subreport_excel" language="groovy" pageWidth="660" pageHeight="30" columnWidth="660" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b28f82e0-47ed-4d59-996b-32e1d85d970c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parentDepartmentId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+(select count(distinct(bio.bim_id)) from emst_card_request crq,emst_card_request_history crh,
+emst_department dep,emst_biometric bio,emst_citizen_info czi
+where crq.crq_id = crh.crh_card_request_id
+and crq.crq_enroll_office_id = dep.dep_id
+and crq.crq_citizen_id = czi.czi_id
+and czi.czi_id = bio.bim_citizen_info_id
+and crh.crh_action = 'FINGER_SCAN' and crh.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and
+crh.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and  dep.dep_parent_dep_id = $P{parentDepartmentId}
+and bio.bim_type = 'FING_MIN_1'
+and czi.czi_id not in (select bim_citizen_info_id from emst_biometric  where bim_type = 'FING_MIN_2')
+and crq.crq_id not in (select crh_card_request_id from emst_card_request_history  where crh_action =  'BATCH_PRODUCTION')) min1,
+
+(select count(distinct(bio.bim_id)) from emst_card_request crq,emst_card_request_history crh,
+emst_department dep,emst_biometric bio,emst_citizen_info czi
+where crq.crq_id = crh.crh_card_request_id
+and crq.crq_enroll_office_id = dep.dep_id
+and crq.crq_citizen_id = czi.czi_id
+and czi.czi_id = bio.bim_citizen_info_id
+and crh.crh_action = 'FINGER_SCAN' and crh.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and
+crh.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and  dep.dep_parent_dep_id = $P{parentDepartmentId}
+and bio.bim_type = 'FING_MIN_2'
+and crq.crq_id not in (select crh_card_request_id from emst_card_request_history  where crh_action =  'BATCH_PRODUCTION')) min2,
+
+(select count(distinct(bio.bim_id)) from emst_card_request crq,emst_card_request_history crh,
+emst_department dep,emst_biometric bio,emst_citizen_info czi
+where crq.crq_id = crh.crh_card_request_id
+and crq.crq_enroll_office_id = dep.dep_id
+and crq.crq_citizen_id = czi.czi_id
+and czi.czi_id = bio.bim_citizen_info_id
+and crh.crh_action = 'FINGER_SCAN' and crh.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and
+crh.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and  dep.dep_parent_dep_id = $P{parentDepartmentId}
+and ((bio.bim_type = 'FING_CANDIDATE'
+and czi.czi_id not in (select bim_citizen_info_id from emst_biometric where bim_type in ('FING_MIN_2','FING_MIN_1')))
+or(bio.bim_type = 'FING_ALL'
+and czi.czi_id not in (select bim_citizen_info_id from emst_biometric where bim_type in ('FING_CANDIDATE'))))
+and crq.crq_id not in (select crh_card_request_id from emst_card_request_history  where crh_action =  'BATCH_PRODUCTION')) pin,
+
+(select count(distinct(bio.bim_id)) from emst_card_request crq,emst_card_request_history crh,
+emst_department dep,emst_biometric bio,emst_citizen_info czi
+where crq.crq_id = crh.crh_card_request_id
+and crq.crq_enroll_office_id = dep.dep_id
+and crq.crq_citizen_id = czi.czi_id
+and czi.czi_id = bio.bim_citizen_info_id
+and crh.crh_action = 'FINGER_SCAN' and crh.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and
+crh.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and  dep.dep_parent_dep_id = $P{parentDepartmentId}
+and crq.crq_id not in (select crh_card_request_id from emst_card_request_history  where crh_action =  'BATCH_PRODUCTION')
+and ((bio.bim_type = 'FING_MIN_1'
+and czi.czi_id not in (select bim_citizen_info_id from emst_biometric  where bim_type = 'FING_MIN_2'))
+or (bio.bim_type = 'FING_MIN_2') or ((bio.bim_type = 'FING_CANDIDATE'
+and czi.czi_id not in (select bim_citizen_info_id from emst_biometric where bim_type in ('FING_MIN_2','FING_MIN_1')))
+or(bio.bim_type = 'FING_ALL'
+and czi.czi_id not in (select bim_citizen_info_id from emst_biometric where bim_type in ('FING_CANDIDATE')))))) countInRow
+
+from dual]]>
+	</queryString>
+	<field name="MIN1" class="java.math.BigDecimal"/>
+	<field name="MIN2" class="java.math.BigDecimal"/>
+	<field name="PIN" class="java.math.BigDecimal"/>
+	<field name="COUNTINROW" class="java.math.BigDecimal"/>
+	<variable name="countInRow" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{COUNTINROW}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="min1Count" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{MIN1}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="min2Count" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{MIN2}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="pinCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{PIN}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="330" y="0" width="165" height="30" uuid="128a2fc2-aa8d-4eb7-a81a-f0c9979872bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{min2Count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="0" width="165" height="30" uuid="293a1a02-1a36-4e2f-a3d8-dcce2b53d11d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pinCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="165" height="30" uuid="d09124cc-a877-40f7-a802-6ba5dddc220e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{countInRow}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="495" y="0" width="165" height="30" uuid="e34a3e93-b232-4bfe-8254-d0b0fe529365"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{min1Count}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

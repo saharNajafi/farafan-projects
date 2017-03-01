@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report010-2SubReport" pageWidth="480" pageHeight="60" whenNoDataType="AllSectionsNoDetail" columnWidth="480" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="092d3723-b426-4520-9ad2-54185ae24bc0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select  DISTINCT DEP.DEP_NAME depName,
+                DEP.DEP_CODE depCode,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	WHERE req.crq_enroll_office_id = $P{departmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) bioCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	WHERE req.crq_enroll_office_id = $P{departmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) idChangeCount,
+
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	WHERE req.crq_enroll_office_id = $P{departmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) damageCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	WHERE req.crq_enroll_office_id = $P{departmentId}
+	AND his.CRH_ACTION in ('UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE', 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE', 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC')
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) rowCount
+
+FROM EMST_CARD_REQUEST CRQ, Emst_Department DEP
+ WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+   AND DEP.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="DEPNAME" class="java.lang.String"/>
+	<field name="DEPCODE" class="java.lang.String"/>
+	<field name="BIOCOUNT" class="java.math.BigDecimal"/>
+	<field name="IDCHANGECOUNT" class="java.math.BigDecimal"/>
+	<field name="DAMAGECOUNT" class="java.math.BigDecimal"/>
+	<field name="ROWCOUNT" class="java.math.BigDecimal"/>
+	<variable name="bioImageCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="bioFingerPrintCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{BIOCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="identityChangeCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{IDCHANGECOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="damageCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{DAMAGECOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="rowCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{ROWCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="384" y="0" width="96" height="30" uuid="53829a39-c67e-4201-a2fd-037d817d6743"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{bioImageCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="0" width="96" height="30" uuid="6826c1dd-06bc-40ce-a5ce-8d6d8dd9f8df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{bioFingerPrintCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="0" width="96" height="30" uuid="639a09c3-0485-402b-9838-a968316fc3a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{identityChangeCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="0" width="96" height="30" uuid="ed7035ae-9b78-4c48-9641-3eb08c225767"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{damageCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="96" height="30" uuid="2d28a162-1a12-42d2-a02a-8bf68da387bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{rowCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

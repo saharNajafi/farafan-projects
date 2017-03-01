@@ -1,0 +1,25 @@
+{
+    'success': true,
+    'showMessage': false,
+    'messageArguments': null,
+    'messageDetail': null,
+    'messageFormat': null,
+
+    'records': [
+        {
+            id: 1,
+            code: 'L',
+            name: 'گم شدن توکن'
+        },
+        {
+            id: 2,
+            code: 'D',
+            name: 'خرابی  توکن'
+        },
+        {
+            id: 3,
+            code: 'E',
+            name: 'سایر موارد'
+        }
+    ]
+}

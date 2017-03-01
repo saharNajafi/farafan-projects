@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport008_pdf" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3426ed98-c0d8-441b-9553-ff59e7f924b8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parentDepartmentId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="nocrFromDate" class="java.lang.String">
+		<property name="mandatory" value="false"/>
+		<property name="default" value="2012/06/21"/>
+		<property name="label" value="از تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) bioCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) idChangeCount,
+
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION = 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE'
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) damageCount,
+
+	(select count(req.crq_id) from emst_card_request req
+	inner join emst_card_request_history his on his.crh_card_request_id = req.crq_id
+	inner join emst_department dep on dep.dep_id = req.crq_enroll_office_id
+	WHERE dep.dep_parent_dep_id = $P{parentDepartmentId}
+	AND his.CRH_ACTION in ('UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC','UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IDENTITY_CHANGE','UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE')
+	and his.crh_date >= to_date($P{nocrFromDate},'YYYY/MM/DD') and his.crh_date < to_date($P{nocrToDate},'YYYY/MM/DD')) totalCount
+
+from dual]]>
+	</queryString>
+	<field name="BIOCOUNT" class="java.math.BigDecimal"/>
+	<field name="IDCHANGECOUNT" class="java.math.BigDecimal"/>
+	<field name="DAMAGECOUNT" class="java.math.BigDecimal"/>
+	<field name="TOTALCOUNT" class="java.math.BigDecimal"/>
+	<variable name="bioImageCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="bioFingerCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{BIOCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="idChangeCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{IDCHANGECOUNT}]]></variableExpression>
+	</variable>
+	<variable name="damageCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{DAMAGECOUNT}]]></variableExpression>
+	</variable>
+	<variable name="totalCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTALCOUNT}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="245" y="3" width="56" height="15" uuid="f312c41b-3065-419c-9d64-a6c96dbba24c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="3" width="56" height="15" uuid="546edf78-d3d7-47e9-beaf-1b3826bf8b5d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{bioFingerCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="3" width="56" height="15" uuid="e43bc607-008d-41c1-9de1-873f37e38470"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{idChangeCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="3" width="56" height="15" uuid="fbcad410-e8c1-4670-ae27-6e00a03ed986"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{damageCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="3" width="56" height="15" uuid="e8f6c7e6-794c-43e5-806d-9d37e32df50c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,25 @@
+{
+    'success': true,
+    'showMessage': false,
+    'messageArguments': null,
+    'messageDetail': null,
+    'messageFormat': null,
+
+    'records': [
+        {
+            id: 1,
+            code: 'N',
+            name: 'صدوراولیه'
+        },
+        {
+            id: 2,
+            code: 'D',
+            name: 'صدور مجدد به دلیل خرابی'
+        },
+        {
+            id: 1,
+            code: 'R',
+            name: 'صدورالمثنی'
+        }
+    ]
+}

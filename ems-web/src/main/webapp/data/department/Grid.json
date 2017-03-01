@@ -1,0 +1,21 @@
+{
+    'success': true,
+    'records': [
+        {
+            id: 1,
+            parentDepartment: 'جایگاه مافوق1',
+            parentDepartmentId: '1',
+            code: '12',
+            name: 'ناو جایگاه سازمانی1',
+            address: 'آدرس',
+            postalCode: '234234765',
+            dn: 'دامنه',
+            parentDN: 'جایگاه سازمانی',
+            parentDNId: '1',
+            dispatchSendType: 'نوع ارسال1',
+            dispatchSendTypeId: '1',
+            location: 'محل1',
+            locationId: '1'
+        }
+    ]
+}

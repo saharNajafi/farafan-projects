@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report08-2SubReport" pageWidth="276" pageHeight="60" whenNoDataType="AllSectionsNoDetail" columnWidth="276" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="092d3723-b426-4520-9ad2-54185ae24bc0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT DEP1.DEP_NAME depName,
+                DEP1.DEP_CODE depCode,
+
+	(select rat.rat_size from emst_rating_info rat
+  inner join emst_enrollment_office eof on rat.rat_id = eof.eof_rat_id
+  where eof.eof_id = $P{departmentId}) ratsize,
+
+	(select count(wst.wst_id) from emst_workstation wst
+	inner join emst_department dep on wst.wst_enrollment_id = dep.dep_id
+	where dep.dep_id = $P{departmentId}) workstationcount,
+
+	(select count(per.per_id) from emst_person per
+	inner join emst_department dep on per.per_dep_id = dep.dep_id
+	where dep.dep_id = $P{departmentId}) personcount,
+
+  (select count(*) from emst_card_request_history his,
+  emst_card_request req,emst_department dep
+  where his.crh_card_request_id = req.crq_id
+  and req.crq_enroll_office_id = dep.dep_id
+  and dep.dep_id = $P{departmentId} and his.crh_action = 'MANAGER_APPROVAL') managerAprovalCount
+
+  from emst_department dep1 where DEP1.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="DEPNAME" class="java.lang.String"/>
+	<field name="DEPCODE" class="java.lang.String"/>
+	<field name="RATSIZE" class="java.math.BigDecimal"/>
+	<field name="WORKSTATIONCOUNT" class="java.math.BigDecimal"/>
+	<field name="PERSONCOUNT" class="java.math.BigDecimal"/>
+	<field name="MANAGERAPROVALCOUNT" class="java.math.BigDecimal"/>
+	<variable name="summaryHallmark" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{RATSIZE}]]></variableExpression>
+	</variable>
+	<variable name="ratSize" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{RATSIZE}]]></variableExpression>
+	</variable>
+	<variable name="workstationCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{WORKSTATIONCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="personCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERSONCOUNT}]]></variableExpression>
+	</variable>
+	<variable name="activateDep" class="java.lang.String">
+		<variableExpression><![CDATA[($F{MANAGERAPROVALCOUNT}.intValue() != 0 ? ($F{RATSIZE}.intValue() != 0 ? "فعال" : "غیرفعال موقت") : "غیرفعال")]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="211" y="0" width="65" height="30" uuid="794f32af-0054-44af-ba8a-0f14b0f8bb37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ratSize}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="65" height="30" uuid="909f0432-1473-49a4-a779-334757472cdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{activateDep}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="0" width="65" height="30" uuid="d3ce2484-77b9-409a-a28e-762bfa3342f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{personCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="81" height="30" uuid="2e4e0590-0d2f-4698-8564-b23a71c02c81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{workstationCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="30">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$V{summaryHallmark} == null]]></printWhenExpression>
+			<textField>
+				<reportElement x="211" y="0" width="65" height="30" uuid="1c2dc075-fc33-44d8-aa41-cf78f476ec1c">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="81" height="30" uuid="7da0b862-20be-4f64-a06a-855bb91fab0a">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="0" width="65" height="30" uuid="b2a84398-3408-4e4f-830a-cdab46b338ab">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="65" height="30" uuid="03ced802-ee56-4bcd-b574-a5632f7c4e03">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["--"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

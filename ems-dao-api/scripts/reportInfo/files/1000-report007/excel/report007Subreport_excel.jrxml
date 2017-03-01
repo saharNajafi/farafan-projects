@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report008Subreport_excel" language="groovy" pageWidth="840" pageHeight="30" columnWidth="840" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b28f82e0-47ed-4d59-996b-32e1d85d970c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nocrFromDate" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String">
+		<property name="default" value="CURRENT_DATE"/>
+		<property name="mandatory" value="false"/>
+		<property name="label" value="تا تاریخ"/>
+		<property name="ui" value="DATE"/>
+	</parameter>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="fromBirthDate" class="java.lang.String">
+		<property name="default" value="1374"/>
+		<property name="ui" value="BIRTH_DATE"/>
+		<property name="label" value="شروع تاریخ تولد"/>
+	</parameter>
+	<parameter name="toBirthDate" class="java.lang.String">
+		<property name="default" value="1379"/>
+		<property name="ui" value="BIRTH_DATE"/>
+		<property name="label" value="پایان تاریخ تولد"/>
+	</parameter>
+	<parameter name="intervals" class="java.lang.String">
+		<property name="default" value="5"/>
+		<property name="ui" value="RANGE"/>
+		<property name="label" value="بازه گروه سنی"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select subSet1.birthdate,
+        subSet1.citizenCount,
+        subSet2.maleCount,
+        subSet3.femaleCount,
+        subSet4.muslimCount,
+        subSet5.christianCount,
+        subSet6.zoroastrianCount,
+        subSet7.jewCount,
+        subSet8.otherCount
+
+from
+(
+select birthdate,
+      count(birthdate) citizenCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet1 left join
+(
+select birthdate,
+      count(birthdate) maleCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_Gender = 'M'
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet2 on subSet1.birthdate = subSet2.birthdate
+left join
+(
+select birthdate,
+      count(birthdate) femaleCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_Gender = 'F'
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet3 on subSet1.birthdate = subSet3.birthdate
+left join
+(
+select birthdate,
+      count(birthdate) muslimCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_religion rlg on rlg.rlg_id = czi.czi_religion_id
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_religion_id = 1
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet4 on subSet1.birthdate = subSet4.birthdate
+left join
+(
+select birthdate,
+      count(birthdate) christianCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_religion rlg on rlg.rlg_id = czi.czi_religion_id
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_religion_id = 2
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet5 on subSet1.birthdate = subSet5.birthdate
+left join
+(
+select birthdate,
+      count(birthdate) zoroastrianCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_religion rlg on rlg.rlg_id = czi.czi_religion_id
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_religion_id = 3
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet6 on subSet1.birthdate = subSet6.birthdate
+left join
+(
+select birthdate,
+      count(birthdate) jewCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_religion rlg on rlg.rlg_id = czi.czi_religion_id
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_religion_id = 4
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet7 on subSet1.birthdate = subSet7.birthdate
+left join
+(
+select birthdate,
+      count(birthdate) otherCount
+from
+(SELECT to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals})) || ' - '
+|| to_char(to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals})) as birthdate
+from EMST_CARD_REQUEST CRQ
+inner join EMST_CARD_REQUEST_HISTORY CRH on CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+inner join EMST_CITIZEN_INFO CZI on  CZI.CZI_ID = CRQ.CRQ_CITIZEN_ID
+inner join emst_religion rlg on rlg.rlg_id = czi.czi_religion_id
+inner join emst_department dep on crq.crq_enroll_office_id = dep.dep_id
+where dep.dep_parent_dep_id = $P{departmentId}
+AND crq_portal_enrolled_date >= to_date($P{nocrFromDate},'YYYY/MM/DD')
+and crq_portal_enrolled_date < to_date($P{nocrToDate},'YYYY/MM/DD')
+and czi.czi_religion_id = $P{intervals}
+and to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals}))*$P{intervals}) >= to_number($P{fromBirthDate}) and
+to_number($P{fromBirthDate})+((floor((to_number(substr(czi.czi_birth_date_sol,1,4))-$P{fromBirthDate})/$P{intervals})+1)*$P{intervals}) <= to_number($P{toBirthDate}))
+group by birthdate
+)subSet8 on subSet1.birthdate = subSet8.birthdate
+order by birthdate]]>
+	</queryString>
+	<field name="BIRTHDATE" class="java.lang.String"/>
+	<field name="CITIZENCOUNT" class="java.math.BigDecimal"/>
+	<field name="MALECOUNT" class="java.math.BigDecimal"/>
+	<field name="FEMALECOUNT" class="java.math.BigDecimal"/>
+	<field name="MUSLIMCOUNT" class="java.math.BigDecimal"/>
+	<field name="CHRISTIANCOUNT" class="java.math.BigDecimal"/>
+	<field name="ZOROASTRIANCOUNT" class="java.math.BigDecimal"/>
+	<field name="JEWCOUNT" class="java.math.BigDecimal"/>
+	<field name="OTHERCOUNT" class="java.math.BigDecimal"/>
+	<variable name="otherCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{OTHERCOUNT} == null ? 0 :$F{OTHERCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="femaleCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{FEMALECOUNT} == null ? 0 : $F{FEMALECOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="startEndDate" class="java.lang.String">
+		<variableExpression><![CDATA[$F{BIRTHDATE}]]></variableExpression>
+	</variable>
+	<variable name="maleCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{MALECOUNT} == null ? 0 : $F{MALECOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="citizenCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{CITIZENCOUNT} == null ? 0 : $F{CITIZENCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="muslimCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{MUSLIMCOUNT} == null ? 0 : $F{MUSLIMCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="christianCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{CHRISTIANCOUNT} == null ? 0 : $F{CHRISTIANCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="jewCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{JEWCOUNT} == null ? 0 : $F{JEWCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="zoroastianCount" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{ZOROASTRIANCOUNT} == null ? 0 : $F{ZOROASTRIANCOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalCitizenCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{citizenCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalMaleCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{maleCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalFemaleCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{femaleCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalMuslimCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{muslimCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalChristianCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{christianCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalZoroastianCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{zoroastianCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalJewCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{jewCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalOtherCount" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{otherCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="361" y="0" width="90" height="30" uuid="bf215c02-f3c0-42e8-8ba4-b39f9e7399d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{muslimCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="0" width="90" height="30" uuid="ce21c7b8-1eed-408c-bd98-b316da0054b1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{christianCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="0" width="90" height="30" uuid="39043487-3182-4f93-9a97-cd642916953e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{zoroastianCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="0" width="90" height="30" uuid="128a2fc2-aa8d-4eb7-a81a-f0c9979872bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{jewCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="90" height="30" uuid="d09124cc-a877-40f7-a802-6ba5dddc220e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{otherCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="0" width="90" height="30" uuid="ee86e440-544d-4339-a98d-c75b20d22102"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{femaleCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="541" y="0" width="90" height="30" uuid="1fb90631-1516-4961-af92-29abaad50718"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{maleCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="631" y="0" width="90" height="30" uuid="d974e4a8-ccd7-4a6d-a563-cac7ff4af554"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{citizenCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="721" y="0" width="119" height="30" uuid="bee4ba2e-eadb-4977-8cb8-2b9359a732b5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{startEndDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

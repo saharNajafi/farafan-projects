@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report03SubReport" pageWidth="595" pageHeight="50" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="092d3723-b426-4520-9ad2-54185ae24bc0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EMS"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="departmentId" class="java.lang.String"/>
+	<parameter name="nocrFromDate" class="java.lang.String"/>
+	<parameter name="nocrToDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT DEP.DEP_NAME depName,
+				 (SELECT COUNT(CRQ.CRQ_ID)
+                   FROM EMST_CARD_REQUEST CRQ, EMST_CARD_REQUEST_HISTORY CRH
+                  WHERE CRQ.CRQ_ENROLL_OFFICE_ID = $P{departmentId}
+                    AND CRQ.CRQ_ID = CRH.CRH_CARD_REQUEST_ID
+                    AND CRH.CRH_ACTION = 'PENDING_ISSUANCE'
+                    AND CRH.CRH_DATE BETWEEN
+                        TO_DATE($P{nocrFromDate}, 'YYYY/MM/DD') AND
+                        (TO_DATE($P{nocrToDate}, 'YYYY/MM/DD') + 1)) pedingIssuanceCount                
+  FROM EMST_CARD_REQUEST CRQ, Emst_Department DEP
+ WHERE CRQ.CRQ_ENROLL_OFFICE_ID = DEP.DEP_ID
+   AND DEP.DEP_ID = $P{departmentId}]]>
+	</queryString>
+	<field name="depName" class="java.lang.String"/>
+	<field name="pedingIssuanceCount" class="java.lang.Long"/>
+	<variable name="summaryHallmark" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{pedingIssuanceCount}]]></variableExpression>
+	</variable>
+	<variable name="pedingIssuanceCount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{pedingIssuanceCount}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement uuid="f21e977d-8f49-4e4a-a2fa-76c078018cc7" x="60" y="3" width="40" height="20">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedingIssuanceCount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="26">
+			<printWhenExpression><![CDATA[$V{summaryHallmark} == null]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="1c2dc075-fc33-44d8-aa41-cf78f476ec1c" x="60" y="3" width="40" height="20">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="B Nazanin" size="10" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["0"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

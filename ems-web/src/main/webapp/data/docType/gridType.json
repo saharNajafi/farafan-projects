@@ -1,0 +1,17 @@
+{
+    'success': true,
+    'records': [
+        {
+            id: 1,
+            name: 'نوع سند',
+            service: '2,3'
+        },
+        {
+            id: 2,
+            name: 'ففتوکپی شناسنامه',
+            service: '1,2,3'
+
+        }
+    ]
+}
+

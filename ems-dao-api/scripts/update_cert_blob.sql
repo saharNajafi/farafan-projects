@@ -1,0 +1,1 @@
+update ICT_NOCR_EMS_AMV.emst_cert c1 set c1.CRT_CERT = (select c2.crt_cert from ICT_NOCR_EMS_VOS.EMST_CERT c2 where c2.crt_id = c1.crt_id);

@@ -1,0 +1,326 @@
+/**
+ * Icons
+ */
+
+.summary {
+    background-image: url(../themes/images/default/mainMenu/details.gif) !important;
+}
+
+.reading {
+    background-image: url(../themes/images/default/mainMenu/article.gif) !important;
+}
+
+.post-go {
+    background-image: url(../themes/images/default/mainMenu/post_go.gif) !important;
+}
+
+.tab-new {
+    background-image: url(../themes/images/default/mainMenu/tab_new.gif) !important;
+}
+
+.feed-add {
+    background-image: url(../themes/images/default/mainMenu/rss_add.gif) !important;
+}
+
+.feed-remove {
+    background-image: url(../themes/images/default/mainMenu/rss_delete.gif) !important;
+}
+
+.feed-load {
+    background-image: url(../themes/images/default/mainMenu/rss_load.gif) !important;
+}
+
+.details {
+    background-image: url(../themes/images/default/mainMenu/details.gif) !important;
+}
+
+.open-all {
+    background-image: url(../themes/images/default/mainMenu/tabs.gif) !important;
+}
+
+.feed {
+    width: 16px;
+    height: 16px;
+    background-image: url(../themes/images/default/mainMenu/rss.gif) !important;
+}
+
+/**
+ * Other styles
+ */
+.feed-picker-url {
+    float: left;
+    width: 425px;
+}
+
+.feed-picker-title {
+    /*    float: left;*/
+    color: #777;
+    font-size: 10px;
+}
+
+.main-menu {
+    padding: 0 3px 0 3px;
+}
+
+.main-menu-item {
+    margin-top: 3px;
+    padding-right: 20px;
+    font-size: 11px;
+    line-height: 20px;
+    cursor: pointer;
+    background: url(../themes/images/default/mainMenu/rss.gif) no-repeat right 2px;
+    border: 1px solid #fff;
+}
+
+.sent-letter-item {
+    background-image: url(../themes/images/default/mainMenu/SentLetter.gif);
+}
+
+.post-office-item {
+    background-image: url(../themes/images/default/mainMenu/PostOffices.png);
+}
+
+.description-item {
+    background-image: url(../themes/images/default/mainMenu/Description.gif);
+}
+
+.post-registry-item {
+    background-image: url(../themes/images/default/mainMenu/PostRegistry.gif);
+}
+
+.post-service-fee-item {
+    background-image: url(../themes/images/default/mainMenu/PostServiceFee.gif);
+}
+
+.receiver-path-item {
+    background-image: url(../themes/images/default/mainMenu/ReceiverPath.gif);
+}
+
+.total-post-office-item {
+    background-image: url(../themes/images/default/mainMenu/OfficeSummary.gif);
+}
+
+.path-item {
+    background-image: url(../themes/images/default/mainMenu/path.png);
+}
+
+.main-menu .x-item-selected {
+    font-weight: bold;
+    color: #15428B;
+    background-color: #DFE8F6;
+    border: 1px dotted #A3BAE9;
+}
+
+.main-menu-item-hover {
+    background-color: #eee;
+}
+
+.topic {
+    padding: 2px 0 0 20px;
+    background: transparent url(../themes/images/default/mainMenu/post.gif) no-repeat;
+}
+
+.topic b {
+    font-family: tahoma, verdana;
+    display: block;
+    color: #333;
+}
+
+.author {
+    color: #333
+}
+
+.post-date {
+    font-weight: bold;
+    color: #333;
+}
+
+.feed-grid .x-grid-rowbody {
+    margin: 5px 20px 10px 25px !important;
+    color: #555;
+    font-size: 11px;
+}
+
+/* Preview classes */
+
+.preview .x-panel-body {
+    background: #fff;
+    color: #222;
+    font: normal 12px tahoma, verdana, arial, sans-serif;
+}
+
+.preview .x-panel-body p {
+    line-height: 18px;
+    margin: 8px 0;
+}
+
+.preview .x-panel-body ul {
+    margin-left: 18px;
+}
+
+.preview .x-panel-body ul li {
+    display: list-item;
+    list-style-image: none !important;
+    list-style-position: outside !important;
+    list-style-type: disc !important;
+    margin-left: 18px;
+}
+
+.preview .x-panel-body pre, #preview .x-panel-body code {
+    background: #f1f1f1;
+    display: block;
+}
+
+.preview .x-panel-body h4.post-author {
+    font-weight: normal;
+    color: #555;
+    font-size: 11px;
+}
+
+.preview .x-panel-body span.post-date {
+    font-weight: normal;
+    color: #555;
+    float: right;
+    font-size: 11px;
+}
+
+.preview .x-panel-body div.post-data {
+    background: #f1f2f4;
+    padding: 5px;
+    border-bottom: 1px solid #dadadb;
+}
+
+.preview .x-panel-body div.post-body {
+    padding: 10px;
+}
+
+.captcha-panel {
+    background-color: #860400;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -khtml-border-radius: 15px;
+    -webkit-border-radius: 15px;
+}
+
+.captcha-inner-panel {
+    background-color: #ffdc73;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+}
+
+.captcha-image {
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+}
+
+.captcha-refresh-btn {
+    background-image: url(../themes/images/default/mainMenu/captcha-refresh.png) !important;
+}
+
+.toolbar-sushi {
+    background-image: url(../themes/images/default/toolbar/distribution.png) !important;
+}
+
+/**
+* Toolbar
+*/
+.toolbar-user {
+    background-image: url(../themes/images/default/toolbar/user1.png) !important;
+}
+
+.toolbar-office {
+    background-image: url(../themes/images/default/toolbar/office-building.png) !important;
+}
+
+.toolbar-workstation {
+    background-image: url(../themes/images/default/toolbar/workstation1.png) !important;
+}
+
+.toolbar-rating {
+    background-image: url(../themes/images/default/toolbar/rating.png) !important;
+}
+
+.toolbar-department {
+    background-image: url(../themes/images/default/toolbar/department.png) !important;
+}
+
+.toolbar-docType {
+    background-image: url(../themes/images/default/toolbar/docType.png) !important;
+}
+
+.toolbar-blacklist {
+    background-image: url(../themes/images/default/toolbar/blacklist.png) !important;
+}
+
+.toolbar-bizLog {
+    background-image: url(../themes/images/default/toolbar/bizLog.png) !important;
+}
+
+.toolbar-systemManagement {
+    background-image: url(../themes/images/default/toolbar/systemManagement.png) !important;
+}
+
+.toolbar-report {
+    background-image: url(../themes/images/default/toolbar/report.png) !important;
+}
+
+/**
+* TBar
+*/
+.tbar-add {
+    background-image: url(../themes/images/default/tbar/add.png) !important;
+}
+
+.btn-find-16x16 {
+    background-image: url(../themes/images/default/shared/find.png) !important;
+}
+
+/*Description Manager*/
+.DescriptionManagerRecive {
+    background-image: url(../themes/images/descriptionManager/recive-icon.png) !important;
+}
+
+.DescriptionManagerSend {
+    background-image: url(../themes/images/descriptionManager/Send-icon.png) !important;
+}
+
+/*view.User*/
+.UserFormGridDeleteIcon {
+    background-image: url(../themes/images/default/shared/delete.png) !important;
+}
+
+.UserFormGridActiveuser {
+    background-image: url(../themes/images/user/Active.png) !important;
+}
+
+.UserFormGridInActiveuser {
+    background-image: url(../themes/images/user/InActive.png) !important;
+}
+
+/*
+.x-hide-display {
+    display: none !important; }
+
+
+.x-grid-center-icon{
+    display:block;
+    margin:0 auto;
+    text-align:center;
+    cursor:hand;
+    }
+*/
+
+/**
+ *  Stylesheet class for view action of report gird
+ */
+.btnShowReport {
+    background-image: url(../themes/images/default/shared/view.png) !important;
+}
+
+.ems-direction-ltr {
+    direction: ltr;
+}
+
+.ems-direction-ltr div {
+    text-align: left !important;
+}

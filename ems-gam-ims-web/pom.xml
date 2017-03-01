@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>ems</artifactId>
+        <groupId>com.gam.nocr</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gam.nocr.ems</groupId>
+    <artifactId>ems-gam-ims-web</artifactId>
+    <packaging>war</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>EMS GAM IMS WEB</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <!-- aspectj -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- aspectj -->
+
+        <dependency>
+            <groupId>com.gam</groupId>
+            <artifactId>gamtools</artifactId>
+        </dependency>
+
+        <!-- jaxws -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!-- jaxws -->
+
+        <dependency>
+            <groupId>ims-stub</groupId>
+            <artifactId>offline</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ims-stub</groupId>
+            <artifactId>online-sc</artifactId>
+        </dependency>
+
+        <!-- Inner Module Dependency -->
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gam.nocr.ems</groupId>
+            <artifactId>ems-dao-jpa-impl</artifactId>
+            <type>ejb</type>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Inner Module Dependency -->
+
+    </dependencies>
+
+    <!--<build>-->
+        <!--<finalName>gam-ims-web</finalName>-->
+        <!--<plugins>-->
+            <!--&lt;!&ndash; jaxws-maven-plugin &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>jaxws-maven-plugin</artifactId>-->
+                <!--<configuration>-->
+
+                    <!--<sei>-->
+                        <!--com.gam.nocr.ems.ims.web.ws.GamIMSWS-->
+                    <!--</sei>-->
+
+                    <!--<genWsdl>true</genWsdl>-->
+                    <!--<keep>true</keep>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>wsgen</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+            <!--&lt;!&ndash; jaxws-maven-plugin &ndash;&gt;-->
+        <!--</plugins>-->
+    <!--</build>-->
+</project>
