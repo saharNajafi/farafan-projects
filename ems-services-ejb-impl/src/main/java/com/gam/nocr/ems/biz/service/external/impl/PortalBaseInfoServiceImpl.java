@@ -14,6 +14,8 @@ import javax.xml.ws.WebServiceException;
 
 import org.slf4j.Logger;
 
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -43,6 +45,9 @@ import com.gam.nocr.ems.data.mapper.tomapper.RatingInfoMapper;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.sun.xml.ws.client.BindingProviderProperties;
 
+import est.Estelam;
+import est.EstelamPort;
+
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
  */
@@ -62,10 +67,9 @@ public class PortalBaseInfoServiceImpl extends EMSAbstractService implements
 	private static final String DEFAULT_WSDL_URL = "http://localhost:7001/portal-web/services/BasicInfoWS?wsdl";
 	private static final String DEFAULT_NAMESPACE = "http://portalws.ws.web.portal.nocr.gam.com/";
 
-	private static final Logger logger = BaseLog
-			.getLogger(CMSServiceImpl.class);
-	private static final Logger portalLogger = BaseLog
-			.getLogger("PortalLogger");
+	private static final Logger logger = BaseLog.getLogger(CMSServiceImpl.class);
+	private static final Logger portalLogger = BaseLog.getLogger("PortalLogger");
+	private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
 	BasicInfoWS service = null;
 
@@ -93,10 +97,16 @@ public class PortalBaseInfoServiceImpl extends EMSAbstractService implements
 			logger.debug("Portal Basic Info wsdl url: " + wsdlUrl);
 			portalLogger.debug("Portal Basic Info wsdl url: " + wsdlUrl);
 
-			BasicInfoWS port = new BasicInfoWS_Service(new URL(wsdlUrl),
-					new QName(namespace, serviceName)).getBasicInfoWSPort();
-			// BasicInfoWS port = new
-			// BasicInfoWS_Service().getBasicInfoWSPort();
+			//Commented for ThreadLocal
+			//BasicInfoWS port = new BasicInfoWS_Service(new URL(wsdlUrl),new QName(namespace, serviceName)).getBasicInfoWSPort();
+			BasicInfoWS port = ServicePorts.getPortalBasicInfoPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new PortalBasicInfo in Portal getService()");
+				port = new BasicInfoWS_Service(new URL(wsdlUrl),new QName(namespace, serviceName)).getBasicInfoWSPort();
+				ServicePorts.setPortalBasicInfoPort(port);
+			} else {
+				threadLocalLogger.debug("***************************** using PortalBasicInfo from ThradLocal");
+			}
 			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
 			return port;
 		} catch (Exception e) {

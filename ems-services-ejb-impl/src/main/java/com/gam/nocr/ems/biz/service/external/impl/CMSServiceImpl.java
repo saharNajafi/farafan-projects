@@ -28,6 +28,8 @@ import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
 
+import servicePortUtil.ServicePorts;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -140,6 +142,8 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
 
     private static final Logger logger = BaseLog.getLogger(CMSServiceImpl.class);
     private static final Logger cmsLogger = BaseLog.getLogger("CmsLogger");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
+    
 
     DocumentRequestWSLocal service = null;
 
@@ -180,10 +184,20 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
 //            System.setProperty("javax.net.ssl.trustStore","/Oracle/Middleware/wlserver_12.1/certificates/servertrust.jks");
 //            System.setProperty("javax.net.ssl.trustStorePassword", "p@ssw0rd");
 
-            DocumentRequestWSLocal port = new DocumentRequestWSService(new URL(wsdlUrl), new QName(namespace, serviceName)).getDocumentRequestWSPort();
-//            DocumentRequestWSLocal port = new DocumentRequestWSService().getDocumentRequestWSPort();
-            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-            return port;
+            //Commented for ThreadLocal
+            //DocumentRequestWSLocal port = new DocumentRequestWSService(new URL(wsdlUrl), new QName(namespace, serviceName)).getDocumentRequestWSPort();
+			DocumentRequestWSLocal port = ServicePorts.getDocumentCMSPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new DocumentRequestWSLocal in CMS getService()");
+				port = new DocumentRequestWSService(new URL(wsdlUrl),
+						new QName(namespace, serviceName))
+						.getDocumentRequestWSPort();
+				ServicePorts.setDocumentCMSPort(port);
+			}else {
+				threadLocalLogger.debug("***************************** using DocumentRequestWSLocal(CMS) from ThradLocal");
+			}
+			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+			return port;
         } catch (NullPointerException e) {
             logger.error(BizExceptionCode.CSI_150, BizExceptionCode.CSI_150_MSG, e);
             cmsLogger.error(BizExceptionCode.CSI_150 + " : " + BizExceptionCode.CSI_150_MSG, e);

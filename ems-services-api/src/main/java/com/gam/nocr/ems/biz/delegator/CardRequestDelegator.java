@@ -305,4 +305,30 @@ public class CardRequestDelegator implements Delegator {
 		getService(null).addRequestedSmsForReservedReq(cardRequestId);
 
 	}
+	
+
+	/**
+	 * this method aims to fetch all citizen ids to purge its bio and docs
+	 * 
+	 * @author ganjyar
+	 * @param fetchLimit
+	 * @return
+	 */
+	public List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit)
+			throws BaseException {
+		return getService(null).getCitizenIdsForPurgeBioAndDocs(fetchLimit);
+	}
+
+	/**
+	 * this method sets all bio and document data to null
+	 * 
+	 * @author ganjyar
+	 * @param citizenIds
+	 */
+
+	public void purgeBiometricsAndDocuments(Long citizenId,String savePurgeHistory)
+			throws BaseException {
+		getService(null).purgeBiometricsAndDocuments(citizenId,savePurgeHistory);
+
+	}
 }

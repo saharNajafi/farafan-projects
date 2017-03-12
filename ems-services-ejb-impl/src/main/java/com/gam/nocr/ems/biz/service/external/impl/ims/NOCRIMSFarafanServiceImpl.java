@@ -16,8 +16,9 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
-import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.slf4j.Logger;
+
+import servicePortUtil.ServicePorts;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
@@ -51,7 +52,6 @@ import com.gam.nocr.ems.data.domain.vol.IMSUpdateResultVTO;
 import com.gam.nocr.ems.data.domain.vol.TransferInfoVTO;
 import com.gam.nocr.ems.data.enums.AFISState;
 import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
-import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CardState;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.data.mapper.xmlmapper.XMLMapperProvider;
@@ -76,6 +76,7 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
 
     private static final Logger logger = BaseLog.getLogger(NOCRIMSFarafanServiceImpl.class);
     private static final Logger ImsLogger = BaseLog.getLogger("ImsLogger");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
     private static final String DEFAULT_USERNAME = "demo";
     private static final String DEFAULT_PASSWORD = "demo";
@@ -160,11 +161,19 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             logger.debug("=======================================================================================");
             ImsLogger.debug("=======================================================================================");
             ImsLogger.debug("=======================================================================================");
-//            ImsServiceServicePort port = new ImsServiceService_Impl(wsdlUrl).getImsServiceServicePort();            
-//            ImsServiceServicePort port = new ImsServiceService_Impl().getImsServiceServicePort();
-            ImsService port = new ImsServiceService(new URL(wsdlUrl), new QName(namespace, serviceName)).getImsServiceServicePort();
-            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-            return port;
+            //Commented for ThraedLocal
+            //ImsService port = new ImsServiceService(new URL(wsdlUrl), new QName(namespace, serviceName)).getImsServiceServicePort();
+			ImsService port = ServicePorts.getImsPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new webServicePort in AFIS getService()");
+				port = new ImsServiceService(new URL(wsdlUrl), new QName(
+						namespace, serviceName)).getImsServiceServicePort();
+				ServicePorts.setImsPort(port);
+			} else {
+				threadLocalLogger.debug("***************************** using webServicePort(AFIS) from ThradLocal");
+			}
+			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+			return port;
         } catch (Exception e) {
             ImsLogger.error(BizExceptionCode.NIF_001 + " : " + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.NIF_001, e.getMessage(), e);

@@ -14,5 +14,7 @@ public interface DocumentDAO extends EmsBaseDAO<DocumentTO> {
     public List<DocumentTO> findByRequestIdAndType(Long requestId, DocumentTypeTO bioType) throws BaseException;
 
     public Integer removeByRequestIdAndType(Long requestId, List<DocumentTypeTO> documentTypeTOs) throws BaseException;
+    
+    public void emptyDocumentData(Long citizenId) throws BaseException;
 
 }

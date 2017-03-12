@@ -12,6 +12,7 @@ import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
 import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
+import com.gam.nocr.ems.data.enums.PurgeState;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 
@@ -94,5 +95,12 @@ public interface CardRequestService extends Service {
 	public void addRequestedSmsForReservedReq(Long cardRequestId) throws BaseException;
 
 	public void repealCardRequestInDelivery(CardRequestTO cardRequestTO) throws BaseException;
+	
+	
+	public List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit) throws BaseException;
 
+	public void purgeBiometricsAndDocuments(Long citizenId,String savePurgeHistory) throws BaseException;
+	
+	public void savePurgeHistory(Long citizenId, PurgeState purgeState,String metaData) throws BaseException;
+	
 }

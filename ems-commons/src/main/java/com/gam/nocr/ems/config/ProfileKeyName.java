@@ -225,5 +225,14 @@ public class ProfileKeyName {
 	//reporting
 	public static final String KEY_REPORTING_JNDI_NAME = EMS_PROFILE_ROOT + ".reportingJndiName";
 	
-    
+	//purge
+	public static final String KEY_NUMBER_OF_CITIZEN_TO_PURGE_BIO_FETCH_LIMIT = EMS_PROFILE_ROOT + ".purgeBioFetchLimit";
+	public static final String KEY_PURGE_BIO_TIME_INTERVAL = EMS_PROFILE_ROOT + ".purgeBioTimeInterval";
+	public static final String KEY_SAVE_PURGE_HISTORY = EMS_PROFILE_ROOT + ".savePurgeHistory";
+	
+	//Gaas DS
+	public static final String KEY_GAAS_JNDI_NAME = EMS_PROFILE_ROOT + ".gaasJndiName";
+	
+	public static final String KEY_INTERVAL_PURGE_UP = EMS_PROFILE_ROOT + ".intervalPurgeUp";
+	 public static final String KEY_INTERVAL_PURGE_DOWN = EMS_PROFILE_ROOT + ".intervalPurgeDown";
 }

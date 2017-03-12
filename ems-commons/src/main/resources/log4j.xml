@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration debug="true"
 	xmlns:log4j='http://jakarta.apache.org/log4j/'>
-
+	<!-- ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
 	<!-- ======================================================================== -->
 	<!-- Appender -->
 	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
@@ -318,6 +318,16 @@
 				value="bizlog: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
 		</layout>
 	</appender>
+	
+	<appender name="ThreadLocalRollingAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="${log_dir}/threadLocal.log" />
+		<param name="MaxFileSize" value="100MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="threadLocal: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
+		</layout>
+	</appender>
 
 	<!-- ======================================================================== -->
 	<!-- Logger -->
@@ -339,7 +349,7 @@
 	</logger>
 
 	<logger name="org.hibernate.type" additivity="false">
-		<level value="warn" />
+		<level value="WARN" />
 		<appender-ref ref="rollingAppender" />
 	</logger>
 
@@ -364,35 +374,35 @@
 	</logger>
 
 	<logger name="PortalLogger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="portalDailyRollingAppender" />
 	</logger>
 
 	<logger name="ImsLogger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="imsDailyRollingAppender" />
 	</logger>
 	<!--Estelam2 Logger -->
 	<logger name="VipLogger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="vipDailyRollingAppender" />
 	</logger>
 	<!--Estelam2 Logger -->
 
 	<!--Estelam2 Logger -->
 	<logger name="Estelam2Logger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="estelam2DailyRollingAppender" />
 	</logger>
 	<!--Estelam2 Logger -->
 	<logger name="CmsLogger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="cmsDailyRollingAppender" />
 	</logger>
 
 
 	<logger name="PkiLogger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="pkiDailyRollingAppender" />
 	</logger>
 
@@ -402,77 +412,83 @@
 	</logger>
 
 	<logger name="org.quartz" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="quartzDailyRollingAppender" />
 	</logger>
 
 	<!--Jobs Loggers -->
 	<logger name="offlineEnquiryRepeat" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="IMSBatchEnquiryRequestJobForIMSPendingRollingAppender" />
 	</logger>
 
 	<logger name="portalUpdateCardRequest" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="PortalUpdateCardRequestsStateRollingAppender" />
 	</logger>
 
 	<logger name="portalFetchCardRequest" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="PortalFetchCardRequestsRollingAppender" />
 	</logger>
 
 	<logger name="cardHandingOutNotification" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="CardHandingOutNotificationRollingAppender" />
 	</logger>
 
 	<logger name="processRequestedReports" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="ProcessRequestedReportsRollingAppender" />
 	</logger>
 
 	<!--Jobs Loggers -->
 
 	<logger name="reportJMS" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="ReportsJMSRollingAppender" />
 	</logger>
 
 	<logger name="cmsdispatch" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="CMSDispatchRollingAppender" />
 	</logger>
 
 	<logger name="dispatch" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="DispatchRollingAppender" />
 	</logger>
 
 	<logger name="ccosStateProvider" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="CCOSStateProviderWSRollingAppender" />
 	</logger>
 
 	<logger name="portalReservationFreeTime" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="PortalReservationFreeTimeRollingAppender" />
 	</logger>
 	
 	<logger name="unsuccessfulDeliveryRequest" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="UnsuccessfulDeliveryRequestRollingAppender" />
 	</logger>
 	
 	<logger name="imsVerificationInDelivery" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="ImsVerificationInDeliveryRollingAppender" />
 	</logger>
 	
 	<logger name="BusinessLogger" additivity="false">
-		<level value="DEBUG" />
+		<level value="WARN" />
 		<appender-ref ref="BizLogRollingAppender" />
 	</logger>
+	
+	<logger name="threadLocal" additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ThreadLocalRollingAppender" />
+	</logger>
+	
 
 	<root>
 		<level value="WARN" />

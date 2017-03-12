@@ -16,11 +16,15 @@ import javax.xml.ws.WebServiceException;
 
 import org.slf4j.Logger;
 
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.profile.ProfileManager;
+import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS_Service;
 import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
@@ -101,6 +105,7 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
     private static final Logger logger = BaseLog.getLogger(CMSServiceImpl.class);
     private static final Logger portalLogger = BaseLog.getLogger("PortalLogger");
     private static final Logger jobLogger = BaseLog.getLogger("portalFetchCardRequest");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
     RegistrationWS service = null;
 
@@ -124,8 +129,16 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
             String serviceName = "RegistrationWS";
             logger.debug("Portal Registration wsdl url: " + wsdlUrl);
             portalLogger.debug("Portal Registration wsdl url: " + wsdlUrl);
-            RegistrationWS port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
-//            RegistrationWS port = new RegistrationWS_Service().getRegistrationWSPort();
+            //Commented for ThraedLocal
+           // RegistrationWS port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
+            RegistrationWS port = ServicePorts.getPortalRegistrationPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new PortalRegistartion in Portal getService()");
+				port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
+				ServicePorts.setPortalRegistrationPort(port);
+			} else {
+				threadLocalLogger.debug("***************************** using PortalRegistartion from ThradLocal");
+			}
             EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
             return port;
         } catch (Exception e) {

@@ -149,6 +149,11 @@ public class PersonDelegator implements Delegator {
     {
     	return getService(null).findListDepartmentsByPersonId(personId);
     }
+
+	public List<Long> getAllPersonIds() throws BaseException {
+		return getService(null).getAllPersonIds();
+		
+	}
     
     
 }

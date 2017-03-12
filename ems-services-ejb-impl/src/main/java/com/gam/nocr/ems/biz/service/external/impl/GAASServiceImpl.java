@@ -12,6 +12,8 @@ import javax.xml.namespace.QName;
 import org.hsqldb.lib.HashMap;
 import org.slf4j.Logger;
 
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
@@ -58,6 +60,7 @@ public class GAASServiceImpl extends AbstractService implements GAASServiceLocal
 
     private static final Logger logger = BaseLog.getLogger(GAASServiceImpl.class);
     private static final Logger gaasLogger = BaseLog.getLogger("GaasLogger");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
     /**
      * Gaas Exception Codes
@@ -126,7 +129,17 @@ public class GAASServiceImpl extends AbstractService implements GAASServiceLocal
             String serviceName = "GAASWebService";
             logger.debug("Gaas wsdl url: " + wsdlUrl);
             gaasLogger.debug("Gaas wsdl url: " + wsdlUrl);
-            return new GAASWebService(new URL(wsdlUrl), new QName(namespace, serviceName)).getGAASWebServiceImpl();
+            GAASWebServiceInterface gaasPort = ServicePorts.getGassPort();
+            if(gaasPort == null){
+            	threadLocalLogger.debug("*********************** new GAASWebServiceInterface in GAAS getGaasService()");
+            	gaasPort  = new GAASWebService(new URL(wsdlUrl), new QName(namespace, serviceName)).getGAASWebServiceImpl();
+            	ServicePorts.setGaasPort(gaasPort);
+            }
+            else
+            {
+            	threadLocalLogger.debug("************************* using GAASWebServiceInterface from threadLocal");
+            }
+            return gaasPort;
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.GSI_062, e.getMessage(), e);
         }

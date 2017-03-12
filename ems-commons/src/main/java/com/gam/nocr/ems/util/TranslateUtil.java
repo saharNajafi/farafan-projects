@@ -13,7 +13,7 @@ public class TranslateUtil {
 //		word = word.replaceAll("ح", "ه");
 		word = word.replaceAll("ة", "ه");
 //		word = word.replaceAll("ع", "ا");
-		word = word.replaceAll("آ", "ا");
+		//word = word.replaceAll("آ", "ا");
 		word = word.replaceAll("أ", "ا");
 		word = word.replaceAll("إ", "ا");
 //		word = word.replaceAll("غ", "ق");

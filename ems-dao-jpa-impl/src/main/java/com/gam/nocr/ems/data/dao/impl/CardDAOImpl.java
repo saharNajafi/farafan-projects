@@ -238,10 +238,17 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 
 		try {
 			StringBuffer stringBuffer = new StringBuffer(
-					"select distinct crd_id,crd_batch_id, crd_crn," + "crd_lost_date, "
-							+ "crd_lostconfirm,ci.CTZ_FIRST_NAME_FA fname,ci.CTZ_SURNAME_FA lname,ci.CTZ_NATIONAL_ID nid " + "from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci "
-							+ "where ci.CTZ_ID=cr.CRQ_CITIZEN_ID and  dis.dpi_container_id=crd.crd_batch_id and dis.dpi_lost_date is  null and cr.crq_card_id=crd.crd_id and crd_lost_date is not null" + " and"
-							+ " crd.crd_state = :stat");
+					"select distinct crd_id,crd_batch_id, crd_crn, crd_lost_date, crd_lostconfirm, ci.CTZ_FIRST_NAME_FA fname,ci.CTZ_SURNAME_FA lname, ci.CTZ_NATIONAL_ID nid "
+							+"from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci, emst_batch bc" 
+							+" where ci.CTZ_ID=cr.CRQ_CITIZEN_ID "
+							+" and  dis.dpi_container_id=crd.crd_batch_id" 
+							+" and  crd.crd_batch_id=bc.bat_id"
+							+" and cr.crq_card_id=crd.crd_id"
+							+" and (( dis.dpi_lost_date is null and crd_lost_date is not null and" 
+							+" crd.crd_state = :cardState) or (dis.dpi_lost_date is not null "
+							+" and bc.bat_state= :batchState"
+							+" and crd_lost_date is not null"
+							+" and crd.crd_state = :cardState)) ");
 
 			if (criteria.getParameters() != null) {
 				Set<String> keySet = criteria.getParameters().keySet();
@@ -313,7 +320,8 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 			}
 
 			Query query = em.createNativeQuery(stringBuffer.toString());
-			query.setParameter("stat", CardState.SHIPPED.toString());
+			query.setParameter("batchState", CardState.RECEIVED.toString());
+			query.setParameter("cardState", CardState.SHIPPED.toString());
 			query.setMaxResults(criteria.getPageSize()).setFirstResult(
 					criteria.getPageNo() * criteria.getPageSize());
 
@@ -356,9 +364,16 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 
 		try {
 			StringBuffer stringBuffer = new StringBuffer("select count(*) "
-					+ "from emst_card crd ,emst_card_request cr,emst_dispatch_info dis "
-					+ "where dis.dpi_container_id=crd.crd_batch_id and dis.dpi_lost_date is  null and cr.crq_card_id=crd.crd_id and crd_lost_date is not null" + " and"
-					+ " crd.crd_state = :stat");
+					+"from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci, emst_batch bc" 
+					+" where ci.CTZ_ID=cr.CRQ_CITIZEN_ID "
+					+" and  dis.dpi_container_id=crd.crd_batch_id" 
+					+" and  crd.crd_batch_id=bc.bat_id"
+					+" and cr.crq_card_id=crd.crd_id"
+					+" and ((dis.dpi_lost_date is null and crd_lost_date is not null and" 
+					+" crd.crd_state = :cardState) or (dis.dpi_lost_date is not null "
+					+" and bc.bat_state= :batchState"
+					+" and crd_lost_date is not null"
+					+" and crd.crd_state = :cardState))");
 
 			if (criteria.getParameters() != null) {
 				Set<String> keySet = criteria.getParameters().keySet();
@@ -404,7 +419,8 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 			}
 
 			Query query = em.createNativeQuery(stringBuffer.toString());
-			query.setParameter("stat", CardState.SHIPPED.toString());
+			query.setParameter("batchState", CardState.RECEIVED.toString());
+			query.setParameter("cardState", CardState.SHIPPED.toString());
 
 			Number number = (Number) query.getSingleResult();
 

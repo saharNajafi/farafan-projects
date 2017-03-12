@@ -1,5 +1,27 @@
 package com.gam.nocr.ems.biz.service.external.impl;
 
+import gampooya.tools.vlp.ListException;
+import gampooya.tools.vlp.ValueListHandler;
+
+import java.net.URL;
+import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
+
+import org.displaytag.exception.ListHandlerException;
+import org.slf4j.Logger;
+
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -20,25 +42,6 @@ import com.gam.nocr.ems.data.dao.SmsDAO;
 import com.gam.nocr.ems.data.domain.OutgoingSMSTO;
 import com.gam.nocr.ems.data.enums.SmsMessages;
 import com.gam.nocr.ems.util.EmsUtil;
-import gampooya.tools.vlp.ListException;
-import gampooya.tools.vlp.ValueListHandler;
-import org.displaytag.exception.ListHandlerException;
-import org.slf4j.Logger;
-
-import weblogic.utils.descriptorgen.interfacegen;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.MessageContext;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com">Alireza Saadat</a>
@@ -52,6 +55,7 @@ public class PortalSmsServiceImpl extends EMSAbstractService implements PortalSm
 
     private static final Logger LOGGER = BaseLog.getLogger(PortalSmsServiceImpl.class);
     private static final Logger portalLogger = BaseLog.getLogger("PortalLogger");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
     private static final String DEFAULT_PORTAL_SMS_ENDPOINT = "http://localhost:7001/services/SmsWS?wsdl";
     private static final String DEFAULT_NOCR_SMS_ENDPOINT = "http://sms.sabteahval.ir:8001/SmsProject/SmsPort?wsdl";
@@ -82,9 +86,16 @@ public class PortalSmsServiceImpl extends EMSAbstractService implements PortalSm
             String wsdlUrl = EmsUtil.getProfileValue(ProfileKeyName.KEY_NOCR_SMS_ENDPOINT, DEFAULT_NOCR_SMS_ENDPOINT);
             String namespace = EmsUtil.getProfileValue(ProfileKeyName.KEY_NOCR_SMS_NAMESPACE, DEFAULT_NOCR_SMS_NAMESPACE);
             String serviceName = "SmsService";
-
-            SmsDelegate smsDelegate = new SmsService(new URL(wsdlUrl), new QName(namespace, serviceName)).getSmsPort();
-//            SmsDelegate smsDelegate = new SmsService().getSmsPort();
+            //Commented  for ThreadLocal
+            //SmsDelegate smsDelegate = new SmsService(new URL(wsdlUrl), new QName(namespace, serviceName)).getSmsPort();
+            SmsDelegate smsDelegate = ServicePorts.getSMSPort();
+			if (smsDelegate == null) {
+				threadLocalLogger.debug("**************************** new SmsDelegate in SMS getEMKSService()");
+				smsDelegate = new SmsService(new URL(wsdlUrl), new QName(namespace, serviceName)).getSmsPort();
+				ServicePorts.setSMSPort(smsDelegate);
+			} else {
+				threadLocalLogger.debug("***************************** using SmsDelegate from ThradLocal");
+			}
             setNocrSmsUserCredential(smsDelegate);
             EmsUtil.setJAXWSWebserviceProperties(smsDelegate, wsdlUrl);
             return smsDelegate;

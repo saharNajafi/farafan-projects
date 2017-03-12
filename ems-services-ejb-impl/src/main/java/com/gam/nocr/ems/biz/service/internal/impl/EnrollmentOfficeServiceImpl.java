@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.delegator.DelegatorException;
 import com.gam.commons.core.biz.service.BizLoggable;
 import com.gam.commons.core.biz.service.Permissions;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -43,6 +44,7 @@ import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.GAASService;
 import com.gam.nocr.ems.biz.service.PortalBaseInfoService;
 import com.gam.nocr.ems.biz.service.TokenManagementService;
+import com.gam.nocr.ems.biz.service.UserManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
@@ -1792,7 +1794,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			return Boolean.TRUE;
 		}
 	}
-
+	
 	@Override
 	public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
 			throws BaseException {
@@ -1811,4 +1813,35 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 		}
 		
 	}
+	
+	
+	//Anbari - userPerm-commented
+	/*@Override
+	public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
+			throws BaseException {
+		try {
+			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),
+					"ems_viewAndChangeOfficeSetting")) {
+				return true;
+			}
+
+			return false;
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.EOS_083, e.getMessage(), e);
+			throw new ServiceException(BizExceptionCode.EOS_083,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+		
+	}*/
+	
+    //Anbari
+    private UserManagementService getUserManagementService() throws BaseException {
+        UserManagementService userManagementService;
+        try {
+            userManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_USER), null);
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.RMG_016, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_USER.split(","));
+        }
+        return userManagementService;
+    }
 }

@@ -1786,7 +1786,9 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
 							"SELECT bat FROM DispatchInfoTO dpi, BatchTO bat "
 									+ "WHERE dpi.containerId = bat.id AND "
 									+ "dpi.containerType = :CONTAINER_TYPE AND "
-									+ "bat.state = :BATCH_STATE AND bat.isLostBatchConfirmed is true "
+									+ "bat.state = :BATCH_STATE AND bat.isLostBatchConfirmed is true AND "
+									+ "(dpi.lostDate is not null OR "
+									+ "dpi.detailLostDate is not null)"
 							,BatchTO.class)
 					.setParameter("CONTAINER_TYPE",
 							DepartmentDispatchSendType.BATCH)
@@ -1813,7 +1815,9 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
 							"SELECT COUNT(bat.id) FROM DispatchInfoTO dpi, BatchTO bat "
 									+ "WHERE dpi.containerId = bat.id AND "
 									+ "dpi.containerType = :CONTAINER_TYPE AND "
-									+ "bat.state = :BATCH_STATE AND bat.isLostBatchConfirmed is true "
+									+ "bat.state = :BATCH_STATE AND bat.isLostBatchConfirmed is true AND "
+									+ "(dpi.lostDate is not null OR "
+									+ "dpi.detailLostDate is not null)"
 							,Long.class)
 					.setParameter("CONTAINER_TYPE",
 							DepartmentDispatchSendType.BATCH)

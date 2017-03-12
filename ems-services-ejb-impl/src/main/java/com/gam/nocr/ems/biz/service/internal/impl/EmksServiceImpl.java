@@ -14,6 +14,8 @@ import javax.xml.ws.WebServiceException;
 
 import org.slf4j.Logger;
 
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -28,6 +30,7 @@ import com.gam.nocr.ems.biz.service.external.client.emks.EMKS;
 import com.gam.nocr.ems.biz.service.external.client.emks.EMKSException;
 import com.gam.nocr.ems.biz.service.external.client.emks.IServiceEMKS;
 import com.gam.nocr.ems.biz.service.external.client.emks.IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage;
+import com.gam.nocr.ems.biz.service.external.client.emks.IServiceEMKSGetSignatureEMKSExceptionFaultFaultMessage;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
@@ -41,6 +44,9 @@ import com.gam.nocr.ems.data.enums.BusinessLogEntity;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.sun.xml.ws.client.BindingProviderProperties;
 
+import est.ImsService;
+import est.ImsServiceService;
+
 @Stateless(name = "EmksService")
 @Local(EmksServiceLocal.class)
 @Remote(EmksServiceRemote.class)
@@ -49,8 +55,8 @@ public class EmksServiceImpl extends EMSAbstractService implements
 	private static final Logger emksLogger = BaseLog.getLogger("EmksLogger");
 	private static final String DEFAULT_WSDL_URL = "http://10.202.1.2/EMKS_WCFService.EMKS.svc?singleWsdl";
 	private static final String DEFAULT_NAMESPACE = "http://tempuri.org/";
-	private static final Logger logger = BaseLog
-			.getLogger(EmksServiceImpl.class);
+	private static final Logger logger = BaseLog.getLogger(EmksServiceImpl.class);
+	private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 	  
     /**
      * Default sync web service timeout configurations in millisecond
@@ -79,8 +85,16 @@ public class EmksServiceImpl extends EMSAbstractService implements
 				namespace = DEFAULT_NAMESPACE;
 			String serviceName = "EMKS";
 
-			IServiceEMKS port = new EMKS((new URL(wsdlUrl)), new QName(
-					namespace, serviceName)).getBasicHttpBindingIServiceEMKS();
+			//Commented for ThraedLocal
+			//IServiceEMKS port = new EMKS((new URL(wsdlUrl)), new QName(namespace, serviceName)).getBasicHttpBindingIServiceEMKS();
+			IServiceEMKS port = ServicePorts.getEmksPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new IServiceEMKS in EMKS getEMKSService()");
+				port = new EMKS((new URL(wsdlUrl)), new QName(namespace, serviceName)).getBasicHttpBindingIServiceEMKS();
+				ServicePorts.setEmksPort(port);
+			} else {
+				threadLocalLogger.debug("***************************** using IServiceEMKS from ThradLocal");
+			}
 			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
 			 try {
                Integer webserviceTimeout = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_EMKS_WEBSERVICE_TIMEOUT, DEFAULT_EMKS_WEBSERVICE_TIMEOUT));
@@ -353,4 +367,23 @@ public class EmksServiceImpl extends EMSAbstractService implements
 						BizExceptionCode.ESI_028_MSG);
 		}
 	}
+
+	@Override
+	public String getSigniture(String str) throws BaseException
+	{
+		String signature = "";
+		try {
+			signature = getEMKSService().getSignature(str);
+		} catch (IServiceEMKSGetSignatureEMKSExceptionFaultFaultMessage e) {
+			throw new ServiceException(BizExceptionCode.ESI_030,
+					BizExceptionCode.ESI_030_MSG);
+		} catch (BaseException e) {
+			throw new ServiceException(BizExceptionCode.ESI_031,
+					BizExceptionCode.ESI_030_MSG);
+		}
+		return signature;
+		
+	}
+	
+	
 }

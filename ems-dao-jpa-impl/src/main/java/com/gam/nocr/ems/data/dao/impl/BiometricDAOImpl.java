@@ -174,4 +174,43 @@ public class BiometricDAOImpl extends EmsBaseDAOImpl<BiometricTO> implements Bio
             throw new DAOException(DataExceptionCode.BDI_007, DataExceptionCode.BDI_007_MSG, e, new Object[]{citizenId});
         }
     }
+    
+
+	@Override
+	public void emptyBiometricData(Long citizenId) throws BaseException {
+		try {
+			em.createNativeQuery(
+					"update emst_biometric bio set bio.bim_data = empty_blob() where bio.bim_citizen_info_id = :citizenId")
+					.setParameter("citizenId", citizenId).executeUpdate();
+			em.flush();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.BDI_008,
+					DataExceptionCode.GLB_008_MSG, e);
+		}
+	}
+
+	//Madanipour
+	@Override
+	public int removeAllBioDataByRequestID(Long id) throws BaseException {
+		
+		try {
+			int result = em
+					.createQuery(
+							"delete from BiometricTO bio "
+									+ "where bio.citizenInfo.id in ("
+									+ "select ctz.id "
+									+ "from CitizenTO ctz, CardRequestTO crq "
+									+ "where crq.id = :requestId "
+									+ "and crq.citizen.id = ctz.id)")
+					.setParameter("requestId", id).executeUpdate();
+			em.flush();
+			return result;
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.BDI_009,
+					DataExceptionCode.GLB_008_MSG, e);
+		}
+		
+		
+		
+	}
 }

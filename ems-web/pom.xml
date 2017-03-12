@@ -10,7 +10,7 @@
 
     <groupId>com.gam.nocr.ems</groupId>
     <artifactId>ems-web</artifactId>
-    <version>2.3.4</version>
+    <version>${nocr.ems-web.version}</version>
     <packaging>war</packaging>
     <name>EMS Web</name>
     <url>http://maven.apache.org</url>

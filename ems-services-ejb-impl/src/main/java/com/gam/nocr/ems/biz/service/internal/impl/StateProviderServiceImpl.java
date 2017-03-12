@@ -25,6 +25,7 @@ import com.gam.commons.profile.ProfileManager;
 import com.gam.commons.stateprovider.StateProviderTO;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.PersonManagementService;
+import com.gam.nocr.ems.biz.service.UserManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLog;
 import com.gam.nocr.ems.config.EMSLogicalNames;
@@ -301,7 +302,31 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         stateProviderTO.setValue(value);
                 }
             
-            
+            //************ Anbari change the securityContex to load access from cache
+                
+                /*
+            } else if (UIStateIds.W_RATING_ADD.equalsIgnoreCase(stateId)) {
+                value = "{\"hidden\":true}";
+                if (getUserManagementService().hasAccess(userProfileTO.getUserName(), "ems_addRating")) {
+                    value = "{\"hidden\":false}";
+//					value = "{\"disabled\":false,\"tooltip\":\"This is a test while enabled\"}";
+                }
+                stateProviderTO.setValue(value);
+            } else if (UIStateIds.W_RATING_EDIT.equalsIgnoreCase(stateId)) {
+                value = "{\"disabled\":true}";
+                if (getUserManagementService().hasAccess(userProfileTO.getUserName(), "ems_editRating")) {
+                    value = "{\"disabled\":false}";
+                }
+                stateProviderTO.setValue(value);
+            } else if (UIStateIds.W_RATING_DELETE.equalsIgnoreCase(stateId)) {
+                value = "{\"hidden\":true}";
+                if (getUserManagementService().hasAccess(userProfileTO.getUserName(), "ems_removeRating")) {
+                    value = "{\"hidden\":false}";
+                }
+                stateProviderTO.setValue(value);
+            }*/
+                
+                
             } else if (UIStateIds.W_RATING_ADD.equalsIgnoreCase(stateId)) {
                 value = "{\"hidden\":true}";
                 if (securityContextService.hasAccess(userProfileTO.getUserName(), "ems_addRating")) {
@@ -329,6 +354,17 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
             logger.error(BizExceptionCode.GLB_ERR_MSG, e);
         }
         return stateProviderTO;
+    }
+    
+    //Anbari
+    private UserManagementService getUserManagementService() throws BaseException {
+        UserManagementService userManagementService;
+        try {
+            userManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_USER), null);
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.RMG_016, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_USER.split(","));
+        }
+        return userManagementService;
     }
 
 

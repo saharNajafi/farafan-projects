@@ -18,6 +18,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -62,6 +64,8 @@ import est.EstelamResult;
 import est.EstelamResult3;
 import est.EstelamResultC;
 import est.ImageResult;
+import est.ImsService;
+import est.ImsServiceService;
 import est.PersonInfo;
 import gampooya.tools.date.DateUtil;
 
@@ -79,6 +83,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 
     private static final Logger logger = BaseLog.getLogger(NOCRIMSOnlineServiceImpl.class);
     private static final Logger ImsLogger = BaseLog.getLogger("ImsLogger");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
     private static final Logger estelam2Logger = BaseLog
 			.getLogger("Estelam2Logger");
 
@@ -149,7 +154,16 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
             logger.debug("=======================================================================================");
             ImsLogger.debug("=======================================================================================");
             
-            EstelamPort port = new Estelam(new URL(wsdlUrl), new QName(namespace, serviceName)).getEstelamPort();
+            //Commented for ThreadLocal
+            //EstelamPort port = new Estelam(new URL(wsdlUrl), new QName(namespace, serviceName)).getEstelamPort();
+            EstelamPort port = ServicePorts.getEstelamPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new EstelamPort in Estelam getService()");
+				port = new Estelam(new URL(wsdlUrl), new QName(namespace, serviceName)).getEstelamPort();
+				ServicePorts.setEstelamPort(port);
+			} else {
+				threadLocalLogger.debug("***************************** using EstelamPort from ThradLocal");
+			}
             EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
             return port;
         } catch (Exception e) {

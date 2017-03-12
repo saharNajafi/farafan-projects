@@ -176,6 +176,12 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_031 = "EMS_S_CRE_031";
 	public static final String CRE_032 = "EMS_S_CRE_032";
 	public static final String CRE_033 = "EMS_S_CRE_033";
+	public static final String CRE_034 = "EMS_S_CRE_034";
+	public static final String CRE_035 = "EMS_S_CRE_035";
+	public static final String CRE_036 = "EMS_S_CRE_036";
+	public static final String CRE_038 = "EMS_S_CRE_038";
+	public static final String CRE_039 = "EMS_S_CRE_039";
+	public static final String CRE_040 = "EMS_S_CRE_040";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -2485,6 +2491,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_027 = "EMS_S_ESI_027";
     public static final String ESI_028 = "EMS_S_ESI_028";
     public static final String ESI_029 = "EMS_S_ESI_029";
+    public static final String ESI_030 = "EMS_S_ESI_030";
+    public static final String ESI_031 = "EMS_S_ESI_031";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
     
     public static final String ESI_001_MSG = "CardInfo is invalid";
@@ -2513,6 +2521,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_026_MSG = "AntiYesPublicKey must be null";
 	public static final String ESI_027_MSG = "MocHashData must be null";
 	public static final String ESI_028_MSG = "MocSignature must be null";
+	public static final String ESI_030_MSG = "EMKS WebService Exception ...";
     
     //com.gam.nocr.ems.biz.job.PortalReservationJob
 	public static final String RSV_01 = "EMS_S_RSV_01";

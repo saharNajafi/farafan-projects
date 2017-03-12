@@ -3,9 +3,12 @@ package com.gam.nocr.ems.biz.service.internal.impl;
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_BIOMETRIC;
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CARD_REQUEST;
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CARD_REQUEST_HISTORY;
+import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CITIZEN;
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_DOCUMENT;
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_ENROLLMENT_OFFICE;
+import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_PURGE_HISTORY;
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_RESERVATION;
+import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_IMS_ESTELAM_IMAGE;
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_REGISTRATION;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getServiceJNDIName;
@@ -41,18 +44,25 @@ import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.IMSManagementService;
 import com.gam.nocr.ems.biz.service.PortalManagementService;
 import com.gam.nocr.ems.biz.service.RegistrationService;
+import com.gam.nocr.ems.biz.service.UserManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.BiometricDAO;
 import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
+import com.gam.nocr.ems.data.dao.CitizenDAO;
 import com.gam.nocr.ems.data.dao.DocumentDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
+import com.gam.nocr.ems.data.dao.ImsEstelamImageDAO;
+import com.gam.nocr.ems.data.dao.PurgeHistoryDAO;
 import com.gam.nocr.ems.data.dao.ReservationDAO;
 import com.gam.nocr.ems.data.domain.BiometricTO;
 import com.gam.nocr.ems.data.domain.CardRequestHistoryTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
+import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.domain.ImsEstelamImageTO;
+import com.gam.nocr.ems.data.domain.PurgeHistoryTO;
 import com.gam.nocr.ems.data.domain.ReservationTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
@@ -64,6 +74,7 @@ import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.Estelam2FlagType;
+import com.gam.nocr.ems.data.enums.PurgeState;
 import com.gam.nocr.ems.data.enums.SMSTypeState;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.data.mapper.tomapper.CardRequestMapper;
@@ -447,6 +458,24 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					DAO_ENROLLMENT_OFFICE.split(","));
 		}
 	}
+	
+	private CitizenDAO getCitizenDAO() throws BaseException {
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(
+					getDaoJNDIName(DAO_CITIZEN));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(BizExceptionCode.CRE_038,
+					BizExceptionCode.GLB_001_MSG, e);
+		}
+	}
+	
+	private PurgeHistoryDAO getPurgeHistoryDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_PURGE_HISTORY));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.CRE_036, BizExceptionCode.GLB_001_MSG,e);
+        }
+    }
 
 	@Override
 	public List<CardRequestVTO> fetchCardRequests(GeneralCriteria criteria)
@@ -599,6 +628,16 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
     }
     
+    //Madanipour
+    private ImsEstelamImageDAO getImsEstelamImageDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_IMS_ESTELAM_IMAGE));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.CRE_039, BizExceptionCode.GLB_001_MSG, e,
+                    DAO_IMS_ESTELAM_IMAGE.split(","));
+        }
+    }
+    
     
  // Anbari
  	@Override
@@ -712,7 +751,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 //			}
 //		}
 	
-//ganjyar
+//Commented By Anbari
 	@Override
 	public AccessProductionVTO getAccessProduction() throws BaseException {
 
@@ -720,17 +759,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			AccessProductionVTO accessProductionVTO = new AccessProductionVTO();
 
 			SecurityContextService securityContextService = new SecurityContextService();
-			if (securityContextService.hasAccess(userProfileTO.getUserName(),
-					"ems_cmsErrorDeleteImage")) {
+			if (securityContextService.hasAccess(userProfileTO.getUserName(),"ems_cmsErrorDeleteImage"))
+			{
 				accessProductionVTO.setErrorDeleteImageAccess(true);
 
 			}
-			if (securityContextService.hasAccess(userProfileTO.getUserName(),
-					"ems_cmsErrorRepealed")) {
+			if (securityContextService.hasAccess(userProfileTO.getUserName(),"ems_cmsErrorRepealed"))
+			{
 				accessProductionVTO.setErrorRepealedAccess(true);
 			}
-			if (securityContextService.hasAccess(userProfileTO.getUserName(),
-					"ems_cmsErrorRetry")) {
+			if (securityContextService.hasAccess(userProfileTO.getUserName(),"ems_cmsErrorRetry"))
+			{
 
 				accessProductionVTO.setErrorRetryAccess(true);
 			}
@@ -743,6 +782,48 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 
 	}
+	
+	//Anbari -userPerm-commented
+	/*public AccessProductionVTO getAccessProduction() throws BaseException {
+
+		try {
+			AccessProductionVTO accessProductionVTO = new AccessProductionVTO();
+
+			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),"ems_cmsErrorDeleteImage"))
+			{
+				accessProductionVTO.setErrorDeleteImageAccess(true);
+
+			}
+			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),"ems_cmsErrorRepealed"))
+			{
+				accessProductionVTO.setErrorRepealedAccess(true);
+			}
+			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),"ems_cmsErrorRetry"))
+			{
+
+				accessProductionVTO.setErrorRetryAccess(true);
+			}
+
+			return accessProductionVTO;
+
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CRE_021,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+
+	}
+	*/
+	
+	  //Anbari
+    private UserManagementService getUserManagementService() throws BaseException {
+        UserManagementService userManagementService;
+        try {
+            userManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_USER), null);
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.RMG_016, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_USER.split(","));
+        }
+        return userManagementService;
+    }
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Override
@@ -821,6 +902,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	 * this method is used to check a person has access to change priority
 	 * @author ganjyar
 	 */
+	
 	@Override
 	public boolean hasChangePriorityAccess() throws BaseException {
 		try {
@@ -837,6 +919,28 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.GLB_008_MSG, e);
 		}
 	}
+	
+	
+	//*********** Anbari - userPerm-commented
+	/*
+	@Override
+	public boolean hasChangePriorityAccess() throws BaseException {
+		try {
+			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),
+					"ems_changePriority")) {
+				return true;
+			}
+
+			return false;
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_025, e.getMessage(), e);
+			throw new ServiceException(BizExceptionCode.CRE_025,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+	}
+	*/
+	
+	
 
 	// hossein 8 feature start
 		@Override
@@ -932,4 +1036,103 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 		
 	}
+	
+	
+	/**
+	 * this fetches citizen ids belongs to card requests must be purged.  
+	 * @author ganjyar
+	 * 
+	 */
+	@Override
+	public List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit)
+			throws BaseException {
+		try {
+			
+			return getCardRequestDAO().getCitizenIdsForPurgeBioAndDocs(fetchLimit);
+			
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CRE_034,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+
+	}
+
+	@Override
+	public void purgeBiometricsAndDocuments(Long citizenId,
+			String savePurgeHistory) throws BaseException {
+		try {
+			getBiometricDAO().emptyBiometricData(citizenId);
+			getDocumentDAO().emptyDocumentData(citizenId);
+			deleteImsEstelamImage(citizenId);
+
+			CitizenTO citizenTO = getCitizenDAO().find(CitizenTO.class,
+					citizenId);
+			citizenTO.setPurgeBio(Boolean.TRUE);
+			citizenTO.setPurgeBioDate(new Date());
+			if (savePurgeHistory.toLowerCase().equals("true")) {
+				sessionContext.getBusinessObject(CardRequestServiceLocal.class).savePurgeHistory(citizenId, PurgeState.SUCCESSFULL, null);
+			}
+
+		} catch (BaseException e) {
+			sessionContext.setRollbackOnly();
+			if (savePurgeHistory.toLowerCase().equals("true")) {
+				sessionContext.getBusinessObject(CardRequestServiceLocal.class).savePurgeHistory(citizenId, PurgeState.FAILED, e.toString());
+			}
+			throw e;
+		} catch (Exception e) {
+			sessionContext.setRollbackOnly();
+			if (savePurgeHistory.toLowerCase().equals("true")) {
+				sessionContext.getBusinessObject(CardRequestServiceLocal.class).savePurgeHistory(citizenId, PurgeState.FAILED, e.toString());
+			}
+			throw new ServiceException(BizExceptionCode.CRE_035,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+	}
+
+	
+	private void deleteImsEstelamImage(Long id) throws BaseException{
+		try {
+			
+			ImsEstelamImageTO imsEstelamImageTO = getImsEstelamImageDAO().find(ImsEstelamImageTO.class, id);
+			
+			if(imsEstelamImageTO != null)
+				getImsEstelamImageDAO().delete(imsEstelamImageTO);
+			
+		} catch (BaseException e) {
+			logger.error(e.getExceptionCode(), e.getMessage(), e);
+
+		}catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_040,e.getMessage(), e);
+		}
+		
+	}
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public void savePurgeHistory(Long citizenId, PurgeState purgeState,
+			String metaData) throws BaseException {
+		try {
+			PurgeHistoryTO purgeHistoryTO = new PurgeHistoryTO();
+			CitizenTO citizenTO = new CitizenTO();
+			citizenTO.setId(citizenId);
+			String nationalID = getCitizenDAO()
+					.find(CitizenTO.class, citizenId).getNationalID();
+			purgeHistoryTO.setCitizen(citizenTO);
+			purgeHistoryTO.setPurgeBiometricDate(new Date());
+			purgeHistoryTO.setPurgeState(purgeState);
+			purgeHistoryTO.setNationalId(nationalID);
+			purgeHistoryTO.setMetaData(metaData);
+			getPurgeHistoryDAO().create(purgeHistoryTO);
+
+		}  catch (BaseException e) {
+			logger.error(e.getExceptionCode(), e.getMessage(), e);
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_036,e.getMessage(), e);
+		}
+
+	}
+	
+
 }

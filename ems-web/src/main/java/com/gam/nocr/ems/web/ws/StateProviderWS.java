@@ -66,34 +66,58 @@ public class StateProviderWS extends EMSWS {
 
         StateProviderWTO[] wtos = parameterWTO.getStateProviderWTOs();
         if (wtos == null || wtos.length == 0) {
-            configLogger.warn("List of requested configuration is null or empty. So returning null as result to the request of user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
+            /**
+             * the thread race problem
+             */
+//            configLogger.warn("List of requested configuration is null or empty. So returning null as result to the request of user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
             return null;
         }
 
         int len = wtos.length;
-        configLogger.info("Total number of configuration items requested by user {} from workstation {} is " + len, up.getUserName(), securityContextWTO.getWorkstationID());
-        configLogger.debug("Following configurations are requested by user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
+        /**
+         * the thread race problem
+         */
+//        configLogger.info("Total number of configuration items requested by user {} from workstation {} is " + len, up.getUserName(), securityContextWTO.getWorkstationID());
+//        configLogger.debug("Following configurations are requested by user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
         ArrayList<String> stateIds = new ArrayList<String>();
         for (int i = 0; i < len; i++) {
-            configLogger.debug(wtos[i].getStateId());
+            /**
+             * the thread race problem
+             */
+//            configLogger.debug(wtos[i].getStateId());
             stateIds.add(wtos[i].getStateId());
         }
         try {
             StateProviderDelegator dlg = new StateProviderDelegator();
-            configLogger.debug("Preparing list of configuration for user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
+            /**
+             * the thread race problem
+             */
+//            configLogger.debug("Preparing list of configuration for user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
             List<StateProviderTO> result = dlg.getState(up, parameterWTO.getModuleName(), stateIds);
             if (result == null) {
-                configLogger.warn("No result returned from database. Returning null as a response to the request specified by user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
+                /**
+                 * the thread race problem
+                 */
+//                configLogger.warn("No result returned from database. Returning null as a response to the request specified by user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());
                 return null;
             }
             int i = 0;
             StateProviderWTO[] resultWTOs = new StateProviderWTO[result.size()];
-            configLogger.debug("The value of requested configurations are as below:");
+            /**
+             * the thread race problem
+             */
+//            configLogger.debug("The value of requested configurations are as below:");
             for (StateProviderTO to : result) {
-                configLogger.debug(to.getStateId() + " : " + to.getValue());
+                /**
+                 * the thread race problem
+                 */            	
+//                configLogger.debug(to.getStateId() + " : " + to.getValue());
                 resultWTOs[i++] = new StateProviderWTO(to);
             }
-            configLogger.debug("Preparing list of configuration for user {} from workstation {} finished", up.getUserName(), securityContextWTO.getWorkstationID());
+            /**
+             * the thread race problem
+             */
+//            configLogger.debug("Preparing list of configuration for user {} from workstation {} finished", up.getUserName(), securityContextWTO.getWorkstationID());
             return resultWTOs;
         } catch (Exception ex) {
             configLogger.error("Unable to retrieve configurations requested by user {} from workstation {}", up.getUserName(), securityContextWTO.getWorkstationID());

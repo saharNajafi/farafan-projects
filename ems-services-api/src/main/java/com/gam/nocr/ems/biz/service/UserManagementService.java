@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.biz.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.gam.commons.core.BaseException;
@@ -33,6 +34,16 @@ public interface UserManagementService extends Service {
 
 	/**
 	 * @author ganjyar
+	 * @throws SQLException 
 	 */
 	public List<String> getUserAccess(UserProfileTO userProfileTO) throws BaseException;
+
+	//Anbari - userPerm-commented
+	//public Boolean hasAccess(String username, String permission) throws BaseException;
+
+	//Anbari - userPerm-commented
+	//public void updatePermissionCache(Long id) throws BaseException;
+
+	//Anbari
+	//public void populatePermissionCache() throws BaseException;
 }

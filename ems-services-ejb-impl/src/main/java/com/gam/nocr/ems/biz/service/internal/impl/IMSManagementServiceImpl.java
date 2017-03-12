@@ -4604,6 +4604,9 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 				doDeleteAction(crq, DoDeleteAction.DeleteDocument,
 						imsUpdateResultVTO.getErrorMessage());
 
+				crq.setReEnrolledDate(new Date());
+				getCardRequestDAO().update(crq);
+
 			} else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000021")) // Delete
 																						// IMAGE
 			{
@@ -4613,6 +4616,9 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 
 				doDeleteAction(crq, DoDeleteAction.DeleteImage,
 						imsUpdateResultVTO.getErrorMessage());
+				
+				crq.setReEnrolledDate(new Date());
+				getCardRequestDAO().update(crq);
 
 			} else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000022")) // Delete
 																						// Finger
@@ -4624,6 +4630,9 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 
 				doDeleteAction(crq, DoDeleteAction.DeleteFinger,
 						imsUpdateResultVTO.getErrorMessage());
+				
+				crq.setReEnrolledDate(new Date());
+				getCardRequestDAO().update(crq);
 
 			} else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000018")) // OK with images
 			{				
@@ -4638,7 +4647,18 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 
 			} else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000019")) // reject
 			{
+				//Trigger should edit to accept change state from Sent_To_Afis to Refer_To_Ccos
+				/*
+				getBiometricDAO().removeAllBioDataByRequestID(crq.getId());
+				getDocumentDAO().removeByRequestIdAndType(crq.getId(), null);
 				
+				
+				crq.setState(CardRequestState.REFERRED_TO_CCOS);
+				getCardRequestDAO().update(crq);
+				getCardRequestHistoryDAO().create(crq,
+						imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
+						CardRequestHistoryAction.AFIS_REJECT, null);
+						*/
 				crq.setState(CardRequestState.IMS_ERROR);
 				getCardRequestDAO().update(crq);
 				getCardRequestHistoryDAO().create(crq,

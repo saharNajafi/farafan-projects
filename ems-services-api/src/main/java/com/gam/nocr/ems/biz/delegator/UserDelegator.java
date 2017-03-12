@@ -46,4 +46,10 @@ public class UserDelegator implements Delegator {
 	public List<String> getUserAccess(UserProfileTO up) throws BaseException{
 		return getService(up).getUserAccess(up);
 	}
+	
+	//	Anbari - userPerm-commented
+	/*public void updatePermissionCache(Long personID) throws BaseException {
+		getService(null).updatePermissionCache(personID);
+		
+	}*/
 }

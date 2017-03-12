@@ -46,6 +46,15 @@ public interface PersonManagementService extends TokenService {
 	
 	public List<Long> findListDepartmentsByPersonId(Long personId) throws BaseException;;
 	
-	//Anbari
+	// Anbari
 	public Long findPersonIdByUsername(String username) throws BaseException;
+
+	//Anbari
+	public List<Long> getAllPersonIds() throws BaseException;
+
+	// Anbari
+	//public void populateUserPermisionCache() throws BaseException;
+
+	// Anbari
+	//public List<String> getPermissionByUserName(String userName) throws BaseException;
 }

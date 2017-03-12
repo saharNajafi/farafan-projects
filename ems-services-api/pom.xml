@@ -11,7 +11,7 @@
 
     <groupId>com.gam.nocr.ems</groupId>
     <artifactId>ems-services-api</artifactId>
-    <version>2.3.4</version>
+    <version>${nocr.ems-services-api.version}</version>
     <name>EMS Services API</name>
 
     <dependencies>

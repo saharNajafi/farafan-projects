@@ -17,6 +17,7 @@ import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataResultWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataWTO;
 import com.gam.nocr.ems.data.domain.ws.SecurityContextWTO;
+import com.gam.nocr.ems.util.EmsUtil;
 
 /**
  * Collection of services related to EMKS (e.g. pin management)
@@ -73,4 +74,48 @@ public class EmksWS extends EMSWS {
 					new EMSWebServiceFault(WebExceptionCode.EKW_001_MSG), e);
 		}
 	}
+	
+	
+	
+	@WebMethod
+	public String getSigniture(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,@WebParam(name = "requestStr") String requestStr) throws InternalException
+	{
+		logger.info("\n========================= GET CARD SIGNATURE FROM EMKS =========================\n");
+		emksLogger
+				.warn("\n========================= GET CARD SIGNATURE FROM EMKS =========================\n");
+		logger.info("\n========================================================================\n");
+		emksLogger
+				.warn("\n========================================================================\n");
+		UserProfileTO up = super.validateRequest(securityContextWTO);
+
+		EmksDelegator emksDelegator = new EmksDelegator();
+		//Anbari
+        //super.isNocrOffice(up);
+        super.isNocrOfficeOrDeliveryOffice(up);
+
+		try {
+			logger.info("\n request id : " + requestStr + "\n");
+			emksLogger.info("\n request id : " + requestStr + "\n");
+//			if(!EmsUtil.checkString(requestStr))
+//				throw new InternalException(WebExceptionCode.RSW_065_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_078));
+				
+
+			return emksDelegator.getSigniture(up, requestStr);
+		} catch (BaseException e) {
+			logger.error(e.getMessage(), e);
+			emksLogger.error(e.getMessage(), e);
+			throw new InternalException(WebExceptionCode.EKW_002_MSG,
+					new EMSWebServiceFault(WebExceptionCode.EKW_002),e);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			emksLogger.error(e.getMessage(), e);
+			throw new InternalException(WebExceptionCode.EKW_003_MSG,
+					new EMSWebServiceFault(WebExceptionCode.EKW_003),e);
+		}
+		
+	}
+	
+	
+	
 }

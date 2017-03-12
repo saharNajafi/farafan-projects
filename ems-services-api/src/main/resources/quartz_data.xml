@@ -913,9 +913,59 @@
 			</cron>
 		</trigger>
 		<!-- ProcessCardDeliverySmsJob -->
-
-
-
+		
+				
+		<!-- PurgeBiometricAndDocumentJob -->
+		<job>
+			<name>purge اطلاعات بیومتریک و مستندات</name>
+			<group>ProcessPurgeBiometricAndDocumentJobGroup</group>
+			<description>
+				خالی کردن فضای تخصیص داده شده به داده های بیومتریک و مدارک
+			</description>
+			<job-class>com.gam.nocr.ems.biz.job.PurgeBiometricAndDocumentJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>ProcessPurgeBiometricAndDocumentJobTrigger</name>
+				<group>ProcessPurgeBiometricAndDocumentJobGroup</group>
+				<job-name>purge اطلاعات بیومتریک و مستندات</job-name>
+				<job-group>ProcessPurgeBiometricAndDocumentJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
+		<!-- PurgeBiometricAndDocumentJob -->
+		
+		<!-- UpdatePermissionCacheJob -->
+<!-- 		<job> -->
+<!-- 			<name>به روزرسانی لیست دسترسی ها ی کاربران</name> -->
+<!-- 			<group>UpdatePermissionCacheJobGroup</group> -->
+<!-- 			<description> -->
+<!-- 			به روزرسانی لیست دسترسی ها ی کاربران -->
+<!-- 			</description> -->
+<!-- 			<job-class>com.gam.nocr.ems.biz.job.UpdatePermissionCacheJob</job-class> -->
+<!-- 			<durability>true</durability> -->
+<!-- 			<recover>true</recover> -->
+<!-- 		</job> -->
+<!-- 		<trigger> -->
+<!-- 			<cron> -->
+<!-- 				<name>UpdatePermissionCacheJobTrigger</name> -->
+<!-- 				<group>UpdatePermissionCacheJobGroup</group> -->
+<!-- 				<job-name>به روزرسانی لیست دسترسی ها ی کاربران</job-name> -->
+<!-- 				<job-group>UpdatePermissionCacheJobGroup</job-group> -->
+<!-- 				<start-time>2010-02-09T18:00:00</start-time> -->
+<!-- 				<end-time>2013-02-09T19:00:00</end-time> -->
+<!-- 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction> -->
+<!-- 				<cron-expression>0 0 0 25 * ?</cron-expression> -->
+<!-- 				<time-zone>Asia/Tehran</time-zone> -->
+<!-- 			</cron> -->
+<!-- 		</trigger> -->
+		<!-- UpdatePermissionCacheJob  -->
 
 	</schedule>
 

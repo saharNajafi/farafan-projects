@@ -1048,6 +1048,13 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 	            citizenLoadedFromDb.setFirstNamePersian(newCitizen.getFirstNamePersian());
 	            citizenLoadedFromDb.setNationalID(newCitizen.getNationalID());
 	            citizenLoadedFromDb.setSurnamePersian(newCitizen.getSurnamePersian());
+	            
+	            //For requests those purged before we should set purgeBio and purgeDate to default value. 
+	            if(citizenLoadedFromDb.getPurgeBio() == null  || citizenLoadedFromDb.getPurgeBio().equals(Boolean.TRUE)){
+	            	citizenLoadedFromDb.setPurgeBio(Boolean.FALSE);
+	            	citizenLoadedFromDb.setPurgeBioDate(null);	            	
+	            }
+	            	
 
 	            newCardRequest.setCitizen(citizenLoadedFromDb);
 	        }
@@ -1071,10 +1078,13 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 	                newCardRequest.setReservationDate(to.getReservationDate());
 	                newCardRequest.setLockDate(to.getLockDate());
 	                newCardRequest.setEstelam2Flag(to.getEstelam2Flag());
-	              //*************************Anbari:Payment
-	                newCardRequest.setPaid(to.isPaid());
-	                newCardRequest.setPaidDate(to.getPaidDate());
-	              //*****************************
+	                // *************************Anbari:Payment
+	                if (!newCardRequest.getState()
+						.equals(CardRequestState.RESERVED)) {
+	                	newCardRequest.setPaid(to.isPaid());
+	                	newCardRequest.setPaidDate(to.getPaidDate());
+	                }
+				// *****************************
 	                newCardRequest.setRequestedSmsStatus(to.getRequestedSmsStatus());
 	                
 

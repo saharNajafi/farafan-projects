@@ -28,5 +28,10 @@ public interface BiometricDAO extends EmsBaseDAO<BiometricTO> {
     int removeFingersInfoByCitizenId(Long citizenId) throws BaseException;
 
     int removeFaceInfoByCitizenId(Long citizenId) throws BaseException;
+    
+    public void emptyBiometricData(Long id) throws BaseException;
+    
+    public int removeAllBioDataByRequestID(Long id) throws BaseException;
+
 
 }

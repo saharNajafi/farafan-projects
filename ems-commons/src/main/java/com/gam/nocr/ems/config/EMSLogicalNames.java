@@ -118,6 +118,7 @@ public class EMSLogicalNames {
     public static String DAO_NIST_HEADER = "NistHeaderDAO";
     public static String DAO_XML_AFIS = "XmlAfisDAO";
     public static String DAO_CARDREQUEST_BLOBS = "CardRequestBlobsDAO";
+    public static String DAO_PURGE_HISTORY = "PurgeHistoryDAO";
     
     /**
      * DAOs, which are required in GamIms implementation

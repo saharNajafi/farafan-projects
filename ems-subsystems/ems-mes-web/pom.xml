@@ -9,7 +9,7 @@
 
     <groupId>com.gam.nocr.ems.subsystems</groupId>
     <artifactId>ems-mes-web</artifactId>
-    <version>1.0.1.5</version>
+    <version>${nocr.ems-mes.version}</version>
     <packaging>war</packaging>
     <name>EMS MES Web</name>
 

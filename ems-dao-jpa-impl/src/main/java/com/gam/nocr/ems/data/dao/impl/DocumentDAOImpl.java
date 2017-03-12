@@ -139,4 +139,18 @@ public class DocumentDAOImpl extends EmsBaseDAOImpl<DocumentTO> implements Docum
             throw new DAOException(DataExceptionCode.DCI_002, DataExceptionCode.DCI_002_MSG, e, new Long[]{requestId});
         }
     }
+    
+    
+    @Override
+	public void emptyDocumentData(Long citizenId) throws BaseException {
+		try {
+			em.createNativeQuery(
+					"update emst_document doc set doc.doc_data = empty_blob() where doc.doc_citizen_info_id =:citizenId")
+					.setParameter("citizenId", citizenId).executeUpdate();
+			 em.flush();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.DCI_007,
+					DataExceptionCode.GLB_008_MSG, e);
+		}
+	}
 }

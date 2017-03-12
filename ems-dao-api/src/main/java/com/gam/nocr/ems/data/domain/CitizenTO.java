@@ -1,5 +1,7 @@
 package com.gam.nocr.ems.data.domain;
 
+import java.util.Date;
+
 import com.gam.commons.core.data.domain.ExtEntityTO;
 
 import javax.persistence.*;
@@ -18,6 +20,8 @@ public class CitizenTO extends ExtEntityTO {
     private String surnamePersian;
     private String nationalID;
     private Long reduplicate;
+    private Boolean purgeBio = Boolean.FALSE;
+    private Date purgeBioDate;
 
     public CitizenTO() {
     }
@@ -82,6 +86,25 @@ public class CitizenTO extends ExtEntityTO {
     public void setReduplicate(Long reduplicate) {
         this.reduplicate = reduplicate;
     }
+    
+    @Column(name = "CTZ_PURGE_BIO")
+    public Boolean getPurgeBio() {
+		return purgeBio;
+	}
+
+	public void setPurgeBio(Boolean purgeBio) {
+		this.purgeBio = purgeBio;
+	}
+
+	@Column(name = "CTZ_PURGE_BIO_DATE")
+	public Date getPurgeBioDate() {
+		return purgeBioDate;
+	}
+
+	public void setPurgeBioDate(Date purgeBioDate) {
+		this.purgeBioDate = purgeBioDate;
+	}
+
 
     @Override
     public String toString() {

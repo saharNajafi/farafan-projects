@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.delegator.DelegatorException;
 import com.gam.commons.core.biz.service.BizLoggable;
 import com.gam.commons.core.biz.service.Permissions;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -40,7 +41,9 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.GAASService;
+import com.gam.nocr.ems.biz.service.PersonManagementService;
 import com.gam.nocr.ems.biz.service.TokenManagementService;
+import com.gam.nocr.ems.biz.service.UserManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
@@ -59,6 +62,7 @@ import com.gam.nocr.ems.data.domain.vol.PersonVTO;
 import com.gam.nocr.ems.data.domain.vol.RoleVTO;
 import com.gam.nocr.ems.data.domain.vol.RoleVTOWrapper;
 import com.gam.nocr.ems.data.domain.vol.UserInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.PermissionsWTO;
 import com.gam.nocr.ems.data.enums.BooleanType;
 import com.gam.nocr.ems.data.enums.PersonRequestStatus;
 import com.gam.nocr.ems.data.enums.ReplicaReason;
@@ -237,6 +241,8 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
                     personDAO.update(personTO);
                 }
             }
+            //********** Anbari -userPerm-commented
+            //getUserManagementService().updatePermissionCache(personTO.getId());
 
             return personTO.getId();
         } catch (BaseException e) {
@@ -245,6 +251,25 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
             throw new ServiceException(BizExceptionCode.PSI_004, BizExceptionCode.GLB_008_MSG, e);
         }
     }
+    
+    
+ // Anbari
+ 	private PersonManagementService getPersonService() throws BaseException {
+ 		PersonManagementService personManagementService;
+ 		try {
+ 			personManagementService = (PersonManagementService) ServiceFactoryProvider
+ 					.getServiceFactory()
+ 					.getService(
+ 							EMSLogicalNames
+ 									.getServiceJNDIName(EMSLogicalNames.SRV_PERSON),
+ 							null);
+ 		} catch (ServiceFactoryException e) {
+ 			throw new DelegatorException(BizExceptionCode.PDL_001,
+ 					BizExceptionCode.GLB_002_MSG, e,
+ 					EMSLogicalNames.SRV_PERSON.split(","));
+ 		}
+ 		return personManagementService;
+ 	}
 
     @Override
     @Permissions(value = "ems_viewPerson")
@@ -956,4 +981,61 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 	public Long findPersonIdByUsername(String username) throws BaseException {
 		return getPersonDAO().findPersonIdByUsername(username);
 	}
+	
+	
+    //Anbari
+    private UserManagementService getUserManagementService() throws BaseException {
+        UserManagementService userManagementService;
+        try {
+            userManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_USER), null);
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.RMG_016, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_USER.split(","));
+        }
+        return userManagementService;
+    }
+
+	@Override
+	public List<Long> getAllPersonIds() throws BaseException {
+		return getPersonDAO().getAllPersonIds();
+	}
+	
+	//*********************Anbari : caching the all user permissions	
+//		private static String PERMISSION_CACHE_NAME = "cachePermissions";
+//	    private NamedCache cachePermissions = CacheFactory.getCache(PERMISSION_CACHE_NAME);	
+//	    @Override
+//		public void populateUserPermisionCache() throws BaseException {
+//
+//	    	cachePermissions.clear();
+//			List<PersonTO> personList = getPersonDAO().getAll();
+//			for (PersonTO person : personList) {
+//				List<PermissionVTO> allUserPermission = getGaasService().getAllUserAccess(person.getUserId(), "", 0,Integer.MAX_VALUE);
+//				PermissionsWTO wto = new PermissionsWTO();
+//				List<String> permissionList = new ArrayList<String>();
+//				for (PermissionVTO permission : allUserPermission) {
+//					permissionList.add(permission.getName());				
+//				}
+//				
+//				if (EmsUtil.checkListSize(permissionList)) {
+//					wto.setName(permissionList);
+//					cachePermissions.put(person.getId(), wto);
+//				}
+//			}
+//
+//		}
+//	    //*******************Anbari : get Permission from cache
+//	    @Override
+//	    public List<String> getPermissionByUserName(String username) throws BaseException
+//	    {
+//	    	
+//	    	Long personId = getPersonDAO().findPersonIdByUsername(username);
+//	    	if(personId != null)
+//	    	{
+//	    		PermissionsWTO permissionsWTO = (PermissionsWTO) cachePermissions.get(personId);
+//	    		if(permissionsWTO != null)
+//	    			return permissionsWTO.getName();
+//	    	}
+//			return new ArrayList<String>();
+//	    	
+//	    }
+//		
 }

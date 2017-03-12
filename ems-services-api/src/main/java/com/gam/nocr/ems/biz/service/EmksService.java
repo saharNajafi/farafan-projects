@@ -12,5 +12,7 @@ public interface EmksService extends Service {
 
 	public EMKSDataResultWTO getNIDCardPINs(EMKSDataWTO emksDataWTO, Long requestID)
 			throws BaseException;
+	
+	public String getSigniture(String str) throws BaseException;
 
 }

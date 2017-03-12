@@ -307,7 +307,11 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     
     //com.gam.nocr.ems.web.ws.EmksWS
     public static final String EKW_001 = "EMS_W_EKW_001";
+    public static final String EKW_002 = "EMS_W_EKW_002";
+    public static final String EKW_003 = "EMS_W_EKW_003";
     public static final String EKW_001_MSG = "Unable to get pins from EMKS. Reason unknown";
+    public static final String EKW_002_MSG = "Unable to get Signiture from EMKS. Reason unknown";
+    public static final String EKW_003_MSG = "Unable to get Signiture from EMKS. Reason unknown";
     
     // com.gam.nocr.ems.web.ws.HelpWS
     public static final String HEW_001 = "EMS_W_HEW_001";
@@ -487,6 +491,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_077_MSG = "unexpected exception happened while trying to fetch archive id";
     public static final String RSW_080_MSG = "Unable to save face items. Number of face items received from CCOS is less than 4 image";
     public static final String RSW_081_MSG = "Unable to convert CitizenWTO to CardRequestTO in preRegistration VIP";
+    
 
 
     // com.gam.nocr.ems.web.ws.RegistrationVipWS

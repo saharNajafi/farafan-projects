@@ -62,5 +62,8 @@ public interface PersonDAO extends EmsBaseDAO<PersonTO> {
 	public List<PersonTO> getAll() throws BaseException;
 	
 	//Anbari
-	Long findPersonIdByUsername(String username) throws BaseException;
+	public Long findPersonIdByUsername(String username) throws BaseException;
+
+	//Anbari
+	public List<Long> getAllPersonIds() throws BaseException;
 }

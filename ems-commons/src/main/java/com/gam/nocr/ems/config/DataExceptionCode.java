@@ -178,6 +178,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PDI_037 = "EMS_D_PDI_037";
     public static final String PDI_038 = "EMS_D_PDI_038";
     public static final String PDI_039 = "EMS_D_PDI_039";
+    public static final String PDI_040 = "EMS_D_PDI_039";
 
     public static final String PDI_001_MSG = "unable to change status";
     public static final String PDI_002_MSG = "violate unique constraint, national ID already exists";
@@ -533,6 +534,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_095 = "EMS_D_CDI_095";
     public static final String CDI_096 = "EMS_D_CDI_096";
     public static final String CDI_097 = "EMS_D_CDI_097";
+    public static final String CDI_098 = "EMS_D_CDI_098";
 
     public static final String CDI_001_MSG = "Unable to create Card Request";
     public static final String CDI_002_MSG = "Integrity constraint violated, card with id {} not found";
@@ -894,6 +896,8 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String BDI_005 = "EMS_D_BDI_005";
     public static final String BDI_006 = "EMS_D_BDI_006";
     public static final String BDI_007 = "EMS_D_BDI_007";
+    public static final String BDI_008 = "EMS_D_BDI_008";
+    public static final String BDI_009 = "EMS_D_BDI_009";
     public static final String BDI_001_MSG = "Unable to create Biometric";
     public static final String BDI_002_MSG = "Integrity constraint violated, citizen info with id {} not found";
     public static final String BDI_003_MSG = "Unable to remove Biometric with request id {} and type {}";
@@ -917,6 +921,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DCI_004 = "EMS_D_DCI_004";
     public static final String DCI_005 = "EMS_D_DCI_005";
     public static final String DCI_006 = "EMS_D_DCI_006";
+    public static final String DCI_007 = "EMS_D_DCI_007";
     public static final String DCI_001_MSG = "Unable to create document";
     public static final String DCI_002_MSG = "Unable to delete document for request id {}";
     public static final String DCI_003_MSG = "Integrity constraint violated, citizen info with id {} not found";

@@ -480,6 +480,8 @@ public interface CardRequestDAO extends EmsBaseDAO<CardRequestTO> {
 
 	//IMS:Anbari
 	List<Long> findAfisResultRequestsCountByState(CardRequestState cardRequestState, Integer fetchLimit) throws BaseException;
+	
+	List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit) throws BaseException;
 
 
 }

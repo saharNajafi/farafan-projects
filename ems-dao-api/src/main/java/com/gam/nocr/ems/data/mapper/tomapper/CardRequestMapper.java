@@ -134,14 +134,14 @@ public class CardRequestMapper {
         	// 1 -----> shahr
         	// 0 ------> dehestan
         	if (wto.getUserCityType().equals("1")) {
-        		if (wto.getLivingCityId() == null) 
+        		if (wto.getLivingCityId() == null || wto.getLivingCityId()==0) 
         			
         			throw new BaseException(MapperExceptionCode.CRM_019, MapperExceptionCode.CRM_019_MSG);
         		czi.setLivingCity(new LocationTO(wto.getLivingCityId()));
         		
         		
         	} else if (wto.getUserCityType().equals("0")) {
-        		if (wto.getLivingVillageId() == null) 
+        		if (wto.getLivingVillageId() == null || wto.getLivingVillageId()==0) 
         			
         			throw new BaseException(MapperExceptionCode.CRM_020, MapperExceptionCode.CRM_020_MSG);
         		czi.setLivingCity(new LocationTO(wto.getLivingVillageId()));
@@ -721,14 +721,14 @@ public class CardRequestMapper {
         	// 1 -----> shahr
         	// 0 ------> dehestan
         	if (wto.getUserCityType().equals("1")) {
-        		if (wto.getLivingCityId() == null) 
+        		if (wto.getLivingCityId() == null || wto.getLivingCityId()==0 ) 
         			
         			throw new BaseException(MapperExceptionCode.CRM_019, MapperExceptionCode.CRM_019_MSG);
         		czi.setLivingCity(new LocationTO(wto.getLivingCityId()));
         		
         		
         	} else if (wto.getUserCityType().equals("0")) {
-        		if (wto.getLivingVillageId() == null) 
+        		if (wto.getLivingVillageId() == null || wto.getLivingVillageId()==0) 
         			
         			throw new BaseException(MapperExceptionCode.CRM_020, MapperExceptionCode.CRM_020_MSG);
         		czi.setLivingCity(new LocationTO(wto.getLivingVillageId()));

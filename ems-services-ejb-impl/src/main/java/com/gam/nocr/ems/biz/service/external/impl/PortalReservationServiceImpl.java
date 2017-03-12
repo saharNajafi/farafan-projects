@@ -10,12 +10,16 @@ import javax.xml.namespace.QName;
 
 import org.slf4j.Logger;
 
+import servicePortUtil.ServicePorts;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.external.client.portal.ExternalInterfaceException_Exception;
+import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS_Service;
 import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS;
 import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS_Service;
 import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWTO;
@@ -45,6 +49,7 @@ public class PortalReservationServiceImpl extends EMSAbstractService implements 
 
     private static final Logger logger = BaseLog.getLogger(CMSServiceImpl.class);
     private static final Logger portalLogger = BaseLog.getLogger("PortalLogger");
+    private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
     ReservationWS service = null;
 
@@ -68,8 +73,16 @@ public class PortalReservationServiceImpl extends EMSAbstractService implements 
             String serviceName = "ReservationWS";
             logger.debug("Portal Reservation wsdl url: " + wsdlUrl);
             portalLogger.debug("Portal Reservation wsdl url: " + wsdlUrl);
-            ReservationWS port = new ReservationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getReservationWSPort();
-//            ReservationWS port = new ReservationWS_Service().getReservationWSPort();
+            //Commented for ThreadLocal
+            //ReservationWS port = new ReservationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getReservationWSPort();
+            ReservationWS port = ServicePorts.getPortalReservationPort();
+			if (port == null) {
+				threadLocalLogger.debug("**************************** new PortalReservation in Portal getService()");
+				port = new ReservationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getReservationWSPort();
+				ServicePorts.setPortalReservationPort(port);
+			} else {
+				threadLocalLogger.debug("***************************** using PortalReservation from ThradLocal");
+			}
             EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
             return port;
         } catch (Exception e) {

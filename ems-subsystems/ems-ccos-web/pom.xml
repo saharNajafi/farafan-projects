@@ -9,7 +9,7 @@
 
     <groupId>com.gam.nocr.ems.subsystems</groupId>
     <artifactId>ems-ccos-web</artifactId>
-    <version>2.7.0.4</version>
+    <version>${nocr.ems-ccos.version}</version>
     <packaging>war</packaging>
     <name>EMS CCOS Web</name>
 

@@ -42,5 +42,13 @@ public class EmksDelegator implements Delegator {
 		return getService(up).getNIDCardPINs(emksDataWTO,requestID);
 
 	}
+	
+	public String getSigniture(UserProfileTO up,
+			String str) throws BaseException {
+
+		return getService(up).getSigniture(str);
+
+	}
+	
 
 }

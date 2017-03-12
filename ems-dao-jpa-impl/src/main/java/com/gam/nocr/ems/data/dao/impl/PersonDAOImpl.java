@@ -423,6 +423,7 @@ public class PersonDAOImpl extends EmsBaseDAOImpl<PersonTO> implements PersonDAO
 					DataExceptionCode.GLB_005_MSG, e);
 		}
 	}
+	
 	@Override
 	public List<PersonTO> getAll() throws BaseException {
 		List<PersonTO> result = null;
@@ -438,6 +439,23 @@ public class PersonDAOImpl extends EmsBaseDAOImpl<PersonTO> implements PersonDAO
 		}
 
 		return result;
+	}
+	
+	
+	@Override
+	public List<Long> getAllPersonIds() throws BaseException {
+		List<Long> ids = null;
+		try {
+			ids = em.createQuery("select pe.id from PersonTO pe",Long.class).getResultList();
+			if(EmsUtil.checkListSize(ids))
+				return ids;		
+
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.PDI_040,
+					DataExceptionCode.GLB_005_MSG, e);
+		}
+		return ids;
+
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.gam.nocr.ems.data.dao.impl;
 
+import gampooya.tools.date.DateUtil;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -77,8 +79,12 @@ CardRequestDAOLocal, CardRequestDAORemote {
 
 	private static final String DEFAULT_NUMBER_OF_REQUEST_TO_LOAD = "100";
 	private static final String DEFAULT_SMS_BODY = "100";
+	private static final String DEFAULT_PURGE_BIO_TIME_INTERVAL = "100";
 	private static final String DEFAULT_DURATION_OF_IMS_ONLINE_RESERVATION_TO_FETCH_UP = "48";
 	private static final String DEFAULT_DURATION_OF_IMS_ONLINE_RESERVATION_TO_FETCH_DOWN = "48";
+	
+	private static final String DEFAULT_INTERVAL_PURGE_UP = "1394/02/01";
+	private static final String DEFAULT_INTERVAL_PURGE_DOWN = "1394/01/01";
 
 	/**
 	 * The method extractSpecifiedTime is used to extract the specified number
@@ -2459,7 +2465,8 @@ CardRequestDAOLocal, CardRequestDAORemote {
 	}
 	
 	
-	//IMS:Anbari
+	//IMS:Anbari : COMMENTED
+	/*
 	@Override
 	public List<Long> findAfisResultRequestsCountByState(CardRequestState cardRequestState,Integer fetchLimit)
 			throws BaseException {
@@ -2483,6 +2490,66 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		}
 
 	}
+	*/
+	
+	
+	
+	//IMS:Anbari
+		@Override
+		public List<Long> findAfisResultRequestsCountByState(CardRequestState cardRequestState,Integer fetchLimit)
+				throws BaseException {
+			Timestamp specifiedTime = null;
+			String timeIntervalFromConfig = null;
+
+			try {
+				timeIntervalFromConfig = (String) ProfileHelper
+						.getProfileManager()
+						.getProfile(
+								ProfileKeyName.KEY_CARD_REQUESTS_COUNT_QUERY_TIME_INTERVAL_FOR_IMS,
+								true, null, null);
+			} catch (ProfileException e) {
+				logger.error(e.getMessage(), e);
+			}
+
+			try {
+				specifiedTime = extractSpecifiedTime(timeIntervalFromConfig, 1);
+			} catch (BaseException e) {
+				logger.error(e.getMessage(), e);
+			}
+
+			if (specifiedTime == null) {
+				specifiedTime = new Timestamp(new Date().getTime());
+			}
+			
+			
+			try {		
+				
+				List<Long> longList = em
+						.createQuery(
+								 " SELECT CRQ.id "
+										+ "FROM CardRequestTO CRQ "
+										+ "WHERE CRQ.state =:CARD_REQUEST_STATE AND "
+										+ "CRQ.id NOT IN "
+										+ "(SELECT CRH.cardRequest.id FROM CardRequestHistoryTO CRH WHERE "
+										+ "CRH.systemID = :SYSTEM_ID AND CRH.cardRequestHistoryAction = (:HISTORY_ACTION) AND CRH.date > (:SPECIFIED_TIME)) "
+										+ "ORDER BY CRQ.priority DESC, CRQ.id ASC ",
+										Long.class)
+										.setParameter("CARD_REQUEST_STATE", cardRequestState)
+										.setParameter("HISTORY_ACTION",CardRequestHistoryAction.AFIS_WAITING)
+										.setParameter("SPECIFIED_TIME", specifiedTime)
+										.setParameter("SYSTEM_ID", SystemId.IMS)
+										.setMaxResults(fetchLimit)
+										.getResultList();
+				if (EmsUtil.checkListSize(longList)) {
+					return longList;
+				}
+				return null;
+			} catch (Exception e) {
+				throw new DataException(DataExceptionCode.CDI_073,
+						DataExceptionCode.GLB_005_MSG, e);
+			}
+
+		}	
 	
 	
 
@@ -4627,6 +4694,85 @@ CardRequestDAOLocal, CardRequestDAORemote {
 					DataExceptionCode.GLB_005_MSG, e);
 		}
 
+	}
+	
+	
+
+	/**
+	 * this method fetches all citizen ids which are ready to purge.
+	 * @author ganjyar
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit)
+			throws BaseException {
+
+		try {
+//			Integer dayInterval = Integer.valueOf(EmsUtil.getProfileValue(
+//					ProfileKeyName.KEY_PURGE_BIO_TIME_INTERVAL,
+//					DEFAULT_PURGE_BIO_TIME_INTERVAL));
+			String purgeIntervalUp = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_INTERVAL_PURGE_UP,DEFAULT_INTERVAL_PURGE_UP));            
+            String purgeIntervalDown = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_INTERVAL_PURGE_DOWN,DEFAULT_INTERVAL_PURGE_DOWN));  
+            
+            Date upDate = DateUtil.convert(DateUtil.convert(purgeIntervalUp, DateUtil.JALALI, DateUtil.GREGORIAN), DateUtil.GREGORIAN);
+            Date downDate = DateUtil.convert(DateUtil.convert(purgeIntervalDown, DateUtil.JALALI, DateUtil.GREGORIAN), DateUtil.GREGORIAN);
+            
+			Date TIME_INTERVAL_UP = EmsUtil.getDateAtMidnight(upDate);         
+	        Date TIME_INTERVAL_DOWN = EmsUtil.getDateAtMidnight(downDate);
+
+			List<BigDecimal> results = em
+					.createNativeQuery(
+							"select distinct crq1.CRQ_CITIZEN_ID from "
+									+ "EMST_CARD_REQUEST crq1, "
+									+ "EMST_CARD crd1, "
+									+ "EMST_CITIZEN ctz  "
+									+ "where "
+									+ "crq1.CRQ_CARD_ID=crd1.CRD_ID  "
+									+ "and crq1.CRQ_CITIZEN_ID=ctz.CTZ_ID  "
+									+ "and crq1.CRQ_STATE='DELIVERED'  "
+//									+ "and crd1.CRD_DELIVER_DATE<:specifiedDate "
+									+ "and (:time_interval_down < crd1.CRD_DELIVER_DATE) AND (crd1.CRD_DELIVER_DATE < :time_interval_up )  "
+									+ "and ctz.CTZ_PURGE_BIO!= :purgeBioState  "
+									+ "and ( "
+									+ "crq1.CRQ_CITIZEN_ID not in  ( "
+									+ "select "
+									+ "crq2.CRQ_CITIZEN_ID  "
+									+ "from "
+									+ "EMST_CARD_REQUEST crq2 left join "
+									+ "EMST_CARD crd2  "
+									+ "on "
+									+ "crq2.CRQ_CARD_ID=crd2.CRD_ID  "
+									+ "where ( "
+									+ "crq1.CRQ_CITIZEN_ID=crq2.CRQ_CITIZEN_ID  "
+									+ "and ( "
+									+ "crq2.CRQ_STATE<>'DELIVERED'  "
+									+ "or (crq2.CRQ_STATE='DELIVERED'  "
+									+ "and ((:time_interval_down > crd2.CRD_DELIVER_DATE) OR (crd2.CRD_DELIVER_DATE > :time_interval_up )) )) "
+//									+ "and crd2.CRD_DELIVER_DATE>=:specifiedDate)) "
+									+ ") " + ") " + ") ")
+					.setParameter("purgeBioState", Boolean.TRUE)
+//					.setParameter("specifiedDate",
+//							EmsUtil.differDay(new Date(), -dayInterval))
+					 .setParameter("time_interval_up", TIME_INTERVAL_UP)
+	                    .setParameter("time_interval_down", TIME_INTERVAL_DOWN)
+					.setMaxResults(fetchLimit).getResultList();
+			
+			List<Long> resultList = new ArrayList<Long>();
+			if (EmsUtil.checkListSize(results)){
+				for (BigDecimal result: results) {
+					
+					resultList.add(result.longValue());
+					
+				}
+			}
+			
+			return resultList;
+			
+			
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.CDI_098,
+					DataExceptionCode.GLB_005_MSG, e);
+		}
 	}
 
 	

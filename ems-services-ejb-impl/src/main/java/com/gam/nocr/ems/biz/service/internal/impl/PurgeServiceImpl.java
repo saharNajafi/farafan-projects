@@ -130,7 +130,7 @@ public class PurgeServiceImpl extends EMSAbstractService implements PurgeService
 	}
 	
 	
-	@Schedule(hour="*", minute="*/30", persistent=false)
+//	@Schedule(hour="*", minute="*/30", persistent=false)
 	@Override
 	public void doPurgeNextCycle() {
 		
