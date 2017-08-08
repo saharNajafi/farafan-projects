@@ -344,6 +344,19 @@
 				</exclusions>
 				<scope>compile</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-tools</artifactId>
+				<version>${jaxws.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
+			<dependency>
+				<groupId>javax.xml.ws</groupId>
+				<artifactId>jaxws-api</artifactId>
+				<version>${jaxws.version}</version>
+			</dependency>
+
 			<!-- jaxws -->
 
 			<!-- inner module dependency -->
@@ -648,14 +661,14 @@
 
     <properties>
         <!-- ============= NOCR module Version ============== -->
-        <nocr.ems.version>2.4.1</nocr.ems.version>
-        <nocr.ems-commons.version>2.4.1</nocr.ems-commons.version>
-        <nocr.ems-dao-api.version>2.4.1</nocr.ems-dao-api.version>
-        <nocr.ems-dao-jpa-impl.version>2.4.1</nocr.ems-dao-jpa-impl.version>
-        <nocr.ems-ear.version>2.4.1</nocr.ems-ear.version>
-        <nocr.ems-services-api.version>2.4.1</nocr.ems-services-api.version>
-        <nocr.ems-services-ejb-impl.version>2.4.1</nocr.ems-services-ejb-impl.version>
-        <nocr.ems-web.version>2.4.1</nocr.ems-web.version>
+        <nocr.ems.version>2.4.2</nocr.ems.version>
+        <nocr.ems-commons.version>2.4.2</nocr.ems-commons.version>
+        <nocr.ems-dao-api.version>2.4.2</nocr.ems-dao-api.version>
+        <nocr.ems-dao-jpa-impl.version>2.4.2</nocr.ems-dao-jpa-impl.version>
+        <nocr.ems-ear.version>2.4.2</nocr.ems-ear.version>
+        <nocr.ems-services-api.version>2.4.2</nocr.ems-services-api.version>
+        <nocr.ems-services-ejb-impl.version>2.4.2</nocr.ems-services-ejb-impl.version>
+        <nocr.ems-web.version>2.4.2</nocr.ems-web.version>
         <nocr.ems-ccos.version>2.7.0.14</nocr.ems-ccos.version>
         <nocr.ems-mes.version>1.0.1.5</nocr.ems-mes.version>
         <nocr.ems-software.version>1.0.0</nocr.ems-software.version>
@@ -698,7 +711,7 @@
 		<json.version>20090211</json.version>
 		<coherence.version>3.7.1.0</coherence.version>
 		<javaee-web-api.version>6.0</javaee-web-api.version>
-		<jaxws.version>2.2.5</jaxws.version>
+		<jaxws.version>2.2.10</jaxws.version>
 		<struts2-core.version>2.3.4</struts2-core.version>
 		<oracle.version>11.2.0</oracle.version>
 		<mysql.version>5.1.9</mysql.version>

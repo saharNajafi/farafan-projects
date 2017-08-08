@@ -39,5 +39,13 @@
         <package-name>net.sf.jasperreports.*</package-name>
         <package-name>com.lowagie.*</package-name>
         <package-name>org.mozilla.*</package-name>
+        <package-name>com.sun.xml.ws.api.wsdl.parser.*</package-name>
+
+        <package-name>com.sun.jersey.*</package-name>
+        <package-name>com.sun.research.ws.wadl.*</package-name>
+        <package-name>com.sun.ws.rs.ext.*</package-name>
+        <package-name>org.codehaus.jackson.*</package-name>
+        <package-name>org.codehaus.jettison.*</package-name>
+        <package-name>org.objectweb.asm.*</package-name>
     </prefer-application-packages>
 </weblogic-application>

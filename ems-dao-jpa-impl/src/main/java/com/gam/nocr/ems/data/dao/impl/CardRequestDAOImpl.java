@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.data.dao.impl;
 
+import com.gam.nocr.ems.data.domain.*;
 import gampooya.tools.date.DateUtil;
 
 import java.math.BigDecimal;
@@ -21,7 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hibernate.exception.JDBCConnectionException;
 import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
@@ -33,10 +33,6 @@ import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CardTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
@@ -4775,6 +4771,37 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		}
 	}
 
-	
+
+	@Override
+	public void findCardRequestStateByTrackingId(
+			String trackingId)throws BaseException{
+
+		em.createQuery("select crq "
+						+ " from CardRequestTO crq"
+						+ " where crq.trackingID =: CRQ_TRACKING_ID",
+						CardRequestTO.class)
+				.setParameter("CRQ_TRACKING_ID", trackingId)
+				.getResultList();
+	}
+
+	@Override
+	public CardRequestTO findCardRequestStateByNationalIdAndMobile(
+			String nationalId, String mobile)throws BaseException{
+
+		return (CardRequestTO) em.createNamedQuery("CardRequestTO.findCardRequestStateByNationalIdAndMobile")
+				.setParameter("nationalId", nationalId)
+				.setParameter("mobile", mobile)
+				.getResultList().get(0);
+	}
+
+	@Override
+	public CardRequestTO findCardRequestStateByNationalIdAndBirthCertificateSeries(
+			String nationalId, String birthCertificateSeries)throws BaseException{
+
+		return (CardRequestTO) em.createNamedQuery("CardRequestTO.findCardRequestStateByNationalIdAndBirthCertificateSeries")
+				.setParameter("nationalId", nationalId)
+				.setParameter("birthCertificateSeries", birthCertificateSeries)
+				.getResultList().get(0);
+	}
 
 }

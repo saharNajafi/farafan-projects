@@ -212,5 +212,4 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 	}
 	//hossein 8feature end
 
-
 }

@@ -18,6 +18,28 @@ import java.util.List;
  */
 @Entity
 @Table(name = "EMST_CARD_REQUEST")
+@NamedQueries({
+        @NamedQuery(
+                name = "CardRequestTO.findCardRequestStateByNationalIdAndMobile",
+                query = " select crq " +
+                        " from CitizenTO ctz, CardRequestTO crq, CitizenInfoTO czi" +
+                        " where crq.citizen.nationalID =:nationalId" +
+                        " and czi.mobile =: mobile" +
+                        " and crq.citizen.id = ctz.id" +
+                        " and czi.citizen.id = ctz.id" +
+                        " order by crq.id"),
+        @NamedQuery(
+                name = "CardRequestTO.findCardRequestStateByNationalIdAndBirthCertificateSeries",
+                query = " select crq " +
+                        " from CardRequestTO crq, CitizenInfoTO czi" +
+                        " where crq.citizen.nationalID =:nationalId" +
+                        " and czi.birthCertificateSeries=:birthCertificateSeries" +
+                        " and crq.citizen.id = czi.id" +
+                        " order by crq.id")
+
+
+})
+
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD_REQUEST", allocationSize = 1)
 public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable {
 

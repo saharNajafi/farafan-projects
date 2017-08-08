@@ -12,11 +12,16 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_IMS_ESTELAM_IMAGE;
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_REGISTRATION;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getServiceJNDIName;
+import static com.gam.nocr.ems.data.enums.CardRequestState.VERIFIED_IMS;
+
+import com.gam.nocr.ems.util.LangUtil;
+import com.gam.nocr.ems.util.Utils;
 import gampooya.tools.security.SecurityContextService;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.annotation.Resource;
 import javax.ejb.Local;
@@ -113,7 +118,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		cardRequestStateList.add(CardRequestState.REGISTERED);
 		cardRequestStateList.add(CardRequestState.RECEIVED_BY_EMS);
 		cardRequestStateList.add(CardRequestState.PENDING_IMS);
-		cardRequestStateList.add(CardRequestState.VERIFIED_IMS);
+		cardRequestStateList.add(VERIFIED_IMS);
 		cardRequestStateList.add(CardRequestState.NOT_VERIFIED_BY_IMS);
 		cardRequestStateList.add(CardRequestState.RESERVED);
 		cardRequestStateList.add(CardRequestState.REFERRED_TO_CCOS);
@@ -121,7 +126,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		cardRequestStateList.add(CardRequestState.APPROVED);
 
 		List<Long> requestIds = new ArrayList<Long>();
-		
+
 		for (CardRequestTO cardRequestTO : getCardRequestDAO()
 				.fetchCardRequestByAction(from, 1,
 						CardRequestedAction.REPEAL_ACCEPTED)) {
@@ -132,20 +137,20 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 //				ArrayList<Long> repealedIdsList = new ArrayList<Long>(); 
 //				repealedIdsList.add(cardRequestTO.getId());
 //				getPortalManagementService().doActivityForUpdateState(repealedIdsList);
-				
+
 			} else {
 				throw new ServiceException(BizExceptionCode.CRE_015,
 						BizExceptionCode.CRE_015_MSG);
 			}
 		}
-		
+
 		return requestIds;
 	}
 
 	@Override
 	@Permissions(value = "ems_repealRequest")
 	public void doCardRequestRepealAction(Long cardRequestId,
-			CardRequestedAction cardRequestedAction, SystemId systemId)
+										  CardRequestedAction cardRequestedAction, SystemId systemId)
 			throws BaseException {
 		doRepealAction(cardRequestId, cardRequestedAction, systemId);
 	}
@@ -153,7 +158,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	@Override
 	@Permissions(value = "ems_transferRequestToNocr")
 	public void transferCardRequestToNocr(Long cardRequestId,
-			CardRequestedAction cardRequestedAction) throws BaseException {
+										  CardRequestedAction cardRequestedAction) throws BaseException {
 		if (cardRequestId == null)
 			throw new ServiceException(BizExceptionCode.CRE_005,
 					BizExceptionCode.CRE_001_MSG);
@@ -168,52 +173,52 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 				cardRequestId);
 
 		switch (cardRequestedAction) {
-		case TRANSFER_IN_PROGRESS:
-			Long previousOffice = cardRequestTO.getEnrollmentOffice().getId();
+			case TRANSFER_IN_PROGRESS:
+				Long previousOffice = cardRequestTO.getEnrollmentOffice().getId();
 
-			EnrollmentOfficeTO enrollmentOfficeTO = getSuperiorOffice(cardRequestTO
-					.getEnrollmentOffice().getId());
+				EnrollmentOfficeTO enrollmentOfficeTO = getSuperiorOffice(cardRequestTO
+						.getEnrollmentOffice().getId());
 
-			if (enrollmentOfficeTO == null)
-				throw new ServiceException(BizExceptionCode.CRE_009,
-						BizExceptionCode.CRE_009_MSG);
+				if (enrollmentOfficeTO == null)
+					throw new ServiceException(BizExceptionCode.CRE_009,
+							BizExceptionCode.CRE_009_MSG);
 
-			cardRequestTO.setEnrollmentOffice(enrollmentOfficeTO);
-			cardRequestTO.setOriginalCardRequestOfficeId(previousOffice);
+				cardRequestTO.setEnrollmentOffice(enrollmentOfficeTO);
+				cardRequestTO.setOriginalCardRequestOfficeId(previousOffice);
 
-			cardRequestDAO.update(cardRequestTO);
+				cardRequestDAO.update(cardRequestTO);
 
-			cardRequestHistoryDAO.create(cardRequestTO, null, SystemId.CCOS,
-					null, CardRequestHistoryAction.TRANSFER_TO_SUPERIOR_OFFICE,
-					getUserProfileTO().getUserName());
-			break;
-		case TRANSFER_UNDO:
-			CardRequestHistoryTO cardRequestHistoryTO = getCardRequestHistoryDAO()
-					.fetchLastHistoryRecord(cardRequestId);
-			if (cardRequestHistoryTO != null) {
-				if (!CardRequestHistoryAction.TRANSFER_TO_SUPERIOR_OFFICE
-						.equals(cardRequestHistoryTO
-								.getCardRequestHistoryAction()))
-					throw new ServiceException(BizExceptionCode.CRE_011,
-							BizExceptionCode.CRE_011_MSG);
-			}
+				cardRequestHistoryDAO.create(cardRequestTO, null, SystemId.CCOS,
+						null, CardRequestHistoryAction.TRANSFER_TO_SUPERIOR_OFFICE,
+						getUserProfileTO().getUserName());
+				break;
+			case TRANSFER_UNDO:
+				CardRequestHistoryTO cardRequestHistoryTO = getCardRequestHistoryDAO()
+						.fetchLastHistoryRecord(cardRequestId);
+				if (cardRequestHistoryTO != null) {
+					if (!CardRequestHistoryAction.TRANSFER_TO_SUPERIOR_OFFICE
+							.equals(cardRequestHistoryTO
+									.getCardRequestHistoryAction()))
+						throw new ServiceException(BizExceptionCode.CRE_011,
+								BizExceptionCode.CRE_011_MSG);
+				}
 
-			Long originOffice = cardRequestTO.getOriginalCardRequestOfficeId();
+				Long originOffice = cardRequestTO.getOriginalCardRequestOfficeId();
 
-			cardRequestTO.setOriginalCardRequestOfficeId(null);
-			cardRequestTO.setEnrollmentOffice(new EnrollmentOfficeTO(
-					originOffice));
+				cardRequestTO.setOriginalCardRequestOfficeId(null);
+				cardRequestTO.setEnrollmentOffice(new EnrollmentOfficeTO(
+						originOffice));
 
-			cardRequestDAO.update(cardRequestTO);
+				cardRequestDAO.update(cardRequestTO);
 
-			cardRequestHistoryDAO
-					.create(cardRequestTO,
-							null,
-							SystemId.CCOS,
-							null,
-							CardRequestHistoryAction.UNDO_TRANSFER_FROM_SUPERIOR_OFFICE,
-							getUserProfileTO().getUserName());
-			break;
+				cardRequestHistoryDAO
+						.create(cardRequestTO,
+								null,
+								SystemId.CCOS,
+								null,
+								CardRequestHistoryAction.UNDO_TRANSFER_FROM_SUPERIOR_OFFICE,
+								getUserProfileTO().getUserName());
+				break;
 		}
 	}
 
@@ -223,11 +228,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	}
 
 	private void doRepealAction(Long cardRequestId,
-			CardRequestedAction cardRequestedAction, SystemId systemId)
+								CardRequestedAction cardRequestedAction, SystemId systemId)
 			throws BaseException {
 		if (cardRequestId == null
 				&& !CardRequestedAction.REPEAL_COMPLETE
-						.equals(cardRequestedAction))
+				.equals(cardRequestedAction))
 			throw new ServiceException(BizExceptionCode.CRE_001,
 					BizExceptionCode.CRE_001_MSG);
 		if (cardRequestedAction == null)
@@ -235,29 +240,29 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.CRE_002_MSG);
 
 		switch (cardRequestedAction) {
-		case REPEALING:
-			getCardRequestDAO().doCardRequestRepealAction(cardRequestId,
-					cardRequestedAction);
-			getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),
-					cardRequestedAction.name(), systemId, null,
-					CardRequestHistoryAction.REPEAL_CARD_REQUEST,
-					getUserProfileTO().getUserName());
-			break;
-		case REPEAL_ACCEPTED:
-			getCardRequestDAO().doCardRequestRepealAction(cardRequestId,
-					cardRequestedAction);
-			getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),
-					cardRequestedAction.name(), systemId, null,
-					CardRequestHistoryAction.REPEAL_CARD_REQUEST,
-					getUserProfileTO().getUserName());
-			break;
-		case REPEAL_UNDO:
-			getCardRequestDAO().doCardRequestRepealAction(cardRequestId, null);
-			getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),
-					cardRequestedAction.name(), systemId, null,
-					CardRequestHistoryAction.REPEAL_CARD_REQUEST,
-					getUserProfileTO().getUserName());
-			break;
+			case REPEALING:
+				getCardRequestDAO().doCardRequestRepealAction(cardRequestId,
+						cardRequestedAction);
+				getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),
+						cardRequestedAction.name(), systemId, null,
+						CardRequestHistoryAction.REPEAL_CARD_REQUEST,
+						getUserProfileTO().getUserName());
+				break;
+			case REPEAL_ACCEPTED:
+				getCardRequestDAO().doCardRequestRepealAction(cardRequestId,
+						cardRequestedAction);
+				getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),
+						cardRequestedAction.name(), systemId, null,
+						CardRequestHistoryAction.REPEAL_CARD_REQUEST,
+						getUserProfileTO().getUserName());
+				break;
+			case REPEAL_UNDO:
+				getCardRequestDAO().doCardRequestRepealAction(cardRequestId, null);
+				getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),
+						cardRequestedAction.name(), systemId, null,
+						CardRequestHistoryAction.REPEAL_CARD_REQUEST,
+						getUserProfileTO().getUserName());
+				break;
 		}
 	}
 
@@ -298,7 +303,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 			if (CardRequestType.FIRST_CARD.equals(cardRequestTO.getType())
 					|| CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD
-							.equals(cardRequestTO.getType())) {
+					.equals(cardRequestTO.getType())) {
 				cardRequestTO.setState(CardRequestState.REPEALED);
 				cardRequestTO.setEnrollmentOffice(null);
 				cardRequestTO.setReservationDate(null);
@@ -344,18 +349,18 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		Boolean result = false;
 		for (BiometricTO biometricTO : biometricTOList) {
 			switch (biometricTO.getType()) {
-			case FING_ALL:
-				result = true;
-				break;
-			case FING_CANDIDATE:
-				result = true;
-				break;
-			case FING_MIN_1:
-				result = true;
-				break;
-			case FING_MIN_2:
-				result = true;
-				break;
+				case FING_ALL:
+					result = true;
+					break;
+				case FING_CANDIDATE:
+					result = true;
+					break;
+				case FING_MIN_1:
+					result = true;
+					break;
+				case FING_MIN_2:
+					result = true;
+					break;
 			}
 			if (result)
 				break;
@@ -367,18 +372,18 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		Boolean result = false;
 		for (BiometricTO biometricTO : biometricTOList) {
 			switch (biometricTO.getType()) {
-			case FACE_IMS:
-				result = true;
-				break;
-			case FACE_CHIP:
-				result = true;
-				break;
-			case FACE_MLI:
-				result = true;
-				break;
-			case FACE_LASER:
-				result = true;
-				break;
+				case FACE_IMS:
+					result = true;
+					break;
+				case FACE_CHIP:
+					result = true;
+					break;
+				case FACE_MLI:
+					result = true;
+					break;
+				case FACE_LASER:
+					result = true;
+					break;
 			}
 			if (result)
 				break;
@@ -399,21 +404,21 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		registrationService.setUserProfileTO(getUserProfileTO());
 		return registrationService;
 	}
-	
+
 	//Anbari
 	private PortalManagementService getPortalManagementService() throws BaseException {
-        PortalManagementService portalManagementService;
-        try {
-            portalManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames
-                    .getServiceJNDIName(EMSLogicalNames.SRV_PORTAL_MANAGEMENT), EmsUtil.getUserInfo(userProfileTO));
-        } catch (ServiceFactoryException e) {
-            throw new ServiceException(BizExceptionCode.RSI_075, BizExceptionCode.GLB_002_MSG, e,
-                    EMSLogicalNames.SRV_PORTAL_MANAGEMENT.split(","));
-        }
-        portalManagementService.setUserProfileTO(getUserProfileTO());
-        return portalManagementService;
-    }	
-	
+		PortalManagementService portalManagementService;
+		try {
+			portalManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames
+					.getServiceJNDIName(EMSLogicalNames.SRV_PORTAL_MANAGEMENT), EmsUtil.getUserInfo(userProfileTO));
+		} catch (ServiceFactoryException e) {
+			throw new ServiceException(BizExceptionCode.RSI_075, BizExceptionCode.GLB_002_MSG, e,
+					EMSLogicalNames.SRV_PORTAL_MANAGEMENT.split(","));
+		}
+		portalManagementService.setUserProfileTO(getUserProfileTO());
+		return portalManagementService;
+	}
+
 
 	private CardRequestDAO getCardRequestDAO() throws BaseException {
 		try {
@@ -458,7 +463,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					DAO_ENROLLMENT_OFFICE.split(","));
 		}
 	}
-	
+
 	private CitizenDAO getCitizenDAO() throws BaseException {
 		try {
 			return DAOFactoryProvider.getDAOFactory().getDAO(
@@ -468,14 +473,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.GLB_001_MSG, e);
 		}
 	}
-	
+
 	private PurgeHistoryDAO getPurgeHistoryDAO() throws BaseException {
-        try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_PURGE_HISTORY));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.CRE_036, BizExceptionCode.GLB_001_MSG,e);
-        }
-    }
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_PURGE_HISTORY));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(BizExceptionCode.CRE_036, BizExceptionCode.GLB_001_MSG, e);
+		}
+	}
 
 	@Override
 	public List<CardRequestVTO> fetchCardRequests(GeneralCriteria criteria)
@@ -542,183 +547,184 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			List<Long> requestIds) throws BaseException {
 		return getCardRequestDAO().getRequestListForUpdateState(requestIds);
 	}
-    
-  //Anbari: new method like completeRepealCardRequest
-    @TransactionAttribute(TransactionAttributeType.MANDATORY)
-    @Override
-    public void doRepealCardRequest(CardRequestTO cardRequestTO) throws BaseException {
-        if (cardRequestTO == null)
-            throw new ServiceException(BizExceptionCode.CRE_007, BizExceptionCode.CRE_007_MSG);
 
-        try {
-            if (EmsUtil.checkListSize(cardRequestTO.getCitizen().getCitizenInfo().getBiometrics())) {
-                if (faceInfoExists(cardRequestTO.getCitizen().getCitizenInfo().getBiometrics())) {
-                    getBiometricDAO().removeFaceInfoByCitizenId(cardRequestTO.getCitizen().getId());
-                }
+	//Anbari: new method like completeRepealCardRequest
+	@TransactionAttribute(TransactionAttributeType.MANDATORY)
+	@Override
+	public void doRepealCardRequest(CardRequestTO cardRequestTO) throws BaseException {
+		if (cardRequestTO == null)
+			throw new ServiceException(BizExceptionCode.CRE_007, BizExceptionCode.CRE_007_MSG);
 
-                if (fingerInfoExists(cardRequestTO.getCitizen().getCitizenInfo().getBiometrics())) {
-                    getBiometricDAO().removeFingersInfoByCitizenId(cardRequestTO.getCitizen().getId());
-                }
-            }
+		try {
+			if (EmsUtil.checkListSize(cardRequestTO.getCitizen().getCitizenInfo().getBiometrics())) {
+				if (faceInfoExists(cardRequestTO.getCitizen().getCitizenInfo().getBiometrics())) {
+					getBiometricDAO().removeFaceInfoByCitizenId(cardRequestTO.getCitizen().getId());
+				}
 
-            if (EmsUtil.checkListSize(cardRequestTO.getCitizen().getCitizenInfo().getDocuments())) {
-                getDocumentDAO().removeByRequestIdAndType(cardRequestTO.getId(), null);
-            }
+				if (fingerInfoExists(cardRequestTO.getCitizen().getCitizenInfo().getBiometrics())) {
+					getBiometricDAO().removeFingersInfoByCitizenId(cardRequestTO.getCitizen().getId());
+				}
+			}
 
-            CardRequestState previousState = cardRequestTO.getState();
-            cardRequestTO.setRequestedAction(null);
-            cardRequestTO.setAuthenticity(null);
-            cardRequestTO.setEnrolledDate(null);
-            cardRequestTO.setReEnrolledDate(null);
-            cardRequestTO.setOriginalCardRequestOfficeId(null);
+			if (EmsUtil.checkListSize(cardRequestTO.getCitizen().getCitizenInfo().getDocuments())) {
+				getDocumentDAO().removeByRequestIdAndType(cardRequestTO.getId(), null);
+			}
 
-            if (CardRequestType.FIRST_CARD.equals(cardRequestTO.getType()) ||
-                    CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD.equals(cardRequestTO.getType())) {
-                cardRequestTO.setState(CardRequestState.REPEALED);
-                cardRequestTO.setEnrollmentOffice(null);
-                cardRequestTO.setReservationDate(null);
+			CardRequestState previousState = cardRequestTO.getState();
+			cardRequestTO.setRequestedAction(null);
+			cardRequestTO.setAuthenticity(null);
+			cardRequestTO.setEnrolledDate(null);
+			cardRequestTO.setReEnrolledDate(null);
+			cardRequestTO.setOriginalCardRequestOfficeId(null);
 
-                getReservationDAO().deleteByCardRequest(cardRequestTO.getId());
+			if (CardRequestType.FIRST_CARD.equals(cardRequestTO.getType()) ||
+					CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD.equals(cardRequestTO.getType())) {
+				cardRequestTO.setState(CardRequestState.REPEALED);
+				cardRequestTO.setEnrollmentOffice(null);
+				cardRequestTO.setReservationDate(null);
 
-                getCardRequestHistoryDAO().create(cardRequestTO, "CardProductionError: Repeal",
-                        SystemId.EMS, null, CardRequestHistoryAction.REPEAL_CARD_REQUEST, null);
-                getCardRequestDAO().addRequestedSmsForNotification(cardRequestTO.getId(), SMSTypeState.REPEALED_FIRST_CARD);
-            } else {
-                cardRequestTO.setState(CardRequestState.REFERRED_TO_CCOS);
-                cardRequestTO.setEnrolledDate(new Date());
-                cardRequestTO.setReservationDate(EmsUtil.getDateAtMidnight(new Date()));
+				getReservationDAO().deleteByCardRequest(cardRequestTO.getId());
 
-                List<ReservationTO> reservationTOs = cardRequestTO.getReservations();
-                for (ReservationTO reservationTO : reservationTOs)
-                    reservationTO.setDate(EmsUtil.getDateAtMidnight(new Date()));
+				getCardRequestHistoryDAO().create(cardRequestTO, "CardProductionError: Repeal",
+						SystemId.EMS, null, CardRequestHistoryAction.REPEAL_CARD_REQUEST, null);
+				getCardRequestDAO().addRequestedSmsForNotification(cardRequestTO.getId(), SMSTypeState.REPEALED_FIRST_CARD);
+			} else {
+				cardRequestTO.setState(CardRequestState.REFERRED_TO_CCOS);
+				cardRequestTO.setEnrolledDate(new Date());
+				cardRequestTO.setReservationDate(EmsUtil.getDateAtMidnight(new Date()));
 
-                getCardRequestHistoryDAO().create(cardRequestTO, "Previous state was " + previousState,
-                        SystemId.EMS, null, CardRequestHistoryAction.REPEAL_CARD_REQUEST, null);
-                getCardRequestDAO().addRequestedSmsForNotification(cardRequestTO.getId(), SMSTypeState.REPEALED_OTHERS);
-            }
+				List<ReservationTO> reservationTOs = cardRequestTO.getReservations();
+				for (ReservationTO reservationTO : reservationTOs)
+					reservationTO.setDate(EmsUtil.getDateAtMidnight(new Date()));
 
-            getCardRequestDAO().update(cardRequestTO);
+				getCardRequestHistoryDAO().create(cardRequestTO, "Previous state was " + previousState,
+						SystemId.EMS, null, CardRequestHistoryAction.REPEAL_CARD_REQUEST, null);
+				getCardRequestDAO().addRequestedSmsForNotification(cardRequestTO.getId(), SMSTypeState.REPEALED_OTHERS);
+			}
 
-        } catch (BaseException e) {
-            logger.error(e.getExceptionCode(), e.getMessage(), e);
-            throw e;
-        } catch (Exception e) {
-            logger.error(BizExceptionCode.CRE_004, e.getMessage(), e);
-            throw new ServiceException(BizExceptionCode.CRE_004, BizExceptionCode.GLB_008_MSG, e);
-        }
-    }
-    
-    
-  //Anbari
-    private BiometricDAO getBiometricDAO() throws BaseException {
-        try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_BIOMETRIC));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.RSI_129, BizExceptionCode.GLB_001_MSG, e,
-                    DAO_BIOMETRIC.split(","));
-        }
-    }
-  //Anbari  
-    private DocumentDAO getDocumentDAO() throws BaseException {
-        try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_DOCUMENT));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.RSI_130, BizExceptionCode.GLB_001_MSG, e,
-                    DAO_DOCUMENT.split(","));
-        }
-    }
-    
-    //Madanipour
-    private ImsEstelamImageDAO getImsEstelamImageDAO() throws BaseException {
-        try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_IMS_ESTELAM_IMAGE));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.CRE_039, BizExceptionCode.GLB_001_MSG, e,
-                    DAO_IMS_ESTELAM_IMAGE.split(","));
-        }
-    }
-    
-    
- // Anbari
- 	@Override
- 	@Permissions(value = "ems_cmsErrorDeleteImage")
- 	public void doImageDeleteAction(List<Long> cardRequestIds, Long citizenId,
- 			CardRequestState state) throws BaseException {
- 		
- 		try {
- 			getBiometricDAO().removeFaceInfoByCitizenId(citizenId);
- 			sessionContext.getBusinessObject(CardRequestServiceLocal.class).updateCardRequestForDocumentAuthenticateState(cardRequestIds.get(0),state); 
- 			getCardRequestDAO().addRequestedSmsForNotification(cardRequestIds.get(0), SMSTypeState.DOCUMENT_AUTHENTICATED);
- 			
- 		} catch (Exception e) {			
- 			logger.error(BizExceptionCode.CRE_018, e.getMessage(), e);
- 			sessionContext.setRollbackOnly();
-             throw new ServiceException(BizExceptionCode.CRE_018, BizExceptionCode.GLB_008_MSG, e);
- 		}		
- 		
- 	}
- 	// Anbari
- 	@Override
- 	@Permissions(value = "ems_cmsErrorRetry")
- 	public void doCMSRetryAction(List<Long> cardRequestIds,
- 			CardRequestState state) throws BaseException {
- 		try {
- 			CardRequestTO cardRequestTO = getCardRequestDAO().fetchCardRequest(cardRequestIds.get(0));
- 			CardRequestState priviousState = cardRequestTO.getState();
- 			cardRequestTO.setState(state);
- 			getCardRequestDAO().update(cardRequestTO);
- 	        getCardRequestHistoryDAO().create(cardRequestTO, "CardProductionError: CMSRetry",
- 				        SystemId.EMS, null, CardRequestHistoryAction.APPROVED_BY_AFIS, null);			
- 		} catch (Exception e) {			
- 			logger.error(BizExceptionCode.CRE_019, e.getMessage(), e);
- 			sessionContext.setRollbackOnly();
-             throw new ServiceException(BizExceptionCode.CRE_019, BizExceptionCode.GLB_008_MSG, e);
- 		}		
- 		
- 	}
+			getCardRequestDAO().update(cardRequestTO);
 
- 	// Anbari
- 	@Override
- 	@Permissions(value = "ems_cmsErrorRepealed")
- 	public void doRepealCardAction(List<Long> cardRequestIds)
- 			throws BaseException {
- 		try {
- 			CardRequestTO cardRequestTO = getCardRequestDAO().fetchCardRequest(cardRequestIds.get(0));
- 			sessionContext.getBusinessObject(CardRequestServiceLocal.class).doRepealCardRequest(cardRequestTO);
- 			//getPortalManagementService().doActivityForUpdateState(cardRequestIds);
- 			//doRepealAction(cardRequestIds.get(0), CardRequestedAction.REPEAL_ACCEPTED,SystemId.EMS);		
- 			
- 		} catch (Exception e) {
- 			logger.error(BizExceptionCode.CRE_020, e.getMessage(), e);
- 			sessionContext.setRollbackOnly();
-             throw new ServiceException(BizExceptionCode.CRE_020, BizExceptionCode.GLB_008_MSG, e);
- 		}			
- 		
- 	}
- 	//Anbari
- 	@TransactionAttribute(TransactionAttributeType.MANDATORY)
- 	@Override
- 	public void updateCardRequestForDocumentAuthenticateState(Long cardRequestId,CardRequestState state) throws BaseException 
- 	{
- 		 CardRequestTO cardRequestTO = getCardRequestDAO().fetchCardRequest(cardRequestId);
- 		 CardRequestState priviousState = cardRequestTO.getState();
- 		 cardRequestTO.setState(state);
-          //cardRequestTO.setEnrolledDate(new Date());
- 		  cardRequestTO.setReEnrolledDate(new Date());
-         // cardRequestTO.setReservationDate(EmsUtil.getDateAtMidnight(new Date()));
+		} catch (BaseException e) {
+			logger.error(e.getExceptionCode(), e.getMessage(), e);
+			throw e;
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_004, e.getMessage(), e);
+			throw new ServiceException(BizExceptionCode.CRE_004, BizExceptionCode.GLB_008_MSG, e);
+		}
+	}
+
+
+	//Anbari
+	private BiometricDAO getBiometricDAO() throws BaseException {
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_BIOMETRIC));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(BizExceptionCode.RSI_129, BizExceptionCode.GLB_001_MSG, e,
+					DAO_BIOMETRIC.split(","));
+		}
+	}
+
+	//Anbari
+	private DocumentDAO getDocumentDAO() throws BaseException {
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_DOCUMENT));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(BizExceptionCode.RSI_130, BizExceptionCode.GLB_001_MSG, e,
+					DAO_DOCUMENT.split(","));
+		}
+	}
+
+	//Madanipour
+	private ImsEstelamImageDAO getImsEstelamImageDAO() throws BaseException {
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_IMS_ESTELAM_IMAGE));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(BizExceptionCode.CRE_039, BizExceptionCode.GLB_001_MSG, e,
+					DAO_IMS_ESTELAM_IMAGE.split(","));
+		}
+	}
+
+
+	// Anbari
+	@Override
+	@Permissions(value = "ems_cmsErrorDeleteImage")
+	public void doImageDeleteAction(List<Long> cardRequestIds, Long citizenId,
+									CardRequestState state) throws BaseException {
+
+		try {
+			getBiometricDAO().removeFaceInfoByCitizenId(citizenId);
+			sessionContext.getBusinessObject(CardRequestServiceLocal.class).updateCardRequestForDocumentAuthenticateState(cardRequestIds.get(0), state);
+			getCardRequestDAO().addRequestedSmsForNotification(cardRequestIds.get(0), SMSTypeState.DOCUMENT_AUTHENTICATED);
+
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_018, e.getMessage(), e);
+			sessionContext.setRollbackOnly();
+			throw new ServiceException(BizExceptionCode.CRE_018, BizExceptionCode.GLB_008_MSG, e);
+		}
+
+	}
+
+	// Anbari
+	@Override
+	@Permissions(value = "ems_cmsErrorRetry")
+	public void doCMSRetryAction(List<Long> cardRequestIds,
+								 CardRequestState state) throws BaseException {
+		try {
+			CardRequestTO cardRequestTO = getCardRequestDAO().fetchCardRequest(cardRequestIds.get(0));
+			CardRequestState priviousState = cardRequestTO.getState();
+			cardRequestTO.setState(state);
+			getCardRequestDAO().update(cardRequestTO);
+			getCardRequestHistoryDAO().create(cardRequestTO, "CardProductionError: CMSRetry",
+					SystemId.EMS, null, CardRequestHistoryAction.APPROVED_BY_AFIS, null);
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_019, e.getMessage(), e);
+			sessionContext.setRollbackOnly();
+			throw new ServiceException(BizExceptionCode.CRE_019, BizExceptionCode.GLB_008_MSG, e);
+		}
+
+	}
+
+	// Anbari
+	@Override
+	@Permissions(value = "ems_cmsErrorRepealed")
+	public void doRepealCardAction(List<Long> cardRequestIds)
+			throws BaseException {
+		try {
+			CardRequestTO cardRequestTO = getCardRequestDAO().fetchCardRequest(cardRequestIds.get(0));
+			sessionContext.getBusinessObject(CardRequestServiceLocal.class).doRepealCardRequest(cardRequestTO);
+			//getPortalManagementService().doActivityForUpdateState(cardRequestIds);
+			//doRepealAction(cardRequestIds.get(0), CardRequestedAction.REPEAL_ACCEPTED,SystemId.EMS);
+
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_020, e.getMessage(), e);
+			sessionContext.setRollbackOnly();
+			throw new ServiceException(BizExceptionCode.CRE_020, BizExceptionCode.GLB_008_MSG, e);
+		}
+
+	}
+
+	//Anbari
+	@TransactionAttribute(TransactionAttributeType.MANDATORY)
+	@Override
+	public void updateCardRequestForDocumentAuthenticateState(Long cardRequestId, CardRequestState state) throws BaseException {
+		CardRequestTO cardRequestTO = getCardRequestDAO().fetchCardRequest(cardRequestId);
+		CardRequestState priviousState = cardRequestTO.getState();
+		cardRequestTO.setState(state);
+		//cardRequestTO.setEnrolledDate(new Date());
+		cardRequestTO.setReEnrolledDate(new Date());
+		// cardRequestTO.setReservationDate(EmsUtil.getDateAtMidnight(new Date()));
 
 //          List<ReservationTO> reservationTOs = cardRequestTO.getReservations();
 //          for (ReservationTO reservationTO : reservationTOs)
 //              reservationTO.setDate(EmsUtil.getDateAtMidnight(new Date()));
-          getCardRequestDAO().update(cardRequestTO);
-          getCardRequestHistoryDAO().create(cardRequestTO, "CardProductionError: DeleteFace",
- 			        SystemId.EMS, null, CardRequestHistoryAction.COMPLETE_REGISTRATION, null);
-          
- 	}
-    
-    
-    
-    // ganjyar
+		getCardRequestDAO().update(cardRequestTO);
+		getCardRequestHistoryDAO().create(cardRequestTO, "CardProductionError: DeleteFace",
+				SystemId.EMS, null, CardRequestHistoryAction.COMPLETE_REGISTRATION, null);
+
+	}
+
+
+	// ganjyar
 	private IMSManagementService getIMSManagementService(
 			UserProfileTO userProfileTO) throws BaseException {
 		ServiceFactory factory = ServiceFactoryProvider.getServiceFactory();
@@ -735,7 +741,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		imsManagementService.setUserProfileTO(userProfileTO);
 		return imsManagementService;
 	}
-	
+
 // ganjyar
 //		@Override
 //		public void doEstelam2(Long cardRequestId) throws BaseException {
@@ -750,8 +756,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 //						BizExceptionCode.GLB_008_MSG, e);
 //			}
 //		}
-	
-//Commented By Anbari
+
+	//Commented By Anbari
 	@Override
 	public AccessProductionVTO getAccessProduction() throws BaseException {
 
@@ -759,17 +765,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			AccessProductionVTO accessProductionVTO = new AccessProductionVTO();
 
 			SecurityContextService securityContextService = new SecurityContextService();
-			if (securityContextService.hasAccess(userProfileTO.getUserName(),"ems_cmsErrorDeleteImage"))
-			{
+			if (securityContextService.hasAccess(userProfileTO.getUserName(), "ems_cmsErrorDeleteImage")) {
 				accessProductionVTO.setErrorDeleteImageAccess(true);
 
 			}
-			if (securityContextService.hasAccess(userProfileTO.getUserName(),"ems_cmsErrorRepealed"))
-			{
+			if (securityContextService.hasAccess(userProfileTO.getUserName(), "ems_cmsErrorRepealed")) {
 				accessProductionVTO.setErrorRepealedAccess(true);
 			}
-			if (securityContextService.hasAccess(userProfileTO.getUserName(),"ems_cmsErrorRetry"))
-			{
+			if (securityContextService.hasAccess(userProfileTO.getUserName(), "ems_cmsErrorRetry")) {
 
 				accessProductionVTO.setErrorRetryAccess(true);
 			}
@@ -782,7 +785,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 
 	}
-	
+
 	//Anbari -userPerm-commented
 	/*public AccessProductionVTO getAccessProduction() throws BaseException {
 
@@ -813,17 +816,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 	}
 	*/
-	
-	  //Anbari
-    private UserManagementService getUserManagementService() throws BaseException {
-        UserManagementService userManagementService;
-        try {
-            userManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_USER), null);
-        } catch (ServiceFactoryException e) {
-            throw new DelegatorException(BizExceptionCode.RMG_016, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_USER.split(","));
-        }
-        return userManagementService;
-    }
+
+	//Anbari
+	private UserManagementService getUserManagementService() throws BaseException {
+		UserManagementService userManagementService;
+		try {
+			userManagementService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_USER), null);
+		} catch (ServiceFactoryException e) {
+			throw new DelegatorException(BizExceptionCode.RMG_016, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_USER.split(","));
+		}
+		return userManagementService;
+	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Override
@@ -832,10 +835,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		cardRequestTO.setPriority(2);
 		getCardRequestDAO().update(cardRequestTO);
 	}
-/**
- * this method is used in change priority process .this method finds a card request by id 
- * @author ganjyar
- */
+
+	/**
+	 * this method is used in change priority process .this method finds a card request by id
+	 *
+	 * @author ganjyar
+	 */
 	@Override
 	public CardRequestVTO findCardRequestById(String cardRequestId)
 			throws BaseException {
@@ -864,8 +869,10 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.GLB_008_MSG, e);
 		}
 	}
+
 	/**
 	 * this method is used in change priority process. the given priority must be between 0 or 99
+	 *
 	 * @author ganjyar
 	 */
 	@Override
@@ -898,11 +905,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.GLB_008_MSG, e);
 		}
 	}
+
 	/**
 	 * this method is used to check a person has access to change priority
+	 *
 	 * @author ganjyar
 	 */
-	
+
 	@Override
 	public boolean hasChangePriorityAccess() throws BaseException {
 		try {
@@ -919,8 +928,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.GLB_008_MSG, e);
 		}
 	}
-	
-	
+
+
 	//*********** Anbari - userPerm-commented
 	/*
 	@Override
@@ -939,50 +948,49 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 	}
 	*/
-	
-	
+
 
 	// hossein 8 feature start
-		@Override
-		@Permissions(value = "ems_viewCardRequestInfo")
-		@BizLoggable(logAction = "LOAD", logEntityName = "REQUEST")
-		public CardRequestVTO viewCardRequestInfo(Long cardRequestId)
-				throws BaseException {
-			try {
-				CardRequestTO cardRequestTO = loadById(cardRequestId);
-				CardRequestVTO cardRequestVTO = CardRequestMapper
-						.convertToVTO(cardRequestTO);
-				return cardRequestVTO;
-			} catch (BaseException e) {
-				throw e;
-			} catch (Exception e) {
-				throw new ServiceException(BizExceptionCode.CRE_028,
-						BizExceptionCode.GLB_008_MSG, e);
-			}
-
+	@Override
+	@Permissions(value = "ems_viewCardRequestInfo")
+	@BizLoggable(logAction = "LOAD", logEntityName = "REQUEST")
+	public CardRequestVTO viewCardRequestInfo(Long cardRequestId)
+			throws BaseException {
+		try {
+			CardRequestTO cardRequestTO = loadById(cardRequestId);
+			CardRequestVTO cardRequestVTO = CardRequestMapper
+					.convertToVTO(cardRequestTO);
+			return cardRequestVTO;
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CRE_028,
+					BizExceptionCode.GLB_008_MSG, e);
 		}
 
-		private CardRequestTO loadById(Long cardRequestId) throws BaseException {
-			if (cardRequestId == 0) {
-				throw new ServiceException(BizExceptionCode.CRE_027,
-						BizExceptionCode.CRE_027_MSG);
-			}
-			CardRequestDAO cardRequestDAO = getCardRequestDAO();
-			CardRequestTO cardRequestTO = cardRequestDAO.find(CardRequestTO.class,
-					cardRequestId);
-			if (cardRequestTO == null) {
-				throw new ServiceException(BizExceptionCode.CRE_029,
-						BizExceptionCode.GLB_021_MSG);
-			} else {
-				return cardRequestTO;
-			}
+	}
+
+	private CardRequestTO loadById(Long cardRequestId) throws BaseException {
+		if (cardRequestId == 0) {
+			throw new ServiceException(BizExceptionCode.CRE_027,
+					BizExceptionCode.CRE_027_MSG);
 		}
-		// hossein 8 feature end
+		CardRequestDAO cardRequestDAO = getCardRequestDAO();
+		CardRequestTO cardRequestTO = cardRequestDAO.find(CardRequestTO.class,
+				cardRequestId);
+		if (cardRequestTO == null) {
+			throw new ServiceException(BizExceptionCode.CRE_029,
+					BizExceptionCode.GLB_021_MSG);
+		} else {
+			return cardRequestTO;
+		}
+	}
+	// hossein 8 feature end
 
 	//Madanipour
 	@Override
 	public List<Long> fetchReservedRequest(Integer numberOfRequestToFetch,
-			Integer dayInterval) throws BaseException {
+										   Integer dayInterval) throws BaseException {
 		try {
 			List<Long> ids = getCardRequestDAO().fetchReservedRequest(
 					numberOfRequestToFetch, dayInterval);
@@ -999,9 +1007,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	@Override
 	public void addRequestedSmsForReservedReq(Long cardRequestId)
 			throws BaseException {
-		
-		try{
-			
+
+		try {
+
 			getCardRequestDAO().addRequestedSmsForReservedReq(cardRequestId);
 			getCardRequestDAO().updateCardRequestRequestedSmsStatus(cardRequestId);
 		} catch (BaseException e) {
@@ -1011,13 +1019,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					BizExceptionCode.GLB_008_MSG, e);
 		}
 
-		
+
 	}
+
 	/**
 	 * this method is called in unsuccessful card delivery process when
-	 * card state is 'stopped'.then revokes card and repeals card request.  
+	 * card state is 'stopped'.then revokes card and repeals card request.
+	 *
 	 * @author ganjyar
-	 * 
 	 */
 	@Override
 	public void repealCardRequestInDelivery(CardRequestTO cardRequestTO)
@@ -1034,22 +1043,22 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			throw new ServiceException(BizExceptionCode.CRE_028,
 					BizExceptionCode.GLB_008_MSG, e);
 		}
-		
+
 	}
-	
-	
+
+
 	/**
-	 * this fetches citizen ids belongs to card requests must be purged.  
+	 * this fetches citizen ids belongs to card requests must be purged.
+	 *
 	 * @author ganjyar
-	 * 
 	 */
 	@Override
 	public List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit)
 			throws BaseException {
 		try {
-			
+
 			return getCardRequestDAO().getCitizenIdsForPurgeBioAndDocs(fetchLimit);
-			
+
 		} catch (BaseException e) {
 			throw e;
 		} catch (Exception e) {
@@ -1061,7 +1070,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 	@Override
 	public void purgeBiometricsAndDocuments(Long citizenId,
-			String savePurgeHistory) throws BaseException {
+											String savePurgeHistory) throws BaseException {
 		try {
 			getBiometricDAO().emptyBiometricData(citizenId);
 			getDocumentDAO().emptyDocumentData(citizenId);
@@ -1091,28 +1100,28 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 	}
 
-	
-	private void deleteImsEstelamImage(Long id) throws BaseException{
+
+	private void deleteImsEstelamImage(Long id) throws BaseException {
 		try {
-			
+
 			ImsEstelamImageTO imsEstelamImageTO = getImsEstelamImageDAO().find(ImsEstelamImageTO.class, id);
-			
-			if(imsEstelamImageTO != null)
+
+			if (imsEstelamImageTO != null)
 				getImsEstelamImageDAO().delete(imsEstelamImageTO);
-			
+
 		} catch (BaseException e) {
 			logger.error(e.getExceptionCode(), e.getMessage(), e);
 
-		}catch (Exception e) {
-			logger.error(BizExceptionCode.CRE_040,e.getMessage(), e);
+		} catch (Exception e) {
+			logger.error(BizExceptionCode.CRE_040, e.getMessage(), e);
 		}
-		
+
 	}
-	
+
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void savePurgeHistory(Long citizenId, PurgeState purgeState,
-			String metaData) throws BaseException {
+								 String metaData) throws BaseException {
 		try {
 			PurgeHistoryTO purgeHistoryTO = new PurgeHistoryTO();
 			CitizenTO citizenTO = new CitizenTO();
@@ -1126,13 +1135,158 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			purgeHistoryTO.setMetaData(metaData);
 			getPurgeHistoryDAO().create(purgeHistoryTO);
 
-		}  catch (BaseException e) {
+		} catch (BaseException e) {
 			logger.error(e.getExceptionCode(), e.getMessage(), e);
 		} catch (Exception e) {
-			logger.error(BizExceptionCode.CRE_036,e.getMessage(), e);
+			logger.error(BizExceptionCode.CRE_036, e.getMessage(), e);
 		}
 
 	}
-	
+
+	@Override
+	public void findCardRequestStateByTrackingId(
+			String trackingId) throws BaseException {
+		try {
+			getCardRequestDAO()
+					.findCardRequestStateByTrackingId(trackingId);
+		} catch (BaseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public String findCardRequestStateByNationalIdAndMobile(
+			String nationalId, String mobile) throws BaseException {
+		ResourceBundle labels = ResourceBundle.getBundle("ussd-request-state");
+		String state = "";
+		try {
+			nationalId = LangUtil.getEnglishNumber(nationalId);
+			if (!Utils.isValidNin(nationalId)) {
+				state = labels.getString("state.notValidNationalId");
+			} else {
+				CardRequestTO cardRequestTO = getCardRequestDAO()
+						.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
+
+				if (cardRequestTO == null) {
+					state = "-1";
+				}
+			}
+		} catch (BaseException e) {
+			e.printStackTrace();
+		}
+		return state;
+	}
+
+	@Override
+	public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
+			String nationalId, String birthCertificateSeries) throws  BaseException {
+		ResourceBundle labels = ResourceBundle.getBundle("ussd-request-state");
+		String state = "";
+		try {
+			nationalId = LangUtil.getEnglishNumber(nationalId);
+			if (!Utils.isValidNin(nationalId)) {
+				state = labels.getString("state.notValidNationalId");
+			} else if (birthCertificateSeries == null){
+				state = labels.getString("state.nullBirthCertificateSeries");
+			}
+			else {
+				CardRequestTO cardRequestTO = getCardRequestDAO()
+						.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalId, birthCertificateSeries);
+				if (cardRequestTO == null){
+					state = labels.getString("state.inValidCtzInfo");
+				}
+
+				switch (cardRequestTO.getState()) {
+
+					case VERIFIED_IMS:
+						state =  labels.getString("state.registered");
+						break;
+
+					case PENDING_FOR_EMS:
+					case RECEIVED_BY_EMS:
+					case PENDING_IMS:
+
+						state =  labels.getString("state.pendingForEmsOrIms");
+						break;
+
+					case NOT_VERIFIED_BY_IMS:
+						state =  labels.getString("state.notVerifiedByEms");
+						break;
+
+					case RESERVED:
+						state =  labels.getString("state.reserved");
+						break;
+
+					case DOCUMENT_AUTHENTICATED:
+					case SCANNED_DOCUMENTS:
+					case SCANNED_FACE:
+					case SCANNED_FINGER:
+					case SCANNED_DOC_FACE:
+					case SCANNED_DOC_FINGER:
+					case SCANNED_FACE_FINGER:
+						state =  labels.getString("state.scanned");
+						break;
+
+					case APPROVED:
+					case SENT_TO_AFIS:
+						state =  labels.getString("state.approvedSendToAFIS");
+						break;
+
+					case APPROVED_BY_AFIS:
+						state =  labels.getString("state.approvedByAFIS");
+						break;
+
+					case PENDING_ISSUANCE:
+					case PENDING_TO_DELIVER_BY_CMS:
+						state =  labels.getString("state.pendingIssuance");
+						break;
+
+					case ISSUED:
+						state =  labels.getString("state.issued");
+						break;
+
+					case READY_TO_DELIVER:
+						state =  labels.getString("state.readyToDeliver");
+						break;
+
+					case DELIVERED:
+						state =  labels.getString("state.deliver");
+						break;
+
+					case UNSUCCESSFUL_DELIVERY:
+					case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
+					case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE:
+						state =  labels.getString("state.unsuccessfulDeliveryDamageBiometric");
+						break;
+
+					case STOPPED:
+						state =  labels.getString("state.stopped");
+						break;
+
+					case REPEALED:
+						state =  labels.getString("state.repealed");
+						break;
+
+					case CMS_ERROR:
+					case CMS_PRODUCTION_ERROR:
+						state =  labels.getString("state.errorProductionError");
+						break;
+
+					case IMS_ERROR:
+						state =  labels.getString("state.imsError");
+						break;
+
+					case REFERRED_TO_CCOS:
+						state =  labels.getString("state.referredToCcos");
+						break;
+				}
+			}
+
+		}catch (BaseException e) {
+			e.printStackTrace();
+		}
+		return state;
+
+	}
 
 }
