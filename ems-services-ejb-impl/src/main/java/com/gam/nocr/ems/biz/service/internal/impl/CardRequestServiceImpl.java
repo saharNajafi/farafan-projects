@@ -1144,14 +1144,20 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	}
 
 	@Override
-	public void findCardRequestStateByTrackingId(
+	public String findCardRequestStateByTrackingId(
 			String trackingId) throws BaseException {
+		ResourceBundle labels = ResourceBundle.getBundle("ussd-request-state");
+		String state = "";
 		try {
-			getCardRequestDAO()
+			CardRequestTO cardRequestTO =  getCardRequestDAO()
 					.findCardRequestStateByTrackingId(trackingId);
+			if (cardRequestTO == null) {
+			state =	labels.getString("state.invalidTrackingId");
+			}
 		} catch (BaseException e) {
 			e.printStackTrace();
 		}
+		return state;
 	}
 
 	@Override
@@ -1162,7 +1168,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		try {
 			nationalId = LangUtil.getEnglishNumber(nationalId);
 			if (!Utils.isValidNin(nationalId)) {
-				state = labels.getString("state.notValidNationalId");
+				state = labels.getString("state.invalidNationalId");
 			} else {
 				CardRequestTO cardRequestTO = getCardRequestDAO()
 						.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
@@ -1186,7 +1192,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			nationalId = LangUtil.getEnglishNumber(nationalId);
 			if (!Utils.isValidNin(nationalId)) {
 				state = labels.getString("state.notValidNationalId");
-			} else if (birthCertificateSeries == null){
+			}
+			else if (birthCertificateSeries == null){
 				state = labels.getString("state.nullBirthCertificateSeries");
 			}
 			else {

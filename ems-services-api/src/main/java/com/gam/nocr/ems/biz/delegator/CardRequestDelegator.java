@@ -342,9 +342,9 @@ public class CardRequestDelegator implements Delegator {
 	 *
 	 */
 
-	public void findCardRequestStateByTrackingId(
+	public String findCardRequestStateByTrackingId(
 			String trackingId) throws BaseException{
-		getService(null)
+	return getService(null)
 					.findCardRequestStateByTrackingId(trackingId);
 	}
 

@@ -103,7 +103,7 @@ public interface CardRequestService extends Service {
 	
 	public void savePurgeHistory(Long citizenId, PurgeState purgeState,String metaData) throws BaseException;
 
-	public  void findCardRequestStateByTrackingId(
+	public  String findCardRequestStateByTrackingId(
 			String trackingId) throws  BaseException;
 
 	public  String findCardRequestStateByNationalIdAndMobile(

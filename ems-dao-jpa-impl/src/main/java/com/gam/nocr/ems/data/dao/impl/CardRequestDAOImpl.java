@@ -4773,15 +4773,12 @@ CardRequestDAOLocal, CardRequestDAORemote {
 
 
 	@Override
-	public void findCardRequestStateByTrackingId(
+	public CardRequestTO findCardRequestStateByTrackingId(
 			String trackingId)throws BaseException{
 
-		em.createQuery("select crq "
-						+ " from CardRequestTO crq"
-						+ " where crq.trackingID =: CRQ_TRACKING_ID",
-						CardRequestTO.class)
-				.setParameter("CRQ_TRACKING_ID", trackingId)
-				.getResultList();
+		return (CardRequestTO) em.createNamedQuery("CardRequestTO.findCardRequestStateByTrackingId")
+				.setParameter("trackingId", trackingId)
+				.getResultList().get(0);
 	}
 
 	@Override

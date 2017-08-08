@@ -54,6 +54,19 @@ public class CardRequestStateWS {
         } catch (Exception e) {
             throw new InternalException(WebExceptionCode.RQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.RQW_003), e);
         }
+    }
 
+    @WebMethod
+    public String checkTrackingId(
+            @WebParam(name = "TrackingId", targetNamespace = "") @XmlElement(required = true, nillable = false) String trackingId
+    ) throws InternalException
+    {
+        try {
+            return cardRequestDelegator.findCardRequestStateByTrackingId(trackingId);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.RQW_003), e);
+        }
     }
 }
