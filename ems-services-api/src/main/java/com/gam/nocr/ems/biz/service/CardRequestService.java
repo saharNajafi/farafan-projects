@@ -102,5 +102,14 @@ public interface CardRequestService extends Service {
 	public void purgeBiometricsAndDocuments(Long citizenId,String savePurgeHistory) throws BaseException;
 	
 	public void savePurgeHistory(Long citizenId, PurgeState purgeState,String metaData) throws BaseException;
-	
+
+	public  void findCardRequestStateByTrackingId(
+			String trackingId) throws  BaseException;
+
+	public  String findCardRequestStateByNationalIdAndMobile(
+			String nationalId, String mobile) throws  BaseException ;
+
+	public  String findCardRequestStateByNationalIdAndBirthCertificateSeries(
+			String nationalId, String birthCertificateSeries) throws  BaseException ;
+
 }

@@ -205,11 +205,11 @@
         </listener-class>
     </listener>
 
-    <listener>
-        <listener-class>
-            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
-        </listener-class>
-    </listener>
+    <!--<listener>-->
+        <!--<listener-class>-->
+            <!--com.sun.xml.ws.transport.http.servlet.WSServletContextListener-->
+        <!--</listener-class>-->
+    <!--</listener>-->
 
     <listener>
         <listener-class>
@@ -238,17 +238,17 @@
 		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>UserManagementWS</servlet-name>
-        <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
-        </servlet-class>
-        <init-param>
-			<param-name>wl-dispatch-policy</param-name>
-			<param-value>CcosDefaultWM</param-value>
-		</init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>UserManagementWS</servlet-name>-->
+        <!--<servlet-class>-->
+            <!--com.sun.xml.ws.transport.http.servlet.WSServlet-->
+        <!--</servlet-class>-->
+        <!--<init-param>-->
+			<!--<param-name>wl-dispatch-policy</param-name>-->
+			<!--<param-value>CcosDefaultWM</param-value>-->
+		<!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
      <servlet>
         <servlet-name>EmksWS</servlet-name>
         <servlet-class>
@@ -440,10 +440,10 @@
         <servlet-name>RegistrationVipWS</servlet-name>
         <url-pattern>/services/registrationvip</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserManagementWS</servlet-name>
-        <url-pattern>/services/usermanagement</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>UserManagementWS</servlet-name>-->
+        <!--<url-pattern>/services/usermanagement</url-pattern>-->
+    <!--</servlet-mapping>-->
      <servlet-mapping>
         <servlet-name>EmksWS</servlet-name>
         <url-pattern>/services/emks</url-pattern>

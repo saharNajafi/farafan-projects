@@ -9,6 +9,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.xml.namespace.QName;
 
+import com.gam.nocr.ems.biz.service.external.client.gaas.*;
 import org.hsqldb.lib.HashMap;
 import org.slf4j.Logger;
 
@@ -20,18 +21,6 @@ import com.gam.commons.core.biz.service.AbstractService;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.biz.service.external.client.gaas.Access;
-import com.gam.nocr.ems.biz.service.external.client.gaas.AccessWrapper;
-import com.gam.nocr.ems.biz.service.external.client.gaas.CASWebService;
-import com.gam.nocr.ems.biz.service.external.client.gaas.CASWebServiceInterface;
-import com.gam.nocr.ems.biz.service.external.client.gaas.GAASWebService;
-import com.gam.nocr.ems.biz.service.external.client.gaas.GAASWebServiceFaultException;
-import com.gam.nocr.ems.biz.service.external.client.gaas.GAASWebServiceInterface;
-import com.gam.nocr.ems.biz.service.external.client.gaas.LoginIP;
-import com.gam.nocr.ems.biz.service.external.client.gaas.Role;
-import com.gam.nocr.ems.biz.service.external.client.gaas.RoleWrapper;
-import com.gam.nocr.ems.biz.service.external.client.gaas.Schedule;
-import com.gam.nocr.ems.biz.service.external.client.gaas.User;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;

@@ -483,5 +483,13 @@ public interface CardRequestDAO extends EmsBaseDAO<CardRequestTO> {
 	
 	List<Long> getCitizenIdsForPurgeBioAndDocs(Integer fetchLimit) throws BaseException;
 
+	void findCardRequestStateByTrackingId(
+			String trackingId)throws BaseException;
+
+	CardRequestTO findCardRequestStateByNationalIdAndMobile(
+			String nationalId, String mobile)throws BaseException;
+
+	CardRequestTO findCardRequestStateByNationalIdAndBirthCertificateSeries(
+			String nationalId, String birthCertificateSeries)throws BaseException;
 
 }

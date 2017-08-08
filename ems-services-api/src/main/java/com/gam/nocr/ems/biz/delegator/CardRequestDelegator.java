@@ -12,6 +12,7 @@ import com.gam.nocr.ems.biz.service.CardManagementService;
 import com.gam.nocr.ems.biz.service.CardRequestService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.BatchDispatchInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
@@ -331,4 +332,53 @@ public class CardRequestDelegator implements Delegator {
 		getService(null).purgeBiometricsAndDocuments(citizenId,savePurgeHistory);
 
 	}
+
+
+	/**
+	 * this method is used to find card request state
+	 * @param trackingId
+	 * @author Sahar Najafi
+	 * @return citizenGuidance
+	 *
+	 */
+
+	public void findCardRequestStateByTrackingId(
+			String trackingId) throws BaseException{
+		getService(null)
+					.findCardRequestStateByTrackingId(trackingId);
+	}
+
+	/**
+	 * this method is used to find card request state
+	 * @param nationalId
+	 * @param mobile
+	 * @author Sahar Najafi
+	 * @return card request state
+	 *
+	 */
+
+
+	public String findCardRequestStateByNationalIdAndMobile(
+			String nationalId, String mobile) throws BaseException{
+		return  getService(null)
+					.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
+	}
+
+	/**
+	 * this method is used to find card request state
+	 * @param nationalId
+	 * @param birthCertificateSeries
+	 * @author Sahar Najafi
+	 * @return citizenGuidance
+	 *
+	 */
+
+
+	public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
+			String nationalId, String birthCertificateSeries) throws BaseException{
+		return  getService(null)
+					.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalId, birthCertificateSeries);
+	}
+
+
 }
