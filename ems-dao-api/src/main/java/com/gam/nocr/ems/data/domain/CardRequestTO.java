@@ -24,7 +24,7 @@ import java.util.List;
                 query = " select crq " +
                         " from CitizenTO ctz, CardRequestTO crq, CitizenInfoTO czi" +
                         " where crq.citizen.nationalID =:nationalId" +
-                        " and czi.mobile =: mobile" +
+                        " and czi.mobile =:mobile" +
                         " and crq.citizen.id = ctz.id" +
                         " and czi.citizen.id = ctz.id" +
                         " order by crq.id"),
@@ -35,6 +35,12 @@ import java.util.List;
                         " where crq.citizen.nationalID =:nationalId" +
                         " and czi.birthCertificateSeries=:birthCertificateSeries" +
                         " and crq.citizen.id = czi.id" +
+                        " order by crq.id"),
+        @NamedQuery(
+                name = "CardRequestTO.findCardRequestStateByTrackingId",
+                query = " select crq " +
+                        " from CardRequestTO crq" +
+                        " where crq.trackingID=:trackingId" +
                         " order by crq.id")
 
 
