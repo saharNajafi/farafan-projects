@@ -441,6 +441,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>ussd-stub</artifactId>
+				<version>${external-ussd.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>ims-stub</groupId>
 				<artifactId>offline</artifactId>
 				<version>${ims.version}</version>
@@ -680,6 +686,7 @@
         <external-gaas.version>2.0.0-SNAPSHOT</external-gaas.version>
         <external-portal.version>5.0.0-SNAPSHOT</external-portal.version>
         <external-emks.version>2.0.0-SNAPSHOT</external-emks.version>
+        <external-ussd.version>2.0.0-SNAPSHOT</external-ussd.version>
         <external-gam-ims.version>1.0.0-SNAPSHOT</external-gam-ims.version>
         <external-matiran-ims.version>1.0.0</external-matiran-ims.version>
         <external-nocr-sms.version>1.0.0-SNAPSHOT</external-nocr-sms.version>
@@ -711,7 +718,7 @@
 		<json.version>20090211</json.version>
 		<coherence.version>3.7.1.0</coherence.version>
 		<javaee-web-api.version>6.0</javaee-web-api.version>
-		<jaxws.version>2.2.10</jaxws.version>
+		<jaxws.version>2.2.5</jaxws.version>
 		<struts2-core.version>2.3.4</struts2-core.version>
 		<oracle.version>11.2.0</oracle.version>
 		<mysql.version>5.1.9</mysql.version>
