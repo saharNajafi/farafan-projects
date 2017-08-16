@@ -1204,6 +1204,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			} else if (birthCertificateSeries == null) {
 				state = labels.getString("state.nullBirthCertificateSeries");
 			} else {
+
 				CardRequestTO cardRequestTO =
 						getCardRequestDAO().findCardRequestStateByNationalId(nationalId);
 				if(cardRequestTO != null) {
