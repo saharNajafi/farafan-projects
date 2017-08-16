@@ -28,7 +28,7 @@ public class CardRequestStateWS {
     private CardRequestDelegator cardRequestDelegator = new CardRequestDelegator();
 
     @WebMethod
-    public String cardRequestState(
+    public String checkCardRequestState(
             @WebParam(name = "NationalId", targetNamespace = "") @XmlElement(required = true, nillable = false) String nationalId,
             @WebParam(name = "Mobile", targetNamespace = "") @XmlElement(required = true, nillable = false) String mobile
             ) throws InternalException {
@@ -44,11 +44,13 @@ public class CardRequestStateWS {
     @WebMethod
     public String checkBirthCertificateSerial(
             @WebParam(name = "NationalId", targetNamespace = "") @XmlElement(required = true, nillable = false) String nationalID,
-            @WebParam(name = "BirthCertificateSeries", targetNamespace = "") @XmlElement(required = true, nillable = false) String birthCertificateSeries
+            @WebParam(name = "BirthCertificateSeries", targetNamespace = "") @XmlElement(required = true, nillable = false) String birthCertificateSeries,
+            @WebParam(name = "CitizenBirthDate", targetNamespace = "") @XmlElement(required = true, nillable = false) String citizenBirthDate
     ) throws InternalException
     {
         try {
-            return cardRequestDelegator.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalID, birthCertificateSeries);
+            return cardRequestDelegator.findCardRequestStateByNationalIdAndBirthCertificateSeries(
+                    nationalID, birthCertificateSeries, citizenBirthDate);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {

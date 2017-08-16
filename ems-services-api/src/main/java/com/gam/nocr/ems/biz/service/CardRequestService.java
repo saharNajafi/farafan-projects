@@ -110,6 +110,6 @@ public interface CardRequestService extends Service {
 			String nationalId, String mobile) throws  BaseException ;
 
 	public  String findCardRequestStateByNationalIdAndBirthCertificateSeries(
-			String nationalId, String birthCertificateSeries) throws  BaseException ;
+			String nationalId, String birthCertificateSeries, String citizenBirthDate) throws  BaseException ;
 
 }

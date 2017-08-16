@@ -24,6 +24,7 @@
         <!--<module>ems-gam-ims-ear</module>-->
         <!--<module>online-sc</module>-->      
         <!--<module>gaas-stub</module>-->
+        <!--<module>ussd-stub</module>-->
     </modules>
 
     <properties>
