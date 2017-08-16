@@ -338,7 +338,7 @@ public class CardRequestDelegator implements Delegator {
 	 * this method is used to find card request state
 	 * @param trackingId
 	 * @author Sahar Najafi
-	 * @return citizenGuidance
+	 * @return card request state
 	 *
 	 */
 
@@ -369,15 +369,15 @@ public class CardRequestDelegator implements Delegator {
 	 * @param nationalId
 	 * @param birthCertificateSeries
 	 * @author Sahar Najafi
-	 * @return citizenGuidance
+	 * @return card request state
 	 *
 	 */
 
 
 	public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
-			String nationalId, String birthCertificateSeries) throws BaseException{
+			String nationalId, String birthCertificateSeries, String citizenBirthDate) throws BaseException{
 		return  getService(null)
-					.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalId, birthCertificateSeries);
+					.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalId, birthCertificateSeries, citizenBirthDate);
 	}
 
 

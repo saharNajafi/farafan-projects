@@ -13,11 +13,16 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_REGISTRATION;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getServiceJNDIName;
 import static com.gam.nocr.ems.data.enums.CardRequestState.VERIFIED_IMS;
-
+import com.gam.commons.profile.ProfileManager;
+import javax.xml.namespace.QName;
+import com.gam.nocr.ems.biz.service.external.client.ussd.*;
 import com.gam.nocr.ems.util.LangUtil;
 import com.gam.nocr.ems.util.Utils;
 import gampooya.tools.security.SecurityContextService;
+import com.gam.nocr.ems.config.ProfileHelper;
+import servicePortUtil.ServicePorts;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -100,6 +105,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 	@Resource
 	SessionContext sessionContext;
+	ResourceBundle labels = null;
 
 	@Override
 	public Long findRequestCountByAction(CardRequestedAction cardRequestedAction)
@@ -1146,7 +1152,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	@Override
 	public String findCardRequestStateByTrackingId(
 			String trackingId) throws BaseException {
-		ResourceBundle labels = ResourceBundle.getBundle("ussd-request-state");
+		labels = ResourceBundle.getBundle("ussd-request-state");
 		String state = "";
 		try {
 			CardRequestTO cardRequestTO =  getCardRequestDAO()
@@ -1154,6 +1160,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			if (cardRequestTO == null) {
 			state =	labels.getString("state.invalidTrackingId");
 			}
+			else
+			state = getState(cardRequestTO.getState());
 		} catch (BaseException e) {
 			e.printStackTrace();
 		}
@@ -1163,7 +1171,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	@Override
 	public String findCardRequestStateByNationalIdAndMobile(
 			String nationalId, String mobile) throws BaseException {
-		ResourceBundle labels = ResourceBundle.getBundle("ussd-request-state");
+		labels = ResourceBundle.getBundle("ussd-request-state");
 		String state = "";
 		try {
 			nationalId = LangUtil.getEnglishNumber(nationalId);
@@ -1171,11 +1179,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 				state = labels.getString("state.invalidNationalId");
 			} else {
 				CardRequestTO cardRequestTO = getCardRequestDAO()
-						.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
-
-				if (cardRequestTO == null) {
+						.findCardRequestStateByNationalId(nationalId);
+				if (cardRequestTO == null || !cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile)) {
 					state = "-1";
-				}
+				} else
+					state = getState(cardRequestTO.getState());
 			}
 		} catch (BaseException e) {
 			e.printStackTrace();
@@ -1185,115 +1193,166 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 	@Override
 	public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
-			String nationalId, String birthCertificateSeries) throws  BaseException {
-		ResourceBundle labels = ResourceBundle.getBundle("ussd-request-state");
+			String nationalId, String birthCertificateSeries, String citizenBirthDate) throws  BaseException {
+		labels = ResourceBundle.getBundle("ussd-request-state");
+		boolean checkWhitelist;
 		String state = "";
 		try {
 			nationalId = LangUtil.getEnglishNumber(nationalId);
 			if (!Utils.isValidNin(nationalId)) {
-				state = labels.getString("state.notValidNationalId");
-			}
-			else if (birthCertificateSeries == null){
+				state = labels.getString("state.invalidNationalId");
+			} else if (birthCertificateSeries == null) {
 				state = labels.getString("state.nullBirthCertificateSeries");
-			}
-			else {
-				CardRequestTO cardRequestTO = getCardRequestDAO()
-						.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalId, birthCertificateSeries);
-				if (cardRequestTO == null){
-					state = labels.getString("state.inValidCtzInfo");
+			} else {
+				CardRequestTO cardRequestTO =
+						getCardRequestDAO().findCardRequestStateByNationalId(nationalId);
+				if(cardRequestTO != null) {
+					if (!cardRequestTO.getCitizen().getCitizenInfo()
+							.getBirthCertificateSeries().equals(birthCertificateSeries))
+						state = labels.getString("state.invalidBirthCertificateSeries");
+					else
+						state = getState(cardRequestTO.getState());
 				}
-
-				switch (cardRequestTO.getState()) {
-
-					case VERIFIED_IMS:
-						state =  labels.getString("state.registered");
-						break;
-
-					case PENDING_FOR_EMS:
-					case RECEIVED_BY_EMS:
-					case PENDING_IMS:
-
-						state =  labels.getString("state.pendingForEmsOrIms");
-						break;
-
-					case NOT_VERIFIED_BY_IMS:
-						state =  labels.getString("state.notVerifiedByEms");
-						break;
-
-					case RESERVED:
-						state =  labels.getString("state.reserved");
-						break;
-
-					case DOCUMENT_AUTHENTICATED:
-					case SCANNED_DOCUMENTS:
-					case SCANNED_FACE:
-					case SCANNED_FINGER:
-					case SCANNED_DOC_FACE:
-					case SCANNED_DOC_FINGER:
-					case SCANNED_FACE_FINGER:
-						state =  labels.getString("state.scanned");
-						break;
-
-					case APPROVED:
-					case SENT_TO_AFIS:
-						state =  labels.getString("state.approvedSendToAFIS");
-						break;
-
-					case APPROVED_BY_AFIS:
-						state =  labels.getString("state.approvedByAFIS");
-						break;
-
-					case PENDING_ISSUANCE:
-					case PENDING_TO_DELIVER_BY_CMS:
-						state =  labels.getString("state.pendingIssuance");
-						break;
-
-					case ISSUED:
-						state =  labels.getString("state.issued");
-						break;
-
-					case READY_TO_DELIVER:
-						state =  labels.getString("state.readyToDeliver");
-						break;
-
-					case DELIVERED:
-						state =  labels.getString("state.deliver");
-						break;
-
-					case UNSUCCESSFUL_DELIVERY:
-					case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
-					case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE:
-						state =  labels.getString("state.unsuccessfulDeliveryDamageBiometric");
-						break;
-
-					case STOPPED:
-						state =  labels.getString("state.stopped");
-						break;
-
-					case REPEALED:
-						state =  labels.getString("state.repealed");
-						break;
-
-					case CMS_ERROR:
-					case CMS_PRODUCTION_ERROR:
-						state =  labels.getString("state.errorProductionError");
-						break;
-
-					case IMS_ERROR:
-						state =  labels.getString("state.imsError");
-						break;
-
-					case REFERRED_TO_CCOS:
-						state =  labels.getString("state.referredToCcos");
-						break;
+				if (cardRequestTO == null) {
+					String checkCrq = getService().checkCardRequestState(nationalId);
+					if (checkCrq == null) {
+						 checkWhitelist =
+								getService().checkWhiteList(citizenBirthDate, nationalId, birthCertificateSeries);
+						if (checkWhitelist){
+							state = labels.getString("state.inWhiteList");
+						}else {
+							if(checkCrq.equals("notPaid"))
+								state = labels.getString("state.notPaid");
+							if(checkCrq.equals("notReserved"))
+								state = labels.getString("state.notReserved");
+//							if(checkCrq.state.equals("enableEnrollmentOffice"))
+//								state = labels.getString("state.enableEnrollmentOffice");
+						}
+//
+					}else {
+						state = labels.getString("state.notPaid");
+					}
 				}
 			}
 
 		}catch (BaseException e) {
 			e.printStackTrace();
 		}
+		catch (BaseException_Exception e) {
+			e.printStackTrace();
+		} catch (ExternalInterfaceException_Exception e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException_Exception e) {
+			e.printStackTrace();
+		}
 		return state;
 
 	}
 
+	private String getState(CardRequestState cardRequestState) {
+		String state = "";
+		switch (cardRequestState) {
+			case VERIFIED_IMS:
+				state = labels.getString("state.registered");
+				break;
+
+			case PENDING_FOR_EMS:
+			case RECEIVED_BY_EMS:
+			case PENDING_IMS:
+
+				state = labels.getString("state.pendingForEmsOrIms");
+				break;
+
+			case NOT_VERIFIED_BY_IMS:
+				state = labels.getString("state.notVerifiedByEms");
+				break;
+
+			case RESERVED:
+				state = labels.getString("state.reserved");
+				break;
+
+			case DOCUMENT_AUTHENTICATED:
+			case SCANNED_DOCUMENTS:
+			case SCANNED_FACE:
+			case SCANNED_FINGER:
+			case SCANNED_DOC_FACE:
+			case SCANNED_DOC_FINGER:
+			case SCANNED_FACE_FINGER:
+				state = labels.getString("state.scanned");
+				break;
+
+			case APPROVED:
+			case SENT_TO_AFIS:
+				state = labels.getString("state.approvedSendToAFIS");
+				break;
+
+			case APPROVED_BY_AFIS:
+				state = labels.getString("state.approvedByAFIS");
+				break;
+
+			case PENDING_ISSUANCE:
+			case PENDING_TO_DELIVER_BY_CMS:
+				state = labels.getString("state.pendingIssuance");
+				break;
+
+			case ISSUED:
+				state = labels.getString("state.issued");
+				break;
+
+			case READY_TO_DELIVER:
+				state = labels.getString("state.readyToDeliver");
+				break;
+
+			case DELIVERED:
+				state = labels.getString("state.deliver");
+				break;
+
+			case UNSUCCESSFUL_DELIVERY:
+			case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
+			case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE:
+				state = labels.getString("state.unsuccessfulDeliveryDamageBiometric");
+				break;
+
+			case STOPPED:
+				state = labels.getString("state.stopped");
+				break;
+
+			case REPEALED:
+				state = labels.getString("state.repealed");
+				break;
+
+			case CMS_ERROR:
+			case CMS_PRODUCTION_ERROR:
+				state = labels.getString("state.errorProductionError");
+				break;
+
+			case IMS_ERROR:
+				state = labels.getString("state.imsError");
+				break;
+
+			case REFERRED_TO_CCOS:
+				state = labels.getString("state.referredToCcos");
+				break;
+		}
+		return state;
+	}
+
+	public CardRequestStateWS getService() throws BaseException {
+		try {
+			ProfileManager pm = ProfileHelper.getProfileManager();
+
+			String wsdlUrl = "";
+			String namespace = "";
+			String serviceName = "cardRequestStateWS";
+			CardRequestStateWS port = ServicePorts.getCardRequestStatePort();
+			if (port == null) {
+				port = new CardRequestStateWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getCardRequestStatePort();
+				ServicePorts.setCardRequestStatePort(port);
+			}
+			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+			return port;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
+		}
+	}
 }

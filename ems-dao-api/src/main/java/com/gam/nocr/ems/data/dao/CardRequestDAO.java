@@ -492,4 +492,7 @@ public interface CardRequestDAO extends EmsBaseDAO<CardRequestTO> {
 	CardRequestTO findCardRequestStateByNationalIdAndBirthCertificateSeries(
 			String nationalId, String birthCertificateSeries)throws BaseException;
 
+	CardRequestTO findCardRequestStateByNationalId(String nationalId)throws BaseException;
+
+
 }

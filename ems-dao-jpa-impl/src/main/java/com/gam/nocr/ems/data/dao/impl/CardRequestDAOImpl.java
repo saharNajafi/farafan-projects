@@ -4778,7 +4778,7 @@ CardRequestDAOLocal, CardRequestDAORemote {
 
 		return (CardRequestTO) em.createNamedQuery("CardRequestTO.findCardRequestStateByTrackingId")
 				.setParameter("trackingId", trackingId)
-				.getResultList().get(0);
+				.getResultList();
 	}
 
 	@Override
@@ -4788,17 +4788,26 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		return (CardRequestTO) em.createNamedQuery("CardRequestTO.findCardRequestStateByNationalIdAndMobile")
 				.setParameter("nationalId", nationalId)
 				.setParameter("mobile", mobile)
-				.getResultList().get(0);
+				.getResultList();
 	}
 
 	@Override
 	public CardRequestTO findCardRequestStateByNationalIdAndBirthCertificateSeries(
 			String nationalId, String birthCertificateSeries)throws BaseException{
 
-		return (CardRequestTO) em.createNamedQuery("CardRequestTO.findCardRequestStateByNationalIdAndBirthCertificateSeries")
+		return (CardRequestTO) em.createNamedQuery(
+				"CardRequestTO.findCardRequestStateByNationalIdAndBirthCertificateSeries")
 				.setParameter("nationalId", nationalId)
 				.setParameter("birthCertificateSeries", birthCertificateSeries)
-				.getResultList().get(0);
+				.getResultList();
+	}
+
+	@Override
+	public CardRequestTO findCardRequestStateByNationalId(String nationalId)throws BaseException{
+		return (CardRequestTO) em.createNamedQuery(
+				"CardRequestTO.findCardRequestStateByNationalId")
+				.setParameter("nationalId", nationalId)
+				.getResultList();
 	}
 
 }
