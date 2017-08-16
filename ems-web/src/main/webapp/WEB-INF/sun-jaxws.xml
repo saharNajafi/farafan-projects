@@ -73,8 +73,8 @@
             url-pattern="/services/tokenws/*"/>
 
     <endpoint
-            name="TokenWS"
-            implementation="com.gam.nocr.ems.web.ws.TokenWS"
+            name="CardRequestStateWS"
+            implementation="com.gam.nocr.ems.web.ws.CardRequestStateWS"
             url-pattern="/services/cardRequestState"/>
 
 </endpoints>
