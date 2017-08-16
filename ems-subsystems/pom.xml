@@ -25,6 +25,7 @@
         <!--<module>online-sc</module>-->      
         <!--<module>gaas-stub</module>-->
         <!--<module>ussd-stub</module>-->
+
     </modules>
 
     <properties>
