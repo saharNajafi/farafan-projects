@@ -20,7 +20,7 @@ import javax.xml.ws.WebFault;
 
 
 @WebFault(faultBean = "com.gam.nocr.ems.web.ws.InternalException")
-@WebService(serviceName = "CardRequestStateWS", portName = "CardRequestStatePort", targetNamespace = "http://portalws.ws.web.portal.nocr.farafan.com/")
+@WebService(serviceName = "CardRequestStateWS", portName = "CardRequestStatePort", targetNamespace = "http://ws.web.ems.nocr.gam.com/")
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 @Internal
 public class CardRequestStateWS {
