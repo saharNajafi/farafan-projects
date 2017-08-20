@@ -16,17 +16,22 @@ import static com.gam.nocr.ems.data.enums.CardRequestState.VERIFIED_IMS;
 import com.gam.commons.profile.ProfileManager;
 import javax.xml.namespace.QName;
 import com.gam.nocr.ems.biz.service.external.client.ussd.*;
+import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.util.LangUtil;
 import com.gam.nocr.ems.util.Utils;
+import gampooya.tools.date.DateUtil;
 import gampooya.tools.security.SecurityContextService;
 import com.gam.nocr.ems.config.ProfileHelper;
 import servicePortUtil.ServicePorts;
 
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.text.DateFormat;
+import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.ejb.Local;
@@ -35,6 +40,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.xml.ws.Service;
 
 import org.slf4j.Logger;
 
@@ -57,15 +63,6 @@ import com.gam.nocr.ems.biz.service.RegistrationService;
 import com.gam.nocr.ems.biz.service.UserManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.dao.BiometricDAO;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.CitizenDAO;
-import com.gam.nocr.ems.data.dao.DocumentDAO;
-import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
-import com.gam.nocr.ems.data.dao.ImsEstelamImageDAO;
-import com.gam.nocr.ems.data.dao.PurgeHistoryDAO;
-import com.gam.nocr.ems.data.dao.ReservationDAO;
 import com.gam.nocr.ems.data.domain.BiometricTO;
 import com.gam.nocr.ems.data.domain.CardRequestHistoryTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
@@ -102,7 +99,10 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 	private static final Logger logger = BaseLog
 			.getLogger(CardRequestServiceImpl.class);
-
+	private static final String DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL
+			= "http://10.7.17.28:7001/CardRequestStateWS?WSDL";
+	private static final String DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE
+			= "http://portalws.ws.web.portal.nocr.gam.com/";
 	@Resource
 	SessionContext sessionContext;
 	ResourceBundle labels = null;
@@ -485,6 +485,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			return DAOFactoryProvider.getDAOFactory().getDAO(getDaoJNDIName(DAO_PURGE_HISTORY));
 		} catch (DAOFactoryException e) {
 			throw new ServiceException(BizExceptionCode.CRE_036, BizExceptionCode.GLB_001_MSG, e);
+		}
+	}
+
+	private RatingInfoDAO getRatingInfoDAO() throws BaseException {
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(
+					EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_RATING_INFO));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(
+					BizExceptionCode.RMS_006, BizExceptionCode.GLB_001_MSG, e, EMSLogicalNames.DAO_RATING_INFO.split(",")
+			);
 		}
 	}
 
@@ -1160,7 +1171,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			if (cardRequestTO == null) {
 			state =	labels.getString("state.invalidTrackingId");
 			}
-			else
+			else if(cardRequestTO.getState() == CardRequestState.RESERVED)
+				state = findEnrollmentOffice(cardRequestTO);
 			state = getState(cardRequestTO.getState());
 		} catch (BaseException e) {
 			e.printStackTrace();
@@ -1180,9 +1192,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			} else {
 				CardRequestTO cardRequestTO = getCardRequestDAO()
 						.findCardRequestStateByNationalId(nationalId);
-				if (cardRequestTO == null || !cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile)) {
+				if (cardRequestTO == null || !cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
 					state = "-1";
-				} else
+				 if(cardRequestTO.getState() == CardRequestState.RESERVED)
+					state = findEnrollmentOffice(cardRequestTO);
+				else
 					state = getState(cardRequestTO.getState());
 			}
 		} catch (BaseException e) {
@@ -1195,7 +1209,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
 			String nationalId, String birthCertificateSeries, String citizenBirthDate) throws  BaseException {
 		labels = ResourceBundle.getBundle("ussd-request-state");
-		boolean checkWhitelist;
+		boolean checkWhiteList;
 		String state = "";
 		try {
 			nationalId = LangUtil.getEnglishNumber(nationalId);
@@ -1204,37 +1218,33 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			} else if (birthCertificateSeries == null) {
 				state = labels.getString("state.nullBirthCertificateSeries");
 			} else {
-
 				CardRequestTO cardRequestTO =
 						getCardRequestDAO().findCardRequestStateByNationalId(nationalId);
 				if(cardRequestTO != null) {
 					if (!cardRequestTO.getCitizen().getCitizenInfo()
 							.getBirthCertificateSeries().equals(birthCertificateSeries))
 						state = labels.getString("state.invalidBirthCertificateSeries");
-					else
-						state = getState(cardRequestTO.getState());
+
+					else {
+							state = getState(cardRequestTO.getState());
+					}
 				}
 				if (cardRequestTO == null) {
 					String checkCrq = getService().checkCardRequestState(nationalId);
 					if (checkCrq == null) {
-						 checkWhitelist =
+						checkWhiteList =
 								getService().checkWhiteList(citizenBirthDate, nationalId, birthCertificateSeries);
-						if (checkWhitelist){
+						if (checkWhiteList) {
 							state = labels.getString("state.inWhiteList");
-						}else {
+						}
+					}if(checkCrq != null) {
 							if(checkCrq.equals("notPaid"))
 								state = labels.getString("state.notPaid");
 							if(checkCrq.equals("notReserved"))
 								state = labels.getString("state.notReserved");
-//							if(checkCrq.state.equals("enableEnrollmentOffice"))
-//								state = labels.getString("state.enableEnrollmentOffice");
 						}
-//
-					}else {
-						state = labels.getString("state.notPaid");
 					}
 				}
-			}
 
 		}catch (BaseException e) {
 			e.printStackTrace();
@@ -1248,6 +1258,60 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 		return state;
 
+	}
+
+
+	private Boolean findReserved(CardRequestTO cardRequestTO) throws BaseException{
+		Boolean state = false;
+		try {
+			if(cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V
+					&& cardRequestTO.isPaid() == true
+					&& compareDate(cardRequestTO.getReservationDate())
+//					&& getPaymentDAO().findPaymentByCardRequest(cardRequestTO) !=null
+					&& getReservationDAO().findReservationByCardRequestId(
+					cardRequestTO.getId()) !=null)
+				state = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (BaseException e) {
+			e.printStackTrace();
+		}
+		return state;
+	}
+
+
+	private String findEnrollmentOffice(CardRequestTO cardRequestTO) {
+		String state = null;
+		EnrollmentOfficeTO enrollmentOfficeTO ;
+		try {
+			if(findReserved(cardRequestTO)) {
+				enrollmentOfficeTO = getEnrollmentOfficeDAO().findEnrollmentOfficeById(
+						cardRequestTO.getEnrollmentOffice().getId());
+				if (getRatingInfoDAO().findByRatingInfoId(
+						enrollmentOfficeTO.getRatingInfo()
+								.getId()).getClazz().equals("0"))
+					state = labels.getString("state.disableEnrollmentOffice");
+				else {
+					state = MessageFormat.format(labels.getString(
+							"state.enableEnrollmentOffice")
+							, cardRequestTO.getReservationDate()
+							, enrollmentOfficeTO.getAddress());
+				}
+			}
+		} catch (BaseException e) {
+			e.printStackTrace();
+		}
+		return state;
+	}
+
+	private boolean compareDate(Date reservationDate) throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		return dateFormat.parse(
+				reservationDate.toString().substring(0, 10)
+		).before(dateFormat.parse(
+				DateUtil.convert(dateFormat.parse(date.toString()
+				), DateUtil.JALALI)));
 	}
 
 	private String getState(CardRequestState cardRequestState) {
@@ -1338,22 +1402,52 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		return state;
 	}
 
-	public CardRequestStateWS getService() throws BaseException {
-		try {
-			ProfileManager pm = ProfileHelper.getProfileManager();
+	public CardRequestStateWS getService() throws BaseException{
+//		try {
+//			ProfileManager pm = ProfileHelper.getProfileManager();
+//
+//			String wsdlUrl = (String) pm.getProfile(
+//					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_ENDPOINT, true, null, null);
+//			String namespace = (String) pm.getProfile(
+//					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_NAMESPACE, true, null, null);
+//			if (wsdlUrl == null)
+//				wsdlUrl = DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL;
+//			if (namespace == null)
+//				namespace = DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE;
+//			String serviceName = "CardRequestStateWS";
+//			CardRequestStateWS port = ServicePorts.getCardRequestStatePort();
+//			if (port == null) {
+//				port = new CardRequestStateWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getCardRequestStatePort();
+//				ServicePorts.setCardRequestStatePort(port);
+//			}
+//			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+//			return port;
+//		} catch (Exception e) {
+//			throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
+//		}
 
-			String wsdlUrl = "";
-			String namespace = "";
-			String serviceName = "cardRequestStateWS";
-			CardRequestStateWS port = ServicePorts.getCardRequestStatePort();
-			if (port == null) {
-				port = new CardRequestStateWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getCardRequestStatePort();
-				ServicePorts.setCardRequestStatePort(port);
-			}
-			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-			return port;
-		} catch (Exception e) {
-			throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
+		URL url = null;
+		try {
+			url = new URL("http://10.7.17.69:7002/CardRequestStateWS?WSDL");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
+
+		//1st argument service URI, refer to wsdl document above
+		//2nd argument is service name, refer to wsdl document above
+		QName qname = new QName("http://portalws.ws.web.portal.nocr.gam.com/", "CardRequestStateWS");
+
+		Service service = Service.create(url, qname);
+
+		CardRequestStateWS hello = service.getPort(CardRequestStateWS.class);
+
+		try {
+			System.out.println(hello.checkCardRequestState("2580151192"));
+		} catch (ExternalInterfaceException_Exception e) {
+			e.printStackTrace();
+		}
+
+		return hello;
+
 	}
 }
