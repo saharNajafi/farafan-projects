@@ -100,7 +100,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	private static final Logger logger = BaseLog
 			.getLogger(CardRequestServiceImpl.class);
 	private static final String DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL
-			= "http://10.7.17.28:7001/CardRequestStateWS?WSDL";
+			= "http://10.7.17.28:7001/ems-web/services/cardRequestState?wsdl";
 	private static final String DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE
 			= "http://portalws.ws.web.portal.nocr.gam.com/";
 	@Resource
@@ -1403,51 +1403,28 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	}
 
 	public CardRequestStateWS getService() throws BaseException{
-//		try {
-//			ProfileManager pm = ProfileHelper.getProfileManager();
-//
-//			String wsdlUrl = (String) pm.getProfile(
-//					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_ENDPOINT, true, null, null);
-//			String namespace = (String) pm.getProfile(
-//					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_NAMESPACE, true, null, null);
-//			if (wsdlUrl == null)
-//				wsdlUrl = DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL;
-//			if (namespace == null)
-//				namespace = DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE;
-//			String serviceName = "CardRequestStateWS";
-//			CardRequestStateWS port = ServicePorts.getCardRequestStatePort();
-//			if (port == null) {
-//				port = new CardRequestStateWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getCardRequestStatePort();
-//				ServicePorts.setCardRequestStatePort(port);
-//			}
-//			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-//			return port;
-//		} catch (Exception e) {
-//			throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
-//		}
-
-		URL url = null;
 		try {
-			url = new URL("http://10.7.17.69:7002/CardRequestStateWS?WSDL");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			ProfileManager pm = ProfileHelper.getProfileManager();
+
+			String wsdlUrl = (String) pm.getProfile(
+					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_ENDPOINT, true, null, null);
+			String namespace = (String) pm.getProfile(
+					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_NAMESPACE, true, null, null);
+			if (wsdlUrl == null)
+				wsdlUrl = DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL;
+			if (namespace == null)
+				namespace = DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE;
+			String serviceName = "CardRequestStateWS";
+			CardRequestStateWS port = ServicePorts.getCardRequestStatePort();
+			if (port == null) {
+				port = new CardRequestStateWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getCardRequestStatePort();
+				ServicePorts.setCardRequestStatePort(port);
+			}
+			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+			return port;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
 		}
-
-		//1st argument service URI, refer to wsdl document above
-		//2nd argument is service name, refer to wsdl document above
-		QName qname = new QName("http://portalws.ws.web.portal.nocr.gam.com/", "CardRequestStateWS");
-
-		Service service = Service.create(url, qname);
-
-		CardRequestStateWS hello = service.getPort(CardRequestStateWS.class);
-
-		try {
-			System.out.println(hello.checkCardRequestState("2580151192"));
-		} catch (ExternalInterfaceException_Exception e) {
-			e.printStackTrace();
-		}
-
-		return hello;
 
 	}
 }
