@@ -12,6 +12,14 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "EMST_RATING_INFO")
+@NamedQueries({
+        @NamedQuery(
+                name = "RatingInfoTO.findByRatingInfoId",
+                query = " select rat " +
+                        " from RatingInfoTO rat" +
+                        " where rat.id =:id"
+        )
+})
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_RATING_INFO", allocationSize = 1)
 public class RatingInfoTO extends ExtEntityTO {
 

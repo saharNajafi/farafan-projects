@@ -11,4 +11,6 @@ public interface ReservationDAO extends EmsBaseDAO<ReservationTO> {
     public ReservationTO fetchReservationByPortalReservationId(Long portalReservationId) throws BaseException;
 
     public Boolean deleteByCardRequest(Long cardRequestId) throws BaseException;
+
+    public ReservationTO findReservationByCardRequestId(Long cardRequestId) throws BaseException;
 }

@@ -14,6 +14,14 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "EMST_RESERVATION")
+@NamedQueries({
+        @NamedQuery(
+                name = "ReservationTO.findReservationByCardRequestId",
+                query = " select rat " +
+                        " from ReservationTO rat" +
+                        " where rat.cardRequest.id =:id"
+        )
+})
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_RESERVATION", allocationSize = 1)
 public class ReservationTO extends ExtEntityTO implements JSONable {
 

@@ -167,7 +167,9 @@ public class ProfileKeyName {
     public static final String KEY_NUMBER_OF_PORTAL_RESERVATION_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".numberOfPortalReservationAsyncCallCount";
     public static final String KEY_NUMBER_OF_Estelam2_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".numberOfEstelam2AsyncCallCount";
     public static final String KEY_NUMBER_OF_EOF_TO_UPDATE = PORTAL_PROFILE_ROOT + ".numberOfEOFToUpdate";
-    
+    public static final String KEY_CARD_REQUEST_STATE_WS_ENDPOINT = PORTAL_PROFILE_ROOT + ".cardRequestStateWSEndPoint";
+    public static final String KEY_CARD_REQUEST_STATE_WS_NAMESPACE = PORTAL_PROFILE_ROOT + ".cardRequestStateWSNameSpace";
+
     //Emks
     public static final String KEY_EMKS_ENDPOINT = EMS_PROFILE_ROOT + ".emksEndpoint";
     public static final String KEY_EMKS_NAMESPACE = EMS_PROFILE_ROOT + ".emksNamespace";

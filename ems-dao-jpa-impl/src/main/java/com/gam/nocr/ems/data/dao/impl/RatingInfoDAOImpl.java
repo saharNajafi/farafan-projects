@@ -185,4 +185,15 @@ public class RatingInfoDAOImpl extends EmsBaseDAOImpl<RatingInfoTO> implements R
             throw new DAOException(DataExceptionCode.RTI_015, DataExceptionCode.GLB_006_MSG, e);
         }
     }
+
+    @Override
+    public RatingInfoTO findByRatingInfoId(Long id)  {
+        List<RatingInfoTO> ratingInfoTOList;
+         ratingInfoTOList = em.createNamedQuery(
+                "RatingInfoTO.findByRatingInfoId")
+                .setParameter("id", id)
+                .getResultList();
+
+        return ratingInfoTOList != null ? ratingInfoTOList.get(0) : null;
+    }
 }
