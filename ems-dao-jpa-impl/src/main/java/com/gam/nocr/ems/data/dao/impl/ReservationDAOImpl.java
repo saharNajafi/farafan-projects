@@ -153,4 +153,18 @@ public class ReservationDAOImpl extends EmsBaseDAOImpl<ReservationTO> implements
         }
         return result == 1;
     }
+
+    @Override
+    public ReservationTO findReservationByCardRequestId(Long cardRequestId) throws BaseException {
+        List<ReservationTO> reservationVTOList;
+        try {
+            reservationVTOList =
+                    em.createNamedQuery("ReservationTO.findReservationByCardRequestId")
+                    .setParameter("cardRequestId", cardRequestId)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.RSI_004, DataExceptionCode.GLB_005_MSG, e);
+        }
+        return reservationVTOList != null ? reservationVTOList.get(0) : null;
+    }
 }

@@ -16,6 +16,15 @@ import java.util.List;
  */
 @Entity
 @Table(name = "EMST_ENROLLMENT_OFFICE")
+@NamedQueries({
+        @NamedQuery(
+                name ="EnrollmentOfficeTO.findEnrollmentOfficeById",
+                query = " select eof" +
+                        " from EnrollmentOfficeTO eof" +
+                        " where eof.id =:eofId"
+        )
+})
+
 @PrimaryKeyJoinColumn(name = "EOF_ID", referencedColumnName = "DEP_ID")
 public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 

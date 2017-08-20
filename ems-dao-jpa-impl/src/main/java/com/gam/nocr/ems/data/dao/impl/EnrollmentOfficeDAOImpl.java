@@ -540,6 +540,21 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 					new String[] { EMSLogicalNames.DAO_PERSON });
 		}
 	}
-	
+
+	@Override
+	public EnrollmentOfficeTO findEnrollmentOfficeById(Long eofId)
+			throws BaseException {
+		List<EnrollmentOfficeTO> enrollmentOfficeList;
+		try {
+			enrollmentOfficeList = em.createNamedQuery("EnrollmentOfficeTO.findEnrollmentOfficeById")
+					.setParameter("eofId", eofId)
+					.getResultList();
+		}catch (Exception e) {
+				throw new DAOException(DataExceptionCode.ENI_013,
+						DataExceptionCode.GLB_005_MSG, e);
+			}
+		return enrollmentOfficeList != null ? enrollmentOfficeList.get(0) : null;
+
+	}
 	
 }
