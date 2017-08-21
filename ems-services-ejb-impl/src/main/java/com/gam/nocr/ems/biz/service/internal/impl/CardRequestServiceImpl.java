@@ -1194,10 +1194,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 						.findCardRequestStateByNationalId(nationalId);
 				if (cardRequestTO == null || !cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
 					state = "-1";
-				 if(cardRequestTO.getState() == CardRequestState.RESERVED)
-					state = findEnrollmentOffice(cardRequestTO);
-				else
-					state = getState(cardRequestTO.getState());
+				if (cardRequestTO != null) {
+					if (cardRequestTO.getState() == CardRequestState.RESERVED)
+						state = findEnrollmentOffice(cardRequestTO);
+					else
+						state = getState(cardRequestTO.getState());
+				}
 			}
 		} catch (BaseException e) {
 			e.printStackTrace();
@@ -1267,7 +1269,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			if(cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V
 					&& cardRequestTO.isPaid() == true
 					&& compareDate(cardRequestTO.getReservationDate())
-//					&& getPaymentDAO().findPaymentByCardRequest(cardRequestTO) !=null
 					&& getReservationDAO().findReservationByCardRequestId(
 					cardRequestTO.getId()) !=null)
 				state = true;
@@ -1294,7 +1295,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 				else {
 					state = MessageFormat.format(labels.getString(
 							"state.enableEnrollmentOffice")
-							, cardRequestTO.getReservationDate()
+							, DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI)
 							, enrollmentOfficeTO.getAddress());
 				}
 			}
@@ -1305,13 +1306,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	}
 
 	private boolean compareDate(Date reservationDate) throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		return dateFormat.parse(
-				reservationDate.toString().substring(0, 10)
-		).before(dateFormat.parse(
-				DateUtil.convert(dateFormat.parse(date.toString()
-				), DateUtil.JALALI)));
+		Date now = new Date();
+		return reservationDate.after(now);
 	}
 
 	private String getState(CardRequestState cardRequestState) {

@@ -19,7 +19,7 @@ import java.util.Date;
                 name = "ReservationTO.findReservationByCardRequestId",
                 query = " select rat " +
                         " from ReservationTO rat" +
-                        " where rat.cardRequest.id =:id"
+                        " where rat.cardRequest.id =:cardRequestId"
         )
 })
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_RESERVATION", allocationSize = 1)
