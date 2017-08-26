@@ -1192,13 +1192,16 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			} else {
 				CardRequestTO cardRequestTO = getCardRequestDAO()
 						.findCardRequestStateByNationalId(nationalId);
-				if (cardRequestTO == null || !cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
+				if (cardRequestTO == null)
 					state = "-1";
-				if (cardRequestTO != null) {
-					if (cardRequestTO.getState() == CardRequestState.RESERVED)
-						state = findEnrollmentOffice(cardRequestTO);
-					else
-						state = getState(cardRequestTO.getState());
+				else if (cardRequestTO != null) {
+					if (cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile)) {
+						if (cardRequestTO.getState() == CardRequestState.RESERVED)
+							state = findEnrollmentOffice(cardRequestTO);
+						else
+							state = getState(cardRequestTO.getState());
+					}else if (!cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
+						state = "-1";
 				}
 			}
 		} catch (BaseException e) {
@@ -1228,6 +1231,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 						state = labels.getString("state.invalidBirthCertificateSeries");
 
 					else {
+						if (cardRequestTO.getState() == CardRequestState.RESERVED)
+							state = findEnrollmentOffice(cardRequestTO);
+						else
 							state = getState(cardRequestTO.getState());
 					}
 				}
@@ -1238,7 +1244,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 								getService().checkWhiteList(citizenBirthDate, nationalId, birthCertificateSeries);
 						if (checkWhiteList) {
 							state = labels.getString("state.inWhiteList");
-						}
+						}else if(!checkWhiteList)
+							state = labels.getString("state.NotInWhiteList");
 					}if(checkCrq != null) {
 							if(checkCrq.equals("notPaid"))
 								state = labels.getString("state.notPaid");
@@ -1248,15 +1255,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					}
 				}
 
-		}catch (BaseException e) {
-			e.printStackTrace();
-		}
-		catch (BaseException_Exception e) {
-			e.printStackTrace();
-		} catch (ExternalInterfaceException_Exception e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException_Exception e) {
-			e.printStackTrace();
+		}catch (Exception e){
+			state = labels.getString("state.ErrorCardRequestServicePortal");
 		}
 		return state;
 
