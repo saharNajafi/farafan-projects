@@ -1171,9 +1171,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			if (cardRequestTO == null) {
 			state =	labels.getString("state.invalidTrackingId");
 			}
-			else if(cardRequestTO.getState() == CardRequestState.RESERVED)
-				state = findEnrollmentOffice(cardRequestTO);
-			state = getState(cardRequestTO.getState());
+			else {
+				if (cardRequestTO.getState() == CardRequestState.RESERVED)
+					state = findEnrollmentOffice(cardRequestTO);
+				else
+				state = getState(cardRequestTO.getState());
+			}
 		} catch (BaseException e) {
 			e.printStackTrace();
 		}
@@ -1229,7 +1232,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					if (!cardRequestTO.getCitizen().getCitizenInfo()
 							.getBirthCertificateSeries().equals(birthCertificateSeries))
 						state = labels.getString("state.invalidBirthCertificateSeries");
-
 					else {
 						if (cardRequestTO.getState() == CardRequestState.RESERVED)
 							state = findEnrollmentOffice(cardRequestTO);
