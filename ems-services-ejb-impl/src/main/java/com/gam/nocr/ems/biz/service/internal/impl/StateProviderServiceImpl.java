@@ -117,9 +117,9 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
             } else if (stateId.startsWith("ccos.")) {
             	OfficeSettingTO officeSettingTO = getOfficeSettingDAO().findByOfficeId(getUserProfileTO().getDepID());
                 if (stateId.endsWith("currentDate")) {
-                    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    String date=format.format(new Date());
-                   /* String date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);*/
+                   /* SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    String date=format.format(new Date());*/
+                    String date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);
                     stateProviderTO.setValue(date);
                 } else if (stateId.endsWith("officeType") || stateId.endsWith("enrollmentOfficeId")) {
                     Long userDepartmentId = getUserProfileTO().getDepID();
