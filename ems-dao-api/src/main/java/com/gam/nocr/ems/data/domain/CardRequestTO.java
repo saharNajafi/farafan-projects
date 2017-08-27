@@ -52,7 +52,6 @@ import java.util.List;
 
 })
 
-
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD_REQUEST", allocationSize = 1)
 public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable {
 
