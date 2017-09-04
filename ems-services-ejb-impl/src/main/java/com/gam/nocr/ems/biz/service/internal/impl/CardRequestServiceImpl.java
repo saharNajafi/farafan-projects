@@ -42,6 +42,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.xml.ws.Service;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import org.slf4j.Logger;
 
@@ -344,7 +345,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 	}
 
-	private Boolean fingerInfoExsts(List<BiometricTO> biometricTOList) {
+	private Boolean fingerInfoExists(List<BiometricTO> biometricTOList) {
 		Boolean result = false;
 		for (BiometricTO biometricTO : biometricTOList) {
 			switch (biometricTO.getType()) {
@@ -1161,15 +1162,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		labels = ResourceBundle.getBundle("ussd-request-state");
 		String state = "";
 		try {
-			CardRequestTO cardRequestTO =  getCardRequestDAO()
+			CardRequestTO cardRequestTO = getCardRequestDAO()
 					.findCardRequestStateByTrackingId(trackingId);
 			if (cardRequestTO == null) {
-			state =	labels.getString("state.invalidTrackingId");
+				state = labels.getString("state.invalidTrackingId");
 			}
-			else if(cardRequestTO.getState() == CardRequestState.RESERVED)
-				state = findEnrollmentOffice(cardRequestTO);
-			state = getState(cardRequestTO.getState());
-		} catch (BaseException e) {
+			if (cardRequestTO != null) {
+				if (cardRequestTO.getState() == CardRequestState.RESERVED)
+					state = findEnrollmentOffice(cardRequestTO);
+				state = getState(cardRequestTO.getState());
+			}
+		}catch (BaseException e) {
 			e.printStackTrace();
 		}
 		return state;
@@ -1204,14 +1207,16 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 						state = labels.getString("state.sendToAFIS");
 					if(cardRequestTO.getState() == CardRequestState.APPROVED_BY_AFIS)
 						state = labels.getString("state.ApprovedByAFIS");
-					if(cardRequestTO.getState() == CardRequestState.CMS_ERROR)
-						state = labels.getString("state.CMSError");
+					if(cardRequestTO.getState() == CardRequestState.PENDING_ISSUANCE)
+						state = labels.getString("state.pendingIssuance");
+					if(cardRequestTO.getState() == CardRequestState.CMS_PRODUCTION_ERROR)
+						state = labels.getString("state.CMSProductionError");
 					if(cardRequestTO.getState() == CardRequestState.ISSUED)
 						state = labels.getString("state.Issued");
 					if(cardRequestTO.getState() == CardRequestState.READY_TO_DELIVER)
 						state = findReadyToDeliverState(cardRequestTO);
-					else
-						state = getState(cardRequestTO.getState());
+//					else
+//						state = getState(cardRequestTO.getState());
 				}
 			}
 		} catch (BaseException e) {
@@ -1221,33 +1226,38 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	}
 
 	private boolean findReservationAttended(CardRequestTO cardRequestTO) throws BaseException {
-		boolean isAttended = false;
+		boolean notAttended = false;
 		try {
-			if(cardRequestTO.getState() == CardRequestState.RESERVED &&
-                    cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V &&
-                    cardRequestTO.getReservationDate().before(new Date()) &&
-                    cardRequestTO.getCitizen().getCitizenInfo().getAddress() == null &&
-                    cardRequestTO.getCitizen().getCitizenInfo().getPhone() == null &&
-                    getReservationDAO().findReservationByCardRequestId(
-                            cardRequestTO.getId()).isAttended().equals(BooleanType.F)
-                    )
-                isAttended = true;
-		} catch (BaseException e) {
+			if (cardRequestTO.getState() == CardRequestState.RESERVED &&
+					cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R &&
+					cardRequestTO.getReservationDate().before(new Date()) &&
+					cardRequestTO.getCitizen().getCitizenInfo().getAddress() == null &&
+					cardRequestTO.getCitizen().getCitizenInfo().getPhone() == null &&
+					!getService().findCitizenIsAttended(cardRequestTO.getPortalRequestId())
+					)
+				notAttended = true;
+		} catch (ExternalInterfaceException_Exception e) {
 			e.printStackTrace();
 		}
-		return isAttended;
+		return notAttended;
 	}
 
-	private String findReadyToDeliverState(CardRequestTO cardRequestTO) throws BaseException{
+	private String findReadyToDeliverState(CardRequestTO cardRequestTO) {
 		String state = "";
 		try {
-			String deliveryOffice = getService().findDeliveryOfficeByNationalId(
-					cardRequestTO.getCitizen().getNationalID());
-			if(deliveryOffice.equals("RPT_W_RDO_011")) {
+			String deliveryOffice = null;
+			try {
+				deliveryOffice = getService().findDeliveryOfficeByNationalId(
+                        cardRequestTO.getCitizen().getNationalID());
+			} catch (ExternalInterfaceException_Exception e) {
+				e.printStackTrace();
+			}
+			if(deliveryOffice.equals("PRT_W_CRSW_004")) {
 				EnrollmentOfficeTO	eofByCardRequest =
 						getEnrollmentOfficeDAO().findEnrollmentOfficeById(
 								cardRequestTO.getEnrollmentOffice().getId()
 						);
+//				no
 				if(EnrollmentOfficeType.NOCR.equals(eofByCardRequest.getType()))
 				state = MessageFormat.format(
 						labels.getString("state.readyToDeliverState"), eofByCardRequest.getPhone()
@@ -1275,13 +1285,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 								Long.parseLong(deliveryOffice)
 						);
 				if(EnrollmentOfficeType.OFFICE.equals(eofDeliveredOfficeId.getType()))
-				state = MessageFormat.format(
-						labels.getString("state.readyToDeliverState"), eofDeliveredOfficeId.getPhone()
-				);
+					state = MessageFormat.format(
+							labels.getString("state.readyToDeliverState"), eofDeliveredOfficeId.getPhone()
+					);
+
 			}
 		} catch (BaseException e) {
-			e.printStackTrace();
-		} catch (ExternalInterfaceException_Exception e) {
 			e.printStackTrace();
 		}
 		return state;
@@ -1294,39 +1303,41 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			CardRequestHistoryTO crhList = getCardRequestHistoryDAO().findByCardRequestId(
 					cardRequestTO.getId());
 			EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().findEnrollmentOfficeById(
-					cardRequestTO.getOriginalCardRequestOfficeId());
+					cardRequestTO.getEnrollmentOffice().getId());
 //			Condition 1
 			if(cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
 					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
-					cardRequestTO.getOriginalCardRequestOfficeId() == 0 ) {
-				if(crqFlag == 7)
+					cardRequestTO.getOriginalCardRequestOfficeId() == null
+					) {
+
+				if (crqFlag == 7)
 					state = labels.getString("state.crqFlag7");
-				if(crqFlag == 5)
+				if (crqFlag == 5)
 					state = MessageFormat.format(labels.getString("state.crqFlag5")
 							, enrollmentOfficeTO.getPhone());
-				if(crqFlag == 4)
+				if (crqFlag == 4)
 					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
 							, enrollmentOfficeTO.getPhone());
-				if(crqFlag == 1)
+				if (crqFlag == 1)
 					state = labels.getString("state.crqFlag1");
-				if(crqFlag == 0)
+				if (crqFlag == 0)
 					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
 							, enrollmentOfficeTO.getPhone());
-			}
-//			Condition 2
-			if(cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
-					crhList.getResult() == "current state is CMS_PRODUCTION_ERROR" &&
-					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
-					cardRequestTO.getOriginalCardRequestOfficeId() == 0  ) {
-				if (crqFlag == 6)
-					state = MessageFormat.format(labels.getString("state.crqFlag6")
-							, enrollmentOfficeTO.getPhone());
+				//
+				// 		Condition 2
+				if(crhList.getResult() !=null) {
+					if (crhList.getResult().equals("current state is CMS_PRODUCTION_ERROR")) {
+						if (crqFlag == 6)
+							state = MessageFormat.format(labels.getString("state.crqFlag6")
+									, enrollmentOfficeTO.getPhone());
+					}
+				}
 			}
 //			Condition 3
 			if(cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS &&
-					crhList.getResult() == "current state is CMS_PRODUCTION_ERROR" &&
+					crhList.getResult().equals("current state is CMS_PRODUCTION_ERROR") &&
 					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
-					cardRequestTO.getOriginalCardRequestOfficeId() == 0  ) {
+					cardRequestTO.getOriginalCardRequestOfficeId() == null  ) {
 				if (crqFlag == 6)
 					state = MessageFormat.format(labels.getString("state.crqFlag6")
 							, enrollmentOfficeTO.getPhone());
@@ -1334,16 +1345,22 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 //			Condition 4
 			if(cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
 					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
-					cardRequestTO.getOriginalCardRequestOfficeId() != 0  ){
+					cardRequestTO.getOriginalCardRequestOfficeId() != null  ){
 				if(crqFlag == 5)
 					state = MessageFormat.format(labels.getString("state.crqFlag5")
-							, enrollmentOfficeTO.getPhone());
+							, getEnrollmentOfficeDAO().findEnrollmentOfficeById(
+									enrollmentOfficeTO.getSuperiorOffice().getId()
+							).getPhone());
 				if(crqFlag == 4)
 					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
-							, enrollmentOfficeTO.getPhone());
+							, getEnrollmentOfficeDAO().findEnrollmentOfficeById(
+									enrollmentOfficeTO.getSuperiorOffice().getId()
+							).getPhone());
 				if(crqFlag == 0)
 					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
-							, enrollmentOfficeTO.getPhone());
+							, getEnrollmentOfficeDAO().findEnrollmentOfficeById(
+									enrollmentOfficeTO.getSuperiorOffice().getId()
+							).getPhone());
 			}
 //			Approved
 			if(cardRequestTO.getState() == CardRequestState.APPROVED){
@@ -1363,14 +1380,22 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		CardRequestHistoryTO crhList = null;
 		String state = "";
 		try {
-			crhList = getCardRequestHistoryDAO().findByCardRequestId(
-					cardRequestId);
-			if(crhList.getResult() == "peson is dead")
+			List<String> crhResult = new ArrayList<String>();
+			crhResult.add("Peson is dead");
+			crhResult.add("{\"exceptions\":{\"marked\":{\"message\":\"Sanad_Is_Marked\",\"code\":\"400\"}}}");
+			for (int i = 0; i < crhResult.size(); i++) {
+				CardRequestHistoryTO cardRequestHistorList = getCardRequestHistoryDAO().findByCardRequestAndResult(
+						cardRequestId, crhResult.get(i)) ;
+				if(cardRequestHistorList != null)
+					crhList = cardRequestHistorList;
+			}
+			if(crhList.getResult().equals("Peson is dead"))
 				state = labels.getString("state.personIsDead");
 			if(
-					crhList.getResult() ==
-							"{\"exceptions\":{\"marked\":{\"message\":\"Sanad_Is_Marked\",\"code\":\"400\"}}}")
+					crhList.getResult().equals(
+							"{\"exceptions\":{\"marked\":{\"message\":\"Sanad_Is_Marked\",\"code\":\"400\"}}}"))
 				state = labels.getString("state.SanadIsMarked");
+
 		} catch (BaseException e) {
 			e.printStackTrace();
 		}
