@@ -100,7 +100,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	private static final Logger logger = BaseLog
 			.getLogger(CardRequestServiceImpl.class);
 	private static final String DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL
-			= "http://10.7.17.28:7001/ems-web/services/cardRequestState?wsdl";
+			= "http://10.7.17.28:7002/services/cardRequestState?wsdl";
 	private static final String DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE
 			= "http://portalws.ws.web.portal.nocr.gam.com/";
 	@Resource
@@ -1297,8 +1297,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 				else {
 					state = MessageFormat.format(labels.getString(
 							"state.enableEnrollmentOffice")
-							, DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI)
-							, enrollmentOfficeTO.getAddress());
+							, DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI));
 				}
 			}
 		} catch (BaseException e) {
