@@ -1155,24 +1155,21 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		}
 
 	}
-
 	@Override
 	public String findCardRequestStateByTrackingId(
 			String trackingId) throws BaseException {
 		labels = ResourceBundle.getBundle("ussd-request-state");
 		String state = "";
 		try {
-			CardRequestTO cardRequestTO = getCardRequestDAO()
+			CardRequestTO cardRequestTO =  getCardRequestDAO()
 					.findCardRequestStateByTrackingId(trackingId);
 			if (cardRequestTO == null) {
-				state = labels.getString("state.invalidTrackingId");
+				state =	labels.getString("state.invalidTrackingId");
 			}
-			if (cardRequestTO != null) {
-				if (cardRequestTO.getState() == CardRequestState.RESERVED)
-					state = findEnrollmentOffice(cardRequestTO);
-				state = getState(cardRequestTO.getState());
+			else {
+					state = getState(cardRequestTO);
 			}
-		}catch (BaseException e) {
+		} catch (BaseException e) {
 			e.printStackTrace();
 		}
 		return state;
@@ -1190,33 +1187,18 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			} else {
 				CardRequestTO cardRequestTO = getCardRequestDAO()
 						.findCardRequestStateByNationalId(nationalId);
-				if (cardRequestTO == null || !cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
+				if (cardRequestTO == null)
 					state = "-1";
-				if (cardRequestTO != null) {
-					if (cardRequestTO.getState() == CardRequestState.RESERVED)
-						state = findEnrollmentOffice(cardRequestTO);
-					if(cardRequestTO.getEstelam2Flag() == Estelam2FlagType.N)
-						state = findCardRequestHistory(cardRequestTO.getId());
-					if(findReservationAttended(cardRequestTO))
-						state = labels.getString("state.notAttend");
-					if(cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED ||
-							cardRequestTO.getState() ==	CardRequestState.REFERRED_TO_CCOS ||
-							cardRequestTO.getState() ==	CardRequestState.APPROVED)
-						state = findCrqFlagByCardRequest(cardRequestTO);
-					if(cardRequestTO.getState() == CardRequestState.SENT_TO_AFIS)
-						state = labels.getString("state.sendToAFIS");
-					if(cardRequestTO.getState() == CardRequestState.APPROVED_BY_AFIS)
-						state = labels.getString("state.ApprovedByAFIS");
-					if(cardRequestTO.getState() == CardRequestState.PENDING_ISSUANCE)
-						state = labels.getString("state.pendingIssuance");
-					if(cardRequestTO.getState() == CardRequestState.CMS_PRODUCTION_ERROR)
-						state = labels.getString("state.CMSProductionError");
-					if(cardRequestTO.getState() == CardRequestState.ISSUED)
-						state = labels.getString("state.Issued");
-					if(cardRequestTO.getState() == CardRequestState.READY_TO_DELIVER)
-						state = findReadyToDeliverState(cardRequestTO);
-//					else
-//						state = getState(cardRequestTO.getState());
+				else if (cardRequestTO != null) {
+					if (cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile)) {
+						if (cardRequestTO.getEstelam2Flag() == Estelam2FlagType.N)
+							state = findCardRequestHistory(cardRequestTO.getId());
+						if (findReservationAttended(cardRequestTO))
+							state = labels.getString("state.notAttend");
+						else
+						state = getState(cardRequestTO);
+				}else if (!cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
+					state = "-1";
 				}
 			}
 		} catch (BaseException e) {
@@ -1423,7 +1405,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 						state = labels.getString("state.invalidBirthCertificateSeries");
 
 					else {
-							state = getState(cardRequestTO.getState());
+							state = getState(cardRequestTO);
 					}
 				}
 				if (cardRequestTO == null) {
@@ -1506,89 +1488,72 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		return reservationDate.after(now);
 	}
 
-	private String getState(CardRequestState cardRequestState) {
+	private String getState(CardRequestTO cardRequestTO) {
 		String state = "";
-		switch (cardRequestState) {
+		switch (cardRequestTO.getState()) {
+			case RESERVED:
+				state = findEnrollmentOffice(cardRequestTO);
+				break;
+			case DOCUMENT_AUTHENTICATED:
+			case REFERRED_TO_CCOS:
+			case APPROVED:
+				try {
+					state = findCrqFlagByCardRequest(cardRequestTO);
+				} catch (BaseException e) {
+					e.printStackTrace();
+				}
+				break;
+			case SENT_TO_AFIS:
+				state = labels.getString("state.sendToAFIS");
+				break;
+			case APPROVED_BY_AFIS:
+				state = labels.getString("state.ApprovedByAFIS");
+				break;
+			case PENDING_ISSUANCE:
+				state = labels.getString("state.pendingIssuance");
+				break;
+			case ISSUED:
+				state = labels.getString("state.Issued");
+				break;
+			case READY_TO_DELIVER:
+				state = findReadyToDeliverState(cardRequestTO);
+				break;
+			case CMS_PRODUCTION_ERROR:
+				state = labels.getString("state.CMSProductionError");
+				break;
 			case VERIFIED_IMS:
 				state = labels.getString("state.registered");
 				break;
-
 			case PENDING_FOR_EMS:
 			case RECEIVED_BY_EMS:
 			case PENDING_IMS:
-
 				state = labels.getString("state.pendingForEmsOrIms");
 				break;
-
 			case NOT_VERIFIED_BY_IMS:
 				state = labels.getString("state.notVerifiedByEms");
 				break;
-
-			case RESERVED:
-				state = labels.getString("state.reserved");
-				break;
-
-			case DOCUMENT_AUTHENTICATED:
-			case SCANNED_DOCUMENTS:
-			case SCANNED_FACE:
-			case SCANNED_FINGER:
-			case SCANNED_DOC_FACE:
-			case SCANNED_DOC_FINGER:
-			case SCANNED_FACE_FINGER:
-				state = labels.getString("state.scanned");
-				break;
-
-			case APPROVED:
-			case SENT_TO_AFIS:
-				state = labels.getString("state.approvedSendToAFIS");
-				break;
-
-			case APPROVED_BY_AFIS:
-				state = labels.getString("state.approvedByAFIS");
-				break;
-
-			case PENDING_ISSUANCE:
 			case PENDING_TO_DELIVER_BY_CMS:
 				state = labels.getString("state.pendingIssuance");
 				break;
-
-			case ISSUED:
-				state = labels.getString("state.issued");
-				break;
-
-			case READY_TO_DELIVER:
-				state = labels.getString("state.readyToDeliver");
-				break;
-
 			case DELIVERED:
 				state = labels.getString("state.deliver");
 				break;
-
 			case UNSUCCESSFUL_DELIVERY:
 			case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
 			case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE:
 				state = labels.getString("state.unsuccessfulDeliveryDamageBiometric");
 				break;
-
 			case STOPPED:
 				state = labels.getString("state.stopped");
 				break;
-
 			case REPEALED:
 				state = labels.getString("state.repealed");
 				break;
-
 			case CMS_ERROR:
-			case CMS_PRODUCTION_ERROR:
-				state = labels.getString("state.errorProductionError");
+				state = labels.getString("state.CMSProductionError");
 				break;
-
 			case IMS_ERROR:
 				state = labels.getString("state.imsError");
-				break;
-
-			case REFERRED_TO_CCOS:
-				state = labels.getString("state.referredToCcos");
 				break;
 		}
 		return state;
