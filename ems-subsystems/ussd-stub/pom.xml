@@ -29,7 +29,7 @@
                         <configuration>
                             <wsdlUrls>
                                 <wsdlUrl>
-                                    http://emsapp.ssd.net:7001/CardRequestStateWS?WSDL
+                                    http://emsapp.ssd.net:7002/CardRequestStateWS?WSDL
                                 </wsdlUrl>
                             </wsdlUrls>
                             <staleFile>${project.build.sourceDirectory}/stale/wsdl.ussdWsdl.done</staleFile>
