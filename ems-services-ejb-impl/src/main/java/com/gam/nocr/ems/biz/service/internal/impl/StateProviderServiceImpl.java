@@ -1,18 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import gampooya.tools.date.DateUtil;
-import gampooya.tools.security.SecurityContextService;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -26,20 +13,23 @@ import com.gam.commons.stateprovider.StateProviderTO;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.PersonManagementService;
 import com.gam.nocr.ems.biz.service.UserManagementService;
-import com.gam.nocr.ems.config.BizExceptionCode;
-import com.gam.nocr.ems.config.EMSLog;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
-import com.gam.nocr.ems.config.ProfileKeyName;
-import com.gam.nocr.ems.config.UIStateIds;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.OfficeSettingDAO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
-import com.gam.nocr.ems.data.enums.OfficeSettingType;
-import com.gam.nocr.ems.data.enums.OfficeType;
+import gampooya.tools.security.SecurityContextService;
+import org.slf4j.Logger;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Soheil Toodeh Fallah (fallah@gamelectronics.com)
@@ -116,7 +106,9 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
             } else if (stateId.startsWith("ccos.")) {
             	OfficeSettingTO officeSettingTO = getOfficeSettingDAO().findByOfficeId(getUserProfileTO().getDepID());
                 if (stateId.endsWith("currentDate")) {
-                    String date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);
+                    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    String date=format.format(new Date());
+                    /*date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);*/
                     stateProviderTO.setValue(date);
                 } else if (stateId.endsWith("officeType") || stateId.endsWith("enrollmentOfficeId")) {
                     Long userDepartmentId = getUserProfileTO().getDepID();
