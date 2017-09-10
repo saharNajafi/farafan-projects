@@ -562,7 +562,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -623,7 +623,7 @@
 						</dependency>
 					</dependencies>
 					<configuration>
-						<!-- <weaveDependencies> <weaveDependency> <groupId>com.gam.commons</groupId> 
+						<!-- <weaveDependencies> <weaveDependency> <groupId>com.gam.commons</groupId>
 							<artifactId>gam-commons-core</artifactId> </weaveDependency> </weaveDependencies> -->
 						<source>1.6</source>
 						<target>1.6</target>
@@ -648,8 +648,8 @@
 	</scm>
 
 	<!-- Added these repositories to nexus -->
-	<!--<repositories> <repository> <id>zk repository</id> <url>http://mavensync.zkoss.org/maven2</url> 
-		</repository> <repository> <id>ZK EE Evaluation</id> <url>http://mavensync.zkoss.org/zk/ee-eval</url> 
+	<!--<repositories> <repository> <id>zk repository</id> <url>http://mavensync.zkoss.org/maven2</url>
+		</repository> <repository> <id>ZK EE Evaluation</id> <url>http://mavensync.zkoss.org/zk/ee-eval</url>
 		</repository> </repositories> -->
 
 	<distributionManagement>
