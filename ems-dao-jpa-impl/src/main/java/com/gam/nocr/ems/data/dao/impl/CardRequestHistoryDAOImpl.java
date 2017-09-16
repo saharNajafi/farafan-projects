@@ -569,6 +569,7 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
  * this method is used to fetch all nearly history base on given cardRequestId
  * @author ganjyar
  */
+
 	@Override
 	public List<CardRequestHistoryTO> fetchAllHistoryByRequestId(Long requestId)
 			throws BaseException {
@@ -591,4 +592,40 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
 		}
 
 	}
+
+    @Override
+    public CardRequestHistoryTO findByCardRequestId(Long cardRequestId) throws BaseException{
+        try {
+            List<CardRequestHistoryTO> cardRequestHistoryTOList =
+                    em.createNamedQuery(
+                            "CardRequestHistoryTO.findByCardRequestId")
+                            .setParameter("cardRequestId", cardRequestId)
+                            .getResultList();
+            if(cardRequestHistoryTOList.size() > 0)
+                return  cardRequestHistoryTOList.get(0);
+            else
+                return null;
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.CDI_098,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+    }
+@Override
+   public CardRequestHistoryTO findByCardRequestAndResult(Long cardRequestId, String crhResult) throws BaseException{
+        try {
+            List<CardRequestHistoryTO> cardRequestHistoryTOList =
+                    em.createNamedQuery(
+                            "CardRequestHistoryTO.findByCardRequestAndResult")
+                            .setParameter("cardRequestId", cardRequestId)
+                            .setParameter("crhResult", crhResult)
+                            .getResultList();
+            if(cardRequestHistoryTOList.size() > 0)
+                return  cardRequestHistoryTOList.get(0);
+            else
+                return null;
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.CDI_098,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+    }
 }

@@ -27,7 +27,7 @@ import java.util.List;
                         " and crq.citizen.citizenInfo.mobile =:mobile" +
                         " and crq.citizen.id = ctz.id" +
                         " and czi.citizen.id = ctz.id" +
-                        " order by crq.id"),
+                        " order by crq.id desc"),
         @NamedQuery(
                 name = "CardRequestTO.findCardRequestStateByNationalIdAndBirthCertificateSeries",
                 query = " select crq " +
@@ -35,19 +35,19 @@ import java.util.List;
                         " where crq.citizen.nationalID =:nationalId" +
                         " and crq.citizen.citizenInfo.birthCertificateSeries =:birthCertificateSeries" +
                         " and crq.citizen.id = czi.id" +
-                        " order by crq.id"),
+                        " order by crq.id desc"),
         @NamedQuery(
                 name = "CardRequestTO.findCardRequestStateByTrackingId",
                 query = " select crq " +
                         " from CardRequestTO crq" +
                         " where crq.trackingID=:trackingId" +
-                        " order by crq.id"),
+                        " order by crq.id desc"),
         @NamedQuery(
                 name = "CardRequestTO.findCardRequestStateByNationalId",
                 query = " select crq " +
                         " from CardRequestTO crq" +
                         " where crq.citizen.nationalID =:nationalId" +
-                        " order by crq.id")
+                        " order by crq.id desc ")
 
 
 })
@@ -88,7 +88,7 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     private Date lastModifiedDate;
     private Estelam2FlagType estelam2Flag;
     private boolean isPaid = false;
-    private Date paidDate; 
+    private Date paidDate;
     private Integer requestedSmsStatus = 0;
 
 
@@ -396,16 +396,16 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     public void setDeliveredOfficeId(Long deliveredOfficeId) {
         this.deliveredOfficeId = deliveredOfficeId;
     }
-    
-    
-    @Column(name = "CRQ_CMS_REQ_ID")
-	public String getCmsRequestId() {
-		return cmsRequestId;
-	}
 
-	public void setCmsRequestId(String cmsRequestId) {
-		this.cmsRequestId = cmsRequestId;
-	}
+
+    @Column(name = "CRQ_CMS_REQ_ID")
+    public String getCmsRequestId() {
+        return cmsRequestId;
+    }
+
+    public void setCmsRequestId(String cmsRequestId) {
+        this.cmsRequestId = cmsRequestId;
+    }
 
 
     @Override
@@ -414,51 +414,51 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     }
 
     @Enumerated(EnumType.STRING)
-	@Column(name = "CRQ_ESTELAM2_FLAG", length = 1)
-	public Estelam2FlagType getEstelam2Flag() {
-		return estelam2Flag;
-	}
+    @Column(name = "CRQ_ESTELAM2_FLAG", length = 1)
+    public Estelam2FlagType getEstelam2Flag() {
+        return estelam2Flag;
+    }
 
-	public void setEstelam2Flag(Estelam2FlagType estelam2Flag) {
-		this.estelam2Flag = estelam2Flag;
-	}
-	
-	@Column(name = "CRQ_REQUESTED_SMS_STATUS")
-	public Integer getRequestedSmsStatus() {
-		return requestedSmsStatus;
-	}
-	
-	public void setRequestedSmsStatus(Integer requestedSmsStatus) {
-		this.requestedSmsStatus = requestedSmsStatus;
-	}
-	
-	/**
+    public void setEstelam2Flag(Estelam2FlagType estelam2Flag) {
+        this.estelam2Flag = estelam2Flag;
+    }
+
+    @Column(name = "CRQ_REQUESTED_SMS_STATUS")
+    public Integer getRequestedSmsStatus() {
+        return requestedSmsStatus;
+    }
+
+    public void setRequestedSmsStatus(Integer requestedSmsStatus) {
+        this.requestedSmsStatus = requestedSmsStatus;
+    }
+
+    /**
      * The method toJSON is used to convert an object to an instance of type {@link String}
      *
      * @return an instance of type {@link String}
      */
-	
-	
-	@Column(name = "CRQ_PAID_STATE")
-	public boolean isPaid() {
-		return isPaid;
-	}
 
-	public void setPaid(boolean isPaid) {
-		this.isPaid = isPaid;
-	}
 
-	@Column(name = "CRQ_PAID_DATE")
+    @Column(name = "CRQ_PAID_STATE")
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    @Column(name = "CRQ_PAID_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-	@JSON(include = false)
-	public Date getPaidDate() {
-		return paidDate;
-	}
+    @JSON(include = false)
+    public Date getPaidDate() {
+        return paidDate;
+    }
 
-	public void setPaidDate(Date paidDate) {
-		this.paidDate = paidDate;
-	}
-	
+    public void setPaidDate(Date paidDate) {
+        this.paidDate = paidDate;
+    }
+
     @Override
     public String toJSON() {
         String jsonObject = EmsUtil.toJSON(this);
@@ -485,6 +485,6 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
         jsonObject += "}";
         return jsonObject;
     }
-    
-    
+
+
 }
