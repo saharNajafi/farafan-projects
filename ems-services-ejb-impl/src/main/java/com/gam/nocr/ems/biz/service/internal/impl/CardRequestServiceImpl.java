@@ -1258,7 +1258,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		boolean notAttended = false;
 		try {
 			if (cardRequestTO.getState() == CardRequestState.RESERVED &&
-					cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R &&
+					cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V &&
 					cardRequestTO.getReservationDate().before(new Date()) &&
 					cardRequestTO.getCitizen().getCitizenInfo().getAddress() == null &&
 					cardRequestTO.getCitizen().getCitizenInfo().getPhone() == null &&
@@ -1334,24 +1334,25 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 					cardRequestTO.getEnrollmentOffice().getId());
 //			Condition 1
 			if(cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
+					(enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR) ||
+					enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE)) &&
 					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
 					cardRequestTO.getOriginalCardRequestOfficeId() == null
 					) {
-
 				if (crqFlag == 7)
 					state = labels.getString("state.crqFlag7");
 				if (crqFlag == 5)
 					state = MessageFormat.format(labels.getString("state.crqFlag5")
 							, enrollmentOfficeTO.getPhone());
-				if (crqFlag == 4)
+				if(crqFlag == 6)
+					state = labels.getString("state.crqFlag");
+				if (crqFlag == 4 || crqFlag == 0)
 					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
 							, enrollmentOfficeTO.getPhone());
-				if (crqFlag == 1)
-					state = labels.getString("state.crqFlag1");
-				if (crqFlag == 0)
-					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
-							, enrollmentOfficeTO.getPhone());
-				//
+
+				if(crqFlag == 3 || crqFlag == 1 || crqFlag == 2)
+					state = labels.getString("state.crqFlag");
+
 				// 		Condition 2
 				if(crhList.getResult() !=null) {
 					if (crhList.getResult().equals("current state is CMS_PRODUCTION_ERROR")) {
@@ -1362,40 +1363,66 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 				}
 			}
 //			Condition 3
+			if(crhList.getResult() !=null) {
+				if (cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS &&
+						(enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR) ||
+						enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE)) &&
+								crhList.getResult().equals("current state is CMS_PRODUCTION_ERROR") &&
+								cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
+								cardRequestTO.getOriginalCardRequestOfficeId() == null) {
+					if (crqFlag == 6)
+						state = MessageFormat.format(labels.getString("state.crqFlag6")
+								, enrollmentOfficeTO.getPhone());
+				}
+			}
+
+//			Condition 5
 			if(cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS &&
-					crhList.getResult().equals("current state is CMS_PRODUCTION_ERROR") &&
-					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
-					cardRequestTO.getOriginalCardRequestOfficeId() == null  ) {
-				if (crqFlag == 6)
-					state = MessageFormat.format(labels.getString("state.crqFlag6")
-							, enrollmentOfficeTO.getPhone());
+					(enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR) ||
+					enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE)) &&
+					(cardRequestTO.getAuthenticity() == CardRequestAuthenticity.NOT_AUTHENTIC ||
+					cardRequestTO.getAuthenticity() == null) &&
+					cardRequestTO.getOriginalCardRequestOfficeId() == null){
+				if (crqFlag == 0)
+					state = labels.getString("state.crqFlag");
 			}
-//			Condition 4
-			if(cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
+//			Condition 6
+			if((cardRequestTO.getAuthenticity() == CardRequestAuthenticity.NOT_AUTHENTIC ||
+			cardRequestTO.getAuthenticity() == null) &&
+					(enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR) ||
+							enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE))) {
+				if (crqFlag == 1 || crqFlag == 2 || crqFlag == 3 || crqFlag == 4 ||
+						crqFlag == 5 || crqFlag == 6 || crqFlag == 7)
+					state = labels.getString("state.crqFlag");
+			}
+//			condition 8
+			if (cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
+					enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE) &&
 					cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
-					cardRequestTO.getOriginalCardRequestOfficeId() != null  ){
+					cardRequestTO.getOriginalCardRequestOfficeId() != null
+					){
 				if(crqFlag == 5)
-					state = MessageFormat.format(labels.getString("state.crqFlag5")
+					state = MessageFormat.format(labels.getString("state.crqFlagOffice5")
 							, getEnrollmentOfficeDAO().findEnrollmentOfficeById(
 									enrollmentOfficeTO.getSuperiorOffice().getId()
 							).getPhone());
-				if(crqFlag == 4)
-					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
-							, getEnrollmentOfficeDAO().findEnrollmentOfficeById(
-									enrollmentOfficeTO.getSuperiorOffice().getId()
-							).getPhone());
-				if(crqFlag == 0)
-					state = MessageFormat.format(labels.getString("state.crqFlag4&0")
+				if(crqFlag == 4 || crqFlag == 0)
+					state = MessageFormat.format(labels.getString("state.crqFlagOffice0")
 							, getEnrollmentOfficeDAO().findEnrollmentOfficeById(
 									enrollmentOfficeTO.getSuperiorOffice().getId()
 							).getPhone());
 			}
+
+
 //			Approved
-			if(cardRequestTO.getState() == CardRequestState.APPROVED){
+			if (cardRequestTO.getState() == CardRequestState.APPROVED &&
+					enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR)) {
 				if (crqFlag == 7)
 					state = labels.getString("state.crqFlag7Approved");
-				if(crqFlag == 0)
-					state = labels.getString("state.crqFlag0Approved");
+				if (crqFlag == 5 || crqFlag == 6 || crqFlag == 4 ||
+						crqFlag == 3 || crqFlag == 1 || crqFlag == 2 ||
+						crqFlag == 0)
+					state = labels.getString("state.crqFlag");
 			}
 
 		} catch (BaseException e) {
@@ -1413,18 +1440,20 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			crhResult.add("{\"exceptions\":{\"marked\":{\"message\":\"Sanad_Is_Marked\",\"code\":\"400\"}}}");
 			for (int i = 0; i < crhResult.size(); i++) {
 				CardRequestHistoryTO cardRequestHistorList = getCardRequestHistoryDAO().findByCardRequestAndResult(
-						cardRequestId, crhResult.get(i)) ;
-				if(cardRequestHistorList != null)
+						cardRequestId, crhResult.get(i));
+				if (cardRequestHistorList != null)
 					crhList = cardRequestHistorList;
 			}
-			if(crhList.getResult().equals("Peson is dead"))
-				state = labels.getString("state.personIsDead");
-			if(
-					crhList.getResult().equals(
-							"{\"exceptions\":{\"marked\":{\"message\":\"Sanad_Is_Marked\",\"code\":\"400\"}}}"))
-				state = labels.getString("state.SanadIsMarked");
+			if (crhList.getResult() != null) {
+				if (crhList.getResult().equals("Peson is dead"))
+					state = labels.getString("state.personIsDead");
+				if (
+						crhList.getResult().equals(
+								"{\"exceptions\":{\"marked\":{\"message\":\"Sanad_Is_Marked\",\"code\":\"400\"}}}"))
+					state = labels.getString("state.SanadIsMarked");
 
-		} catch (BaseException e) {
+			}
+		}catch (BaseException e) {
 			e.printStackTrace();
 		}
 		return state;
@@ -1479,6 +1508,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 	private String getState(CardRequestTO cardRequestTO) throws BaseException{
 		String state = "";
 		try {
+			if(cardRequestTO.getState() == CardRequestState.RESERVED &&
+					cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V &&
+					cardRequestTO.getReservationDate().before(new Date()) &&
+					cardRequestTO.getCitizen().getCitizenInfo().getAddress() == null &&
+					cardRequestTO.getCitizen().getCitizenInfo().getPhone() == null){
+				Long reservationHistoryCount =
+						getService().countResrevationHistoryByCardRequestId(
+								cardRequestTO.getPortalRequestId());
+				if(reservationHistoryCount >= 9)
+					state = labels.getString("state.multiReservation");
+			}
 			if (cardRequestTO.getState() == CardRequestState.RESERVED)
 				state = findEnrollmentOffice(cardRequestTO);
 			if (cardRequestTO.getEstelam2Flag() == Estelam2FlagType.N)
@@ -1539,6 +1579,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 			}
 		} catch (BaseException e) {
 			e.printStackTrace();
+		} catch (ExternalInterfaceException_Exception e) {
+			e.printStackTrace();
 		}
 		return state;
 	}
@@ -1566,6 +1608,5 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 		} catch (Exception e) {
 			throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
 		}
-
 	}
 }
