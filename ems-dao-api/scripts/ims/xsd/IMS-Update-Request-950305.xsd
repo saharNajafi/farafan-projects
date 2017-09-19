@@ -29,8 +29,8 @@
 		<xsd:element type="MandatoryDateCompleteType" name="ReservationDate" />
 		<xsd:element type="xsd:string" name="Reduplicate" />
 		<xsd:element type="xsd:int" name="ImsId"  />
-		<xsd:element type="StringType" name="ManagerUsername" /> 
-		<xsd:element type="StringType" name="AuthenticatedBy" /> 		
+		<xsd:element type="StringType" name="ManagerUsername" />
+		<xsd:element type="StringType" name="AuthenticatedBy" />
 		</xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="IdentityDataType">
@@ -113,7 +113,7 @@
             <xsd:element type="FaceImagesType" name="FACE_CHIP"/>
             <xsd:element type="FaceImagesType" name="FACE_MLI"/>
             <xsd:element type="FaceImagesType" name="FACE_LASER"/>
-			<xsd:element type="SourceImageType" name="SourceImage"/>       
+			<xsd:element type="SourceImageType" name="SourceImage"/>
 	   </xsd:sequence>
     </xsd:complexType>
 	<xsd:complexType name="FingersBiometricInfoType">
@@ -127,7 +127,7 @@
     <xsd:complexType name="FaceImagesType">
         <xsd:sequence>
             <xsd:element name="Data" type="ByteType" />
-			
+
         </xsd:sequence>
     </xsd:complexType>
     <xsd:simpleType name="ShenasnameNoType">
@@ -200,7 +200,7 @@
         <xsd:restriction base="xsd:string">
             <xsd:pattern value="[*]{0}|[0-9]{4}" />
         </xsd:restriction>
-    </xsd:simpleType>	
+    </xsd:simpleType>
 	<xsd:simpleType name="MandatoryCodeType">
         <xsd:restriction base="xsd:string">
 		<xsd:maxLength value="9" />
