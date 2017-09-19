@@ -201,7 +201,6 @@
 				<version>${hibernate-entitymanager.version}</version>
 			</dependency>
 
-
 			<!-- GAM -->
 			<dependency>
 				<groupId>com.gam</groupId>
