@@ -664,8 +664,6 @@
 			<url>http://10.102.1.18:8081/nexus/content/repositories/ICT_Snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-	
-
 
 
     <properties>
