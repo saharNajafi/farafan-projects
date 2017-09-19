@@ -586,7 +586,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
-                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "Father's FirstName"
+                                    DataExceptionCode.IUC_004_MSG, "Father's FirstName"
                             ),
                             new String[]{CLASS_NAME, "Father's FirstName"});
                 }
@@ -622,7 +622,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
-                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "Mother's FirstName"
+                                    DataExceptionCode.IUC_004_MSG, "Mother's FirstName"
                             ),
                             new String[]{CLASS_NAME, "Mother's FirstName"});
                 }
@@ -875,7 +875,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
-                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "ManagerUsername"
+                                    DataExceptionCode.IUC_004_MSG, "ManagerUsername"
                             ),
                             new String[]{CLASS_NAME, "ManagerUsername"});
                 }
@@ -901,7 +901,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
-                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "AuthenticatedBy"
+                                    DataExceptionCode.IUC_004_MSG, "AuthenticatedBy"
                             ),
                             new String[]{CLASS_NAME, "AuthenticatedBy"});
                 }
