@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -581,6 +582,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 if (citizenInfoTO.getFatherFirstNamePersian() != null) {
                     fatherFirstNameElement.appendChild(doc.createTextNode(citizenInfoTO.getFatherFirstNamePersian()));
                 }
+                if (citizenInfoTO.getFatherFirstNamePersian() == null) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_004,
+                            MessageFormat.format(
+                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "Father's FirstName"
+                            ),
+                            new String[]{CLASS_NAME, "Father's FirstName"});
+                }
                 fatherElement.appendChild(fatherFirstNameElement);
                 Element fatherBirthDateElement = doc.createElement("BirthDate");
                 if (citizenInfoTO.getFatherBirthDateSolar() != null 
@@ -608,6 +617,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 Element motherFirstNameElement = doc.createElement("FirstName");
                 if (citizenInfoTO.getMotherFirstNamePersian() != null) {
                     motherFirstNameElement.appendChild(doc.createTextNode(citizenInfoTO.getMotherFirstNamePersian()));
+                }
+                if (citizenInfoTO.getMotherFirstNamePersian() == null) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_004,
+                            MessageFormat.format(
+                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "Mother's FirstName"
+                            ),
+                            new String[]{CLASS_NAME, "Mother's FirstName"});
                 }
                 motherElement.appendChild(motherFirstNameElement);
                 Element motherBirthDateElement = doc.createElement("BirthDate");
@@ -854,6 +871,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 {
                 managerUsernameElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getManager().getUserName()));
                 }
+                if (cardRequestTO.getEnrollmentOffice().getManager() == null) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_004,
+                            MessageFormat.format(
+                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "ManagerUsername"
+                            ),
+                            new String[]{CLASS_NAME, "ManagerUsername"});
+                }
                 requestInfo.appendChild(managerUsernameElement);
                 CardRequestHistoryTO cardRequestHistoryTO=null;
                 if(cardRequestTO.getOrigin()==CardRequestOrigin.V)
@@ -871,6 +896,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 if(cardRequestHistoryTO != null && cardRequestHistoryTO.getActor() !=null)
                 {
                 authenticatedByElement.appendChild(doc.createTextNode(cardRequestHistoryTO.getActor()));
+                }
+                if (cardRequestHistoryTO == null && cardRequestHistoryTO.getActor() ==null) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_004,
+                            MessageFormat.format(
+                                    DataExceptionCode.IUC_004_MSG, CLASS_NAME, "AuthenticatedBy"
+                            ),
+                            new String[]{CLASS_NAME, "AuthenticatedBy"});
                 }
                 requestInfo.appendChild(authenticatedByElement);
 
