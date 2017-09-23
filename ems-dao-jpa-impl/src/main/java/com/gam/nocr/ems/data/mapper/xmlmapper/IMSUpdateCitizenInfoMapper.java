@@ -582,7 +582,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 if (citizenInfoTO.getFatherFirstNamePersian() != null) {
                     fatherFirstNameElement.appendChild(doc.createTextNode(citizenInfoTO.getFatherFirstNamePersian()));
                 }
-                if (citizenInfoTO.getFatherFirstNamePersian() == null) {
+                if (citizenInfoTO.getFatherFirstNamePersian() == null ||
+                        citizenInfoTO.getFatherFirstNamePersian().isEmpty()) {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
@@ -618,7 +619,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 if (citizenInfoTO.getMotherFirstNamePersian() != null) {
                     motherFirstNameElement.appendChild(doc.createTextNode(citizenInfoTO.getMotherFirstNamePersian()));
                 }
-                if (citizenInfoTO.getMotherFirstNamePersian() == null) {
+                if (citizenInfoTO.getMotherFirstNamePersian() == null ||
+                        citizenInfoTO.getMotherFirstNamePersian().isEmpty()) {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
@@ -897,7 +899,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 {
                 authenticatedByElement.appendChild(doc.createTextNode(cardRequestHistoryTO.getActor()));
                 }
-                if (cardRequestHistoryTO == null && cardRequestHistoryTO.getActor() ==null) {
+                if (cardRequestHistoryTO == null && cardRequestHistoryTO.getActor() ==null ||
+                        cardRequestHistoryTO.getActor().isEmpty() ) {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
