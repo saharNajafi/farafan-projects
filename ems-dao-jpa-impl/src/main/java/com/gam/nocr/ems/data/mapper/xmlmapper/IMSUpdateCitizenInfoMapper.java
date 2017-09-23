@@ -874,12 +874,15 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 managerUsernameElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getManager().getUserName()));
                 }
                 if (cardRequestTO.getEnrollmentOffice().getManager() == null) {
-                    throw new DataException(
-                            DataExceptionCode.IUC_004,
-                            MessageFormat.format(
-                                    DataExceptionCode.IUC_004_MSG, "ManagerUsername"
-                            ),
-                            new String[]{CLASS_NAME, "ManagerUsername"});
+                    if (cardRequestTO.getEnrollmentOffice().getManager().getUserName() == null ||
+                            cardRequestTO.getEnrollmentOffice().getManager().getUserName().isEmpty()) {
+                        throw new DataException(
+                                DataExceptionCode.IUC_004,
+                                MessageFormat.format(
+                                        DataExceptionCode.IUC_004_MSG, "ManagerUsername"
+                                ),
+                                new String[]{CLASS_NAME, "ManagerUsername"});
+                    }
                 }
                 requestInfo.appendChild(managerUsernameElement);
                 CardRequestHistoryTO cardRequestHistoryTO=null;
