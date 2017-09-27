@@ -61,7 +61,7 @@ public class ImsEstelamImageDAOImpl extends EmsBaseDAOImpl<ImsEstelamImageTO>
         try {
              List<ImsEstelamImageTO> resultList = em.createQuery("select iei " +
                     "from ImsEstelamImageTO iei " +
-                    "where iei.nationalID = :nationalId)", ImsEstelamImageTO.class)
+                    "where iei.nationalID = :nationalId", ImsEstelamImageTO.class)
                     .setParameter("nationalId", nationalId)
                     .getResultList();
             
