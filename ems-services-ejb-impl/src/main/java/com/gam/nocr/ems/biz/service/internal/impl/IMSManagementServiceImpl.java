@@ -4829,6 +4829,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 	}
 		
 		//Anbari:IMS
+		//todo : change get(0) and replace it
 		private void saveIMSModifiedFaceImage(CardRequestTO crq,
 				BiometricType biometricType, byte[] faceImage) throws BaseException {
 			List<BiometricTO> storedImage = getBiometricDAO()
