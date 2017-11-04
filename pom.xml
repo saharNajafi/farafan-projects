@@ -688,6 +688,7 @@
         <external-portal.version>5.0.0-SNAPSHOT</external-portal.version>
         <external-emks.version>2.0.0-SNAPSHOT</external-emks.version>
         <external-ussd.version>1.2.1</external-ussd.version>
+
         <external-gam-ims.version>1.0.0-SNAPSHOT</external-gam-ims.version>
         <external-matiran-ims.version>1.0.0</external-matiran-ims.version>
         <external-nocr-sms.version>1.0.0-SNAPSHOT</external-nocr-sms.version>
