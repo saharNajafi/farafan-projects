@@ -15,26 +15,25 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class UnsuccessfulDeliveryRequestJob implements InterruptableJob {
+public class UnsuccessfulDeliveryRequestJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(UnsuccessfulDeliveryRequestJob.class);
-    private static final Logger cmsLogger = BaseLog.getLogger("CmsLogger");
     private static final Logger unsuccessfulDeliveryLogger = BaseLog.getLogger("unsuccessfulDeliveryRequest");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(unsuccessfulDeliveryLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         CardManagementDelegator cardManagementDelegator = new CardManagementDelegator();
         try {
-        	//identify changed OR forbidden Or death
+            //identify changed OR forbidden Or death
             Long stopedCardCount = cardManagementDelegator.findRequestsCountByState(CardRequestState.STOPPED);
-            unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
-            unsuccessfulDeliveryLogger.info("\n-------------------------- job just started fro STOPPED requests --------------------------");
-            unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
-            unsuccessfulDeliveryLogger.info("\nthe requests count is:"+stopedCardCount);
+            info("\n-------------------------------------------------------------------------------------------");
+            info("\n-------------------------- job just started fro STOPPED requests --------------------------");
+            info("\n-------------------------------------------------------------------------------------------");
+            info("\nthe requests count is:" + stopedCardCount);
             Integer indexForStoppedCard = 0;
             for (int i = 0; i < stopedCardCount; i++) {
                 if (!isJobInterrupted) {
@@ -43,19 +42,15 @@ public class UnsuccessfulDeliveryRequestJob implements InterruptableJob {
                     } catch (BaseException e) {
                         //  An exception happened while trying to process a damaged unsuccessfull request. So ignore the
                         //  failed request and go to the next one by increasing the start index to load
-                    	indexForStoppedCard++;
-                        logger.error(e.getExceptionCode(), e.getMessage(), e);
-                        cmsLogger.error(e.getExceptionCode(), e.getMessage(), e);
-                        unsuccessfulDeliveryLogger.error(e.getExceptionCode(), e.getMessage(), e);
+                        indexForStoppedCard++;
+                        logException(e);
                     }
                 } else {
                     break;
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            cmsLogger.error(e.getMessage(), e);
-            unsuccessfulDeliveryLogger.error(e.getMessage(), e);
+            logGenerakException(e);
         }
 
         try {
@@ -70,28 +65,26 @@ public class UnsuccessfulDeliveryRequestJob implements InterruptableJob {
                         //  An exception happened while trying to process a damaged unsuccessfull request. So ignore the
                         //  failed request and go to the next one by increasing the start index to load
                         indexForDamagedCard++;
-                        logger.error(e.getExceptionCode(), e.getMessage(), e);
-                        cmsLogger.error(e.getExceptionCode(), e.getMessage(), e);
+                        logException(e);
                     }
                 } else {
                     break;
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            cmsLogger.error(e.getMessage(), e);
+            logGenerakException(e);
         }
 
         try {
             // Biometric Problem OR unmatched cut fingers OR unmatched face 
-        	// OR (unmatched cut fingers AND unmatched face)
+            // OR (unmatched cut fingers AND unmatched face)
             Long biometricCount = 0L;
             if (!isJobInterrupted)
                 biometricCount = cardManagementDelegator.findRequestsCountByState(CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC);
-            unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
-            unsuccessfulDeliveryLogger.info("\n---- job just started fro UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC requests -------------");
-            unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
-            unsuccessfulDeliveryLogger.info("\nthe requests count is:"+biometricCount);
+            info("\n-------------------------------------------------------------------------------------------");
+            info("\n---- job just started fro UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC requests -------------");
+            info("\n-------------------------------------------------------------------------------------------");
+            info("\nthe requests count is:" + biometricCount);
             Integer indexForBiometric = 0;
             for (int i = 0; i < biometricCount; i++) {
                 if (!isJobInterrupted) {
@@ -101,26 +94,22 @@ public class UnsuccessfulDeliveryRequestJob implements InterruptableJob {
                         //  An exception happened while trying to process a biometric unsuccessfull request. So
                         //  ignore the failed request and go to the next one by increasing the start index to load
                         indexForBiometric++;
-                        logger.error(e.getExceptionCode(), e.getMessage(), e);
-                        cmsLogger.error(e.getExceptionCode(), e.getMessage(), e);
-                        unsuccessfulDeliveryLogger.error(e.getExceptionCode(), e.getMessage(), e);
+                        logException(e);
                     }
                 } else {
                     break;
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            cmsLogger.error(e.getMessage(), e);
-            unsuccessfulDeliveryLogger.error(e.getMessage(), e);
+            logGenerakException(e);
         }
-     
+        endLogging();
     }
 
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

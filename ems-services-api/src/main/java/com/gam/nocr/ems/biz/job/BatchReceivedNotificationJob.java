@@ -13,14 +13,15 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class BatchReceivedNotificationJob implements InterruptableJob {
-    private static final Logger logger = BaseLog.getLogger(BatchReceivedNotificationJob.class);
+public class BatchReceivedNotificationJob  extends BaseEmsJob implements InterruptableJob {
+    private static final Logger jobLogger = BaseLog.getLogger("batchReceivedNotification");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
@@ -36,15 +37,16 @@ public class BatchReceivedNotificationJob implements InterruptableJob {
                         //  An exception happened while trying to notify the CMS about receiving a batch. So ignore the
                         //  current batch and go to the next one by increasing the start index to load
                         from++;
-                        logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+                        logException(e);
                     }
                 } else {
                     break;
                 }
             }
         } catch (BaseException e) {
-            logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+            logException(e);
         }
+        endLogging();
     }
 
 

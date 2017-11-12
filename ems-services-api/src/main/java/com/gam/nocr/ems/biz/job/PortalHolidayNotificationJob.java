@@ -21,28 +21,29 @@ import com.gam.nocr.ems.config.BizExceptionCode;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalHolidayNotificationJob implements InterruptableJob {
+public class PortalHolidayNotificationJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(PortalHolidayNotificationJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalHolidayNotificationJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
 		HolidayDelegator holidayDelegator = new HolidayDelegator();
         try {
 			holidayDelegator.notifyPortalAboutHoliday();
         } catch (BaseException e) {
-            logger.error(BizExceptionCode.GLB_ERR_MSG, e);
+            logException(e);
         }
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

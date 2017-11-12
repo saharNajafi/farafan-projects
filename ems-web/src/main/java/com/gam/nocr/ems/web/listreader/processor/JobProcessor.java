@@ -33,7 +33,7 @@ public class JobProcessor implements ListProcessor {
      * As this grid is not going to be filled through database query, there is no need to implement this method
      *
      * @param paramProvider Encapsulates all parameters required to generate the result list
-     * @return  Collection of transfer object that should be serialized to be send to the client
+     * @return Collection of transfer object that should be serialized to be send to the client
      * @throws ListReaderException
      */
     @Override
@@ -42,11 +42,11 @@ public class JobProcessor implements ListProcessor {
     }
 
     /**
-     /**
+     * /**
      * As this grid is not going to be filled through database query, there is no need to implement this method
      *
      * @param paramProvider Encapsulates all parameters required to generate the result list
-     * @return  Collection of transfer object that should be serialized to be send to the client
+     * @return Collection of transfer object that should be serialized to be send to the client
      * @throws ListReaderException
      */
     @Override
@@ -58,7 +58,7 @@ public class JobProcessor implements ListProcessor {
      * Prepares a list of system jobs (using Quartz API) to be displayed in 3S GUI.
      *
      * @param paramProvider Encapsulates all parameters required to generate the result list
-     * @return  The result object containing list of jobs to send to the caller
+     * @return The result object containing list of jobs to send to the caller
      * @throws ListReaderException
      */
     @Override
@@ -72,7 +72,12 @@ public class JobProcessor implements ListProcessor {
             }
             SchedulerService schedulerService = (SchedulerService) obj;
             Scheduler scheduler = schedulerService.getScheduler();
-            List<JobDetail> jobDetails = schedulerService.getJobsList(scheduler);
+            List<JobDetail> jobDetails = null;
+            if (scheduler != null) {
+                jobDetails = schedulerService.getJobsList(scheduler);
+            }else{
+                return new ListResult(paramProvider.getListName(), 0, new ArrayList());
+            }
             if (jobDetails == null)
                 return null;
 

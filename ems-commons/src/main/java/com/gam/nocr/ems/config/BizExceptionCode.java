@@ -1664,6 +1664,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String JBS_023 = "EMS_S_JBS_023";
 	public static final String JBS_024 = "EMS_S_JBS_024";
 	public static final String JBS_025 = "EMS_S_JBS_025";
+	public static final String JBS_026 = "EMS_S_JBS_026";
 	public static final String JBS_001_MSG = "Job key cannot be null";
 	public static final String JBS_002_MSG = "SchedulerService cannot be null";
 	public static final String JBS_003_MSG = "Job cannot be null";
@@ -1686,6 +1687,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String JBS_020_MSG = "Problem when trying to reschedule job {}";
 	public static final String JBS_021_MSG = "Job is currently running";
 	public static final String JBS_024_MSG = "Unable to interrupt job";
+	public static final String JBS_026_MSG = "Scheduler is not started!";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.RatingServiceImpl
 	public static final String RMS_001 = "EMS_S_RMS_001";

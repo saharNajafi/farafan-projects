@@ -16,9 +16,9 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalLocationsNotificationJob implements InterruptableJob {
+public class PortalLocationsNotificationJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(PortalLocationsNotificationJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalLocationsNotificationJob");
 
     private static final String DEFAULT_NUMBER_OF_LOCATION_TO_UPDATE = "10";
 
@@ -27,6 +27,7 @@ public class PortalLocationsNotificationJob implements InterruptableJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
@@ -56,13 +57,14 @@ public class PortalLocationsNotificationJob implements InterruptableJob {
                 }
             }
         } catch (BaseException e) {
-            LOGGER.error(e.getMessage(), e);
+            logException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

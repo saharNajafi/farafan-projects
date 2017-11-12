@@ -15,15 +15,16 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalUpdateForNotVerifiedMESRequestsJob implements InterruptableJob {
+public class PortalUpdateForNotVerifiedMESRequestsJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(PortalUpdateForNotVerifiedMESRequestsJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalUpdateForNotVerifiedMESRequestsJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
@@ -37,13 +38,14 @@ public class PortalUpdateForNotVerifiedMESRequestsJob implements InterruptableJo
                 }
             }
         } catch (BaseException e) {
-            logger.error(BizExceptionCode.GLB_ERR_MSG, e);
+            logException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

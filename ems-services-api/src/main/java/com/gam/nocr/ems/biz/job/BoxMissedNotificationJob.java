@@ -13,14 +13,15 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class BoxMissedNotificationJob implements InterruptableJob {
-    private static final Logger logger = BaseLog.getLogger(BoxMissedNotificationJob.class);
+public class BoxMissedNotificationJob extends BaseEmsJob implements InterruptableJob {
+    private static final Logger jobLogger = BaseLog.getLogger("boxMissedNotification");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
@@ -36,20 +37,21 @@ public class BoxMissedNotificationJob implements InterruptableJob {
                         //  An exception happened while trying to notify the CMS about missing a box. So ignore the
                         //  missed one and go to the next missed box by increasing the start index to load
                         from++;
-                        logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+                        logException(e);
                     }
                 } else {
                     break;
                 }
             }
         } catch (BaseException e) {
-            logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+            logException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey, null);
         isJobInterrupted = true;
     }
 }

@@ -14,28 +14,30 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalRatingInfoNotificationJob implements InterruptableJob {
+public class PortalRatingInfoNotificationJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(PortalRatingInfoNotificationJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalRatingInfoNotificationJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         RatingDelegator ratingDelegator = new RatingDelegator();
         try {
             ratingDelegator.notifyPortalAboutRatingInfo();
         } catch (BaseException e) {
-            logger.error(BizExceptionCode.GLB_ERR_MSG, e);
+            logException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

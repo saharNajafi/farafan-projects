@@ -18,10 +18,9 @@ import java.util.HashMap;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class IMSBatchEnquiryRequestJob implements InterruptableJob {
+public class IMSBatchEnquiryRequestJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(IMSBatchEnquiryRequestJob.class);
-    private static final Logger ImsLogger = BaseLog.getLogger("ImsLogger");
+    private static final Logger ImsLogger = BaseLog.getLogger("IMSBatchEnquiryRequest");
 
     private static final String DEFAULT_IMS_OFFLINE_ENQUIRY_SIZE = "10";
 
@@ -30,6 +29,7 @@ public class IMSBatchEnquiryRequestJob implements InterruptableJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(ImsLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         Integer from = 0;
@@ -52,8 +52,7 @@ public class IMSBatchEnquiryRequestJob implements InterruptableJob {
                     } catch (Exception e) {
                         //  An exception happened while trying to send the batch enquiry to IMS for a batch of requests
                         //  So ignore the batch items and go to the next batch by increasing the start index to load
-                        logger.error(e.getMessage(), e);
-                        ImsLogger.error(e.getMessage(), e);
+                       logGenerakException(e );
                         from += batchSize;
                     }
                 } else {
@@ -64,21 +63,20 @@ public class IMSBatchEnquiryRequestJob implements InterruptableJob {
                 try {
                     imsDelegator.sendBatchEnquiryReqForFirstTime(from, modular, CardRequestState.RECEIVED_BY_EMS);
                 } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                    ImsLogger.error(e.getMessage(), e);
+                  logGenerakException(e);
                 }
             }
 
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            ImsLogger.error(e.getMessage(), e);
+           logGenerakException(e);
         }
+        endLogging();
     }
 
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

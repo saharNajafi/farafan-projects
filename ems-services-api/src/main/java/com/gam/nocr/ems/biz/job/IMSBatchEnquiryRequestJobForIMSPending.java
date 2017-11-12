@@ -27,10 +27,9 @@ import java.util.HashMap;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class IMSBatchEnquiryRequestJobForIMSPending implements InterruptableJob {
+public class IMSBatchEnquiryRequestJobForIMSPending  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(IMSBatchEnquiryRequestJobForIMSPending.class);
-    private static final Logger jobLogger = BaseLog.getLogger("offlineEnquiryRepeat");
+    private static final Logger jobLogger = BaseLog.getLogger("IMSBatchEnquiryRequestJobForIMSPending");
 
     private static final String DEFAULT_IMS_OFFLINE_ENQUIRY_SIZE = "2";
 
@@ -39,17 +38,12 @@ public class IMSBatchEnquiryRequestJobForIMSPending implements InterruptableJob 
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
-
         Integer from = 0;
         IMSDelegator imsDelegator = new IMSDelegator();
-
-        logger.info("##################  IMSBatchEnquiryRequestJobForIMSPending Started #################");
-        jobLogger.info("##################  IMSBatchEnquiryRequestJobForIMSPending Started #################");
-
         try {
             Integer batchSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_IMS_OFFLINE_ENQUIRY_SIZE, DEFAULT_IMS_OFFLINE_ENQUIRY_SIZE));
-
             HashMap<String, String> param = new HashMap<String, String>();
             String[] parameters = imsDelegator.getBatchEnquiryParametersForIMSPendingRequestsFromProfileManager();
             param.put("interval", parameters[0]);
@@ -59,21 +53,18 @@ public class IMSBatchEnquiryRequestJobForIMSPending implements InterruptableJob 
             Integer loopCount = requestCount / batchSize;
             Integer modular = requestCount % batchSize;
 
-            logger.info("IMSBatchEnquiryRequestJobForIMSPending: Total number of items to be send for enquiry : " + requestCount);
-            jobLogger.info("IMSBatchEnquiryRequestJobForIMSPending: Total number of items to be send for enquiry : " + requestCount);
+            info("IMSBatchEnquiryRequestJobForIMSPending: Total number of items to be send for enquiry : " + requestCount);
 
             for (int i = 0; i < loopCount; i++) {
                 if (!isJobInterrupted) {
-                    logger.info("IMSBatchEnquiryRequestJobForIMSPending: iteration " + i + " of " + loopCount);
-                    jobLogger.info("IMSBatchEnquiryRequestJobForIMSPending: iteration " + i + " of " + loopCount);
+                    info("IMSBatchEnquiryRequestJobForIMSPending: iteration " + i + " of " + loopCount);
                     try {
                         imsDelegator.sendBatchEnquiryReqForFirstTime(from, batchSize, CardRequestState.PENDING_IMS);
                     } catch (Exception e) {
                         //  An exception happened while trying to send the batch enquiry to IMS for a batch of requests
                         //  So ignore the batch items and go to the next batch by increasing the start index to load
                         String message = "IMSBatchEnquiryRequestJobForIMSPending: An error occurred while trying send enquiry request to IMS - " + e.getMessage();
-                        logger.error(message, e);
-                        jobLogger.error(message, e);
+                        error(message, e);
                         from += batchSize;
                     }
                 } else {
@@ -81,29 +72,25 @@ public class IMSBatchEnquiryRequestJobForIMSPending implements InterruptableJob 
                 }
             }
             if (modular > 0 && !isJobInterrupted) {
-                logger.info("IMSBatchEnquiryRequestJobForIMSPending: last iteration ");
-                jobLogger.info("IMSBatchEnquiryRequestJobForIMSPending: last iteration ");
+                info("IMSBatchEnquiryRequestJobForIMSPending: last iteration ");
                 try {
                     imsDelegator.sendBatchEnquiryReqForFirstTime(from, modular, CardRequestState.PENDING_IMS);
                 } catch (Exception e) {
                     String message = "IMSBatchEnquiryRequestJobForIMSPending: An error occurred while trying send enquiry request to IMS - " + e.getMessage();
-                    logger.error(message, e);
-                    jobLogger.error(message, e);
+                  logGenerakException(e);
                 }
             }
         } catch (Exception e) {
             String message = "IMSBatchEnquiryRequestJobForIMSPending: An error occurred while trying send enquiry request to IMS - " + e.getMessage();
-            logger.error(message, e);
-            jobLogger.error(message, e);
+            error(message, e);
         }
 
-        logger.info("##################  IMSBatchEnquiryRequestJobForIMSPending Finished #################");
-        jobLogger.info("##################  IMSBatchEnquiryRequestJobForIMSPending Finished #################");
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

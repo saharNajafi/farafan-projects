@@ -19,9 +19,9 @@ import java.util.List;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalReservationsJob implements InterruptableJob {
+public class PortalReservationsJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(PortalReservationsJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalReservationsJob");
 
     private static final String DEFAULT_NUMBER_OF_PORTAL_RESERVATION_TO_LOAD = "10";
 
@@ -30,6 +30,7 @@ public class PortalReservationsJob implements InterruptableJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
@@ -62,7 +63,7 @@ public class PortalReservationsJob implements InterruptableJob {
                         try {
                             portalManagementDelegator.transferReservationsToEMSAndDoEstelam2(longList);
                         } catch (BaseException e) {
-                            LOGGER.error(e.getMessage(), e);
+                            logException(e);
                         }
                     } else {
                         break;
@@ -71,15 +72,16 @@ public class PortalReservationsJob implements InterruptableJob {
 
             }
         } catch (BaseException e) {
-            LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+            logException(e);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logGenerakException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

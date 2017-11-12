@@ -14,15 +14,16 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class ProcessSmsJob implements InterruptableJob {
+public class ProcessSmsJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(ProcessSmsJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("ProcessSmsJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
@@ -43,7 +44,7 @@ public class ProcessSmsJob implements InterruptableJob {
                         if (!loopFlag)
                             from++;
                     } catch (BaseException e) {
-                        LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+                        error(e.getExceptionCode() + " : " + e.getMessage(), e);
                         if (BizExceptionCode.PSS_003.equals(e.getExceptionCode())
                                 || BizExceptionCode.PSS_010.equals(e.getExceptionCode())
                                 || BizExceptionCode.PSS_011.equals(e.getExceptionCode()))
@@ -55,15 +56,16 @@ public class ProcessSmsJob implements InterruptableJob {
                 }
             }
         } catch (BaseException e) {
-            LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+            logException(e);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logGenerakException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

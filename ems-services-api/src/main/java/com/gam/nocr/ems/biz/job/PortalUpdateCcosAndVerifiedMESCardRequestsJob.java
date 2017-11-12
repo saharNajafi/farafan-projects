@@ -14,9 +14,9 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalUpdateCcosAndVerifiedMESCardRequestsJob implements InterruptableJob {
+public class PortalUpdateCcosAndVerifiedMESCardRequestsJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(PortalUpdateCcosAndVerifiedMESCardRequestsJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalUpdateCcosAndVerifiedMESCardRequestsJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
@@ -34,6 +34,7 @@ public class PortalUpdateCcosAndVerifiedMESCardRequestsJob implements Interrupta
      */
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
@@ -45,19 +46,20 @@ public class PortalUpdateCcosAndVerifiedMESCardRequestsJob implements Interrupta
                 try {
                     portalManagementDelegator.updateCardRequestFromCCOSAndMES(from, to);
                 }catch (Exception ex){
-                    logger.error(ex.getMessage(), ex);
+                    logGenerakException(ex);
                     from++;
                 }
             }
 
         } catch (Exception e) {
-            logger.error("Failed to execute update card request from CCOS job.", e);
+            error("Failed to execute update card request from CCOS job.", e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+       error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

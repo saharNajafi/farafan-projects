@@ -31,7 +31,7 @@
 //
 //@PersistJobDataAfterExecution
 //@DisallowConcurrentExecution
-//public class UpdatePermissionCacheJob implements InterruptableJob {
+//public class UpdatePermissionCacheJob  extends BaseEmsJob implements InterruptableJob {
 //
 //	private static final Logger logger = BaseLog
 //			.getLogger(UpdatePermissionCacheJob.class);

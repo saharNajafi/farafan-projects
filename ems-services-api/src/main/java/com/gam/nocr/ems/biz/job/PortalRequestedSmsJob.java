@@ -16,15 +16,16 @@ import java.util.List;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalRequestedSmsJob implements InterruptableJob {
+public class PortalRequestedSmsJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(PortalReservationsJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("PortalRequestedSmsJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
@@ -39,7 +40,7 @@ public class PortalRequestedSmsJob implements InterruptableJob {
                         try {
                             portalManagementDelegator.addRequestedSms(portalCardRequestId);
                         } catch (BaseException e) {
-                            LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+                            logException(e);
                         }
                     } else {
                         break;
@@ -48,15 +49,16 @@ public class PortalRequestedSmsJob implements InterruptableJob {
                 portalCardRequestIds = portalManagementDelegator.fetchRequestedSmsIds();
             }
         } catch (BaseException e) {
-            LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+            logException(e);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logGenerakException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

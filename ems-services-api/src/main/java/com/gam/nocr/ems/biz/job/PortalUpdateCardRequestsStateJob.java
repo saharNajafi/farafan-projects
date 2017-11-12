@@ -22,11 +22,9 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalUpdateCardRequestsStateJob implements InterruptableJob {
+public class PortalUpdateCardRequestsStateJob extends BaseEmsJob implements InterruptableJob {
 
-	private static final Logger LOGGER = BaseLog
-			.getLogger(PortalUpdateCardRequestsStateJob.class);
-	private static final Logger jobLOGGER = BaseLog
+	private static final Logger jobLogger = BaseLog
 			.getLogger("portalUpdateCardRequest");
 
 	private static final String DEFAULT_NUMBER_OF_REQUEST_TO_UPDATE = "100";
@@ -38,7 +36,8 @@ public class PortalUpdateCardRequestsStateJob implements InterruptableJob {
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext)
 			throws JobExecutionException {
-		jobLOGGER.info("Updating requests state in portal started");
+		startLogging(jobLogger);
+		info("Updating requests state in portal started");
 		jobKey = jobExecutionContext.getJobDetail().getKey();
 
 //		Boolean loopFlag = true;
@@ -57,7 +56,7 @@ public class PortalUpdateCardRequestsStateJob implements InterruptableJob {
 			List<Long> requestIds = new CardRequestDelegator()
 					.getRequestIdsForUpdateState(fetchLimit);
 
-			jobLOGGER.info("Total number of requests for update state "
+			info("Total number of requests for update state "
 					+ requestIds.size());
 
 			if (requestIds.size() > 0) {
@@ -79,45 +78,39 @@ public class PortalUpdateCardRequestsStateJob implements InterruptableJob {
 					batches.add(batch);
 				}
 
-				jobLOGGER.info("Updating requests in bunch of "
+				info("Updating requests in bunch of "
 						+ numberOfRequestToUpdate);
 
-				jobLOGGER.info("Total number of batch for update state "
+				info("Total number of batch for update state "
 						+ batches.size());
 
 				int batchNum = 1;
 				for (List<Long> batch : batches) {
 					if (!isJobInterrupted) {
 						try {
-							jobLOGGER.info("Going to update batch " + batchNum);
+							info("Going to update batch " + batchNum);
 							new PortalManagementDelegator()
 									.updateRequestStates(batch);
-							jobLOGGER.info("batch " + batchNum
+							info("batch " + batchNum
 									+ " updated successfully");
 						} catch (Exception e) {
 							String excepStr = StringUtils.getStringFromException(e);
-							jobLOGGER
-									.error("An error occurred while updating batch "
+							error("An error occurred while updating batch "
 											+ batchNum + " : " + excepStr);
-							LOGGER.error("An error occurred while updating batch "
-									+ batchNum + " : " + excepStr);
 						}
 					} else {
-						jobLOGGER
-								.info("Job execution interrupted. No further processing will be done");
+						info("Job execution interrupted. No further processing will be done");
 						break;
 					}
 					batchNum++;
 				}
 			}
 			else{
-				jobLOGGER.info("No need to update reruest states");
+				info("No need to update reruest states");
 			}
 
 		} catch (BaseException e) {
-			LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-			jobLOGGER
-					.error("An error occurred in updating state of some requests in portal - "
+			error("An error occurred in updating state of some requests in portal - "
 							+ e.getExceptionCode() + " : " + e.getMessage());
 		}
 
@@ -135,24 +128,24 @@ public class PortalUpdateCardRequestsStateJob implements InterruptableJob {
 		// to = to + numberOfRequestToUpdate;
 		// LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(),
 		// e);
-		// jobLOGGER
-		// .error("An error occurred in updating state of some requests in portal - "
+		// error("An error occurred in updating state of some requests in portal - "
 		// + e.getExceptionCode()
 		// + " : "
 		// + e.getMessage());
 		// }
 		// } else {
-		// jobLOGGER
-		// .info("Job execution interrupted. No further processing will be done");
+		// info("Job execution interrupted. No further processing will be done");
 		// break;
 		// }
 		// }
-		jobLOGGER.info("Updating requests state in portal finished");
+		info("Updating requests state in portal finished");
+		endLogging();
 	}
+
 
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
-		System.err.println("calling interrupt: jobKey ==> " + jobKey);
+		error("calling interrupt: jobKey ==> " + jobKey);
 		isJobInterrupted = true;
 	}
 }

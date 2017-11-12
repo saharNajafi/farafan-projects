@@ -20,14 +20,15 @@ import java.util.Map;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class EnrollmentOfficesUpdatingNotificationJob implements InterruptableJob {
-    private static final Logger logger = BaseLog.getLogger(EnrollmentOfficesUpdatingNotificationJob.class);
+public class EnrollmentOfficesUpdatingNotificationJob  extends BaseEmsJob implements InterruptableJob {
+    private static final Logger jobLogger = BaseLog.getLogger("enrollmentOfficesUpdatingNotification");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         EnrollmentOfficeDelegator enrollmentOfficeDelegator = new EnrollmentOfficeDelegator();
@@ -50,11 +51,10 @@ public class EnrollmentOfficesUpdatingNotificationJob implements InterruptableJo
                     try {
                         newOfficeSuccess.add(enrollmentOfficeDelegator.
                                 notifySubSystemsAboutEnrollmentOffices(newEnrollmentOffice, "NEW"));
-                        logger.debug("successfully updated new enrollment office in CMS and CCOS with id : " + newEnrollmentOffice.getId());
+                        debug("successfully updated new enrollment office in CMS and CCOS with id : " + newEnrollmentOffice.getId());
                     } catch (BaseException e) {
-                        logger.error("updating enrollment office information encounter error with id : " + newEnrollmentOffice.getId());
-                        logger.error(BizExceptionCode.GLB_ERR_MSG, e);
-
+                        error("updating enrollment office information encounter error with id : " + newEnrollmentOffice.getId(),null);
+                        logException(e);
                         newOfficeFailure.add(newEnrollmentOffice.getId());
                     }
                 } else {
@@ -67,11 +67,10 @@ public class EnrollmentOfficesUpdatingNotificationJob implements InterruptableJo
                         editedOfficeSuccess.add(enrollmentOfficeDelegator.
                                 notifySubSystemsAboutEnrollmentOffices(modifiedEnrollmentOffice, "EDIT"));
 
-                        logger.debug("successfully updated modified enrollment office in CMS and CCOS with id : " + modifiedEnrollmentOffice.getId());
+                        debug("successfully updated modified enrollment office in CMS and CCOS with id : " + modifiedEnrollmentOffice.getId());
                     } catch (BaseException e) {
-                        logger.error("updating enrollment office information encounter error with id : " + modifiedEnrollmentOffice.getId());
-                        logger.error(BizExceptionCode.GLB_ERR_MSG, e);
-
+                        error("updating enrollment office information encounter error with id : " + modifiedEnrollmentOffice.getId());
+                       logException(e);
                         editedOfficeFailure.add(modifiedEnrollmentOffice.getId());
                     }
                 } else {
@@ -84,11 +83,10 @@ public class EnrollmentOfficesUpdatingNotificationJob implements InterruptableJo
                         deletedOfficeSuccess.add(enrollmentOfficeDelegator.
                                 notifySubSystemsAboutEnrollmentOffices(deletedEnrollmentOffice, "DELETE"));
 
-                        logger.debug("successfully updated deleted enrollment office in CMS and CCOS with id : " + deletedEnrollmentOffice.getId());
+                        debug("successfully updated deleted enrollment office in CMS and CCOS with id : " + deletedEnrollmentOffice.getId());
                     } catch (BaseException e) {
-                        logger.error("updating enrollment office information encounter error with id : " + deletedEnrollmentOffice.getId());
-                        logger.error(BizExceptionCode.GLB_ERR_MSG, e);
-
+                        error("updating enrollment office information encounter error with id : " + deletedEnrollmentOffice.getId());
+                        logException(e);
                         deletedOfficeFailure.add(deletedEnrollmentOffice.getId());
                     }
                 } else {
@@ -109,13 +107,14 @@ public class EnrollmentOfficesUpdatingNotificationJob implements InterruptableJo
 
 
         } catch (Exception e) {
-            logger.error(BizExceptionCode.GLB_ERR_MSG, e);
+            logGenerakException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

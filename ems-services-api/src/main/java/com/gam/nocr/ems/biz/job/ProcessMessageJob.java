@@ -1,64 +1,59 @@
 package com.gam.nocr.ems.biz.job;
 
-import java.util.List;
-
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.InterruptableJob;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
-import org.quartz.PersistJobDataAfterExecution;
-import org.quartz.UnableToInterruptJobException;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.nocr.ems.biz.delegator.MessageDelegator;
+import org.quartz.*;
+import org.slf4j.Logger;
+
+import java.util.List;
 
 
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class ProcessMessageJob implements InterruptableJob {
+public class ProcessMessageJob extends BaseEmsJob implements InterruptableJob {
 
-	private static final Logger LOGGER = BaseLog.getLogger(ProcessMessageJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("ProcessMessageJob");
 
-	private boolean isJobInterrupted = false;
-	private JobKey jobKey = null;
+    private boolean isJobInterrupted = false;
+    private JobKey jobKey = null;
 
-	@Override
-	public void execute(JobExecutionContext jobExecutionContext)
-			throws JobExecutionException {
-		jobKey = jobExecutionContext.getJobDetail().getKey();
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext)
+            throws JobExecutionException {
+        startLogging(jobLogger);
+        jobKey = jobExecutionContext.getJobDetail().getKey();
 
-		try {
-			
-			MessageDelegator messageDelegator = new MessageDelegator();
+        try {
 
-			List<Long> messageIds  = messageDelegator.fetchReadyToProcessMessage();
+            MessageDelegator messageDelegator = new MessageDelegator();
 
-			if (messageIds != null) {
-				for (Long id : messageIds) {
-					if (!isJobInterrupted) {
-						try {
-							messageDelegator.processMessage(id);
-						} catch (Exception e) {
-							LOGGER.error(e.getMessage(), e);
-						}
-					} else {
-						break;
-					}
-				}
-			}
-		} catch (BaseException e) {
-			LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-	}
+            List<Long> messageIds = messageDelegator.fetchReadyToProcessMessage();
 
-	@Override
-	public void interrupt() throws UnableToInterruptJobException {
-		System.err.println("calling interrupt: jobKey ==> " + jobKey);
-		isJobInterrupted = true;
-	}
+            if (messageIds != null) {
+                for (Long id : messageIds) {
+                    if (!isJobInterrupted) {
+                        try {
+                            messageDelegator.processMessage(id);
+                        } catch (Exception e) {
+                            logGenerakException(e);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } catch (BaseException e) {
+            logException(e);
+        } catch (Exception e) {
+            logGenerakException(e);
+        }
+        endLogging();
+    }
+
+    @Override
+    public void interrupt() throws UnableToInterruptJobException {
+        error("calling interrupt: jobKey ==> " + jobKey);
+        isJobInterrupted = true;
+    }
 }

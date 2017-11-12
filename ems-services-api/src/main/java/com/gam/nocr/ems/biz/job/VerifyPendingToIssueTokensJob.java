@@ -30,19 +30,17 @@ import com.gam.nocr.ems.data.enums.TokenType;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class VerifyPendingToIssueTokensJob implements InterruptableJob {
+public class VerifyPendingToIssueTokensJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(VerifyPendingToIssueTokensJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("VerifyPendingToIssueTokensJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
-
-        logger.info("==========================================================");
-        logger.info("VerifyPendingToIssueTokensJob execute method is started...");
         TokenManagementDelegator tokenManagementDelegator = new TokenManagementDelegator();
         try {
             // Finding certificate
@@ -63,11 +61,11 @@ public class VerifyPendingToIssueTokensJob implements InterruptableJob {
                                     try {
                                         tokenManagementDelegator.createBusinessLog(BusinessLogAction.PERSON_TOKEN_RESPONSE, BusinessLogEntity.PKI, "System", "The Token has been created successfully. PersonTokenID : '" + tokenId + "'", true);
                                     } catch (Exception e) {
-                                        logger.error(e.getMessage(), e);
+                                        logGenerakException(e);
                                     }
                                 }
                             } catch (BaseException e) {
-                                logger.error(e.getExceptionCode(), e.getMessage(), e);
+                                logException(e);
                             }
                         } else {
                             break;
@@ -100,7 +98,7 @@ public class VerifyPendingToIssueTokensJob implements InterruptableJob {
 //                    }
 //                }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+                logGenerakException(e);
             }
             
             try {
@@ -119,7 +117,7 @@ public class VerifyPendingToIssueTokensJob implements InterruptableJob {
 //                                    }
 //                                }
                             } catch (BaseException e) {
-                                logger.error(e.getExceptionCode(), e.getMessage(), e);
+                               logException(e);
                             }
                         } else {
                             break;
@@ -127,7 +125,7 @@ public class VerifyPendingToIssueTokensJob implements InterruptableJob {
 					}
                 }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+               logGenerakException(e);
             }
 
             try {
@@ -184,19 +182,18 @@ public class VerifyPendingToIssueTokensJob implements InterruptableJob {
 //                    }
 //                }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+                logGenerakException(e);
             }
 
         } catch (Exception e) {
-            logger.error(BizExceptionCode.GLB_ERR_MSG, e);
+           logGenerakException(e);
         }
-        logger.info("VerifyPendingToIssueTokensJob execute method is finished.");
-        logger.info("=========================================================");
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

@@ -1,498 +1,920 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration debug="true"
-	xmlns:log4j='http://jakarta.apache.org/log4j/'>
-	<!-- ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
-	<!-- ======================================================================== -->
-	<!-- Appender -->
-	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
-			<param name="ConversionPattern"
-				value="ems: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	<appender name="thirdPartyConsoleAppender" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
-			<param name="ConversionPattern"
-				value="--- [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %c %x - %m%n" />
-		</layout>
-	</appender>
-	<appender name="commonsConsoleAppender" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
-			<param name="ConversionPattern"
-				value="com: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %c %x - %m%n" />
-		</layout>
-	</appender>
-	<appender name="methodLoggerAspectConsoleAppender" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
-			<param name="ConversionPattern"
-				value="ems: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %x - %m%n" />
-		</layout>
-	</appender>
-	<appender name="rollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="css_application.log" />
-		<param name="MaxFileSize" value="100MB" />
-		<param name="MaxBackupIndex" value="10" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="ems: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+                     xmlns:log4j='http://jakarta.apache.org/log4j/'>
+    <!-- ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
+    <!-- ======================================================================== -->
+    <!-- Appender -->
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
+            <param name="ConversionPattern"
+                   value="ems: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="thirdPartyConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
+            <param name="ConversionPattern"
+                   value="--- [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %c %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="commonsConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
+            <param name="ConversionPattern"
+                   value="com: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %c %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="methodLoggerAspectConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="[%p] %d %c - &lt;%m&gt;%n"/> -->
+            <param name="ConversionPattern"
+                   value="ems: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="rollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="css_application.log"/>
+        <param name="MaxFileSize" value="100MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="ems: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="gaasDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/gaasLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="gaas: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="gaasDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/gaasLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="gaas: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="portalDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/portalLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="portal: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="portalDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/portalLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="portal: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="imsDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/imsLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="ims: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	<!-- vip appender -->
-	<appender name="vipDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/vipLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="ims: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	<!-- vip appender -->
+    <appender name="IMSBatchEnquiryRequestRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/jobs/IMSBatchEnquiryRequest/IMSBatchEnquiryRequest.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="ims: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <!-- vip appender -->
+    <appender name="vipDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/vipLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="ims: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <!-- vip appender -->
 
-	<!-- Estelam2 appender -->
-	<appender name="estelam2DailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/estelam2Log.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="ims: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	<!-- Estelam2 appender -->
-	<appender name="cmsDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/cmsLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="cms: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <!-- Estelam2 appender -->
+    <appender name="estelam2DailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/estelam2Log.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="ims: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <!-- Estelam2 appender -->
+    <appender name="cmsDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/cmsLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="cms: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="emksLoggerDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/emksLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="emks: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="emksLoggerDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/emksLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="emks: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="pkiDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/pkiLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="pki: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="pkiDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/pkiLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="pki: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<!-- Jobs loggers appenders -->
-	<appender name="IMSBatchEnquiryRequestJobForIMSPendingRollingAppender"
-		class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/offlineEnquiryRepeat/offlineEnquiryRepeat.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="offlineEnquiryRepeat: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <!-- Jobs loggers appenders -->
+    <appender name="BatchMissedNotificationJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/batchMissedNotification/batchMissedNotification.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="PortalUpdateCardRequestsStateRollingAppender"
-		class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/portalUpdateCardRequest/portalUpdateCardRequest.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="portalUpdateCardRequest: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="BatchReceivedNotificationJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/batchReceivedNotification/batchReceivedNotification.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="PortalFetchCardRequestsRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/portalFetchCardRequest/portalFetchCardRequest.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="portalFetchCardRequest: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="BoxMissedNotificationJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/boxMissedNotification/boxMissedNotification.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="CardHandingOutNotificationJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/cardHandingOutNotification/cardHandingOutNotification.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="CardHandingOutNotificationRollingAppender"
-		class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/cardHandingOutNotification/cardHandingOutNotification.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="cardHandingOutNotification: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="CardIssuanceRequestJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/cardIssuanceRequest/cardIssuanceRequest.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="CardMissedNotificationJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/cardMissedNotification/cardMissedNotification.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="EnrollmentOfficesUpdatingNotificationJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/enrollmentOfficesUpdatingNotification/enrollmentOfficesUpdatingNotification.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="Estelam3LoggerJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/estelam3/estelam3.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="ProcessRequestedReportsRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/processRequestedReports/processRequestedReports.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="processRequestedReports: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	<!-- Jobs loggers appenders -->
+    <appender name="IMSBatchEnquiryRequestJobForIMSPendingRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/IMSBatchEnquiryRequestJobForIMSPending/IMSBatchEnquiryRequestJobForIMSPending.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="IMSBatchEnquiryResultJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/IMSBatchEnquiryResultJob/IMSBatchEnquiryResultJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="IMSUpdateCitizensInfoJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/IMSUpdateCitizensInfoJob/IMSUpdateCitizensInfoJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="IMSGetUpdatedCitizensResultJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/jobs/IMSGetUpdatedCitizensResultJob/IMSGetUpdatedCitizensResultJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="ReportsJMSRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/reportJMS/reportJMS.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="reportJMS: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="PortalUpdateCardRequestsStateRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/portalUpdateCardRequest/portalUpdateCardRequest.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="portalUpdateCardRequest: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="fileAppender" class="org.apache.log4j.FileAppender">
-		<param name="File" value="log.log" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p %d{ISO8601} %t::%c{1} - %m%n" />
-		</layout>
-	</appender>
+    <appender name="PortalUpdateCcosAndVerifiedMESCardRequestsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalUpdateCcosAndVerifiedMESCardRequestsJob/PortalUpdateCcosAndVerifiedMESCardRequestsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PortalUpdateForNotVerifiedMESRequestsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalUpdateForNotVerifiedMESRequestsJob/PortalUpdateForNotVerifiedMESRequestsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ProcessCardDeliverySmsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/ProcessCardDeliverySmsJob/ProcessCardDeliverySmsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ProcessMessageJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/ProcessMessageJob/ProcessMessageJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ProcessReferToCCOSSmsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/ProcessReferToCCOSSmsJob/ProcessReferToCCOSSmsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ProcessReservedSmsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/ProcessReservedSmsJob/ProcessReservedSmsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PurgeBiometricAndDocumentLoggerRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PurgeBiometricAndDocument/PurgeBiometricAndDocument.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="RepealedCardRequestJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/RepealedCardRequestJob/RepealedCardRequestJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ReservedSmsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/ReservedSmsJob/ReservedSmsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ProcessSmsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/ProcessSmsJob/ProcessSmsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="databaseAppender" class="org.apache.log4j.jdbc.JDBCAppender">
-		<param name="URL" value="jdbc:mysql://localhost:3306/test" />
-		<param name="Driver" value="com.mysql.jdbc.Driver" />
-		<param name="User" value="root" />
-		<param name="Password" value="root" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="INSERT INTO LOGS(USER_ID, DATED, LOGGER, LEVEL, MESSAGE) VALUES('%x','%d{yyyy-MM-dddd HH:mm:ss}','%C','%p','%m')" />
-		</layout>
-	</appender>
+    <appender name="PortalFetchCardRequestsRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/portalFetchCardRequest/portalFetchCardRequest.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="portalFetchCardRequest: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PortalHolidayNotificationJobRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalHolidayNotificationJob/PortalHolidayNotificationJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PortalLocationsNotificationJobRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalLocationsNotificationJob/PortalLocationsNotificationJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PortalRatingInfoNotificationJobRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalRatingInfoNotificationJob/PortalRatingInfoNotificationJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PortalRequestedSmsJobRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalRequestedSmsJob/PortalRequestedSmsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="quartzDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/quartzLog.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="quartz: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="ProcessRequestedReportsRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/processRequestedReports/processRequestedReports.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="processRequestedReports: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <!-- Jobs loggers appenders -->
 
-	<appender name="CMSDispatchRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/cmsdispatch/cmsdispatch.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="portalUpdateCardRequest: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="ReportsJMSRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/reportJMS/reportJMS.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="reportJMS: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="DispatchRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/dispatch/dispatch.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="dispatch: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="fileAppender" class="org.apache.log4j.FileAppender">
+        <param name="File" value="log.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %d{ISO8601} %t::%c{1} - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="CCOSStateProviderWSRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File" value="${log_dir}/ccos/fetchConfigs/fetchConfigs.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="ccosFetchConfig: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="databaseAppender" class="org.apache.log4j.jdbc.JDBCAppender">
+        <param name="URL" value="jdbc:mysql://localhost:3306/test"/>
+        <param name="Driver" value="com.mysql.jdbc.Driver"/>
+        <param name="User" value="root"/>
+        <param name="Password" value="root"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="INSERT INTO LOGS(USER_ID, DATED, LOGGER, LEVEL, MESSAGE) VALUES('%x','%d{yyyy-MM-dddd HH:mm:ss}','%C','%p','%m')"/>
+        </layout>
+    </appender>
 
-	<appender name="PortalReservationFreeTimeRollingAppender"
-		class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/portalReservationFreeTime/portalReservationFreeTime.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="portalReservationFreeTime: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="quartzDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/quartzLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="quartz: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="UnsuccessfulDeliveryRequestRollingAppender"
-		class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/jobs/unsuccessfulDeliveryRequest.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="unsuccessfulDelivery: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	<appender name="ImsVerificationInDeliveryRollingAppender"
-		class="org.apache.log4j.RollingFileAppender">
-		<!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
-		<param name="File"
-			value="${log_dir}/imsVerificationInDelivery.log" />
-		<param name="MaxFileSize" value="50MB" />
-		<param name="MaxBackupIndex" value="5" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="imsVerificationInDeliverye: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="CMSDispatchRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/cmsdispatch/cmsdispatch.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="CMSDispatch: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<appender name="BizLogRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="${log_dir}/bizlog.log" />
-		<param name="MaxFileSize" value="100MB" />
-		<param name="MaxBackupIndex" value="10" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="bizlog: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
-	
-	<appender name="ThreadLocalRollingAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="${log_dir}/threadLocal.log" />
-		<param name="MaxFileSize" value="100MB" />
-		<param name="MaxBackupIndex" value="10" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="threadLocal: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n" />
-		</layout>
-	</appender>
+    <appender name="DispatchRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/dispatch/dispatch.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="dispatch: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<!-- ======================================================================== -->
-	<!-- Logger -->
-	<logger name="com.gam.nocr.ems.biz.service.external.impl"
-		additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <appender name="CCOSStateProviderWSRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/ccos/fetchConfigs/fetchConfigs.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="ccosFetchConfig: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<logger name="com.gam.nocr.ems.biz.service.internal.impl"
-		additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <appender name="PortalReservationFreeTimeRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/portalReservationFreeTime/portalReservationFreeTime.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="portalReservationFreeTime: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="PortalReservationsJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/PortalReservationsJob/PortalReservationsJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<logger name="com.gam.nocr.ems.config" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <appender name="UnsuccessfulDeliveryRequestRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/unsuccessfulDeliveryRequest/unsuccessfulDeliveryRequest.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="unsuccessfulDelivery: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="VerifyPendingToIssueTokensJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/VerifyPendingToIssueTokensJob/VerifyPendingToIssueTokensJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="VerifyReadyToIssueTokensJobRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/VerifyReadyToIssueTokensJob/VerifyReadyToIssueTokensJob.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="ImsVerificationInDeliveryRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/imsVerificationInDelivery.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="imsVerificationInDeliverye: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<logger name="org.hibernate.type" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <appender name="BizLogRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${log_dir}/bizlog.log"/>
+        <param name="MaxFileSize" value="100MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="bizlog: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<logger name="com.gam.commons" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <appender name="ThreadLocalRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${log_dir}/threadLocal.log"/>
+        <param name="MaxFileSize" value="100MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="threadLocal: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
-	<logger name="com.gam.nocr" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <!-- ======================================================================== -->
+    <!-- Logger -->
+    <logger name="com.gam.nocr.ems.biz.service.external.impl"
+            additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
 
-	<logger name="com.gam.nocr.ems.biz.service.aspects" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</logger>
+    <logger name="com.gam.nocr.ems.biz.service.internal.impl"
+            additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
 
-	<logger name="GaasLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="gaasDailyRollingAppender" />
-	</logger>
+    <logger name="com.gam.nocr.ems.config" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
 
-	<logger name="PortalLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="portalDailyRollingAppender" />
-	</logger>
+    <logger name="org.hibernate.type" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
 
-	<logger name="ImsLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="imsDailyRollingAppender" />
-	</logger>
-	<!--Estelam2 Logger -->
-	<logger name="VipLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="vipDailyRollingAppender" />
-	</logger>
-	<!--Estelam2 Logger -->
+    <logger name="com.gam.commons" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
 
-	<!--Estelam2 Logger -->
-	<logger name="Estelam2Logger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="estelam2DailyRollingAppender" />
-	</logger>
-	<!--Estelam2 Logger -->
-	<logger name="CmsLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="cmsDailyRollingAppender" />
-	</logger>
+    <logger name="com.gam.nocr" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
+
+    <logger name="com.gam.nocr.ems.biz.service.aspects" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </logger>
+
+    <logger name="GaasLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="gaasDailyRollingAppender"/>
+    </logger>
+
+    <logger name="PortalLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="portalDailyRollingAppender"/>
+    </logger>
+
+    <logger name="IMSBatchEnquiryRequest" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="IMSBatchEnquiryRequestRollingAppender"/>
+    </logger>
+    <!--Estelam2 Logger -->
+    <logger name="VipLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="vipDailyRollingAppender"/>
+    </logger>
+    <!--Estelam2 Logger -->
+
+    <!--Estelam2 Logger -->
+    <logger name="Estelam2Logger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="estelam2DailyRollingAppender"/>
+    </logger>
+    <!--Estelam2 Logger -->
+    <logger name="CmsLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="cmsDailyRollingAppender"/>
+    </logger>
 
 
-	<logger name="PkiLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="pkiDailyRollingAppender" />
-	</logger>
+    <logger name="PkiLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="pkiDailyRollingAppender"/>
+    </logger>
 
-	<logger name="EmksLogger" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="emksLoggerDailyRollingAppender" />
-	</logger>
+    <logger name="EmksLogger" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="emksLoggerDailyRollingAppender"/>
+    </logger>
 
-	<logger name="org.quartz" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="quartzDailyRollingAppender" />
-	</logger>
+    <logger name="org.quartz" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="quartzDailyRollingAppender"/>
+    </logger>
 
-	<!--Jobs Loggers -->
-	<logger name="offlineEnquiryRepeat" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="IMSBatchEnquiryRequestJobForIMSPendingRollingAppender" />
-	</logger>
+    <!--Jobs Loggers -->
+    <logger name="batchMissedNotification" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="BatchMissedNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="batchReceivedNotification" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="BatchReceivedNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="boxMissedNotification" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="BoxMissedNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="cardHandingOutNotification" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CardHandingOutNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="cardIssuanceRequest" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CardIssuanceRequestJobRollingAppender"/>
+    </logger>
+    <logger name="cardMissedNotification" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CardMissedNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="enrollmentOfficesUpdatingNotification" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="EnrollmentOfficesUpdatingNotificationJobRollingAppender"/>
+    </logger>
 
-	<logger name="portalUpdateCardRequest" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="PortalUpdateCardRequestsStateRollingAppender" />
-	</logger>
+    <logger name="Estelam3Logger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="Estelam3LoggerJobRollingAppender"/>
+    </logger>
 
-	<logger name="portalFetchCardRequest" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="PortalFetchCardRequestsRollingAppender" />
-	</logger>
+    <logger name="IMSBatchEnquiryRequestJobForIMSPending" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="IMSBatchEnquiryRequestJobForIMSPendingRollingAppender"/>
+    </logger>
+    <logger name="IMSBatchEnquiryResultJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="IMSBatchEnquiryResultJobRollingAppender"/>
+    </logger>
+    <logger name="IMSUpdateCitizensInfoJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="IMSUpdateCitizensInfoJobRollingAppender"/>
+    </logger>
+    <logger name="IMSGetUpdatedCitizensResultJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="IMSGetUpdatedCitizensResultJobRollingAppender"/>
+    </logger>
 
-	<logger name="cardHandingOutNotification" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="CardHandingOutNotificationRollingAppender" />
-	</logger>
+    <logger name="portalUpdateCardRequest" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalUpdateCardRequestsStateRollingAppender"/>
+    </logger>
+    <logger name="PortalUpdateCcosAndVerifiedMESCardRequestsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalUpdateCcosAndVerifiedMESCardRequestsJobRollingAppender"/>
+    </logger>
+    <logger name="PortalUpdateForNotVerifiedMESRequestsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalUpdateForNotVerifiedMESRequestsJobRollingAppender"/>
+    </logger>
+    <logger name="ProcessCardDeliverySmsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ProcessCardDeliverySmsJobRollingAppender"/>
+    </logger>
+    <logger name="ProcessMessageJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ProcessMessageJobRollingAppender"/>
+    </logger>
+    <logger name="ProcessReferToCCOSSmsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ProcessReferToCCOSSmsJobRollingAppender"/>
+    </logger>
+    <logger name="ProcessReservedSmsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ProcessReservedSmsJobRollingAppender"/>
+    </logger>
+    <logger name="PurgeBiometricAndDocumentLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PurgeBiometricAndDocumentLoggerRollingAppender"/>
+    </logger>
+    <logger name="RepealedCardRequestJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="RepealedCardRequestJobRollingAppender"/>
+    </logger>
+    <logger name="ReservedSmsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ReservedSmsJobRollingAppender"/>
+    </logger>
+    <logger name="ProcessSmsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ProcessSmsJobRollingAppender"/>
+    </logger>
 
-	<logger name="processRequestedReports" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="ProcessRequestedReportsRollingAppender" />
-	</logger>
+    <logger name="portalFetchCardRequest" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalFetchCardRequestsRollingAppender"/>
+    </logger>
+    <logger name="PortalHolidayNotificationJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalHolidayNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="PortalLocationsNotificationJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalLocationsNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="PortalRatingInfoNotificationJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalRatingInfoNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="PortalRequestedSmsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalRequestedSmsJobRollingAppender"/>
+    </logger>
 
-	<!--Jobs Loggers -->
+    <logger name="processRequestedReports" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ProcessRequestedReportsRollingAppender"/>
+    </logger>
 
-	<logger name="reportJMS" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="ReportsJMSRollingAppender" />
-	</logger>
+    <!--Jobs Loggers -->
 
-	<logger name="cmsdispatch" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="CMSDispatchRollingAppender" />
-	</logger>
+    <logger name="reportJMS" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ReportsJMSRollingAppender"/>
+    </logger>
 
-	<logger name="dispatch" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="DispatchRollingAppender" />
-	</logger>
+    <logger name="cmsdispatch" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CMSDispatchRollingAppender"/>
+    </logger>
 
-	<logger name="ccosStateProvider" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="CCOSStateProviderWSRollingAppender" />
-	</logger>
+    <logger name="dispatch" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="DispatchRollingAppender"/>
+    </logger>
 
-	<logger name="portalReservationFreeTime" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="PortalReservationFreeTimeRollingAppender" />
-	</logger>
-	
-	<logger name="unsuccessfulDeliveryRequest" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="UnsuccessfulDeliveryRequestRollingAppender" />
-	</logger>
-	
-	<logger name="imsVerificationInDelivery" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="ImsVerificationInDeliveryRollingAppender" />
-	</logger>
-	
-	<logger name="BusinessLogger" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="BizLogRollingAppender" />
-	</logger>
-	
-	<logger name="threadLocal" additivity="false">
-		<level value="WARN" />
-		<appender-ref ref="ThreadLocalRollingAppender" />
-	</logger>
-	
+    <logger name="ccosStateProvider" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CCOSStateProviderWSRollingAppender"/>
+    </logger>
 
-	<root>
-		<level value="WARN" />
-		<appender-ref ref="rollingAppender" />
-	</root>
+    <logger name="portalReservationFreeTime" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalReservationFreeTimeRollingAppender"/>
+    </logger>
+    <logger name="PortalReservationsJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="PortalReservationsJobRollingAppender"/>
+    </logger>
+
+    <logger name="unsuccessfulDeliveryRequest" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="UnsuccessfulDeliveryRequestRollingAppender"/>
+    </logger>
+    <logger name="VerifyPendingToIssueTokensJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="VerifyPendingToIssueTokensJobRollingAppender"/>
+    </logger>
+
+    <logger name="VerifyReadyToIssueTokensJob" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="VerifyReadyToIssueTokensJobRollingAppender"/>
+    </logger>
+
+    <logger name="imsVerificationInDelivery" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ImsVerificationInDeliveryRollingAppender"/>
+    </logger>
+
+    <logger name="BusinessLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="BizLogRollingAppender"/>
+    </logger>
+
+    <logger name="threadLocal" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="ThreadLocalRollingAppender"/>
+    </logger>
+
+
+    <root>
+        <level value="WARN"/>
+        <appender-ref ref="rollingAppender"/>
+    </root>
 
 </log4j:configuration>

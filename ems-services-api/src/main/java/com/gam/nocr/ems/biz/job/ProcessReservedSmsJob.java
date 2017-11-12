@@ -1,7 +1,5 @@
 package com.gam.nocr.ems.biz.job;
 
-import java.util.List;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.nocr.ems.biz.delegator.OutgoingSMSDelegator;
@@ -10,91 +8,91 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.enums.SendSmsType;
 import com.gam.nocr.ems.util.EmsUtil;
-
 import org.quartz.*;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class ProcessReservedSmsJob implements InterruptableJob {
+public class ProcessReservedSmsJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(ProcessReservedSmsJob.class);
-    
-    private static final String DEFAULT_DELETE_FROM_MSGT_ENABLE= "F";
-    private static final String DEFAULT_DELETE_FROM_MSGT_TIME_INTERVAL= "2";
-    private static final String DEFAULT_PROCESS_RESERVED_SMS_FETCH_LIMIT= "100";
+    private static final Logger jobLogger = BaseLog.getLogger("ProcessReservedSmsJob");
+
+    private static final String DEFAULT_DELETE_FROM_MSGT_ENABLE = "F";
+    private static final String DEFAULT_DELETE_FROM_MSGT_TIME_INTERVAL = "2";
+    private static final String DEFAULT_PROCESS_RESERVED_SMS_FETCH_LIMIT = "100";
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
-        	OutgoingSMSDelegator outgoingSMSDelegator = new OutgoingSMSDelegator();
-        	
-        	Integer fetchLimit = Integer
-					.valueOf(EmsUtil
-							.getProfileValue(
-									ProfileKeyName.KEY_NUMBER_OF_PROCESS_RESERVED_SMS_FETCH_LIMIT,
-									DEFAULT_PROCESS_RESERVED_SMS_FETCH_LIMIT));
-            
-            List<Long> msgIds = outgoingSMSDelegator.fetchMessagesId(SendSmsType.RESERVED_SMS.getIntValue(),fetchLimit);
-			if (EmsUtil.checkListSize(msgIds)) {
+            OutgoingSMSDelegator outgoingSMSDelegator = new OutgoingSMSDelegator();
 
-				for (Long id : msgIds) {
-					if (!isJobInterrupted) {
-						try {
-							outgoingSMSDelegator.processSmsToSend(id);
+            Integer fetchLimit = Integer
+                    .valueOf(EmsUtil
+                            .getProfileValue(
+                                    ProfileKeyName.KEY_NUMBER_OF_PROCESS_RESERVED_SMS_FETCH_LIMIT,
+                                    DEFAULT_PROCESS_RESERVED_SMS_FETCH_LIMIT));
 
-						} catch (BaseException e) {
+            List<Long> msgIds = outgoingSMSDelegator.fetchMessagesId(SendSmsType.RESERVED_SMS.getIntValue(), fetchLimit);
+            if (EmsUtil.checkListSize(msgIds)) {
 
-							LOGGER.error(e.getExceptionCode() + " : "+ e.getMessage(), e);
-							
-							if (BizExceptionCode.OSS_002.equals(e.getExceptionCode())
-									|| BizExceptionCode.OSS_003.equals(e.getExceptionCode())
-									|| BizExceptionCode.OSS_004.equals(e.getExceptionCode()))
-								break;
-						}
-					} else {
-						break;
-					}
-				}
-			}
-        }catch (BaseException e) {
-			LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-        
+                for (Long id : msgIds) {
+                    if (!isJobInterrupted) {
+                        try {
+                            outgoingSMSDelegator.processSmsToSend(id);
 
-            
+                        } catch (BaseException e) {
+                            logException(e);
+                            if (BizExceptionCode.OSS_002.equals(e.getExceptionCode())
+                                    || BizExceptionCode.OSS_003.equals(e.getExceptionCode())
+                                    || BizExceptionCode.OSS_004.equals(e.getExceptionCode()))
+                                break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } catch (BaseException e) {
+            logException(e);
+        } catch (Exception e) {
+            logGenerakException(e);
+        }
+
+
         /**
          * delete older records
          */
-		if (Boolean.valueOf(EmsUtil.getProfileValue(
-				ProfileKeyName.KEY_DELETE_FROM_MSGT_ENABLE,
-				DEFAULT_DELETE_FROM_MSGT_ENABLE))) {
-			try {
-				PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-				portalManagementDelegator
-						.deleteOldRecordsFromMsgt(Integer.valueOf(EmsUtil.getProfileValue(
-								ProfileKeyName.KEY_DELETE_FROM_MSGT_TIME_INTERVAL,
-								DEFAULT_DELETE_FROM_MSGT_TIME_INTERVAL)), SendSmsType.RESERVED_SMS.getIntValue());
+        if (Boolean.valueOf(EmsUtil.getProfileValue(
+                ProfileKeyName.KEY_DELETE_FROM_MSGT_ENABLE,
+                DEFAULT_DELETE_FROM_MSGT_ENABLE))) {
+            try {
+                PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+                portalManagementDelegator
+                        .deleteOldRecordsFromMsgt(Integer.valueOf(EmsUtil.getProfileValue(
+                                ProfileKeyName.KEY_DELETE_FROM_MSGT_TIME_INTERVAL,
+                                DEFAULT_DELETE_FROM_MSGT_TIME_INTERVAL)), SendSmsType.RESERVED_SMS.getIntValue());
 
-			} catch (BaseException e) {
-				LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-			} catch (Exception e) {
-				LOGGER.error(e.getMessage(), e);
-			}
-		}
+            } catch (BaseException e) {
+                logException(e);
+            } catch (Exception e) {
+                logGenerakException(e);
+            }
+        }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

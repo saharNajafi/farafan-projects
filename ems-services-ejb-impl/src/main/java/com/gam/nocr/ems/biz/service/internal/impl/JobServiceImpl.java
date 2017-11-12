@@ -34,6 +34,9 @@ public class JobServiceImpl extends EMSAbstractService implements JobServiceLoca
         if (schedulerService == null) {
             throw new ServiceException(BizExceptionCode.JBS_002, BizExceptionCode.JBS_002_MSG);
         }
+        if (schedulerService.getScheduler()==null){
+            throw new ServiceException(BizExceptionCode.JBS_026, BizExceptionCode.JBS_026_MSG);
+        }
         List<JobDetail> jobDetails = schedulerService.getJobsList(schedulerService.getScheduler());
         for (JobDetail job : jobDetails) {
             if (job.getKey().getName().equals(jobKey)) {
@@ -67,6 +70,9 @@ public class JobServiceImpl extends EMSAbstractService implements JobServiceLoca
         if (schedulerService == null) {
             throw new ServiceException(BizExceptionCode.JBS_004, BizExceptionCode.JBS_004_MSG);
         }
+        if (schedulerService.getScheduler()==null){
+            throw new ServiceException(BizExceptionCode.JBS_026, BizExceptionCode.JBS_026_MSG);
+        }
         List<JobDetail> jobDetails = schedulerService.getJobsList(schedulerService.getScheduler());
         for (JobDetail job : jobDetails) {
             if (job.getKey().getName().equals(jobKey)) {
@@ -99,6 +105,9 @@ public class JobServiceImpl extends EMSAbstractService implements JobServiceLoca
         }
         if (schedulerService == null) {
             throw new ServiceException(BizExceptionCode.JBS_006, BizExceptionCode.JBS_006_MSG);
+        }
+        if (schedulerService.getScheduler()==null){
+            throw new ServiceException(BizExceptionCode.JBS_026, BizExceptionCode.JBS_026_MSG);
         }
         List<JobDetail> jobDetails = schedulerService.getJobsList(schedulerService.getScheduler());
         for (JobDetail job : jobDetails) {
@@ -135,6 +144,9 @@ public class JobServiceImpl extends EMSAbstractService implements JobServiceLoca
         }
         if (schedulerService == null) {
             throw new ServiceException(BizExceptionCode.JBS_008, BizExceptionCode.JBS_008_MSG);
+        }
+        if (schedulerService.getScheduler()==null){
+            throw new ServiceException(BizExceptionCode.JBS_026, BizExceptionCode.JBS_026_MSG);
         }
         List<JobDetail> jobDetails = schedulerService.getJobsList(schedulerService.getScheduler());
         JobKey key = null;
@@ -202,6 +214,9 @@ public class JobServiceImpl extends EMSAbstractService implements JobServiceLoca
         }
         if (schedulerService == null) {
             throw new ServiceException(BizExceptionCode.JBS_023, BizExceptionCode.JBS_006_MSG);
+        }
+        if (schedulerService.getScheduler()==null){
+            throw new ServiceException(BizExceptionCode.JBS_026, BizExceptionCode.JBS_026_MSG);
         }
         List<JobDetail> jobDetails = schedulerService.getJobsList(schedulerService.getScheduler());
         for (JobDetail job : jobDetails) {

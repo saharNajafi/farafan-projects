@@ -22,19 +22,17 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class VerifyReadyToIssueTokensJob implements InterruptableJob {
+public class VerifyReadyToIssueTokensJob  extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger logger = BaseLog.getLogger(VerifyReadyToIssueTokensJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("VerifyReadyToIssueTokensJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
-
-        logger.info("========================================================");
-        logger.info("VerifyReadyToIssueTokensJob execute method is started...");
         TokenManagementDelegator tokenManagementDelegator = new TokenManagementDelegator();
         try {
             // Finding certificate
@@ -56,7 +54,7 @@ public class VerifyReadyToIssueTokensJob implements InterruptableJob {
                                     tokenManagementDelegator.createBusinessLog(BusinessLogAction.PERSON_TOKEN_REQUEST,
                                             BusinessLogEntity.PKI, "System", "The request has been sent successfully. PersonTokenID : '" + tokenId + "'", true);
                                 } catch (Exception e) {
-                                    logger.error(e.getMessage(), e);
+                                    logGenerakException(e);
                                 }
                             }
                         } catch (BaseException e) {
@@ -64,14 +62,14 @@ public class VerifyReadyToIssueTokensJob implements InterruptableJob {
                             //  So ignore the failed request and go to the next one by increasing the start index to
                             //  load
                             personTokenIndex++;
-                            logger.error(e.getExceptionCode(), e.getMessage(), e);
+                            logException(e);
                         }
                     } else {
                         break;
                     }
                 }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+                logGenerakException(e);
             }
             
             try {
@@ -112,14 +110,14 @@ public class VerifyReadyToIssueTokensJob implements InterruptableJob {
                             //  So ignore the failed request and go to the next one by increasing the start index to
                             //  load
                             personTokenIndex++;
-                            logger.error(e.getExceptionCode(), e.getMessage(), e);
+                            logException(e);
                         }
                     } else {
                         break;
                     }
                 }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+               logGenerakException(e);
             }
 
             // NetworkToken
@@ -154,20 +152,19 @@ public class VerifyReadyToIssueTokensJob implements InterruptableJob {
 //                    }
 //                }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+               logGenerakException(e);
             }
 
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+          logGenerakException(e);
         }
-        logger.info("VerifyReadyToIssueTokensJob execute method is finished.");
-        logger.info("=======================================================");
+        endLogging();
     }
 
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

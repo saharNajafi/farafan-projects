@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.web.listener;
 
+import com.gam.commons.profile.ConfigurationFileHandler;
 import com.gam.commons.scheduler.SchedulerService;
 import com.gam.commons.scheduler.impl.SchedulerServiceImpl;
 
@@ -15,16 +16,22 @@ import javax.servlet.ServletContextListener;
 public class EMSSchedulerStartupListener implements ServletContextListener {
 
     SchedulerService schedulerService = new SchedulerServiceImpl();
+    private String schedulerEnabled = (String) ConfigurationFileHandler.getInstance()
+            .getProperty("JobSchedulerEnabled", "true");
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         //todo: this is for testing jobs using jobs.jsp, it's not used in production mode and can be removed
         servletContextEvent.getServletContext().setAttribute("scheduler", schedulerService);
-        schedulerService.initialize();
+        if ("true".equalsIgnoreCase(schedulerEnabled) || schedulerEnabled == null) {
+            schedulerService.initialize();
+        }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        schedulerService.tearDown(schedulerService.getScheduler());
+        if (schedulerService.getScheduler() != null) {
+            schedulerService.tearDown(schedulerService.getScheduler());
+        }
     }
 }

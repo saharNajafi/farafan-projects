@@ -16,15 +16,16 @@ import org.slf4j.Logger;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class RepealedCardRequestJob implements InterruptableJob {
+public class RepealedCardRequestJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(RepealedCardRequestJob.class);
+    private static final Logger jobLogger = BaseLog.getLogger("RepealedCardRequestJob");
 
     private boolean isJobInterrupted = false;
     private JobKey jobKey = null;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLogger);
         jobKey = jobExecutionContext.getJobDetail().getKey();
 
         try {
@@ -40,7 +41,7 @@ public class RepealedCardRequestJob implements InterruptableJob {
                     } catch (Exception e) {
                         //  An exception happened while trying to delete a registration information. So ignore the
                         //  failed request and go to the next one by increasing the start index to load
-                        LOGGER.error(e.getMessage(), e);
+                        error(e.getMessage(), e);
                         from++;
                     }
                 } else {
@@ -48,15 +49,16 @@ public class RepealedCardRequestJob implements InterruptableJob {
                 }
             }
         } catch (BaseException e) {
-            LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+            logException(e);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logGenerakException(e);
         }
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }

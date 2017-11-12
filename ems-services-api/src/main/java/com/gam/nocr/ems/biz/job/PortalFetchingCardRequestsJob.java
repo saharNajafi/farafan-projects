@@ -18,9 +18,8 @@ import java.util.List;
  */
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class PortalFetchingCardRequestsJob implements InterruptableJob {
+public class PortalFetchingCardRequestsJob extends BaseEmsJob implements InterruptableJob {
 
-    private static final Logger LOGGER = BaseLog.getLogger(PortalFetchingCardRequestsJob.class);
     private static final Logger jobLOGGER = BaseLog.getLogger("portalFetchCardRequest");
 
     private static final String DEFAULT_NUMBER_OF_PORTAL_REQUEST_TO_LOAD = "10";
@@ -30,8 +29,8 @@ public class PortalFetchingCardRequestsJob implements InterruptableJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        startLogging(jobLOGGER);
         jobKey = jobExecutionContext.getJobDetail().getKey();
-        jobLOGGER.info("Fetching card requests from portal started");
         try {
             RegistrationDelegator registrationDelegator = new RegistrationDelegator();
 
@@ -42,7 +41,7 @@ public class PortalFetchingCardRequestsJob implements InterruptableJob {
                 Integer requestCount = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_NUMBER_OF_PORTAL_REQUEST_TO_LOAD,
                         DEFAULT_NUMBER_OF_PORTAL_REQUEST_TO_LOAD));
 
-                jobLOGGER.info("Trying to fetch portal requests in batch of {} items", requestCount);
+                info("Trying to fetch portal requests in batch of {} items", requestCount);
 
                 Integer loopCount = portalCardRequestIds.size() / requestCount;
                 Integer modular = portalCardRequestIds.size() % requestCount;
@@ -64,31 +63,29 @@ public class PortalFetchingCardRequestsJob implements InterruptableJob {
                         try {
                             registrationDelegator.fetchPortalCardRequestsToSave(longList);
                         } catch (Exception e) {
-                            LOGGER.error(e.getMessage(), e);
-                            jobLOGGER.error("Exception has been raised while fetching portal card requests with identification list of: " + longList.toString() , e);
+                            error("Exception has been raised while fetching portal card requests with identification list of: " + longList.toString(), e);
                         }
                     } else {
-                        jobLOGGER.warn("Fetching card requests from portal interrupted by user");
+                        warn("Fetching card requests from portal interrupted by user");
                         break;
                     }
                 }
 
             } else {
-                jobLOGGER.info("There is no portal request identifiers to load from portal");
+                info("There is no portal request identifiers to load from portal");
             }
         } catch (BaseException e) {
-            LOGGER.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-            jobLOGGER.error("Fetching card requests from portal stopped due to an exceptional situation", e);
+            logException(e);
         } catch (Exception e) {
-            jobLOGGER.error("Fetching card requests from portal stopped due to an exceptional situation", e);
-            LOGGER.error(e.getMessage(), e);
+            logGenerakException(e);
         }
-        jobLOGGER.info("Fetching card requests from portal finished");
+
+        endLogging();
     }
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }
