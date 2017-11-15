@@ -57,6 +57,7 @@ public class TestCMSWS extends WSSecurity {
     @WebMethod
     public void sendCardIssuanceRequestToCms(@WebParam(name = "cardRequestIds") List<Long> cardRequestIds) throws ExternalInterfaceException {
         //  Make sure the caller is the CMS (not anyone else)
+        System.out.println("CARD Request ID For Sending To CMS: " + cardRequestIds);
         try {
             super.authenticate(webServiceContext);
         } catch (BaseException e) {
