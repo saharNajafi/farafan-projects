@@ -57,7 +57,7 @@ public class TestCMSWS extends WSSecurity {
     @WebMethod
     public void sendCardIssuanceRequestToCms(@WebParam(name = "cardRequestIds") List<Long> cardRequestIds) throws ExternalInterfaceException {
         //  Make sure the caller is the CMS (not anyone else)
-        System.out.println("CARD Request ID For Sending To CMS: " + cardRequestIds);
+        System.out.println("Start CARD Request ID For Sending To CMS: " + cardRequestIds);
         try {
             super.authenticate(webServiceContext);
         } catch (BaseException e) {
@@ -224,7 +224,7 @@ public class TestCMSWS extends WSSecurity {
         } catch (Exception e) {
             logger.error("An exception happened while trying to send issuance request to the CMS", e);
         }
-
+        System.out.println("Stop CARD Request ID For Sending To CMS: " + cardRequestIds);
     }
 
 
