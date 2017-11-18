@@ -409,10 +409,6 @@
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
-        <init-param>
-			<param-name>wl-dispatch-policy</param-name>
-			<param-value>CcosDefaultWM</param-value>
-		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
