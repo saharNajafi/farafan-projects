@@ -185,7 +185,7 @@ public class IMSUpdateCitizensInfoJob extends BaseEmsJob implements Interruptabl
 
     @Override
     public void interrupt() throws UnableToInterruptJobException {
-        System.err.println("calling interrupt: jobKey ==> " + jobKey);
+        error("calling interrupt: jobKey ==> " + jobKey);
         isJobInterrupted = true;
     }
 }
