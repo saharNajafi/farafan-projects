@@ -17,7 +17,12 @@ import com.gam.nocr.ems.config.EMSValueListProvider;
 import com.gam.nocr.ems.data.dao.DepartmentDAO;
 import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
+import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
+import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
+import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
+import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.data.enums.WorkstationState;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.ListMap;
@@ -278,4 +283,5 @@ public class WorkstationServiceImpl extends EMSAbstractService implements Workst
 		}
 		return personManagementService;
 	}
+
 }

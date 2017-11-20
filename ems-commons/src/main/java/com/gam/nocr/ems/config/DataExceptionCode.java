@@ -1026,5 +1026,9 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NHD_001_MSG = "The operation to save nist header data failed";
     public static final String NHD_002_MSG = "The operation to find nist header data failed";
 
+//	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
+    public static final String WST_002 = "EMS_WST_002";
+    public static final String WST_002_MSG = "WorkStationId doesn't exist";
+
     
 }

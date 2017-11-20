@@ -3,7 +3,12 @@ package com.gam.nocr.ems.data.dao.impl;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
+import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
+import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
+import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
+import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
+import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.data.enums.WorkstationState;
 import com.gam.nocr.ems.util.EmsUtil;
 
@@ -59,7 +64,7 @@ public class WorkstationDAOImpl extends EmsBaseDAOImpl<WorkstationTO> implements
             if (err.contains(UNIQUE_KEY_WORKST_CODE))
                 throw new DAOException(DataExceptionCode.WDI_003, DataExceptionCode.WDI_003_MSG, e);
             if (err.contains(UNIQUE_KEY_WORKST_ACTIVATION_CODE))
-            	throw new DAOException(DataExceptionCode.WDI_010,DataExceptionCode.WDI_010_MSG , e);
+                throw new DAOException(DataExceptionCode.WDI_010, DataExceptionCode.WDI_010_MSG, e);
             else
                 throw new DAOException(DataExceptionCode.WDI_004, DataExceptionCode.WDI_004_MSG, e);
         }
@@ -202,4 +207,5 @@ public class WorkstationDAOImpl extends EmsBaseDAOImpl<WorkstationTO> implements
             throw new DAOException(DataExceptionCode.WDI_013, DataExceptionCode.GLB_005_MSG, e);
         }
     }
+
 }
