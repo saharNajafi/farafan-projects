@@ -5,6 +5,7 @@ import com.gam.commons.core.biz.service.Internal;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.delegator.WorkstationDelegator;
 import com.gam.nocr.ems.biz.delegator.WorkstationInfoDelegator;
+import com.gam.nocr.ems.biz.delegator.WorkstationPluginsDelegator;
 import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
 import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
 import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
@@ -29,6 +30,7 @@ import java.util.List;
 @Internal
 public class EmsWorkStationPlatformManagementWS {
     private WorkstationInfoDelegator workstationInfoDelegator = new WorkstationInfoDelegator();
+    private WorkstationPluginsDelegator workstationPluginsDelegator = new WorkstationPluginsDelegator();
 
     @WebMethod
     public Boolean isReliableVerInquiryRequired(
@@ -77,7 +79,7 @@ public class EmsWorkStationPlatformManagementWS {
         UserProfileTO userProfileTO = null;
         String verCode = null;
         try {
-            verCode = workstationInfoDelegator.getReliableVerByPlugin(userProfileTO, workStationId, pluginInfoList);
+            verCode = workstationPluginsDelegator.getReliableVerByPlugin(userProfileTO, workStationId, pluginInfoList);
         } catch (BaseException e) {
             e.printStackTrace();
         }

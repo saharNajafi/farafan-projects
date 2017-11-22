@@ -28,10 +28,11 @@ public class WorkstationInfoDelegator implements Delegator {
             workstationInfoService =
                     (WorkstationInfoService) ServiceFactoryProvider.getServiceFactory().getService(
                             EMSLogicalNames.getServiceJNDIName(
-                                    EMSLogicalNames.SRV_WORKSTATION), EmsUtil.getUserInfo(userProfileTO));
+                                    EMSLogicalNames.SRV_WORKSTATIONINFO), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new DelegatorException(
-                    BizExceptionCode.WDL_001, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_WORKSTATION.split(","));
+                    BizExceptionCode.WDL_001, BizExceptionCode.GLB_002_MSG,
+                    e, EMSLogicalNames.SRV_WORKSTATIONINFO.split(","));
         }
         workstationInfoService.setUserProfileTO(userProfileTO);
         return workstationInfoService;
@@ -44,7 +45,7 @@ public class WorkstationInfoDelegator implements Delegator {
         try {
             workstationInfoTo = getService(userProfileTO).isReliableVerInquiryRequired(workStationId);
             if(workstationInfoTo != null)
-                result = true;
+                result = Boolean.valueOf(String.valueOf(workstationInfoTo.getGatherSate()));
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -65,18 +66,6 @@ public class WorkstationInfoDelegator implements Delegator {
         return verCode;
     }
 
-    public String getReliableVerByPlugin(
-            UserProfileTO userProfileTO,String workStationId, List<PluginInfoVTO> pluginInfoList)
-            throws BaseException {
-        String verCode = null;
-        try {
-            verCode = getService(userProfileTO).getReliableVerByPlugin(workStationId, pluginInfoList);
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return verCode;
-    }
-
     public List<String> getCompatibleClientVerList(UserProfileTO userProfileTO) throws BaseException {
         List<String> verCode = null;
         try {
@@ -86,5 +75,4 @@ public class WorkstationInfoDelegator implements Delegator {
         }
         return verCode;
     }
-
 }

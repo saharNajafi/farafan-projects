@@ -31,6 +31,8 @@ public class EMSLogicalNames {
     public static String SRV_COMPLETE_REGISTRATION = "CompleteRegistrationService";
     public static String SRV_STATE_PROVIDER = "StateProviderService";
     public static String SRV_WORKSTATION = "WorkstationService";
+    public static String SRV_WORKSTATIONINFO = "WorkstationInfoService";
+    public static String SRV_WORKSTATIONPLUGINS = "WorkstationPluginsService";
     public static String SRV_RATING = "RatingService";
     public static String SRV_LOCATION = "LocationService";
     public static String SRV_HOLIDAY= "HolidayService";

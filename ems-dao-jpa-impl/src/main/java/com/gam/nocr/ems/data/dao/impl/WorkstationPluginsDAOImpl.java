@@ -1,12 +1,9 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.util.EmsUtil;
-
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

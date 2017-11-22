@@ -21,7 +21,5 @@ public interface WorkstationInfoService extends Service {
                                     ClientNetworkConfigsVTO clientNetworkConfig,
                                     ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException;
 
-    String getReliableVerByPlugin(String workStationId, List<PluginInfoVTO> pluginInfoList) throws BaseException;
-
     List<String> getCompatibleClientVerList() throws BaseException;
 }

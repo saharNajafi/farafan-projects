@@ -90,7 +90,9 @@ public class WorkstationInfoTO extends ExtEntityTO {
     @JoinColumn(name = "WSI_WORKSTATION_ID", referencedColumnName = "WST_ID")
     @OneToOne
     private WorkstationTO workstationTO;
-
+    @Basic(optional = false)
+    @Column(name = "GATHER_SATE")
+    private short gatherSate;
     public WorkstationInfoTO() {
     }
 
@@ -190,6 +192,14 @@ public class WorkstationInfoTO extends ExtEntityTO {
 
     public void setWorkstationTO(WorkstationTO workstationTO) {
         this.workstationTO = workstationTO;
+    }
+
+    public short getGatherSate() {
+        return gatherSate;
+    }
+
+    public void setGatherSate(short gatherSate) {
+        this.gatherSate = gatherSate;
     }
 
     @Override
