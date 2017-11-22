@@ -1,16 +1,19 @@
 package com.gam.nocr.ems.data.domain.vol;
 
+import com.gam.commons.core.data.domain.ExtEntityTO;
+
 import java.util.List;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/15/17.
  */
-public class ClientNetworkConfigsVTO {
+public class ClientNetworkConfigsVTO extends ExtEntityTO {
     private List<String> ipAddressList;
     private String computerName;
     private String userName;
     private String gateway;
 
+    public  ClientNetworkConfigsVTO(){}
     public List<String> getIpAddressList() {
         return ipAddressList;
     }
