@@ -6,30 +6,58 @@
 package com.gam.nocr.ems.data.domain;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
-import java.math.BigDecimal;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
- * @author safiary
+ * @author sahar
  */
 @Entity
 @Table(name = "EMST_WORKSTATION_INFO")
 @NamedQueries({
-    @NamedQuery(
-            name = "WorkstationInfoTO.findAll",
-            query = "SELECT w FROM WorkstationInfoTO w"),
         @NamedQuery(
-            name = "WorkstationInfoTO.findByWorkstationId",
-            query = "SELECT wsi" +
-                    " FROM WorkstationInfoTO wsi" +
-                    " WHERE wsi.workstationId=:workstationId" +
-                    " order by wsi.id desc"),
-
+                name = "WorkstationInfoTO.findAll",
+                query = "SELECT e FROM WorkstationInfoTO e")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findById",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.id =:id")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByWorkstationId",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.workstationTO.id =:workstationId")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByMacAddressList",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.macAddressList = :wsiMacAddressList")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByIpAddressList",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.ipAddressList = :wsiIpAddressList")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByCpuType",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.cpuType = :wsiCpuType")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByRamCapacity",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.ramCapacity = :wsiRamCapacity")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByOsVersion",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.osVersion = :wsiOsVersion")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByComputerName",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.computerName = :wsiComputerName")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByUsername",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.username = :wsiUsername")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByGateway",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.gateway = :wsiGateway")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByHasDotnetFramwork45",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.hasDotnetFramwork45 = :wsiHasDotnetFramwork45")
+        , @NamedQuery(
+        name = "WorkstationInfoTO.findByIs64bitOs",
+        query = "SELECT e FROM WorkstationInfoTO e WHERE e.is64bitOs = :wsiIs64bitOs")
 })
-public class WorkstationInfoTO extends ExtEntityTO  {
+public class WorkstationInfoTO extends ExtEntityTO {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -38,64 +66,40 @@ public class WorkstationInfoTO extends ExtEntityTO  {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @Column(name = "WSI_ID")
     private Long id;
-
-    @Size(max = 150)
     @Column(name = "WSI_MAC_ADDRESS_LIST")
     private String macAddressList;
-
-    @Size(max = 150)
     @Column(name = "WSI_IP_ADDRESS_LIST")
     private String ipAddressList;
-
-    @Size(max = 150)
     @Column(name = "WSI_CPU_TYPE")
     private String cpuType;
-
     @Column(name = "WSI_RAM_CAPACITY")
     private Integer ramCapacity;
-
-    @Size(max = 30)
     @Column(name = "WSI_OS_VERSION")
     private String osVersion;
-
-    @Size(max = 150)
     @Column(name = "WSI_COMPUTER_NAME")
     private String computerName;
-
-    @Size(max = 150)
     @Column(name = "WSI_USERNAME")
     private String username;
-
-    @Size(max = 150)
     @Column(name = "WSI_GATEWAY")
     private String gateway;
-
     @Column(name = "WSI_HAS_DOTNET_FRAMWORK45")
     private Short hasDotnetFramwork45;
-
     @Column(name = "WSI_IS_64BIT_OS")
     private Short is64bitOs;
-
     @MapsId
+    @JoinColumn(name = "WSI_WORKSTATION_ID", referencedColumnName = "WST_ID")
     @OneToOne
-    @JoinColumn(name = "WORKSTATION_ID", referencedColumnName = "WST_ID")
-    private WorkstationTO workstation;
+    private WorkstationTO workstationTO;
 
     public WorkstationInfoTO() {
     }
 
-    public WorkstationTO getWorkstationId() {
-        return workstation;
-    }
-
-    public void setWorkstationId(WorkstationTO workstationId) {
-        this.workstation = workstationId;
-    }
-
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -178,6 +182,14 @@ public class WorkstationInfoTO extends ExtEntityTO  {
 
     public void setIs64bitOs(Short is64bitOs) {
         this.is64bitOs = is64bitOs;
+    }
+
+    public WorkstationTO getWorkstationTO() {
+        return workstationTO;
+    }
+
+    public void setWorkstationTO(WorkstationTO workstationTO) {
+        this.workstationTO = workstationTO;
     }
 
     @Override

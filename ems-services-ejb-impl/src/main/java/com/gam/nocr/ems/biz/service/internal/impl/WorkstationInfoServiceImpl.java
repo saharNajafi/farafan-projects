@@ -11,7 +11,9 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.WorkstationInfoDAO;
+import com.gam.nocr.ems.data.dao.WorkstationPluginsDAO;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
+import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
 import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
 import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
@@ -34,13 +36,27 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         implements WorkstationInfoServiceLocal, WorkstationInfoServiceRemote {
     public WorkstationInfoDAO getWorkstationInfoDAO() throws BaseException {
         try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATION));
+            return DAOFactoryProvider.getDAOFactory().getDAO(
+                    EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATIONINFO));
         } catch (DAOFactoryException e) {
             throw new DelegatorException(
                     BizExceptionCode.WSI_001,
                     BizExceptionCode.GLB_001_MSG,
                     e,
-                    new String[]{EMSLogicalNames.DAO_WORKSTATION});
+                    new String[]{EMSLogicalNames.DAO_WORKSTATIONINFO});
+        }
+    }
+
+    public WorkstationPluginsDAO getWorkstationPluginsDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(
+                    EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATIONPlugins));
+        } catch (DAOFactoryException e) {
+            throw new DelegatorException(
+                    BizExceptionCode.WSI_001,
+                    BizExceptionCode.GLB_001_MSG,
+                    e,
+                    new String[]{EMSLogicalNames.DAO_WORKSTATIONPlugins});
         }
     }
 
@@ -65,22 +81,24 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         try {
             if (workStationId == null)
                 throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
-            WorkstationInfoTO workstationInfo = getWorkstationInfoDAO().isReliableVerInquiryRequired(workStationId);
-//            update workstationInfo
+            WorkstationInfoTO workstationInfo =
+                    getWorkstationInfoDAO().isReliableVerInquiryRequired(workStationId);
             if (workstationInfo != null) {
-                workstationInfo.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
-                workstationInfo.setCpuType(clientHardWareSpec.getCpuType());
-                workstationInfo.setRamCapacity(clientHardWareSpec.getRamCapacity());
-                workstationInfo.setOsVersion(clientSoftWareSpec.getOsVersion());
-                workstationInfo.setHasDotnetFramwork45(Short.parseShort(
-                        (clientSoftWareSpec.getDotNetwork45Installed()).toString()));
-                workstationInfo.setIpAddressList(String.valueOf(clientNetworkConfig.getIpAddressList()));
-                workstationInfo.setComputerName(clientNetworkConfig.getComputerName());
-                workstationInfo.setUsername(clientNetworkConfig.getUserName());
-                workstationInfo.setGateway(clientNetworkConfig.getGateway());
-                getWorkstationInfoDAO().update(workstationInfo);
-            }
-//            save workstationInfo
+                updateWorkstationInfo(clientHardWareSpec,
+                        clientNetworkConfig, clientSoftWareSpec, workstationInfo);
+            } else
+            saveWorkstationInfo(clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
+            ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+        } catch (BaseException e) {
+            e.printStackTrace();
+        }
+        return ccosExactVersion;
+    }
+
+    private void saveWorkstationInfo(ClientHardWareSpecVTO clientHardWareSpec,
+                                     ClientNetworkConfigsVTO clientNetworkConfig,
+                                     ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException {
+        try {
             WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();
             workstationInfoTO.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
             workstationInfoTO.setCpuType(clientHardWareSpec.getCpuType());
@@ -93,11 +111,30 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             workstationInfoTO.setUsername(clientNetworkConfig.getUserName());
             workstationInfoTO.setGateway(clientNetworkConfig.getGateway());
             getWorkstationInfoDAO().create(workstationInfoTO);
-            ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
         } catch (BaseException e) {
             e.printStackTrace();
         }
-        return ccosExactVersion;
+    }
+
+    private void updateWorkstationInfo(
+            ClientHardWareSpecVTO clientHardWareSpec,
+            ClientNetworkConfigsVTO clientNetworkConfig,
+            ClientSoftWareSpecVTO clientSoftWareSpec, WorkstationInfoTO workstationInfo) throws  BaseException{
+        try {
+            workstationInfo.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
+            workstationInfo.setCpuType(clientHardWareSpec.getCpuType());
+            workstationInfo.setRamCapacity(clientHardWareSpec.getRamCapacity());
+            workstationInfo.setOsVersion(clientSoftWareSpec.getOsVersion());
+            workstationInfo.setHasDotnetFramwork45(Short.parseShort(
+                    (clientSoftWareSpec.getDotNetwork45Installed()).toString()));
+            workstationInfo.setIpAddressList(String.valueOf(clientNetworkConfig.getIpAddressList()));
+            workstationInfo.setComputerName(clientNetworkConfig.getComputerName());
+            workstationInfo.setUsername(clientNetworkConfig.getUserName());
+            workstationInfo.setGateway(clientNetworkConfig.getGateway());
+            getWorkstationInfoDAO().update(workstationInfo);
+        } catch (BaseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -107,6 +144,22 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         try {
             if (workStationId == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
+            WorkstationPluginsTO workstationPlugins =
+                    getWorkstationPluginsDAO().findByWorkstationId(workStationId);
+            if (workstationPlugins != null) {
+                for (PluginInfoVTO pluginInfo : pluginInfoList) {
+                    workstationPlugins.setPluginName(pluginInfo.getPluginName());
+                    workstationPlugins.setState(Short.valueOf(pluginInfo.getState()));
+                    getWorkstationPluginsDAO().update(workstationPlugins);
+                }
+            } else {
+                WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
+                for (PluginInfoVTO pluginInfo : pluginInfoList) {
+                    workstationPluginsTO.setPluginName(pluginInfo.getPluginName());
+                    workstationPluginsTO.setState(Short.valueOf(pluginInfo.getState()));
+                    getWorkstationPluginsDAO().create(workstationPluginsTO);
+                }
+            }
             ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
         } catch (BaseException e) {
             e.printStackTrace();

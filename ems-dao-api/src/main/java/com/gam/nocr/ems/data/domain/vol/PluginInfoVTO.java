@@ -5,7 +5,7 @@ package com.gam.nocr.ems.data.domain.vol;
  */
 public class PluginInfoVTO {
     private String id;
-    private String fullName;
+    private String pluginName;
     private String state;
 
     public String getId() {
@@ -16,12 +16,12 @@ public class PluginInfoVTO {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getPluginName() {
+        return pluginName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setPluginName(String pluginName) {
+        this.pluginName = pluginName;
     }
 
     public String getState() {

@@ -56,10 +56,4 @@ public class WorkstationInfoDAOImpl extends EmsBaseDAOImpl<WorkstationInfoTO>
         return null;
     }
 
-    @Override
-    public String getReliableVerByPlugin(String workStationId,
-                                         List<PluginInfoVTO> pluginInfoList) throws BaseException {
-        return null;
-    }
-
 }

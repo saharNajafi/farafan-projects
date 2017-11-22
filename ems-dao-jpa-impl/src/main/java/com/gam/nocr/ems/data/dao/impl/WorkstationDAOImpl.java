@@ -3,12 +3,7 @@ package com.gam.nocr.ems.data.dao.impl;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
-import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
-import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.data.enums.WorkstationState;
 import com.gam.nocr.ems.util.EmsUtil;
 

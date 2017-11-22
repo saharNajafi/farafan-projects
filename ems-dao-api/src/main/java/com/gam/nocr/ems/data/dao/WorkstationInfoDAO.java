@@ -19,6 +19,5 @@ public interface WorkstationInfoDAO extends EmsBaseDAO<WorkstationInfoTO>{
             String workStationId, ClientHardWareSpecVTO clientHardWareSpec,
             ClientNetworkConfigsVTO clientNetworkConfig, ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException;
 
-    public String getReliableVerByPlugin(String workStationId, List<PluginInfoVTO> pluginInfoList) throws BaseException;
 
 }

@@ -89,6 +89,8 @@ public class EMSLogicalNames {
     public static String DAO_CARD_REQUEST_HISTORY = "CardRequestHistoryDAO";
     public static String DAO_DEPARTMENT = "DepartmentDAO";
     public static String DAO_WORKSTATION = "WorkstationDAO";
+    public static String DAO_WORKSTATIONINFO = "WorkstationInfoDAO";
+    public static String DAO_WORKSTATIONPlugins = "WorkstationPluginsDAO";
     public static String DAO_ENROLLMENT_OFFICE = "EnrollmentOfficeDAO";
     public static String DAO_PERSON_TOKEN = "PersonTokenDAO";
     public static String DAO_NETWORK_TOKEN = "NetworkTokenDAO";
