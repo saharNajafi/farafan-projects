@@ -222,20 +222,20 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>RegistrationWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>RegistrationWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
+     <servlet>
         <servlet-name>RegistrationVipWS</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>RegistrationWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>RegistrationWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -244,20 +244,20 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
+     <servlet>
         <servlet-name>EmksWS</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>EmksWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>EmksWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -266,9 +266,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>MesDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>MesDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -277,9 +277,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>ListWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>ListWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -288,9 +288,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -299,9 +299,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>DispatchWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>DispatchWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -310,9 +310,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CardWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CardWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -321,9 +321,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <!-- servlet>
@@ -343,9 +343,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CmsWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CmsWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -354,9 +354,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -365,31 +365,31 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
+	<servlet>
         <servlet-name>HelpWS</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
+	<servlet>
         <servlet-name>MessageWS</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -398,9 +398,9 @@
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
         <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
+			<param-name>wl-dispatch-policy</param-name>
+			<param-value>CcosDefaultWM</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -409,10 +409,6 @@
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
         </servlet-class>
-        <init-param>
-            <param-name>wl-dispatch-policy</param-name>
-            <param-value>CcosDefaultWM</param-value>
-        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -464,7 +460,7 @@
         <servlet-name>UserManagementWS</servlet-name>
         <url-pattern>/services/usermanagement</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+     <servlet-mapping>
         <servlet-name>EmksWS</servlet-name>
         <url-pattern>/services/emks</url-pattern>
     </servlet-mapping>
@@ -509,11 +505,11 @@
         <url-pattern>/services/reportws/*</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
+	<servlet-mapping>
         <servlet-name>HelpWS</servlet-name>
         <url-pattern>/services/help</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+	<servlet-mapping>
         <servlet-name>MessageWS</servlet-name>
         <url-pattern>/services/message</url-pattern>
     </servlet-mapping>
