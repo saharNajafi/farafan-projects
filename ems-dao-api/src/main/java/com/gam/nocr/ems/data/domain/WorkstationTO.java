@@ -125,7 +125,7 @@ public class WorkstationTO extends ExtEntityTO implements JSONable {
         this.provinceName = provinceName;
     }
 
-    @OneToOne(mappedBy = "workstationTO", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "workstation", cascade = CascadeType.PERSIST)
     public WorkstationInfoTO getWorkstationInfoTO() {
         return workstationInfoTO;
     }

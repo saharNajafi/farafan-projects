@@ -15,9 +15,9 @@ import java.util.List;
  */
 public interface WorkstationInfoService extends Service {
 
-    WorkstationInfoTO isReliableVerInquiryRequired(String workStationId) throws BaseException;
+    Boolean isReliableVerInquiryRequired(String workStationId) throws BaseException;
 
-    String getReliableVerByPlatform(String workStationId, ClientHardWareSpecVTO clientHardWareSpec,
+    String getReliableVerByPlatform(String workStationCode, ClientHardWareSpecVTO clientHardWareSpec,
                                     ClientNetworkConfigsVTO clientNetworkConfig,
                                     ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException;
 

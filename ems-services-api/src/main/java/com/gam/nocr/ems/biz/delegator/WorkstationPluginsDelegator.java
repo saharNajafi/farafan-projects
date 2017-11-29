@@ -37,11 +37,11 @@ public class WorkstationPluginsDelegator implements Delegator {
     }
 
     public String getReliableVerByPlugin(
-            UserProfileTO userProfileTO,String workStationId, List<PluginInfoVTO> pluginInfoList)
+            UserProfileTO userProfileTO,String workStationCode, List<PluginInfoVTO> pluginInfoList)
             throws BaseException {
         String verCode = null;
         try {
-            verCode = getService(userProfileTO).getReliableVerByPlugin(workStationId, pluginInfoList);
+            verCode = getService(userProfileTO).getReliableVerByPlugin(workStationCode, pluginInfoList);
         } catch (BaseException e) {
             e.printStackTrace();
         }

@@ -15,45 +15,30 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "EMST_WORKSTATION_PLUGINS")
+@SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_WORKSTATION_PLUGINS", allocationSize = 1)
 @NamedQueries({
-        @NamedQuery(
-                name = "WorkstationPluginsTO.findAll",
-                query = "SELECT e FROM WorkstationPluginsTO e")
-        , @NamedQuery(
-        name = "WorkstationPluginsTO.findByWplId",
-        query = "SELECT e FROM WorkstationPluginsTO e WHERE e.id =:id")
-        , @NamedQuery(
-        name = "WorkstationPluginsTO.findByWplPluginName",
-        query = "SELECT e FROM WorkstationPluginsTO e WHERE e.pluginName =:pluginName")
-        , @NamedQuery(
-        name = "WorkstationPluginsTO.findByWplState",
-        query = "SELECT e FROM WorkstationPluginsTO e WHERE e.state =:state")
-        , @NamedQuery(
-        name = "WorkstationPluginsTO.findByWorkstationId",
-        query = "SELECT e FROM WorkstationInfoTO e WHERE e.workstationTO.id =:workstationId")
+     @NamedQuery(
+        name = "WorkstationPluginsTO.findByWorkstationById",
+        query = " SELECT e FROM WorkstationPluginsTO e" +
+                " WHERE e.workstationTO.id =:workstationId")
 })
 public class WorkstationPluginsTO extends ExtEntityTO {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @Column(name = "WPL_ID")
+
     private Long id;
-    @Column(name = "WPL_PLUGIN_NAME")
     private String pluginName;
-    @Basic(optional = false)
-    @Column(name = "WPL_STATE")
     private short state;
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "WPL_WORKSTATION_ID", referencedColumnName = "WST_ID")
     private WorkstationTO workstationTO;
 
     public WorkstationPluginsTO() {
     }
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @Column(name = "WPL_ID")
     @Override
     public Long getId() {
         return id;
@@ -64,6 +49,7 @@ public class WorkstationPluginsTO extends ExtEntityTO {
         this.id = id;
     }
 
+    @Column(name = "WPL_PLUGIN_NAME")
     public String getPluginName() {
         return pluginName;
     }
@@ -72,6 +58,8 @@ public class WorkstationPluginsTO extends ExtEntityTO {
         this.pluginName = pluginName;
     }
 
+    @Basic(optional = false)
+    @Column(name = "WPL_STATE")
     public short getState() {
         return state;
     }
@@ -80,6 +68,8 @@ public class WorkstationPluginsTO extends ExtEntityTO {
         this.state = state;
     }
 
+    @OneToOne
+    @JoinColumn(name = "WPL_WORKSTATION_ID")
     public WorkstationTO getWorkstationTO() {
         return workstationTO;
     }
@@ -91,7 +81,7 @@ public class WorkstationPluginsTO extends ExtEntityTO {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (super.getId() != null ? super.getId().hashCode() : 0);
         return hash;
     }
 
@@ -102,7 +92,7 @@ public class WorkstationPluginsTO extends ExtEntityTO {
             return false;
         }
         WorkstationPluginsTO other = (WorkstationPluginsTO) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;

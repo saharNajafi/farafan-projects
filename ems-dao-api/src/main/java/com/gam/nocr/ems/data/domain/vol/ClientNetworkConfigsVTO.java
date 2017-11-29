@@ -7,13 +7,12 @@ import java.util.List;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/15/17.
  */
-public class ClientNetworkConfigsVTO extends ExtEntityTO {
+public class ClientNetworkConfigsVTO extends ExtEntityTO{
     private List<String> ipAddressList;
     private String computerName;
     private String userName;
     private String gateway;
 
-    public  ClientNetworkConfigsVTO(){}
     public List<String> getIpAddressList() {
         return ipAddressList;
     }

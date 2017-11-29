@@ -4,10 +4,6 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
-import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
@@ -31,8 +27,42 @@ public class WorkstationInfoDAOImpl extends EmsBaseDAOImpl<WorkstationInfoTO>
         this.em = em;
     }
 
+    /**
+     * The create method, handles all the save operations for all the classes which are extended from EntityTO
+     *
+     * @param workstationInfoTO - the object of type EntityTO to create
+     * @return the object of type EntityTo
+     */
     @Override
-    public WorkstationInfoTO isReliableVerInquiryRequired(String workstationId) throws BaseException {
+    public WorkstationInfoTO create(WorkstationInfoTO workstationInfoTO) throws BaseException {
+        try {
+            WorkstationInfoTO to = super.create(workstationInfoTO);
+            em.flush();
+            return to;
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.WDI_014, DataExceptionCode.WDI_006_MSG, e);
+        }
+    }
+
+    /**
+     * The Update method, handles the update operations for all the classes which are extended from EntityTO.
+     *
+     * @param workstationInfoTO - the object of type EntityTO to create
+     * @return the object which of type EntityTO, or null if the object is not found
+     */
+    @Override
+    public WorkstationInfoTO update(WorkstationInfoTO workstationInfoTO) throws BaseException {
+        try {
+            WorkstationInfoTO to = super.update(workstationInfoTO);
+            em.flush();
+            return to;
+        } catch (Exception e) {
+                throw new DAOException(DataExceptionCode.WDI_014, DataExceptionCode.WDI_006_MSG, e);
+        }
+    }
+
+    @Override
+    public WorkstationInfoTO isReliableVerInquiryRequired(Long workstationId) throws BaseException {
         List<WorkstationInfoTO> workstationInfoTOs = null;
         try {
             workstationInfoTOs =
@@ -47,13 +77,4 @@ public class WorkstationInfoDAOImpl extends EmsBaseDAOImpl<WorkstationInfoTO>
         else
             return null;
     }
-
-    @Override
-    public String getReliableVerByPlatform(
-            String workStationId, ClientHardWareSpecVTO clientHardWareSpec,
-            ClientNetworkConfigsVTO clientNetworkConfig,
-            ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException {
-        return null;
-    }
-
 }

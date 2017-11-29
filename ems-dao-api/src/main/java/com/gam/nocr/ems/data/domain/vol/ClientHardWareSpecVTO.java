@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/15/17.
  */
-public class ClientHardWareSpecVTO extends ExtEntityTO {
+public class ClientHardWareSpecVTO extends ExtEntityTO{
     private List<String> macAddressList;
     private String cpuType;
     private Integer ramCapacity;

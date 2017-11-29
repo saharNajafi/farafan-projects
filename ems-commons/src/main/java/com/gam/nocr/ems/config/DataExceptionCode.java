@@ -324,10 +324,14 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WDI_010 = "EMS_D_WDI_010";
     public static final String WDI_011 = "EMS_D_WDI_011";
     public static final String WDI_012 = "EMS_D_WDI_012";
+    public static final String WDI_014 = "EMS_D_WDI_014";
+    public static final String WDI_015 = "EMS_D_WDI_015";
     public static final String WDI_013 = "EMS_D_WDI_013";
     public static final String WDI_002_MSG = "violate unique constraint, activation code already exists";
     public static final String WDI_003_MSG = "violate unique constraint, workstation code for this enrollment office already exists";
     public static final String WDI_004_MSG = "unable to to save workstation";
+    public static final String WDI_006_MSG = "unable to to save workstationInfo";
+    public static final String WDI_007_MSG = "unable to to save workstationPlugins";
     public static final String WDI_005_MSG = "unable to to find department";
     public static final String WDI_010_MSG = "workstation activation code is repetitive";
 

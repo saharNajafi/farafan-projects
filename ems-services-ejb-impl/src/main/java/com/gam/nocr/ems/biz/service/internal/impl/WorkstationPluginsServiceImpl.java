@@ -9,14 +9,14 @@ import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationPluginsDAO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
+import com.gam.nocr.ems.data.domain.WorkstationTO;
 import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import java.util.List;
 
 /**
@@ -41,15 +41,31 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
         }
     }
 
+    public WorkstationDAO getWorkstationDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATION));
+        } catch (DAOFactoryException e) {
+            throw new DelegatorException(
+                    BizExceptionCode.WSI_001,
+                    BizExceptionCode.GLB_001_MSG,
+                    e,
+                    new String[]{EMSLogicalNames.DAO_WORKSTATION});
+        }
+    }
+
     @Override
     public String getReliableVerByPlugin (
-            String workStationId, List<PluginInfoVTO> pluginInfoList) throws BaseException {
+            String workStationCode, List<PluginInfoVTO> pluginInfoList) throws BaseException {
         String ccosExactVersion = null;
+        WorkstationPluginsTO workstationPlugins = null;
         try {
-            if (workStationId == null)
+            if (workStationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
-            WorkstationPluginsTO workstationPlugins =
-                    getWorkstationPluginsDAO().findByWorkstationId(workStationId);
+            WorkstationTO workstationTO =
+                    getWorkstationDAO().findByActivationCode(workStationCode);
+            if(workstationTO != null)
+            workstationPlugins =
+                   getWorkstationPluginsDAO().findByWorkstationById(workstationTO.getId());
             if (workstationPlugins != null) {
                 for (PluginInfoVTO pluginInfo : pluginInfoList) {
                     workstationPlugins.setPluginName(pluginInfo.getPluginName());
@@ -59,7 +75,10 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
             } else {
                 WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
                 for (PluginInfoVTO pluginInfo : pluginInfoList) {
+                    WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workStationCode);
+                    workstationPluginsTO.setWorkstationTO(workstation);
                     workstationPluginsTO.setPluginName(pluginInfo.getPluginName());
+//                    TODO
                     workstationPluginsTO.setState(Short.valueOf(pluginInfo.getState()));
                     getWorkstationPluginsDAO().create(workstationPluginsTO);
                 }

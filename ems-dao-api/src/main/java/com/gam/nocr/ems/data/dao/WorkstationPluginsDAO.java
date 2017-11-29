@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface WorkstationPluginsDAO extends EmsBaseDAO<WorkstationPluginsTO>{
 
-    public WorkstationPluginsTO findByWorkstationId(String workStationId);
+    public WorkstationPluginsTO findByWorkstationById(Long workStationID) throws BaseException;
 }

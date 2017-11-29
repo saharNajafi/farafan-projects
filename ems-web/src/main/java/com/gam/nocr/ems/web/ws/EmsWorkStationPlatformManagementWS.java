@@ -34,13 +34,13 @@ public class EmsWorkStationPlatformManagementWS {
 
     @WebMethod
     public Boolean isReliableVerInquiryRequired(
-            @WebParam(name = "WorkStationId", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) String workStationId
+            @WebParam(name = "WorkstationCode", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) String workstationCode
     ) throws InternalException {
         UserProfileTO userProfileTO = null;
-        Boolean result = null;
+        Boolean result = false;
         try {
-             result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workStationId);
+             result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -49,8 +49,8 @@ public class EmsWorkStationPlatformManagementWS {
 
     @WebMethod
     public String getReliableVerByPlatform(
-            @WebParam(name = "WorkStationId", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) String workStationId,
+            @WebParam(name = "WorkstationCode", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) String workstationCode,
             @WebParam(name = "ClientHardWareSpec", targetNamespace = "")
             @XmlElement(required = true, nillable = false) ClientHardWareSpecVTO clientHardWareSpec,
             @WebParam(name = "ClientNetworkConfig", targetNamespace = "")
@@ -62,7 +62,7 @@ public class EmsWorkStationPlatformManagementWS {
         String verCode = null;
         try {
             verCode = workstationInfoDelegator.getReliableVerByPlatform(
-                    userProfileTO, workStationId, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
+                    userProfileTO, workstationCode, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -71,15 +71,15 @@ public class EmsWorkStationPlatformManagementWS {
 
     @WebMethod
     public String getReliableVerByPlugin(
-            @WebParam(name = "WorkStationId", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) String workStationId,
+            @WebParam(name = "WorkstationCode", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) String workstationCode,
             @WebParam(name = "PluginInfo", targetNamespace = "")
             @XmlElement(required = true, nillable = false) List<PluginInfoVTO> pluginInfoList
     ) throws InternalException {
         UserProfileTO userProfileTO = null;
         String verCode = null;
         try {
-            verCode = workstationPluginsDelegator.getReliableVerByPlugin(userProfileTO, workStationId, pluginInfoList);
+            verCode = workstationPluginsDelegator.getReliableVerByPlugin(userProfileTO, workstationCode, pluginInfoList);
         } catch (BaseException e) {
             e.printStackTrace();
         }

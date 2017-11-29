@@ -39,13 +39,10 @@ public class WorkstationInfoDelegator implements Delegator {
     }
 
     public Boolean isReliableVerInquiryRequired(
-            UserProfileTO userProfileTO, String workStationId) throws BaseException{
+            UserProfileTO userProfileTO, String workstationCode) throws BaseException{
         Boolean result = false;
-        WorkstationInfoTO workstationInfoTo = null;
         try {
-            workstationInfoTo = getService(userProfileTO).isReliableVerInquiryRequired(workStationId);
-            if(workstationInfoTo != null)
-                result = Boolean.valueOf(String.valueOf(workstationInfoTo.getGatherSate()));
+            result = getService(userProfileTO).isReliableVerInquiryRequired(workstationCode);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -53,13 +50,13 @@ public class WorkstationInfoDelegator implements Delegator {
     }
 
     public String getReliableVerByPlatform(
-            UserProfileTO userProfileTO, String workStationId, ClientHardWareSpecVTO clientHardWareSpec,
+            UserProfileTO userProfileTO, String workstationCode, ClientHardWareSpecVTO clientHardWareSpec,
             ClientNetworkConfigsVTO clientNetworkConfig, ClientSoftWareSpecVTO clientSoftWareSpec)
             throws BaseException {
         String verCode = null;
         try {
             verCode = getService(userProfileTO).getReliableVerByPlatform(
-                    workStationId, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
+                    workstationCode, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
         } catch (BaseException e) {
             e.printStackTrace();
         }
