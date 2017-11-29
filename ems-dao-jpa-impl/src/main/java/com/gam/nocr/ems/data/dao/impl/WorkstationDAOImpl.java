@@ -59,7 +59,7 @@ public class WorkstationDAOImpl extends EmsBaseDAOImpl<WorkstationTO> implements
             if (err.contains(UNIQUE_KEY_WORKST_CODE))
                 throw new DAOException(DataExceptionCode.WDI_003, DataExceptionCode.WDI_003_MSG, e);
             if (err.contains(UNIQUE_KEY_WORKST_ACTIVATION_CODE))
-            	throw new DAOException(DataExceptionCode.WDI_010,DataExceptionCode.WDI_010_MSG , e);
+                throw new DAOException(DataExceptionCode.WDI_010, DataExceptionCode.WDI_010_MSG, e);
             else
                 throw new DAOException(DataExceptionCode.WDI_004, DataExceptionCode.WDI_004_MSG, e);
         }
@@ -202,4 +202,7 @@ public class WorkstationDAOImpl extends EmsBaseDAOImpl<WorkstationTO> implements
             throw new DAOException(DataExceptionCode.WDI_013, DataExceptionCode.GLB_005_MSG, e);
         }
     }
+
+
+
 }

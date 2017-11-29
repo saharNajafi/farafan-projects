@@ -278,4 +278,5 @@ public class WorkstationServiceImpl extends EMSAbstractService implements Workst
 		}
 		return personManagementService;
 	}
+
 }

@@ -26,6 +26,8 @@ public class WorkstationTO extends ExtEntityTO implements JSONable {
     private String enrollmentOfficeCode;
     private String lState;
     private String provinceName;
+    private WorkstationInfoTO workstationInfoTO;
+    private WorkstationPluginsTO workstationPluginsTO;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -123,6 +125,23 @@ public class WorkstationTO extends ExtEntityTO implements JSONable {
         this.provinceName = provinceName;
     }
 
+    @OneToOne(mappedBy = "workstation", cascade = CascadeType.PERSIST)
+    public WorkstationInfoTO getWorkstationInfoTO() {
+        return workstationInfoTO;
+    }
+
+    public void setWorkstationInfoTO(WorkstationInfoTO workstationInfoTO) {
+        this.workstationInfoTO = workstationInfoTO;
+    }
+
+    @OneToOne(mappedBy = "workstationTO", cascade = CascadeType.PERSIST)
+    public WorkstationPluginsTO getWorkstationPluginsTO() {
+        return workstationPluginsTO;
+    }
+
+    public void setWorkstationPluginsTO(WorkstationPluginsTO workstationPluginsTO) {
+        this.workstationPluginsTO = workstationPluginsTO;
+    }
     //	public String toString(Long id,
 //						   String code,
 //						   String activationCode,

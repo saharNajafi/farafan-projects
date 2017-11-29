@@ -1638,7 +1638,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
 	public CardRequestStateWS getService() throws BaseException{
 		try {
-			ProfileManager pm = ProfileHelper.getProfileManager();
+ 			ProfileManager pm = ProfileHelper.getProfileManager();
 
 			String wsdlUrl = (String) pm.getProfile(
 					ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_ENDPOINT, true, null, null);

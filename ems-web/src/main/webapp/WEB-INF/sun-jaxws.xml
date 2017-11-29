@@ -13,7 +13,7 @@
             name="RegistrationWS"
             implementation="com.gam.nocr.ems.web.ws.RegistrationWS"
             url-pattern="/services/registration"/>
-   	<endpoint
+    <endpoint
             name="RegistrationVipWS"
             implementation="com.gam.nocr.ems.web.ws.RegistrationVipWS"
             url-pattern="/services/registrationvip"/>
@@ -25,7 +25,7 @@
     <endpoint
             name="EmksWS"
             implementation="com.gam.nocr.ems.web.ws.EmksWS"
-            url-pattern="/services/emks"/>         
+            url-pattern="/services/emks"/>
 
     <endpoint
             name="ListWS"
@@ -65,8 +65,8 @@
             name="HelpWS"
             implementation="com.gam.nocr.ems.web.ws.HelpWS"
             url-pattern="/services/help"/>
-     <endpoint name="MessageWS" implementation="com.gam.nocr.ems.web.ws.MessageWS"
-		url-pattern="/services/message" />       
+    <endpoint name="MessageWS" implementation="com.gam.nocr.ems.web.ws.MessageWS"
+              url-pattern="/services/message"/>
     <endpoint
             name="TokenWS"
             implementation="com.gam.nocr.ems.web.ws.TokenWS"
@@ -76,5 +76,8 @@
             name="CardRequestStateWS"
             implementation="com.gam.nocr.ems.web.ws.CardRequestStateWS"
             url-pattern="/services/cardRequestState"/>
-
+    <endpoint
+            name="EmsWorkStationPlatformManagementWS"
+            implementation="com.gam.nocr.ems.web.ws.EmsWorkStationPlatformManagementWS"
+            url-pattern="/services/EmsWorkStationPlatformManagement"/>
 </endpoints>

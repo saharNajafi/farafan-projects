@@ -10,7 +10,13 @@ import com.gam.nocr.ems.biz.service.WorkstationService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
+import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
+import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
+import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
+import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com">Alireza Saadat</a>
@@ -55,8 +61,8 @@ public class WorkstationDelegator implements Delegator {
     public WorkstationTO findByDepartmentIdAndActivationCode(UserProfileTO userProfileTO,
                                                              Long departmentId,
                                                              String workstationActivationCode) throws BaseException {
-        return getService(userProfileTO).findByDepartmentIdAndActivationCode(departmentId, workstationActivationCode);
+        return getService(userProfileTO).
+                findByDepartmentIdAndActivationCode(departmentId, workstationActivationCode);
     }
-
 
 }
