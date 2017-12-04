@@ -1,0 +1,859 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://document.ws.cms.iran.gemalto.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="DocumentRequestWSService" targetNamespace="http://document.ws.cms.iran.gemalto.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://document.ws.cms.iran.gemalto.com/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://document.ws.cms.iran.gemalto.com/">
+  <xs:element name="addUserSite" type="tns:addUserSite"/>
+  <xs:element name="addUserSiteResponse" type="tns:addUserSiteResponse"/>
+  <xs:element name="batchMissed" type="tns:batchMissed"/>
+  <xs:element name="batchMissedResponse" type="tns:batchMissedResponse"/>
+  <xs:element name="batchReceipt" type="tns:batchReceipt"/>
+  <xs:element name="batchReceiptResponse" type="tns:batchReceiptResponse"/>
+  <xs:element name="boxMissed" type="tns:boxMissed"/>
+  <xs:element name="boxMissedResponse" type="tns:boxMissedResponse"/>
+  <xs:element name="cardDestroyed" type="tns:cardDestroyed"/>
+  <xs:element name="cardDestroyedResponse" type="tns:cardDestroyedResponse"/>
+  <xs:element name="cardHandedOut" type="tns:cardHandedOut"/>
+  <xs:element name="cardHandedOutResponse" type="tns:cardHandedOutResponse"/>
+  <xs:element name="cardMissed" type="tns:cardMissed"/>
+  <xs:element name="cardMissedResponse" type="tns:cardMissedResponse"/>
+  <xs:element name="expireCard" type="tns:expireCard"/>
+  <xs:element name="expireCardResponse" type="tns:expireCardResponse"/>
+  <xs:element name="getCardApplications" type="tns:getCardApplications"/>
+  <xs:element name="getCardApplicationsResponse" type="tns:getCardApplicationsResponse"/>
+  <xs:element name="getCardInfo" type="tns:getCardInfo"/>
+  <xs:element name="getCardInfoResponse" type="tns:getCardInfoResponse"/>
+  <xs:element name="getCitizenCards" type="tns:getCitizenCards"/>
+  <xs:element name="getCitizenCardsByProduct" type="tns:getCitizenCardsByProduct"/>
+  <xs:element name="getCitizenCardsByProductResponse" type="tns:getCitizenCardsByProductResponse"/>
+  <xs:element name="getCitizenCardsResponse" type="tns:getCitizenCardsResponse"/>
+  <xs:element name="getCurrentCitizenCard" type="tns:getCurrentCitizenCard"/>
+  <xs:element name="getCurrentCitizenCardByProduct" type="tns:getCurrentCitizenCardByProduct"/>
+  <xs:element name="getCurrentCitizenCardByProductResponse" type="tns:getCurrentCitizenCardByProductResponse"/>
+  <xs:element name="getCurrentCitizenCardResponse" type="tns:getCurrentCitizenCardResponse"/>
+  <xs:element name="issueCard" type="tns:issueCard"/>
+  <xs:element name="issueCardResponse" type="tns:issueCardResponse"/>
+  <xs:element name="resumeCard" type="tns:resumeCard"/>
+  <xs:element name="resumeCardResponse" type="tns:resumeCardResponse"/>
+  <xs:element name="revokeCard" type="tns:revokeCard"/>
+  <xs:element name="revokeCardResponse" type="tns:revokeCardResponse"/>
+  <xs:element name="suspendCard" type="tns:suspendCard"/>
+  <xs:element name="suspendCardResponse" type="tns:suspendCardResponse"/>
+  <xs:element name="updateCardApplicationStatus" type="tns:updateCardApplicationStatus"/>
+  <xs:element name="updateCardApplicationStatusResponse" type="tns:updateCardApplicationStatusResponse"/>
+  <xs:element name="updateUserSite" type="tns:updateUserSite"/>
+  <xs:element name="updateUserSiteResponse" type="tns:updateUserSiteResponse"/>
+  <xs:complexType name="addUserSite">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userSite" type="tns:userSiteInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType final="extension restriction" name="userSiteInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="isPostNeeded" type="xs:int"/>
+      <xs:element minOccurs="0" name="nocrOfficeCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="nocrOfficeContact" type="xs:string"/>
+      <xs:element minOccurs="0" name="nocrOfficeID" type="xs:string"/>
+      <xs:element minOccurs="0" name="nocrOfficeName" type="xs:string"/>
+      <xs:element minOccurs="0" name="nocrOfficePostalCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="nocrOfficeStateName" type="xs:string"/>
+      <xs:element minOccurs="0" name="postDestinationCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="userSiteCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="userSiteContact" type="xs:string"/>
+      <xs:element minOccurs="0" name="userSiteID" type="xs:string"/>
+      <xs:element minOccurs="0" name="userSiteName" type="xs:string"/>
+      <xs:element minOccurs="0" name="userSitePostalCode" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="addUserSiteResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="expireCard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="expireCardResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getCitizenCardsByProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="citizenNID" type="xs:string"/>
+      <xs:element minOccurs="0" name="productID" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCitizenCardsByProductResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cardInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType final="extension restriction" name="cardInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="citizenID" type="xs:string"/>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="issuanceDate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="productID" type="xs:string"/>
+      <xs:element minOccurs="0" name="productVersion" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+      <xs:element minOccurs="0" name="requestID" type="xs:string"/>
+      <xs:element name="status" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="resumeCard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="resumeCardResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getCitizenCards">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="citizenNID" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCitizenCardsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cardInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="issueCard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="requestId" type="xs:string"/>
+      <xs:element name="priority" type="xs:int"/>
+      <xs:element minOccurs="0" name="productId" type="xs:string"/>
+      <xs:element minOccurs="0" name="productVersion" type="xs:string"/>
+      <xs:element name="type" type="xs:int"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+      <xs:element minOccurs="0" name="requestData" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="issueCardResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="batchMissed">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="batchId" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="batchMissedResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="cardHandedOut">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="cardHandedOutResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getCardApplications">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCardApplicationsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cardApplicationInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType final="extension restriction" name="cardApplicationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+      <xs:element name="status" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateCardApplicationStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="applicationID" type="xs:string"/>
+      <xs:element name="status" type="xs:int"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateCardApplicationStatusResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="suspendCard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="suspendCardResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="cardDestroyed">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="cardDestroyedResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getCurrentCitizenCardByProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="citizenNID" type="xs:string"/>
+      <xs:element minOccurs="0" name="productID" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCurrentCitizenCardByProductResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:cardInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="revokeCard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="revokeCardResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="updateUserSite">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="userSite" type="tns:userSiteInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateUserSiteResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getCardInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCardInfoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:cardInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="batchReceipt">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="batchId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="batchReceiptResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getCurrentCitizenCard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="citizenNID" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCurrentCitizenCardResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cardInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="boxMissed">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="boxId" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="boxMissedResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="cardMissed">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="crn" type="xs:string"/>
+      <xs:element minOccurs="0" name="reason" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="cardMissedResponse">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:element name="ExternalInterfaceException" type="tns:ExternalInterfaceException"/>
+  <xs:complexType name="ExternalInterfaceException">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="parameters" type="xs:anyType"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+      <xs:element minOccurs="0" name="errorCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="resourceBundleBaseName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="addUserSite">
+    <wsdl:part element="tns:addUserSite" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="expireCard">
+    <wsdl:part element="tns:expireCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCitizenCardsByProduct">
+    <wsdl:part element="tns:getCitizenCardsByProduct" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateUserSiteResponse">
+    <wsdl:part element="tns:updateUserSiteResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCitizenCardsByProductResponse">
+    <wsdl:part element="tns:getCitizenCardsByProductResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="revokeCardResponse">
+    <wsdl:part element="tns:revokeCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCardInfoResponse">
+    <wsdl:part element="tns:getCardInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="issueCard">
+    <wsdl:part element="tns:issueCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCardApplicationsResponse">
+    <wsdl:part element="tns:getCardApplicationsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCardApplications">
+    <wsdl:part element="tns:getCardApplications" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addUserSiteResponse">
+    <wsdl:part element="tns:addUserSiteResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCurrentCitizenCardByProduct">
+    <wsdl:part element="tns:getCurrentCitizenCardByProduct" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="expireCardResponse">
+    <wsdl:part element="tns:expireCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resumeCardResponse">
+    <wsdl:part element="tns:resumeCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCitizenCardsResponse">
+    <wsdl:part element="tns:getCitizenCardsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="revokeCard">
+    <wsdl:part element="tns:revokeCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateUserSite">
+    <wsdl:part element="tns:updateUserSite" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="batchReceiptResponse">
+    <wsdl:part element="tns:batchReceiptResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCurrentCitizenCard">
+    <wsdl:part element="tns:getCurrentCitizenCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="boxMissed">
+    <wsdl:part element="tns:boxMissed" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cardMissed">
+    <wsdl:part element="tns:cardMissed" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cardMissedResponse">
+    <wsdl:part element="tns:cardMissedResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resumeCard">
+    <wsdl:part element="tns:resumeCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="batchMissedResponse">
+    <wsdl:part element="tns:batchMissedResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="issueCardResponse">
+    <wsdl:part element="tns:issueCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCitizenCards">
+    <wsdl:part element="tns:getCitizenCards" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCurrentCitizenCardResponse">
+    <wsdl:part element="tns:getCurrentCitizenCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="batchMissed">
+    <wsdl:part element="tns:batchMissed" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cardHandedOut">
+    <wsdl:part element="tns:cardHandedOut" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateCardApplicationStatus">
+    <wsdl:part element="tns:updateCardApplicationStatus" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="suspendCard">
+    <wsdl:part element="tns:suspendCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cardHandedOutResponse">
+    <wsdl:part element="tns:cardHandedOutResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cardDestroyed">
+    <wsdl:part element="tns:cardDestroyed" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ExternalInterfaceException">
+    <wsdl:part element="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCardInfo">
+    <wsdl:part element="tns:getCardInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="batchReceipt">
+    <wsdl:part element="tns:batchReceipt" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cardDestroyedResponse">
+    <wsdl:part element="tns:cardDestroyedResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateCardApplicationStatusResponse">
+    <wsdl:part element="tns:updateCardApplicationStatusResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="suspendCardResponse">
+    <wsdl:part element="tns:suspendCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="boxMissedResponse">
+    <wsdl:part element="tns:boxMissedResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCurrentCitizenCardByProductResponse">
+    <wsdl:part element="tns:getCurrentCitizenCardByProductResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="DocumentRequestWSLocal">
+    <wsdl:operation name="addUserSite">
+      <wsdl:input message="tns:addUserSite" name="addUserSite">
+    </wsdl:input>
+      <wsdl:output message="tns:addUserSiteResponse" name="addUserSiteResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="expireCard">
+      <wsdl:input message="tns:expireCard" name="expireCard">
+    </wsdl:input>
+      <wsdl:output message="tns:expireCardResponse" name="expireCardResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCitizenCardsByProduct">
+      <wsdl:input message="tns:getCitizenCardsByProduct" name="getCitizenCardsByProduct">
+    </wsdl:input>
+      <wsdl:output message="tns:getCitizenCardsByProductResponse" name="getCitizenCardsByProductResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resumeCard">
+      <wsdl:input message="tns:resumeCard" name="resumeCard">
+    </wsdl:input>
+      <wsdl:output message="tns:resumeCardResponse" name="resumeCardResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCitizenCards">
+      <wsdl:input message="tns:getCitizenCards" name="getCitizenCards">
+    </wsdl:input>
+      <wsdl:output message="tns:getCitizenCardsResponse" name="getCitizenCardsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="issueCard">
+      <wsdl:input message="tns:issueCard" name="issueCard">
+    </wsdl:input>
+      <wsdl:output message="tns:issueCardResponse" name="issueCardResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="batchMissed">
+      <wsdl:input message="tns:batchMissed" name="batchMissed">
+    </wsdl:input>
+      <wsdl:output message="tns:batchMissedResponse" name="batchMissedResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cardHandedOut">
+      <wsdl:input message="tns:cardHandedOut" name="cardHandedOut">
+    </wsdl:input>
+      <wsdl:output message="tns:cardHandedOutResponse" name="cardHandedOutResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCardApplications">
+      <wsdl:input message="tns:getCardApplications" name="getCardApplications">
+    </wsdl:input>
+      <wsdl:output message="tns:getCardApplicationsResponse" name="getCardApplicationsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateCardApplicationStatus">
+      <wsdl:input message="tns:updateCardApplicationStatus" name="updateCardApplicationStatus">
+    </wsdl:input>
+      <wsdl:output message="tns:updateCardApplicationStatusResponse" name="updateCardApplicationStatusResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="suspendCard">
+      <wsdl:input message="tns:suspendCard" name="suspendCard">
+    </wsdl:input>
+      <wsdl:output message="tns:suspendCardResponse" name="suspendCardResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cardDestroyed">
+      <wsdl:input message="tns:cardDestroyed" name="cardDestroyed">
+    </wsdl:input>
+      <wsdl:output message="tns:cardDestroyedResponse" name="cardDestroyedResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrentCitizenCardByProduct">
+      <wsdl:input message="tns:getCurrentCitizenCardByProduct" name="getCurrentCitizenCardByProduct">
+    </wsdl:input>
+      <wsdl:output message="tns:getCurrentCitizenCardByProductResponse" name="getCurrentCitizenCardByProductResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="revokeCard">
+      <wsdl:input message="tns:revokeCard" name="revokeCard">
+    </wsdl:input>
+      <wsdl:output message="tns:revokeCardResponse" name="revokeCardResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateUserSite">
+      <wsdl:input message="tns:updateUserSite" name="updateUserSite">
+    </wsdl:input>
+      <wsdl:output message="tns:updateUserSiteResponse" name="updateUserSiteResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCardInfo">
+      <wsdl:input message="tns:getCardInfo" name="getCardInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:getCardInfoResponse" name="getCardInfoResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="batchReceipt">
+      <wsdl:input message="tns:batchReceipt" name="batchReceipt">
+    </wsdl:input>
+      <wsdl:output message="tns:batchReceiptResponse" name="batchReceiptResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrentCitizenCard">
+      <wsdl:input message="tns:getCurrentCitizenCard" name="getCurrentCitizenCard">
+    </wsdl:input>
+      <wsdl:output message="tns:getCurrentCitizenCardResponse" name="getCurrentCitizenCardResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="boxMissed">
+      <wsdl:input message="tns:boxMissed" name="boxMissed">
+    </wsdl:input>
+      <wsdl:output message="tns:boxMissedResponse" name="boxMissedResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cardMissed">
+      <wsdl:input message="tns:cardMissed" name="cardMissed">
+    </wsdl:input>
+      <wsdl:output message="tns:cardMissedResponse" name="cardMissedResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:ExternalInterfaceException" name="ExternalInterfaceException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DocumentRequestWSServiceSoapBinding" type="tns:DocumentRequestWSLocal">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="addUserSite">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addUserSite">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addUserSiteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="expireCard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="expireCard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="expireCardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCitizenCardsByProduct">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCitizenCardsByProduct">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCitizenCardsByProductResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resumeCard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="resumeCard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="resumeCardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCitizenCards">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCitizenCards">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCitizenCardsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="issueCard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="issueCard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="issueCardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="batchMissed">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="batchMissed">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="batchMissedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cardHandedOut">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cardHandedOut">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cardHandedOutResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCardApplications">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCardApplications">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCardApplicationsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateCardApplicationStatus">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateCardApplicationStatus">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateCardApplicationStatusResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="suspendCard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="suspendCard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="suspendCardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cardDestroyed">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cardDestroyed">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cardDestroyedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrentCitizenCardByProduct">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCurrentCitizenCardByProduct">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCurrentCitizenCardByProductResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="revokeCard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="revokeCard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="revokeCardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateUserSite">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateUserSite">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateUserSiteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCardInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCardInfo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCardInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="batchReceipt">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="batchReceipt">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="batchReceiptResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrentCitizenCard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCurrentCitizenCard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCurrentCitizenCardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="boxMissed">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="boxMissed">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="boxMissedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cardMissed">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cardMissed">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cardMissedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ExternalInterfaceException">
+        <soap:fault name="ExternalInterfaceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DocumentRequestWSService">
+    <wsdl:port binding="tns:DocumentRequestWSServiceSoapBinding" name="DocumentRequestWSPort">
+      <soap:address location="https://cms1.train.ir:8444/cpm-ws-input/DocumentRequestWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

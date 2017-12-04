@@ -417,6 +417,9 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DSI_077 = "EMS_D_DSI_077";
     public static final String DSI_078 = "EMS_D_DSI_078";
     public static final String DSI_079 = "EMS_D_DSI_079";
+    public static final String DSI_080 = "EMS_D_DSI_080";
+    public static final String DSI_081 = "EMS_D_DSI_081";
+    public static final String DSI_082 = "EMS_D_DSI_082";
     //Adldoost : messages for essential exceptions in triggers
     public static final String DSI_054_MSG = "Received cards count should not be larger than total count";
     public static final String DSI_056_MSG = "Received cards count should be larger than zero";
@@ -439,6 +442,10 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DSI_044_MSG = "The interval time for the missed batches could not be found by using ProfileManager. So the default value was used instead.";
     public static final String DSI_045_MSG = "The interval time for the missed boxes could not be found by using ProfileManager. So the default value was used instead.";
     public static final String DSI_046_MSG = "The interval time for the missed cards could not be found by using ProfileManager. So the default value was used instead.";
+    public static final String DSI_080_MSG = "unable to to update batch";
+    public static final String DSI_081_MSG = "violate unique constraint, Batch CMS id already exists";
+    public static final String DSI_082_MSG = "violate unique constraint, Postal Tracking Code already exists";
+
 
     // com.gam.nocr.ems.data.dao.impl.CardRequestDAOImpl
     public static final String CDI_001 = "EMS_D_CDI_001";

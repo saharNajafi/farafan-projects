@@ -1303,6 +1303,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String DPI_057 = "EMS_S_DPI_057";
 	public static final String DPI_058 = "EMS_S_DPI_058";
 	public static final String DPI_059 = "EMS_S_DPI_059";
+	public static final String DPI_060 = "EMS_S_DPI_060";
+	public static final String DPI_061 = "EMS_S_DPI_061";
+	public static final String DPI_062 = "EMS_S_DPI_062";
+	public static final String DPI_063 = "EMS_S_DPI_063";
+	public static final String DPI_064 = "EMS_S_DPI_064";
+	public static final String DPI_065 = "EMS_S_DSI_065";
+	public static final String DPI_066 = "EMS_S_DSI_066";
+	public static final String DPI_067 = "EMS_S_DSI_067";
+	public static final String DPI_068 = "EMS_S_DSI_068";
+	public static final String DPI_069 = "EMS_S_DSI_069";
 	public static final String DPI_010_MSG = "invalid input parameter, batch id is empty";
 	public static final String DPI_011_MSG = "invalid input parameter, there is no card in this batch";
 	public static final String DPI_012_MSG = "invalid input parameter, box id is empty";
@@ -1323,6 +1333,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String DPI_039_MSG = "EMS Internal Error, an unexpected error occur";
 	public static final String DPI_056_MSG = "Invalid request ID – the request ID is invalid";
 	public static final String DPI_058_MSG = "Invalid request. Due to the fact that CMS had been notified about the state of the card, your demand for changing status to previous one could not be performed.";
+	public static final String DPI_062_MSG = "There is already an existing batch with CMSID: {}";
+	public static final String DPI_063_MSG = "Can not update batch with CMSID: {}";
+	public static final String DPI_064_MSG = "There is already an existing batch with Postal Tracking Code: {}";
+	public static final String DPI_065_MSG = "Batch Recived Is Announced By Delivery Office";
+	public static final String DPI_066_MSG = "Can not find batch with CMSID: {}";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
 	public static final String WSI_001 = "EMS_S_WSI_001";

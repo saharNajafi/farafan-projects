@@ -24,7 +24,6 @@ import java.util.List;
                         " where eof.id =:eofId"
         )
 })
-
 @PrimaryKeyJoinColumn(name = "EOF_ID", referencedColumnName = "DEP_ID")
 public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 
@@ -42,7 +41,10 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
     private EnrollmentOfficeStatus status;
     private EnrollmentOfficeDeliverStatus deliver;
     private OfficeType khosusiType;
-    private OfficeCalenderType calenderType;    
+    private OfficeCalenderType calenderType;
+    private String postDestinationCode;
+    private Boolean isPostNeeded = true;
+
 
 	public EnrollmentOfficeTO() {
     }
@@ -194,7 +196,25 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 	public void setCalenderType(OfficeCalenderType calenderType) {
 		this.calenderType = calenderType;
 	}
-	
+
+    @Column(name = "EOF_POST_DESTINATION_CODE",length = 10)
+    public String getPostDestinationCode() {
+        return postDestinationCode;
+    }
+
+    public void setPostDestinationCode(String postDestinationCode) {
+        this.postDestinationCode = postDestinationCode;
+    }
+
+    @Column(name = "EOF_IS_POST_NEEDED")
+    public Boolean getIsPostNeeded() {
+        return isPostNeeded;
+    }
+
+    public void setIsPostNeeded(Boolean isPostNeeded) {
+        this.isPostNeeded = isPostNeeded;
+    }
+
     @Override
     public String toString() {
         StringBuilder returnValue = new StringBuilder();

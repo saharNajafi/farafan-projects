@@ -1,8 +1,5 @@
 package com.gam.nocr.ems.biz.delegator;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.delegator.Delegator;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -16,6 +13,9 @@ import com.gam.nocr.ems.data.domain.CardTO;
 import com.gam.nocr.ems.data.domain.ws.DispatchInfoWTO;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com">Alireza Saadat</a>
@@ -36,6 +36,10 @@ public class DispatchingDelegator implements Delegator {
 
     public void batchProduction(UserProfileTO userProfileTO, String batchId, List<CardTO> cards) throws BaseException {
         getService(userProfileTO).batchProduction(batchId, cards);
+    }
+
+    public void batchProduction(UserProfileTO userProfileTO, String batchId, List<CardTO> cards,String postalTrackingCode) throws BaseException {
+        getService(userProfileTO).batchProduction(batchId, cards, postalTrackingCode);
     }
 
     public void boxShipped(UserProfileTO userProfileTO, String boxId, List<String> batchIds) throws BaseException {
@@ -83,5 +87,9 @@ public class DispatchingDelegator implements Delegator {
 	public Integer countBatchDispatchList(HashMap parameters, UserProfileTO userProfileTO) throws BaseException {
 		return getService(userProfileTO).countBatchDispatchList(parameters, userProfileTO);
 	}
+
+    public void updateBatchPostalTrackingCode(UserProfileTO userProfileTO,String batchId,String postalTrackingCode) throws BaseException{
+         getService(userProfileTO).updateBatchPostalTrackingCode(batchId, postalTrackingCode);
+    }
     
 }
