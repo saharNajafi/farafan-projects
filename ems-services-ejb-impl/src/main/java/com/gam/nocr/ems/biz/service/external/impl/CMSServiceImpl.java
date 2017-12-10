@@ -289,6 +289,8 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                 userSiteInfo.setUserSiteID(String.valueOf(dbEnrollmentOffice.getId()));
                 userSiteInfo.setUserSiteCode(dbEnrollmentOffice.getCode());
                 userSiteInfo.setUserSiteName(dbEnrollmentOffice.getName());
+                userSiteInfo.setIsPostNeeded(dbEnrollmentOffice.getIsPostNeeded() ? 1 : 0);
+                userSiteInfo.setPostDestinationCode(dbEnrollmentOffice.getPostDestinationCode()!= null ? dbEnrollmentOffice.getPostDestinationCode():"");
                 String userSiteContact = dbEnrollmentOffice.getAddress() + ", " +
                         dbEnrollmentOffice.getPhone() + ", " +
                         dbEnrollmentOffice.getFax();

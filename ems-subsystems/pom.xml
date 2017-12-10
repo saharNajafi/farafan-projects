@@ -20,6 +20,7 @@
         <module>ems-mes-web</module>
         <module>ems-mes-ear</module>
         <module>ems-software</module>
+       <!-- <module>cms-stub</module>-->
         <!--<module>ems-gam-ims-web</module>-->
         <!--<module>ems-gam-ims-ear</module>-->
         <!--<module>online-sc</module>-->      

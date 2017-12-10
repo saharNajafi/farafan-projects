@@ -24,6 +24,7 @@ public class BatchTO extends CardContainerTO implements JSONable {
     private List<CardTO> cards;
 //    private Long totalCardsCount;
     private Boolean isLostBatchConfirmed;
+    private String postalTrackingCode;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -99,7 +100,17 @@ public class BatchTO extends CardContainerTO implements JSONable {
 	public void setIsLostBatchConfirmed(Boolean isLostBatchConfirmed) {
 		this.isLostBatchConfirmed = isLostBatchConfirmed;
 	}
-	@Override
+
+    @Column(name = "BAT_POSTAL_TRACKING_CODE", length = 30,unique = true, nullable = true)
+    public String getPostalTrackingCode() {
+        return postalTrackingCode;
+    }
+
+    public void setPostalTrackingCode(String postalTrackingCode) {
+        this.postalTrackingCode = postalTrackingCode;
+    }
+
+    @Override
     public String toString() {
         return toJSON();
     }

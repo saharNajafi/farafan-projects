@@ -34,6 +34,8 @@ public interface DispatchDAO extends EmsBaseDAO<CardContainerTO> {
 
     public void updateBatches(BoxTO boxTO, List<String> batchIds) throws BaseException;
 
+    public void updateBatchPostalTrackingCode(String batchId, String postalTrackingCode) throws BaseException;
+
     /**
      * The method updateBatchesState is use to update the state of the batches in spite of their ids
      *

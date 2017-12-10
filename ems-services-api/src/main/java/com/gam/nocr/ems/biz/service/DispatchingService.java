@@ -18,6 +18,10 @@ public interface DispatchingService extends Service {
 
 	public String batchProduction(String batchId, List<CardTO> cards) throws BaseException;
 
+	public String batchProduction(String batchId, List<CardTO> cards,String postalTrackingCode) throws BaseException;
+
+	public void updateBatchPostalTrackingCode(String batchId,String postalTrackingCode) throws BaseException;
+
 	public String boxShipped(String boxId, List<String> batchIds) throws BaseException;
 
 	public String cardProductionError(String requestID, String errorCode, String description) throws BaseException;

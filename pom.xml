@@ -682,7 +682,7 @@
         <nocr.ems-gam-ims.version>1.0.0-SNAPSHOT</nocr.ems-gam-ims.version>
 
         <!-- ============= External Module Version ============== -->
-        <external-cms.version>1.0.0-SNAPSHOT</external-cms.version>
+        <external-cms.version>1.1.0</external-cms.version>
         <external-pki.version>1.0.0-SNAPSHOT</external-pki.version>
         <external-gaas.version>2.0.0-SNAPSHOT</external-gaas.version>
         <external-portal.version>5.0.0-SNAPSHOT</external-portal.version>
