@@ -75,8 +75,7 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
             } else {
                 WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
                 for (PluginInfoVTO pluginInfo : pluginInfoList) {
-                    WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workStationCode);
-                    workstationPluginsTO.setWorkstationTO(workstation);
+                    workstationPluginsTO.setWorkstationTO(workstationTO);
                     workstationPluginsTO.setPluginName(pluginInfo.getPluginName());
 //                    TODO
                     workstationPluginsTO.setState(Short.valueOf(pluginInfo.getState()));

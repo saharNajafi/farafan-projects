@@ -68,7 +68,7 @@ public class WorkstationPluginsTO extends ExtEntityTO {
         this.state = state;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "WPL_WORKSTATION_ID")
     public WorkstationTO getWorkstationTO() {
         return workstationTO;
