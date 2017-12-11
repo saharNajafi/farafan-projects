@@ -159,7 +159,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
     }
 
     @Basic(optional = false)
-    @Column(name = "GATHER_SATE")
+    @Column(name = "WSI_GATHER_SATE")
     public short getGatherSate() {
         return gatherSate;
     }
