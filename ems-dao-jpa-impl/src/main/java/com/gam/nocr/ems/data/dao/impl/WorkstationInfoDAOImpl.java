@@ -17,7 +17,6 @@ import java.util.List;
 @Stateless(name = "WorkstationInfoDAO")
 @Local(WorkstationInfoDAOLocal.class)
 @Remote(WorkstationInfoDAORemote.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class WorkstationInfoDAOImpl extends EmsBaseDAOImpl<WorkstationInfoTO>
         implements WorkstationInfoDAOLocal, WorkstationInfoDAORemote {
 
