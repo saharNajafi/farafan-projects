@@ -3,14 +3,9 @@ package com.gam.nocr.ems.web.ws;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Internal;
 import com.gam.commons.core.data.domain.UserProfileTO;
-import com.gam.nocr.ems.biz.delegator.WorkstationDelegator;
 import com.gam.nocr.ems.biz.delegator.WorkstationInfoDelegator;
 import com.gam.nocr.ems.biz.delegator.WorkstationPluginsDelegator;
-import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
-import com.gam.nocr.ems.data.domain.ws.SecurityContextWTO;
+import com.gam.nocr.ems.data.domain.ws.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -55,11 +50,11 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode,
             @WebParam(name = "ClientHardWareSpec", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) ClientHardWareSpecVTO clientHardWareSpec,
+            @XmlElement(required = true, nillable = false) ClientHardWareSpecWTO clientHardWareSpec,
             @WebParam(name = "ClientNetworkConfig", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) ClientNetworkConfigsVTO clientNetworkConfig,
+            @XmlElement(required = true, nillable = false) ClientNetworkConfigsWTO clientNetworkConfig,
             @WebParam(name = "ClientSoftWareSpec", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) ClientSoftWareSpecVTO clientSoftWareSpec
+            @XmlElement(required = true, nillable = false) ClientSoftWareSpecWTO clientSoftWareSpec
     ) throws InternalException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;
@@ -78,7 +73,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode,
             @WebParam(name = "PluginInfo", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) List<PluginInfoVTO> pluginInfoList
+            @XmlElement(required = true, nillable = false) List<PluginInfoWTO> pluginInfoList
     ) throws InternalException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;

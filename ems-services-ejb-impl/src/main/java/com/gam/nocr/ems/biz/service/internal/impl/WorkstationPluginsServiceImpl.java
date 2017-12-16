@@ -13,7 +13,7 @@ import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationPluginsDAO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.PluginInfoWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
@@ -55,7 +55,7 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
 
     @Override
     public String getReliableVerByPlugin (
-            String workStationCode, List<PluginInfoVTO> pluginInfoList) throws BaseException {
+            String workStationCode, List<PluginInfoWTO> pluginInfoList) throws BaseException {
         String ccosExactVersion = null;
         WorkstationPluginsTO workstationPlugins = null;
         try {
@@ -67,14 +67,14 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
             workstationPlugins =
                    getWorkstationPluginsDAO().findByWorkstationById(workstationTO.getId());
             if (workstationPlugins != null) {
-                for (PluginInfoVTO pluginInfo : pluginInfoList) {
+                for (PluginInfoWTO pluginInfo : pluginInfoList) {
                     workstationPlugins.setPluginName(pluginInfo.getPluginName());
                     workstationPlugins.setState(Short.valueOf(pluginInfo.getState()));
                     getWorkstationPluginsDAO().update(workstationPlugins);
                 }
             } else {
                 WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
-                for (PluginInfoVTO pluginInfo : pluginInfoList) {
+                for (PluginInfoWTO pluginInfo : pluginInfoList) {
                     workstationPluginsTO.setWorkstationTO(workstationTO);
                     workstationPluginsTO.setPluginName(pluginInfo.getPluginName());
 //                    TODO

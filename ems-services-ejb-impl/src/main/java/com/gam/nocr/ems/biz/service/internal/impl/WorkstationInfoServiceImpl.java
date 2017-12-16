@@ -12,14 +12,11 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationInfoDAO;
-import com.gam.nocr.ems.data.dao.WorkstationPluginsDAO;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
-import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
-import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.ClientHardWareSpecWTO;
+import com.gam.nocr.ems.data.domain.ws.ClientNetworkConfigsWTO;
+import com.gam.nocr.ems.data.domain.ws.ClientSoftWareSpecWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
@@ -78,9 +75,9 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public String getReliableVerByPlatform(String workstationCode, ClientHardWareSpecVTO clientHardWareSpec,
-                                           ClientNetworkConfigsVTO clientNetworkConfig,
-                                           ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException {
+    public String getReliableVerByPlatform(String workstationCode, ClientHardWareSpecWTO clientHardWareSpec,
+                                           ClientNetworkConfigsWTO clientNetworkConfig,
+                                           ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException {
         String ccosExactVersion = null;
         try {
             if (workstationCode == null)
@@ -100,9 +97,9 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         return ccosExactVersion;
     }
 
-    private void saveWorkstationInfo(String workstationCode, ClientHardWareSpecVTO clientHardWareSpec,
-                                     ClientNetworkConfigsVTO clientNetworkConfig,
-                                     ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException {
+    private void saveWorkstationInfo(String workstationCode, ClientHardWareSpecWTO clientHardWareSpec,
+                                     ClientNetworkConfigsWTO clientNetworkConfig,
+                                     ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException {
         try {
             WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();
             WorkstationTO workstationTO = getWorkstationDAO().findByActivationCode(workstationCode);
@@ -134,9 +131,9 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     }
 
     private void updateWorkstationInfo(
-            ClientHardWareSpecVTO clientHardWareSpec,
-            ClientNetworkConfigsVTO clientNetworkConfig,
-            ClientSoftWareSpecVTO clientSoftWareSpec, WorkstationInfoTO workstationInfo) throws BaseException {
+            ClientHardWareSpecWTO clientHardWareSpec,
+            ClientNetworkConfigsWTO clientNetworkConfig,
+            ClientSoftWareSpecWTO clientSoftWareSpec, WorkstationInfoTO workstationInfo) throws BaseException {
         try {
             workstationInfo.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
             workstationInfo.setCpuType(clientHardWareSpec.getCpuType());

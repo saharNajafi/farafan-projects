@@ -2,11 +2,9 @@ package com.gam.nocr.ems.biz.service;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
-import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
-import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.ClientHardWareSpecWTO;
+import com.gam.nocr.ems.data.domain.ws.ClientNetworkConfigsWTO;
+import com.gam.nocr.ems.data.domain.ws.ClientSoftWareSpecWTO;
 
 import java.util.List;
 
@@ -17,9 +15,9 @@ public interface WorkstationInfoService extends Service {
 
     Boolean isReliableVerInquiryRequired(String workStationId) throws BaseException;
 
-    String getReliableVerByPlatform(String workStationCode, ClientHardWareSpecVTO clientHardWareSpec,
-                                    ClientNetworkConfigsVTO clientNetworkConfig,
-                                    ClientSoftWareSpecVTO clientSoftWareSpec) throws BaseException;
+    String getReliableVerByPlatform(String workStationCode, ClientHardWareSpecWTO clientHardWareSpec,
+                                    ClientNetworkConfigsWTO clientNetworkConfig,
+                                    ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException;
 
     List<String> getCompatibleClientVerList() throws BaseException;
 }

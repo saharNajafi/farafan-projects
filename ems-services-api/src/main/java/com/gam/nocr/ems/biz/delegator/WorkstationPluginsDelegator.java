@@ -6,11 +6,10 @@ import com.gam.commons.core.biz.delegator.DelegatorException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
-import com.gam.nocr.ems.biz.service.WorkstationInfoService;
 import com.gam.nocr.ems.biz.service.WorkstationPluginsService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.PluginInfoWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class WorkstationPluginsDelegator implements Delegator {
     }
 
     public String getReliableVerByPlugin(
-            UserProfileTO userProfileTO,String workStationCode, List<PluginInfoVTO> pluginInfoList)
+            UserProfileTO userProfileTO,String workStationCode, List<PluginInfoWTO> pluginInfoList)
             throws BaseException {
         String verCode = null;
         try {

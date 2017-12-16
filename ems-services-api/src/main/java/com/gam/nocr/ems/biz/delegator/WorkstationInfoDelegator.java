@@ -9,11 +9,9 @@ import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.WorkstationInfoService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
-import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
-import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
-import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.ClientHardWareSpecWTO;
+import com.gam.nocr.ems.data.domain.ws.ClientNetworkConfigsWTO;
+import com.gam.nocr.ems.data.domain.ws.ClientSoftWareSpecWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import java.util.List;
@@ -50,8 +48,8 @@ public class WorkstationInfoDelegator implements Delegator {
     }
 
     public String getReliableVerByPlatform(
-            UserProfileTO userProfileTO, String workstationCode, ClientHardWareSpecVTO clientHardWareSpec,
-            ClientNetworkConfigsVTO clientNetworkConfig, ClientSoftWareSpecVTO clientSoftWareSpec)
+            UserProfileTO userProfileTO, String workstationCode, ClientHardWareSpecWTO clientHardWareSpec,
+            ClientNetworkConfigsWTO clientNetworkConfig, ClientSoftWareSpecWTO clientSoftWareSpec)
             throws BaseException {
         String verCode = null;
         try {

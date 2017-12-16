@@ -1,4 +1,4 @@
-package com.gam.nocr.ems.data.domain.vol;
+package com.gam.nocr.ems.data.domain.ws;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/15/17.
  */
-public class ClientNetworkConfigsVTO extends ExtEntityTO{
+public class ClientNetworkConfigsWTO extends ExtEntityTO{
     private List<String> ipAddressList;
     private String computerName;
     private String userName;
