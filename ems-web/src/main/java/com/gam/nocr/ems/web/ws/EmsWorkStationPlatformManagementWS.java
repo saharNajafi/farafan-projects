@@ -29,7 +29,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
     private WorkstationPluginsDelegator workstationPluginsDelegator = new WorkstationPluginsDelegator();
 
     @WebMethod
-    public Boolean isReliableVerInquiryRequired(
+    public boolean isReliableVerInquiryRequired(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode
