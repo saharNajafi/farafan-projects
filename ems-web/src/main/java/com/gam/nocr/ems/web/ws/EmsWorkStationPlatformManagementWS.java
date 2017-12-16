@@ -10,6 +10,7 @@ import com.gam.nocr.ems.data.domain.vol.ClientHardWareSpecVTO;
 import com.gam.nocr.ems.data.domain.vol.ClientNetworkConfigsVTO;
 import com.gam.nocr.ems.data.domain.vol.ClientSoftWareSpecVTO;
 import com.gam.nocr.ems.data.domain.vol.PluginInfoVTO;
+import com.gam.nocr.ems.data.domain.ws.SecurityContextWTO;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -28,16 +29,17 @@ import java.util.List;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL,
         parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 @Internal
-public class EmsWorkStationPlatformManagementWS {
+public class EmsWorkStationPlatformManagementWS extends EMSWS {
     private WorkstationInfoDelegator workstationInfoDelegator = new WorkstationInfoDelegator();
     private WorkstationPluginsDelegator workstationPluginsDelegator = new WorkstationPluginsDelegator();
 
     @WebMethod
     public Boolean isReliableVerInquiryRequired(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode
     ) throws InternalException {
-        UserProfileTO userProfileTO = null;
+        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         Boolean result = false;
         try {
              result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
@@ -49,6 +51,7 @@ public class EmsWorkStationPlatformManagementWS {
 
     @WebMethod
     public String getReliableVerByPlatform(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode,
             @WebParam(name = "ClientHardWareSpec", targetNamespace = "")
@@ -58,7 +61,7 @@ public class EmsWorkStationPlatformManagementWS {
             @WebParam(name = "ClientSoftWareSpec", targetNamespace = "")
             @XmlElement(required = true, nillable = false) ClientSoftWareSpecVTO clientSoftWareSpec
     ) throws InternalException {
-        UserProfileTO userProfileTO = null;
+        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;
         try {
             verCode = workstationInfoDelegator.getReliableVerByPlatform(
@@ -71,12 +74,13 @@ public class EmsWorkStationPlatformManagementWS {
 
     @WebMethod
     public String getReliableVerByPlugin(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode,
             @WebParam(name = "PluginInfo", targetNamespace = "")
             @XmlElement(required = true, nillable = false) List<PluginInfoVTO> pluginInfoList
     ) throws InternalException {
-        UserProfileTO userProfileTO = null;
+        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;
         try {
             verCode = workstationPluginsDelegator.getReliableVerByPlugin(userProfileTO, workstationCode, pluginInfoList);
@@ -87,8 +91,10 @@ public class EmsWorkStationPlatformManagementWS {
     }
 
     @WebMethod
-    public List<String> getCompatibleClientVerList() throws InternalException {
-        UserProfileTO userProfileTO = null;
+    public List<String> getCompatibleClientVerList(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO
+    ) throws InternalException {
+        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         List<String> verCode = null;
         try {
             verCode = workstationInfoDelegator.getCompatibleClientVerList(userProfileTO);
