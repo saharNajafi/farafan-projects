@@ -444,7 +444,7 @@ public class CMSWS extends WSSecurity {
     }
 
 
-    public void updateBatchPostalTrackingCode(@WebParam(name = "batchId") String batchId,
+    public void updatePostalTrackingCode(@WebParam(name = "batchId") String batchId,
                                               @WebParam(name = "postalTrackingCode") String postalTrackingCode) throws ExternalInterfaceException {
 
         dispatchLogger.info("'updateBatchPostalTrackingCode' web service called by CMS with batchId : {} and postalTrackingCode : {} ", batchId, postalTrackingCode);
