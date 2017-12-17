@@ -75,21 +75,24 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public String getReliableVerByPlatform(String workstationCode, ClientHardWareSpecWTO clientHardWareSpec,
-                                           ClientNetworkConfigsWTO clientNetworkConfig,
-                                           ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException {
+    public String getReliableVerByPlatform(
+            String workstationCode, WorkstationInfoTO workstationInfoTO) throws BaseException {
         String ccosExactVersion = null;
+        WorkstationTO workstation;
+        WorkstationInfoTO workstationInfo = null;
         try {
             if (workstationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
-            WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
-            WorkstationInfoTO workstationInfo =
+             workstation = getWorkstationDAO().findByActivationCode(workstationCode);
+            if(workstation != null)
+             workstationInfo =
                     getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
             if (workstationInfo != null) {
-                updateWorkstationInfo(clientHardWareSpec,
-                        clientNetworkConfig, clientSoftWareSpec, workstationInfo);
-            } else
-                saveWorkstationInfo(workstationCode, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
+                updateWorkstationInfo(workstationInfoTO, workstationInfo);
+            } else if (workstation != null) {
+                workstationInfoTO.setWorkstation(workstation);
+                getWorkstationInfoDAO().create(workstationInfoTO);
+            }
             ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
         } catch (BaseException e) {
             e.printStackTrace();
@@ -97,58 +100,21 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         return ccosExactVersion;
     }
 
-    private void saveWorkstationInfo(String workstationCode, ClientHardWareSpecWTO clientHardWareSpec,
-                                     ClientNetworkConfigsWTO clientNetworkConfig,
-                                     ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException {
+    private void updateWorkstationInfo(WorkstationInfoTO workstationInfoTo
+            , WorkstationInfoTO workstationInfo) throws BaseException {
         try {
-            WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();
-            WorkstationTO workstationTO = getWorkstationDAO().findByActivationCode(workstationCode);
-//            todo
-//            if(workstationTO == null)
-//                throw new Exception();
-            if (workstationTO != null) {
-                workstationInfoTO.setWorkstation(workstationTO);
-                workstationInfoTO.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
-                workstationInfoTO.setCpuType(clientHardWareSpec.getCpuType());
-                workstationInfoTO.setRamCapacity(clientHardWareSpec.getRamCapacity());
-                workstationInfoTO.setOsVersion(clientSoftWareSpec.getOsVersion());
-                if(clientSoftWareSpec.getDotNetwork45Installed() != null)
-                    workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(
-                            String.valueOf(((clientSoftWareSpec.getDotNetwork45Installed()) ? 1 : 0))));
-                if(clientSoftWareSpec.getIs64BitOs()!=null)
-                workstationInfoTO.setIs64bitOs(Short.parseShort(
-                        String.valueOf(((clientSoftWareSpec.getIs64BitOs())? 1 : 0))));
-                workstationInfoTO.setIpAddressList(String.valueOf(clientNetworkConfig.getIpAddressList()));
-                workstationInfoTO.setComputerName(clientNetworkConfig.getComputerName());
-                workstationInfoTO.setUsername(clientNetworkConfig.getUserName());
-                workstationInfoTO.setGateway(clientNetworkConfig.getGateway());
-                workstationInfoTO.setGatherSate((short) 0);
-                getWorkstationInfoDAO().create(workstationInfoTO);
-            }
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void updateWorkstationInfo(
-            ClientHardWareSpecWTO clientHardWareSpec,
-            ClientNetworkConfigsWTO clientNetworkConfig,
-            ClientSoftWareSpecWTO clientSoftWareSpec, WorkstationInfoTO workstationInfo) throws BaseException {
-        try {
-            workstationInfo.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
-            workstationInfo.setCpuType(clientHardWareSpec.getCpuType());
-            workstationInfo.setRamCapacity(clientHardWareSpec.getRamCapacity());
-            workstationInfo.setOsVersion(clientSoftWareSpec.getOsVersion());
-            if(clientSoftWareSpec.getDotNetwork45Installed() != null)
-            workstationInfo.setHasDotnetFramwork45(Short.parseShort(
-                    String.valueOf(((clientSoftWareSpec.getDotNetwork45Installed()) ? 1 : 0))));
-            if(clientSoftWareSpec.getIs64BitOs()!=null)
-            workstationInfo.setIs64bitOs(Short.parseShort(
-                    String.valueOf(((clientSoftWareSpec.getIs64BitOs()) ? 1 : 0))));
-            workstationInfo.setIpAddressList(String.valueOf(clientNetworkConfig.getIpAddressList()));
-            workstationInfo.setComputerName(clientNetworkConfig.getComputerName());
-            workstationInfo.setUsername(clientNetworkConfig.getUserName());
-            workstationInfo.setGateway(clientNetworkConfig.getGateway());
+            workstationInfo.setMacAddressList(String.valueOf(workstationInfoTo.getMacAddressList()));
+            workstationInfo.setCpuType(workstationInfoTo.getCpuType());
+            workstationInfo.setRamCapacity(workstationInfoTo.getRamCapacity());
+            workstationInfo.setOsVersion(workstationInfoTo.getOsVersion());
+            if(workstationInfoTo.getHasDotnetFramwork45() != null)
+            workstationInfo.setHasDotnetFramwork45(workstationInfoTo.getHasDotnetFramwork45());
+            if(workstationInfoTo.getIs64bitOs()!=null)
+            workstationInfo.setIs64bitOs(workstationInfoTo.getIs64bitOs());
+            workstationInfo.setIpAddressList(String.valueOf(workstationInfoTo.getIpAddressList()));
+            workstationInfo.setComputerName(workstationInfoTo.getComputerName());
+            workstationInfo.setUsername(workstationInfoTo.getUsername());
+            workstationInfo.setGateway(workstationInfoTo.getGateway());
             getWorkstationInfoDAO().update(workstationInfo);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -160,8 +126,10 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         List<String> verCodeList = new ArrayList<String>();
         String[] verCode =
                 ConfigurationFileHandler.getInstance().getProperty("ccos-version").toString().split(",");
-        for (String verCodeS : verCode) {
-            verCodeList.add(verCodeS);
+        if(verCode.length > 0) {
+            for (String verCodeS : verCode) {
+                verCodeList.add(verCodeS);
+            }
         }
         return verCodeList;
     }

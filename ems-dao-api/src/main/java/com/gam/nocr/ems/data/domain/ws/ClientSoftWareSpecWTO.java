@@ -5,7 +5,7 @@ import com.gam.commons.core.data.domain.ExtEntityTO;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/15/17.
  */
-public class ClientSoftWareSpecWTO extends ExtEntityTO{
+public class ClientSoftWareSpecWTO {
     private String osVersion;
     private Boolean isDotNetwork45Installed;
     private Boolean is64BitOs;

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/15/17.
  */
-public class ClientNetworkConfigsWTO extends ExtEntityTO{
+public class ClientNetworkConfigsWTO {
     private List<String> ipAddressList;
     private String computerName;
     private String userName;

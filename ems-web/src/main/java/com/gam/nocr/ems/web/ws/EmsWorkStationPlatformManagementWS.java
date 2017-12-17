@@ -5,6 +5,9 @@ import com.gam.commons.core.biz.service.Internal;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.delegator.WorkstationInfoDelegator;
 import com.gam.nocr.ems.biz.delegator.WorkstationPluginsDelegator;
+import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
+import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
+import com.gam.nocr.ems.data.domain.WorkstationTO;
 import com.gam.nocr.ems.data.domain.ws.*;
 
 import javax.jws.WebMethod;
@@ -13,6 +16,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.WebFault;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,11 +42,11 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         Boolean result = false;
         try {
-             result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
+            result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
         } catch (BaseException e) {
             e.printStackTrace();
         }
-    return result;
+        return result;
     }
 
     @WebMethod
@@ -59,8 +64,10 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;
         try {
+          WorkstationInfoTO workstationInfoTO =
+                  convertToWorkstationInfo(clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
             verCode = workstationInfoDelegator.getReliableVerByPlatform(
-                    userProfileTO, workstationCode, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
+                    userProfileTO, workstationCode, workstationInfoTO);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -77,8 +84,18 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
     ) throws InternalException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;
+        List<WorkstationPluginsTO> workstationPluginsList = new ArrayList<WorkstationPluginsTO>();
         try {
-            verCode = workstationPluginsDelegator.getReliableVerByPlugin(userProfileTO, workstationCode, pluginInfoList);
+            if (pluginInfoList.size() > 0){
+                for (PluginInfoWTO pluginInfo : pluginInfoList) {
+                    WorkstationPluginsTO workstationPlugins = new WorkstationPluginsTO();
+                    workstationPlugins.setPluginName(pluginInfo.getPluginName());
+                    workstationPlugins.setState(Short.valueOf(pluginInfo.getState()));
+                    workstationPluginsList.add(workstationPlugins);
+                }
+        }
+            verCode = workstationPluginsDelegator.getReliableVerByPlugin(
+                    userProfileTO, workstationCode, workstationPluginsList);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -99,4 +116,25 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         return verCode;
     }
 
+    private WorkstationInfoTO convertToWorkstationInfo(ClientHardWareSpecWTO clientHardWareSpec,
+                                                       ClientNetworkConfigsWTO clientNetworkConfig,
+                                                       ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException {
+        WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();
+        workstationInfoTO.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
+        workstationInfoTO.setCpuType(clientHardWareSpec.getCpuType());
+        workstationInfoTO.setRamCapacity(clientHardWareSpec.getRamCapacity());
+        workstationInfoTO.setOsVersion(clientSoftWareSpec.getOsVersion());
+        if (clientSoftWareSpec.getDotNetwork45Installed() != null)
+            workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(
+                    String.valueOf(((clientSoftWareSpec.getDotNetwork45Installed()) ? 1 : 0))));
+        if (clientSoftWareSpec.getIs64BitOs() != null)
+            workstationInfoTO.setIs64bitOs(Short.parseShort(
+                    String.valueOf(((clientSoftWareSpec.getIs64BitOs()) ? 1 : 0))));
+        workstationInfoTO.setIpAddressList(String.valueOf(clientNetworkConfig.getIpAddressList()));
+        workstationInfoTO.setComputerName(clientNetworkConfig.getComputerName());
+        workstationInfoTO.setUsername(clientNetworkConfig.getUserName());
+        workstationInfoTO.setGateway(clientNetworkConfig.getGateway());
+        workstationInfoTO.setGatherSate((short) 0);
+        return workstationInfoTO;
+    }
 }

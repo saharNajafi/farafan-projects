@@ -55,33 +55,22 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
 
     @Override
     public String getReliableVerByPlugin (
-            String workStationCode, List<PluginInfoWTO> pluginInfoList) throws BaseException {
+            String workStationCode, List<WorkstationPluginsTO> workstationPluginsList) throws BaseException {
         String ccosExactVersion = null;
-        WorkstationPluginsTO workstationPlugins = null;
         try {
             if (workStationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
             WorkstationTO workstationTO =
                     getWorkstationDAO().findByActivationCode(workStationCode);
             if(workstationTO != null)
-            workstationPlugins =
-                   getWorkstationPluginsDAO().findByWorkstationById(workstationTO.getId());
-            if (workstationPlugins != null) {
-                for (PluginInfoWTO pluginInfo : pluginInfoList) {
-                    workstationPlugins.setPluginName(pluginInfo.getPluginName());
-                    workstationPlugins.setState(Short.valueOf(pluginInfo.getState()));
-                    getWorkstationPluginsDAO().update(workstationPlugins);
-                }
-            } else {
-                WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
-                for (PluginInfoWTO pluginInfo : pluginInfoList) {
+                for (WorkstationPluginsTO workstationPlugin : workstationPluginsList) {
+                    WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
                     workstationPluginsTO.setWorkstationTO(workstationTO);
-                    workstationPluginsTO.setPluginName(pluginInfo.getPluginName());
+                    workstationPluginsTO.setPluginName(workstationPlugin.getPluginName());
 //                    TODO
-                    workstationPluginsTO.setState(Short.valueOf(pluginInfo.getState()));
-                    getWorkstationPluginsDAO().create(workstationPluginsTO);
+                    workstationPluginsTO.setState(workstationPlugin.getState());
+                     getWorkstationPluginsDAO().create(workstationPluginsTO);
                 }
-            }
             ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
         } catch (BaseException e) {
             e.printStackTrace();
