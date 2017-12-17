@@ -9,6 +9,7 @@ import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.WorkstationInfoService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.ws.ClientHardWareSpecWTO;
 import com.gam.nocr.ems.data.domain.ws.ClientNetworkConfigsWTO;
 import com.gam.nocr.ems.data.domain.ws.ClientSoftWareSpecWTO;
@@ -48,13 +49,12 @@ public class WorkstationInfoDelegator implements Delegator {
     }
 
     public String getReliableVerByPlatform(
-            UserProfileTO userProfileTO, String workstationCode, ClientHardWareSpecWTO clientHardWareSpec,
-            ClientNetworkConfigsWTO clientNetworkConfig, ClientSoftWareSpecWTO clientSoftWareSpec)
+            UserProfileTO userProfileTO, String workstationCode, WorkstationInfoTO workstationInfoTO)
             throws BaseException {
         String verCode = null;
         try {
             verCode = getService(userProfileTO).getReliableVerByPlatform(
-                    workstationCode, clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
+                    workstationCode, workstationInfoTO);
         } catch (BaseException e) {
             e.printStackTrace();
         }

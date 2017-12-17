@@ -2,7 +2,7 @@ package com.gam.nocr.ems.biz.service;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
-import com.gam.nocr.ems.data.domain.ws.PluginInfoWTO;
+import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface WorkstationPluginsService extends Service {
 
-    String getReliableVerByPlugin(String workStationCode, List<PluginInfoWTO> pluginInfoList) throws BaseException;
+    String getReliableVerByPlugin(
+            String workStationCode, List<WorkstationPluginsTO> workstationPluginsList) throws BaseException;
 
 }
