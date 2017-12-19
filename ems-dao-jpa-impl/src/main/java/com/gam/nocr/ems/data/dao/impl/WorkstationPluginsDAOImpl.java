@@ -62,7 +62,7 @@ public class WorkstationPluginsDAOImpl extends EmsBaseDAOImpl<WorkstationPlugins
     }
 
     @Override
-    public WorkstationPluginsTO findByWorkstationById(Long workstationId){
+    public WorkstationPluginsTO findByWorkstationById(Long workstationId) throws DAOException {
         List<WorkstationPluginsTO> workstationPluginsTOs = null;
         try {
             workstationPluginsTOs =
@@ -70,11 +70,7 @@ public class WorkstationPluginsDAOImpl extends EmsBaseDAOImpl<WorkstationPlugins
                             .setParameter("workstationId", workstationId)
                             .getResultList();
         } catch (Exception e) {
-            try {
-                throw new DAOException(DataExceptionCode.WST_002, DataExceptionCode.WST_002_MSG, e);
-            } catch (DAOException e1) {
-                e1.printStackTrace();
-            }
+            throw new DAOException(DataExceptionCode.WST_002, DataExceptionCode.WST_002_MSG, e);
         }
         if (EmsUtil.checkListSize(workstationPluginsTOs))
             return workstationPluginsTOs.get(0);

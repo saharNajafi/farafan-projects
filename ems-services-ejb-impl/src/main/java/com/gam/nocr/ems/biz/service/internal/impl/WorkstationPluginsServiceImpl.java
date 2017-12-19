@@ -59,19 +59,20 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
         String ccosExactVersion = null;
         try {
             if (workStationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
             WorkstationTO workstationTO =
                     getWorkstationDAO().findByActivationCode(workStationCode);
-            if(workstationTO != null)
+            if(workstationTO != null) {
                 for (WorkstationPluginsTO workstationPlugin : workstationPluginsList) {
                     WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
                     workstationPluginsTO.setWorkstationTO(workstationTO);
                     workstationPluginsTO.setPluginName(workstationPlugin.getPluginName());
 //                    TODO
                     workstationPluginsTO.setState(workstationPlugin.getState());
-                     getWorkstationPluginsDAO().create(workstationPluginsTO);
+                    getWorkstationPluginsDAO().create(workstationPluginsTO);
                 }
-            ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+            }
         } catch (BaseException e) {
             e.printStackTrace();
         }
