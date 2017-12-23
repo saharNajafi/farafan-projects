@@ -186,6 +186,11 @@
         <remote>com.gam.nocr.ems.biz.service.internal.impl.RegistrationServiceRemote</remote>
     </ejb-ref>-->
     <!--Local and Remote EJB Services-->
+    <listener>
+        <listener-class>
+            com.farafan.config.ConfigurationLoaderListener
+        </listener-class>
+    </listener>
 
     <listener>
         <listener-class>
@@ -338,6 +343,13 @@
         <load-on-startup>1</load-on-startup>
     </servlet-->
     <servlet>
+        <servlet-name>ReloadConfigurationServlet</servlet-name>
+        <servlet-class>
+            com.farafan.config.ConfigurationReloadServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
         <servlet-name>CardProductionNotificationService</servlet-name>
         <servlet-class>
             com.sun.xml.ws.transport.http.servlet.WSServlet
@@ -448,6 +460,10 @@
     <!--<servlet-name>PortalServlet</servlet-name>-->
     <!--<url-pattern>/portal</url-pattern>-->
     <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>ReloadConfigurationServlet</servlet-name>
+        <url-pattern>/reloadConfigurations</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegistrationWS</servlet-name>
         <url-pattern>/services/registration</url-pattern>
