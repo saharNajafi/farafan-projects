@@ -184,6 +184,11 @@
             <scope>provided</scope>
         </dependency>
         <!-- inner module dependency -->
+        <dependency>
+            <groupId>com.farafan</groupId>
+            <artifactId>configurationloader</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 
