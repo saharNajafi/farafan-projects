@@ -16,7 +16,7 @@ public class PurgeBiometricAndDocumentJob extends BaseEmsJob implements Interrup
 
     private static final Logger purgeBioAndDocsLogger = BaseLog
             .getLogger("PurgeBiometricAndDocumentLogger");
-    private static final String DEFAULT_CITIZEN_TO_PURGE_BIO_FETCH_LIMIT = "1";
+    private static final String DEFAULT_CITIZEN_TO_PURGE_BIO_FETCH_LIMIT = "0";
     private static final String DEFAULT_SAVE_PURGE_HISTORY = "true";
 
     private boolean isJobInterrupted = false;
