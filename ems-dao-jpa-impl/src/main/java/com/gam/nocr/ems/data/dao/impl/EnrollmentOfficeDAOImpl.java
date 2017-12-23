@@ -209,7 +209,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 									+ "or eof.type = 'NOCR'))) "
 									+ "and "
 									+ "((EOF1.lastSyncDate IS NOT NULL AND EOF1.lastSyncDate < EOF1.lastModifiedDate) OR "
-									+ "(EOF1.lastSyncDate < EOF1.parentDepartment.lastModifiedDate))) ",
+									+ "(EOF1.lastSyncDate < EOF1.parentDepartment.lastModifiedDate)) ",
 							EnrollmentOfficeTO.class).getResultList();
 			em.flush();
 		} catch (Exception e) {
