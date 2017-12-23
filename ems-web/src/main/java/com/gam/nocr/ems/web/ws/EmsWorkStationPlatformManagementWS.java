@@ -40,7 +40,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             @XmlElement(required = true, nillable = false) String workstationCode
     ) throws InternalException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
-        Boolean result = false;
+        boolean result = false;
         try {
             result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
         } catch (BaseException e) {

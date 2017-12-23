@@ -2606,12 +2606,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String WST_010 = "EMS_WST_010";
 	public static final String WST_001_MSG = "WorkStationId is invalid";
 	public static final String WST_003_MSG = "InvalidData: WorkStationId is empty";
-	public static final String WST_004_MSG = "Service is unavailable";
-	public static final String WST_005_MSG = "Mac address is invalid";
-	public static final String WST_006_MSG = "OS version is invalid";
-	public static final String WST_007_MSG = "IP address is invalid";
-	public static final String WST_008_MSG = "UserName is invalid";
-	public static final String WST_009_MSG = "Computer name is invalid";
-	public static final String WST_010_MSG = "Net framework is unknown";
+	public static final String WST_002_MSG = "WorkStationCode is empty";
 
 }

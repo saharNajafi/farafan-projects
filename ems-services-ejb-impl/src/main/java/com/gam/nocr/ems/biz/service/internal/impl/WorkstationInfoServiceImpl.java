@@ -58,12 +58,12 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public Boolean isReliableVerInquiryRequired(String workstationCode) throws BaseException {
+    public boolean isReliableVerInquiryRequired(String workstationCode) throws BaseException {
         WorkstationInfoTO workstationInfoTO = null;
-        Boolean result = false;
+        boolean result = false;
         try {
             if (workstationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
                 if(workstationInfoTO != null)
@@ -82,18 +82,19 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         WorkstationInfoTO workstationInfo = null;
         try {
             if (workstationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
              workstation = getWorkstationDAO().findByActivationCode(workstationCode);
             if(workstation != null)
              workstationInfo =
                     getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
             if (workstationInfo != null) {
                 updateWorkstationInfo(workstationInfoTO, workstationInfo);
+                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             } else if (workstation != null) {
                 workstationInfoTO.setWorkstation(workstation);
                 getWorkstationInfoDAO().create(workstationInfoTO);
+                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             }
-            ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -124,12 +125,16 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     @Override
     public List<String> getCompatibleClientVerList() {
         List<String> verCodeList = new ArrayList<String>();
-        String[] verCode =
-                ConfigurationFileHandler.getInstance().getProperty("ccos-version").toString().split(",");
-        if(verCode.length > 0) {
-            for (String verCodeS : verCode) {
-                verCodeList.add(verCodeS);
+        try {
+            String[] verCode =
+                    ConfigurationFileHandler.getInstance().getProperty("ccos-version").toString().split(",");
+            if (verCode.length > 0) {
+                for (String verCodeS : verCode) {
+                    verCodeList.add(verCodeS);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return verCodeList;
     }
