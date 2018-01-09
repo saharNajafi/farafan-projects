@@ -39,7 +39,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
     private Short hasDotnetFramwork45;
     private Short is64bitOs;
     private WorkstationTO workstation;
-    private short gatherSate;
+    private short gatherState;
 
     public WorkstationInfoTO() {
     }
@@ -159,13 +159,13 @@ public class WorkstationInfoTO extends ExtEntityTO {
     }
 
     @Basic(optional = false)
-    @Column(name = "WSI_GATHER_SATE")
-    public short getGatherSate() {
-        return gatherSate;
+    @Column(name = "WSI_GATHER_STATE")
+    public short getGatherState() {
+        return gatherState;
     }
 
-    public void setGatherSate(short gatherSate) {
-        this.gatherSate = gatherSate;
+    public void setGatherState(short gatherState) {
+        this.gatherState = gatherState;
     }
 
     @Override

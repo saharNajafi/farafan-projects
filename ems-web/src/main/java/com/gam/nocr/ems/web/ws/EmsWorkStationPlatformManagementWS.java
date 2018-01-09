@@ -134,7 +134,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         workstationInfoTO.setComputerName(clientNetworkConfig.getComputerName());
         workstationInfoTO.setUsername(clientNetworkConfig.getUserName());
         workstationInfoTO.setGateway(clientNetworkConfig.getGateway());
-        workstationInfoTO.setGatherSate((short) 0);
+        workstationInfoTO.setGatherState((short) 0);
         return workstationInfoTO;
     }
 }

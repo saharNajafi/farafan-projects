@@ -67,7 +67,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
                 if(workstationInfoTO != null)
-                    result = Boolean.valueOf(String.valueOf(workstationInfoTO.getGatherSate()));
+                    result = Boolean.valueOf(String.valueOf(workstationInfoTO.getGatherState()));
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -101,8 +101,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         return ccosExactVersion;
     }
 
-    private void updateWorkstationInfo(WorkstationInfoTO workstationInfoTo
-            , WorkstationInfoTO workstationInfo) throws BaseException {
+    private void updateWorkstationInfo(WorkstationInfoTO workstationInfoTo, WorkstationInfoTO workstationInfo) throws BaseException {
         try {
             workstationInfo.setMacAddressList(String.valueOf(workstationInfoTo.getMacAddressList()));
             workstationInfo.setCpuType(workstationInfoTo.getCpuType());
