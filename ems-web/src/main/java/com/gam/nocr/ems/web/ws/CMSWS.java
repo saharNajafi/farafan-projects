@@ -443,7 +443,7 @@ public class CMSWS extends WSSecurity {
         }
     }
 
-
+    @WebMethod
     public void updatePostalTrackingCode(@WebParam(name = "batchId") String batchId,
                                               @WebParam(name = "postalTrackingCode") String postalTrackingCode) throws ExternalInterfaceException {
 
