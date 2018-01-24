@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML Studio 2012 Developer Edition (Trial) 10.1.2.4113 (http://www.liquid-technologies.com)-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xsd:element name="UpdateRequest" type="UpdateRequestType" />
+    <xsd:complexType name="UpdateRequestType">
+        <xsd:sequence>
+            <xsd:element type="CitizenType" name="Citizen"/>
+			<xsd:element type="RequestInfoType" name="RequestInfo" />
+        </xsd:sequence>
+        <xsd:attribute name="requestId" type="requestIDType" use="required" />
+    </xsd:complexType>
+    <xsd:complexType name="CitizenType">
+        <xsd:sequence>
+            <xsd:element name="IdentityData" type="IdentityDataType" />
+            <xsd:element name="Address" type="AddressType" />
+            <xsd:element name="Family" type="FamilyType" />
+            <xsd:element name="BiometricInfo" type="BiometricInfoType" />
+            <xsd:element name="Documents" type="DocumentsInfoType" />
+        </xsd:sequence>
+        <xsd:attribute name="updateType" type="citizenUpdateType" />
+    </xsd:complexType>
+		 <xsd:complexType name="RequestInfoType">
+        <xsd:sequence>
+            <xsd:element type="MandatoryDateCompleteType" name="EnrolledDate" />
+            <xsd:element type="MandatoryCodeType" name="EnrollmentOffice" />
+            <xsd:element type="OriginType" name="Origin" />
+            <xsd:element type="OptionalDateCompleteType" name="PortalEnrolledDate" />
+		<xsd:element type="OptionalCodeType" name="OriginalCardRequestOffice" />
+		<xsd:element type="MandatoryDateCompleteType" name="ReservationDate" />
+		<xsd:element type="xsd:string" name="Reduplicate" />
+		<xsd:element type="xsd:int" name="ImsId"  />
+		<xsd:element type="StringType" name="ManagerUsername" />
+		<xsd:element type="StringType" name="AuthenticatedBy" />
+		</xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="IdentityDataType">
+        <xsd:sequence>
+            <xsd:element name="NID" type="MandatoryNIDType" />
+            <xsd:element name="Religion" type="ReligionType" />
+            <xsd:element name="BirthDateLunar" type="lunarDateType" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="AddressType">
+        <xsd:sequence>
+            <xsd:element name="ZipCode" type="ZipCodeType" />
+            <xsd:element name="AddressDescription" type="AddressDescriptionType" />
+            <xsd:element name="MobilePhone" type="MobileType" />
+            <xsd:element name="Phone" type="xsd:string" />
+            <xsd:element name="geo_serial" type="geoSerialType" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="FamilyType">
+        <xsd:sequence>
+            <xsd:element name="Parents" type="ParentsType" />
+            <xsd:element name="Spouses" type="SpousesType" />
+            <xsd:element name="Children" type="ChildrenType" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ParentsType">
+        <xsd:sequence>
+            <xsd:element name="Father" type="FatherInfo" />
+            <xsd:element name="Mother" type="MotherInfo" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MotherInfo">
+        <xsd:sequence>
+            <xsd:element name="NID" type="OptionalNIDType"  />
+            <xsd:element name="ShenasnamehNo" type="ShenasnameNoType" />
+            <xsd:element name="FirstName" type="StringType"  />
+			<xsd:element  name="BirthDate"  type="OptionalDateCompleteType" />
+        </xsd:sequence>
+    </xsd:complexType>
+	 <xsd:complexType name="FatherInfo">
+        <xsd:sequence>
+            <xsd:element name="NID" type="OptionalNIDType" />
+            <xsd:element name="ShenasnamehNo" type="ShenasnameNoType" />
+            <xsd:element name="FirstName" type="StringType"  />
+			<xsd:element  name="BirthDate"  type="OptionalDateCompleteType" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="SpousesType">
+        <xsd:sequence>
+            <xsd:element name="Spouse" type="SpouseType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="SpouseType">
+        <xsd:sequence>
+            <xsd:element name="NID" type="MandatoryNIDType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="MarriageDate" type="MandatoryDateSimpleType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="DivorceDate" type="OptionalDateSimpleType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="MarriageStatus" type="MarriageStatusType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ChildrenType">
+        <xsd:sequence>
+            <xsd:element name="Child" type="ChildType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ChildType">
+        <xsd:sequence>
+            <xsd:element name="NID" type="MandatoryNIDType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BiometricInfoType">
+        <xsd:sequence>
+            <xsd:element type="FacesBiometricInfoType" name="FaceImages" />
+            <xsd:element type="FingersBiometricInfoType" name="Fingers" />
+        </xsd:sequence>
+    </xsd:complexType>
+		 <xsd:complexType name="FacesBiometricInfoType">
+        <xsd:sequence>
+            <xsd:element type="FaceImagesType" name="FACE_IMS"/>
+            <xsd:element type="FaceImagesType" name="FACE_CHIP"/>
+            <xsd:element type="FaceImagesType" name="FACE_MLI"/>
+            <xsd:element type="FaceImagesType" name="FACE_LASER"/>
+			<xsd:element type="SourceImageType" name="SourceImage"/>
+	   </xsd:sequence>
+    </xsd:complexType>
+	<xsd:complexType name="FingersBiometricInfoType">
+        <xsd:sequence>
+			<xsd:element type="ByteType" name="NIST" />
+			<xsd:element type="ByteType" name="MetaData"/>
+			<xsd:element type="KsvType" name="KSV"/>
+			<xsd:element type="xsd:base64Binary" name="Key"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="FaceImagesType">
+        <xsd:sequence>
+            <xsd:element name="Data" type="ByteType" />
+
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="ShenasnameNoType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10" />
+            <xsd:minLength value="0" />
+            <xsd:pattern value="[0-9]*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="DocumentsInfoType">
+        <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+            <xsd:element name="Document" type="DocumentType" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="DocumentType">
+        <xsd:sequence>
+            <xsd:element name="Type" type="DocType" />
+            <xsd:element name="Data" type="ByteType" />
+        </xsd:sequence>
+    </xsd:complexType>
+	<xsd:simpleType name="MobileType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0][0-9]{10}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	 <xsd:simpleType name="OriginType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="P">
+                <xsd:annotation>
+                    <xsd:documentation>Portal</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="M">
+                <xsd:annotation>
+                    <xsd:documentation>MES</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="C">
+                <xsd:annotation>
+                    <xsd:documentation>CCOS</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+			<xsd:enumeration value="V">
+                <xsd:annotation>
+                    <xsd:documentation>VIP</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="SourceImageType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>live</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>scan</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="">
+                <xsd:annotation>
+                    <xsd:documentation>unknown</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="KsvType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[*]{0}|[0-9]{4}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="MandatoryCodeType">
+        <xsd:restriction base="xsd:string">
+		<xsd:maxLength value="9" />
+		  <xsd:pattern value="[1-9][0-9]*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="OptionalCodeType">
+        <xsd:restriction base="xsd:string">
+		<xsd:maxLength value="9" />
+            <xsd:minLength value="0" />
+		  <xsd:pattern value="[*]{0}|[1-9][0-9]*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	 <xsd:simpleType name="StringType">
+        <xsd:restriction base="xsd:string">
+            <xsd:minLength value="1" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="ByteType">
+        <xsd:restriction base="xsd:base64Binary">
+            <xsd:minLength value="1" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="MarriageStatusType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Stable</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Death</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>Divorced</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="citizenUpdateType">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>First card</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Extend card</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>Replica card</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="4">
+                <xsd:annotation>
+                    <xsd:documentation>Replace card</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="5">
+                <xsd:annotation>
+                    <xsd:documentation>Unsuccessful delivery</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+	    <xsd:simpleType name="OptionalDateSimpleType">
+        <xsd:annotation>
+            <xsd:documentation>yyyy/mm/dd</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[*]{0}|[1][2345][0-9]{2}[/][0][1-6][/]([0][1-9]|[1-2][0-9]|[3][0-1]|\s\s)|[1][2345][0-9]{2}[/]([0][7-9]|[1][0-2])[/]([0][1-9]|[1-2][0-9]|30|\s\s)|[1][2345][0-9]{2}[/]\s\s[/]\s\s" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	    <xsd:simpleType name="MandatoryDateSimpleType">
+        <xsd:annotation>
+            <xsd:documentation>yyyy/mm/dd</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[1][2345][0-9]{2}[/][0][1-6][/]([0][1-9]|[1-2][0-9]|[3][0-1]|\s\s)|[1][2345][0-9]{2}[/]([0][7-9]|[1][0-2])[/]([0][1-9]|[1-2][0-9]|30|\s\s)|[1][2345][0-9]{2}[/]\s\s[/]\s\s" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="MandatoryDateCompleteType">
+        <xsd:annotation>
+            <xsd:documentation>yyyy/mm/dd</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[1][2345][0-9]{2}[/][0][1-6][/]([0][1-9]|[1-2][0-9]|[3][0-1])|[1][2345][0-9]{2}[/]([0][7-9]|[1][0-2])[/]([0][1-9]|[1-2][0-9]|30)" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="OptionalDateCompleteType">
+        <xsd:annotation>
+            <xsd:documentation>yyyy/mm/dd</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[*]{0}|[1][2345][0-9]{2}[/][0][1-6][/]([0][1-9]|[1-2][0-9]|[3][0-1])|[1][2345][0-9]{2}[/]([0][7-9]|[1][0-2])[/]([0][1-9]|[1-2][0-9]|30)" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="lunarDateType">
+        <xsd:annotation>
+            <xsd:documentation>yyyy/mm/dd</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[1][2345][0-9]{2}[/]([0][1-9]|[1][0-2])[/]([0][1-9]|[1-2][0-9]|30)" />
+        </xsd:restriction>
+    </xsd:simpleType>
+		 <xsd:simpleType name="DocType">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="50">
+                <xsd:annotation>
+                    <xsd:documentation>firstPage</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="51">
+                <xsd:annotation>
+                    <xsd:documentation>marriagePage</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="100">
+                <xsd:annotation>
+                    <xsd:documentation>childrenPage</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="requestIDType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="32" />
+            <xsd:minLength value="32" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="MandatoryNIDType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{10}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="OptionalNIDType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[*]{0}|[0-9]{10}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ReligionType">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Mosalman</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Masihi</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>Zartoshti</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+			<xsd:enumeration value="4">
+                <xsd:annotation>
+                    <xsd:documentation>Yahoudi</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+			<xsd:enumeration value="5">
+                <xsd:annotation>
+                    <xsd:documentation>Sayer</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="ZipCodeType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{10}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+	<xsd:simpleType name="geoSerialType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="1"/>
+                <xsd:maxInclusive value="999999"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="AddressDescriptionType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="300" />
+            <xsd:minLength value="6" />
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
+
