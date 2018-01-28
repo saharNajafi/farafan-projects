@@ -1,25 +1,5 @@
 package com.gam.nocr.ems.biz.service.external.impl.ims;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttributeType;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
-
-import org.slf4j.Logger;
-
-import servicePortUtil.ServicePorts;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
@@ -33,19 +13,10 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.RegistrationService;
 import com.gam.nocr.ems.biz.service.ims.IMSOnlineService;
-import com.gam.nocr.ems.config.BizExceptionCode;
-import com.gam.nocr.ems.config.ConstValues;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
-import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
 import com.gam.nocr.ems.data.dao.XmlAfisDAO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.ChildTO;
-import com.gam.nocr.ems.data.domain.CitizenInfoTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.SpouseTO;
-import com.gam.nocr.ems.data.domain.XmlAfisTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.BirthCertIssPlaceVTO;
 import com.gam.nocr.ems.data.domain.vol.EmsCardDeliverInfo;
 import com.gam.nocr.ems.data.domain.vol.IMSUpdateResultVTO;
@@ -56,7 +27,6 @@ import com.gam.nocr.ems.data.enums.CardState;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.data.mapper.xmlmapper.XMLMapperProvider;
 import com.gam.nocr.ems.util.EmsUtil;
-
 import est.CardDeliverInfo;
 import est.ImsService;
 import est.ImsServiceService;
@@ -64,6 +34,20 @@ import est.TransferInfo;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.util.Base64;
+import org.slf4j.Logger;
+import servicePortUtil.ServicePorts;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttributeType;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -128,8 +112,6 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
 //            throw new ServiceException(BizExceptionCode.NIF_001, e.getMessage(), e);
 //        }
 //    }
-    
-
     private XmlAfisDAO getXmlAfisDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_XML_AFIS));
@@ -138,7 +120,7 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         }
     }
 
-    
+
     private ImsService getService() throws BaseException {
         try {
             ProfileManager pm = ProfileHelper.getProfileManager();
@@ -163,23 +145,23 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             ImsLogger.debug("=======================================================================================");
             //Commented for ThraedLocal
             //ImsService port = new ImsServiceService(new URL(wsdlUrl), new QName(namespace, serviceName)).getImsServiceServicePort();
-			ImsService port = ServicePorts.getImsPort();
-			if (port == null) {
-				threadLocalLogger.debug("**************************** new webServicePort in AFIS getService()");
-				port = new ImsServiceService(new URL(wsdlUrl), new QName(
-						namespace, serviceName)).getImsServiceServicePort();
-				ServicePorts.setImsPort(port);
-			} else {
-				threadLocalLogger.debug("***************************** using webServicePort(AFIS) from ThradLocal");
-			}
-			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-			return port;
+            ImsService port = ServicePorts.getImsPort();
+            if (port == null) {
+                threadLocalLogger.debug("**************************** new webServicePort in AFIS getService()");
+                port = new ImsServiceService(new URL(wsdlUrl), new QName(
+                        namespace, serviceName)).getImsServiceServicePort();
+                ServicePorts.setImsPort(port);
+            } else {
+                threadLocalLogger.debug("***************************** using webServicePort(AFIS) from ThradLocal");
+            }
+            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+            return port;
         } catch (Exception e) {
             ImsLogger.error(BizExceptionCode.NIF_001 + " : " + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.NIF_001, e.getMessage(), e);
         }
     }
-    
+
 
     /**
      * getIMSOnlineService
@@ -202,21 +184,21 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         }
         return nocrImsOnlineService;
     }
-    
+
     private CardRequestHistoryDAO getCardRequestHistoryDAO()
-			throws BaseException {
-		DAOFactory daoFactory = DAOFactoryProvider.getDAOFactory();
-		CardRequestHistoryDAO cardRequestHistoryDAO;
-		try {
-			cardRequestHistoryDAO = daoFactory.getDAO(EMSLogicalNames
-					.getDaoJNDIName(EMSLogicalNames.DAO_CARD_REQUEST_HISTORY));
-		} catch (DAOFactoryException e) {
-			throw new ServiceException(BizExceptionCode.MMS_002,
-					BizExceptionCode.GLB_001_MSG, e,
-					EMSLogicalNames.DAO_CARD_REQUEST_HISTORY.split(","));
-		}
-		return cardRequestHistoryDAO;
-	}
+            throws BaseException {
+        DAOFactory daoFactory = DAOFactoryProvider.getDAOFactory();
+        CardRequestHistoryDAO cardRequestHistoryDAO;
+        try {
+            cardRequestHistoryDAO = daoFactory.getDAO(EMSLogicalNames
+                    .getDaoJNDIName(EMSLogicalNames.DAO_CARD_REQUEST_HISTORY));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.MMS_002,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    EMSLogicalNames.DAO_CARD_REQUEST_HISTORY.split(","));
+        }
+        return cardRequestHistoryDAO;
+    }
 
     /**
      * getRegistrationService
@@ -586,20 +568,25 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         XMLMapperProvider xmlMapperProvider = new XMLMapperProvider();
         HashMap map = new HashMap();
         map.put("requestId", imsRequestId);
-       
+
         Long writeDate = new Date().getTime();
-        byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
-        ImsLogger.info("\n################## Preparing Xml lasts: "+((new Date().getTime()) - writeDate) +" ##################");
-        logger.info("\n################## Preparing Xml lasts: "+((new Date().getTime()) - writeDate) +" ##################");
+//        byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
+        String xmlString = new String(xmlMapperProvider.writeXML(cardRequestTOList, map));
+        String validateXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + xmlString;
+        xmlMapperProvider.validateAgainstXSD(new ByteArrayInputStream(validateXml.getBytes()),
+                getClass().getClassLoader().getResourceAsStream("com/gam/nocr/ims/xsd/IMSUpdateRequest.xsd"));
+        byte[] byteRequest = xmlString.getBytes();
+        ImsLogger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
+        logger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
 
         if (byteRequest != null) {
             TransferInfoVTO transferInfoVTO = new TransferInfoVTO(imsRequestId, 0, byteRequest);
             TransferInfo transferInfo = convertToTransferInfo(transferInfoVTO);
             String strResult;
             // save xml afis
-			Boolean saveXmlAfis = Boolean.valueOf(EmsUtil
-					.getProfileValue(ProfileKeyName.KEY_SAVE_XMLAFIS,
-							DEFAULT_SAVE_XMLAFIS));
+            Boolean saveXmlAfis = Boolean.valueOf(EmsUtil
+                    .getProfileValue(ProfileKeyName.KEY_SAVE_XMLAFIS,
+                            DEFAULT_SAVE_XMLAFIS));
             try {
                 String[] strParameters = getParametersByProfileManager();
                 String username = strParameters[0];
@@ -609,11 +596,11 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
 
                 ImsLogger.info("IMS Farafan service stub created. Now calling updateCitizenInfo");
                 Long startDate = new Date().getTime();
-               
+
                 TransferInfo trInfo = imsOnlineService.updateCitizenInfo(username, password, transferInfo);
-                
-                ImsLogger.info("\n################## Calling AFIS Webservice lasts: "+((new Date().getTime()) - startDate) +" ##################");
-                logger.info("\n################## Calling AFIS Webservice lasts: "+((new Date().getTime()) - startDate) +" ##################");
+
+                ImsLogger.info("\n################## Calling AFIS Webservice lasts: " + ((new Date().getTime()) - startDate) + " ##################");
+                logger.info("\n################## Calling AFIS Webservice lasts: " + ((new Date().getTime()) - startDate) + " ##################");
                 ImsLogger.info("Calling updateCitizenInfo finished");
 
                 if (trInfo == null) {
@@ -647,21 +634,21 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                 strResult = transferInfoVTOResult.getErrMessage();
             } catch (BaseException e) {
                 ImsLogger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-                if(saveXmlAfis)
-                saveXmlAfis(new XmlAfisTO(cardRequestTOList.get(0).getId(),new String(byteRequest), new Date(),e.getMessage()));
+                if (saveXmlAfis)
+                    saveXmlAfis(new XmlAfisTO(cardRequestTOList.get(0).getId(), new String(byteRequest), new Date(), e.getMessage()));
                 throw e;
             } catch (Exception e) {
                 ServiceException serviceException = new ServiceException(BizExceptionCode.NIF_008, e.getMessage(), e, EMSLogicalNames.SRV_NIF.split(","));
                 logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_NIF.split(","));
                 ImsLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_NIF.split(","));
-                if(saveXmlAfis)
-                saveXmlAfis(new XmlAfisTO(cardRequestTOList.get(0).getId(),new String(byteRequest), new Date(),e.getMessage()));                
+                if (saveXmlAfis)
+                    saveXmlAfis(new XmlAfisTO(cardRequestTOList.get(0).getId(), new String(byteRequest), new Date(), e.getMessage()));
                 throw serviceException;
             }
             if (strResult != null) {
-            	if(saveXmlAfis)
-            	saveXmlAfis(new XmlAfisTO(cardRequestTOList.get(0).getId(),new String(byteRequest), new Date(),"strResult is not null:"+strResult));                
-            	ImsLogger.error(BizExceptionCode.NIF_009 + " : " + strResult);
+                if (saveXmlAfis)
+                    saveXmlAfis(new XmlAfisTO(cardRequestTOList.get(0).getId(), new String(byteRequest), new Date(), "strResult is not null:" + strResult));
+                ImsLogger.error(BizExceptionCode.NIF_009 + " : " + strResult);
                 throw new ServiceException(BizExceptionCode.NIF_009, strResult, EMSLogicalNames.SRV_NIF.split(","));
             }
 //            else
@@ -671,29 +658,29 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
 //            }
         }
     }
+
     /**
      * @author ganjyar
      * The method saves xml sending AFIS
-     * 
      */
     @javax.ejb.TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void saveXmlAfis(XmlAfisTO xmlAfisTO) {
+    private void saveXmlAfis(XmlAfisTO xmlAfisTO) {
 
-		try {
-			XmlAfisTO create = getXmlAfisDAO().create(xmlAfisTO);
+        try {
+            XmlAfisTO create = getXmlAfisDAO().create(xmlAfisTO);
 
-		} catch (BaseException e) {
-			 logger.error(e.getMessage(),e);
-             ImsLogger.error(e.getMessage(),e);
-		} catch (Exception e) {
-			 logger.error(e.getMessage(),e);
-             ImsLogger.error(e.getMessage(),e);
-		}
+        } catch (BaseException e) {
+            logger.error(e.getMessage(), e);
+            ImsLogger.error(e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            ImsLogger.error(e.getMessage(), e);
+        }
 
-	}
+    }
 
 
-	/**
+    /**
      * The method getUpdatedCitizensResult is used to receive the response of updating the citizen information
      * request from IMS sub system.
      *
@@ -742,13 +729,13 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
              * </CitInfoResult>
              */
             String errorMSG = "";
-            if(resultMap.containsValue("00000000000000000000000000000000")){
+            if (resultMap.containsValue("00000000000000000000000000000000")) {
                 errorMSG += "Invalid message request id. The returned message request id from AFIS is '00000000000000000000000000000000'; however the expected one has been '" + imsRequestId + "'.\n";
             }
-            if(resultMap.containsValue("0000000000")){
+            if (resultMap.containsValue("0000000000")) {
                 errorMSG += "Invalid nationalId. The returned nationalId from AFIS is '0000000000'.\n";
             }
-            if(EmsUtil.checkString(errorMSG)){
+            if (EmsUtil.checkString(errorMSG)) {
                 throw new ServiceException(BizExceptionCode.NIF_021, errorMSG);
             }
             //----------------------------------------------------------------------------------------------------------------------
@@ -786,10 +773,9 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         }
 
         return imsUpdateResultVTOList;
-    }   
-    
+    }
 
-    
+
     /**
      * The method setCitizenCardDelivered is used to notify the IMS about the delivering the card by citizen
      *
@@ -803,13 +789,13 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             String[] strParameters = getParametersByProfileManager();
             String username = strParameters[0];
             String password = strParameters[1];
-            
+
             CardDeliverInfo cardDeliverInfo = new CardDeliverInfo();
-            
+
             cardDeliverInfo.setCardbatchId(emsInfo.getCardbatchId());
             cardDeliverInfo.setCarddeliveredDate(DateUtil.convert(emsInfo.getCardDeliveredDate(), DateUtil.JALALI));
-            if(emsInfo.getCardlostDate()!=null)
-            	cardDeliverInfo.setCardlostDate(DateUtil.convert(emsInfo.getCardlostDate(), DateUtil.JALALI));
+            if (emsInfo.getCardlostDate() != null)
+                cardDeliverInfo.setCardlostDate(DateUtil.convert(emsInfo.getCardlostDate(), DateUtil.JALALI));
             cardDeliverInfo.setCardreceivedDate(DateUtil.convert(emsInfo.getCardreceivedDate(), DateUtil.JALALI));
             cardDeliverInfo.setCardshipmentDate(DateUtil.convert(emsInfo.getCardshipmentDate(), DateUtil.JALALI));
             cardDeliverInfo.setCardState(Byte.valueOf(CardState.toLong(emsInfo.getCardState()).toString()));
@@ -818,56 +804,53 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             cardDeliverInfo.setPersonNin(emsInfo.getPersonNin());
             cardDeliverInfo.setSmartCardIssuanceDate(DateUtil.convert(emsInfo.getCardIssuanceDate(), DateUtil.JALALI));
             cardDeliverInfo.setSmartCardSeriSerial(emsInfo.getCrn());
-            
+
             returnFlag = getService().setCitizenCardDelivered(username, password, cardDeliverInfo);
-        }catch (BaseException e) {
-        	logger.error("EXCEPTION IN IMS setCitizenCardDelivered ", e);
+        } catch (BaseException e) {
+            logger.error("EXCEPTION IN IMS setCitizenCardDelivered ", e);
             ImsLogger.error("EXCEPTION IN IMS setCitizenCardDelivered ", e);
-			throw new ServiceException(BizExceptionCode.NIF_015, BizExceptionCode.NIF_015_MSG, e);
-		} 
-        catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.NIF_015, BizExceptionCode.NIF_015_MSG, e);
+        } catch (Exception e) {
             logger.error("EXCEPTION IN IMS setCitizenCardDelivered ", e);
             ImsLogger.error("EXCEPTION IN IMS setCitizenCardDelivered ", e);
         }
-        if(returnFlag!=null && "OK".equals(returnFlag))
-        	return true;
-        else
-        {
-        	Long cardRequestId = emsInfo.getCardRequestId();
-        	getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId),returnFlag,SystemId.IMS, null,CardRequestHistoryAction.AFIS_DELIVERED_ERROR, null);        	
-        	
+        if (returnFlag != null && "OK".equals(returnFlag))
+            return true;
+        else {
+            Long cardRequestId = emsInfo.getCardRequestId();
+            getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId), returnFlag, SystemId.IMS, null, CardRequestHistoryAction.AFIS_DELIVERED_ERROR, null);
+
         }
         return false;
     }
 
     private XMLGregorianCalendar convertDateToXMLGregorianCalendar(
-			Date carddeliveredDate) throws BaseException{
+            Date carddeliveredDate) throws BaseException {
 
-		GregorianCalendar gregorianCalendar = new GregorianCalendar();
-		gregorianCalendar.setTime(carddeliveredDate);
-		try {
-			return DatatypeFactory.newInstance().newXMLGregorianCalendar(
-					gregorianCalendar);
-		} catch (DatatypeConfigurationException e) {
-			throw new ServiceException(BizExceptionCode.NIF_015, BizExceptionCode.NIF_015_MSG, e);
-		}
-	}
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.setTime(carddeliveredDate);
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(
+                    gregorianCalendar);
+        } catch (DatatypeConfigurationException e) {
+            throw new ServiceException(BizExceptionCode.NIF_015, BizExceptionCode.NIF_015_MSG, e);
+        }
+    }
 
 
-	/**
+    /**
      * The method fetchCitizenInfo if used to receive all the information about a specified citizen, from the sub system
      * 'IMS'.
      *
      * @param nationalId is an instance of type {@link String}, which represents the nationalId of a specified citizen
      * @return an instance of type {@link com.gam.nocr.ems.data.domain.CitizenTO}
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public CitizenTO fetchCitizenInfo(String nationalId) throws BaseException {
 
-     //   CitizenTO citizenTO;
-    	CitizenTO citizenTO = new CitizenTO();
+        //   CitizenTO citizenTO;
+        CitizenTO citizenTO = new CitizenTO();
 
         try {
 //            String[] strParameters = getParametersByProfileManager();
@@ -892,9 +875,9 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
 //            citizenTO = (CitizenTO) xmlMapperProvider.readXML(xmlResponse, ctz);
 //
 //            setDefaultValues(citizenTO);
-        	
-        	citizenTO.setNationalID(nationalId);
-        	citizenTO = getIMSOnlineService().fetchCitizenInfoByOnlineEnquiry(citizenTO);
+
+            citizenTO.setNationalID(nationalId);
+            citizenTO = getIMSOnlineService().fetchCitizenInfoByOnlineEnquiry(citizenTO);
 
 
         } catch (BaseException e) {
@@ -907,11 +890,11 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             throw new ServiceException(BizExceptionCode.NIF_015, BizExceptionCode.NIF_015_MSG, e);
         }
 
-		return citizenTO;
+        return citizenTO;
     }
 
 
-  //Anbari getUpdatedCitizensResultNew to call IMS newServices and pars exception and errorCode and get Image
+    //Anbari getUpdatedCitizensResultNew to call IMS newServices and pars exception and errorCode and get Image
     @Override
     public IMSUpdateResultVTO getUpdatedCitizensResultNew(String nationalId) throws BaseException {
         IMSUpdateResultVTO imsUpdateResultVTO = new IMSUpdateResultVTO();
@@ -933,7 +916,7 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                 ImsLogger.error(BizExceptionCode.NIF_022 + " : " + BizExceptionCode.NIF_010_MSG);
                 throw new ServiceException(BizExceptionCode.NIF_022, BizExceptionCode.NIF_010_MSG, new String[]{"ErrorMessage", "getUpdatedCitizensResult"});
             }
-            
+
             //***************************** Anbari :  extract IMS requestID form XML inorder to find incorrect xml format or NID
             XMLMapperProvider xmlMapperProvider = new XMLMapperProvider();
             String xmlResult = EmsUtil.convertByteArrayToXMLString(transferInfo.getData());
@@ -941,24 +924,24 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             //logger.info("\n\n The xml result from the service 'getUpdatedCitizensResult' : \n" + xmlResult + "\n\n");
             ImsLogger.info("\n\n The xml result from the service 'getUpdatedCitizensResult' : \n" + xmlResult + "\n\n");
             HashMap<String, String> resultMap = xmlMapperProvider.readXML(xmlResult);
-            
+
             //********************************
-            
+
             //Anbari : do business in various ErrorCode in outer method
-            imsUpdateResultVTO.setErrorMessage(transferInfo.getErrMessage());       
-            
+            imsUpdateResultVTO.setErrorMessage(transferInfo.getErrMessage());
+
             //Anbari : Invalid message requestID
             String errorMSG = "";
-            if(resultMap.containsValue("00000000000000000000000000000000")){
-                errorMSG += "Invalid message request id for nationalID "+ nationalId +". The returned message request id from AFIS is '00000000000000000000000000000000'; however the expected one has been .\n";
+            if (resultMap.containsValue("00000000000000000000000000000000")) {
+                errorMSG += "Invalid message request id for nationalID " + nationalId + ". The returned message request id from AFIS is '00000000000000000000000000000000'; however the expected one has been .\n";
             }
-            if(resultMap.containsValue("0000000000")){
+            if (resultMap.containsValue("0000000000")) {
                 errorMSG += "Invalid nationalId. The returned nationalId from AFIS is '0000000000'.\n";
             }
-            if(EmsUtil.checkString(errorMSG)){
+            if (EmsUtil.checkString(errorMSG)) {
                 throw new ServiceException(BizExceptionCode.NIF_021, errorMSG);
             }
-          //  ----------------------------------------------------------------------------------------------------------------------
+            //  ----------------------------------------------------------------------------------------------------------------------
 
             String requestId = resultMap.get("REQUEST_ID");
             resultMap.remove("REQUEST_ID");
@@ -976,42 +959,41 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                     imsUpdateResultVTO.setAfisState(AFISState.convertToAFISState(resultMap.get(mapKey.toString())));
                 }
 
-			//		TODO : Calling IMS_IdentityChangeService on future, but now set this attribute with a dummy value
+                //		TODO : Calling IMS_IdentityChangeService on future, but now set this attribute with a dummy value
                 imsUpdateResultVTO.setIdentityChanged(0000);
             }
-            
-            if(transferInfo.getErrMessage().contains("UPDT-000018") && transferInfo.getData() != null) //OK with Image : so parse the XML IMS_UPDT_000018
+
+            if (transferInfo.getErrMessage().contains("UPDT-000018") && transferInfo.getData() != null) //OK with Image : so parse the XML IMS_UPDT_000018
             {
-            	if (transferInfo.getData() == null) {
+                if (transferInfo.getData() == null) {
                     ImsLogger.error(BizExceptionCode.NIF_011 + " : " + BizExceptionCode.NIF_011_MSG);
                     throw new ServiceException(BizExceptionCode.NIF_011, BizExceptionCode.NIF_011_MSG, new String[]{"getUpdatedCitizensResult"});
                 }
 
-                 //logger.info("\n\n The xml result from the service 'getUpdatedCitizensResult' : \n" + xmlResult + "\n\n");
-                 ImsLogger.info("\n\n The xml result from the service 'getUpdatedCitizensResult' : \n" + xmlResult + "\n\n");
-                 resultMap.clear();
-                 resultMap = xmlMapperProvider.readXMLNew(xmlResult);
-                 String faceIMSStr = resultMap.get("FACE_IMS");
-                 String faceLASERstr = resultMap.get("FACE_LASER");
-                 String faceCHIPstr = resultMap.get("FACE_CHIP");
-                 String faceMLIstr = resultMap.get("FACE_MLI");
-                 
-                 if(faceIMSStr == null || faceLASERstr == null || faceCHIPstr == null || faceMLIstr== null)
-                	 throw new ServiceException(BizExceptionCode.NIF_023, BizExceptionCode.NIF_019_MSG, new String[]{"getUpdatedCitizensResult"});                	 
-                 
-                 imsUpdateResultVTO.setFaceIMS(Base64.decodeToBytes(faceIMSStr));
-                 imsUpdateResultVTO.setFaceLASER(Base64.decodeToBytes(faceLASERstr));                 
-                 imsUpdateResultVTO.setFaceCHIP(Base64.decodeToBytes(faceCHIPstr));
-                 imsUpdateResultVTO.setFaceMLI(Base64.decodeToBytes(faceMLIstr)); 
-                 
-                 
+                //logger.info("\n\n The xml result from the service 'getUpdatedCitizensResult' : \n" + xmlResult + "\n\n");
+                ImsLogger.info("\n\n The xml result from the service 'getUpdatedCitizensResult' : \n" + xmlResult + "\n\n");
+                resultMap.clear();
+                resultMap = xmlMapperProvider.readXMLNew(xmlResult);
+                String faceIMSStr = resultMap.get("FACE_IMS");
+                String faceLASERstr = resultMap.get("FACE_LASER");
+                String faceCHIPstr = resultMap.get("FACE_CHIP");
+                String faceMLIstr = resultMap.get("FACE_MLI");
+
+                if (faceIMSStr == null || faceLASERstr == null || faceCHIPstr == null || faceMLIstr == null)
+                    throw new ServiceException(BizExceptionCode.NIF_023, BizExceptionCode.NIF_019_MSG, new String[]{"getUpdatedCitizensResult"});
+
+                imsUpdateResultVTO.setFaceIMS(Base64.decodeToBytes(faceIMSStr));
+                imsUpdateResultVTO.setFaceLASER(Base64.decodeToBytes(faceLASERstr));
+                imsUpdateResultVTO.setFaceCHIP(Base64.decodeToBytes(faceCHIPstr));
+                imsUpdateResultVTO.setFaceMLI(Base64.decodeToBytes(faceMLIstr));
+
+
 //                 imsUpdateResultVTO.setFaceIMS(org.apache.commons.codec.binary.Base64.decodeBase64(faceIMSStr));
 //                 imsUpdateResultVTO.setFaceLASER(org.apache.commons.codec.binary.Base64.decodeBase64(faceLASERstr));                 
 //                 imsUpdateResultVTO.setFaceCHIP(org.apache.commons.codec.binary.Base64.decodeBase64(faceCHIPstr));
 //                 imsUpdateResultVTO.setFaceMLI(org.apache.commons.codec.binary.Base64.decodeBase64(faceMLIstr));  
-            }                   
-           
-            
+            }
+
 
         } catch (BaseException e) {
             ImsLogger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
@@ -1023,7 +1005,5 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         }
         return imsUpdateResultVTO;
     }
-    
-  
 
 }
