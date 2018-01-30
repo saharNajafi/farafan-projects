@@ -144,16 +144,4 @@ public class XMLMapperProvider implements XMLMapper {
             throw new ValidationException("Error in XSD Validation...", ex);
         }
     }
-
-    public static void main(String[] args) throws BaseException, FileNotFoundException {
-        XMLMapperProvider mapper = new XMLMapperProvider();
-        try {
-            mapper.validateAgainstXSD(new FileInputStream("c:/xml/b.xml"), new FileInputStream("c:/xml/a.xsd"));
-        } catch (ValidationException e) {
-
-            System.out.println(e.getCause().getMessage());
-        }
-
-    }
-
 }
