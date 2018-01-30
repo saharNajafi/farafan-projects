@@ -837,6 +837,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 requestInfo.appendChild(enrollmentOfficeElement);
                 
                 Element originElement = doc.createElement("Origin");
+                if (cardRequestTO.getOrigin()==null){
+                    throw new DataException(
+                            DataExceptionCode.IUC_004,
+                            MessageFormat.format(
+                                    DataExceptionCode.IUC_004_MSG, "CardRequest's Origin"
+                            ),
+                            new String[]{CLASS_NAME, "CardRequest's Origin"});
+                }
                 originElement.appendChild(doc.createTextNode(cardRequestTO.getOrigin().toString()));
                 requestInfo.appendChild(originElement);
                 

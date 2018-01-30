@@ -46,6 +46,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.*;
 
@@ -570,12 +571,13 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         map.put("requestId", imsRequestId);
 
         Long writeDate = new Date().getTime();
-//        byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
-        String xmlString = new String(xmlMapperProvider.writeXML(cardRequestTOList, map));
-        String validateXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + xmlString;
-        xmlMapperProvider.validateAgainstXSD(new ByteArrayInputStream(validateXml.getBytes()),
-                getClass().getClassLoader().getResourceAsStream("com/gam/nocr/ims/xsd/IMSUpdateRequest.xsd"));
-        byte[] byteRequest = xmlString.getBytes();
+        byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
+        String validateXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + new String(byteRequest);
+        try {
+            xmlMapperProvider.validateAgainstXSD(new ByteArrayInputStream(validateXml.getBytes("UTF-8")),
+                    getClass().getClassLoader().getResourceAsStream("com/gam/nocr/ims/xsd/IMSUpdateRequest.xsd"));
+        } catch (UnsupportedEncodingException e) {
+        }
         ImsLogger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
         logger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
 
@@ -668,7 +670,6 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
 
         try {
             XmlAfisTO create = getXmlAfisDAO().create(xmlAfisTO);
-
         } catch (BaseException e) {
             logger.error(e.getMessage(), e);
             ImsLogger.error(e.getMessage(), e);
