@@ -577,6 +577,8 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             xmlMapperProvider.validateAgainstXSD(new ByteArrayInputStream(validateXml.getBytes("UTF-8")),
                     getClass().getClassLoader().getResourceAsStream("com/gam/nocr/ims/xsd/IMSUpdateRequest.xsd"));
         } catch (UnsupportedEncodingException e) {
+            logger.error("Invalid XML Encoding for sending to EQC (IMS request Id: " + imsRequestId + ")");
+
         }
         ImsLogger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
         logger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
