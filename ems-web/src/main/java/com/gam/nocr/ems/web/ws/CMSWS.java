@@ -197,9 +197,9 @@ public class CMSWS extends WSSecurity {
         } catch (Exception e) {
             if (e instanceof BaseException) {
                 *//**
-                 * Wrap exceptions into an instance of {@link com.gam.nocr.ems.web.ws.ExternalInterfaceException} base
-                 * on what that has been contracted by Gemalto
-                 *//*
+     * Wrap exceptions into an instance of {@link com.gam.nocr.ems.web.ws.ExternalInterfaceException} base
+     * on what that has been contracted by Gemalto
+     *//*
                 if (("EMS_S_DPI_010").equals(((BaseException) e).getExceptionCode())) {
                     logger.error(PROSHIP_ERROR_CODE_PREFIX + "-000001 - Invalid parameter – t he parameter 'batchID' is invalid", e);
                     dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX + "-000001 - Invalid parameter – the parameter 'batchID' is invalid", e);
@@ -236,9 +236,9 @@ public class CMSWS extends WSSecurity {
                 }
             } else {
                 *//**
-                 * Wrap any runtime exception into an instance of {@link com.gam.nocr.ems.web.ws.ExternalInterfaceException}
-                 * with a dedicated error code
-                 *//*
+     * Wrap any runtime exception into an instance of {@link com.gam.nocr.ems.web.ws.ExternalInterfaceException}
+     * with a dedicated error code
+     *//*
                 logger.error("EMS-INTL-000001 - EMS internal error", e);
                 dispatchLogger.error("EMS-INTL-000001 - EMS internal error", e);
                 throw new ExternalInterfaceException("EMS-INTL-000001", "EMS internal error");
@@ -260,8 +260,8 @@ public class CMSWS extends WSSecurity {
 
     @WebMethod
     public void batchProduction(@WebParam(name = "batchId") String batchId,
-                                                @WebParam(name = "producedCards") List<CardInfo> producedCards,
-                                                @WebParam(name = "postalTrackingCode") String postalTrackingCode) throws ExternalInterfaceException {
+                                @WebParam(name = "producedCards") List<CardInfo> producedCards,
+                                @WebParam(name = "postalTrackingCode") String postalTrackingCode) throws ExternalInterfaceException {
 
         dispatchLogger.info("'batchProduction' web service called by CMS with batchId : {} and productedCards : {} and postalTrackingCode : {} ", new Object[]{batchId, producedCards, postalTrackingCode});
 
@@ -301,22 +301,25 @@ public class CMSWS extends WSSecurity {
                     "Invalid parameter – the parameter 'producedCards' is invalid");
         }
 
-        if (!EmsUtil.checkString(postalTrackingCode)) {
-            logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 - Postal tracking code is empty");
-            dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 Postal tracking code is empty");
-            throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001",
-                    "Postal tracking code is empty");
-        }
-        if (!EmsUtil.checkMaxFieldLength(postalTrackingCode, 30)) {
-            logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
-            dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
-            throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002", "Too long postal tracking code");
-        }
+        if (postalTrackingCode != null) {
 
-        if (!EmsUtil.checkRegex(postalTrackingCode, EmsUtil.numberConstraint)) {
-            logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
-            dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
-            throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003", "Postal tracking contains invalid char");
+            if (!EmsUtil.checkString(postalTrackingCode)) {
+                logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 - Postal tracking code is empty");
+                dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 Postal tracking code is empty");
+                throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001",
+                        "Postal tracking code is empty");
+            }
+            if (!EmsUtil.checkMaxFieldLength(postalTrackingCode, 30)) {
+                logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
+                dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
+                throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002", "Too long postal tracking code");
+            }
+
+            if (!EmsUtil.checkRegex(postalTrackingCode, EmsUtil.numberConstraint)) {
+                logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
+                dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
+                throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003", "Postal tracking contains invalid char");
+            }
         }
 
         for (CardInfo cardInfo : producedCards) {
@@ -445,7 +448,7 @@ public class CMSWS extends WSSecurity {
 
     @WebMethod
     public void updatePostalTrackingCode(@WebParam(name = "batchId") String batchId,
-                                              @WebParam(name = "postalTrackingCode") String postalTrackingCode) throws ExternalInterfaceException {
+                                         @WebParam(name = "postalTrackingCode") String postalTrackingCode) throws ExternalInterfaceException {
 
         dispatchLogger.info("'updateBatchPostalTrackingCode' web service called by CMS with batchId : {} and postalTrackingCode : {} ", batchId, postalTrackingCode);
 
@@ -476,22 +479,25 @@ public class CMSWS extends WSSecurity {
                     "Invalid parameter – the parameter 'batchID' is invalid");
         }
 
-        if (!EmsUtil.checkString(postalTrackingCode)) {
-            logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 - Postal tracking code is empty");
-            dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 Postal tracking code is empty");
-            throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001",
-                    "Postal tracking code is empty");
-        }
-        if (!EmsUtil.checkMaxFieldLength(postalTrackingCode, 30)) {
-            logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
-            dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
-            throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002", "Too long postal tracking code");
-        }
+        if (postalTrackingCode != null) {
 
-        if (!EmsUtil.checkRegex(postalTrackingCode, EmsUtil.numberConstraint)) {
-            logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
-            dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
-            throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003", "Postal tracking contains invalid char");
+            if (!EmsUtil.checkString(postalTrackingCode)) {
+                logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 - Postal tracking code is empty");
+                dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001 Postal tracking code is empty");
+                throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000001",
+                        "Postal tracking code is empty");
+            }
+            if (!EmsUtil.checkMaxFieldLength(postalTrackingCode, 30)) {
+                logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
+                dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002 Too long postal tracking code");
+                throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000002", "Too long postal tracking code");
+            }
+
+            if (!EmsUtil.checkRegex(postalTrackingCode, EmsUtil.numberConstraint)) {
+                logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
+                dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003 Postal tracking contains invalid char");
+                throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000003", "Postal tracking contains invalid char");
+            }
         }
 
         try {
@@ -529,7 +535,7 @@ public class CMSWS extends WSSecurity {
                     logger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000006 " + e.getMessage(), e);
                     dispatchLogger.error(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000006 " + e.getMessage(), e);
                     throw new ExternalInterfaceException(PROSHIP_ERROR_CODE_PREFIX_NEW + "-000006", e.getMessage());
-                }else {
+                } else {
                     logger.error("EMS-INTL-000001 - EMS internal error", e);
                     dispatchLogger.error("EMS-INTL-000001 - EMS internal error", e);
                     throw new ExternalInterfaceException("EMS-INTL-000001", "EMS internal error");
