@@ -9,4 +9,6 @@ import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 public interface WorkstationPluginsDAO extends EmsBaseDAO<WorkstationPluginsTO>{
 
     public WorkstationPluginsTO findByWorkstationById(Long workStationID) throws BaseException;
+
+    public WorkstationPluginsTO findByWorkstationIdAndName(Long workStationID,String pluginName) throws BaseException;
 }

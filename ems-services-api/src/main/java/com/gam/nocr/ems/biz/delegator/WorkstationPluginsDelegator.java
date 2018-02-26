@@ -10,7 +10,6 @@ import com.gam.nocr.ems.biz.service.WorkstationPluginsService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
-import com.gam.nocr.ems.data.domain.ws.PluginInfoWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import java.util.List;
@@ -37,13 +36,13 @@ public class WorkstationPluginsDelegator implements Delegator {
     }
 
     public String getReliableVerByPlugin(
-            UserProfileTO userProfileTO,String workStationCode, List<WorkstationPluginsTO> workstationPluginsList)
+            UserProfileTO userProfileTO, String workStationCode, List<WorkstationPluginsTO> workstationPluginsList)
             throws BaseException {
         String verCode = null;
         try {
             verCode = getService(userProfileTO).getReliableVerByPlugin(workStationCode, workstationPluginsList);
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw e;
         }
         return verCode;
     }

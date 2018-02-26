@@ -17,10 +17,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "EMST_WORKSTATION_PLUGINS")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_WORKSTATION_PLUGINS", allocationSize = 1)
 @NamedQueries({
-     @NamedQuery(
-        name = "WorkstationPluginsTO.findByWorkstationById",
-        query = " SELECT e FROM WorkstationPluginsTO e" +
-                " WHERE e.workstationTO.id =:workstationId")
+        @NamedQuery(
+                name = "WorkstationPluginsTO.findByWorkstationById",
+                query = " SELECT w FROM WorkstationPluginsTO w" +
+                        " WHERE w.workstationTO.id =:workstationId"),
+        @NamedQuery(name = "WorkstationPluginsTO.findByWorkstationIdAndName",
+                query = "select w from WorkstationPluginsTO w" +
+                        " where w.pluginName=:pluginName and w.workstationTO=:workstationId")
 })
 public class WorkstationPluginsTO extends ExtEntityTO {
 

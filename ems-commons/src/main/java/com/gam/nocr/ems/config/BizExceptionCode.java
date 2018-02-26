@@ -2605,7 +2605,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String WST_009 = "EMS_WST_009";
 	public static final String WST_010 = "EMS_WST_010";
 	public static final String WST_001_MSG = "WorkStationId is invalid";
-	public static final String WST_003_MSG = "InvalidData: WorkStationId is empty";
 	public static final String WST_002_MSG = "WorkStationCode is empty";
+	public static final String WST_003_MSG = "InvalidData: WorkStationId is empty";
+	public static final String WST_004_MSG = "can not create workstation plugin";
 
 }

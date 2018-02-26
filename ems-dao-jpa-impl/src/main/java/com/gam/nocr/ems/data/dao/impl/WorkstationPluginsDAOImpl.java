@@ -3,9 +3,9 @@ package com.gam.nocr.ems.data.dao.impl;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
-import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.util.EmsUtil;
+
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -76,5 +76,21 @@ public class WorkstationPluginsDAOImpl extends EmsBaseDAOImpl<WorkstationPlugins
             return workstationPluginsTOs.get(0);
         else
             return null;
+    }
+
+    @Override
+    public WorkstationPluginsTO findByWorkstationIdAndName(Long workStationID, String pluginName) throws BaseException {
+        List<WorkstationPluginsTO> workstationPluginsTOs = null;
+        try {
+            workstationPluginsTOs =
+                    em.createNamedQuery("WorkstationPluginsTO.findByWorkstationIdAndName")
+                            .setParameter("workstationId", workStationID)
+                            .setParameter("pluginName", pluginName)
+                            .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.WST_002, DataExceptionCode.WST_002_MSG, e);
+        }
+        return EmsUtil.checkListSize(workstationPluginsTOs) ? workstationPluginsTOs.get(0) : null;
+
     }
 }

@@ -7,7 +7,6 @@ import com.gam.nocr.ems.biz.delegator.WorkstationInfoDelegator;
 import com.gam.nocr.ems.biz.delegator.WorkstationPluginsDelegator;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
-import com.gam.nocr.ems.data.domain.WorkstationTO;
 import com.gam.nocr.ems.data.domain.ws.*;
 
 import javax.jws.WebMethod;
@@ -17,7 +16,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.WebFault;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -97,7 +95,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             verCode = workstationPluginsDelegator.getReliableVerByPlugin(
                     userProfileTO, workstationCode, workstationPluginsList);
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw new InternalException(e.getExceptionCode(), new EMSWebServiceFault(e.getMessage()), e);
         }
         return verCode;
     }

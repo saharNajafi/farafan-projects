@@ -7,6 +7,7 @@ import com.gam.nocr.ems.util.JSONable;
 import flexjson.JSON;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Haeri (haeri@gamelectronics.com)
@@ -26,8 +27,7 @@ public class WorkstationTO extends ExtEntityTO implements JSONable {
     private String enrollmentOfficeCode;
     private String lState;
     private String provinceName;
-    private WorkstationInfoTO workstationInfoTO;
-    private WorkstationPluginsTO workstationPluginsTO;
+    private List<WorkstationPluginsTO> workstationPluginsTOList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -139,6 +139,16 @@ public class WorkstationTO extends ExtEntityTO implements JSONable {
 //				"Enrollment Office Name: " + enrollmentOfficeName +
 //				"state: " + state;
 //	}
+
+
+    @OneToMany(mappedBy = "workstationTO",cascade = {CascadeType.MERGE,CascadeType.PERSIST},orphanRemoval = true)
+    public List<WorkstationPluginsTO> getWorkstationPluginsTOList() {
+        return workstationPluginsTOList;
+    }
+
+    public void setWorkstationPluginsTOList(List<WorkstationPluginsTO> workstationPluginsTOList) {
+        this.workstationPluginsTOList = workstationPluginsTOList;
+    }
 
 
     @Override

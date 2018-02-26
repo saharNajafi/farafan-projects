@@ -13,10 +13,12 @@ import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationPluginsDAO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
-import com.gam.nocr.ems.data.domain.ws.PluginInfoWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
-import javax.ejb.*;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ import java.util.List;
 @Local(WorkstationPluginsServiceLocal.class)
 @Remote(WorkstationPluginsServiceRemote.class)
 public class WorkstationPluginsServiceImpl extends EMSAbstractService
-        implements WorkstationPluginsServiceLocal, WorkstationPluginsServiceRemote{
+        implements WorkstationPluginsServiceLocal, WorkstationPluginsServiceRemote {
 
     public WorkstationPluginsDAO getWorkstationPluginsDAO() throws BaseException {
         try {
@@ -54,28 +56,38 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public String getReliableVerByPlugin (
+    public String getReliableVerByPlugin(
             String workStationCode, List<WorkstationPluginsTO> workstationPluginsList) throws BaseException {
         String ccosExactVersion = null;
+        WorkstationTO workstationTO = null;
         try {
-            if (workStationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
-            WorkstationTO workstationTO =
+            workstationTO =
                     getWorkstationDAO().findByActivationCode(workStationCode);
-            if(workstationTO != null) {
-                for (WorkstationPluginsTO workstationPlugin : workstationPluginsList) {
-                    WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
-                    workstationPluginsTO.setWorkstationTO(workstationTO);
-                    workstationPluginsTO.setPluginName(workstationPlugin.getPluginName());
-//                    TODO
-                    workstationPluginsTO.setState(workstationPlugin.getState());
-                    getWorkstationPluginsDAO().create(workstationPluginsTO);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
+        }
+        try {
+            if (workstationTO != null) {
+                if (workstationTO != null) {
+                    for(WorkstationPluginsTO workstationPluginsTO : workstationPluginsList){
+                        workstationPluginsTO.setWorkstationTO(workstationTO);
+                    }
+                    for(Iterator<WorkstationPluginsTO> workstationPluginsTOIterator = workstationTO.getWorkstationPluginsTOList().iterator();
+                        workstationPluginsTOIterator.hasNext(); ) {
+                        WorkstationPluginsTO workstationPluginsTO = workstationPluginsTOIterator.next();
+                        workstationPluginsTO.setWorkstationTO(null);
+                        workstationPluginsTOIterator.remove();
+                    }
+                    workstationTO.getWorkstationPluginsTOList().addAll(workstationPluginsList);
+                    getWorkstationDAO().update(workstationTO);
+                    ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
                 }
                 ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             }
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_004_MSG);
         }
+
         return ccosExactVersion;
     }
 }
