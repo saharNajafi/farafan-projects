@@ -66,7 +66,7 @@ public class ProcessCardDeliverySmsJob extends BaseEmsJob implements Interruptab
         } catch (BaseException e) {
             logException(e);
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
 
 
@@ -86,7 +86,7 @@ public class ProcessCardDeliverySmsJob extends BaseEmsJob implements Interruptab
             } catch (BaseException e) {
                 logException(e);
             } catch (Exception e) {
-                logGenerakException(e);
+                logGeneralException(e);
             }
         }
         endLogging();

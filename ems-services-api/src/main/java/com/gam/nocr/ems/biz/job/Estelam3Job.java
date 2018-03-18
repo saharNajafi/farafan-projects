@@ -67,7 +67,7 @@ public class Estelam3Job  extends BaseEmsJob implements InterruptableJob {
 						// enquiry to IMS for a batch of requests
 						// So ignore the batch items and go to the next batch by
 						// increasing the start index to load
-						logGenerakException(e);
+						logGeneralException(e);
 //						isJobInterrupted=true;
 					}
 				} else {
@@ -85,7 +85,7 @@ public class Estelam3Job  extends BaseEmsJob implements InterruptableJob {
 					//Anbari:Estelam3
 					imsDelegator.updateCitizenInfoByEstelam3(ids);
 				} catch (Exception e) {
-					logGenerakException(e);
+					logGeneralException(e);
 				}
 			}
 

@@ -4,6 +4,7 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.nocr.ems.biz.delegator.CardIssuanceRequestDelegator;
+import com.gam.nocr.ems.biz.delegator.IMSDelegator;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.domain.CertificateTO;
@@ -227,5 +228,16 @@ public class TestCMSWS extends WSSecurity {
         System.out.println("Stop CARD Request ID For Sending To CMS: " + cardRequestIds);
     }
 
+    @WebMethod
+    public void sendIMSUpdateCitizensInfo(@WebParam(name = "cardRequestId") Long cardRequestId) throws ExternalInterfaceException {
+        if (cardRequestId != null) {
+            try {
+                IMSDelegator imsDelegator = new IMSDelegator();
+                imsDelegator.updateCitizenInfoById(cardRequestId);
+            } catch (Exception e) {
+                logger.error("Error: " , e);
+            }
+        }
+    }
 
 }

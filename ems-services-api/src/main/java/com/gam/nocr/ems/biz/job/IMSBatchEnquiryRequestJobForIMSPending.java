@@ -77,7 +77,7 @@ public class IMSBatchEnquiryRequestJobForIMSPending  extends BaseEmsJob implemen
                     imsDelegator.sendBatchEnquiryReqForFirstTime(from, modular, CardRequestState.PENDING_IMS);
                 } catch (Exception e) {
                     String message = "IMSBatchEnquiryRequestJobForIMSPending: An error occurred while trying send enquiry request to IMS - " + e.getMessage();
-                  logGenerakException(e);
+                  logGeneralException(e);
                 }
             }
         } catch (Exception e) {

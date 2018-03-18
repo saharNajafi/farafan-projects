@@ -135,7 +135,7 @@ public class CardIssuanceRequestJob extends BaseEmsJob implements InterruptableJ
                                 // issuance request to the CMS. So ignore the
                                 // current request and go to the next one by
                                 // increasing the start index to load
-                                logGenerakException(e);
+                                logGeneralException(e);
                                 break;
                             }
                         } else {
@@ -198,7 +198,7 @@ public class CardIssuanceRequestJob extends BaseEmsJob implements InterruptableJ
                                 // issuance request to the CMS. So ignore the
                                 // current request and go to the next one by
                                 // increasing the start index to load
-                                logGenerakException(e);
+                                logGeneralException(e);
                             }
                         } else {
                             break;
@@ -213,7 +213,7 @@ public class CardIssuanceRequestJob extends BaseEmsJob implements InterruptableJ
                     + " and success threads = " + finishedThreads
                     + " and exception threads = " + errorThreads);
         } catch (Exception e) {
-            logGenerakException( e);
+            logGeneralException( e);
         }
 
         endLogging();

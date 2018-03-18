@@ -3,7 +3,6 @@ package com.gam.nocr.ems.biz.job;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.nocr.ems.biz.delegator.EnrollmentOfficeDelegator;
-import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -107,7 +106,7 @@ public class EnrollmentOfficesUpdatingNotificationJob  extends BaseEmsJob implem
 
 
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
         endLogging();
     }

@@ -15,13 +15,11 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.nocr.ems.biz.delegator.TokenManagementDelegator;
-import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.data.domain.CertificateTO;
 import com.gam.nocr.ems.data.enums.BusinessLogAction;
 import com.gam.nocr.ems.data.enums.BusinessLogEntity;
 import com.gam.nocr.ems.data.enums.CertificateUsage;
 import com.gam.nocr.ems.data.enums.TokenState;
-import com.gam.nocr.ems.data.enums.TokenType;
 
 /**
  * Verifies all token requests that are in pending issuance state by checking their latest state in PKI
@@ -61,7 +59,7 @@ public class VerifyPendingToIssueTokensJob  extends BaseEmsJob implements Interr
                                     try {
                                         tokenManagementDelegator.createBusinessLog(BusinessLogAction.PERSON_TOKEN_RESPONSE, BusinessLogEntity.PKI, "System", "The Token has been created successfully. PersonTokenID : '" + tokenId + "'", true);
                                     } catch (Exception e) {
-                                        logGenerakException(e);
+                                        logGeneralException(e);
                                     }
                                 }
                             } catch (BaseException e) {
@@ -98,7 +96,7 @@ public class VerifyPendingToIssueTokensJob  extends BaseEmsJob implements Interr
 //                    }
 //                }
             } catch (Exception e) {
-                logGenerakException(e);
+                logGeneralException(e);
             }
             
             try {
@@ -125,7 +123,7 @@ public class VerifyPendingToIssueTokensJob  extends BaseEmsJob implements Interr
 					}
                 }
             } catch (Exception e) {
-               logGenerakException(e);
+               logGeneralException(e);
             }
 
             try {
@@ -182,11 +180,11 @@ public class VerifyPendingToIssueTokensJob  extends BaseEmsJob implements Interr
 //                    }
 //                }
             } catch (Exception e) {
-                logGenerakException(e);
+                logGeneralException(e);
             }
 
         } catch (Exception e) {
-           logGenerakException(e);
+           logGeneralException(e);
         }
         endLogging();
     }

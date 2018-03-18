@@ -48,7 +48,7 @@ public class BaseEmsJob {
         error(e.getExceptionCode() + " : " + e.getMessage(), e);
     }
 
-    public void logGenerakException(Exception e) {
+    public void logGeneralException(Exception e) {
         error(e.getMessage(), e);
     }
 

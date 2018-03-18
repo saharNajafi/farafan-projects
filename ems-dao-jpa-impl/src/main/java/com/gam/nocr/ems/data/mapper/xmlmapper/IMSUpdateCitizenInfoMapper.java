@@ -1,46 +1,5 @@
 package com.gam.nocr.ems.data.mapper.xmlmapper;
 
-import gampooya.tools.date.DateFormatException;
-import gampooya.tools.date.DateUtil;
-import gampooya.tools.util.Base64;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.slf4j.Logger;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -58,24 +17,32 @@ import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.NistHeaderDAO;
 import com.gam.nocr.ems.data.dao.ReligionDAO;
-import com.gam.nocr.ems.data.domain.BiometricTO;
-import com.gam.nocr.ems.data.domain.CardRequestHistoryTO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.ChildTO;
-import com.gam.nocr.ems.data.domain.CitizenInfoTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.DocumentTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.domain.MaritalStatusTO;
-import com.gam.nocr.ems.data.domain.NistHeaderTO;
-import com.gam.nocr.ems.data.domain.ReligionTO;
-import com.gam.nocr.ems.data.domain.SpouseTO;
-import com.gam.nocr.ems.data.enums.BiometricType;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.CardRequestOrigin;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NistParser;
+import gampooya.tools.date.DateFormatException;
+import gampooya.tools.date.DateUtil;
+import gampooya.tools.util.Base64;
+import org.slf4j.Logger;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -127,11 +94,12 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
         }
         return religionDAO;
     }
+
     private NistHeaderDAO getNistHeaderDAO() throws BaseException {
         DAOFactory factory = DAOFactoryProvider.getDAOFactory();
         NistHeaderDAO nistHeaderDAO = null;
         try {
-        	nistHeaderDAO = (NistHeaderDAO) factory.getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_NIST_HEADER));
+            nistHeaderDAO = (NistHeaderDAO) factory.getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_NIST_HEADER));
         } catch (DAOFactoryException e) {
             throw new ServiceException(
                     DataExceptionCode.IUC_034,
@@ -156,7 +124,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
         }
         return enrollmentOfficeDAO;
     }
-    
+
     private CardRequestHistoryDAO getCardRequestHistoryDAO() throws BaseException {
         DAOFactory factory = DAOFactoryProvider.getDAOFactory();
         CardRequestHistoryDAO cardRequestHistoryDAO = null;
@@ -486,7 +454,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 //Citizen Element
                 Element citizenElement = doc.createElement("Citizen");
                 rootElement.appendChild(citizenElement);
-                
+
                 //RequestInfo Element
                 Element requestInfo = doc.createElement("RequestInfo");
                 rootElement.appendChild(requestInfo);
@@ -548,9 +516,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 addressElement.appendChild(phoneElement);
 
                 Element geoSerialElement = doc.createElement("geo_serial");
-                if(citizenInfoTO.getLivingCity()!=null)
-                {
-                geoSerialElement.appendChild(doc.createTextNode(citizenInfoTO.getLivingCity().getId().toString()));
+                if (citizenInfoTO.getLivingCity() != null) {
+                    geoSerialElement.appendChild(doc.createTextNode(citizenInfoTO.getLivingCity().getId().toString()));
                 }
                 addressElement.appendChild(geoSerialElement);
 
@@ -563,9 +530,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
 
                 Element fatherElement = doc.createElement("Father");
                 parentsElement.appendChild(fatherElement);
-                	
-                	
-                
+
+
                 Element fatherNationalIdElement = doc.createElement("NID");
                 if (citizenInfoTO.getFatherNationalID() != null && !citizenInfoTO.getFatherNationalID().equals(ConstValues.DEFAULT_NID)) {
                     fatherNationalIdElement.appendChild(doc.createTextNode(citizenInfoTO.getFatherNationalID()));
@@ -593,14 +559,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 fatherElement.appendChild(fatherFirstNameElement);
                 Element fatherBirthDateElement = doc.createElement("BirthDate");
-                if (citizenInfoTO.getFatherBirthDateSolar() != null 
-                		&&
-                		!DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI).equals(ConstValues.DEFAULT_DATE)) {
-                	fatherBirthDateElement
-                     .appendChild(doc.createTextNode(DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI)));
+                if (citizenInfoTO.getFatherBirthDateSolar() != null
+                        &&
+                        !DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI).equals(ConstValues.DEFAULT_DATE)) {
+                    fatherBirthDateElement
+                            .appendChild(doc.createTextNode(DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI)));
                 }
                 fatherElement.appendChild(fatherBirthDateElement);
-                
+
 
                 Element motherElement = doc.createElement("Mother");
                 parentsElement.appendChild(motherElement);
@@ -630,21 +596,19 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 motherElement.appendChild(motherFirstNameElement);
                 Element motherBirthDateElement = doc.createElement("BirthDate");
-                if (citizenInfoTO.getMotherBirthDateSolar() != null 
-                		&&
-                		!DateUtil.convert(citizenInfoTO.getMotherBirthDateSolar(), DateUtil.JALALI).equals(ConstValues.DEFAULT_DATE)) {
-                	motherBirthDateElement
-                     .appendChild(doc.createTextNode(DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI)));
+                if (citizenInfoTO.getMotherBirthDateSolar() != null
+                        &&
+                        !DateUtil.convert(citizenInfoTO.getMotherBirthDateSolar(), DateUtil.JALALI).equals(ConstValues.DEFAULT_DATE)) {
+                    motherBirthDateElement
+                            .appendChild(doc.createTextNode(DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI)));
                 }
                 motherElement.appendChild(motherBirthDateElement);
-                
-                
-                
 
-                    Element spousesElement = doc.createElement("Spouses");
-                    familyElement.appendChild(spousesElement);
 
-                    if (citizenInfoTO.getSpouses() != null) {
+                Element spousesElement = doc.createElement("Spouses");
+                familyElement.appendChild(spousesElement);
+
+                if (citizenInfoTO.getSpouses() != null) {
                     for (int i = 0; i < citizenInfoTO.getSpouses().size(); i++) {
                         Element spouseElement = doc.createElement("Spouse");
                         spousesElement.appendChild(spouseElement);
@@ -663,8 +627,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                         spouseElement.appendChild(marriageDateJalaliElement);
 
                         Element divorceDateJalaliElement = doc.createElement("DivorceDate");
-                        
-                       
+
+
                         if (citizenInfoTO.getSpouses().get(i).getSpouseDeathOrDivorceDate() != null) {
                             divorceDateJalaliElement
                                     .appendChild(doc.createTextNode(DateUtil.convert(citizenInfoTO.getSpouses().get(i).getSpouseDeathOrDivorceDate(), DateUtil.JALALI)));
@@ -677,16 +641,16 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                         spouseElement.appendChild(marriageStatusElement);
                     }
                 }
-                
-                    Element childrenElement = doc.createElement("Children");
-                    familyElement.appendChild(childrenElement);
-                    if (citizenInfoTO != null && citizenInfoTO.getChildren() != null) {
-                    	int childrenCount = citizenInfoTO.getChildren().size();
-                    	if (childrenCount > 20) {
-                    		childrenCount = 20;
-                    	}
-                    
-                    	for (int i = 0; i < childrenCount; i++) {
+
+                Element childrenElement = doc.createElement("Children");
+                familyElement.appendChild(childrenElement);
+                if (citizenInfoTO != null && citizenInfoTO.getChildren() != null) {
+                    int childrenCount = citizenInfoTO.getChildren().size();
+                    if (childrenCount > 20) {
+                        childrenCount = 20;
+                    }
+
+                    for (int i = 0; i < childrenCount; i++) {
 
                         Element childElement = doc.createElement("Child");
                         childrenElement.appendChild(childElement);
@@ -698,81 +662,80 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                         }
                     }
                 }
-                    String faceChipData =null;
-                    String faceImsData =null;
-                    String faceLaserData =null;
-                    String faceMliData =null;
-                    byte[] fingerData =null;
-                    
-				for (BiometricTO biometricTO : citizenInfoTO.getBiometrics()) {
+                String faceChipData = null;
+                String faceImsData = null;
+                String faceLaserData = null;
+                String faceMliData = null;
+                byte[] fingerData = null;
 
-					switch (biometricTO.getType()) {
-					case FACE_CHIP:
-						faceChipData = convertToBase64(biometricTO.getData());
-						break;
-					case FACE_IMS:
-						faceImsData = convertToBase64(biometricTO.getData());
-						break;
-					case FACE_LASER:
-						faceLaserData = convertToBase64(biometricTO.getData());
-						break;
-					case FACE_MLI:
-						faceMliData = convertToBase64(biometricTO.getData());
-						break;
-					case FING_ALL:
-						fingerData = biometricTO.getData();
-						break;
+                for (BiometricTO biometricTO : citizenInfoTO.getBiometrics()) {
 
-					default:
-						break;
-					}
+                    switch (biometricTO.getType()) {
+                        case FACE_CHIP:
+                            faceChipData = convertToBase64(biometricTO.getData());
+                            break;
+                        case FACE_IMS:
+                            faceImsData = convertToBase64(biometricTO.getData());
+                            break;
+                        case FACE_LASER:
+                            faceLaserData = convertToBase64(biometricTO.getData());
+                            break;
+                        case FACE_MLI:
+                            faceMliData = convertToBase64(biometricTO.getData());
+                            break;
+                        case FING_ALL:
+                            fingerData = biometricTO.getData();
+                            break;
 
-				}
+                        default:
+                            break;
+                    }
+
+                }
 
                 Element biometricInfoElement = doc.createElement("BiometricInfo");
                 citizenElement.appendChild(biometricInfoElement);
 
                 Element faceImagesElement = doc.createElement("FaceImages");
                 biometricInfoElement.appendChild(faceImagesElement);
-                
-                
-                
+
+
                 Element faceImsElement = doc.createElement("FACE_IMS");
                 faceImagesElement.appendChild(faceImsElement);
-                
+
                 Element faceImsDataElement = doc.createElement("Data");
                 faceImsDataElement.appendChild(doc.createTextNode(faceImsData));
                 faceImsElement.appendChild(faceImsDataElement);
-                
+
                 Element faceChipElement = doc.createElement("FACE_CHIP");
                 faceImagesElement.appendChild(faceChipElement);
-                
+
                 Element faceChipDataElement = doc.createElement("Data");
                 faceChipDataElement.appendChild(doc.createTextNode(faceChipData));
                 faceChipElement.appendChild(faceChipDataElement);
-                
+
                 Element faceMliElement = doc.createElement("FACE_MLI");
                 faceImagesElement.appendChild(faceMliElement);
-                
+
                 Element faceMliDataElement = doc.createElement("Data");
                 faceMliDataElement.appendChild(doc.createTextNode(faceMliData));
                 faceMliElement.appendChild(faceMliDataElement);
-                
+
                 Element faceLaserElement = doc.createElement("FACE_LASER");
                 faceImagesElement.appendChild(faceLaserElement);
-                
-                
+
+
                 Element faceLaserDataElement = doc.createElement("Data");
                 faceLaserDataElement.appendChild(doc.createTextNode(faceLaserData));
                 faceLaserElement.appendChild(faceLaserDataElement);
-                
+
                 Element sourceImageElement = doc.createElement("SourceImage");
                 sourceImageElement.appendChild(doc.createTextNode(""));
                 faceImagesElement.appendChild(sourceImageElement);
-                
+
                 Element fingersElement = doc.createElement("Fingers");
                 biometricInfoElement.appendChild(fingersElement);
-                
+
                 Element nistElement = doc.createElement("NIST");
                 nistElement.appendChild(doc.createTextNode(convertToBase64(fingerData)));
                 fingersElement.appendChild(nistElement);
@@ -781,17 +744,16 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 byte[] nistHeader = NistParser.parseNistData(fingerData).getNistHeader();
                 //save nist header
                 Boolean parseNistAllways = Boolean.valueOf(EmsUtil
-						.getProfileValue(ProfileKeyName.KEY_PARSE_NIST_ALLWAYS,
-								DEFAULT_KEY_PARSE_NIST_ALLWAYS));
-                if(!parseNistAllways)
-                {
-                NistHeaderTO nistHeaderTO = new NistHeaderTO(cardRequestTO,nistHeader,new Date());
-                getNistHeaderDAO().create(nistHeaderTO);
+                        .getProfileValue(ProfileKeyName.KEY_PARSE_NIST_ALLWAYS,
+                                DEFAULT_KEY_PARSE_NIST_ALLWAYS));
+                if (!parseNistAllways) {
+                    NistHeaderTO nistHeaderTO = new NistHeaderTO(cardRequestTO, nistHeader, new Date());
+                    getNistHeaderDAO().create(nistHeaderTO);
                 }
                 //
                 fingerDataElement.appendChild(doc.createTextNode(convertToBase64(nistHeader)));
                 fingersElement.appendChild(fingerDataElement);
-                
+
                 Element ksvElement = doc.createElement("KSV");
                 ksvElement.appendChild(doc.createTextNode(""));
                 fingersElement.appendChild(ksvElement);
@@ -820,24 +782,22 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                         docElement.appendChild(dataElement);
                     }
                 }
-                
+
                 Element enrolledDateElement = doc.createElement("EnrolledDate");
-                if(cardRequestTO.getEnrolledDate() != null)
-                {
-                enrolledDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getEnrolledDate(), DateUtil.JALALI)));
+                if (cardRequestTO.getEnrolledDate() != null) {
+                    enrolledDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getEnrolledDate(), DateUtil.JALALI)));
                 }
                 requestInfo.appendChild(enrolledDateElement);
-                
+
 
                 Element enrollmentOfficeElement = doc.createElement("EnrollmentOffice");
-                if(cardRequestTO.getEnrollmentOffice()!=null)
-                {
-                enrollmentOfficeElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getCode()));
+                if (cardRequestTO.getEnrollmentOffice() != null) {
+                    enrollmentOfficeElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getCode()));
                 }
                 requestInfo.appendChild(enrollmentOfficeElement);
-                
+
                 Element originElement = doc.createElement("Origin");
-                if (cardRequestTO.getOrigin()==null){
+                if (cardRequestTO.getOrigin() == null) {
                     throw new DataException(
                             DataExceptionCode.IUC_004,
                             MessageFormat.format(
@@ -847,49 +807,53 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 originElement.appendChild(doc.createTextNode(cardRequestTO.getOrigin().toString()));
                 requestInfo.appendChild(originElement);
-                
+
                 Element portalEnrolledDateElement = doc.createElement("PortalEnrolledDate");
-                if(cardRequestTO.getPortalEnrolledDate() != null) {
-                portalEnrolledDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getPortalEnrolledDate(), DateUtil.JALALI)));
+                if (cardRequestTO.getPortalEnrolledDate() != null) {
+                    try {
+                        portalEnrolledDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getPortalEnrolledDate(), DateUtil.JALALI)));
+                    } catch (Exception ex) {
+                        logger.error("Error In Converting PortalEnrolledDate : " + cardRequestTO.getPortalEnrolledDate() + " for Card Request :" + cardRequestTO.getId(), ex);
+                        throw ex;
+                    }
                 }
                 requestInfo.appendChild(portalEnrolledDateElement);
-                
+
                 Element originalCardRequestOfficeElement = doc.createElement("OriginalCardRequestOffice");
-                if(cardRequestTO.getOriginalCardRequestOfficeId()!=null){
-                	EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, cardRequestTO.getOriginalCardRequestOfficeId());
-                originalCardRequestOfficeElement.appendChild(doc.createTextNode(enrollmentOfficeTO.getCode()));
+                if (cardRequestTO.getOriginalCardRequestOfficeId() != null) {
+                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, cardRequestTO.getOriginalCardRequestOfficeId());
+                    originalCardRequestOfficeElement.appendChild(doc.createTextNode(enrollmentOfficeTO.getCode()));
                 }
                 requestInfo.appendChild(originalCardRequestOfficeElement);
-                
+
                 Element reservationDateElement = doc.createElement("ReservationDate");
-                if(cardRequestTO.getReservationDate()!=null)
-                reservationDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI)));
+                if (cardRequestTO.getReservationDate() != null)
+                    reservationDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI)));
                 else
-                reservationDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getEnrolledDate(), DateUtil.JALALI)));
+                    reservationDateElement.appendChild(doc.createTextNode(DateUtil.convert(cardRequestTO.getEnrolledDate(), DateUtil.JALALI)));
                 requestInfo.appendChild(reservationDateElement);
 
                 Element reduplicateElement = doc.createElement("Reduplicate");
                 reduplicateElement.appendChild(doc.createTextNode(""));
                 requestInfo.appendChild(reduplicateElement);
-                
+
                 Element imsIdElement = doc.createElement("ImsId");
                 imsIdElement.appendChild(doc.createTextNode("0"));
                 requestInfo.appendChild(imsIdElement);
 
                 Element managerUsernameElement = doc.createElement("ManagerUsername");
-                if(cardRequestTO.getEnrollmentOffice().getManager()!=null)
-                {
-                managerUsernameElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getManager().getUserName()));
+                if (cardRequestTO.getEnrollmentOffice().getManager() != null) {
+                    managerUsernameElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getManager().getUserName()));
                 }
-                if (cardRequestTO.getEnrollmentOffice().getManager() == null){
-                        throw new DataException(
-                                DataExceptionCode.IUC_004,
-                                MessageFormat.format(
-                                        DataExceptionCode.IUC_004_MSG, "ManagerUsername"
-                                ),
-                                new String[]{CLASS_NAME, "ManagerUsername"});
+                if (cardRequestTO.getEnrollmentOffice().getManager() == null) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_004,
+                            MessageFormat.format(
+                                    DataExceptionCode.IUC_004_MSG, "ManagerUsername"
+                            ),
+                            new String[]{CLASS_NAME, "ManagerUsername"});
 
-                }else if (cardRequestTO.getEnrollmentOffice().getManager() != null) {
+                } else if (cardRequestTO.getEnrollmentOffice().getManager() != null) {
                     if (cardRequestTO.getEnrollmentOffice().getManager().getUserName() == null ||
                             cardRequestTO.getEnrollmentOffice().getManager().getUserName().isEmpty()) {
                         throw new DataException(
@@ -901,22 +865,21 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                     }
                 }
                 requestInfo.appendChild(managerUsernameElement);
-                CardRequestHistoryTO cardRequestHistoryTO=null;
-                if(cardRequestTO.getOrigin()==CardRequestOrigin.V)
-                	cardRequestHistoryTO = getCardRequestHistoryDAO()
-						.findHistoryByRequestIdAndAction(
-							cardRequestTO.getId(),
-							CardRequestHistoryAction.FINGER_SCAN);
+                CardRequestHistoryTO cardRequestHistoryTO = null;
+                if (cardRequestTO.getOrigin() == CardRequestOrigin.V)
+                    cardRequestHistoryTO = getCardRequestHistoryDAO()
+                            .findHistoryByRequestIdAndAction(
+                                    cardRequestTO.getId(),
+                                    CardRequestHistoryAction.FINGER_SCAN);
                 else
-                	cardRequestHistoryTO = getCardRequestHistoryDAO()
-						.findHistoryByRequestIdAndAction(
-								cardRequestTO.getId(),
-								CardRequestHistoryAction.AUTHENTICATE_DOCUMENT);
-                
+                    cardRequestHistoryTO = getCardRequestHistoryDAO()
+                            .findHistoryByRequestIdAndAction(
+                                    cardRequestTO.getId(),
+                                    CardRequestHistoryAction.AUTHENTICATE_DOCUMENT);
+
                 Element authenticatedByElement = doc.createElement("AuthenticatedBy");
-                if(cardRequestHistoryTO != null && cardRequestHistoryTO.getActor() !=null)
-                {
-                authenticatedByElement.appendChild(doc.createTextNode(cardRequestHistoryTO.getActor()));
+                if (cardRequestHistoryTO != null && cardRequestHistoryTO.getActor() != null) {
+                    authenticatedByElement.appendChild(doc.createTextNode(cardRequestHistoryTO.getActor()));
                 }
                 if (cardRequestHistoryTO == null) {
                     throw new DataException(
@@ -939,7 +902,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 requestInfo.appendChild(authenticatedByElement);
             }
 
-            
+
             DOMSource domSource = new DOMSource(doc);
             StringWriter writer = new StringWriter();
             StreamResult result = new StreamResult(writer);
@@ -951,9 +914,9 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
             logger.info("=================================IMS UPDATE CITIZEN INFO MAPPER================================");
             imsLogger.info("=================================IMS UPDATE CITIZEN INFO MAPPER================================");
             logger.info("The xml request for calling the updateCitizenInfo service was produced by the sub system 'EMS'.");
-            imsLogger.info("requestId:"+toList.get(0).getId());
-            logger.info("requestId:"+toList.get(0).getId());
-            imsLogger.info("requestId:"+toList.get(0).getId());
+            imsLogger.info("requestId:" + toList.get(0).getId());
+            logger.info("requestId:" + toList.get(0).getId());
+            imsLogger.info("requestId:" + toList.get(0).getId());
 //            logger.info(writer.toString());
 //            imsLogger.info(writer.toString());
             logger.info("===============================================================================================");
@@ -1032,7 +995,6 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
      * @param attributesMap is a map of type {@link java.util.Map <String, String>}
      * @return an instance of type {@link com.gam.commons.core.data.domain.ExtEntityTO}
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public ExtEntityTO readXML(String xmlData, ExtEntityTO to, Map<String, String> attributesMap) throws BaseException {

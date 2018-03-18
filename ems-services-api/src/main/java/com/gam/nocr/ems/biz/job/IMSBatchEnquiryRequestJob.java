@@ -52,7 +52,7 @@ public class IMSBatchEnquiryRequestJob  extends BaseEmsJob implements Interrupta
                     } catch (Exception e) {
                         //  An exception happened while trying to send the batch enquiry to IMS for a batch of requests
                         //  So ignore the batch items and go to the next batch by increasing the start index to load
-                       logGenerakException(e );
+                       logGeneralException(e );
                         from += batchSize;
                     }
                 } else {
@@ -63,12 +63,12 @@ public class IMSBatchEnquiryRequestJob  extends BaseEmsJob implements Interrupta
                 try {
                     imsDelegator.sendBatchEnquiryReqForFirstTime(from, modular, CardRequestState.RECEIVED_BY_EMS);
                 } catch (Exception e) {
-                  logGenerakException(e);
+                  logGeneralException(e);
                 }
             }
 
         } catch (Exception e) {
-           logGenerakException(e);
+           logGeneralException(e);
         }
         endLogging();
     }

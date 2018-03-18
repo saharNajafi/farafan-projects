@@ -1,14 +1,11 @@
 package com.gam.nocr.ems.biz.job;
 
-import java.util.List;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.nocr.ems.biz.delegator.TokenManagementDelegator;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.domain.CertificateTO;
-import com.gam.nocr.ems.data.domain.PersonTokenTO;
 import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.util.EmsUtil;
 
@@ -54,7 +51,7 @@ public class VerifyReadyToIssueTokensJob  extends BaseEmsJob implements Interrup
                                     tokenManagementDelegator.createBusinessLog(BusinessLogAction.PERSON_TOKEN_REQUEST,
                                             BusinessLogEntity.PKI, "System", "The request has been sent successfully. PersonTokenID : '" + tokenId + "'", true);
                                 } catch (Exception e) {
-                                    logGenerakException(e);
+                                    logGeneralException(e);
                                 }
                             }
                         } catch (BaseException e) {
@@ -69,7 +66,7 @@ public class VerifyReadyToIssueTokensJob  extends BaseEmsJob implements Interrup
                     }
                 }
             } catch (Exception e) {
-                logGenerakException(e);
+                logGeneralException(e);
             }
             
             try {
@@ -117,7 +114,7 @@ public class VerifyReadyToIssueTokensJob  extends BaseEmsJob implements Interrup
                     }
                 }
             } catch (Exception e) {
-               logGenerakException(e);
+               logGeneralException(e);
             }
 
             // NetworkToken
@@ -152,11 +149,11 @@ public class VerifyReadyToIssueTokensJob  extends BaseEmsJob implements Interrup
 //                    }
 //                }
             } catch (Exception e) {
-               logGenerakException(e);
+               logGeneralException(e);
             }
 
         } catch (Exception e) {
-          logGenerakException(e);
+          logGeneralException(e);
         }
         endLogging();
     }

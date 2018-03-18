@@ -571,7 +571,18 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         map.put("requestId", imsRequestId);
 
         Long writeDate = new Date().getTime();
-        byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
+        byte[] byteRequest = null;
+        try {
+            byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
+        }catch (BaseException ex) {
+            logger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
+            ImsLogger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
+            throw ex;
+        }catch (RuntimeException ex){
+            logger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
+            ImsLogger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
+            throw ex;
+        }
         String validateXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + new String(byteRequest);
         try {
             xmlMapperProvider.validateAgainstXSD(new ByteArrayInputStream(validateXml.getBytes("UTF-8")),

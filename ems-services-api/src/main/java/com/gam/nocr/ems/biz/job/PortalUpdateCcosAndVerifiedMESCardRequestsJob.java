@@ -1,6 +1,5 @@
 package com.gam.nocr.ems.biz.job;
 
-import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.nocr.ems.biz.delegator.PortalManagementDelegator;
 import org.quartz.*;
@@ -46,7 +45,7 @@ public class PortalUpdateCcosAndVerifiedMESCardRequestsJob  extends BaseEmsJob i
                 try {
                     portalManagementDelegator.updateCardRequestFromCCOSAndMES(from, to);
                 }catch (Exception ex){
-                    logGenerakException(ex);
+                    logGeneralException(ex);
                     from++;
                 }
             }

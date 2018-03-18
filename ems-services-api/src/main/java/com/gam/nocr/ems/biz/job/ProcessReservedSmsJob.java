@@ -64,7 +64,7 @@ public class ProcessReservedSmsJob extends BaseEmsJob implements InterruptableJo
         } catch (BaseException e) {
             logException(e);
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
 
 
@@ -84,7 +84,7 @@ public class ProcessReservedSmsJob extends BaseEmsJob implements InterruptableJo
             } catch (BaseException e) {
                 logException(e);
             } catch (Exception e) {
-                logGenerakException(e);
+                logGeneralException(e);
             }
         }
         endLogging();

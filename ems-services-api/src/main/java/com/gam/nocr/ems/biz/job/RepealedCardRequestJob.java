@@ -51,7 +51,7 @@ public class RepealedCardRequestJob extends BaseEmsJob implements InterruptableJ
         } catch (BaseException e) {
             logException(e);
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
         endLogging();
     }

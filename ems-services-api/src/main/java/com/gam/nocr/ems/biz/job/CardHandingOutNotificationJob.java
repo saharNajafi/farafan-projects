@@ -112,7 +112,7 @@ public class CardHandingOutNotificationJob extends BaseEmsJob implements Interru
                                 }
 
                             } catch (Exception e) {
-                                logGenerakException(e);
+                                logGeneralException(e);
                                 break;
                             }
                         } else {

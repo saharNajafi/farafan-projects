@@ -36,7 +36,7 @@ public class ProcessMessageJob extends BaseEmsJob implements InterruptableJob {
                         try {
                             messageDelegator.processMessage(id);
                         } catch (Exception e) {
-                            logGenerakException(e);
+                            logGeneralException(e);
                         }
                     } else {
                         break;
@@ -46,7 +46,7 @@ public class ProcessMessageJob extends BaseEmsJob implements InterruptableJob {
         } catch (BaseException e) {
             logException(e);
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
         endLogging();
     }

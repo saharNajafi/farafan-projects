@@ -41,7 +41,7 @@ public class IMSGetUpdatedCitizensResultJob extends BaseEmsJob implements Interr
                         try {
                             imsDelegator.getUpdatedCitizenResultNew(requestId);
                         } catch (Exception e) {
-                            logGenerakException(e);
+                            logGeneralException(e);
                         }
                     } else {
                         break;

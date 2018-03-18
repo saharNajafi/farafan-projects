@@ -109,7 +109,7 @@ public class IMSUpdateCitizensInfoJob extends BaseEmsJob implements Interruptabl
                                 }
 
                             } catch (Exception e) {
-                                logGenerakException(e);
+                                logGeneralException(e);
                             }
                         } else {
                             break;
@@ -162,7 +162,7 @@ public class IMSUpdateCitizensInfoJob extends BaseEmsJob implements Interruptabl
                             try {
                                 imsDelegator.updateCitizenInfoById(requestId);
                             } catch (Exception e) {
-                                logGenerakException(e);
+                                logGeneralException(e);
                             }
                         } else {
                             break;
@@ -178,7 +178,7 @@ public class IMSUpdateCitizensInfoJob extends BaseEmsJob implements Interruptabl
                     + " and exception threads = " + errorThreads);
 
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
         endLogging();
     }

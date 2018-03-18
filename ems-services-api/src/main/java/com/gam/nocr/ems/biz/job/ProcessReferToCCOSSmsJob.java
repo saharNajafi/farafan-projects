@@ -70,7 +70,7 @@ public class ProcessReferToCCOSSmsJob extends BaseEmsJob implements Interruptabl
         } catch (BaseException e) {
             logException(e);
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
 
 
@@ -90,7 +90,7 @@ public class ProcessReferToCCOSSmsJob extends BaseEmsJob implements Interruptabl
             } catch (BaseException e) {
                 logException(e);
             } catch (Exception e) {
-                logGenerakException(e);
+                logGeneralException(e);
             }
         }
         endLogging();

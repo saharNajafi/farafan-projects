@@ -50,7 +50,7 @@ public class UnsuccessfulDeliveryRequestJob extends BaseEmsJob implements Interr
                 }
             }
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
 
         try {
@@ -72,7 +72,7 @@ public class UnsuccessfulDeliveryRequestJob extends BaseEmsJob implements Interr
                 }
             }
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
 
         try {
@@ -101,7 +101,7 @@ public class UnsuccessfulDeliveryRequestJob extends BaseEmsJob implements Interr
                 }
             }
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
         endLogging();
     }

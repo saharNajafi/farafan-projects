@@ -68,7 +68,7 @@ public class ReservedSmsJob extends BaseEmsJob implements InterruptableJob {
         } catch (BaseException e) {
             logException(e);
         } catch (Exception e) {
-            logGenerakException(e);
+            logGeneralException(e);
         }
         endLogging();
     }
