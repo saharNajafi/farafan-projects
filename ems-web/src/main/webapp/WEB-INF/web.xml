@@ -331,6 +331,16 @@
 		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet>
+        <servlet-name>TestCMSWS</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
     <!-- servlet>
         <servlet-name>CMSWS</servlet-name>
         <servlet-class>
@@ -551,6 +561,11 @@
         <url-pattern>/imsws/*</url-pattern>
     </servlet-mapping>
     <!-- Temporary -->
+
+    <servlet-mapping>
+        <servlet-name>TestCMSWS</servlet-name>
+        <url-pattern>/services/TestCMSWS</url-pattern>
+    </servlet-mapping>
 
     <session-config>
         <session-timeout>30</session-timeout>

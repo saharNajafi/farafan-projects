@@ -80,4 +80,8 @@
             name="EmsWorkStationPlatformManagementWS"
             implementation="com.gam.nocr.ems.web.ws.EmsWorkStationPlatformManagementWS"
             url-pattern="/services/EmsWorkStationPlatformManagement"/>
+    <endpoint
+            name="TestCMSWS"
+            implementation="com.gam.nocr.ems.web.ws.TestCMSWS"
+            url-pattern="/services/TestCMSWS"/>
 </endpoints>

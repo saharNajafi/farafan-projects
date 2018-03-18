@@ -36,7 +36,7 @@ import java.util.concurrent.Future;
         )
 @WebService
         (
-                serviceName = "TestCMSCardIssuanceRequestService",
+                serviceName = "TestCMSWS",
                 portName = "TestCMSCardIssuanceRequestPort",
                 targetNamespace = "http://ws.matiran.gam.com/"
         )
