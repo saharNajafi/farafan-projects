@@ -64,42 +64,59 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         try {
             if (workstationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
+
+            if (workstationCode == null) {
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.EMSWorkstationPMService0002);
+            }
+            if(workstationCode.length() < 40) {
+                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.EMSWorkstationPMService0003);
+            }
+            if(workstationCode.length() > 40) {
+                throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.EMSWorkstationPMService0004);
+            }
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
+            if(workstation == null) {
+                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.EMSWorkstationPMService0001);
+            }
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
-                if(workstationInfoTO != null)
-                    result = Boolean.valueOf(String.valueOf(workstationInfoTO.getGatherState()));
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
+                if(workstationInfoTO != null) {
+                    result = workstationInfoTO.getGatherState() != 0;
+                }
         return result;
     }
 
-    @Override
-    public String getReliableVerByPlatform(
-            String workstationCode, WorkstationInfoTO workstationInfoTO) throws BaseException {
-        String ccosExactVersion = null;
-        WorkstationTO workstation;
-        WorkstationInfoTO workstationInfo = null;
-        try {
-            if (workstationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
-             workstation = getWorkstationDAO().findByActivationCode(workstationCode);
-            if(workstation != null)
-             workstationInfo =
-                    getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
-            if (workstationInfo != null) {
-                updateWorkstationInfo(workstationInfoTO, workstationInfo);
-                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
-            } else if (workstation != null) {
-                workstationInfoTO.setWorkstation(workstation);
-                getWorkstationInfoDAO().create(workstationInfoTO);
-                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+        @Override
+        public String getReliableVerByPlatform(
+                String workstationCode, WorkstationInfoTO workstationInfoTO) throws BaseException {
+            String ccosExactVersion = null;
+            WorkstationTO workstation;
+            WorkstationInfoTO workstationInfo = null;
+            try {
+                if (workstationCode == null)
+                    throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.EMSWorkstationPMService0002);
+                if(workstationCode.length() < 48)
+                    throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.EMSWorkstationPMService0003);
+                if(workstationCode.length() > 48)
+                    throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.EMSWorkstationPMService0004);
+
+                workstation = getWorkstationDAO().findByActivationCode(workstationCode);
+                if(workstation == null)
+                    throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.EMSWorkstationPMService0001);
+                workstationInfo =
+                        getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
+                if (workstationInfo != null) {
+                    updateWorkstationInfo(workstationInfoTO, workstationInfo);
+                    ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+                } else if (workstation != null) {
+                    workstationInfoTO.setWorkstation(workstation);
+                    getWorkstationInfoDAO().create(workstationInfoTO);
+                    ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+                }
+            } catch (BaseException e) {
+                e.printStackTrace();
             }
-        } catch (BaseException e) {
-            e.printStackTrace();
+            return ccosExactVersion;
         }
-        return ccosExactVersion;
-    }
 
     private void updateWorkstationInfo(WorkstationInfoTO workstationInfoTo, WorkstationInfoTO workstationInfo) throws BaseException {
         try {

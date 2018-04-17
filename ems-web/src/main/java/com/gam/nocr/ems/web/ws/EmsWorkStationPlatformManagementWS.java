@@ -36,15 +36,9 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode
-    ) throws InternalException {
+    ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
-        boolean result = false;
-        try {
-            result = workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return result;
+          return workstationInfoDelegator.isReliableVerInquiryRequired(userProfileTO, workstationCode);
     }
 
     @WebMethod
@@ -62,7 +56,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         String verCode = null;
         try {
-          WorkstationInfoTO workstationInfoTO =
+           WorkstationInfoTO workstationInfoTO =
                   convertToWorkstationInfo(clientHardWareSpec, clientNetworkConfig, clientSoftWareSpec);
             verCode = workstationInfoDelegator.getReliableVerByPlatform(
                     userProfileTO, workstationCode, workstationInfoTO);
@@ -116,11 +110,25 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
 
     private WorkstationInfoTO convertToWorkstationInfo(ClientHardWareSpecWTO clientHardWareSpec,
                                                        ClientNetworkConfigsWTO clientNetworkConfig,
-                                                       ClientSoftWareSpecWTO clientSoftWareSpec) throws BaseException {
+                                                       ClientSoftWareSpecWTO clientSoftWareSpec) throws InternalException {
         WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();
+        for (String macAddress : clientHardWareSpec.getMacAddressList()) {
+            if (macAddress.length() == 0 || macAddress == null)
+                throw new InternalException(
+                        WebExceptionCode.EMSWorkstationPMService0009, new EMSWebServiceFault(WebExceptionCode.WST_009));
+            if (macAddress.length() > 17)
+                throw new InternalException(
+                        WebExceptionCode.EMSWorkstationPMService0011, new EMSWebServiceFault(WebExceptionCode.WST_011));
+            if (macAddress.length() < 17)
+                throw new InternalException(
+                        WebExceptionCode.EMSWorkstationPMService0010, new EMSWebServiceFault(WebExceptionCode.WST_010));
+        }
         workstationInfoTO.setMacAddressList(String.valueOf(clientHardWareSpec.getMacAddressList()));
         workstationInfoTO.setCpuType(clientHardWareSpec.getCpuType());
         workstationInfoTO.setRamCapacity(clientHardWareSpec.getRamCapacity());
+        if (clientSoftWareSpec.getOsVersion() == null)
+        throw new InternalException(
+                WebExceptionCode.EMSWorkstationPMService0012, new EMSWebServiceFault(WebExceptionCode.WST_012));
         workstationInfoTO.setOsVersion(clientSoftWareSpec.getOsVersion());
         if (clientSoftWareSpec.getDotNetwork45Installed() != null)
             workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(
@@ -128,8 +136,19 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         if (clientSoftWareSpec.getIs64BitOs() != null)
             workstationInfoTO.setIs64bitOs(Short.parseShort(
                     String.valueOf(((clientSoftWareSpec.getIs64BitOs()) ? 1 : 0))));
+        for (String ipAddress : clientNetworkConfig.getIpAddressList()) {
+            if (!Utils.isIPValid(ipAddress))
+                throw new InternalException(
+                        WebExceptionCode.EMSWorkstationPMService0008, new EMSWebServiceFault(WebExceptionCode.WST_008));
+        }
         workstationInfoTO.setIpAddressList(String.valueOf(clientNetworkConfig.getIpAddressList()));
+        if (clientNetworkConfig.getComputerName() == null)
+            throw new InternalException(
+                    WebExceptionCode.EMSWorkstationPMService0014, new EMSWebServiceFault(WebExceptionCode.WST_014));
         workstationInfoTO.setComputerName(clientNetworkConfig.getComputerName());
+        if (clientNetworkConfig.getUserName() == null)
+            throw new InternalException(
+                    WebExceptionCode.EMSWorkstationPMService0013, new EMSWebServiceFault(WebExceptionCode.WST_013));
         workstationInfoTO.setUsername(clientNetworkConfig.getUserName());
         workstationInfoTO.setGateway(clientNetworkConfig.getGateway());
         workstationInfoTO.setGatherState((short) 0);
