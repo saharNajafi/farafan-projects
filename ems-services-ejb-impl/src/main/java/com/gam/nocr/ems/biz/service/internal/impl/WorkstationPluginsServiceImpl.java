@@ -60,12 +60,12 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
         try {
             if (workstationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.EMSWorkstationPMService0002);
-            if(workstationCode.length() < 48)
+            if(workstationCode.length() < 40)
                 throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.EMSWorkstationPMService0003);
-            if(workstationCode.length() > 48)
+            if(workstationCode.length() > 40)
                 throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.EMSWorkstationPMService0004);
-
-            WorkstationTO workstationTO = getWorkstationDAO().findByActivationCode(workstationCode);
+            WorkstationTO workstationTO =
+                    getWorkstationDAO().findByActivationCode(workstationCode);
             if (workstationTO == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.EMSWorkstationPMService0001);
             for (WorkstationPluginsTO workstationPlugin : workstationPluginsList) {
@@ -76,12 +76,10 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
                 workstationPluginsTO.setState(workstationPlugin.getState());
                 getWorkstationPluginsDAO().create(workstationPluginsTO);
             }
-                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
-            }
+            ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_004_MSG);
+            e.printStackTrace();
         }
-
         return ccosExactVersion;
     }
 }
