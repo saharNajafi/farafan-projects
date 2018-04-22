@@ -2,6 +2,7 @@ package com.gam.nocr.ems.biz.service.external.impl.ims;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.ValidationException;
 import com.gam.commons.core.biz.service.AbstractService;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
@@ -574,13 +575,13 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
         byte[] byteRequest = null;
         try {
             byteRequest = xmlMapperProvider.writeXML(cardRequestTOList, map);
-        }catch (BaseException ex) {
-            logger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
-            ImsLogger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
+        } catch (BaseException ex) {
+            logger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId(), ex);
+            ImsLogger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId(), ex);
             throw ex;
-        }catch (RuntimeException ex){
-            logger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
-            ImsLogger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId() , ex);
+        } catch (RuntimeException ex) {
+            logger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId(), ex);
+            ImsLogger.error("Exception in WriteXML for Card Request: " + cardRequestTOList.get(0).getId(), ex);
             throw ex;
         }
         String validateXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + new String(byteRequest);
@@ -589,6 +590,9 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                     getClass().getClassLoader().getResourceAsStream("com/gam/nocr/ims/xsd/IMSUpdateRequest.xsd"));
         } catch (UnsupportedEncodingException e) {
             logger.error("Invalid XML Encoding for sending to EQC (IMS request Id: " + imsRequestId + ")");
+        } catch (ValidationException ve) {
+            ImsLogger.error("Error in XSD Validation for sending to EQC (IMS request Id: " + imsRequestId + ") and card requests: " + cardRequestTOList.get(0), ve);
+            throw ve;
         }
         ImsLogger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
         logger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
