@@ -2593,20 +2593,34 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String OSS_008 = "EMS_S_OSS_008";
 	public static final String OSS_009 = "EMS_S_OSS_009";
 
-//	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
-	public static final String WST_001 = "EMS_WST_001";
-	public static final String WST_002 = "EMS_WST_002";
-	public static final String WST_003 = "EMS_WST_003";
-	public static final String WST_004 = "EMS_WST_004";
-	public static final String WST_005 = "EMS_WST_005";
-	public static final String WST_006 = "EMS_WST_006";
-	public static final String WST_007 = "EMS_WST_007";
-	public static final String WST_008 = "EMS_WST_008";
-	public static final String WST_009 = "EMS_WST_009";
-	public static final String WST_010 = "EMS_WST_010";
-	public static final String WST_001_MSG = "WorkStationId is invalid";
-	public static final String WST_002_MSG = "WorkStationCode is empty";
-	public static final String WST_003_MSG = "InvalidData: WorkStationId is empty";
-	public static final String WST_004_MSG = "can not create workstation plugin";
+	//	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
+	public static final String WST_001 = "EMSWorkstationPMService0001";
+	public static final String WST_002 = "EMSWorkstationPMService0002";
+	public static final String WST_003 = "EMSWorkstationPMService0003";
+	public static final String WST_004 = "EMSWorkstationPMService0004";
+	public static final String WST_005 = "EMSWorkstationPMService0005";
+	public static final String WST_006 = "EMSWorkstationPMService0006";
+	public static final String WST_007 = "EMSWorkstationPMService0007";
+	public static final String WST_008 = "EMSWorkstationPMService0008";
+	public static final String WST_009 = "EMSWorkstationPMService0009";
+	public static final String WST_010 = "EMSWorkstationPMService0010";
+	public static final String WST_011 = "EMSWorkstationPMService0011";
+	public static final String WST_012 = "EMSWorkstationPMService0012";
+	public static final String WST_013 = "EMSWorkstationPMService0013";
+	public static final String WST_014 = "EMSWorkstationPMService0014";
+	public static final String EMSWorkstationPMService0001 = "WorkstationCode is invalid";
+	public static final String EMSWorkstationPMService0002 = "WorkstationCode is empty";
+	public static final String EMSWorkstationPMService0003 = "WorkstationCode is too short";
+	public static final String EMSWorkstationPMService0004 = "WorkstationCode is too long";
+	public static final String EMSWorkstationPMService0005 = "Minimum duration is not met";
+	public static final String EMSWorkstationPMService0006 = "Workstation is inactive";
+	public static final String EMSWorkstationPMService0007 = "Workstation is inactive";
+	public static final String EMSWorkstationPMService0008 = "IP address format is invalid";
+	public static final String EMSWorkstationPMService0009 = "MAC address could not be empty";
+	public static final String EMSWorkstationPMService0010 = "MAC address is too short";
+	public static final String EMSWorkstationPMService0011 = "MAC address is too long";
+	public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
+	public static final String EMSWorkstationPMService0013 = "Username could not be empty";
+	public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
 
 }

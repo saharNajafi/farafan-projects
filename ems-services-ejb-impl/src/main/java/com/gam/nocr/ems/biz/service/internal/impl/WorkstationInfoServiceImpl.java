@@ -63,11 +63,17 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         boolean result = false;
         try {
             if (workstationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.EMSWorkstationPMService0002);
+            if(workstationCode.length() < 40)
+                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.EMSWorkstationPMService0003);
+            if(workstationCode.length() > 40)
+                throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.EMSWorkstationPMService0004);
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
+            if(workstation == null)
+                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.EMSWorkstationPMService0001);
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
-                if(workstationInfoTO != null)
-                    result = Boolean.valueOf(String.valueOf(workstationInfoTO.getGatherState()));
+            if(workstationInfoTO != null)
+                result = workstationInfoTO.getGatherState() != 0;
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -82,10 +88,15 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         WorkstationInfoTO workstationInfo = null;
         try {
             if (workstationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
-             workstation = getWorkstationDAO().findByActivationCode(workstationCode);
-            if(workstation != null)
-             workstationInfo =
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.EMSWorkstationPMService0002);
+            if(workstationCode.length() < 40)
+                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.EMSWorkstationPMService0003);
+            if(workstationCode.length() > 40)
+                throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.EMSWorkstationPMService0004);
+            workstation = getWorkstationDAO().findByActivationCode(workstationCode);
+            if(workstation == null)
+                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.EMSWorkstationPMService0001);
+            workstationInfo =
                     getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
             if (workstationInfo != null) {
                 updateWorkstationInfo(workstationInfoTO, workstationInfo);
@@ -108,9 +119,9 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             workstationInfo.setRamCapacity(workstationInfoTo.getRamCapacity());
             workstationInfo.setOsVersion(workstationInfoTo.getOsVersion());
             if(workstationInfoTo.getHasDotnetFramwork45() != null)
-            workstationInfo.setHasDotnetFramwork45(workstationInfoTo.getHasDotnetFramwork45());
+                workstationInfo.setHasDotnetFramwork45(workstationInfoTo.getHasDotnetFramwork45());
             if(workstationInfoTo.getIs64bitOs()!=null)
-            workstationInfo.setIs64bitOs(workstationInfoTo.getIs64bitOs());
+                workstationInfo.setIs64bitOs(workstationInfoTo.getIs64bitOs());
             workstationInfo.setIpAddressList(String.valueOf(workstationInfoTo.getIpAddressList()));
             workstationInfo.setComputerName(workstationInfoTo.getComputerName());
             workstationInfo.setUsername(workstationInfoTo.getUsername());

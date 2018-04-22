@@ -628,7 +628,21 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     
     public static final String MSW_001_MSG = "Unable to get count messages";
     public static final String MSW_002_MSG = "Unable to get content message";
-	
-    
+
+    //com.gam.nocr.ems.web.ws.EmsWorkStationPlatformManagementWS
+    public static final String WST_008 = "EMSWorkstationPMService0008";
+    public static final String WST_009 = "EMSWorkstationPMService0009";
+    public static final String WST_010 = "EMSWorkstationPMService0010";
+    public static final String WST_011 = "EMSWorkstationPMService0011";
+    public static final String WST_012 = "EMSWorkstationPMService0012";
+    public static final String WST_013 = "EMSWorkstationPMService0013";
+    public static final String WST_014 = "EMSWorkstationPMService0014";
+    public static final String EMSWorkstationPMService0008 = "IP address format is invalid";
+    public static final String EMSWorkstationPMService0009 = "MAC address could not be empty";
+    public static final String EMSWorkstationPMService0010 = "MAC address is too short";
+    public static final String EMSWorkstationPMService0011 = "MAC address is too long";
+    public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
+    public static final String EMSWorkstationPMService0013 = "Username could not be empty";
+    public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
 
 }

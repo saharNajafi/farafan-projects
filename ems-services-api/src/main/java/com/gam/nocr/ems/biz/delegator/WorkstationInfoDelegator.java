@@ -39,13 +39,7 @@ public class WorkstationInfoDelegator implements Delegator {
 
     public Boolean isReliableVerInquiryRequired(
             UserProfileTO userProfileTO, String workstationCode) throws BaseException{
-        Boolean result = false;
-        try {
-            result = getService(userProfileTO).isReliableVerInquiryRequired(workstationCode);
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return result;
+           return getService(userProfileTO).isReliableVerInquiryRequired(workstationCode);
     }
 
     public String getReliableVerByPlatform(
