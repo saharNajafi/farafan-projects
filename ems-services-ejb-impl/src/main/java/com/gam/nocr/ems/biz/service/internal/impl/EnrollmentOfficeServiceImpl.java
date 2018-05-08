@@ -197,6 +197,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 				throw new ServiceException(BizExceptionCode.EOS_068,
 						BizExceptionCode.EOS_068_MSG);
 		}
+		if (!isValidLength(String.valueOf(enrollmentOfficeVTO.getDepPhoneNumber()), 8))
+			throw new ServiceException(BizExceptionCode.EOS_084,
+					BizExceptionCode.EOS_084_MSG);
+		if (isNullOrEmpty(String.valueOf(enrollmentOfficeVTO.getDepPhoneNumber())))
+			throw new ServiceException(BizExceptionCode.EOS_085,
+					BizExceptionCode.EOS_085_MSG);
 	}
 
 	/**
@@ -500,7 +506,16 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
             office.setKhosusiType(OfficeType.valueOf(enrollmentOfficeVTO.getKhosusiType()));
-            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+//            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+			office.setHasStair((short) (enrollmentOfficeVTO.getHasStair() ? 1: 0));
+			office.setHasElevator((short) (enrollmentOfficeVTO.getHasElevator() ? 1: 0));
+			office.setHasPortabilityEquipment((short) (enrollmentOfficeVTO.getHasPortabilityEquipment() ? 1: 0));
+			office.setThursdayMorningActive(enrollmentOfficeVTO.getThursdayMorningActive());
+			office.setThursdayEveningActive(enrollmentOfficeVTO.getThursdayEveningActive());
+			office.setFridayMorningActive(enrollmentOfficeVTO.getFridayMorningActive());
+			office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
+			office.setSingleStageOnly((short)(enrollmentOfficeVTO.getSingleStageOnly() ? 1: 0));
+
             if(enrollmentOfficeVTO.getKhosusiType().equals(OfficeType.NOCR.name()) 
             		|| enrollmentOfficeVTO.getKhosusiType().equals("0") )
 				office.setType(EnrollmentOfficeType.NOCR);
@@ -553,6 +568,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			departmentTO.setDn("EOF" + departmentTO.getId());
 			departmentTO.setParentDN(parentTO.getDn() + "."
 					+ parentTO.getParentDN());
+			departmentTO.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
 
 			manager.setDepartment(departmentTO);
 
@@ -604,7 +620,16 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setLocation(new LocationTO(enrollmentOfficeVTO.getLocId()));
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
-            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+//            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+			office.setHasStair((short) (enrollmentOfficeVTO.getHasStair() ? 1 : 0));
+			office.setHasElevator((short)(enrollmentOfficeVTO.getHasElevator() ? 1 : 0));
+			office.setHasPortabilityEquipment((short)(enrollmentOfficeVTO.getHasPortabilityEquipment() ? 1 : 0));
+			office.setThursdayMorningActive(enrollmentOfficeVTO.getThursdayMorningActive());
+			office.setThursdayEveningActive(enrollmentOfficeVTO.getThursdayEveningActive());
+			office.setFridayMorningActive(enrollmentOfficeVTO.getFridayMorningActive());
+			office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
+			office.setSingleStageOnly((short)(enrollmentOfficeVTO.getSingleStageOnly() ? 1 : 0));
+			office.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
             if (EnrollmentOfficeType.NOCR.equals(office.getType()) &&
                     EnrollmentOfficeType.OFFICE.name().equals(enrollmentOfficeVTO.getOfficeType()))
                 throw new ServiceException(BizExceptionCode.EOS_069, BizExceptionCode.EOS_069_MSG);
@@ -652,7 +677,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             PersonDAO personDAO = getPersonDAO();
 
             DepartmentTO parentTO = departmentDAO.fetchDepartment(enrollmentOfficeVTO.getParentId());
-
             office.setParentDepartment(parentTO);
             if (enrollmentOfficeVTO.getArea() != null)
                 office.setArea(enrollmentOfficeVTO.getArea().intValue());
@@ -767,7 +791,16 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			vto.setWorkingHoursStart(office.getWorkingHoursFrom());
 			vto.setWorkingHoursFinish(office.getWorkingHoursTo());
 			vto.setKhosusiType(office.getKhosusiType().toString());
-			 vto.setCalenderType(OfficeCalenderType.toLong(office.getCalenderType()).toString());
+//			 vto.setCalenderType(OfficeCalenderType.toLong(office.getCalenderType()).toString());
+			vto.setDepPhoneNumber(office.getParentDepartment().getDepPhoneNumber());
+			vto.setThursdayMorningActive(office.getThursdayMorningActive());
+			vto.setThursdayEveningActive(office.getThursdayMorningActive());
+			vto.setFridayMorningActive(office.getFridayMorningActive());
+			vto.setFridayEveningActive(office.getFridayEveningActive());
+			vto.setSingleStageOnly(office.getSingleStageOnly() != 0);
+			vto.setHasStair(office.getHasStair() != 0);
+			vto.setHasElevator(office.getHasElevator() != 0);
+			vto.setHasPortabilityEquipment(office.getHasPortabilityEquipment() != 0);
 			return vto;
 		} catch (BaseException e) {
 			throw e;

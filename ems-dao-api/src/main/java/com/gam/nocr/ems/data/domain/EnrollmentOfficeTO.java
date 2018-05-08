@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.data.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
@@ -8,6 +9,7 @@ import com.gam.nocr.ems.data.enums.OfficeType;
 import com.gam.nocr.ems.util.JSONable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +46,14 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
     private OfficeCalenderType calenderType;
     private String postDestinationCode;
     private Boolean isPostNeeded = true;
+    private short hasStair;
+    private short hasElevator;
+    private short hasPortabilityEquipment;
+    private Boolean thursdayMorningActive = false;
+    private Boolean thursdayEveningActive = false;
+    private Boolean fridayMorningActive = false;
+    private Boolean fridayEveningActive = false;
+    private short singleStageOnly;
 
 
 	public EnrollmentOfficeTO() {
@@ -213,6 +223,85 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 
     public void setIsPostNeeded(Boolean isPostNeeded) {
         this.isPostNeeded = isPostNeeded;
+    }
+    @Column(name = "EOF_HAS_STAIR", nullable = false)
+    public short getHasStair() {
+        return hasStair;
+    }
+
+    public void setHasStair(short hasStair) {
+        this.hasStair = hasStair;
+    }
+
+    @Column(name = "EOF_HAS_ELEVATOR", nullable = false)
+    public short getHasElevator() {
+        return hasElevator;
+    }
+
+    public void setHasElevator(short hasElevator) {
+        this.hasElevator = hasElevator;
+    }
+
+    @Column(name = "EOF_HAS_PORTABILITY_EQUIPMENT", nullable = false)
+    public short getHasPortabilityEquipment() {
+        return hasPortabilityEquipment;
+    }
+
+    public void setHasPortabilityEquipment(short hasPortabilityEquipment) {
+        this.hasPortabilityEquipment = hasPortabilityEquipment;
+    }
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "THURSDAY_MORNING_ACTIVE" ,columnDefinition = "NUMBER(1) DEFAULT 0")
+    public Boolean getThursdayMorningActive() {
+        return thursdayMorningActive;
+    }
+
+    public void setThursdayMorningActive(Boolean thursdayMorningActive) {
+        this.thursdayMorningActive = thursdayMorningActive;
+    }
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "THURSDAY_EVENING_ACTIVE" ,columnDefinition = "NUMBER(1) DEFAULT 0" )
+    public Boolean getThursdayEveningActive() {
+        return thursdayEveningActive;
+    }
+
+    public void setThursdayEveningActive(Boolean thursdayEveningActive) {
+        this.thursdayEveningActive = thursdayEveningActive;
+    }
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FRIDAY_MORNING_ACTIVE" ,columnDefinition = "NUMBER(1) DEFAULT 0")
+    public Boolean getFridayMorningActive() {
+        return fridayMorningActive;
+    }
+
+    public void setFridayMorningActive(Boolean fridayMorningActive) {
+        this.fridayMorningActive = fridayMorningActive;
+    }
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FRIDAY_EVENING_ACTIVE",columnDefinition = "NUMBER(1) DEFAULT 0" )
+    public Boolean getFridayEveningActive() {
+        return fridayEveningActive;
+    }
+
+    public void setFridayEveningActive(Boolean fridayEveningActive) {
+        this.fridayEveningActive = fridayEveningActive;
+    }
+
+    @Column(name = "SINGLE_STAGE_ONLY")
+    public short getSingleStageOnly() {
+        return singleStageOnly;
+    }
+
+    public void setSingleStageOnly(short singleStageOnly) {
+        this.singleStageOnly = singleStageOnly;
     }
 
     @Override

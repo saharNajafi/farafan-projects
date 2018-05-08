@@ -2,23 +2,7 @@ package com.gam.nocr.ems.data.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.data.enums.DepartmentDispatchSendType;
@@ -54,6 +38,7 @@ public class DepartmentTO extends ExtEntityTO implements JSONable {
 
 	private Date lastSyncDate;
 	private Date lastModifiedDate;
+	private long depPhoneNumber;
 
 	public DepartmentTO() {
 	}
@@ -251,6 +236,15 @@ public class DepartmentTO extends ExtEntityTO implements JSONable {
 
 	public void setSendType(String sendType) {
 		this.sendType = sendType;
+	}
+
+	@Column(name = "DEP_PHONE_NUMBER")
+	public long getDepPhoneNumber() {
+		return depPhoneNumber;
+	}
+
+	public void setDepPhoneNumber(long depPhoneNumber) {
+		this.depPhoneNumber = depPhoneNumber;
 	}
 
 	@Override

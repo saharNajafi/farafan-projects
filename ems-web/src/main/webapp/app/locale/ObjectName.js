@@ -140,7 +140,16 @@ Ext.define('Ems.locale.objectName', {
 		g_officeType : 'g_officeType',
 		g_officeDeliver : 'g_officeDeliver',
 
-		g_khosusiType : 'g_khosusiType',	
+		g_khosusiType : 'g_khosusiType',
+		officeDepPhoneNumber: 'depPhoneNumber',
+		thursdayMorningActive : 'thursdayMorningActive',
+		thursdayEveningActive : 'thursdayEveningActive',
+		fridayMorningActive : 'fridayMorningActive',
+		fridayEveningActive : 'fridayEveningActive',
+		singleStageOnly: 'singleStageOnly',
+		hasStair: 'hasStair',
+		hasElevator: 'hasElevator',
+		hasPortabilityEquipment: 'hasPortabilityEquipment'
 	},
 
 	//
@@ -229,7 +238,7 @@ Ext.define('Ems.locale.objectName', {
 		location : 'locName',
 		locationId : 'locId',
 		locationEditor : 'locationEditor',
-		provinceName: 'provinceName'
+		provinceName: 'provinceName',
 	},
 	//
 

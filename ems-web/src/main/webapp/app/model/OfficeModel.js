@@ -55,8 +55,18 @@ Ext.define('Ems.model.OfficeModel', {
 
         , EmsObjectName.officeNewEdit.superiorOfficeName
         , EmsObjectName.officeNewEdit.superiorOfficeId
-        , EmsObjectName.officeNewEdit.fqdn,
+        , EmsObjectName.officeNewEdit.fqdn
         , EmsObjectName.officeNewEdit.calenderType
         , EmsObjectName.officeNewEdit.provinceName
+        , EmsObjectName.officeNewEdit.officeDepPhoneNumber
+        , EmsObjectName.officeNewEdit.thursdayMorningActive
+        , EmsObjectName.officeNewEdit.thursdayEveningActive
+        , EmsObjectName.officeNewEdit.fridayMorningActive
+        , EmsObjectName.officeNewEdit.fridayEveningActive
+        , EmsObjectName.officeNewEdit.singleStageOnly
+        , EmsObjectName.officeNewEdit.hasStair
+        , EmsObjectName.officeNewEdit.hasElevator
+        , EmsObjectName.officeNewEdit.hasPortabilityEquipment
+        
     ]
 });

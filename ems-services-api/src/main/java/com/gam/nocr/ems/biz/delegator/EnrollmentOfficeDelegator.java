@@ -113,24 +113,25 @@ public class EnrollmentOfficeDelegator implements Delegator {
 		EnrollmentOfficeDeliverStatus eofOldDelivery = eofOld.getDeliver();
 		String eofNewDelivery = vto.getOfficeDeliver();
 		Long eofId = getService(userProfileTO).update(vto);
-		boolean equalsCalender = vto.getCalenderType().equals(
-				OfficeCalenderType.toLong(eofOld.getCalenderType()).toString());
-		if (eofId != null || !equalsCalender) {
+//		boolean equalsCalender = vto.getCalenderType().equals(
+//				OfficeCalenderType.toLong(eofOld.getCalenderType()).toString());
+//		if (eofId != null || !equalsCalender) {
+		if (eofId != null) {
 			checkOfficeDelivery(vto, "EDIT", eofOldDelivery, eofNewDelivery);
-			PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+//			PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
 			RatingInfoTO ratingInfoTO = getRatingInfoDAO().find(
 					RatingInfoTO.class, vto.getRateId());
-			if (ratingInfoTO != null || !equalsCalender) {
-
+//			if (ratingInfoTO != null || !equalsCalender) {
+			if (ratingInfoTO != null) {
 				RatingInfoTO newRating = null;
 				String newCalender = null;
 				if (!ratingIdOld.equals(ratingInfoTO.getId()))
 					newRating = ratingInfoTO;
-				if (!equalsCalender)
-					newCalender = vto.getCalenderType();
+//				if (!equalsCalender)
+//					newCalender = vto.getCalenderType();
 
-				portalManagementDelegator.syncResevationFreeTimeByNewRating(
-						eofId, newRating,newCalender);
+//				portalManagementDelegator.syncResevationFreeTimeByNewRating(
+//						eofId, newRating,newCalender);
 			}
 		}
 		return eofId;

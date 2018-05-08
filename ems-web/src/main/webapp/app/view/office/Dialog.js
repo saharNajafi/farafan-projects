@@ -17,7 +17,7 @@ Ext.define('Ems.view.office.Dialog', {
         , 'Ems.view.office.NewEdit.ManagementInfo'
         , 'Ems.view.office.NewEdit.OfficeInfo'
         , 'Ems.view.office.NewEdit.OfficeAddressInfo'
-
+        , 'Ems.view.office.NewEdit.OfficeFacility'
         , 'Ems.view.office.NewEdit.cmbManagement'
         , 'Ems.view.office.NewEdit.cmbSuperRegisterOffice'
 
@@ -26,7 +26,7 @@ Ext.define('Ems.view.office.Dialog', {
     width: 860,
 
     initComponent: function () {
-        this.height = 560;
+        this.height = 680;
         this.callParent(arguments);
     },
 
@@ -40,6 +40,9 @@ Ext.define('Ems.view.office.Dialog', {
             },
             {
                 xtype: 'officeneweditofficeaddressinfo'
+            },
+            {
+                xtype: 'officeneweditofficeFacility'
             }
         ]
     }

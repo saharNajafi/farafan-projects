@@ -59,7 +59,16 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private String amputationAnnouncment;
     private String useScannerUI;
     private String allowEditBackground;
-    
+    private Long depPhoneNumber;
+    private Boolean thursdayMorningActive;
+    private Boolean thursdayEveningActive;
+    private Boolean fridayMorningActive;
+    private Boolean fridayEveningActive;
+    private Boolean singleStageOnly;
+    private Boolean hasStair;
+    private Boolean hasElevator;
+    private Boolean hasPortabilityEquipment;
+
     
     private String officeSettingType;
 
@@ -432,6 +441,76 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
 		this.allowEditBackground = allowEditBackground;
 	}
 
+    public Long getDepPhoneNumber() {
+        return depPhoneNumber;
+    }
 
-	
+    public void setDepPhoneNumber(Long depPhoneNumber) {
+        this.depPhoneNumber = depPhoneNumber;
+    }
+
+    public Boolean getThursdayMorningActive() {
+        return thursdayMorningActive;
+    }
+
+
+    public void setThursdayMorningActive(Boolean thursdayMorningActive) {
+        this.thursdayMorningActive = thursdayMorningActive;
+    }
+
+    public Boolean getThursdayEveningActive() {
+        return thursdayEveningActive;
+    }
+
+    public void setThursdayEveningActive(Boolean thursdayEveningActive) {
+        this.thursdayEveningActive = thursdayEveningActive;
+    }
+
+    public Boolean getFridayMorningActive() {
+        return fridayMorningActive;
+    }
+
+    public void setFridayMorningActive(Boolean fridayMorningActive) {
+        this.fridayMorningActive = fridayMorningActive;
+    }
+
+    public Boolean getFridayEveningActive() {
+        return fridayEveningActive;
+    }
+
+    public void setFridayEveningActive(Boolean fridayEveningActive) {
+        this.fridayEveningActive = fridayEveningActive;
+    }
+
+    public Boolean getSingleStageOnly() {
+        return singleStageOnly;
+    }
+
+    public void setSingleStageOnly(Boolean singleStageOnly) {
+        this.singleStageOnly = singleStageOnly;
+    }
+
+    public Boolean getHasStair() {
+        return hasStair;
+    }
+
+    public void setHasStair(Boolean hasStair) {
+        this.hasStair = hasStair;
+    }
+
+    public Boolean getHasElevator() {
+        return hasElevator;
+    }
+
+    public void setHasElevator(Boolean hasElevator) {
+        this.hasElevator = hasElevator;
+    }
+
+    public Boolean getHasPortabilityEquipment() {
+        return hasPortabilityEquipment;
+    }
+
+    public void setHasPortabilityEquipment(Boolean hasPortabilityEquipment) {
+        this.hasPortabilityEquipment = hasPortabilityEquipment;
+    }
 }

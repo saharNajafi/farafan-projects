@@ -95,22 +95,22 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		        		}
 		        	}
 		        },
-		        {
-		        	fieldLabel: 'نوع تقویم',
-		        	id: EmsObjectName.officeNewEdit.calenderType,
-		        	renderer: function (value) {
-
-		        		if (value == "1") {
-		        			return 'پنجشنبه باز و جمعه تعطیل';
-		        		} else if (value == "0") {
-		        			return "جمعه و پنجشنبه تعطیل";
-		        		}else if (value == "2") {
-		        			return "جمعه و پنجشنبه باز";
-		        		}else if (value == "3") {
-		        			return "جمعه باز و پنجشنبه تعطیل";
-		        		}
-		        	}
-		        },
+		        // {
+		        // 	fieldLabel: 'نوع تقویم',
+		        // 	id: EmsObjectName.officeNewEdit.calenderType,
+		        // 	renderer: function (value) {
+                //
+		        // 		if (value == "1") {
+		        // 			return 'پنجشنبه باز و جمعه تعطیل';
+		        // 		} else if (value == "0") {
+		        // 			return "جمعه و پنجشنبه تعطیل";
+		        // 		}else if (value == "2") {
+		        // 			return "جمعه و پنجشنبه باز";
+		        // 		}else if (value == "3") {
+		        // 			return "جمعه باز و پنجشنبه تعطیل";
+		        // 		}
+		        // 	}
+		        // },
 		        {
 		        	fieldLabel: 'دفتر معین',
 		        	id: EmsObjectName.officeNewEdit.superiorOfficeName,
@@ -336,50 +336,50 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		                      
 		                      
 		                      
-		                      {
-		                    	  xtype: 'calendertype',
-		                    	  fieldLabel: 'نوع تقویم',
-		                    	  id: EmsObjectName.officeNewEdit.calenderType,
-		                    	  name: EmsObjectName.officeNewEdit.calenderType,
-		                    	  allowBlank: false,
-		                    	  listeners: {
-		                    		  change: function (autocomplete, newValue, oldValue) {
-		                    			  
-		                    			  if(oldValue == undefined){
-		                    				  EmsObjectName.officeNewEdit.calenderTypeTmp = newValue;
-		                    			  }
-		                    			  else  if(EmsObjectName.officeNewEdit.calenderTypeTmp ==  "0")
-		                    			  {
-
-		                    			  }
-		                    			  else  if(EmsObjectName.officeNewEdit.calenderTypeTmp ==  "1")
-		                    			  {
-		                    				  
-		                    				  switch (newValue) {
-		                    				  case "0":
-		                    					  Gam.window.MessageManager.showInfoMsg('این دفتر باید تا انجام آخرین رزرو باز باشد');
-		                    					  break;
-
-		                    				  default:
-		                    					  break;
-		                    				  }		
-		                    			  }
-		                    			  else if(EmsObjectName.officeNewEdit.calenderTypeTmp ==  "2")
-		                    			  {
-		                    				  switch (newValue) {
-		                    				  case "1":
-		                    				  case "0":
-		                    					  Gam.window.MessageManager.showInfoMsg('این دفتر باید تا انجام آخرین رزرو باز باشد');
-		                    					  break;
-
-		                    				  default:
-		                    					  break;
-		                    				  }		 
-		                    			  }
-		                    		  }
-		                    	  }
-
-		                      },
+		                      // {
+		                    	//   xtype: 'calendertype',
+		                    	//   fieldLabel: 'نوع تقویم',
+		                    	//   id: EmsObjectName.officeNewEdit.calenderType,
+		                    	//   name: EmsObjectName.officeNewEdit.calenderType,
+		                    	//   allowBlank: false,
+		                    	//   listeners: {
+		                    	// 	  change: function (autocomplete, newValue, oldValue) {
+		                    	//
+		                    	// 		  if(oldValue == undefined){
+		                    	// 			  EmsObjectName.officeNewEdit.calenderTypeTmp = newValue;
+		                    	// 		  }
+		                    	// 		  else  if(EmsObjectName.officeNewEdit.calenderTypeTmp ==  "0")
+		                    	// 		  {
+                              //
+		                    	// 		  }
+		                    	// 		  else  if(EmsObjectName.officeNewEdit.calenderTypeTmp ==  "1")
+		                    	// 		  {
+		                    	//
+		                    	// 			  switch (newValue) {
+		                    	// 			  case "0":
+		                    	// 				  Gam.window.MessageManager.showInfoMsg('این دفتر باید تا انجام آخرین رزرو باز باشد');
+		                    	// 				  break;
+                              //
+		                    	// 			  default:
+		                    	// 				  break;
+		                    	// 			  }
+		                    	// 		  }
+		                    	// 		  else if(EmsObjectName.officeNewEdit.calenderTypeTmp ==  "2")
+		                    	// 		  {
+		                    	// 			  switch (newValue) {
+		                    	// 			  case "1":
+		                    	// 			  case "0":
+		                    	// 				  Gam.window.MessageManager.showInfoMsg('این دفتر باید تا انجام آخرین رزرو باز باشد');
+		                    	// 				  break;
+                              //
+		                    	// 			  default:
+		                    	// 				  break;
+		                    	// 			  }
+		                    	// 		  }
+		                    	// 	  }
+		                    	//   }
+                              //
+		                      // },
 		                      
 		                      
 		                      {

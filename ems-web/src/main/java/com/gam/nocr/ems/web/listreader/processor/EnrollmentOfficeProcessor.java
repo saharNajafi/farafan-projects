@@ -57,6 +57,8 @@ public class EnrollmentOfficeProcessor extends EMSVLPListProcessor {
         String superiorOfficeName = paramProvider.getFilter("superiorOfficeName");
         String fqdn = paramProvider.getFilter("fqdn");
         String provinceName = paramProvider.getFilter("provinceName");
+        String depPhoneNumber = paramProvider.getFilter("depPhoneNumber");
+
         Integer perId;
         Long personID = null;
 
@@ -152,6 +154,11 @@ public class EnrollmentOfficeProcessor extends EMSVLPListProcessor {
             parameters.put("province", "%" + provinceName + "%");
             parts.append(",province");
         }
+        if (depPhoneNumber != null && depPhoneNumber.trim().length() != 0) {
+            parameters.put("depPhoneNumber", "%" + depPhoneNumber + "%");
+            parts.append(",depPhoneNumber");
+        }
+
         ValueListHandler vlh;
         try {
             vlh = vlp.loadList("enrollmentList",

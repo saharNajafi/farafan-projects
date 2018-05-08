@@ -115,6 +115,15 @@
 					d.dep_postal_code,
 					d.dep_parent_dep_id,
 					d.dep_location_id,
+					d.dep_phone_number,
+					e.THURSDAY_MORNING_ACTIVE,
+					e.THURSDAY_EVENING_ACTIVE,
+					e.FRIDAY_MORNING_ACTIVE,
+					e.FRIDAY_EVENING_ACTIVE,
+					e.EOF_HAS_STAIR,
+					e.EOF_HAS_ELEVATOR,
+					e.EOF_HAS_PORTABILITY_EQUIPMENT,
+					e.SINGLE_STAGE_ONLY,
 					d.dep_dn || '.' ||
 					d.dep_parent_dn fqdn,
 					(select dp.dep_name from emst_department dp
@@ -237,6 +246,33 @@
 				<part name="province">
 					and lp.loc_name like {province}
 				</part>
+				<part name="depPhoneNumber">
+					and d.dep_phone_number like {depPhoneNumber}
+				</part>
+				<part name="thursdayMorningActive">
+					and e.THURSDAY_MORNING_ACTIVE like {thursdayMorningActive}
+				</part>
+				<part name="thursdayEveningActive">
+					and e.THURSDAY_EVENING_ACTIVE like {thursdayEveningActive}
+				</part>
+				<part name="fridayMorningActive">
+					and e.FRIDAY_MORNING_ACTIVE like {fridayMorningActive}
+				</part>
+				<part name="fridayEveningActive">
+					and e.FRIDAY_EVENING_ACTIVE like {fridayEveningActive}
+				</part>
+				<part name="singleStageOnly">
+					and e.SINGLE_STAGE_ONLY like {singleStageOnly}
+				</part>
+				<part name="hasStair">
+					and e.EOF_HAS_STAIR like {hasStair}
+				</part>
+				<part name="hasElevator">
+					and e.EOF_HAS_ELEVATOR like {hasElevator}
+				</part>
+				<part name="hasPortabilityEquipment">
+					and e.EOF_HAS_PORTABILITY_EQUIPMENT like {hasPortabilityEquipment}
+				</part>
 				<order-by>
 					d.dep_id
 				</order-by>
@@ -288,6 +324,15 @@
                 <field name="officeSettingType" column="OST_TYPE"/>
                 <field name="substitutionOfficeId" column="EOF_SUBSTITUTION_OFFICE_ID"/>
                 <field name="substitutionOfficeName" column="EOF_SUBSTITUTION_OFFICE_NAME"/>
+                <field name="depPhoneNumber" column="DEP_PHONE_NUMBER"/>
+                <field name="thursdayMorningActive" column="THURSDAY_MORNING_ACTIVE"/>
+                <field name="thursdayEveningActive" column="THURSDAY_EVENING_ACTIVE"/>
+                <field name="fridayMorningActive" column="FRIDAY_MORNING_ACTIVE"/>
+                <field name="fridayEveningActive" column="FRIDAY_EVENING_ACTIVE"/>
+                <field name="singleStageOnly" column="SINGLE_STAGE_ONLY"/>
+                <field name="hasStair" column="EOF_HAS_STAIR"/>
+                <field name="hasElevator" column="EOF_HAS_ELEVATOR"/>
+                <field name="hasPortabilityEquipment" column="EOF_HAS_PORTABILITY_EQUIPMENT"/>
 			</dto-fields>
 		</dto>
 	</list>

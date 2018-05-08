@@ -1078,6 +1078,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_081 = "EMS_S_EOS_081";
 	public static final String EOS_082 = "EMS_S_EOS_082";
 	public static final String EOS_083 = "EMS_S_EOS_083";
+	public static final String EOS_084 = "EMS_S_EOS_084";
+	public static final String EOS_085 = "EMS_S_EOS_085";
+
 	public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
 	public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
 	public static final String EOS_006_MSG = "Enrollment office name is too long";
@@ -1126,7 +1129,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_073_MSG = "Enrollment office manager must be set";
 	public static final String EOS_078_MSG = "Enrollment office has card request";
 	public static final String EOS_079_MSG = "Enrollment office Delivery Status could not update becuase of CMS or Portal Problems!!";
-	
+	public static final String EOS_084_MSG = "the lenght of depPhoneNumber is too short";
+	public static final String EOS_085_MSG = "depPhoneNumber cannot be null";
+
 
 	// com.gam.nocr.ems.biz.service.internal.impl.DepartmentServiceImpl
 	public static final String DSI_001 = "EMS_S_DSI_001";
