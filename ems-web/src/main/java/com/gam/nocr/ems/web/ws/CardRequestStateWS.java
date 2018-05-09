@@ -2,9 +2,11 @@ package com.gam.nocr.ems.web.ws;
 
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.Internal;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
+import org.slf4j.Logger;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -26,6 +28,7 @@ import javax.xml.ws.WebFault;
 public class CardRequestStateWS {
 
     private CardRequestDelegator cardRequestDelegator = new CardRequestDelegator();
+    private static final Logger logger = BaseLog.getLogger("UssdService");
 
     @WebMethod
     public String checkCardRequestState(
@@ -37,9 +40,11 @@ public class CardRequestStateWS {
         try {
             return cardRequestDelegator.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
         } catch (BaseException e) {
+            logger.error("Erorr In Calling checkCardRequestState Web service :", e);
             throw new InternalException(
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
+            logger.error("Exception In Calling checkCardRequestState Web service :", e);
             throw new InternalException(
                     WebExceptionCode.RQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.RQW_003), e);
         }

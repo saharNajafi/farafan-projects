@@ -2,7 +2,9 @@ package com.gam.nocr.ems.data.domain.ws;
 
 import com.gam.nocr.ems.util.EmsUtil;
 
-public class ImsCitizenInfoResponseWTO {
+import java.io.Serializable;
+
+public class ImsCitizenInfoResponseWTO implements Serializable{
 
 	private Long requestId;
 	private Boolean imsIsDown;

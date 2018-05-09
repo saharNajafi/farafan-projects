@@ -2,7 +2,9 @@ package com.gam.nocr.ems.data.domain.ws;
 
 import com.gam.nocr.ems.util.EmsUtil;
 
-public class ImsCitizenInfoRequestWTO {
+import java.io.Serializable;
+
+public class ImsCitizenInfoRequestWTO implements Serializable{
 
 	private Long requestId;
 

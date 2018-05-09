@@ -645,4 +645,10 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EMSWorkstationPMService0013 = "Username could not be empty";
     public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
 
+    //com.gam.nocr.ems.web.ws.WS.CardRequestStateWS
+    public static final String CRST_008 = "EMS_A_CRST_001";
+    public static final String CRST_008_MSG = "";
+
+
+
 }

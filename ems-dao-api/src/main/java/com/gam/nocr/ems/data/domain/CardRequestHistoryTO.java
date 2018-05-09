@@ -17,18 +17,17 @@ import java.util.Date;
 @Table(name = "EMST_CARD_REQUEST_HISTORY")
 @NamedQueries({
         @NamedQuery(name = "CardRequestHistoryTO.findByCardRequestId",
-        query = " select crh" +
-                " from CardRequestHistoryTO crh" +
-                " where crh.cardRequest.id=:cardRequestId" +
-                " order by crh.id desc "
+                query = " select crh" +
+                        " from CardRequestHistoryTO crh" +
+                        " where crh.cardRequest.id=:cardRequestId" +
+                        " order by crh.id desc "
         ),
 
         @NamedQuery(name = "CardRequestHistoryTO.findByCardRequestAndResult",
-        query = " select crh" +
-                " from CardRequestHistoryTO crh" +
-                " where crh.cardRequest.id=:cardRequestId" +
-                " and crh.result=:crhResult" +
-                " order by crh.id desc"
+                query = " select crh" +
+                        " from CardRequestHistoryTO crh" +
+                        " where crh.cardRequest.id=:cardRequestId" +
+                        " order by crh.id desc"
         )
 })
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD_REQUEST_HISTORY", allocationSize = 1)

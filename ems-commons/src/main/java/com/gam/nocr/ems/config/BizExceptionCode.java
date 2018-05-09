@@ -182,6 +182,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_038 = "EMS_S_CRE_038";
 	public static final String CRE_039 = "EMS_S_CRE_039";
 	public static final String CRE_040 = "EMS_S_CRE_040";
+	public static final String CRE_041 = "EMS_S_CRE_041";
+	public static final String CRE_042 = "EMS_S_CRE_042";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -191,7 +193,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_024_MSG = "the given priority is unvalid. priority must be  between 0 and 99";
 	public static final String CRE_026_MSG = "the given requestId or priority are null";
 	public static final String CRE_027_MSG = "requestId couldn't be null, please insert an ID";
-	
+	public static final String CRE_041_MSG = "Can not Find Card request history for not verified card request";
+
 	// com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
 	public static final String CRS_001 = "EMS_S_CRS_001";
 	public static final String CRS_002 = "EMS_S_CRS_002";

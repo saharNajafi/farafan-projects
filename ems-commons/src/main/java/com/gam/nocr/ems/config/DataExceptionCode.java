@@ -547,6 +547,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_096 = "EMS_D_CDI_096";
     public static final String CDI_097 = "EMS_D_CDI_097";
     public static final String CDI_098 = "EMS_D_CDI_098";
+    public static final String CDI_099 = "EMS_D_CDI_099";
 
     public static final String CDI_001_MSG = "Unable to create Card Request";
     public static final String CDI_002_MSG = "Integrity constraint violated, card with id {} not found";

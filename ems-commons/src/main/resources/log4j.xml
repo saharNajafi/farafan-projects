@@ -641,6 +641,18 @@
         </layout>
     </appender>
 
+    <appender name="UssdRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <param name="File"
+               value="${log_dir}/ussd-error.log"/>
+        <param name="MaxFileSize" value="100MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+
     <!-- ======================================================================== -->
     <!-- Logger -->
     <logger name="com.gam.nocr.ems.biz.service.external.impl"
@@ -911,6 +923,10 @@
         <appender-ref ref="ThreadLocalRollingAppender"/>
     </logger>
 
+    <logger name="UssdService" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="UssdRollingAppender"/>
+    </logger>
 
     <root>
         <level value="WARN"/>

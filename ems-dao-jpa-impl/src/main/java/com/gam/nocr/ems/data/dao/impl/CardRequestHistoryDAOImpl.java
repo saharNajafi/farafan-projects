@@ -1,19 +1,5 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.data.DataException;
@@ -31,6 +17,18 @@ import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.SequenceName;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.slf4j.Logger;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -97,7 +95,7 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
      * @param result        an instance of type {@link String} which represents a brief description about the done
      *                      operation
      * @return a list of type {@link com.gam.nocr.ems.data.domain.CardRequestHistoryTO} or null if there is nothing to
-     *         return
+     * return
      */
     @Override
     public List<CardRequestHistoryTO> findByCardRequestToAndResult(long cardRequestId,
@@ -310,7 +308,6 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
      * @param systemId     an enum type of {@link com.gam.nocr.ems.data.enums.SystemId}
      * @return a list of type {@link String} which represents the subsystem requestId
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public List<String> findSubSystemRequestIdsByRequestStateAndSystemId(CardRequestState requestState,
@@ -342,7 +339,6 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
      * @param nationalId an instance of type {@link String } which represents the citizen national Id
      * @return a list of type {@link com.gam.nocr.ems.data.domain.CardRequestHistoryTO}
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public List<CardRequestHistoryTO> findUniqueByNationalId(String nationalId) throws BaseException {
@@ -367,7 +363,6 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
      * @param subsystemRequestId is an instance of type {@link String} which represents the subsystem request id
      * @return a list of type {@link Long} which represents a specified cardRequestId
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public List<Long> findCardRequestIdsBySubSystemRequestId(String subsystemRequestId) throws BaseException {
@@ -523,86 +518,88 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
         }
     }
 
-    
-	@Override
-	public Boolean existInHistoryByCmsReqId(String cmsReqId, Long requestId) {
-		Long count = null;
-		try{
-			count = em
-					.createQuery(
-							"select count(crh.id) from CardRequestHistoryTO crh where crh.requestID = :cmsReqId and crh.cardRequest.id = :requestId and crh.systemID = :systemID and crh.cardRequestHistoryAction = :action",
-							Long.class).setParameter("cmsReqId", cmsReqId)
-					.setParameter("systemID", SystemId.CMS)
-					.setParameter("requestId", requestId).setParameter("action", CardRequestHistoryAction.PENDING_ISSUANCE).getSingleResult();
-		}catch(NoResultException e){
-			logger.error("ERROR_00000 : There is no CardRequestTO for cmsReqId = " + cmsReqId);
-		}
-		return (count == null || count.longValue() == 0) ? false : true;
-	}
-
-	@Override
-	public CardRequestHistoryTO findHistoryByRequestIdAndAction(Long reqId,
-			CardRequestHistoryAction action) throws BaseException {
-
-		try {
-			List<CardRequestHistoryTO> resultList = em
-					.createQuery(
-							"SELECT CRH FROM CardRequestHistoryTO CRH "
-									+ "WHERE CRH.cardRequest.id = :cardRequestId " +
-									"AND CRH.cardRequestHistoryAction in (:action) " +
-									"AND CRH.actor is not null  order by crh.date desc ",
-							CardRequestHistoryTO.class)
-					.setParameter("cardRequestId", reqId)
-					.setParameter("action", action).getResultList();
-			if (EmsUtil.checkListSize(resultList))
-				return resultList.get(0);
-			else
-				return null;
-
-		} catch (Exception e) {
-			throw new DataException(DataExceptionCode.CRH_011,
-					DataExceptionCode.GLB_005_MSG, e);
-		}
-
-	}
-/**
- * this method is used to fetch all nearly history base on given cardRequestId
- * @author ganjyar
- */
-
-	@Override
-	public List<CardRequestHistoryTO> fetchAllHistoryByRequestId(Long requestId)
-			throws BaseException {
-
-		try {
-			List<CardRequestHistoryTO> resultList = em
-					.createQuery(
-							"SELECT CRH FROM CardRequestHistoryTO CRH "
-									+ "WHERE CRH.cardRequest.id = :cardRequestId order by crh.date desc ",
-							CardRequestHistoryTO.class)
-					.setParameter("cardRequestId", requestId).getResultList();
-			if (EmsUtil.checkListSize(resultList))
-				return resultList;
-			else
-				return null;
-
-		} catch (Exception e) {
-			throw new DataException(DataExceptionCode.CRH_011,
-					DataExceptionCode.GLB_005_MSG, e);
-		}
-
-	}
 
     @Override
-    public CardRequestHistoryTO findByCardRequestId(Long cardRequestId) throws BaseException{
+    public Boolean existInHistoryByCmsReqId(String cmsReqId, Long requestId) {
+        Long count = null;
+        try {
+            count = em
+                    .createQuery(
+                            "select count(crh.id) from CardRequestHistoryTO crh where crh.requestID = :cmsReqId and crh.cardRequest.id = :requestId and crh.systemID = :systemID and crh.cardRequestHistoryAction = :action",
+                            Long.class).setParameter("cmsReqId", cmsReqId)
+                    .setParameter("systemID", SystemId.CMS)
+                    .setParameter("requestId", requestId).setParameter("action", CardRequestHistoryAction.PENDING_ISSUANCE).getSingleResult();
+        } catch (NoResultException e) {
+            logger.error("ERROR_00000 : There is no CardRequestTO for cmsReqId = " + cmsReqId);
+        }
+        return (count == null || count.longValue() == 0) ? false : true;
+    }
+
+    @Override
+    public CardRequestHistoryTO findHistoryByRequestIdAndAction(Long reqId,
+                                                                CardRequestHistoryAction action) throws BaseException {
+
+        try {
+            List<CardRequestHistoryTO> resultList = em
+                    .createQuery(
+                            "SELECT CRH FROM CardRequestHistoryTO CRH "
+                                    + "WHERE CRH.cardRequest.id = :cardRequestId " +
+                                    "AND CRH.cardRequestHistoryAction in (:action) " +
+                                    "AND CRH.actor is not null  order by crh.date desc ",
+                            CardRequestHistoryTO.class)
+                    .setParameter("cardRequestId", reqId)
+                    .setParameter("action", action).getResultList();
+            if (EmsUtil.checkListSize(resultList))
+                return resultList.get(0);
+            else
+                return null;
+
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CRH_011,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+
+    }
+
+    /**
+     * this method is used to fetch all nearly history base on given cardRequestId
+     *
+     * @author ganjyar
+     */
+
+    @Override
+    public List<CardRequestHistoryTO> fetchAllHistoryByRequestId(Long requestId)
+            throws BaseException {
+
+        try {
+            List<CardRequestHistoryTO> resultList = em
+                    .createQuery(
+                            "SELECT CRH FROM CardRequestHistoryTO CRH "
+                                    + "WHERE CRH.cardRequest.id = :cardRequestId order by crh.date desc ",
+                            CardRequestHistoryTO.class)
+                    .setParameter("cardRequestId", requestId).getResultList();
+            if (EmsUtil.checkListSize(resultList))
+                return resultList;
+            else
+                return null;
+
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CRH_011,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+
+    }
+
+    @Override
+    public CardRequestHistoryTO findByCardRequestId(Long cardRequestId) throws BaseException {
         try {
             List<CardRequestHistoryTO> cardRequestHistoryTOList =
                     em.createNamedQuery(
                             "CardRequestHistoryTO.findByCardRequestId")
                             .setParameter("cardRequestId", cardRequestId)
                             .getResultList();
-            if(cardRequestHistoryTOList.size() > 0)
-                return  cardRequestHistoryTOList.get(0);
+            if (cardRequestHistoryTOList.size() > 0)
+                return cardRequestHistoryTOList.get(0);
             else
                 return null;
         } catch (Exception e) {
@@ -610,21 +607,21 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
                     DataExceptionCode.GLB_005_MSG, e);
         }
     }
-@Override
-   public CardRequestHistoryTO findByCardRequestAndResult(Long cardRequestId, String crhResult) throws BaseException{
+
+    @Override
+    public CardRequestHistoryTO findByCardRequestAndResult(Long cardRequestId) throws BaseException {
         try {
             List<CardRequestHistoryTO> cardRequestHistoryTOList =
                     em.createNamedQuery(
                             "CardRequestHistoryTO.findByCardRequestAndResult")
                             .setParameter("cardRequestId", cardRequestId)
-                            .setParameter("crhResult", crhResult)
                             .getResultList();
-            if(cardRequestHistoryTOList.size() > 0)
-                return  cardRequestHistoryTOList.get(0);
+            if (cardRequestHistoryTOList.size() > 0)
+                return cardRequestHistoryTOList.get(0);
             else
                 return null;
         } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.CDI_098,
+            throw new DAOException(DataExceptionCode.CDI_099,
                     DataExceptionCode.GLB_005_MSG, e);
         }
     }
