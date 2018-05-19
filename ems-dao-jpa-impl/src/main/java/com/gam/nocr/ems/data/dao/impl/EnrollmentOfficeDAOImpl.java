@@ -550,11 +550,10 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 					.setParameter("eofId", eofId)
 					.getResultList();
 		}catch (Exception e) {
-				throw new DAOException(DataExceptionCode.ENI_013,
-						DataExceptionCode.GLB_005_MSG, e);
+				throw new DAOException(DataExceptionCode.ENI_015,
+						DataExceptionCode.ENI_015_MSG, e);
 			}
 		return enrollmentOfficeList != null ? enrollmentOfficeList.get(0) : null;
-
 	}
 	
 }

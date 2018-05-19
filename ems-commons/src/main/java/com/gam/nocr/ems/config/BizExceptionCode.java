@@ -184,6 +184,19 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_040 = "EMS_S_CRE_040";
 	public static final String CRE_041 = "EMS_S_CRE_041";
 	public static final String CRE_042 = "EMS_S_CRE_042";
+	public static final String CRE_043 = "EMS_S_CRE_043";
+	public static final String CRE_044 = "EMS_S_CRE_044";
+	public static final String CRE_045 = "EMS_S_CRE_045";
+	public static final String CRE_046 = "EMS_S_CRE_046";
+	public static final String CRE_047 = "EMS_S_CRE_047";
+	public static final String CRE_048 = "EMS_S_CRE_048";
+	public static final String CRE_049 = "EMS_S_CRE_049";
+	public static final String CRE_050 = "EMS_S_CRE_050";
+	public static final String CRE_051 = "EMS_S_CRE_051";
+	public static final String CRE_052 = "EMS_S_CRE_052";
+	public static final String CRE_053 = "EMS_S_CRE_053";
+	public static final String CRE_054 = "EMS_S_CRE_054";
+	public static final String CRE_055 = "EMS_S_CRE_055";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -194,6 +207,20 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_026_MSG = "the given requestId or priority are null";
 	public static final String CRE_027_MSG = "requestId couldn't be null, please insert an ID";
 	public static final String CRE_041_MSG = "Can not Find Card request history for not verified card request";
+	public static final String CRE_042_MSG = "an error has occurred in findReserved method";
+	public static final String CRE_043_MSG = "an error has occurred in findReservationAttended method";
+	public static final String CRE_044_MSG = "an error has occurred in findCrqFlagByCardRequest method";
+	public static final String CRE_045_MSG = "an error has occurred in findDeliveryOfficeByNationalId method";
+	public static final String CRE_046_MSG = "an error has occurred in findReadyToDeliverState method";
+	public static final String CRE_047_MSG = "an error has occurred in countResrevationHistoryByCardRequestId method";
+	public static final String CRE_048_MSG = "an error has occurred in getState method";
+	public static final String CRE_049_MSG = "an error has occurred in findCitizenIsAttended method";
+	public static final String CRE_050_MSG = "an error has occurred in checkCardRequestState method";
+	public static final String CRE_051_MSG = "an error has occurred in findCardRequestStateByNationalIdAndBirthCertificateSeries method";
+	public static final String CRE_052_MSG = "an error has occurred in checkWhiteList method";
+	public static final String CRE_053_MSG = "an error has occurred in findCardRequestStateByTrackingId method";
+	public static final String CRE_054_MSG = "an error has occurred in findCardRequestStateByNationalIdAndMobile method";
+	public static final String CRE_055_MSG = "Cannot instantiate CardRequestStateWS service";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
 	public static final String CRS_001 = "EMS_S_CRS_001";

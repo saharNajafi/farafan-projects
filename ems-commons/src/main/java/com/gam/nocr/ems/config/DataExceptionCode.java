@@ -548,6 +548,11 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_097 = "EMS_D_CDI_097";
     public static final String CDI_098 = "EMS_D_CDI_098";
     public static final String CDI_099 = "EMS_D_CDI_099";
+    public static final String CDI_101 = "EMS_D_CDI_101";
+    public static final String CDI_102 = "EMS_D_CDI_102";
+    public static final String CDI_103 = "EMS_D_CDI_103";
+    public static final String CDI_104 = "EMS_D_CDI_104";
+    public static final String CDI_106 = "EMS_D_CDI_106";
 
     public static final String CDI_001_MSG = "Unable to create Card Request";
     public static final String CDI_002_MSG = "Integrity constraint violated, card with id {} not found";
@@ -573,6 +578,12 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_058_MSG = "Integrity constraint violated, requested action transition is not permitted.";
     public static final String CDI_089_MSG = "Can not referesh entity manager";
     public static final String CDI_090_MSG = "Can not update deliver Office id in cardRequest for disableling office deliver feture";
+    public static final String CDI_101_MSG = "an error occur in findCardRequestStateByNationalId method";
+    public static final String CDI_102_MSG = "an error occur in findByCardRequestId method";
+    public static final String CDI_103_MSG = "an error occur in findCardRequestStateByNationalIdAndMobile method";
+    public static final String CDI_104_MSG = "an error occur in findCardRequestStateByNationalIdAndBirthCertificateSeries method";
+    public static final String CDI_106_MSG = "an error occur in findCardRequestStateByTrackingId method";
+
 
     // com.gam.nocr.ems.data.dao.impl.DocTypeDAOImpl
     public static final String DCT_001 = "EMS_D_DCT_001";
@@ -641,6 +652,9 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ENI_012 = "EMS_D_ENI_012";
     public static final String ENI_013 = "EMS_D_ENI_013";
     public static final String ENI_014 = "EMS_D_ENI_014";
+    public static final String ENI_015 = "EMS_D_ENI_015";
+    public static final String ENI_015_MSG = "an error occur in findEnrollmentOfficeById method";
+
     // com.gam.nocr.ems.data.dao.impl.Estelam2FailureLogDAOImpl
     public static final String EFI_001 = "EMS_D_EFI_001";
 

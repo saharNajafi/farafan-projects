@@ -598,31 +598,10 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
                             "CardRequestHistoryTO.findByCardRequestId")
                             .setParameter("cardRequestId", cardRequestId)
                             .getResultList();
-            if (cardRequestHistoryTOList.size() > 0)
-                return cardRequestHistoryTOList.get(0);
-            else
-                return null;
+           return cardRequestHistoryTOList.size() > 0 ?  cardRequestHistoryTOList.get(0) : null;
         } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.CDI_098,
-                    DataExceptionCode.GLB_005_MSG, e);
-        }
-    }
-
-    @Override
-    public CardRequestHistoryTO findByCardRequestAndResult(Long cardRequestId) throws BaseException {
-        try {
-            List<CardRequestHistoryTO> cardRequestHistoryTOList =
-                    em.createNamedQuery(
-                            "CardRequestHistoryTO.findByCardRequestAndResult")
-                            .setParameter("cardRequestId", cardRequestId)
-                            .getResultList();
-            if (cardRequestHistoryTOList.size() > 0)
-                return cardRequestHistoryTOList.get(0);
-            else
-                return null;
-        } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.CDI_099,
-                    DataExceptionCode.GLB_005_MSG, e);
+            throw new DAOException(DataExceptionCode.CDI_102,
+                    DataExceptionCode.CDI_102_MSG, e);
         }
     }
 }

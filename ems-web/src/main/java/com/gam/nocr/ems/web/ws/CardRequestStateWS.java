@@ -36,17 +36,17 @@ public class CardRequestStateWS {
             @XmlElement(required = true, nillable = false) String nationalId,
             @WebParam(name = "Mobile", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String mobile
-            ) throws InternalException {
+            ) throws InternalException, BaseException {
         try {
             return cardRequestDelegator.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
         } catch (BaseException e) {
-            logger.error("Erorr In Calling checkCardRequestState Web service :", e);
+            logger.error("Error In Calling checkCardRequestState Web service :", e);
             throw new InternalException(
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
             logger.error("Exception In Calling checkCardRequestState Web service :", e);
             throw new InternalException(
-                    WebExceptionCode.RQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.RQW_003), e);
+                    WebExceptionCode.CRQW_001_MSG, new EMSWebServiceFault(WebExceptionCode.CRQW_001), e);
         }
     }
 
@@ -58,23 +58,25 @@ public class CardRequestStateWS {
             @XmlElement(required = true, nillable = false) String birthCertificateSeries,
             @WebParam(name = "CitizenBirthDate", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String citizenBirthDate
-    ) throws InternalException {
+    ) throws InternalException, BaseException {
         try {
             return cardRequestDelegator.findCardRequestStateByNationalIdAndBirthCertificateSeries(
                     nationalID, birthCertificateSeries, citizenBirthDate);
-        } catch (BaseException e) {
+        }
+        catch (BaseException e) {
             throw new InternalException(
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new InternalException(
-                    WebExceptionCode.RQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.RQW_003), e);
+                    WebExceptionCode.CRQW_002_MSG, new EMSWebServiceFault(WebExceptionCode.CRQW_002), e);
         }
     }
 
     @WebMethod
     public String checkTrackingId(
             @WebParam(name = "TrackingId", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) String trackingId) throws InternalException {
+            @XmlElement(required = true, nillable = false) String trackingId) throws InternalException, BaseException {
         try {
             return cardRequestDelegator.findCardRequestStateByTrackingId(trackingId);
         } catch (BaseException e) {
@@ -82,7 +84,7 @@ public class CardRequestStateWS {
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
             throw new InternalException(
-                    WebExceptionCode.RQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.RQW_003), e);
+                    WebExceptionCode.CRQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.CRQW_003), e);
         }
     }
 }

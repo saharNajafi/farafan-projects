@@ -646,8 +646,13 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
 
     //com.gam.nocr.ems.web.ws.WS.CardRequestStateWS
-    public static final String CRST_008 = "EMS_A_CRST_001";
-    public static final String CRST_008_MSG = "";
+    public static final String CRQW_001 = "EMS_W_CRQW_001";
+    public static final String CRQW_002 = "EMS_W_CRQW_002";
+    public static final String CRQW_003 = "EMS_W_CRQW_003";
+
+    public static final String CRQW_001_MSG = "unexpected exception happened while trying to perform checkCardRequestState action";
+    public static final String CRQW_002_MSG = "unexpected exception happened while trying to perform checkBirthCertificateSerial action";
+    public static final String CRQW_003_MSG = "unexpected exception happened while trying to perform checkTrackingId action";
 
 
 

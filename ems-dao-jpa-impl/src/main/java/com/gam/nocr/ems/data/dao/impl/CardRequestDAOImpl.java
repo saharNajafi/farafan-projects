@@ -4698,16 +4698,14 @@ CardRequestDAOLocal, CardRequestDAORemote {
 	public CardRequestTO findCardRequestStateByTrackingId(
 			String trackingId) throws DAOException {
 		try {
-			List<CardRequestTO> cardRequestTOList = em.createNamedQuery("CardRequestTO.findCardRequestStateByTrackingId")
-					.setParameter("trackingId", trackingId)
-					.getResultList();
-			if (cardRequestTOList.size() > 0)
-				return  cardRequestTOList.get(0);
-			else
-				return null;
+			List<CardRequestTO> cardRequestTOList =
+					em.createNamedQuery("CardRequestTO.findCardRequestStateByTrackingId")
+							.setParameter("trackingId", trackingId)
+							.getResultList();
+			return cardRequestTOList.size() > 0 ? cardRequestTOList.get(0) : null;
 		} catch (Exception e) {
-			throw new DAOException(DataExceptionCode.CDI_098,
-					DataExceptionCode.GLB_005_MSG, e);
+			throw new DAOException(DataExceptionCode.CDI_106,
+					DataExceptionCode.CDI_106_MSG, e);
 		}
 	}
 
@@ -4720,13 +4718,10 @@ CardRequestDAOLocal, CardRequestDAORemote {
 							.setParameter("nationalId", nationalId)
 							.setParameter("mobile", mobile)
 							.getResultList();
-			if (cardRequestTOList.size() > 0)
-				return cardRequestTOList.get(0);
-			else
-				return null;
+				return cardRequestTOList.size() > 0 ? cardRequestTOList.get(0) : null;
 		} catch (Exception e) {
-			throw new DAOException(DataExceptionCode.CDI_098,
-					DataExceptionCode.GLB_005_MSG, e);
+			throw new DAOException(DataExceptionCode.CDI_103,
+					DataExceptionCode.CDI_103_MSG, e);
 		}
 	}
 
@@ -4740,13 +4735,10 @@ CardRequestDAOLocal, CardRequestDAORemote {
 							.setParameter("nationalId", nationalId)
 							.setParameter("birthCertificateSeries", birthCertificateSeries)
 							.getResultList();
-			if (cardRequestTOList.size() > 0)
-				return cardRequestTOList.get(0);
-			else
-				return null;
+			return cardRequestTOList.size() > 0 ? cardRequestTOList.get(0) : null;
 		} catch (Exception e) {
-			throw new DAOException(DataExceptionCode.CDI_098,
-					DataExceptionCode.GLB_005_MSG, e);
+			throw new DAOException(DataExceptionCode.CDI_104,
+					DataExceptionCode.CDI_104_MSG, e);
 		}
 	}
 
@@ -4754,17 +4746,12 @@ CardRequestDAOLocal, CardRequestDAORemote {
 	public CardRequestTO findCardRequestStateByNationalId(String nationalId) throws DAOException {
 		try {
 			List<CardRequestTO> cardRequestTOList =
-					em.createNamedQuery(
-					"CardRequestTO.findCardRequestStateByNationalId")
+					em.createNamedQuery("CardRequestTO.findCardRequestStateByNationalId")
 					.setParameter("nationalId", nationalId)
 					.getResultList();
-			if(cardRequestTOList.size() > 0)
-			return  cardRequestTOList.get(0);
-			else
-				return null;
+			return cardRequestTOList.size() > 0 ? cardRequestTOList.get(0) : null;
 		} catch (Exception e) {
-			throw new DAOException(DataExceptionCode.CDI_098,
-					DataExceptionCode.GLB_005_MSG, e);
+			throw new DAOException(DataExceptionCode.CDI_101, DataExceptionCode.CDI_101_MSG, e);
 		}
 	}
 

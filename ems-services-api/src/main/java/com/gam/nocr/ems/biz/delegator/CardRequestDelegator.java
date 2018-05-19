@@ -342,10 +342,8 @@ public class CardRequestDelegator implements Delegator {
 	 *
 	 */
 
-	public String findCardRequestStateByTrackingId(
-			String trackingId) throws BaseException{
-	return getService(null)
-					.findCardRequestStateByTrackingId(trackingId);
+	public String findCardRequestStateByTrackingId(String trackingId) throws BaseException {
+		return getService(null).findCardRequestStateByTrackingId(trackingId);
 	}
 
 	/**
@@ -358,10 +356,8 @@ public class CardRequestDelegator implements Delegator {
 	 */
 
 
-	public String findCardRequestStateByNationalIdAndMobile(
-			String nationalId, String mobile) throws BaseException{
-		return  getService(null)
-					.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
+	public String findCardRequestStateByNationalIdAndMobile(String nationalId, String mobile) throws BaseException{
+		return  getService(null).findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
 	}
 
 	/**
