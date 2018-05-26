@@ -1144,7 +1144,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 state = getState(cardRequestTO);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_053,
-                    BizExceptionCode.CRE_053_MSG);
+                    BizExceptionCode.CRE_053_MSG, e);
         }
         return state;
     }
@@ -1175,7 +1175,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_054,
-                    BizExceptionCode.CRE_054_MSG);
+                    BizExceptionCode.CRE_054_MSG, e);
         }
         return state;
     }
@@ -1223,19 +1223,19 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_051,
-                    BizExceptionCode.CRE_051_MSG);
+                    BizExceptionCode.CRE_051_MSG, e);
         } catch (BaseException_Exception e) {
             ussdLogger.error(BizExceptionCode.CRE_052 + BizExceptionCode.CRE_052_MSG + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_052,
-                    BizExceptionCode.CRE_052_MSG);
+                    BizExceptionCode.CRE_052_MSG, e);
         } catch (ExternalInterfaceException_Exception e) {
             ussdLogger.error(BizExceptionCode.CRE_050 + BizExceptionCode.CRE_050_MSG + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_050,
-                    BizExceptionCode.CRE_050_MSG);
+                    BizExceptionCode.CRE_050_MSG, e);
         } catch (UnsupportedEncodingException_Exception e) {
             ussdLogger.error(BizExceptionCode.CRE_052 + BizExceptionCode.CRE_052_MSG + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_052,
-                    BizExceptionCode.CRE_052_MSG);
+                    BizExceptionCode.CRE_052_MSG, e);
         }
         return state;
 
@@ -1251,18 +1251,18 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 notAttended = true;
         }catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_043,
-                    BizExceptionCode.CRE_043_MSG);
+                    BizExceptionCode.CRE_043_MSG, e);
         } catch (ExternalInterfaceException_Exception e) {
             ussdLogger.error(BizExceptionCode.CRE_049 + BizExceptionCode.CRE_049_MSG + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_049,
-                    BizExceptionCode.CRE_049_MSG);
+                    BizExceptionCode.CRE_049_MSG, e);
         }
         return notAttended;
     }
 
     private String findReadyToDeliverState(CardRequestTO cardRequestTO) throws BaseException  {
         String state = "";
-        String result;
+        String result = "";
         try {
             String deliveryOffice = null;
             try {
@@ -1271,7 +1271,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }catch (ExternalInterfaceException_Exception e) {
                 ussdLogger.error(BizExceptionCode.CRE_045 + BizExceptionCode.CRE_045_MSG + e.getMessage(), e);
                 throw new ServiceException(BizExceptionCode.CRE_045,
-                        BizExceptionCode.CRE_045_MSG);
+                        BizExceptionCode.CRE_045_MSG, e);
             }
             if (deliveryOffice.equals("PRT_W_CRSW_004")) {
                 EnrollmentOfficeTO eofByCardRequest =
@@ -1313,9 +1313,20 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                                     eofDeliveredOfficeId.getAddress());
                 }
             }
-        } catch (BaseException e) {
+            ussdLogger.info("incoming result from NOCR SMS service is : " + result);
+
+            if (SmsMessages.INVALID_USER.name().equals(result))
+                ussdLogger.error("incoming result from NOCR SMS service is : " + BizExceptionCode.PSS_010_MSG);
+            else if (SmsMessages.INVALID_IP_ADDRESS.name().equals(result))
+                ussdLogger.error("incoming result from NOCR SMS service is : " + BizExceptionCode.PSS_011_MSG);
+            else if (SmsMessages.SEND_ERROR.name().equals(result))
+                ussdLogger.error("incoming result from NOCR SMS service is : " + BizExceptionCode.PSS_012_MSG);
+            else if (SmsMessages.SMS_VERY_LONG.name().equals(result))
+                ussdLogger.error("incoming result from NOCR SMS service is : " + BizExceptionCode.PSS_013_MSG);
+        } catch (Exception e) {
+            ussdLogger.error(e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_046,
-                    BizExceptionCode.CRE_046_MSG);
+                    BizExceptionCode.CRE_046_MSG, e);
         }
         return state;
     }
@@ -1458,7 +1469,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_044,
-                    BizExceptionCode.CRE_044_MSG);
+                    BizExceptionCode.CRE_044_MSG, e);
         }
         return state;
     }
@@ -1481,7 +1492,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_041,
-                    BizExceptionCode.CRE_041_MSG);
+                    BizExceptionCode.CRE_041_MSG, e);
         }
 
         return state;
@@ -1497,7 +1508,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 state = true;
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.CRE_042,
-                    BizExceptionCode.CRE_042_MSG);
+                    BizExceptionCode.CRE_042_MSG, e);
         }
         return state;
     }
@@ -1626,11 +1637,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_048,
-                    BizExceptionCode.CRE_048_MSG);
+                    BizExceptionCode.CRE_048_MSG, e);
         } catch (ExternalInterfaceException_Exception e) {
             ussdLogger.error(BizExceptionCode.CRE_047 + BizExceptionCode.CRE_047_MSG + e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_047,
-                    BizExceptionCode.CRE_047_MSG);
+                    BizExceptionCode.CRE_047_MSG, e);
         }
         return state;
     }
