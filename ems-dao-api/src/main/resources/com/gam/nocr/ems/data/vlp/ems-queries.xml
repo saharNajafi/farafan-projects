@@ -124,6 +124,9 @@
 					e.EOF_HAS_ELEVATOR,
 					e.EOF_HAS_PORTABILITY_EQUIPMENT,
 					e.SINGLE_STAGE_ONLY,
+					e.EOF_IS_ACTIVE,
+					e.EOF_IS_POST_NEEDED,
+					e.EOF_POST_DESTINATION_CODE,
 					d.dep_dn || '.' ||
 					d.dep_parent_dn fqdn,
 					(select dp.dep_name from emst_department dp
@@ -246,32 +249,8 @@
 				<part name="province">
 					and lp.loc_name like {province}
 				</part>
-				<part name="depPhoneNumber">
-					and d.dep_phone_number like {depPhoneNumber}
-				</part>
-				<part name="thursdayMorningActive">
-					and e.THURSDAY_MORNING_ACTIVE like {thursdayMorningActive}
-				</part>
-				<part name="thursdayEveningActive">
-					and e.THURSDAY_EVENING_ACTIVE like {thursdayEveningActive}
-				</part>
-				<part name="fridayMorningActive">
-					and e.FRIDAY_MORNING_ACTIVE like {fridayMorningActive}
-				</part>
-				<part name="fridayEveningActive">
-					and e.FRIDAY_EVENING_ACTIVE like {fridayEveningActive}
-				</part>
 				<part name="singleStageOnly">
 					and e.SINGLE_STAGE_ONLY like {singleStageOnly}
-				</part>
-				<part name="hasStair">
-					and e.EOF_HAS_STAIR like {hasStair}
-				</part>
-				<part name="hasElevator">
-					and e.EOF_HAS_ELEVATOR like {hasElevator}
-				</part>
-				<part name="hasPortabilityEquipment">
-					and e.EOF_HAS_PORTABILITY_EQUIPMENT like {hasPortabilityEquipment}
 				</part>
 				<order-by>
 					d.dep_id
@@ -333,6 +312,9 @@
                 <field name="hasStair" column="EOF_HAS_STAIR"/>
                 <field name="hasElevator" column="EOF_HAS_ELEVATOR"/>
                 <field name="hasPortabilityEquipment" column="EOF_HAS_PORTABILITY_EQUIPMENT"/>
+                <field name="isActive" column="EOF_IS_ACTIVE"/>
+                <field name="isPostNeede" column="EOF_IS_POST_NEEDED"/>
+                <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
 			</dto-fields>
 		</dto>
 	</list>

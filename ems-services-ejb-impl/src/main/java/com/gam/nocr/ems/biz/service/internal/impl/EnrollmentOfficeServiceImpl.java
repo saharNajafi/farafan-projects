@@ -469,6 +469,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			office.setFridayMorningActive(enrollmentOfficeVTO.getFridayMorningActive());
 			office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
 			office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
+			office.setActive(enrollmentOfficeVTO.getActive());
+			office.setPostNeeded(enrollmentOfficeVTO.getPostNeede());
+			office.setPostDestinationCode(enrollmentOfficeVTO.getPostDestinationCode());
 
             if(enrollmentOfficeVTO.getKhosusiType().equals(OfficeType.NOCR.name()) 
             		|| enrollmentOfficeVTO.getKhosusiType().equals("0") )
@@ -584,6 +587,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
 			office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
 			office.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
+			office.setActive(enrollmentOfficeVTO.getActive());
+			office.setPostNeeded(enrollmentOfficeVTO.getPostNeede());
+			office.setPostDestinationCode(enrollmentOfficeVTO.getPostDestinationCode());
             if (EnrollmentOfficeType.NOCR.equals(office.getType()) &&
                     EnrollmentOfficeType.OFFICE.name().equals(enrollmentOfficeVTO.getOfficeType()))
                 throw new ServiceException(BizExceptionCode.EOS_069, BizExceptionCode.EOS_069_MSG);
@@ -755,6 +761,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			vto.setHasStair(office.getHasStair());
 			vto.setHasElevator(office.getHasElevator());
 			vto.setHasPortabilityEquipment(office.getHasPortabilityEquipment());
+			vto.setActive(office.getActive());
+			vto.setPostNeede(office.getPostNeeded());
+			vto.setPostDestinationCode(office.getPostDestinationCode());
 			return vto;
 		} catch (BaseException e) {
 			throw e;
