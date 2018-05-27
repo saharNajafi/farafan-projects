@@ -1,28 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
-import gampooya.tools.security.SecurityContextService;
-import gampooya.tools.vlp.ListException;
-import gampooya.tools.vlp.ValueListHandler;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
-
-import javax.annotation.Resource;
-import javax.ejb.AsyncResult;
-import javax.ejb.Asynchronous;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-
-import org.displaytag.exception.ListHandlerException;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -37,52 +14,29 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
-import com.gam.nocr.ems.biz.service.BusinessLogService;
-import com.gam.nocr.ems.biz.service.CMSService;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.GAASService;
-import com.gam.nocr.ems.biz.service.PortalBaseInfoService;
-import com.gam.nocr.ems.biz.service.TokenManagementService;
-import com.gam.nocr.ems.biz.service.UserManagementService;
-import com.gam.nocr.ems.config.BizExceptionCode;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.EMSValueListProvider;
-import com.gam.nocr.ems.config.ProfileHelper;
-import com.gam.nocr.ems.config.ProfileKeyName;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.DepartmentDAO;
-import com.gam.nocr.ems.data.dao.DispatchDAO;
-import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
-import com.gam.nocr.ems.data.dao.OfficeSettingDAO;
-import com.gam.nocr.ems.data.dao.PersonDAO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.DepartmentTO;
-import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.domain.LocationTO;
-import com.gam.nocr.ems.data.domain.OfficeSettingTO;
-import com.gam.nocr.ems.data.domain.PersonTO;
-import com.gam.nocr.ems.data.domain.RatingInfoTO;
+import com.gam.nocr.ems.biz.service.*;
+import com.gam.nocr.ems.config.*;
+import com.gam.nocr.ems.data.dao.*;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
-import com.gam.nocr.ems.data.domain.vol.PermissionVTO;
-import com.gam.nocr.ems.data.domain.vol.RoleVTO;
-import com.gam.nocr.ems.data.domain.vol.UserInfoVTO;
-import com.gam.nocr.ems.data.enums.BooleanType;
-import com.gam.nocr.ems.data.enums.BusinessLogAction;
-import com.gam.nocr.ems.data.enums.BusinessLogEntity;
-import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.DepartmentDispatchSendType;
-import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
-import com.gam.nocr.ems.data.enums.EnrollmentOfficeStatus;
-import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
-import com.gam.nocr.ems.data.enums.OfficeCalenderType;
-import com.gam.nocr.ems.data.enums.OfficeSettingType;
-import com.gam.nocr.ems.data.enums.OfficeType;
-import com.gam.nocr.ems.data.enums.SystemId;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.util.EmsUtil;
+import gampooya.tools.security.SecurityContextService;
+import gampooya.tools.vlp.ListException;
+import gampooya.tools.vlp.ValueListHandler;
+import org.displaytag.exception.ListHandlerException;
+import org.slf4j.Logger;
+
+import javax.annotation.Resource;
+import javax.ejb.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Future;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
 /**
  * <p>
@@ -507,14 +461,14 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
             office.setKhosusiType(OfficeType.valueOf(enrollmentOfficeVTO.getKhosusiType()));
 //            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
-			office.setHasStair((short) (enrollmentOfficeVTO.getHasStair() ? 1: 0));
-			office.setHasElevator((short) (enrollmentOfficeVTO.getHasElevator() ? 1: 0));
-			office.setHasPortabilityEquipment((short) (enrollmentOfficeVTO.getHasPortabilityEquipment() ? 1: 0));
+			office.setHasStair(enrollmentOfficeVTO.getHasStair());
+			office.setHasElevator(enrollmentOfficeVTO.getHasElevator());
+			office.setHasPortabilityEquipment(enrollmentOfficeVTO.getHasPortabilityEquipment());
 			office.setThursdayMorningActive(enrollmentOfficeVTO.getThursdayMorningActive());
 			office.setThursdayEveningActive(enrollmentOfficeVTO.getThursdayEveningActive());
 			office.setFridayMorningActive(enrollmentOfficeVTO.getFridayMorningActive());
 			office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
-			office.setSingleStageOnly((short)(enrollmentOfficeVTO.getSingleStageOnly() ? 1: 0));
+			office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
 
             if(enrollmentOfficeVTO.getKhosusiType().equals(OfficeType.NOCR.name()) 
             		|| enrollmentOfficeVTO.getKhosusiType().equals("0") )
@@ -621,14 +575,14 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
 //            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
-			office.setHasStair((short) (enrollmentOfficeVTO.getHasStair() ? 1 : 0));
-			office.setHasElevator((short)(enrollmentOfficeVTO.getHasElevator() ? 1 : 0));
-			office.setHasPortabilityEquipment((short)(enrollmentOfficeVTO.getHasPortabilityEquipment() ? 1 : 0));
+			office.setHasStair(enrollmentOfficeVTO.getHasStair());
+			office.setHasElevator(enrollmentOfficeVTO.getHasElevator());
+			office.setHasPortabilityEquipment(enrollmentOfficeVTO.getHasPortabilityEquipment());
 			office.setThursdayMorningActive(enrollmentOfficeVTO.getThursdayMorningActive());
 			office.setThursdayEveningActive(enrollmentOfficeVTO.getThursdayEveningActive());
 			office.setFridayMorningActive(enrollmentOfficeVTO.getFridayMorningActive());
 			office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
-			office.setSingleStageOnly((short)(enrollmentOfficeVTO.getSingleStageOnly() ? 1 : 0));
+			office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
 			office.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
             if (EnrollmentOfficeType.NOCR.equals(office.getType()) &&
                     EnrollmentOfficeType.OFFICE.name().equals(enrollmentOfficeVTO.getOfficeType()))
@@ -797,10 +751,10 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			vto.setThursdayEveningActive(office.getThursdayMorningActive());
 			vto.setFridayMorningActive(office.getFridayMorningActive());
 			vto.setFridayEveningActive(office.getFridayEveningActive());
-			vto.setSingleStageOnly(office.getSingleStageOnly() != 0);
-			vto.setHasStair(office.getHasStair() != 0);
-			vto.setHasElevator(office.getHasElevator() != 0);
-			vto.setHasPortabilityEquipment(office.getHasPortabilityEquipment() != 0);
+			vto.setSingleStageOnly(office.getSingleStageOnly());
+			vto.setHasStair(office.getHasStair());
+			vto.setHasElevator(office.getHasElevator());
+			vto.setHasPortabilityEquipment(office.getHasPortabilityEquipment());
 			return vto;
 		} catch (BaseException e) {
 			throw e;

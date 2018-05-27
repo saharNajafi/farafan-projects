@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "EMST_ENROLLMENT_OFFICE")
 @NamedQueries({
         @NamedQuery(
-                name ="EnrollmentOfficeTO.findEnrollmentOfficeById",
+                name = "EnrollmentOfficeTO.findEnrollmentOfficeById",
                 query = " select eof" +
                         " from EnrollmentOfficeTO eof" +
                         " where eof.id =:eofId"
@@ -46,17 +46,19 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
     private OfficeCalenderType calenderType;
     private String postDestinationCode;
     private Boolean isPostNeeded = true;
-    private short hasStair;
-    private short hasElevator;
-    private short hasPortabilityEquipment;
+    private Boolean hasStair;
+    private Boolean hasElevator;
+    private Boolean hasPortabilityEquipment;
+    private Boolean isActive;
+    private List<OfficeCapacityTO> officeCapacityTO;
     private Boolean thursdayMorningActive = false;
     private Boolean thursdayEveningActive = false;
     private Boolean fridayMorningActive = false;
     private Boolean fridayEveningActive = false;
-    private short singleStageOnly;
+    private Boolean singleStageOnly;
 
 
-	public EnrollmentOfficeTO() {
+    public EnrollmentOfficeTO() {
     }
 
     public EnrollmentOfficeTO(Long id) {
@@ -137,17 +139,17 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 
     public void setType(EnrollmentOfficeType type) {
         this.type = type;
-    }    
+    }
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "EOF_DELIVER_TYPE")
     public EnrollmentOfficeDeliverStatus getDeliver() {
-		return deliver;
-	}
+        return deliver;
+    }
 
-	public void setDeliver(EnrollmentOfficeDeliverStatus deliver) {
-		this.deliver = deliver;
-	}
+    public void setDeliver(EnrollmentOfficeDeliverStatus deliver) {
+        this.deliver = deliver;
+    }
 
 
     @Column(name = "EOF_WORKING_HOURS_FROM")
@@ -188,26 +190,26 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
     }
 
     @Enumerated(EnumType.ORDINAL)
-	@Column(name = "EOF_KHOSUSI_TYPE")
+    @Column(name = "EOF_KHOSUSI_TYPE")
     public OfficeType getKhosusiType() {
-    	return khosusiType;
+        return khosusiType;
     }
-    
+
     public void setKhosusiType(OfficeType khosusiType) {
-    	this.khosusiType = khosusiType;
+        this.khosusiType = khosusiType;
     }
-    
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "EOF_CALENDER_TYPE")
-	public OfficeCalenderType getCalenderType() {
-		return calenderType;
-	}
+    public OfficeCalenderType getCalenderType() {
+        return calenderType;
+    }
 
-	public void setCalenderType(OfficeCalenderType calenderType) {
-		this.calenderType = calenderType;
-	}
+    public void setCalenderType(OfficeCalenderType calenderType) {
+        this.calenderType = calenderType;
+    }
 
-    @Column(name = "EOF_POST_DESTINATION_CODE",length = 10)
+    @Column(name = "EOF_POST_DESTINATION_CODE", length = 10)
     public String getPostDestinationCode() {
         return postDestinationCode;
     }
@@ -217,43 +219,63 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
     }
 
     @Column(name = "EOF_IS_POST_NEEDED")
-    public Boolean getIsPostNeeded() {
+    public Boolean getPostNeeded() {
         return isPostNeeded;
     }
 
-    public void setIsPostNeeded(Boolean isPostNeeded) {
-        this.isPostNeeded = isPostNeeded;
+    public void setPostNeeded(Boolean postNeeded) {
+        isPostNeeded = postNeeded;
     }
+
     @Column(name = "EOF_HAS_STAIR", nullable = false)
-    public short getHasStair() {
+    public Boolean getHasStair() {
         return hasStair;
     }
 
-    public void setHasStair(short hasStair) {
+    public void setHasStair(Boolean hasStair) {
         this.hasStair = hasStair;
     }
 
     @Column(name = "EOF_HAS_ELEVATOR", nullable = false)
-    public short getHasElevator() {
+    public Boolean getHasElevator() {
         return hasElevator;
     }
 
-    public void setHasElevator(short hasElevator) {
+    public void setHasElevator(Boolean hasElevator) {
         this.hasElevator = hasElevator;
     }
 
     @Column(name = "EOF_HAS_PORTABILITY_EQUIPMENT", nullable = false)
-    public short getHasPortabilityEquipment() {
+    public Boolean getHasPortabilityEquipment() {
         return hasPortabilityEquipment;
     }
 
-    public void setHasPortabilityEquipment(short hasPortabilityEquipment) {
+    public void setHasPortabilityEquipment(Boolean hasPortabilityEquipment) {
         this.hasPortabilityEquipment = hasPortabilityEquipment;
+    }
+
+    @Column(name = "EOF_IS_ACTIVE")
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    @OneToMany(mappedBy = "enrollmentOffice")
+    @JsonIgnore
+    public List<OfficeCapacityTO> getOfficeCapacityTO() {
+        return officeCapacityTO;
+    }
+
+    public void setOfficeCapacityTO(List<OfficeCapacityTO> officeCapacityTO) {
+        this.officeCapacityTO = officeCapacityTO;
     }
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "THURSDAY_MORNING_ACTIVE" ,columnDefinition = "NUMBER(1) DEFAULT 0")
+    @Column(name = "THURSDAY_MORNING_ACTIVE", columnDefinition = "NUMBER(1) DEFAULT 0")
     public Boolean getThursdayMorningActive() {
         return thursdayMorningActive;
     }
@@ -264,7 +286,7 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "THURSDAY_EVENING_ACTIVE" ,columnDefinition = "NUMBER(1) DEFAULT 0" )
+    @Column(name = "THURSDAY_EVENING_ACTIVE", columnDefinition = "NUMBER(1) DEFAULT 0")
     public Boolean getThursdayEveningActive() {
         return thursdayEveningActive;
     }
@@ -275,7 +297,7 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FRIDAY_MORNING_ACTIVE" ,columnDefinition = "NUMBER(1) DEFAULT 0")
+    @Column(name = "FRIDAY_MORNING_ACTIVE", columnDefinition = "NUMBER(1) DEFAULT 0")
     public Boolean getFridayMorningActive() {
         return fridayMorningActive;
     }
@@ -286,7 +308,7 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FRIDAY_EVENING_ACTIVE",columnDefinition = "NUMBER(1) DEFAULT 0" )
+    @Column(name = "FRIDAY_EVENING_ACTIVE", columnDefinition = "NUMBER(1) DEFAULT 0")
     public Boolean getFridayEveningActive() {
         return fridayEveningActive;
     }
@@ -295,14 +317,16 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
         this.fridayEveningActive = fridayEveningActive;
     }
 
+    @Basic(optional = false)
     @Column(name = "SINGLE_STAGE_ONLY")
-    public short getSingleStageOnly() {
+    public Boolean getSingleStageOnly() {
         return singleStageOnly;
     }
 
-    public void setSingleStageOnly(short singleStageOnly) {
+    public void setSingleStageOnly(Boolean singleStageOnly) {
         this.singleStageOnly = singleStageOnly;
     }
+
 
     @Override
     public String toString() {
@@ -316,7 +340,6 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
         returnValue.append(" }");
         return returnValue.toString();
     }
-
 
 
 }
