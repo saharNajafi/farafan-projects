@@ -23,7 +23,8 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
     buildFormItems: function () {
         return [
             {
-                xtype: 'hiddenfield',
+                xtype: 'numberfield',
+                hidden: true,
                 itemId: 'id'
             },
             {
