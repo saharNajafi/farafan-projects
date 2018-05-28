@@ -65,7 +65,7 @@ Ext.define('Ems.locale.objectName', {
 		startDate: 'startDate',
 		endDate: 'endDate',
 		capacity: 'capacity',
-		shifNo: 'shifNo',
+		shiftNo: 'shiftNo',
 		id: 'id',
 		isActive: 'isActive',
         workingHoursFrom: 'workingHoursFrom',

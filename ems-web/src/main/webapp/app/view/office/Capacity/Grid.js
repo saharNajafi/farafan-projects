@@ -76,7 +76,6 @@ Ext.define('Ems.view.office.Capacity.Grid', {
 
         this.columns = [
             {
-                xtype: 'gridcolumn',
                 text: 'تاریخ شروع',
                 width: 150,
                 dataIndex: EmsObjectName.capacity.startDate,
@@ -84,7 +83,6 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 format: Ext.Date.defaultDateTimeFormat
             },
             {
-                xtype: 'gridcolumn',
                 text: 'تاریخ پایان',
                 width: 150,
                 dataIndex: EmsObjectName.capacity.endDate,
