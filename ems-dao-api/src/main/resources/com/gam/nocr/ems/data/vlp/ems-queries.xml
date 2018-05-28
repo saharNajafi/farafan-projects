@@ -313,7 +313,7 @@
                 <field name="hasElevator" column="EOF_HAS_ELEVATOR"/>
                 <field name="hasPortabilityEquipment" column="EOF_HAS_PORTABILITY_EQUIPMENT"/>
                 <field name="isActive" column="EOF_IS_ACTIVE"/>
-                <field name="isPostNeede" column="EOF_IS_POST_NEEDED"/>
+                <field name="isPostNeeded" column="EOF_IS_POST_NEEDED"/>
                 <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
 			</dto-fields>
 		</dto>
