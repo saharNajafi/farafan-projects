@@ -204,6 +204,7 @@ Ext.define('Ems.controller.OfficeController', {
         var form = win.down('officeneweditcapacityofficeinfo');
         var record = grid.store.getAt(rowIndex);
         var capacityGrid = win.down('grid');
+        capacityGrid.store.extraParams = { enrollmentOfficeId: record.get('id') };
         capacityGrid.enrollmentOfficeID = record.get('id');
         Ext.each(form.query('field'),
             function(field) {
