@@ -69,7 +69,7 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private Boolean hasElevator;
     private Boolean hasPortabilityEquipment;
     private Boolean isActive;
-    private Boolean isPostNeede;
+    private Boolean isPostNeeded;
     private String postDestinationCode;
 
     
@@ -525,12 +525,12 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
         isActive = active;
     }
 
-    public Boolean getPostNeede() {
-        return isPostNeede;
+    public Boolean getPostNeeded() {
+        return isPostNeeded;
     }
 
-    public void setPostNeede(Boolean postNeede) {
-        isPostNeede = postNeede;
+    public void setPostNeeded(Boolean postNeeded) {
+        isPostNeeded = postNeeded;
     }
 
     public String getPostDestinationCode() {
