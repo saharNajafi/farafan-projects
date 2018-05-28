@@ -14,7 +14,7 @@ Ext.define('Ems.view.office.Grid', {
 
         id: 'officeGrid',
 
-        title: 'مدیریت دفاتر پيشخوان',
+        title: 'مدیریت دفاتر پیشخوان ',
 
         store: {type: 'officeformgridstore'},
 
@@ -23,6 +23,16 @@ Ext.define('Ems.view.office.Grid', {
         actionColumnItems: [
             'edit->officedialog',
             'view->officedialog',
+            {
+                // icon: 'resources/themes/images/user/UserList.png',
+                tooltip: 'ظرفیت',
+                action: 'capacityOffice',
+                stateful: true,
+                stateId: this.stateId + 'Capacity',
+                getClass: function (value, metadata, record) {
+                    return 'girdAction-OfficeCapacity-icon';
+                }
+            },
             {
                 // icon: 'resources/themes/images/user/UserList.png',
                 tooltip: 'فهرست کاربران',

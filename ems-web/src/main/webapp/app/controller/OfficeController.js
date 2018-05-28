@@ -98,12 +98,76 @@ Ext.define('Ems.controller.OfficeController', {
 //                }
 //            },
 
+
         	   '[action=btnOfficeRegisterDeliver]': {
                    click: function (btn) {
                        this.RegisterRevokeOffice(btn);
                    }
                }
                ,
+
+            'officecapacitydialog [action=edit]': {
+        	       click: function(grid, rowIndex) {
+                       var record = grid.store.getAt(rowIndex);
+                       var form = Ext.create('Ems.view.office.Capacity.Dialog');
+                        Ext.each(form.query('field'), function(field) {
+                            field.setValue(record.get(field.getItemId()));
+                        });
+                        form.show();
+                   }
+            },
+
+            'officecapacitydialog [action=remove]': {
+                click: function(grid, rowIndex) {
+                    Ext.msg.confirm('', 'آیا از حذف ظرفیت اطمینان دارید؟', function(btn) {
+                        if(btn == "yes"){
+                            Gam.Msg.showWaitMsg();
+                            Ext.Ajax.request({
+                                url: 'test',
+                                jsonData: { id: grid.store.getAt(rowIndex) },
+                                success: function () {
+                                    Gam.Msg.hideWaitMsg();
+                                },
+                                failure: function() {
+                                    Gam.Msg.hideWaitMsg();
+                                }
+                            });
+                        }
+                    });
+                }
+            },
+
+            'officecapacitydialog cancelbtn': {
+        	       click: function (sender) {
+                       sender.up('dialog').close();
+                   }
+            },
+            'officecapacitydialog savebtn': {
+        	       click: function(sender) {
+                       var form = sender.up('dialog');
+                       var list = [];
+                       var obj = { enrollmentOfficeID: form.enrollmentOfficeID };
+                       var me = this;
+                        Ext.each(form.query('field'),
+                            function (field) {
+                                if(field.getValue() != "" && field.getValue() != null) {
+                                    obj[field.getItemId()] = field.getValue();
+                                }
+                            }
+                        );
+                        list.push({ record: obj});
+                       Ext.Ajax.request({
+                           url: me.ns + '/test',
+                           jsonData: list,
+                           success: function (response) {
+                               alert('success');
+                           },
+                           failure: function () {
+                               alert('fail');
+                           }
+                       });
+                   }
+            },
 
                "[action=exportExcel]": {
                    click: function (btn) {
@@ -131,7 +195,29 @@ Ext.define('Ems.controller.OfficeController', {
            this.callParent(arguments);
        },
 
-
+    /*
+        Author: Navid
+        Description: write doCapacityOffice method for first test
+    */
+    doCapacityOffice: function(grid, rowIndex) {
+        var win = Ext.create('Ems.view.office.Capacity.Window', {controller: this});
+        var form = win.down('officeneweditcapacityofficeinfo');
+        var record = grid.store.getAt(rowIndex);
+        var capacityGrid = win.down('grid');
+        capacityGrid.enrollmentOfficeID = record.get('id');
+        Ext.each(form.query('field'),
+            function(field) {
+                field.setValue(record.get(field.getItemId()));
+            }
+        );
+        Tools.MaskUnMask(win);
+        var storeOffice = grid.getStore(),
+            record = storeOffice.getAt(rowIndex),
+            capacityGrid = win.down('grid');
+        if (capacityGrid != null) {
+            win.show();
+        }
+    },
 
     doUserListOffice: function (grid, rowIndex) {
 

@@ -12,7 +12,7 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 	id: 'idOfficeNewEditOfficeInfo',
 
 	title: 'اطلاعات  دفتر',
-	height: 255,
+	height: 280,
 	margin: 10,
 	layout: 'column',
 	initComponent: function () {
@@ -122,6 +122,7 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		        		}
 		        	}
 		        }
+
 //		        {
 //		        xtype: 'checkboxfield',
 //		        disabled: true,
@@ -410,6 +411,29 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		                    	  allowBlank: false 
 
 		                      },
+        //     private Boolean isActive;
+        // private Boolean isPostNeede;
+        // private String postDestinationCode;
+								{
+									xtype: 'checkbox',
+									fieldLabel: 'فعال',
+									id: EmsObjectName.officeNewEdit.isActive,
+									name: EmsObjectName.officeNewEdit.isActive
+								},
+								{
+									xtype: 'checkbox',
+									fieldLabel: 'وضعیت ارسال بسته',
+									id: EmsObjectName.officeNewEdit.isPostNeeded,
+									name: EmsObjectName.officeNewEdit.isPostNeeded
+								},
+								{
+									xtype: 'textfield',
+									fieldLabel: 'کد پستی شهر مقصد',
+                                    enforceMaxLength: true,
+									maxLength: 10,
+									id: EmsObjectName.officeNewEdit.postDestinationCode,
+									name: EmsObjectName.officeNewEdit.postDestinationCode
+								},
 		                      {
 		                    	  xtype: 'hiddenfield',
 		                    	  fieldLabel: 'شناسه دفتر',

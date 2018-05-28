@@ -61,6 +61,17 @@ Ext.define('Ems.locale.objectName', {
 
 	//
 
+	capacity: {
+		startDate: 'startDate',
+		endDate: 'endDate',
+		capacity: 'capacity',
+		shifNo: 'shifNo',
+		id: 'id',
+		isActive: 'isActive',
+        workingHoursFrom: 'workingHoursFrom',
+        workingHoursTo: 'workingHoursTo'
+	},
+
 	suerList : {
 		firstName : 'firstName',
 		lastName : 'lastName',
@@ -109,6 +120,9 @@ Ext.define('Ems.locale.objectName', {
 		calenderTypeTmp : 'calenderTypeTmp',
 		officeID : 'id',
 		provinceName: 'provinceName',
+		isActive: 'isActive',
+        postDestinationCode: 'postDestinationCode',
+        isPostNeeded: 'isPostNeeded',
 
 		khosusiType : 'khosusiType',
 

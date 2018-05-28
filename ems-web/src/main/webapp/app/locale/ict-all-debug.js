@@ -4295,7 +4295,8 @@ Ext.define('Gam.app.controller.DialogBasedGrid', {
 	 * @param batch
 	 * @param options
 	 */
-	onSyncFailure: function(batch, options) { 
+	onSyncFailure: function(batch, options) {
+        Gam.Msg.hideWaitMsg();
 		var currentActionUrl = batch.operations[0].request.url;
 		
 		if(currentActionUrl.indexOf('office') != -1 && timeOutFlag){
@@ -4551,7 +4552,13 @@ Ext.define('Gam.app.controller.LocalDialogBasedGrid', {
 		me.callParent(arguments);
 
 		if(messageInfo.autoShow)
-		{ return; }
+		{
+            Ext.Msg.alert({
+                title: Gam.Resource.title.error,
+                msg: messageInfo.message,
+                icon: Ext.Msg[messageInfo.icon]
+            });
+		}
 
 		var callbackButtons = messageInfo.callbackButtons || [];
 		if(messageInfo.manner == Gam.GlobalConfiguration.MESSAGE.MANNERS.CONFIRMATION)

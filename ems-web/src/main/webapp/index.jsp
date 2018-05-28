@@ -246,6 +246,12 @@
     height: 16px;
     cursor: pointer;
 }
+.girdAction-OfficeCapacity-icon{
+    background: url('resources/themes/images/default/mainMenu/OfficeSummary.gif') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 .girdAction-ReIssueRequestDeactive-icon{
     background: url('resources/themes/images/officeSetting/reissuerequest02.png') no-repeat right;
     width: 16px;

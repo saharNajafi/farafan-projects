@@ -23,10 +23,18 @@ Ext.define('Ems.view.office.Dialog', {
 
     ],
 
+    autoScroll: true,
+
+    scrollable: true,
+
+    constrain: true,
+
     width: 860,
 
     initComponent: function () {
         this.height = 680;
+        this.autoScroll = true;
+        this.scrollable = true;
         this.callParent(arguments);
     },
 
