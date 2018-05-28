@@ -45,7 +45,7 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                 {
                     xtype: 'splitbutton',
                     action: 'User',
-                    text: 'سلام',
+                    text: 'کاربران',
                     //text: 'Menu Button',
                     scale: 'large',
                     rowspan: 3,
