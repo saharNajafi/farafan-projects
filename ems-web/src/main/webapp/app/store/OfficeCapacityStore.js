@@ -9,6 +9,5 @@ Ext.define('Ems.store.OfficeCapacityStore', {
     alias: 'store.officecapacitystore',
 
     model: 'Ems.model.OfficeCapacityModel',
-    baseUrl: 'extJsController/dispatch',
-    listName: 'departmentUserList'
+    baseUrl: 'extJsController/officeCapacity/fetch'
 });
