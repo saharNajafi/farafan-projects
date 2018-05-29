@@ -120,9 +120,9 @@ Ext.define('Ems.locale.objectName', {
 		calenderTypeTmp : 'calenderTypeTmp',
 		officeID : 'id',
 		provinceName: 'provinceName',
-		isActive: 'isActive',
+		active: 'active',
         postDestinationCode: 'postDestinationCode',
-        isPostNeeded: 'isPostNeeded',
+        postNeeded: 'postNeeded',
 
 		khosusiType : 'khosusiType',
 
