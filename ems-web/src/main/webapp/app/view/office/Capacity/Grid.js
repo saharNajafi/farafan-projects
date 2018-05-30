@@ -58,13 +58,6 @@ Ext.define('Ems.view.office.Capacity.Grid', {
     actionColumnItems: [
         {
             icon: 'resources/themes/images/default/shared/forbidden.png',
-            tooltip: 'حذف',
-            action: 'revokeCapacity',
-            stateful: true,
-            stateId: this.stateId + 'CancelCapacity'
-        },
-        {
-            icon: 'resources/themes/images/default/shared/forbidden.png',
             tooltip: 'ویرایش',
             action: 'editCapacity',
             stateful: true,
@@ -77,14 +70,14 @@ Ext.define('Ems.view.office.Capacity.Grid', {
         this.columns = [
             {
                 text: 'تاریخ شروع',
-                width: 150,
+                width: 120,
                 dataIndex: EmsObjectName.capacity.startDate,
                 xtype: 'gam.datecolumn',
                 format: Ext.Date.defaultDateTimeFormat
             },
             {
                 text: 'تاریخ پایان',
-                width: 150,
+                width: 120,
                 dataIndex: EmsObjectName.capacity.endDate,
                 xtype: 'gam.datecolumn',
                 format: Ext.Date.defaultDateTimeFormat
@@ -136,8 +129,8 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             {
                 xtype: 'gridcolumn',
                 text: 'شیفت',
-                flex: 100,
-                dataIndex: EmsObjectName.capacity.shifNo,
+                width: 100,
+                dataIndex: EmsObjectName.capacity.shiftNo,
                 renderer: function (value) {
                     if (value == "0") {
                         return "صبح";

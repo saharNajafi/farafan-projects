@@ -157,7 +157,7 @@ Ext.define('Ems.controller.OfficeController', {
                         );
                         list.push({ record: obj});
                        Ext.Ajax.request({
-                           url: me.ns + '/test',
+                           url: me.ns + '/save',
                            jsonData: list,
                            success: function (response) {
                                alert('success');
@@ -205,7 +205,13 @@ Ext.define('Ems.controller.OfficeController', {
         var record = grid.store.getAt(rowIndex);
         var capacityGrid = win.down('grid');
         capacityGrid.store.extraParams = { enrollmentOfficeId: record.get('id') };
+        var capacityStore = capacityGrid.getStore();
         capacityGrid.enrollmentOfficeID = record.get('id');
+        if (capacityStore.readParams == null) {
+            capacityStore.readParams({enrollmentOfficeID: record.get('id')});
+        } else {
+            capacityStore.readParams.enrollmentOfficeID = record.get('id');
+        }
         Ext.each(form.query('field'),
             function(field) {
                 field.setValue(record.get(field.getItemId()));
