@@ -109,7 +109,9 @@ Ext.define('Ems.controller.OfficeController', {
             'officecapacitydialog [action=edit]': {
         	       click: function(grid, rowIndex) {
                        var record = grid.store.getAt(rowIndex);
-                       var form = Ext.create('Ems.view.office.Capacity.Dialog');
+                       var form = Ext.create('Ems.view.office.Capacity.Dialog', {
+                           enrollmentOfficeID: grid.enrollmentOfficeID
+                       });
                         Ext.each(form.query('field'), function(field) {
                             field.setValue(record.get(field.getItemId()));
                         });
