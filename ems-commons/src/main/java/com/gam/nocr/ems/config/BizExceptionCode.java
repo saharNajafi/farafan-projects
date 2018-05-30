@@ -1110,6 +1110,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_083 = "EMS_S_EOS_083";
 	public static final String EOS_084 = "EMS_S_EOS_084";
 	public static final String EOS_085 = "EMS_S_EOS_085";
+	public static final String EOS_086 = "EMS_S_EOS_086";
 
 	public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
 	public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
@@ -2657,5 +2658,18 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
 	public static final String EMSWorkstationPMService0013 = "Username could not be empty";
 	public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
+
+	//com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
+	public static final String OC_001 = "EMS_S_OC_001";
+	public static final String OC_002 = "EMS_S_OC_002";
+	public static final String OC_003 = "EMS_S_OC_003";
+	public static final String OC_004 = "EMS_S_OC_004";
+	public static final String OC_005 = "EMS_S_OC_005";
+	public static final String OC_001_MSG = "OfficeCapacityId id is null";
+	public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
+	public static final String OC_003_MSG = "EnrollmentOffice id is null";
+	public static final String OC_004_MSG = "Could not find officeCapacityList with enrollmentOfficeId {}\";";
+	public static final String OC_005_MSG = "Could not find officeCapacity with officeCapacityId {}\";";
+
 
 }

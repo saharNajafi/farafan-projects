@@ -1587,5 +1587,44 @@
 		</dto>
 	</list>
 	<!-- destionation List -->
+	<!-- officeCapacity List -->
+	<list>
+		<list-name>officeCapacityList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT
+					oc.EOC_ID,
+					oc.EOC_START_DATE,
+					oc.EOC_END_DATE,
+					oc.EOC_SHIFT_NO,
+					oc.EOC_CAPACITY,
+					oc.EOC_IS_ACTIVE,
+					oc.EOC_OFFICE_ID,
+					oc.EOC_WORKING_HOURS_FROM,
+					oc.EOC_WORKING_HOURS_TO
+				</part>
+				from EMST_OFFICE_CAPACITY oc
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.OfficeCapacityTO</dto-class>
+			<dto-fields>
+				<field name="id" column="EOC_ID"/>
+				<field name="startDate" column="EOC_START_DATE"/>
+				<field name="endDate" column="EOC_END_DATE"/>
+				<field name="shiftNo" column="EOC_SHIFT_NO"/>
+				<field name="capacity" column="EOC_CAPACITY "/>
+				<field name="isActive" column="EOC_IS_ACTIVE"/>
+				<field name="enrollmentOfficeId" column="EOC_OFFICE_ID"/>
+				<field name="workingHoursFrom" column="EOC_WORKING_HOURS_FROM"/>
+				<field name="workingHoursTo" column="EOC_WORKING_HOURS_TO"/>
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- officeCapacity List -->
 
 </lists>

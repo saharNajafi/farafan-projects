@@ -52,6 +52,7 @@ public class EMSLogicalNames {
     public static String SRV_MESSAGE = "MessageService";
     public static String SRV_PREPARED_MESSAGE = "PreparedMessageService";
     public static String SRV_OUTGOING_SMS = "OutgoingSMSService";
+    public static String SRV_OFFICE_CAPACITY = "OfficeCapacityService";
 
     // Proxy Services
     public static String SRV_GAAS = "GAASService";
@@ -119,6 +120,7 @@ public class EMSLogicalNames {
     public static String DAO_PHOTO_VIP = "PhotoVipDAO";
     public static String DAO_IMS_ESTELAM_IMAGE = "ImsEstelamImageDAO";
     public static String DAO_OFFICE_SETTING = "OfficeSettingDAO";
+    public static String DAO_OFFICE_CAPACITY = "OfficeCapacityDAO";
     public static String DAO_NIST_HEADER = "NistHeaderDAO";
     public static String DAO_XML_AFIS = "XmlAfisDAO";
     public static String DAO_CARDREQUEST_BLOBS = "CardRequestBlobsDAO";

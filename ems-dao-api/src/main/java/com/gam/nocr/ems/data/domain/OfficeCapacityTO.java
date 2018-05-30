@@ -18,20 +18,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "EMST_OFFICE_CAPACITY")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_OFFICE_CAPACITY", allocationSize = 1)
-//@NamedQueries({
-//        @NamedQuery(
-//                name = "OfficeCapacityTO.findByEnrollmentOfficeId",
-//                query = "SELECT oc FROM OfficeCapacityTO oc where oc.enrollmentOffice.id=:eofId"),
-//
-//        @NamedQuery(
-//                name = "OfficeCapacityTO.findbyEnrollmentOfficeIdAndDateAndShift",
-//                query = "SELECT oc FROM OfficeCapacityTO  oc where oc.enrollmentOffice.id=:eofId " +
-//                        "and oc.shiftNo=:shiftNo and :date between oc.startDate and oc.endDate"),
-//        @NamedQuery(
-//                name = "OfficeCapacityTO.listByDate",
-//                query = "select oc from OfficeCapacityTO oc where oc.endDate >= :startDate and oc.startDate <= :endDate"
-//        )
-//})
+@NamedQueries({
+        @NamedQuery(
+                name = "OfficeCapacityTO.findByEnrollmentOfficeId",
+                query = "SELECT oc FROM OfficeCapacityTO oc where oc.enrollmentOffice.id=:eofId"),
+  })
 public class OfficeCapacityTO extends ExtEntityTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,6 +33,8 @@ public class OfficeCapacityTO extends ExtEntityTO implements Serializable {
     private ShiftEnum shiftNo;
     private short capacity;
     private short isActive;
+    private Float workingHoursFrom;
+    private Float workingHoursTo;
     private EnrollmentOfficeTO enrollmentOffice;
 
     @Id
@@ -111,6 +104,24 @@ public class OfficeCapacityTO extends ExtEntityTO implements Serializable {
 
     public void setIsActive(short isActive) {
         this.isActive = isActive;
+    }
+
+    @Column(name = "EOC_WORKING_HOURS_FROM")
+    public Float getWorkingHoursFrom() {
+        return workingHoursFrom;
+    }
+
+    public void setWorkingHoursFrom(Float workingHoursFrom) {
+        this.workingHoursFrom = workingHoursFrom;
+    }
+
+    @Column(name = "EOC_WORKING_HOURS_TO")
+    public Float getWorkingHoursTo() {
+        return workingHoursTo;
+    }
+
+    public void setWorkingHoursTo(Float workingHoursTo) {
+        this.workingHoursTo = workingHoursTo;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

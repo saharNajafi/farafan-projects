@@ -57,7 +57,9 @@
 			<processor name='card-processor'
                    type='com.gam.nocr.ems.web.listreader.processor.CardProcessor'/>  
 		<processor name='batch-processor'
-                   type='com.gam.nocr.ems.web.listreader.processor.BatchProcessor'/>  
+                   type='com.gam.nocr.ems.web.listreader.processor.BatchProcessor'/>
+        <processor name='officeCapacity-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.OfficeCapacityProcessor'/>
             
     </processors>
     <wrappers>
@@ -191,5 +193,8 @@
 		<list name='lostBatchList' processor="batch-processor">
 			<access permission="EMS_LOST_CARD_LIST" />
 		</list>
+        <list name='officeCapacityList' processor='officeCapacity-processor'>
+            <access permission="EMS_VIEW_OFFICE_CAPACITY_LIST"/>
+        </list>
     </lists>
 </listreader-config>

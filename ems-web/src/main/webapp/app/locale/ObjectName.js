@@ -69,7 +69,8 @@ Ext.define('Ems.locale.objectName', {
 		id: 'id',
 		isActive: 'isActive',
         workingHoursFrom: 'workingHoursFrom',
-        workingHoursTo: 'workingHoursTo'
+        workingHoursTo: 'workingHoursTo',
+		enrollmentOfficeId: 'enrollmentOfficeId'
 	},
 
 	suerList : {

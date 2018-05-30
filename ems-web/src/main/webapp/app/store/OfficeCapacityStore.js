@@ -7,7 +7,8 @@
 Ext.define('Ems.store.OfficeCapacityStore', {
     extend: 'Gam.data.store.grid.Grid',
     alias: 'store.officecapacitystore',
-
+    id: 'idOfficeCapacityStore',
     model: 'Ems.model.OfficeCapacityModel',
-    baseUrl: 'extJsController/officeCapacity/fetch'
+    listName: 'officeCapacityList',
+    baseUrl: 'extJsController/officeCapacity'
 });

@@ -13,6 +13,7 @@ Ext.define('Ems.model.OfficeCapacityModel', {
         { name: 'shiftNo', type: 'number' },
         { name: 'id', type: 'number' },
         { name: 'workingHoursFrom', type: 'number' },
-        { name: 'workingHoursTo', type: 'number' }
+        { name: 'workingHoursTo', type: 'number' },
+        { name: 'enrollmentOfficeId', type: 'number' }
     ]
 });

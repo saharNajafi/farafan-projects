@@ -1056,5 +1056,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WST_002 = "EMS_WST_002";
     public static final String WST_002_MSG = "WorkStationId doesn't exist";
 
-    
+    //com.gam.nocr.ems.data.dao.impl.OfficeCapacityDAOImpl.java
+    public static final String OCD_001 = "EMS_D_OCD_001";
+    public static final String OCD_001_MSG = "findByEnrollmentOfficeId operation could not be executed";
 }

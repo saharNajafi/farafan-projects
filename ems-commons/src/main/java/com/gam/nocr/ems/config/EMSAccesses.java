@@ -33,6 +33,7 @@ public class EMSAccesses extends AbstractAccessList {
     public static final String EMS_VIEW_REPORT_REQUEST_LIST = "ems_viewReportRequestList";
     public static final String EMS_VIEW_CCOS_USER_LIST = "ems_viewCcosUserList";
     public static final String EMS_VIEW_CCOS_WORKSTATION_LIST = "ems_viewCcosWorkstationList";
+    public static final String EMS_VIEW_OFFICE_CAPACITY_LIST = "ems_viewOfficeCapacityList";
     //Anbari
     public static final String EMS_VIEW_CMS_PRODUCTION_ERROR_LIST = "ems_cmsErrorProduction";
     public static final String EMS_VIEW_HOLIDAY_LIST = "ems_holiday";
