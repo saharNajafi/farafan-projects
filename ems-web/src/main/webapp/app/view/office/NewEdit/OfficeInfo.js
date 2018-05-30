@@ -417,14 +417,14 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 								{
 									xtype: 'checkbox',
 									fieldLabel: 'فعال',
-									id: EmsObjectName.officeNewEdit.isActive,
-									name: EmsObjectName.officeNewEdit.isActive
+									id: EmsObjectName.officeNewEdit.active,
+									name: EmsObjectName.officeNewEdit.active
 								},
 								{
 									xtype: 'checkbox',
 									fieldLabel: 'وضعیت ارسال بسته',
-									id: EmsObjectName.officeNewEdit.isPostNeeded,
-									name: EmsObjectName.officeNewEdit.isPostNeeded
+									id: EmsObjectName.officeNewEdit.postNeeded,
+									name: EmsObjectName.officeNewEdit.postNeeded
 								},
 								{
 									xtype: 'textfield',

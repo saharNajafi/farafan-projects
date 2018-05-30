@@ -67,9 +67,9 @@ Ext.define('Ems.model.OfficeModel', {
         , EmsObjectName.officeNewEdit.hasStair
         , EmsObjectName.officeNewEdit.hasElevator
         , EmsObjectName.officeNewEdit.hasPortabilityEquipment
-        , EmsObjectName.officeNewEdit.isActive
+        , EmsObjectName.officeNewEdit.active
         , EmsObjectName.officeNewEdit.postDestinationCode
-        , EmsObjectName.officeNewEdit.isPostNeeded
+        , EmsObjectName.officeNewEdit.postNeeded
 
         
     ]
