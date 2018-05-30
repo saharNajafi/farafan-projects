@@ -41,7 +41,7 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
                 }),
                 valueField: 'id',
                 displayField: 'title',
-                itemId: 'shifNo',
+                itemId: 'shiftNo',
                 fieldLabel: 'شیفت'
             },
             {

@@ -157,10 +157,10 @@ Ext.define('Ems.controller.OfficeController', {
                                 }
                             }
                         );
-                        list.push({ record: obj});
+                        list.push(obj);
                        Ext.Ajax.request({
-                           url: me.ns + '/save',
-                           jsonData: list,
+                           url: 'officeCapacity' + '/save',
+                           jsonData: { records: list},
                            success: function (response) {
                                alert('success');
                            },
