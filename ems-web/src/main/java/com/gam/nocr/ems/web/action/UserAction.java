@@ -27,6 +27,8 @@ public class UserAction extends ListControllerImpl<UserVTO> {
      */
     private String userInfo;
 
+    private String fetchJobVariable;
+
     private UserDelegator userDelegator;
 
     public UserAction() {
@@ -41,7 +43,7 @@ public class UserAction extends ListControllerImpl<UserVTO> {
     /**
      * Changes the user password by calling a service on GAAS
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String changePassword() throws BaseException {
@@ -59,7 +61,7 @@ public class UserAction extends ListControllerImpl<UserVTO> {
     /**
      * Fetches current user's firstName and sureName in order to be displayed on 3S main menu
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String fetchUserInfo() throws BaseException {
@@ -74,7 +76,7 @@ public class UserAction extends ListControllerImpl<UserVTO> {
     /**
      * Called by 3S UI in order to invalidate current user's session and logs him/her out of system
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String logout() throws BaseException {
@@ -87,11 +89,34 @@ public class UserAction extends ListControllerImpl<UserVTO> {
         }
     }
 
+    /**
+     * Fetch Job Value Handler For Display main menu
+     *
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @throws BaseException
+     */
+    public String fetchJobVariable() throws BaseException {
+        try {
+            setFetchJobVariable(userDelegator.fetchJobVariable(getUserProfile()));
+            return SUCCESS_RESULT;
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.USA_002, WebExceptionCode.GLB_001_MSG, e);
+        }
+    }
+
     public String getUserInfo() {
         return userInfo;
     }
 
     public void setUserInfo(String userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public String getFetchJobVariable() {
+        return fetchJobVariable;
+    }
+
+    public void setFetchJobVariable(String fetchJobVariable) {
+        this.fetchJobVariable = fetchJobVariable;
     }
 }

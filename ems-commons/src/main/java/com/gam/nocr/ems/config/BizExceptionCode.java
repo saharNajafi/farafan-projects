@@ -722,6 +722,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String USI_013 = "EMS_S_USI_013";
     public static final String USI_014 = "EMS_S_USI_014";
     public static final String USI_015 = "EMS_S_USI_015";
+    public static final String USI_016 = "EMS_S_USI_016";
     public static final String USI_003_MSG = "invalid input entry, userVTO is null. change password operation cannot be done";
     public static final String USI_004_MSG = "invalid input entry, oldPassword is empty";
     public static final String USI_005_MSG = "cannot find userId assigned to this person";
@@ -730,6 +731,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String USI_008_MSG = "invalid input entry, newPassword is empty";
     public static final String USI_009_MSG = "invalid input entry, confirmPassword is empty";
     public static final String USI_010_MSG = "new password doesn't match confirm password, please try again";
+    public static final String USI_016_MSG = "can not read JobSchedulerEnabled variable from nocr.properties";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.BusinessLogServiceImpl
 	public static final String BSI_001 = "EMS_S_BSI_001";

@@ -38,6 +38,9 @@ public interface UserManagementService extends Service {
 	 */
 	public List<String> getUserAccess(UserProfileTO userProfileTO) throws BaseException;
 
+
+	public String fetchJobVariable(UserProfileTO userProfileTO) throws BaseException;
+
 	//Anbari - userPerm-commented
 	//public Boolean hasAccess(String username, String permission) throws BaseException;
 

@@ -1,7 +1,5 @@
 package com.gam.nocr.ems.biz.delegator;
 
-import java.util.List;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.delegator.Delegator;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -15,6 +13,8 @@ import com.gam.nocr.ems.data.domain.CertificateTO;
 import com.gam.nocr.ems.data.domain.vol.UserVTO;
 import com.gam.nocr.ems.data.enums.CertificateUsage;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com.com">Alireza Saadat</a>
@@ -46,6 +46,10 @@ public class UserDelegator implements Delegator {
 	public List<String> getUserAccess(UserProfileTO up) throws BaseException{
 		return getService(up).getUserAccess(up);
 	}
+
+    public String fetchJobVariable(UserProfileTO userProfileTO) throws BaseException{
+        return getService(userProfileTO).fetchJobVariable(userProfileTO);
+    }
 	
 	//	Anbari - userPerm-commented
 	/*public void updatePermissionCache(Long personID) throws BaseException {
