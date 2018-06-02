@@ -27,7 +27,7 @@ public class OfficeCapacityProcessor extends EMSVLPListProcessor {
             vlh = vlp.loadList("officeCapacityList",
                     ("main" + parts).split(","),
                     ("count" + parts).split(","),
-                    parameters,null, null);
+                    null,null, null);
         } catch (ListException e) {
             throw new ListReaderException("Unable to prepare a VLH to fetch list named '" + paramProvider.getListName() + "'", e);
         }

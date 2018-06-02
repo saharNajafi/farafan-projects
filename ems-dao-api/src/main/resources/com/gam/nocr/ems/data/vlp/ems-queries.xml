@@ -1611,7 +1611,7 @@
 			</main-query>
 		</query>
 		<dto>
-			<dto-class>com.gam.nocr.ems.data.domain.OfficeCapacityTO</dto-class>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.OfficeCapacityVTO</dto-class>
 			<dto-fields>
 				<field name="id" column="EOC_ID"/>
 				<field name="startDate" column="EOC_START_DATE"/>
