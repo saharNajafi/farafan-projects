@@ -158,6 +158,7 @@ Ext.define('Ems.controller.OfficeController', {
                                     obj[field.getItemId()] = field.getValue();
                                 }
                             }
+
                         );
                         list.push(obj);
                        Ext.Ajax.request({
