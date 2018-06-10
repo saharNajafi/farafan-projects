@@ -32,6 +32,7 @@ Ext.define('Ems.view.viewport.Operation', {
 			        	xtype: 'splitbutton',
 			        	action: 'Dispatch',
 			        	text: 'توزيع',
+                        //hidden: globalAccessAllow,
 			        	tooltip: 'توزيع' + '   < Ctrl+Shift+D >',
 			        	iconCls: 'toolbar-sushi',
 	                    scale: 'large',
@@ -60,6 +61,7 @@ Ext.define('Ems.view.viewport.Operation', {
 			        {
 			        	action: 'BlackList',
 			        	text: 'فهرست ممنوعه',
+                       // hidden: globalAccessAllow,
 			        	tooltip: 'فهرست ممنوعه' + '   < Ctrl+Shift+B >',
 			        	iconCls: 'toolbar-blacklist',
 			        	id: 'OperationMenuBlackList'

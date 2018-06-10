@@ -148,8 +148,6 @@ Ext.define('Ems.controller.OfficeController', {
         	       click: function(sender) {
                        var form = sender.up('dialog');
                        var list = [];
-                       ///Add CapacityOfficeId test push
-
                        var obj = { enrollmentOfficeId: form.enrollmentOfficeID, id: null };
                        var me = this;
                         Ext.each(form.query('field'),

@@ -5,7 +5,9 @@ Gam.application({
     name: 'Ems',
     appFolder: 'app',
     autoCreateViewport: true,
-    controllers: ['NavigationHeaderController']
-    //  launch: function() { }
+    controllers: ['NavigationHeaderController'],
+    launch: function() {
+        //Ext.create('Ems.view.Viewport');
+    }
 });
 

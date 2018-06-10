@@ -6,6 +6,7 @@ Ext.define('Ems.locale.Resource', {
     alternateClassName: 'EmsResource',
     alias: 'localeprovider.Ems',
 
+
     general: {
         buttons: {
             printSelectedItems: 'چاپ موارد انتخابی',

@@ -5,9 +5,10 @@ Ext.define('Ems.view.Viewport', {
         type: 'border'
     },
 
+
     initComponent: function () {
         var me = this;
-
+        globalAccessAllow = true;
         this.items = [
             {
                 region: 'north',

@@ -46,6 +46,7 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                     xtype: 'splitbutton',
                     action: 'User',
                     text: 'کاربران',
+                    //hidden: globalAccessAllow,
                     //text: 'Menu Button',
                     scale: 'large',
                     rowspan: 3,
@@ -86,6 +87,7 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                     id: 'BaseInfoMenuDepartment',
                     tooltip: 'جایگاه سازمانی' + '   < Ctrl+Shift+O >',
                     text: 'جایگاه سازمانی',
+                   // hidden: globalAccessAllow,
                     iconCls: 'toolbar-department',
                     width: 85
                 },
@@ -94,12 +96,14 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                     id: 'BaseInfoMenuOffice',
                     tooltip: 'دفاتر پیشخوان' + '   < Ctrl+Shift+S >',
                     text: 'دفاتر پیشخوان',
+                   // hidden: globalAccessAllow,
                     iconCls: 'toolbar-office'
                 },
                 {
                     action: 'Workstation',
                     id: 'BaseInfoMenuWorkstation',
                     text: 'ايستگاه کاری',
+                    //hidden: globalAccessAllow,
                     tooltip: 'ايستگاه کاری' + '   < Ctrl+Shift+T >',
                     iconCls: 'toolbar-workstation'
                 },
@@ -107,6 +111,7 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                     action: 'Rating',
                     id: 'BaseInfoMenuRating',
                     text: 'رتبه',
+                  //  hidden: globalAccessAllow,
                     tooltip: 'رتبه' + '   < Ctrl+Shift+I >',
                     iconCls: 'toolbar-rating',
                     width: 60
@@ -115,6 +120,7 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                     action: 'DocType',
                     id: 'BaseInfoMenuDocType',
                     text: 'انواع سند',
+                   // hidden: globalAccessAllow,
                     tooltip: 'انواع سند' + ' < Ctrl+Shift+T >',
                     iconCls: 'toolbar-docType'
                 }
