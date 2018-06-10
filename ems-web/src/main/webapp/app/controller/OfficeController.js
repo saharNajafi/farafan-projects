@@ -164,8 +164,13 @@ Ext.define('Ems.controller.OfficeController', {
                            url: 'extJsController/officeCapacity' + '/save',
                            jsonData: { records: list},
                            success: function (response) {
-                               Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
-                               Ext.StoreManager.get('idOfficeCapacityStore').load();
+                               if(Ext.JSON.decode(response.responseText).success) {
+                                   Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
+                                   Ext.StoreManager.get('idOfficeCapacityStore').load();
+                               }
+                               else {
+                                   Ext.Msg.alert('خطا', 'خطایی رخ داده است');
+                               }
                            },
                            failure: function () {
                                Ext.Msg.alert('خطا', 'خطایی رخ داده است');
