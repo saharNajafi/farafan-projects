@@ -148,7 +148,7 @@ Ext.define('Ems.controller.OfficeController', {
         	       click: function(sender) {
                        var form = sender.up('dialog');
                        var list = [];
-                       var obj = { enrollmentOfficeID: form.enrollmentOfficeID };
+                       var obj = { enrollmentOfficeID: form.enrollmentOfficeID, officeCapacityID: null };
                        var me = this;
                         Ext.each(form.query('field'),
                             function (field) {
