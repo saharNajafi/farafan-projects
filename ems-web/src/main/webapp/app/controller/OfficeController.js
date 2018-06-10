@@ -159,13 +159,14 @@ Ext.define('Ems.controller.OfficeController', {
                         );
                         list.push(obj);
                        Ext.Ajax.request({
-                           url: 'officeCapacity' + '/save',
+                           url: 'extJsController/officeCapacity' + '/save',
                            jsonData: { records: list},
                            success: function (response) {
-                               alert('success');
+                               Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
+                               Ext.StoreManager.get('idOfficeCapacityStore').load();
                            },
                            failure: function () {
-                               alert('fail');
+                               Ext.Msg.alert('خطا', 'خطایی رخ داده است');
                            }
                        });
                    }
