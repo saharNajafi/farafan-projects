@@ -150,7 +150,7 @@ Ext.define('Ems.controller.OfficeController', {
                        var list = [];
                        ///Add CapacityOfficeId test push
 
-                       var obj = { enrollmentOfficeID: form.enrollmentOfficeID, officeCapacityID: null };
+                       var obj = { enrollmentOfficeId: form.enrollmentOfficeID, id: null };
                        var me = this;
                         Ext.each(form.query('field'),
                             function (field) {
