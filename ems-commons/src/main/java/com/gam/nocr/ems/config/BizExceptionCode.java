@@ -197,6 +197,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_053 = "EMS_S_CRE_053";
 	public static final String CRE_054 = "EMS_S_CRE_054";
 	public static final String CRE_055 = "EMS_S_CRE_055";
+	public static final String CRE_056 = "EMS_S_CRE_056";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -221,6 +222,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_053_MSG = "an error has occurred in findCardRequestStateByTrackingId method";
 	public static final String CRE_054_MSG = "an error has occurred in findCardRequestStateByNationalIdAndMobile method";
 	public static final String CRE_055_MSG = "Cannot instantiate CardRequestStateWS service";
+	public static final String CRE_056_MSG = "Can not Find Card request";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
 	public static final String CRS_001 = "EMS_S_CRS_001";

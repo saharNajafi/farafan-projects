@@ -36,7 +36,7 @@ public class CardRequestStateWS {
             @XmlElement(required = true, nillable = false) String nationalId,
             @WebParam(name = "Mobile", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String mobile
-            ) throws InternalException, BaseException {
+    ) throws InternalException, BaseException {
         try {
             return cardRequestDelegator.findCardRequestStateByNationalIdAndMobile(nationalId, mobile);
         } catch (BaseException e) {
@@ -44,7 +44,7 @@ public class CardRequestStateWS {
             throw new InternalException(
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
-            logger.error("Exception In Calling checkCardRequestState Web service :", e);
+            logger.error("Unhandled Exception In Calling checkCardRequestState Web service :", e);
             throw new InternalException(
                     WebExceptionCode.CRQW_001_MSG, new EMSWebServiceFault(WebExceptionCode.CRQW_001), e);
         }
@@ -62,12 +62,12 @@ public class CardRequestStateWS {
         try {
             return cardRequestDelegator.findCardRequestStateByNationalIdAndBirthCertificateSeries(
                     nationalID, birthCertificateSeries, citizenBirthDate);
-        }
-        catch (BaseException e) {
+        } catch (BaseException e) {
+            logger.error("Error In Calling checkBirthCertificateSerial Web service :", e);
             throw new InternalException(
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
+            logger.error("Unhandled Exception In Calling checkBirthCertificateSerial Web service :", e);
             throw new InternalException(
                     WebExceptionCode.CRQW_002_MSG, new EMSWebServiceFault(WebExceptionCode.CRQW_002), e);
         }
@@ -80,9 +80,11 @@ public class CardRequestStateWS {
         try {
             return cardRequestDelegator.findCardRequestStateByTrackingId(trackingId);
         } catch (BaseException e) {
+            logger.error("Error In Calling checkTrackingId Web service :", e);
             throw new InternalException(
                     e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
+            logger.error("Unhandled Exception In Calling checkTrackingId Web service :", e);
             throw new InternalException(
                     WebExceptionCode.CRQW_003_MSG, new EMSWebServiceFault(WebExceptionCode.CRQW_003), e);
         }
