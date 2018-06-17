@@ -1058,5 +1058,13 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
 
     //com.gam.nocr.ems.data.dao.impl.OfficeCapacityDAOImpl.java
     public static final String OCD_001 = "EMS_D_OCD_001";
-    public static final String OCD_001_MSG = "findByEnrollmentOfficeId operation could not be executed";
+    public static final String OCD_002 = "EMS_D_OCD_002";
+    public static final String OCD_003 = "EMS_D_OCD_003";
+    public static final String OCD_004 = "EMS_D_OCD_004";
+    public static final String OCD_005 = "EMS_D_OCD_005";
+    public static final String OCD_006 = "EMS_D_OCD_006";
+    public static final String OCD_007 = "EMS_D_OCD_007";
+    public static final String OCD_001_MSG = "Unique constraint violated, Office Capacity class has already been used";
+    public static final String OCD_002_MSG = "findByEnrollmentOfficeId operation could not be executed";
+    public static final String OCD_003_MSG = "Unique constraint violated, Office Capacity size has already been used";
 }

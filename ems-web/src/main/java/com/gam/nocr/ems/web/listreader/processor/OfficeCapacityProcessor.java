@@ -19,15 +19,15 @@ public class OfficeCapacityProcessor extends EMSVLPListProcessor {
 
     protected ValueListHandler prepareVLH(ParameterProvider paramProvider) throws ListReaderException {
         HashMap parameters = new HashMap();
-        StringBuilder parts = new StringBuilder();
         ValueListProvider vlp = getValueListProvider();
-
+        StringBuilder parts = new StringBuilder();
+        parameters.put("enrollmentOfficeID", paramProvider.getParameter("enrollmentOfficeID"));
         ValueListHandler vlh;
         try {
             vlh = vlp.loadList("officeCapacityList",
-                    ("main" + parts).split(","),
+                    ( "main" +  parts).split(","),
                     ("count" + parts).split(","),
-                    null,null, null);
+                    parameters, null, null);
         } catch (ListException e) {
             throw new ListReaderException("Unable to prepare a VLH to fetch list named '" + paramProvider.getListName() + "'", e);
         }

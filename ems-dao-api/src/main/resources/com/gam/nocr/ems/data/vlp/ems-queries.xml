@@ -1608,6 +1608,7 @@
 					oc.EOC_WORKING_HOURS_TO
 				</part>
 				from EMST_OFFICE_CAPACITY oc
+				WHERE oc.EOC_OFFICE_ID = ({enrollmentOfficeID})
 			</main-query>
 		</query>
 		<dto>
@@ -1617,7 +1618,7 @@
 				<field name="startDate" column="EOC_START_DATE"/>
 				<field name="endDate" column="EOC_END_DATE"/>
 				<field name="shiftNo" column="EOC_SHIFT_NO"/>
-				<field name="capacity" column="EOC_CAPACITY "/>
+				<field name="capacity" column="EOC_CAPACITY"/>
 				<field name="isActive" column="EOC_IS_ACTIVE"/>
 				<field name="enrollmentOfficeId" column="EOC_OFFICE_ID"/>
 				<field name="workingHoursFrom" column="EOC_WORKING_HOURS_FROM"/>

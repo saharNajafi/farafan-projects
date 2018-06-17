@@ -2669,11 +2669,25 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String OC_003 = "EMS_S_OC_003";
 	public static final String OC_004 = "EMS_S_OC_004";
 	public static final String OC_005 = "EMS_S_OC_005";
+	public static final String OC_006 = "EMS_S_OC_006";
+	public static final String OC_007 = "EMS_S_OC_007";
+	public static final String OC_008 = "EMS_S_OC_008";
+	public static final String OC_009 = "EMS_S_OC_009";
+	public static final String OC_010 = "EMS_S_OC_010";
+	public static final String OC_011 = "EMS_S_OC_011";
+	public static final String OC_012 = "EMS_S_OC_012";
 	public static final String OC_001_MSG = "OfficeCapacityId id is null";
 	public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
 	public static final String OC_003_MSG = "EnrollmentOffice id is null";
 	public static final String OC_004_MSG = "Could not find officeCapacityList with enrollmentOfficeId {}\";";
-	public static final String OC_005_MSG = "Could not find officeCapacity with officeCapacityId {}\";";
+	public static final String OC_005_MSG = "Could not find officeCapacity with id {}\";";
+	public static final String OC_006_MSG = "startDate must be bigger than current date";
+	public static final String OC_007_MSG = "there is an OfficeCapacity, You should edit it";
+	public static final String OC_008_MSG = "getPreviousDay operation could not be executed";
+	public static final String OC_009_MSG = "createOfficeCapacity operation could not be executed";
+	public static final String OC_010_MSG = "save operation could not be executed";
+	public static final String OC_011_MSG = "update operation could not be executed";
+	public static final String OC_012_MSG = "load operation could not be executed";
 
 
 }

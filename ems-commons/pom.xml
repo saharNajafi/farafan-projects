@@ -86,6 +86,11 @@
             <artifactId>gam-commons-security</artifactId>
         </dependency>
         <!-- inner module dependency -->
+        <dependency>
+            <groupId>ir.ghasemkiani</groupId>
+            <artifactId>persiancalendar</artifactId>
+            <version>2.1.7</version>
+        </dependency>
     </dependencies>
 	
 	<build>

@@ -13,6 +13,7 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.RatingInfoTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
+import com.gam.nocr.ems.data.domain.vol.OfficeCapacityVTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import java.util.List;
@@ -23,30 +24,28 @@ import java.util.List;
 public class OfficeCapacityDelegator implements Delegator {
 
     private OfficeCapacityService getService(UserProfileTO userProfileTO) throws BaseException {
-        OfficeCapacityService officeCapacityService = null;
+        OfficeCapacityService officeCapacityService;
         try {
-            officeCapacityService = (OfficeCapacityService) ServiceFactoryProvider.getServiceFactory().getService(
-                    EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_OFFICE_CAPACITY), EmsUtil.getUserInfo(userProfileTO));
+            officeCapacityService = ServiceFactoryProvider.getServiceFactory().getService(
+                    EMSLogicalNames.getServiceJNDIName(
+                            EMSLogicalNames.SRV_OFFICE_CAPACITY), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
-            throw new DelegatorException(BizExceptionCode.RTL_001, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_OFFICE_CAPACITY.split(","));
+            throw new DelegatorException(
+                    BizExceptionCode.ODL_001, BizExceptionCode.GLB_002_MSG, e
+                    , EMSLogicalNames.SRV_OFFICE_CAPACITY.split(","));
         }
         officeCapacityService.setUserProfileTO(userProfileTO);
         return officeCapacityService;
     }
-
-    public List<OfficeCapacityTO> fetchOfficeCapacityList(UserProfileTO userProfileTO, long officeId) throws BaseException {
-        return getService(userProfileTO).fetchOfficeCapacityList(officeId);
-    }
-
-    public long save(UserProfileTO userProfileTO, OfficeCapacityTO to) throws BaseException {
+    public long save(UserProfileTO userProfileTO, OfficeCapacityVTO to) throws BaseException {
         return getService(userProfileTO).save(to);
     }
 
-    public long update(UserProfileTO userProfileTO, OfficeCapacityTO to) throws BaseException {
+    public long update(UserProfileTO userProfileTO, OfficeCapacityVTO to) throws BaseException {
         return getService(userProfileTO).update(to);
     }
 
-    public OfficeCapacityTO load(UserProfileTO userProfileTO, Long officeCapacityId) throws BaseException{
+    public OfficeCapacityVTO load(UserProfileTO userProfileTO, Long officeCapacityId) throws BaseException{
         return getService(userProfileTO).load(officeCapacityId);
     }
 

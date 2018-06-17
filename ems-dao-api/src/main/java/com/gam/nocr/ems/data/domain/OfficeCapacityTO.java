@@ -20,36 +20,33 @@ import java.io.Serializable;
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_OFFICE_CAPACITY", allocationSize = 1)
 @NamedQueries({
         @NamedQuery(
-                name = "OfficeCapacityTO.findByEnrollmentOfficeId",
-                query = "SELECT oc FROM OfficeCapacityTO oc where oc.enrollmentOffice.id=:eofId"),
+                name = "officeCapacityTO.findByEnrollmentOfficeId",
+                query = "SELECT oc FROM OfficeCapacityTO oc" +
+                        " where oc.enrollmentOffice.id=:enrollmentOfficeId" +
+                        " order by oc.startDate ASC "),
   })
-public class OfficeCapacityTO extends ExtEntityTO implements Serializable {
+public class OfficeCapacityTO extends ExtEntityTO {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    private Long id;
     private int startDate;
     private int endDate;
     private ShiftEnum shiftNo;
     private short capacity;
-    private short isActive;
     private Float workingHoursFrom;
     private Float workingHoursTo;
     private EnrollmentOfficeTO enrollmentOffice;
 
+    public OfficeCapacityTO() {
+    }
+
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @Column(name = "EOC_ID")
-    @Override
     public Long getId() {
-        return id;
+        return super.getId();
     }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "EOC_START_DATE")
@@ -95,17 +92,6 @@ public class OfficeCapacityTO extends ExtEntityTO implements Serializable {
         this.capacity = capacity;
     }
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "EOC_IS_ACTIVE")
-    public short getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(short isActive) {
-        this.isActive = isActive;
-    }
-
     @Column(name = "EOC_WORKING_HOURS_FROM")
     public Float getWorkingHoursFrom() {
         return workingHoursFrom;
@@ -134,45 +120,30 @@ public class OfficeCapacityTO extends ExtEntityTO implements Serializable {
         this.enrollmentOffice = enrollmentOffice;
     }
 
-    public OfficeCapacityTO() {
-    }
-
-    public OfficeCapacityTO(Long id) {
-        this.id = id;
-    }
-
-    public OfficeCapacityTO(Long id, int startDate, int endDate, ShiftEnum shiftNo, short capacity, short isActive, EnrollmentOfficeTO enrollmentOffice) {
-        this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.shiftNo = shiftNo;
-        this.capacity = capacity;
-        this.isActive = isActive;
-        this.enrollmentOffice = enrollmentOffice;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (super.getId() != null ? super.getId().hashCode() : 0);
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OfficeCapacityTO)) {
-            return false;
-        }
-        OfficeCapacityTO other = (OfficeCapacityTO) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof OfficeCapacityTO)) {
+//            return false;
+//        }
+//        OfficeCapacityTO other = (OfficeCapacityTO) object;
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     @Override
     public String toString() {
-        return "com.farafan.crsProvider.domain.OfficeCapacityTO[ id=" + id + " ]";
+        return "com.gam.nocr.ems.data.domain.OfficeCapacityTO[ id=" + super.getId() + " ]";
     }
+
+
 }

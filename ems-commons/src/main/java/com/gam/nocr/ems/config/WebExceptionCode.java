@@ -657,8 +657,8 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.web.action.OfficeCapacityAction
     public static final String OFC_001 = "EMS_A_OFC_001";
     public static final String OFC_002 = "EMS_A_OFC_002";
+    public static final String OFC_003 = "EMS_A_OFC_003";
     public static final String OFC_001_MSG = "invalid input entry, officeCapacity id is empty\";";
-    public static final String OFC_002_MSG = "invalid input entry, enrollmentOffice id is empty\";";
 
 
 

@@ -1,8 +1,17 @@
 package com.gam.nocr.ems.data.domain.vol;
 
+import com.gam.commons.core.BaseException;
+import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.domain.ExtEntityTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.enums.ShiftEnum;
+import com.gam.nocr.ems.config.BizExceptionCode;
+import com.gam.nocr.ems.config.ConstValues;
+import gampooya.tools.date.DateFormatException;
+import gampooya.tools.date.DateUtil;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import com.gam.nocr.ems.util.CalendarUtil;
+import java.util.Date;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 5/30/18.
@@ -12,11 +21,11 @@ public class OfficeCapacityVTO extends ExtEntityTO {
     private String startDate;
     private String endDate;
     private String shiftNo;
-    private short capacity;
-    private String isActive;
+    private String capacity;
     private Float workingHoursFrom;
     private Float workingHoursTo;
-    private Long enrollmentOffice;
+    private Long enrollmentOfficeId;
+    private Boolean editable;
 
     @Override
     public Long getId() {
@@ -33,7 +42,12 @@ public class OfficeCapacityVTO extends ExtEntityTO {
     }
 
     public void setStartDate(String startDate) {
-        this.startDate = startDate;
+        String date = null;
+        if(!startDate.contains("T")) {
+            date = convertPersianToGregorian(startDate);
+            this.startDate = date.replace("/", "-").concat("T00:00:00");
+        }else
+            this.startDate = startDate;
     }
 
     public String getEndDate() {
@@ -41,7 +55,9 @@ public class OfficeCapacityVTO extends ExtEntityTO {
     }
 
     public void setEndDate(String endDate) {
-        this.endDate = endDate;
+        String date = null;
+        date = convertPersianToGregorian(endDate);
+        this.endDate = date.replace("/", "-").concat("T00:00:00");
     }
 
     public String getShiftNo() {
@@ -52,20 +68,12 @@ public class OfficeCapacityVTO extends ExtEntityTO {
         this.shiftNo = shiftNo;
     }
 
-    public short getCapacity() {
+    public String getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(short capacity) {
+    public void setCapacity(String capacity) {
         this.capacity = capacity;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
     }
 
     public Float getWorkingHoursFrom() {
@@ -84,11 +92,38 @@ public class OfficeCapacityVTO extends ExtEntityTO {
         this.workingHoursTo = workingHoursTo;
     }
 
-    public Long getEnrollmentOffice() {
-        return enrollmentOffice;
+    public Long getEnrollmentOfficeId() {
+        return enrollmentOfficeId;
     }
 
-    public void setEnrollmentOffice(Long enrollmentOffice) {
-        this.enrollmentOffice = enrollmentOffice;
+    public void setEnrollmentOfficeId(Long enrollmentOfficeId) {
+        this.enrollmentOfficeId = enrollmentOfficeId;
+    }
+
+    public Boolean getEditable() {
+        editable = false;
+        Date date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            date = sdf.parse(startDate.substring(0, 9));
+            if(date.after(new Date()))
+                editable = true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return editable;
+    }
+
+    public void setEditable(Boolean editable) {
+        this.editable = editable;
+    }
+
+    private String convertPersianToGregorian(String date){
+        String DELIMITER = "/";
+        String year = date.substring(0, 4);
+        String month = date.substring(4, 6);
+        String day = date.substring(6, 8);
+        String DateWithSlash = year + DELIMITER + month + DELIMITER + day;
+        return CalendarUtil.convertPersianToGregorian(DateWithSlash);
     }
 }
