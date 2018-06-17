@@ -15,6 +15,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
     autoHeight: true,
     id: 'grdOfficesCapacityGrid',
 
+
     store: {type: 'officecapacitystore'},
 
 
@@ -57,11 +58,26 @@ Ext.define('Ems.view.office.Capacity.Grid', {
 
     actionColumnItems: [
         {
-            icon: 'resources/themes/images/default/shared/forbidden.png',
+            icon: 'resources/themes/images/default/shared/edit.png',
             tooltip: 'ویرایش',
             action: 'editCapacity',
             stateful: true,
-            stateId: this.stateId + 'EditCapacity'
+            stateId: this.stateId + 'EditCapacity',
+            handler: function (sender,r,c,d,e,f) {
+                var grid = sender.up('grid');
+                var store = grid.store;
+                var form = Ext.create('Ems.view.office.Capacity.Dialog', { enrollmentOfficeID: grid.enrollmentOfficeID});
+                var record = store.getAt(r);
+                form.editableField = record.get('editable');
+                form.action = "edit";
+                form.sendID = record.get('id');
+                form.down('#capacity').setValue(record.get('capacity'));
+                form.down('#workingHoursFrom').hide();
+                form.down('#workingHoursTo').hide();
+                form.down('#shiftNo').hide();
+                form.down('#startDate').hide();
+                form.show();
+            }
         },
     ],
 
@@ -71,14 +87,14 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             {
                 text: 'تاریخ شروع',
                 width: 120,
-                dataIndex: EmsObjectName.capacity.startDate,
+                dataIndex: 'startDate',
                 xtype: 'gam.datecolumn',
                 format: Ext.Date.defaultDateTimeFormat
             },
             {
                 text: 'تاریخ پایان',
                 width: 120,
-                dataIndex: EmsObjectName.capacity.endDate,
+                dataIndex: 'endDate',
                 xtype: 'gam.datecolumn',
                 format: Ext.Date.defaultDateTimeFormat
             },

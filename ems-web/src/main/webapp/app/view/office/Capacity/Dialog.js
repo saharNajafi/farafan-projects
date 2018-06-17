@@ -15,6 +15,8 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
 
     width: 400,
 
+    action: "add",
+
     initComponent: function () {
         this.height = 250;
         this.callParent(arguments);
@@ -35,8 +37,8 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
                         { name: 'title', type: 'string'}
                     ],
                     data: [
-                        {id: 1, title: 'صبح'},
-                        {id: 2, title: 'شب'}
+                        {id: 0, title: 'صبح'},
+                        {id: 1, title: 'شب'}
                     ]
                 }),
                 valueField: 'id',

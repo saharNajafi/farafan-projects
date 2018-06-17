@@ -44,7 +44,7 @@ Ext
 													tooltip : 'رویدادها'
 															+ '   < Ctrl+Shift+E >',
 													text : 'رویدادها',
-                                                    hidden: true,
+                                                   // hidden: true,
 													action : 'BizLog',
 													icon : 'resources/themes/images/default/toolbar/bizLogItem.png',
 													id : 'ReportMenuBizLogManagerBizLog'
@@ -60,7 +60,7 @@ Ext
 												},
 												{
 													text : 'تنظیمات سیستم',
-                                                    hidden: true,
+                                                    //hidden: true,
 													tooltip : 'تنظیمات سیستم'
 															+ '   < Ctrl+Shift+C >',
 													action : 'SystemProfileList',
@@ -70,7 +70,7 @@ Ext
 												{
 													tooltip : 'راهنمای کاربران CCOS',
 													text : 'راهنما',
-                                                    hidden: true,
+                                                    //hidden: true,
 													action : 'HelpFileList',
 													icon : 'resources/themes/images/default/toolbar/iconRibonHelp.png',
 													id : 'ReportMenuBizLogManagerHelpFileList'
@@ -78,7 +78,7 @@ Ext
 												{
 													text : 'درخواست های توکن',
 													tooltip : 'درخواست های توکن',
-                                                    hidden: true,
+                                                    //hidden: true,
 													action : 'TokenRequestList',
 													icon : 'resources/themes/images/default/toolbar/setting.png',
 													id : 'wReportMenuBizLogManagerTokenRequest'
@@ -88,7 +88,7 @@ Ext
 										tooltip : 'درخواستها'
 												+ '   < Ctrl+Shift+R >',
 										text : 'درخواستها',
-                                        hidden: true,
+                                        //hidden: true,
 										action : 'CardRequestList',
 										icon : 'resources/themes/images/default/toolbar/index.png',
 										id : 'ReportMenuBizLogManagerCardRequestList'
@@ -96,7 +96,7 @@ Ext
 									{
 										tooltip : 'مدیریت درخواست هایی که در صدور با خطا مواجه شدند',
 										text : 'خطاهای صدور',
-                                        hidden: true,
+                                       // hidden: true,
 										action : 'CmsErrorEvaluateList',
 										icon : 'resources/themes/images/default/toolbar/cms_error.png',
 										id : 'ReportMenuBizLogManagerCmsErrorEvaluateList',
@@ -107,7 +107,7 @@ Ext
 										icon : 'resources/themes/images/default/toolbar/estelam2_error.png',
 										id : 'ReportMenuBizLogManagerEstelam2FalseList',
 										text : 'استعلام های منفی',
-                                        hidden: true,
+                                        //hidden: true,
 										width : 100,
 										action : 'Estelam2FalseList',
 
@@ -116,7 +116,7 @@ Ext
 									{
 										tooltip : 'تعطیلات',
 										text : 'تعطیلات',
-                                        hidden: true,
+                                       // hidden: true,
 										action : 'HolidayList',
 										icon : 'resources/themes/images/default/toolbar/tatil.png',
 										id : 'ReportMenuBizLogManagerHolidayList'
@@ -126,7 +126,7 @@ Ext
 										tooltip : 'درخواست گزارشات'
 												+ '   < Ctrl+Alt+R >',
 										text : 'گزارشات',
-                                        hidden: true,
+                                       // hidden: true,
 										action : 'ReportRequest',
 										icon : 'resources/themes/images/default/toolbar/reports-request.png',
 										id : 'reportsMenu',
@@ -161,7 +161,7 @@ Ext
 									{
 										tooltip : 'مدیریت پیام ها',
 										text : 'مدیریت پیام ها',
-                                        hidden: true,
+                                      //  hidden: true,
 										action : 'Messages',
 										icon : 'resources/themes/images/default/toolbar/iconRibonNotification.png',
 										id : 'ReportMenuBizLogManagerMessages'

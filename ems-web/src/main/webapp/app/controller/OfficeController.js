@@ -148,15 +148,24 @@ Ext.define('Ems.controller.OfficeController', {
         	       click: function(sender) {
                        var form = sender.up('dialog');
                        var list = [];
-                       var obj = { enrollmentOfficeId: form.enrollmentOfficeID, id: null };
+                       var obj = { id: form.action == "edit" ? form.sendID : null };
+                       if(form.action == "add") {
+                        Ext.apply(obj, { enrollmentOfficeId: form.enrollmentOfficeID });
+                       }
                        var me = this;
-                        Ext.each(form.query('field'),
-                            function (field) {
-                                if(field.getValue() != "" && field.getValue() != null) {
-                                    obj[field.getItemId()] = field.getValue();
-                                }
-                            }
-                        );
+                       if(form.action == "add") {
+                           Ext.each(form.query('field'),
+                               function (field) {
+                                   if (field.isHidden() == false) {
+                                       obj[field.getItemId()] = field.getValue();
+                                   }
+                               }
+                           );
+                       }
+                       else {
+                           obj['capacity'] = form.down('#capacity').getValue();
+                           obj['editable'] = form.editableField;
+                       }
                         list.push(obj);
                        Ext.Ajax.request({
                            url: 'extJsController/officeCapacity' + '/save',
@@ -167,7 +176,15 @@ Ext.define('Ems.controller.OfficeController', {
                                    Ext.StoreManager.get('idOfficeCapacityStore').load();
                                }
                                else {
-                                   Ext.Msg.alert('خطا', 'خطایی رخ داده است');
+                                   var msg = Ext.JSON.decode(response.responseText).messageInfo.message;
+                                   var showMsg = "";
+                                   if(msg[msg.length-1] == "6") {
+                                        showMsg = "تاریخ شروع باید از تاریخ امروز بزرگتر باشد";
+                                   }
+                                   else if(msg[msg.length-1] == "7") {
+                                       showMsg = "این سطر در سیستم وجود دارد. لطفا آن را ویرایش کنید";
+                                   }
+                                   Ext.Msg.alert('خطا',showMsg);
                                }
                            },
                            failure: function () {
