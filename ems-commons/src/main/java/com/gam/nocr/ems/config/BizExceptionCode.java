@@ -2676,6 +2676,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String OC_010 = "EMS_S_OC_010";
 	public static final String OC_011 = "EMS_S_OC_011";
 	public static final String OC_012 = "EMS_S_OC_012";
+	public static final String OC_013 = "EMS_S_OC_013";
+	public static final String OC_014 = "EMS_S_OC_014";
+	public static final String OC_015 = "EMS_S_OC_015";
 	public static final String OC_001_MSG = "OfficeCapacityId id is null";
 	public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
 	public static final String OC_003_MSG = "EnrollmentOffice id is null";
@@ -2688,6 +2691,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String OC_010_MSG = "save operation could not be executed";
 	public static final String OC_011_MSG = "update operation could not be executed";
 	public static final String OC_012_MSG = "load operation could not be executed";
+	public static final String OC_013_MSG = "officeCapacity is not editable";
+	public static final String OC_015_MSG = "An error has occured during converting date";
 
 
 }
