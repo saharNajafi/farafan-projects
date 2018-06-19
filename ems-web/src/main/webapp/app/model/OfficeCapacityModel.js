@@ -7,8 +7,8 @@
 Ext.define('Ems.model.OfficeCapacityModel', {
     extend: 'Gam.data.model.Model',
     fields: [
-        { name: 'startDate', type: 'date' },
-        { name: 'endDate', type: 'date' },
+        { name: 'startDate', type: 'string' },
+        { name: 'endDate', type: 'string' },
         { name: 'capacity', type: 'number' },
         { name: 'shiftNo', type: 'number' },
         { name: 'id', type: 'number' },

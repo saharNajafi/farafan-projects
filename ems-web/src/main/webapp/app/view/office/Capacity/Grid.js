@@ -88,15 +88,25 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 text: 'تاریخ شروع',
                 width: 120,
                 dataIndex: 'startDate',
-                xtype: 'gam.datecolumn',
-                format: Ext.Date.defaultDateTimeFormat
+                renderer: function (val) {
+                    var dd = val.split('T')[0];
+                   var newVal =  new Date(dd);
+                   return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + Ext.JalaliDate.getMonth(newVal).toString() + '/' + Ext.JalaliDate.getDate(newVal).toString();
+                }
+                //xtype: 'gam.datecolumn',
+                //format: Ext.Date.defaultDateTimeFormat
             },
             {
                 text: 'تاریخ پایان',
                 width: 120,
                 dataIndex: 'endDate',
-                xtype: 'gam.datecolumn',
-                format: Ext.Date.defaultDateTimeFormat
+                renderer: function (val) {
+                    var dd = val.split('T')[0];
+                    var newVal =  new Date(dd);
+                    return Ext.JalaliDate.getFullYear(newVal) + '/' + Ext.JalaliDate.getMonth(newVal) + '/' + Ext.JalaliDate.getDate(newVal);
+                }
+                //xtype: 'gam.datecolumn'
+                //format: Ext.Date.defaultDateTimeFormat
             },
             {
                 xtype: 'gridcolumn',
