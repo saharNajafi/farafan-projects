@@ -13095,9 +13095,11 @@ Ext.define('Gam.window.dialog.Entity', {
 	initComponent: function()
 	{
 		var me = this;
-		// me.scrollable = true;
-		// me.autoScroll = true;
-		// me.constrain = true;
+		 me.scrollable = true;
+		 me.autoScroll = true;
+		 me.constrain = true;
+
+
 
 		if(!me.width || me.width < Gam.GlobalConfiguration.DIALOG_MIN_WIDTH)
 		{
@@ -13105,6 +13107,7 @@ Ext.define('Gam.window.dialog.Entity', {
 		}
 
 		me.callParent();
+        me.down('form').setAutoScroll(true);
 		me.defaultFocus = me.items.items[0].id;
 	},
 
