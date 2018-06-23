@@ -58,11 +58,19 @@ Ext.define('Ems.view.office.Capacity.Grid', {
 
     actionColumnItems: [
         {
-            icon: 'resources/themes/images/default/shared/edit.png',
+           // icon: 'resources/themes/images/default/shared/edit.png',
             tooltip: 'ویرایش',
             action: 'editCapacity',
             stateful: true,
             stateId: this.stateId + 'EditCapacity',
+            getClass: function (value, metadata, record) {
+                if(record.get('editable')) {
+                    return 'girdAction-OfficeCapacity-edit-icon';
+                }
+                else {
+                    return 'x-hide-display';
+                }
+           },
             handler: function (sender,r,c,d,e,f) {
                 var grid = sender.up('grid');
                 var store = grid.store;

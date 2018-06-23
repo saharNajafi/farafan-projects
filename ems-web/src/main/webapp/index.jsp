@@ -204,6 +204,13 @@
     cursor: pointer;
 }
 
+.girdAction-OfficeCapacity-edit-icon {
+    background: url('resources/themes/images/default/shared/edit.png') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
 .girdAction-LivePhotoActive-icon{
     background: url('resources/themes/images/officeSetting/camera01.png') no-repeat right;
     width: 16px;
