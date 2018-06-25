@@ -59,7 +59,8 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                             getPreviousDay(officeCapacityVTO.getStartDate())).replace("/", ""));
             if (officeCapacityTOList != null) {
                 for (OfficeCapacityTO officeCapacity : officeCapacityTOList) {
-                    if (officeCapacity.getStartDate() == toDateWithoutSlash)
+                    if (officeCapacity.getStartDate() == toDateWithoutSlash
+                            && officeCapacity.getShiftNo().getCode().equals(officeCapacityVTO.getShiftNo()) )
                         throw new ServiceException(BizExceptionCode.OC_007, BizExceptionCode.OC_007_MSG);
                     int currentIndex = officeCapacityTOList.indexOf(officeCapacity);
                     if(currentIndex == 0 && toDateWithoutSlash < officeCapacity.getStartDate()){
@@ -84,6 +85,14 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                                 int previousIndex = currentIndex - 1;
                                 OfficeCapacityTO previousOfficeCapacity;
                                     previousOfficeCapacity = officeCapacityTOList.get(previousIndex);
+                                if (toDateWithoutSlash == previousOfficeCapacity.getStartDate()) {
+                                    endDate = Integer.valueOf(convertGregorianToPersian(getPreviousDay(
+                                            convertPersianToGregorian(String.valueOf(
+                                                    officeCapacity.getStartDate())
+                                            ))).replace("/", ""));
+                                    officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                                    previuosAdded = true;
+                                }
                                 if (toDateWithoutSlash > previousOfficeCapacity.getStartDate()
                                         && toDateWithoutSlash < officeCapacity.getStartDate()) {
                                     previousOfficeCapacity.setEndDate(previousDay);
