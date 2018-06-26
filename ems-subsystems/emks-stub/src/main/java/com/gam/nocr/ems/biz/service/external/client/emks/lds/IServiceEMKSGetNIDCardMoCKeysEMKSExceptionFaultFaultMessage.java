@@ -1,5 +1,5 @@
 
-package com.gam.nocr.ems.biz.service.external.client.emks;
+package com.gam.nocr.ems.biz.service.external.client.emks.lds;
 
 import javax.xml.ws.WebFault;
 
@@ -11,7 +11,7 @@ import javax.xml.ws.WebFault;
  * 
  */
 @WebFault(name = "EMKSException", targetNamespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService")
-public class IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage
+public class IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage
     extends java.lang.Exception
 {
 
@@ -26,7 +26,7 @@ public class IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage
      * @param message
      * @param faultInfo
      */
-    public IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage(String message, EMKSException faultInfo) {
+    public IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage(String message, EMKSException faultInfo) {
         super(message);
         this.faultInfo = faultInfo;
     }
@@ -37,7 +37,7 @@ public class IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage
      * @param faultInfo
      * @param cause
      */
-    public IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage(String message, EMKSException faultInfo, Throwable cause) {
+    public IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage(String message, EMKSException faultInfo, Throwable cause) {
         super(message, cause);
         this.faultInfo = faultInfo;
     }
@@ -45,7 +45,7 @@ public class IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage
     /**
      * 
      * @return
-     *     returns fault bean: com.gam.nocr.ems.biz.service.external.client.emks.EMKSException
+     *     returns fault bean: com.gam.nocr.ems.biz.service.external.client.emks.lds.EMKSException
      */
     public EMKSException getFaultInfo() {
         return faultInfo;

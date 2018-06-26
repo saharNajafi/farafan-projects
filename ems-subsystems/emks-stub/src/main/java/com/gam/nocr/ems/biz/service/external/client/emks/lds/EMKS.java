@@ -1,5 +1,5 @@
 
-package com.gam.nocr.ems.biz.service.external.client.emks;
+package com.gam.nocr.ems.biz.service.external.client.emks.lds;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,22 +17,22 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "EMKS", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://10.202.1.2/EMKS_WCFService.EMKS.svc?singleWsdl")
+@WebServiceClient(name = "EMKS", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl")
 public class EMKS
     extends Service
 {
 
     private final static URL EMKS_WSDL_LOCATION;
-    private final static Logger logger = Logger.getLogger(com.gam.nocr.ems.biz.service.external.client.emks.EMKS.class.getName());
+    private final static Logger logger = Logger.getLogger(com.gam.nocr.ems.biz.service.external.client.emks.lds.EMKS.class.getName());
 
     static {
         URL url = null;
         try {
             URL baseUrl;
-            baseUrl = com.gam.nocr.ems.biz.service.external.client.emks.EMKS.class.getResource(".");
-            url = new URL(baseUrl, "http://10.202.1.2/EMKS_WCFService.EMKS.svc?singleWsdl");
+            baseUrl = com.gam.nocr.ems.biz.service.external.client.emks.lds.EMKS.class.getResource(".");
+            url = new URL(baseUrl, "http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://10.202.1.2/EMKS_WCFService.EMKS.svc?singleWsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         EMKS_WSDL_LOCATION = url;

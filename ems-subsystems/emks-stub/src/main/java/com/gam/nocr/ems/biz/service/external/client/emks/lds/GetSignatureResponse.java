@@ -1,5 +1,5 @@
 
-package com.gam.nocr.ems.biz.service.external.client.emks;
+package com.gam.nocr.ems.biz.service.external.client.emks.lds;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="CardInfo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="GetSignatureResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -30,36 +30,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cardInfo"
+    "getSignatureResult"
 })
-@XmlRootElement(name = "GetNIDCardPINs")
-public class GetNIDCardPINs {
+@XmlRootElement(name = "GetSignatureResponse")
+public class GetSignatureResponse {
 
-    @XmlElementRef(name = "CardInfo", namespace = "http://tempuri.org/", type = JAXBElement.class)
-    protected JAXBElement<String> cardInfo;
+    @XmlElementRef(name = "GetSignatureResult", namespace = "http://tempuri.org/", type = JAXBElement.class)
+    protected JAXBElement<String> getSignatureResult;
 
     /**
-     * Gets the value of the cardInfo property.
+     * Gets the value of the getSignatureResult property.
      * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public JAXBElement<String> getCardInfo() {
-        return cardInfo;
+    public JAXBElement<String> getGetSignatureResult() {
+        return getSignatureResult;
     }
 
     /**
-     * Sets the value of the cardInfo property.
+     * Sets the value of the getSignatureResult property.
      * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setCardInfo(JAXBElement<String> value) {
-        this.cardInfo = ((JAXBElement<String> ) value);
+    public void setGetSignatureResult(JAXBElement<String> value) {
+        this.getSignatureResult = ((JAXBElement<String> ) value);
     }
 
 }
