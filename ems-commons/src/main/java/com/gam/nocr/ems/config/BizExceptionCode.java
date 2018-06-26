@@ -2550,11 +2550,12 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_029 = "EMS_S_ESI_029";
     public static final String ESI_030 = "EMS_S_ESI_030";
     public static final String ESI_031 = "EMS_S_ESI_031";
+    public static final String ESI_032 = "EMS_S_ESI_032";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
     
     public static final String ESI_001_MSG = "CardInfo is invalid";
 	public static final String ESI_002_MSG = "Card verification failed";
-	public static final String ESI_003_MSG = "PIN generation failed";
+	public static final String ESI_003_MSG = "Key/PIN generation failed";
 	public static final String ESI_004_MSG = "Infrastructure error";
 	public static final String ESI_005_MSG = "Unknown Error from Emks";
 	public static final String ESI_006_MSG = "Exception happened is unknown";
@@ -2579,7 +2580,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_027_MSG = "MocHashData must be null";
 	public static final String ESI_028_MSG = "MocSignature must be null";
 	public static final String ESI_030_MSG = "EMKS WebService Exception ...";
-    
+	public static final String ESI_031_MSG = "EMKS GetSignature WebService Exception ...";
+
     //com.gam.nocr.ems.biz.job.PortalReservationJob
 	public static final String RSV_01 = "EMS_S_RSV_01";
 	public static final String RSV_02 = "EMS_S_RSV_02";

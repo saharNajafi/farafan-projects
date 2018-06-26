@@ -56,6 +56,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
     private static final String EMKS_0002 = "EMKS-0002";
     private static final String EMKS_0003 = "EMKS-0003";
     private static final String EMKS_0004 = "EMKS-0004";
+    private static final String EMKS_0005 = "EMKS-0005";
     private static final String EMKS_0099 = "EMKS-0099";
 
     private IServiceEMKS getEMKSService() throws BaseException {
@@ -159,7 +160,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
             emksLogger.info("N_MOC : "
                     + (nidCardMoCKeys.getNMoC() == null ? "" : nidCardMoCKeys
                     .getNMoC().getValue().toString()) + "\n");*/
-            insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_PINS);
+            insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_MOCS);
             return emksDataResultWTO;
         } catch (IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage e) {
             handleEmksException(e);
@@ -427,11 +428,22 @@ public class EmksServiceImpl extends EMSAbstractService implements
         try {
             signature = getEMKSService().getSignature(str);
         } catch (IServiceEMKSGetSignatureEMKSExceptionFaultFaultMessage e) {
-            throw new ServiceException(BizExceptionCode.ESI_030,
-                    BizExceptionCode.ESI_030_MSG);
+            EMKSException faultInfo = e.getFaultInfo();
+            ;
+            String errorCode = faultInfo.getErrorCode().getValue();
+            if (EMKS_0005.equals(errorCode)) {
+                throw new ServiceException(BizExceptionCode.ESI_032,
+                        BizExceptionCode.ESI_031_MSG);
+            } else if (EMKS_0099.equals(errorCode)) {
+                throw new ServiceException(BizExceptionCode.ESI_005,
+                        BizExceptionCode.ESI_005_MSG);
+            } else {
+                throw new ServiceException(BizExceptionCode.ESI_030,
+                        BizExceptionCode.ESI_031_MSG);
+            }
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.ESI_031,
-                    BizExceptionCode.ESI_030_MSG);
+                    BizExceptionCode.ESI_031_MSG);
         }
         return signature;
 
