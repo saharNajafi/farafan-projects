@@ -19,11 +19,7 @@ import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
-import com.gam.nocr.ems.data.domain.BiometricTO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CitizenInfoTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.enums.AFISState;
 import com.gam.nocr.ems.data.enums.BiometricType;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
@@ -841,7 +837,7 @@ public class CardRequestCMSMapper implements XMLMapper {
 				Element fingersElement = doc.createElement("Fingers");
 				biometricIndfoElement.appendChild(fingersElement);
 				Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
-				featureExtractorID.setValue("0001");
+				featureExtractorID.setValue(attributesMap.get("featureExtractorID"));
 				fingersElement.setAttributeNode(featureExtractorID);
 				if (mohFlag) {
 					Element imageElement = doc.createElement("Image");

@@ -7,6 +7,7 @@ import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
+import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.profile.ProfileManager;
@@ -17,6 +18,8 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.data.dao.BiometricInfoDAO;
+import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.CardApplicationInfoVTO;
@@ -50,6 +53,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_BIOMETRIC_INFO;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -484,6 +490,8 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                 currentChildrenCount++;
             }
         }
+        BiometricInfoTO biometricInfoTO ;
+        biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
 
 //		TODO : Dummy assignment
         recordedChildrenCount = children.size();
@@ -496,6 +504,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
         map.put("recordedSpousesCount", recordedSpousesCount);
         map.put("currentChildrenCount", currentChildrenCount);
         map.put("recordedChildrenCount", recordedChildrenCount);
+        map.put("featureExtractorID", biometricInfoTO.getFeatureExtractorID());
         byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTO, map);
         if (byteRequest != null && byteRequest.length != 0) {
 
@@ -2575,6 +2584,20 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
 
         logger.info("The process 'updateEnrollmentOffices' is finished.");
         cmsLogger.info("The process 'updateEnrollmentOffices' is finished.");
+    }
+
+    /**
+     * getBiometricInfoDAO
+     */
+    private BiometricInfoDAO getBiometricInfoDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(
+                    getDaoJNDIName(DAO_BIOMETRIC_INFO));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.CMS_084,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    DAO_BIOMETRIC_INFO.split(","));
+        }
     }
 }
 
