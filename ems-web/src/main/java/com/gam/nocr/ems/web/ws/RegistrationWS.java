@@ -242,6 +242,7 @@ public class RegistrationWS extends EMSWS {
     @WebMethod
     public void saveFingerInfo(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
                                @WebParam(name = "requestID") long requestID,
+                               @WebParam(name = "featureExtractorID") String featureExtractorID,
                                @WebParam(name = "biometricWTO") BiometricWTO[] biometricWTOs) throws InternalException {
 
         UserProfileTO up = super.validateRequest(securityContextWTO);
@@ -274,7 +275,7 @@ public class RegistrationWS extends EMSWS {
         }
 
         try {
-            registrationDelegator.addFingerData(up, requestID, biometrics);
+            registrationDelegator.addFingerData(up, requestID, biometrics, featureExtractorID);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
         } catch (Exception e) {
@@ -731,6 +732,7 @@ public class RegistrationWS extends EMSWS {
                                  @WebParam(name = "citizenWTO") CitizenWTO citizenWTO,
                                  @WebParam(name = "fingers") BiometricWTO[] fingersWTO,
                                  @WebParam(name = "faces") BiometricWTO[] facesWTO,
+                                 @WebParam(name = "featureExtractorID") String featureExtractorID,
                                  @WebParam(name = "documents") DocumentWTO[] documentsWTO,
                                  @WebParam(name = "signature") byte[] signature) throws InternalException {
         UserProfileTO up = super.validateRequest(securityContextWTO);
@@ -742,7 +744,7 @@ public class RegistrationWS extends EMSWS {
         ArrayList<DocumentTO> documents = convertToDocumentsTO(documentsWTO);
 
         try {
-            delegator.register(up, cardRequestTO, fingers, faces, documents, signature);
+            delegator.register(up, cardRequestTO, fingers, faces, documents, signature,  featureExtractorID);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {

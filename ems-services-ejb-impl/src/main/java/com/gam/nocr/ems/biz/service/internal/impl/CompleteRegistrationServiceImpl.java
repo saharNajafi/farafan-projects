@@ -48,11 +48,13 @@ public class CompleteRegistrationServiceImpl extends EMSAbstractService implemen
     @Override
     @Permissions(value = "ems_transferMES")
     @BizLoggable(logAction = "INSERT", logEntityName = "REQUEST")
-    public void register(CardRequestTO requestTO, ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces, ArrayList<DocumentTO> documents, byte[] signature) throws BaseException {
+    public void register(CardRequestTO requestTO, ArrayList<BiometricTO> fingers
+            , ArrayList<BiometricTO> faces
+            , ArrayList<DocumentTO> documents, byte[] signature, String featureExtractorID) throws BaseException {
         RegistrationService registrationService = getRegistrationService();
         registrationService.setUserProfileTO(getUserProfileTO());
         long requestId = registrationService.saveFromMES(requestTO);
-        registrationService.addFingerDataFromMES(requestId, fingers);
+        registrationService.addFingerDataFromMES(requestId, fingers, featureExtractorID);
         registrationService.addFaceDataFromMES(requestId, faces);
         registrationService.addDocumentFromMES(requestId, documents);
 //		registrationService.authenticateDocumentFromMES(requestId);
