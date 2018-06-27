@@ -840,7 +840,9 @@ public class CardRequestCMSMapper implements XMLMapper {
 			if (mohFlag || mocCount > 0) {
 				Element fingersElement = doc.createElement("Fingers");
 				biometricIndfoElement.appendChild(fingersElement);
-
+				Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
+				featureExtractorID.setValue("0001");
+				fingersElement.setAttributeNode(featureExtractorID);
 				if (mohFlag) {
 					Element imageElement = doc.createElement("Image");
 					fingersElement.appendChild(imageElement);
