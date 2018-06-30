@@ -138,29 +138,9 @@ public class EmksServiceImpl extends EMSAbstractService implements
         try {
             CardMoCKeys nidCardMoCKeys = emksService.getNIDCardMoCKeys(str);
             EMKSCardMoCKeysWTO emksDataResultWTO = new EMKSCardMoCKeysWTO();
-            /*emksDataResultWTO.setId(nidCardMoCKeys.getID().getValue().toString());
-            emksDataResultWTO.setSign(nidCardMoCKeys.getSign().getValue()
-                    .toString());
-            if (emksDataWTO.getMocAvailable().equals("0")) {
-                if (nidCardMoCKeys.getNMoC() == null)
-                    throw new BaseException("101",
-                            "MocAvailable is '0' but NMoC equals null");
-
-                emksDataResultWTO.setNmoc(nidCardMoCKeys.getNMoC().getValue()
-                        .toString());
-            } else if (emksDataWTO.getMocAvailable().equals("1")) {
-                if (nidCardMoCKeys.getNMoC() != null)
-                    throw new BaseException("101",
-                            "MocAvailable is '0' but NMoC must be null");
-            }
-            emksLogger.info("id : " + nidCardMoCKeys.getID().getValue().toString()
-                    + "\n");
-            emksLogger.info("sign : "
-                    + nidCardMoCKeys.getSign().getValue().toString() + "\n");
-            emksLogger.info("N_MOC : "
-                    + (nidCardMoCKeys.getNMoC() == null ? "" : nidCardMoCKeys
-                    .getNMoC().getValue().toString()) + "\n");*/
-            insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_MOCS);
+            emksDataResultWTO.setMoc_enc(nidCardMoCKeys.getMoCENC().getValue());
+            emksDataResultWTO.setMoc_mac(nidCardMoCKeys.getMoCMAC().getValue());
+            insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_MOC_KEYS);
             return emksDataResultWTO;
         } catch (IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage e) {
             handleEmksException(e);
@@ -429,7 +409,6 @@ public class EmksServiceImpl extends EMSAbstractService implements
             signature = getEMKSService().getSignature(str);
         } catch (IServiceEMKSGetSignatureEMKSExceptionFaultFaultMessage e) {
             EMKSException faultInfo = e.getFaultInfo();
-            ;
             String errorCode = faultInfo.getErrorCode().getValue();
             if (EMKS_0005.equals(errorCode)) {
                 throw new ServiceException(BizExceptionCode.ESI_032,

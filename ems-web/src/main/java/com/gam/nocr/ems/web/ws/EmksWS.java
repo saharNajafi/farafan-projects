@@ -113,7 +113,7 @@ public class EmksWS extends EMSWS {
     }
 
     /**
-     * get pin while deliver card to citizen in ccos
+     * get MOCs Keys and Default Pins while deliver card to citizen in ccos
      *
      * @param securityContextWTO The login and session information of the user
      * @throws InternalException
@@ -146,8 +146,8 @@ public class EmksWS extends EMSWS {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             emksLogger.error(e.getMessage(), e);
-            throw new InternalException(WebExceptionCode.EKW_001,
-                    new EMSWebServiceFault(WebExceptionCode.EKW_001_MSG), e);
+            throw new InternalException(WebExceptionCode.EKW_004,
+                    new EMSWebServiceFault(WebExceptionCode.EKW_004_MSG), e);
         }
 
     }

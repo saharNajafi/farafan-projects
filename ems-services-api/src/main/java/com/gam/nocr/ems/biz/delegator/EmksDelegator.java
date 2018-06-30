@@ -47,7 +47,6 @@ public class EmksDelegator implements Delegator {
 	public EMKSCardMoCKeysWTO getNIDCardMoCKeys(UserProfileTO up,
 												EMKSDataWTO emksDataWTO, Long requestID) throws BaseException {
 		return getService(up).getNIDCardMoCKeys(emksDataWTO,requestID);
-
 	}
 
 
