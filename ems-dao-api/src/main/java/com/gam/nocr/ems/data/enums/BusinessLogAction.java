@@ -85,7 +85,7 @@ public enum BusinessLogAction {
      * EMKS Actions
      */
     GET_PINS,
-    GET_MOCS,
+    GET_MOC_KEYS,
     /**
      * VIP Actions
      */
