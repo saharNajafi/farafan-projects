@@ -30,7 +30,7 @@ public class BiometricInfoTO extends ExtEntityTO  {
     private MinutiaType minType;
     private CitizenTO citizen;
     private FingerQualityType fingerQualityType = FingerQualityType.UNDEFINED;
-    private String featureExtractorID="0001";
+    private String featureExtractorID = "0001";
     
 
     @Id
@@ -91,7 +91,7 @@ public class BiometricInfoTO extends ExtEntityTO  {
 		this.fingerQualityType = fingerQualityType;
 	}
 
-    @Column(name = "BMI_FEATURE_EXTRACTOR_ID",length = 4)
+    @Column(name = "BMI_FEATURE_EXTRACTOR_ID",nullable = false,length = 4, columnDefinition = "varchar2(4) default '1'")
     public String getFeatureExtractorID() {
         return featureExtractorID;
     }

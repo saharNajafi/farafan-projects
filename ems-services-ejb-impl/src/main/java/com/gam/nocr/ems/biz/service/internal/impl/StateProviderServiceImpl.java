@@ -21,6 +21,7 @@ import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
 import gampooya.tools.security.SecurityContextService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import javax.ejb.Local;
@@ -90,7 +91,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
         try {
             SecurityContextService securityContextService = new SecurityContextService();
             ProfileManager profileManager = ProfileHelper.getProfileManager();
-            Long personID =getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
             Integer perId = null;
             try {
                 perId = Integer.parseInt("" + personID);
@@ -104,10 +105,10 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                 if (value != null && value.trim().length() > 0)
                     stateProviderTO.setValue(value);
             } else if (stateId.startsWith("ccos.")) {
-            	OfficeSettingTO officeSettingTO = getOfficeSettingDAO().findByOfficeId(getUserProfileTO().getDepID());
+                OfficeSettingTO officeSettingTO = getOfficeSettingDAO().findByOfficeId(getUserProfileTO().getDepID());
                 if (stateId.endsWith("currentDate")) {
-                    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    String date=format.format(new Date());
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    String date = format.format(new Date());
                     /*date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);*/
                     stateProviderTO.setValue(date);
                 } else if (stateId.endsWith("officeType") || stateId.endsWith("enrollmentOfficeId")) {
@@ -120,181 +121,163 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         stateProviderTO.setValue(enrollmentOfficeTO.getId().toString());
                 }
                 //Anbari
-                else if (stateId.endsWith("isDeliver")){
+                else if (stateId.endsWith("isDeliver")) {
                     Long userDepartmentId = getUserProfileTO().getDepID();
                     EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
-                    if(EnrollmentOfficeType.OFFICE.equals(enrollmentOfficeTO.getType()) && EnrollmentOfficeDeliverStatus.ENABLED.equals(enrollmentOfficeTO.getDeliver()))
-                    	stateProviderTO.setValue("1");
+                    if (EnrollmentOfficeType.OFFICE.equals(enrollmentOfficeTO.getType()) && EnrollmentOfficeDeliverStatus.ENABLED.equals(enrollmentOfficeTO.getDeliver()))
+                        stateProviderTO.setValue("1");
                     else
-                    	stateProviderTO.setValue("0");
-                }
-                else if(stateId.endsWith("isVIP"))
-                {
-                    try{
-                    	long depID = userProfileTO.getDepID();
-                    	EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, depID);
-                    	String enrollmentOfficeCode = enrollmentOfficeTO.getCode();
-                    	ProfileManager pm = ProfileHelper.getProfileManager();
-                    	String codeVip = (String) pm.getProfile(ProfileKeyName.KEY_VIP_ENROLLMENT_OFFICE, true, null, null);
-                    	if(enrollmentOfficeCode.equals(codeVip))
-                    		stateProviderTO.setValue("1");
-                    		else
-                    		stateProviderTO.setValue("0");
+                        stateProviderTO.setValue("0");
+                } else if (stateId.endsWith("isVIP")) {
+                    try {
+                        long depID = userProfileTO.getDepID();
+                        EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, depID);
+                        String enrollmentOfficeCode = enrollmentOfficeTO.getCode();
+                        ProfileManager pm = ProfileHelper.getProfileManager();
+                        String codeVip = (String) pm.getProfile(ProfileKeyName.KEY_VIP_ENROLLMENT_OFFICE, true, null, null);
+                        if (enrollmentOfficeCode.equals(codeVip))
+                            stateProviderTO.setValue("1");
+                        else
+                            stateProviderTO.setValue("0");
+                    } catch (Exception e) {
+
+                        EMSLog.getLogger(this.getClass()).error("Exception happened while trying to find stateId:" + "isVip" + ".", e);
+                        stateProviderTO.setStateId("isVip");
+                        stateProviderTO.setValue("0");
+
                     }
-                    catch(Exception e)
-                    {
-                    	
-                    	EMSLog.getLogger(this.getClass()).error("Exception happened while trying to find stateId:" + "isVip" + ".", e);
-                    	stateProviderTO.setStateId("isVip");
-                    	stateProviderTO.setValue("0");
-                    
-                    }
-                	
+
                 }
                 /**
                  * edited by Madanipour
                  * check some setting that should be set for each office
                  */
-                
-				else if (stateId.endsWith("canImportFaceFromFile")) {
 
-					if (officeSettingTO.getUploadPhoto()){
-						
-						stateProviderTO.setValue("true");
-					}else {
-						stateProviderTO.setValue("false");
-					}
+                else if (stateId.endsWith("canImportFaceFromFile")) {
 
-				}
-                                
-				else if (stateId.endsWith("forceTenprintUnsegmentedCapture")) {
+                    if (officeSettingTO.getUploadPhoto()) {
 
-					if (officeSettingTO.getFingerScanSingleMode()){
-						stateProviderTO.setValue("false");
-					}else {
-						stateProviderTO.setValue("true");
-					}
+                        stateProviderTO.setValue("true");
+                    } else {
+                        stateProviderTO.setValue("false");
+                    }
 
-					
-				}
-                
-				else if (stateId.endsWith("elderlyMode")) {
+                } else if (stateId.endsWith("forceTenprintUnsegmentedCapture")) {
 
-					if (officeSettingTO.getElderlyMode()){
-						
-						stateProviderTO.setValue("true");
-					}else {
-						stateProviderTO.setValue("false");
-					}
+                    if (officeSettingTO.getFingerScanSingleMode()) {
+                        stateProviderTO.setValue("false");
+                    } else {
+                        stateProviderTO.setValue("true");
+                    }
 
-				}
-                
-				else if (stateId.endsWith("icaoTestsEnabled")) {
 
-					if (officeSettingTO.getNonConfirmingIcaoImage()){
-						
-						stateProviderTO.setValue("false");
-					}else {
-						stateProviderTO.setValue("true");
-					}
+                } else if (stateId.endsWith("elderlyMode")) {
 
-				}
-                
-				else if (stateId.endsWith("disabilityMode")) {
+                    if (officeSettingTO.getElderlyMode()) {
 
-					if (officeSettingTO.getDisabilityMode()){
-						
-						stateProviderTO.setValue("true");
-					}else {
-						stateProviderTO.setValue("false");
-					}
+                        stateProviderTO.setValue("true");
+                    } else {
+                        stateProviderTO.setValue("false");
+                    }
 
-				}
-                
-				else if (stateId.endsWith("ReIssueRequest")) {
+                } else if (stateId.endsWith("icaoTestsEnabled")) {
 
-					if (officeSettingTO.getReissueRequest()) {
-						stateProviderTO.setValue("1");
-					} else {
-						stateProviderTO.setValue("0");
-					}
+                    if (officeSettingTO.getNonConfirmingIcaoImage()) {
 
-				}
+                        stateProviderTO.setValue("false");
+                    } else {
+                        stateProviderTO.setValue("true");
+                    }
 
-				else if (stateId
-						.endsWith("allowChangeFingerStatusDuringCapture")) {
+                } else if (stateId.endsWith("disabilityMode")) {
 
-					if (officeSettingTO.getAmputationAnnouncment())
-						stateProviderTO.setValue("true");
-					else
-						stateProviderTO.setValue("false");
+                    if (officeSettingTO.getDisabilityMode()) {
 
-				}
-                
-				else if (stateId
-						.endsWith("allowAmputatedFingerStatus")) {
+                        stateProviderTO.setValue("true");
+                    } else {
+                        stateProviderTO.setValue("false");
+                    }
 
-					if (officeSettingTO.getAmputationAnnouncment())
-						stateProviderTO.setValue("true");
-					else
-						stateProviderTO.setValue("false");
+                } else if (stateId.endsWith("ReIssueRequest")) {
 
-				}
-                
-				else if (stateId
-						.endsWith("nMocGeneration")) {
+                    if (officeSettingTO.getReissueRequest()) {
+                        stateProviderTO.setValue("1");
+                    } else {
+                        stateProviderTO.setValue("0");
+                    }
 
-					if (officeSettingTO.getnMocGeneration())
-						stateProviderTO.setValue("1");
-					else
-						stateProviderTO.setValue("0");
+                } else if (stateId
+                        .endsWith("allowChangeFingerStatusDuringCapture")) {
 
-				}
-                
-				else if (stateId
-						.endsWith("allowEditBackground")) {
+                    if (officeSettingTO.getAmputationAnnouncment())
+                        stateProviderTO.setValue("true");
+                    else
+                        stateProviderTO.setValue("false");
 
-					if (officeSettingTO.getAllowEditBackground())
-						stateProviderTO.setValue("true");
-					else
-						stateProviderTO.setValue("false");
+                } else if (stateId
+                        .endsWith("allowAmputatedFingerStatus")) {
 
-				}
-                
-				else if (stateId
-						.endsWith("useScannerUI")) {
+                    if (officeSettingTO.getAmputationAnnouncment())
+                        stateProviderTO.setValue("true");
+                    else
+                        stateProviderTO.setValue("false");
 
-					if (officeSettingTO.getUseScannerUI())
-						stateProviderTO.setValue("true");
-					else
-						stateProviderTO.setValue("false");
+                } else if (stateId
+                        .endsWith("nMocGeneration")) {
 
-				}            
-                
-                else if(stateId.endsWith("tokenExpire"))
-                {
-                	 try{
-                		 ProfileManager pm = ProfileHelper.getProfileManager();
-                     		String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);
-                     		stateProviderTO.setValue(tokenExpireDateValue);
-                     }
-                     catch(Exception e)
-                     {
-                     	
-                     	EMSLog.getLogger(this.getClass()).error("Exception happened while trying to find stateId:" + "ccosTokenExpire" + ".", e);
-                     	stateProviderTO.setStateId("ccosTokenExpire");
-                     	stateProviderTO.setValue("21");
-                     
-                     }
-                	
-                }
-                else {
+                    if (officeSettingTO.getnMocGeneration())
+                        stateProviderTO.setValue("1");
+                    else
+                        stateProviderTO.setValue("0");
+
+                } else if (stateId
+                        .endsWith("allowEditBackground")) {
+
+                    if (officeSettingTO.getAllowEditBackground())
+                        stateProviderTO.setValue("true");
+                    else
+                        stateProviderTO.setValue("false");
+
+                } else if (stateId
+                        .endsWith("useScannerUI")) {
+
+                    if (officeSettingTO.getUseScannerUI())
+                        stateProviderTO.setValue("true");
+                    else
+                        stateProviderTO.setValue("false");
+
+                } else if (stateId.endsWith("tokenExpire")) {
+                    try {
+                        ProfileManager pm = ProfileHelper.getProfileManager();
+                        String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);
+                        stateProviderTO.setValue(tokenExpireDateValue);
+                    } catch (Exception e) {
+
+                        EMSLog.getLogger(this.getClass()).error("Exception happened while trying to find stateId:" + "ccosTokenExpire" + ".", e);
+                        stateProviderTO.setStateId("ccosTokenExpire");
+                        stateProviderTO.setValue("21");
+
+                    }
+
+                } else if (stateId.endsWith("featureExtractorID")) {
+                    if (!StringUtils.isEmpty(officeSettingTO.getFeatureExtractorID()))
+                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractorID());
+                    else
+
+                        stateProviderTO.setValue("");
+                } else if (stateId.endsWith("featureExtractorVersion")) {
+                    if (!StringUtils.isEmpty(officeSettingTO.getFeatureExtractorVersion()))
+                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractorVersion());
+                    else
+
+                        stateProviderTO.setValue("");
+                } else {
                     value = (String) profileManager.getProfile(ProfileKeyName.STATE_ROOT + "." + stateId, true, null, null);
                     if (value != null && value.trim().length() > 0)
                         stateProviderTO.setValue(value);
                 }
-            
-            //************ Anbari change the securityContex to load access from cache
+
+                //************ Anbari change the securityContex to load access from cache
                 
                 /*
             } else if (UIStateIds.W_RATING_ADD.equalsIgnoreCase(stateId)) {
@@ -317,8 +300,8 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                 }
                 stateProviderTO.setValue(value);
             }*/
-                
-                
+
+
             } else if (UIStateIds.W_RATING_ADD.equalsIgnoreCase(stateId)) {
                 value = "{\"hidden\":true}";
                 if (securityContextService.hasAccess(userProfileTO.getUserName(), "ems_addRating")) {
@@ -347,7 +330,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
         }
         return stateProviderTO;
     }
-    
+
     //Anbari
     private UserManagementService getUserManagementService() throws BaseException {
         UserManagementService userManagementService;
@@ -373,32 +356,32 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
         }
         return enrollmentOfficeDAO;
     }
-    
-	private OfficeSettingDAO getOfficeSettingDAO() throws ServiceException {
 
-		OfficeSettingDAO officeSettingDAO = null;
+    private OfficeSettingDAO getOfficeSettingDAO() throws ServiceException {
 
-		try {
-			officeSettingDAO = DAOFactoryProvider
-					.getDAOFactory()
-					.getDAO(EMSLogicalNames
-							.getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_SETTING));
-		} catch (DAOFactoryException e) {
+        OfficeSettingDAO officeSettingDAO = null;
 
-			throw new ServiceException(BizExceptionCode.SPS_001,
-					BizExceptionCode.GLB_001_MSG, e,
-					EMSLogicalNames.DAO_OFFICE_SETTING.split(","));
+        try {
+            officeSettingDAO = DAOFactoryProvider
+                    .getDAOFactory()
+                    .getDAO(EMSLogicalNames
+                            .getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_SETTING));
+        } catch (DAOFactoryException e) {
 
-		}
-		return officeSettingDAO;
+            throw new ServiceException(BizExceptionCode.SPS_001,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    EMSLogicalNames.DAO_OFFICE_SETTING.split(","));
 
-	}
-	
-	//Anbari
+        }
+        return officeSettingDAO;
+
+    }
+
+    //Anbari
     private PersonManagementService getPersonService() throws BaseException {
         PersonManagementService personManagementService;
         try {
-            personManagementService = (PersonManagementService) ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_PERSON),null);
+            personManagementService = (PersonManagementService) ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_PERSON), null);
         } catch (ServiceFactoryException e) {
             throw new DelegatorException(BizExceptionCode.PDL_001, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_PERSON.split(","));
         }
