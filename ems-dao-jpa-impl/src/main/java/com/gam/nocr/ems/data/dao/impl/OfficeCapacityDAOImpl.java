@@ -4,7 +4,7 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
-import com.gam.nocr.ems.data.domain.RatingInfoTO;
+import com.gam.nocr.ems.data.enums.ShiftEnum;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -28,11 +28,12 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
     }
 
     @Override
-    public List<OfficeCapacityTO> findByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException {
+    public List<OfficeCapacityTO> findByEnrollmentOfficeIdAndShiftNo(Long enrollmentOfficeId, ShiftEnum shiftNo) throws BaseException {
         List<OfficeCapacityTO> officeCapacityList;
         try {
-            officeCapacityList = em.createNamedQuery("officeCapacityTO.findByEnrollmentOfficeId")
+            officeCapacityList = em.createNamedQuery("officeCapacityTO.findByEnrollmentOfficeIdAndShiftNo")
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
+                    .setParameter("shiftNo", shiftNo)
                     .getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.OCD_002, DataExceptionCode.OCD_002_MSG, e);

@@ -54,13 +54,14 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                 throw new ServiceException(BizExceptionCode.OC_006, BizExceptionCode.OC_006_MSG);
             if(officeCapacityVTO.getEnrollmentOfficeId() == null)
                 throw new ServiceException(BizExceptionCode.OC_003, BizExceptionCode.OC_003_MSG);
-            officeCapacityTOList = getOfficeCapacityDAO().findByEnrollmentOfficeId(officeCapacityVTO.getEnrollmentOfficeId());
+            officeCapacityTOList =
+                    getOfficeCapacityDAO().findByEnrollmentOfficeIdAndShiftNo(
+                            officeCapacityVTO.getEnrollmentOfficeId(), ShiftEnum.getShift(officeCapacityVTO.getShiftNo()));
             Integer previousDay = Integer.valueOf(convertGregorianToPersian(
                             getPreviousDay(officeCapacityVTO.getStartDate())).replace("/", ""));
             if (officeCapacityTOList != null) {
                 for (OfficeCapacityTO officeCapacity : officeCapacityTOList) {
-                    if (officeCapacity.getStartDate() == toDateWithoutSlash
-                            && officeCapacity.getShiftNo().getCode().equals(officeCapacityVTO.getShiftNo()) )
+                    if (officeCapacity.getStartDate() == toDateWithoutSlash)
                         throw new ServiceException(BizExceptionCode.OC_007, BizExceptionCode.OC_007_MSG);
                     int currentIndex = officeCapacityTOList.indexOf(officeCapacity);
                     if(currentIndex == 0 && toDateWithoutSlash < officeCapacity.getStartDate()){
@@ -85,14 +86,6 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                                 int previousIndex = currentIndex - 1;
                                 OfficeCapacityTO previousOfficeCapacity;
                                     previousOfficeCapacity = officeCapacityTOList.get(previousIndex);
-                                if (toDateWithoutSlash == previousOfficeCapacity.getStartDate()) {
-                                    endDate = Integer.valueOf(convertGregorianToPersian(getPreviousDay(
-                                            convertPersianToGregorian(String.valueOf(
-                                                    officeCapacity.getStartDate())
-                                            ))).replace("/", ""));
-                                    officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
-                                    previuosAdded = true;
-                                }
                                 if (toDateWithoutSlash > previousOfficeCapacity.getStartDate()
                                         && toDateWithoutSlash < officeCapacity.getStartDate()) {
                                     previousOfficeCapacity.setEndDate(previousDay);
