@@ -398,7 +398,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_161 = "EMS_S_RSI_161";
 	public static final String RSI_162 = "EMS_S_RSI_162";
 	public static final String RSI_163 = "EMS_S_RSI_163";
-	
+	public static final String RSI_164 = "EMS_S_RSI_164";
+
 	public static final String RSI_006_MSG = "Card request cannot not be null";
 	public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
 	public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -526,7 +527,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_161_MSG = "could not add biometric info";
 	public static final String RSI_162_MSG = "LivingCity is null or 0";
 	public static final String RSI_163_MSG = "Living is null or 0";
-	
+	public static final String RSI_164_MSG = "featureExtractorID is null";
+
 	// com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
 	public static final String KSI_001 = "EMS_S_KSI_001";
 	public static final String KSI_002 = "EMS_S_KSI_002";

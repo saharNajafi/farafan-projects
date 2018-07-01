@@ -1443,6 +1443,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 			biometricInfoTO.setNationalID(cardRequestTO.getCitizen()
 					.getNationalID());
 			biometricInfoTO.setCitizen(cardRequestTO.getCitizen());
+			if(featureExtractorID == null)
+				throw new ServiceException(BizExceptionCode.RSI_164,
+						BizExceptionCode.RSI_164_MSG);
 			biometricInfoTO.setFeatureExtractorID(featureExtractorID);
 			Long countBios = biometricInfoDAO.checkBiometricInfo(requestId);
 			if (countBios == null)
