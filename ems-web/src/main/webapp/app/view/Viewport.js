@@ -8,7 +8,7 @@ Ext.define('Ems.view.Viewport', {
 
     initComponent: function () {
         var me = this;
-       // globalAccessAllow = true;
+        globalAccessAllow = true;
         this.items = [
             {
                 region: 'north',

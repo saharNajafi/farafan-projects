@@ -17,9 +17,11 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
 
     action: "add",
 
+    title: 'چدید',
+
     initComponent: function () {
-        this.height = 250;
         this.callParent(arguments);
+        this.minHeight = 100;
     },
 
     buildFormItems: function () {
@@ -44,26 +46,31 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
                 valueField: 'id',
                 displayField: 'title',
                 itemId: 'shiftNo',
+                forceSelection: true,
                 fieldLabel: 'شیفت'
             },
             {
                 xtype: 'datefield',
                 itemId: 'startDate',
-                fieldLabel: 'تاریخ شروع'
+                fieldLabel: 'تاریخ شروع',
+                forceSelection: true
             },
             {
                 xtype: 'workinghours',
                 itemId: 'workingHoursFrom',
-                fieldLabel: 'از ساعت'
+                fieldLabel: 'از ساعت',
+                forceSelection: true
             },
             {
                 xtype: 'workinghours',
                 itemId: 'workingHoursTo',
-                fieldLabel: 'تا ساعت'
+                fieldLabel: 'تا ساعت',
+                forceSelection: true
             },
             {
                 xtype: 'numberfield',
                 itemId: 'capacity',
+                minValue: 0,
                 fieldLabel: 'ظرفیت'
             }
         ]

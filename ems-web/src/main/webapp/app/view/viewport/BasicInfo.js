@@ -85,7 +85,7 @@ Ext.define('Ems.view.viewport.BasicInfo', {
                 {
                     action: 'Department',
                     id: 'BaseInfoMenuDepartment',
-                    tooltip: 'جایگاه سازمانی' + '   < Ctrl+Shift+O >',
+                  //  tooltip: 'جایگاه سازمانی' + '   < Ctrl+Shift+O >',
                     text: 'جایگاه سازمانی',
                    // hidden: globalAccessAllow,
                     iconCls: 'toolbar-department',

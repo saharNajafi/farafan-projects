@@ -167,30 +167,33 @@ Ext.define('Ems.controller.OfficeController', {
                            obj['editable'] = form.editableField;
                        }
                         list.push(obj);
-                       Ext.Ajax.request({
-                           url: 'extJsController/officeCapacity' + '/save',
-                           jsonData: { records: list},
-                           success: function (response) {
-                               if(Ext.JSON.decode(response.responseText).success) {
-                                   Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
-                                   Ext.StoreManager.get('idOfficeCapacityStore').load();
-                               }
-                               else {
-                                   var msg = Ext.JSON.decode(response.responseText).messageInfo.message;
-                                   var showMsg = "";
-                                   if(msg[msg.length-1] == "6") {
-                                        showMsg = "تاریخ شروع باید از تاریخ امروز بزرگتر باشد";
+                       if(form.isValid()) {
+                           Ext.Ajax.request({
+                               url: 'extJsController/officeCapacity' + '/save',
+                               jsonData: {records: list},
+                               success: function (response) {
+                                   if (Ext.JSON.decode(response.responseText).success) {
+                                       Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
+                                       Ext.StoreManager.get('idOfficeCapacityStore').load();
+                                       form.close();
                                    }
-                                   else if(msg[msg.length-1] == "7") {
-                                       showMsg = "این سطر در سیستم وجود دارد. لطفا آن را ویرایش کنید";
+                                   else {
+                                       var msg = Ext.JSON.decode(response.responseText).messageInfo.message;
+                                       var showMsg = "";
+                                       if (msg[msg.length - 1] == "6") {
+                                           showMsg = "تاریخ شروع باید از تاریخ امروز بزرگتر باشد";
+                                       }
+                                       else if (msg[msg.length - 1] == "7") {
+                                           showMsg = "این سطر در سیستم وجود دارد. لطفا آن را ویرایش کنید";
+                                       }
+                                       Ext.Msg.alert('خطا', showMsg);
                                    }
-                                   Ext.Msg.alert('خطا',showMsg);
+                               },
+                               failure: function () {
+                                   Ext.Msg.alert('خطا', 'خطایی رخ داده است');
                                }
-                           },
-                           failure: function () {
-                               Ext.Msg.alert('خطا', 'خطایی رخ داده است');
-                           }
-                       });
+                           });
+                       }
                    }
             },
 

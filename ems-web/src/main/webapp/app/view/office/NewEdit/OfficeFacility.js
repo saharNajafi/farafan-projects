@@ -46,7 +46,7 @@ Ext.define('Ems.view.office.NewEdit.OfficeFacility', {
                 items: [
                     {
                         readOnly: true,
-                        boxLabel: 'قابل مشاهده در CRS',
+                        boxLabel: 'قابلیت ثبت نام تک مرحله ای',
                 id: EmsObjectName.officeNewEdit.singleStageOnly
             },
             {
@@ -110,7 +110,7 @@ Ext.define('Ems.view.office.NewEdit.OfficeFacility', {
                 allowBlank: true,
                 items: [
                     {
-                        boxLabel: 'قابل مشاهده در CRS',
+                        boxLabel: 'قابلیت ثبت نام تک مرحله ای',
                         id: EmsObjectName.officeNewEdit.singleStageOnly,
                         name: EmsObjectName.officeNewEdit.singleStageOnly
                     },
