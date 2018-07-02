@@ -27,7 +27,7 @@ Ext.define('Ems.view.office.Capacity.Window', {
     width: 750,
 
     scrollable: true,
-    draggable: true,
+    constrain: true,
 
     resizable: false,
     //closeAction: 'destroy',
