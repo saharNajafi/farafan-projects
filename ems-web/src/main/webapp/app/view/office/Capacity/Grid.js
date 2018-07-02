@@ -25,7 +25,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             text: 'جدید',
             //action: 'exportExcel',
             handler: function(sender) {
-                Ext.create('Ems.view.office.Capacity.Dialog', { title: 'چدید', enrollmentOfficeID: sender.up('grid').enrollmentOfficeID}).show();
+                Ext.create('Ems.view.office.Capacity.Dialog', { title: 'چدید', height: 210, enrollmentOfficeID: sender.up('grid').enrollmentOfficeID}).show();
             }
         }
     ],
@@ -74,7 +74,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             handler: function (sender,r,c,d,e,f) {
                 var grid = sender.up('grid');
                 var store = grid.store;
-                var form = Ext.create('Ems.view.office.Capacity.Dialog', {title: 'ویرایش', enrollmentOfficeID: grid.enrollmentOfficeID});
+                var form = Ext.create('Ems.view.office.Capacity.Dialog', {title: 'ویرایش', height: 100, enrollmentOfficeID: grid.enrollmentOfficeID});
                 var record = store.getAt(r);
                 form.editableField = record.get('editable');
                 form.action = "edit";

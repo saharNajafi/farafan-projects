@@ -21,7 +21,7 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
 
     initComponent: function () {
         this.callParent(arguments);
-        this.minHeight = 100;
+       // this.minHeight = 100;
     },
 
     buildFormItems: function () {
