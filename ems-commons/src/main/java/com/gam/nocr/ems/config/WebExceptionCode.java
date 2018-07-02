@@ -309,10 +309,12 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EKW_001 = "EMS_W_EKW_001";
     public static final String EKW_002 = "EMS_W_EKW_002";
     public static final String EKW_003 = "EMS_W_EKW_003";
+    public static final String EKW_004 = "EMS_W_EKW_004";
     public static final String EKW_001_MSG = "Unable to get pins from EMKS. Reason unknown";
     public static final String EKW_002_MSG = "Unable to get Signiture from EMKS. Reason unknown";
     public static final String EKW_003_MSG = "Unable to get Signiture from EMKS. Reason unknown";
-    
+    public static final String EKW_004_MSG = "Unable to get MOC Keys from EMKS. Reason unknown";
+
     // com.gam.nocr.ems.web.ws.HelpWS
     public static final String HEW_001 = "EMS_W_HEW_001";
     public static final String HEW_002 = "EMS_W_HEW_002";

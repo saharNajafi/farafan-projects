@@ -398,7 +398,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_161 = "EMS_S_RSI_161";
 	public static final String RSI_162 = "EMS_S_RSI_162";
 	public static final String RSI_163 = "EMS_S_RSI_163";
-	
+	public static final String RSI_164 = "EMS_S_RSI_164";
+
 	public static final String RSI_006_MSG = "Card request cannot not be null";
 	public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
 	public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -526,7 +527,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_161_MSG = "could not add biometric info";
 	public static final String RSI_162_MSG = "LivingCity is null or 0";
 	public static final String RSI_163_MSG = "Living is null or 0";
-	
+	public static final String RSI_164_MSG = "featureExtractorID is null";
+
 	// com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
 	public static final String KSI_001 = "EMS_S_KSI_001";
 	public static final String KSI_002 = "EMS_S_KSI_002";
@@ -2550,11 +2552,12 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_029 = "EMS_S_ESI_029";
     public static final String ESI_030 = "EMS_S_ESI_030";
     public static final String ESI_031 = "EMS_S_ESI_031";
+    public static final String ESI_032 = "EMS_S_ESI_032";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
     
     public static final String ESI_001_MSG = "CardInfo is invalid";
 	public static final String ESI_002_MSG = "Card verification failed";
-	public static final String ESI_003_MSG = "PIN generation failed";
+	public static final String ESI_003_MSG = "Key/PIN generation failed";
 	public static final String ESI_004_MSG = "Infrastructure error";
 	public static final String ESI_005_MSG = "Unknown Error from Emks";
 	public static final String ESI_006_MSG = "Exception happened is unknown";
@@ -2579,7 +2582,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_027_MSG = "MocHashData must be null";
 	public static final String ESI_028_MSG = "MocSignature must be null";
 	public static final String ESI_030_MSG = "EMKS WebService Exception ...";
-    
+	public static final String ESI_031_MSG = "EMKS GetSignature WebService Exception ...";
+
     //com.gam.nocr.ems.biz.job.PortalReservationJob
 	public static final String RSV_01 = "EMS_S_RSV_01";
 	public static final String RSV_02 = "EMS_S_RSV_02";

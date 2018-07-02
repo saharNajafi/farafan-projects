@@ -2,7 +2,9 @@ package com.gam.nocr.ems.data.domain.ws;
 
 import com.gam.nocr.ems.util.EmsUtil;
 
-public class EMKSDataResultWTO {
+import java.io.Serializable;
+
+public class EMKSDataResultWTO implements Serializable{
 
 	private String id;
 	private String sign;

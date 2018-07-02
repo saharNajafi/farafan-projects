@@ -2,9 +2,12 @@ package com.gam.nocr.ems.data.domain.ws;
 
 import com.gam.nocr.ems.util.EmsUtil;
 
-public class EMKSDataWTO {
+import java.io.Serializable;
+
+public class EMKSDataWTO implements Serializable{
 	private String csn;
 	private String crn;
+	private String cardProvider;
 	private String pinKeyVersion;
 	private String pinAlgorithmVersion;
 	private String sodKeyVersion;
@@ -36,6 +39,14 @@ public class EMKSDataWTO {
 
 	public void setCrn(String crn) {
 		this.crn = crn;
+	}
+
+	public String getCardProvider() {
+		return cardProvider;
+	}
+
+	public void setCardProvider(String cardProvider) {
+		this.cardProvider = cardProvider;
 	}
 
 	public String getPinKeyVersion() {

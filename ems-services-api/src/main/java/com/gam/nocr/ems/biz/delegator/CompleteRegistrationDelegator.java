@@ -39,8 +39,8 @@ public class CompleteRegistrationDelegator implements Delegator {
                          ArrayList<BiometricTO> fingers,
                          ArrayList<BiometricTO> faces,
                          ArrayList<DocumentTO> documents,
-                         byte[] signature) throws BaseException {
-        getService(userProfileTO).register(requestTO, fingers, faces, documents, signature);
+                         byte[] signature, String featureExtractorID) throws BaseException {
+        getService(userProfileTO).register(requestTO, fingers, faces, documents, signature, featureExtractorID);
     }
 
     public String requestArchiveId(UserProfileTO userProfileTO, Long cardRequestId, Long enrollmentOfficeId) throws BaseException {

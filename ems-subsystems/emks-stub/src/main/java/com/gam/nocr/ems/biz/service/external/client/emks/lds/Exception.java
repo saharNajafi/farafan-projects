@@ -1,5 +1,5 @@
 
-package com.gam.nocr.ems.biz.service.external.client.emks;
+package com.gam.nocr.ems.biz.service.external.client.emks.lds;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,7 @@ package com.gam.nocr.ems.data.dao;
 
 import com.gam.commons.core.BaseException;
 import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
+import com.gam.nocr.ems.data.enums.ShiftEnum;
 
 import java.util.List;
 
@@ -10,6 +11,6 @@ import java.util.List;
  */
 public interface OfficeCapacityDAO extends EmsBaseDAO<OfficeCapacityTO> {
 
-    List<OfficeCapacityTO> findByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException;
+    List<OfficeCapacityTO> findByEnrollmentOfficeIdAndShiftNo(Long enrollmentOfficeId, ShiftEnum shiftNo) throws BaseException;
 
 }

@@ -20,9 +20,10 @@ import java.io.Serializable;
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_OFFICE_CAPACITY", allocationSize = 1)
 @NamedQueries({
         @NamedQuery(
-                name = "officeCapacityTO.findByEnrollmentOfficeId",
+                name = "officeCapacityTO.findByEnrollmentOfficeIdAndShiftNo",
                 query = "SELECT oc FROM OfficeCapacityTO oc" +
                         " where oc.enrollmentOffice.id=:enrollmentOfficeId" +
+                        " and oc.shiftNo=:shiftNo" +
                         " order by oc.startDate ASC "),
   })
 public class OfficeCapacityTO extends ExtEntityTO {

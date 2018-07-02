@@ -69,8 +69,8 @@ public class RegistrationDelegator implements Delegator {
     }
 
     public void addFingerData(UserProfileTO userProfileTO, long requestId,
-                              ArrayList<BiometricTO> biometricDatas) throws BaseException {
-        getService(userProfileTO).addFingerData(requestId, biometricDatas);
+                              ArrayList<BiometricTO> biometricDatas , String featureExtractorID) throws BaseException {
+        getService(userProfileTO).addFingerData(requestId, biometricDatas, featureExtractorID);
     }
 
     public void addFaceData(UserProfileTO userProfileTO, long requestId,
@@ -205,10 +205,10 @@ public class RegistrationDelegator implements Delegator {
 	
 	public Boolean registerVip(UserProfileTO userProfileTO,
 			CardRequestTO requestTO, ArrayList<BiometricTO> fingers,
-			ArrayList<BiometricTO> faces, ArrayList<DocumentTO> documents)
+			ArrayList<BiometricTO> faces, ArrayList<DocumentTO> documents, String featureExtractorID)
 			throws BaseException {
 		return getService(userProfileTO).saveFromVip(requestTO, fingers, faces,
-				documents);
+				documents, featureExtractorID);
 	}
 
 	public PhotoVipWTO getPhotoVip(UserProfileTO up, Long cardRquestId) throws BaseException{

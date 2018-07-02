@@ -54,7 +54,9 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                 throw new ServiceException(BizExceptionCode.OC_006, BizExceptionCode.OC_006_MSG);
             if(officeCapacityVTO.getEnrollmentOfficeId() == null)
                 throw new ServiceException(BizExceptionCode.OC_003, BizExceptionCode.OC_003_MSG);
-            officeCapacityTOList = getOfficeCapacityDAO().findByEnrollmentOfficeId(officeCapacityVTO.getEnrollmentOfficeId());
+            officeCapacityTOList =
+                    getOfficeCapacityDAO().findByEnrollmentOfficeIdAndShiftNo(
+                            officeCapacityVTO.getEnrollmentOfficeId(), ShiftEnum.getShift(officeCapacityVTO.getShiftNo()));
             Integer previousDay = Integer.valueOf(convertGregorianToPersian(
                             getPreviousDay(officeCapacityVTO.getStartDate())).replace("/", ""));
             if (officeCapacityTOList != null) {
