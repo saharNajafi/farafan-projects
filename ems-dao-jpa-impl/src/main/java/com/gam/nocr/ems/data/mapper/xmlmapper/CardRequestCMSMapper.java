@@ -837,6 +837,12 @@ public class CardRequestCMSMapper implements XMLMapper {
 				Element fingersElement = doc.createElement("Fingers");
 				biometricIndfoElement.appendChild(fingersElement);
 				Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
+				String featureExtractorIDValue = attributesMap.get("featureExtractorID");
+				if(featureExtractorIDValue == null || Integer.valueOf(featureExtractorIDValue) < 0){
+					Object[] args = {"FeatureExtractorID" };
+					throw new DataException(DataExceptionCode.CRC_010,
+							DataExceptionCode.GLB_001_MSG, args);
+				}
 				featureExtractorID.setValue(attributesMap.get("featureExtractorID"));
 				fingersElement.setAttributeNode(featureExtractorID);
 				if (mohFlag) {

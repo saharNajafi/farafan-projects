@@ -490,8 +490,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                 currentChildrenCount++;
             }
         }
-        BiometricInfoTO biometricInfoTO ;
-        biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
+        BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
 
 //		TODO : Dummy assignment
         recordedChildrenCount = children.size();

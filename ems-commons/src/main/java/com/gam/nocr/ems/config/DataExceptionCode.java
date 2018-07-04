@@ -33,6 +33,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRC_007 = "EMS_D_CRC_007";
     public static final String CRC_008 = "EMS_D_CRC_008";
     public static final String CRC_009 = "EMS_D_CRC_009";
+    public static final String CRC_010 = "EMS_D_CRC_010";
 
     // com.gam.nocr.ems.data.mapper.xmlmapper.PersonPKIMapper
     public static final String PPM_001 = "EMS_D_PPM_001";
