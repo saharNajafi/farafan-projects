@@ -2553,6 +2553,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_030 = "EMS_S_ESI_030";
     public static final String ESI_031 = "EMS_S_ESI_031";
     public static final String ESI_032 = "EMS_S_ESI_032";
+    public static final String ESI_033 = "EMS_S_ESI_033";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
     
     public static final String ESI_001_MSG = "CardInfo is invalid";
@@ -2583,6 +2584,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_028_MSG = "MocSignature must be null";
 	public static final String ESI_030_MSG = "EMKS WebService Exception ...";
 	public static final String ESI_031_MSG = "EMKS GetSignature WebService Exception ...";
+	public static final String ESI_033_MSG = "CardProvider must not be null";
 
     //com.gam.nocr.ems.biz.job.PortalReservationJob
 	public static final String RSV_01 = "EMS_S_RSV_01";

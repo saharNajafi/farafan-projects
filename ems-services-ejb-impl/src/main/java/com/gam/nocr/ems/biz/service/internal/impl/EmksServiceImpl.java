@@ -332,6 +332,11 @@ public class EmksServiceImpl extends EMSAbstractService implements
     private void checkValidationOnemksData(EMKSDataWTO emksDataWTO)
             throws BaseException {
 
+        if (!EmsUtil.checkString(emksDataWTO.getCardProvider())) {
+            throw new ServiceException(BizExceptionCode.ESI_033,
+                    BizExceptionCode.ESI_033_MSG);
+        }
+
         if (!EmsUtil.checkString(emksDataWTO.getMocAvailable()))
             throw new ServiceException(BizExceptionCode.ESI_010,
                     BizExceptionCode.ESI_010_MSG);

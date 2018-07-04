@@ -25,7 +25,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             text: 'جدید',
             //action: 'exportExcel',
             handler: function(sender) {
-                Ext.create('Ems.view.office.Capacity.Dialog', { enrollmentOfficeID: sender.up('grid').enrollmentOfficeID}).show();
+                Ext.create('Ems.view.office.Capacity.Dialog', { title: 'چدید', height: 210, enrollmentOfficeID: sender.up('grid').enrollmentOfficeID}).show();
             }
         }
     ],
@@ -74,7 +74,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             handler: function (sender,r,c,d,e,f) {
                 var grid = sender.up('grid');
                 var store = grid.store;
-                var form = Ext.create('Ems.view.office.Capacity.Dialog', { enrollmentOfficeID: grid.enrollmentOfficeID});
+                var form = Ext.create('Ems.view.office.Capacity.Dialog', {title: 'ویرایش', height: 100, enrollmentOfficeID: grid.enrollmentOfficeID});
                 var record = store.getAt(r);
                 form.editableField = record.get('editable');
                 form.action = "edit";
@@ -95,11 +95,20 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             {
                 text: 'تاریخ شروع',
                 width: 120,
+                sortable: false,
                 dataIndex: 'startDate',
                 renderer: function (val) {
                     var dd = val.split('T')[0];
                    var newVal =  new Date(dd);
-                   return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + Ext.JalaliDate.getMonth(newVal).toString() + '/' + Ext.JalaliDate.getDate(newVal).toString();
+                   var month = (Ext.JalaliDate.getMonth(newVal)+1).toString();
+                   var day = Ext.JalaliDate.getDate(newVal).toString();
+                   if(month.length == 1) {
+                       month = 0 + month;
+                   }
+                   if(day.length == 1) {
+                       day = 0 + day;
+                   }
+                   return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + month + '/' + day;
                 }
                 //xtype: 'gam.datecolumn',
                 //format: Ext.Date.defaultDateTimeFormat
@@ -107,11 +116,20 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             {
                 text: 'تاریخ پایان',
                 width: 120,
+                sortable: false,
                 dataIndex: 'endDate',
                 renderer: function (val) {
                     var dd = val.split('T')[0];
                     var newVal =  new Date(dd);
-                    return Ext.JalaliDate.getFullYear(newVal) + '/' + Ext.JalaliDate.getMonth(newVal) + '/' + Ext.JalaliDate.getDate(newVal);
+                    var month = (Ext.JalaliDate.getMonth(newVal)+1).toString();
+                    var day = Ext.JalaliDate.getDate(newVal).toString();
+                    if(month.length == 1) {
+                        month = 0 + month;
+                    }
+                    if(day.length == 1) {
+                        day = 0 + day;
+                    }
+                    return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + month + '/' + day;
                 }
                 //xtype: 'gam.datecolumn'
                 //format: Ext.Date.defaultDateTimeFormat
@@ -120,12 +138,14 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 xtype: 'gridcolumn',
                 text: 'ظرفیت',
                 width: 150,
+                sortable: false,
                 dataIndex: EmsObjectName.capacity.capacity
             },
             {
                 xtype: 'gridcolumn',
                 text: 'ساعت شروع کار',
                 align: 'center',
+                sortable: false,
                 dataIndex: EmsObjectName.capacity.workingHoursFrom,
                 id: EmsObjectName.capacity.workingHoursFrom,
                 renderer: function(workingHour) {
@@ -145,6 +165,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 xtype: 'gridcolumn',
                 text: 'ساعت پایان کار',
                 align: 'center',
+                sortable: false,
                 dataIndex: EmsObjectName.capacity.workingHoursTo,
                 id: EmsObjectName.capacity.workingHoursTo,
                 renderer: function(workingHour) {
@@ -163,6 +184,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             {
                 xtype: 'gridcolumn',
                 text: 'شیفت',
+                sortable: false,
                 width: 100,
                 dataIndex: EmsObjectName.capacity.shiftNo,
                 renderer: function (value) {

@@ -13026,6 +13026,8 @@ Ext.define('Gam.window.dialog.Dialog', {
 
 	modal: true,
 
+	minHeight: 100,
+
 	title: 'تعیین نشده',
 
 	initComponent: function()
@@ -13098,6 +13100,7 @@ Ext.define('Gam.window.dialog.Entity', {
 		 me.scrollable = true;
 		 me.autoScroll = true;
 		 me.constrain = true;
+		 me.minHeight = 100;
 
 
 
