@@ -172,10 +172,10 @@ public class UserManagementServiceImpl extends EMSAbstractService implements Use
 
     @Override
     public String fetchJobVariable(UserProfileTO userProfileTO) throws BaseException {
-        String schedulerEnabled = "true";
+        String schedulerEnabled = "false";
         try {
             schedulerEnabled = (String) ConfigurationFileHandler.getInstance()
-                    .getProperty("JobSchedulerEnabled", "true");
+                    .getProperty("JobSchedulerEnabled", "false");
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.USI_016, BizExceptionCode.USI_016_MSG);
         }
