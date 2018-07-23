@@ -1205,6 +1205,10 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     if (!cardRequestTO.getCitizen().getCitizenInfo()
                             .getBirthCertificateSeries().equals(birthCertificateSeries))
                         state = labels.getString("state.invalidBirthCertificateSeries");
+
+                    else if(!cardRequestTO.getCitizen().getCitizenInfo()
+                            .getBirthDateSolar().equals(citizenBirthDate))
+                        state = labels.getString("state.invalidBirthCertificateSeries");
                     else
                         state = getState(cardRequestTO);
                 } else if (cardRequestTO == null) {
