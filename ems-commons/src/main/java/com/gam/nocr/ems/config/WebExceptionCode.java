@@ -415,6 +415,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_083 = "EMS_W_RSW_083";
     public static final String RSW_084 = "EMS_W_RSW_084";
     public static final String RSW_085 = "EMS_W_RSW_085";
+    public static final String RSW_086 = "EMS_W_RSW_086";
     public static final String RSW_001_MSG = "Unable to convert CitizenWTO to CardRequestTO";
     public static final String RSW_002_MSG = "CitizenWTO should not be null";
     public static final String RSW_003_MSG = "Cannot save CitizenWTO which has request Id value, try update instead";
@@ -493,7 +494,8 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_077_MSG = "unexpected exception happened while trying to fetch archive id";
     public static final String RSW_080_MSG = "Unable to save face items. Number of face items received from CCOS is less than 4 image";
     public static final String RSW_081_MSG = "Unable to convert CitizenWTO to CardRequestTO in preRegistration VIP";
-    
+    public static final String RSW_086_MSG = "the feature extractor id is empty";
+
 
 
     // com.gam.nocr.ems.web.ws.RegistrationVipWS
