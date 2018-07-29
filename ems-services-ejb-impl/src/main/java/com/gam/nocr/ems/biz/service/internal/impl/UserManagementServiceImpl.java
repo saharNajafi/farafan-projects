@@ -175,7 +175,7 @@ public class UserManagementServiceImpl extends EMSAbstractService implements Use
         String schedulerEnabled = "false";
         try {
             schedulerEnabled = (String) ConfigurationFileHandler.getInstance()
-                    .getProperty("JobSchedulerEnabled", "false");
+                    .getProperty("JobSchedulerEnabled", "true");
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.USI_016, BizExceptionCode.USI_016_MSG);
         }
