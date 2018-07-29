@@ -60,7 +60,6 @@ Ext
 												},
 												{
 													text : 'تنظیمات سیستم',
-                                                    hidden: true,
 													tooltip : 'تنظیمات سیستم'
 															+ '   < Ctrl+Shift+C >',
 													action : 'SystemProfileList',
