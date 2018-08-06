@@ -63,6 +63,7 @@ Ext.define('Ems.view.viewport.UserInfo', {
                                 {
                                     action: 'masterExit',
                                     text: 'خروج',
+                                    id: 'custlogout',
                                     tooltip: 'خروج' + '   < Ctrl+Shift+Q >',
                                     icon: 'resources/themes/images/default/toolbar/exit.png',
                                     handler: function () {
