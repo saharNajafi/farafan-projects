@@ -127,8 +127,8 @@ public class RegistrationWS extends EMSWS {
         cardRequestTO.setEnrolledDate(new Date());
         cardRequestTO.setState(CardRequestState.REFERRED_TO_CCOS);
         cardRequestTO.setEnrollmentOffice(new EnrollmentOfficeTO(up.getDepID()));
-        cardRequestTO.setEstelam2Flag(Estelam2FlagType.V);       
-        cardRequestTO.setRequestedSmsStatus(1);      
+        cardRequestTO.setEstelam2Flag(Estelam2FlagType.V);
+        cardRequestTO.setRequestedSmsStatus(1);
 
         try {
             return registrationDelegator.save(up, cardRequestTO);
@@ -253,6 +253,10 @@ public class RegistrationWS extends EMSWS {
             throw new InternalException(WebExceptionCode.RSW_038_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_038));
         }
 
+        if (!EmsUtil.checkString(featureExtractorID)) {
+            throw new InternalException(WebExceptionCode.RSW_086_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_086));
+        }
+
         BiometricTO bio;
         ArrayList<BiometricTO> biometrics = new ArrayList<BiometricTO>();
         for (BiometricWTO biometricWTO : biometricWTOs) {
@@ -323,15 +327,15 @@ public class RegistrationWS extends EMSWS {
                                     @WebParam(name = "requestID") long requestID) throws InternalException {
         UserProfileTO up = super.validateRequest(securityContextWTO);
         //for (BiometricType type : BiometricType.values()) {
-            // {
-                try {
-                    registrationDelegator.removeFingerAllTypeData(up, requestID);
-                } catch (BaseException e) {
-                    throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
-                } catch (Exception e) {
-                    throw new InternalException(WebExceptionCode.RSW_017_MSG /*+ type.name()*/, new EMSWebServiceFault(WebExceptionCode.RSW_017), e);
-                }
-            //}
+        // {
+        try {
+            registrationDelegator.removeFingerAllTypeData(up, requestID);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_017_MSG /*+ type.name()*/, new EMSWebServiceFault(WebExceptionCode.RSW_017), e);
+        }
+        //}
         //}
         return true;
     }
@@ -407,10 +411,10 @@ public class RegistrationWS extends EMSWS {
 
         List<BiometricTO> biometrics;
         try {
-        	
-        	BiometricType type=BiometricType.FACE_LASER;
-        	if(faceType !=null)
-        		type=BiometricType.toType(faceType);
+
+            BiometricType type = BiometricType.FACE_LASER;
+            if (faceType != null)
+                type = BiometricType.toType(faceType);
             biometrics = registrationDelegator.getFaceData(up, requestID, type);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()));
@@ -452,13 +456,13 @@ public class RegistrationWS extends EMSWS {
         UserProfileTO up = super.validateRequest(securityContextWTO);
 //        for (BiometricType type : BiometricType.values()) {
 //            if (type == BiometricType.FACE_IMS || type == BiometricType.FACE_CHIP || type == BiometricType.FACE_MLI || type == BiometricType.FACE_LASER) {
-                try {
-                    registrationDelegator.removeFaceAllTypeData(up, requestID);
-                } catch (BaseException e) {
-                    throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
-                } catch (Exception e) {
-                    throw new InternalException(WebExceptionCode.RSW_023_MSG /*+ type.name()*/, new EMSWebServiceFault(WebExceptionCode.RSW_023), e);
-                }
+        try {
+            registrationDelegator.removeFaceAllTypeData(up, requestID);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_023_MSG /*+ type.name()*/, new EMSWebServiceFault(WebExceptionCode.RSW_023), e);
+        }
 //            }
 //        }
         return true;
@@ -700,10 +704,10 @@ public class RegistrationWS extends EMSWS {
         if (ctz == null) {
             throw new InternalException(WebExceptionCode.RSW_062_MSG + firstName + ", " + lastName + ", " + nationalId, new EMSWebServiceFault(WebExceptionCode.RSW_062));
         }
-        
+
 
         try {
-        	registrationDelegator.checkPreviousCardRequestNotStopped(up, ctz);
+            registrationDelegator.checkPreviousCardRequestNotStopped(up, ctz);
             CitizenWTO citizenWTO = CardRequestMapper.convert(null, ctz);
 
             citizenWTO.setId(null);
@@ -744,7 +748,7 @@ public class RegistrationWS extends EMSWS {
         ArrayList<DocumentTO> documents = convertToDocumentsTO(documentsWTO);
 
         try {
-            delegator.register(up, cardRequestTO, fingers, faces, documents, signature,  featureExtractorID);
+            delegator.register(up, cardRequestTO, fingers, faces, documents, signature, featureExtractorID);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
@@ -967,139 +971,140 @@ public class RegistrationWS extends EMSWS {
         return documents;
     }
 
-	@WebMethod
-	public PhotoVipWTO getPhotoVip(
-			@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-			@WebParam(name = "cardRquestId") Long cardRquestId)
-			throws InternalException {
+    @WebMethod
+    public PhotoVipWTO getPhotoVip(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "cardRquestId") Long cardRquestId)
+            throws InternalException {
 
-		UserProfileTO up = super.validateRequest(securityContextWTO);
-		PhotoVipWTO photoVipWTO=null;
-		
-		try {
-			photoVipWTO = registrationDelegator.getPhotoVip(up,
-					cardRquestId);
-		} catch (BaseException e) {
-			throw new InternalException(e.getMessage(), new EMSWebServiceFault(
-					e.getExceptionCode()), e);
-		} catch (Exception e) {
-			throw new InternalException(WebExceptionCode.RVW_017_MSG, new EMSWebServiceFault(
-					WebExceptionCode.RVW_017), e);
-		}
-		
-		return photoVipWTO;
-	}
-	 @WebMethod
-	    public void updateVipRegistrationRequest(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-	                                          @WebParam(name = "citizenWTO") CitizenWTO citizenWTO) throws InternalException {
+        UserProfileTO up = super.validateRequest(securityContextWTO);
+        PhotoVipWTO photoVipWTO = null;
 
-	        UserProfileTO up = super.validateRequest(securityContextWTO);
-	        CardRequestTO cardRequestTO;
-	        try {
-	            cardRequestTO = CardRequestMapper.convert(citizenWTO);
-	        } catch (BaseException e) {
-	            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
-	        } catch (Exception e) {
-	            throw new InternalException(WebExceptionCode.RSW_006_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_081), e);
-	        }
-	        if (citizenWTO.getRequestId() == null) {
-	            throw new InternalException(WebExceptionCode.RSW_005_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_082));
-	        }
-	        try {
-	            registrationDelegator.updateVipRegistrationRequest(up, cardRequestTO);
-	        } catch (BaseException e) {
-	            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
-	        } catch (Exception e) {
-	            throw new InternalException(WebExceptionCode.RSW_008_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_083), e);
-	        }
-	    }
-	 
-	 
-	//Anbari
-			@WebMethod
-			public String saveOfficeVIPRegistrationRequest(
-					@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-					@WebParam(name = "citizenWTO") CitizenWTO citizenWTO)
-					throws InternalException {
+        try {
+            photoVipWTO = registrationDelegator.getPhotoVip(up,
+                    cardRquestId);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(
+                    e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RVW_017_MSG, new EMSWebServiceFault(
+                    WebExceptionCode.RVW_017), e);
+        }
 
-				UserProfileTO up = super.validateRequest(securityContextWTO);
-				String savedTrackingId = null;		
-				
-				CardRequestTO cardRequestTO;
+        return photoVipWTO;
+    }
 
-				// convert wto to CardRequestTO
-				try {
-					cardRequestTO = CardRequestMapper.convertVIPRequest(citizenWTO);			
+    @WebMethod
+    public void updateVipRegistrationRequest(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+                                             @WebParam(name = "citizenWTO") CitizenWTO citizenWTO) throws InternalException {
 
-				} catch (BaseException e) {
-					throw new InternalException(e.getMessage(), new EMSWebServiceFault(
-							e.getExceptionCode()), e);
-				} catch (Exception e) {
-					throw new InternalException(WebExceptionCode.RSW_001_MSG,
-							new EMSWebServiceFault(WebExceptionCode.RSW_085), e);
-				}	
+        UserProfileTO up = super.validateRequest(securityContextWTO);
+        CardRequestTO cardRequestTO;
+        try {
+            cardRequestTO = CardRequestMapper.convert(citizenWTO);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_006_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_081), e);
+        }
+        if (citizenWTO.getRequestId() == null) {
+            throw new InternalException(WebExceptionCode.RSW_005_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_082));
+        }
+        try {
+            registrationDelegator.updateVipRegistrationRequest(up, cardRequestTO);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_008_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_083), e);
+        }
+    }
 
-				try {
-					List<CitizenTO> citizenList = registrationDelegator.findByNID(up, citizenWTO.getNationalId());
-					if (!EmsUtil.checkListSize(citizenList)) {
-						savedTrackingId = registrationDelegator.saveVIPpreRegistrationAndDoEstelam(up, cardRequestTO);
-					} else
-						throw new ServiceException(BizExceptionCode.MMS_063,
-								BizExceptionCode.MMS_063_MSG);				
-					return savedTrackingId;
-				} catch (BaseException e) {
-					throw new InternalException(e.getMessage(), new EMSWebServiceFault(
-							e.getExceptionCode()), e);
-				} catch (Exception e) {
-					throw new InternalException(WebExceptionCode.RSW_004_MSG,
-							new EMSWebServiceFault(WebExceptionCode.RSW_084), e);
-				}
-			}
-			
-			//Anbari : Method to fetch IMS Estelam Image
-			@WebMethod
-			public EstelamImsImageWTO getImsEstelamImage(
-					@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-					@WebParam(name = "nationalID") String nationalID)
-					throws InternalException {
 
-				UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
-				EstelamImsImageWTO imsEstelamImageWTO = null;
-				try {
-					imsEstelamImageWTO = registrationDelegator.getImsEstelamImage(userProfileTO, nationalID);
-				} catch (BaseException e) {
-					throw new InternalException(e.getMessage(), new EMSWebServiceFault(
-							e.getExceptionCode()), e);
-				} catch (Exception e) {
-					throw new InternalException(WebExceptionCode.RVW_017_MSG, new EMSWebServiceFault(
-							WebExceptionCode.RVW_017), e);
-				}
-				
-				return imsEstelamImageWTO;
-			}
-			
-			
-			//Anbari : Method to fetch citizen birth date to calculate elderly mode
-			@WebMethod
-			public CitizenBirthDateAndGenderWTO getBirthDateAndGenderByRequestId(
-					@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-					@WebParam(name = "requestId") Long requestId)
-					throws InternalException {
+    //Anbari
+    @WebMethod
+    public String saveOfficeVIPRegistrationRequest(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "citizenWTO") CitizenWTO citizenWTO)
+            throws InternalException {
 
-				UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
-				CitizenBirthDateAndGenderWTO birthDateAndGender;
-				try {
-					birthDateAndGender = registrationDelegator.getBirthDateAndGenderByRequestId(userProfileTO, requestId);
-				} catch (BaseException e) {
-					throw new InternalException(e.getMessage(), new EMSWebServiceFault(
-							e.getExceptionCode()), e);
-				} catch (Exception e) {
-					throw new InternalException(WebExceptionCode.RVW_022_MSG, new EMSWebServiceFault(
-							WebExceptionCode.RVW_023), e);
-				}
-				
-				return birthDateAndGender;
-			}
-			
+        UserProfileTO up = super.validateRequest(securityContextWTO);
+        String savedTrackingId = null;
+
+        CardRequestTO cardRequestTO;
+
+        // convert wto to CardRequestTO
+        try {
+            cardRequestTO = CardRequestMapper.convertVIPRequest(citizenWTO);
+
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(
+                    e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_001_MSG,
+                    new EMSWebServiceFault(WebExceptionCode.RSW_085), e);
+        }
+
+        try {
+            List<CitizenTO> citizenList = registrationDelegator.findByNID(up, citizenWTO.getNationalId());
+            if (!EmsUtil.checkListSize(citizenList)) {
+                savedTrackingId = registrationDelegator.saveVIPpreRegistrationAndDoEstelam(up, cardRequestTO);
+            } else
+                throw new ServiceException(BizExceptionCode.MMS_063,
+                        BizExceptionCode.MMS_063_MSG);
+            return savedTrackingId;
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(
+                    e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_004_MSG,
+                    new EMSWebServiceFault(WebExceptionCode.RSW_084), e);
+        }
+    }
+
+    //Anbari : Method to fetch IMS Estelam Image
+    @WebMethod
+    public EstelamImsImageWTO getImsEstelamImage(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "nationalID") String nationalID)
+            throws InternalException {
+
+        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
+        EstelamImsImageWTO imsEstelamImageWTO = null;
+        try {
+            imsEstelamImageWTO = registrationDelegator.getImsEstelamImage(userProfileTO, nationalID);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(
+                    e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RVW_017_MSG, new EMSWebServiceFault(
+                    WebExceptionCode.RVW_017), e);
+        }
+
+        return imsEstelamImageWTO;
+    }
+
+
+    //Anbari : Method to fetch citizen birth date to calculate elderly mode
+    @WebMethod
+    public CitizenBirthDateAndGenderWTO getBirthDateAndGenderByRequestId(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "requestId") Long requestId)
+            throws InternalException {
+
+        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
+        CitizenBirthDateAndGenderWTO birthDateAndGender;
+        try {
+            birthDateAndGender = registrationDelegator.getBirthDateAndGenderByRequestId(userProfileTO, requestId);
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(
+                    e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RVW_022_MSG, new EMSWebServiceFault(
+                    WebExceptionCode.RVW_023), e);
+        }
+
+        return birthDateAndGender;
+    }
+
 
 }

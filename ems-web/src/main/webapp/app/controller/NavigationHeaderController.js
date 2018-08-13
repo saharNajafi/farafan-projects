@@ -362,6 +362,25 @@ Ext.define('Ems.controller.NavigationHeaderController', {
 
 
     onBtnClicked: function (btn) {
+        Ext.Ajax.request({
+            url: 'extJsController/currentUser/fetchJobVariable',
+            method: 'POST',
+            success: function(response, request) {
+                if(response.responseText.indexOf('<html xmlns="http://www.w3.org/1999/xhtml">') > 0) {
+                    Tools.deleteAllCookies();
+                    Ext.Ajax.request({
+                        url: 'extJsController/sessionClearForLogout/logout',
+                        success: function (response) {
+                            //window.location.href=document.location.origin+document.location.pathname;
+                            window.location.href = document.location.pathname;
+                        },
+                        failure: function () {
+                            Tools.errorFailure();
+                        }
+                    });
+                }
+            }
+         });
     	if (!(btn.action === this.selectionchange)) {
             this.application.launchModule(btn.action);
             this.selectionchange = btn.action;

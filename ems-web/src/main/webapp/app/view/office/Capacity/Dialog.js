@@ -17,7 +17,7 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
 
     action: "add",
 
-    title: 'چدید',
+    title: 'جدید',
 
     initComponent: function () {
         this.callParent(arguments);

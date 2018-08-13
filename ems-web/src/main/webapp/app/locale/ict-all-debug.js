@@ -416,6 +416,46 @@ Ext.define('Gam.data.store.Store', {
 	extend: 'Ext.data.Store',
 	alias: 'store.gam.store',
 
+    onProxyLoad: function(operation) {
+		var stateProviderCheking = operation.request.url.split('/')[1];
+        var me = this,
+            resultSet = operation.getResultSet(),
+            records = operation.getRecords(),
+            successful = operation.wasSuccessful();
+
+        if (resultSet) {
+        	if(operation.response.responseText.indexOf('<html xmlns="http://www.w3.org/1999/xhtml">') > 0) {
+                Tools.deleteAllCookies();
+                Ext.Ajax.request({
+                    url: 'extJsController/sessionClearForLogout/logout',
+                    success: function (response) {
+                        //window.location.href=document.location.origin+document.location.pathname;
+                        window.location.href = document.location.pathname;
+                    },
+                    failure: function () {
+                        Tools.errorFailure();
+                    }
+                });
+                //Ext.get('custlogout').dom.click();
+			}
+            me.totalCount = resultSet.total;
+        }
+
+        if (successful) {
+            me.loadRecords(records, operation);
+        }
+
+        me.loading = false;
+        me.fireEvent('load', me, records, successful);
+
+
+
+        me.fireEvent('read', me, records, operation.wasSuccessful());
+
+
+        Ext.callback(operation.callback, operation.scope || me, [records, operation, successful]);
+    },
+
 	addBlankRecord: function(index)
 	{
 		index = index || 0;
@@ -495,6 +535,21 @@ Ext.define('Gam.data.store.Remote', {
 		options.recursiveSerialization = Ext.isDefined(options.recursiveSerialization) ? options.recursiveSerialization : true;
 
 		this.callParent([options]);
+        // if(this.storeId != null) {
+        //     if(this.proxy.reader.jsonData == null) {
+        //         Ext.create('Ems.view.viewport.ExitWindow.Window').showAt({x: -80, y: 0});
+        //         Ext.Ajax.request({
+        //             url: 'extJsController/sessionClearForLogout/logout',
+        //             success: function (response) {
+        //                 //window.location.href=document.location.origin+document.location.pathname;
+        //                 window.location.href = document.location.pathname;
+        //             },
+        //             failure: function () {
+        //                 Tools.errorFailure();
+        //             }
+        //         });
+        //     }
+        // }
 	},
 
 });
@@ -1008,6 +1063,29 @@ Ext.define('Gam.data.proxy.Ajax', {
 
 		}
 	},
+
+    doRequest: function(operation, callback, scope) {
+		console.log("Test");
+        var writer  = this.getWriter(),
+            request = this.buildRequest(operation, callback, scope);
+
+        if (operation.allowWrite()) {
+            request = writer.write(request);
+        }
+
+        Ext.apply(request, {
+            headers       : this.headers,
+            timeout       : this.timeout,
+            scope         : this,
+            callback      : this.createRequestCallback(request, operation, callback, scope),
+            method        : this.getMethod(request),
+            disableCaching: false
+        });
+
+        Ext.Ajax.request(request);
+
+        return request;
+    },
 
 
 
