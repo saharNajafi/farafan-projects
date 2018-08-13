@@ -2,6 +2,7 @@ package com.gam.nocr.ems.biz.service.internal.impl;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.ValidationException;
 import com.gam.commons.core.biz.service.BizLoggable;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
@@ -32,7 +33,6 @@ import org.slf4j.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
-import javax.xml.bind.ValidationException;
 import java.util.*;
 import java.util.concurrent.Future;
 
