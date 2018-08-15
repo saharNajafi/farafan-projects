@@ -9,14 +9,8 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.commons.core.util.SecureString;
-import com.gam.nocr.ems.config.ConstValues;
-import com.gam.nocr.ems.config.DataExceptionCode;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileKeyName;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
-import com.gam.nocr.ems.data.dao.NistHeaderDAO;
-import com.gam.nocr.ems.data.dao.ReligionDAO;
+import com.gam.nocr.ems.config.*;
+import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.CardRequestOrigin;
@@ -43,6 +37,9 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.*;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_BIOMETRIC_INFO;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -667,6 +664,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 String faceLaserData = null;
                 String faceMliData = null;
                 byte[] fingerData = null;
+                String featureExtractorIDValue = null;
 
                 for (BiometricTO biometricTO : citizenInfoTO.getBiometrics()) {
 
@@ -685,6 +683,8 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                             break;
                         case FING_ALL:
                             fingerData = biometricTO.getData();
+                            BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
+                            featureExtractorIDValue = biometricInfoTO.getFeatureExtractorID();
                             break;
 
                         default:
@@ -735,6 +735,15 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
 
                 Element fingersElement = doc.createElement("Fingers");
                 biometricInfoElement.appendChild(fingersElement);
+
+                Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
+                if (featureExtractorIDValue == null || Integer.valueOf(featureExtractorIDValue) < 0) {
+                    Object[] args = {"FeatureExtractorID"};
+                    throw new DataException(DataExceptionCode.CRC_010,
+                            DataExceptionCode.GLB_001_MSG, args);
+                }
+                featureExtractorID.setValue(featureExtractorIDValue);
+                fingersElement.setAttributeNode(featureExtractorID);
 
                 Element nistElement = doc.createElement("NIST");
                 nistElement.appendChild(doc.createTextNode(convertToBase64(fingerData)));
@@ -1004,5 +1013,16 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
     @Override
     public ExtEntityTO readXML(String xmlData, ExtEntityTO to, Map<String, String> attributesMap) throws BaseException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private BiometricInfoDAO getBiometricInfoDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(
+                    getDaoJNDIName(DAO_BIOMETRIC_INFO));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.CMS_084,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    DAO_BIOMETRIC_INFO.split(","));
+        }
     }
 }
