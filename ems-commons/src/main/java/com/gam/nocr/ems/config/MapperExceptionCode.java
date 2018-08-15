@@ -133,4 +133,57 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.data.mapper.tomapper.PersonTokenMapper
     public static final String PTM_001 = "EMS_M_PTM_001";
     public static final String PTM_001_MSG = "invalid personToken, id is null";
+    //com.gam.nocr.ems.web.ws.CCOSPaymentWS.java
+    public static final String CPM_001 = "EMS_CP_001";
+    public static final String CPM_002 = "EMS_CPM_002";
+    public static final String CPM_003 = "EMS_CPM_003";
+    public static final String CPM_004 = "EMS_CPM_004";
+    public static final String CPM_005 = "EMS_CPM_005";
+    public static final String CPM_006 = "EMS_CPM_006";
+    public static final String CPM_007 = "EMS_CPM_007";
+    public static final String CPM_008 = "EMS_CPM_008";
+    public static final String CPM_009 = "EMS_CPM_009";
+    public static final String CPM_010 = "EMS_CPM_010";
+    public static final String CPM_011 = "CPM_011_MSG";
+    public static final String CPM_012 = "CPM_012_MSG";
+    public static final String CPM_014 = "CPM_014_MSG";
+    public static final String CPM_015 = "CPM_015_MSG";
+    public static final String CPM_016 = "CPM_016_MSG";
+    public static final String CPM_017 = "CPM_017_MSG";
+    public static final String CPM_018 = "CPM_018_MSG";
+    public static final String CPM_019 = "CPM_019_MSG";
+    public static final String CPM_020 = "CPM_020_MSG";
+    public static final String CPM_021 = "CPM_021_MSG";
+    public static final String CPM_022 = "CPM_022_MSG";
+    public static final String CPM_023 = "CPM_023_MSG";
+    public static final String CPM_024 = "CPM_024_MSG";
+    public static final String CPM_025 = "CPM_025_MSG";
+    public static final String CPM_001_MSG = "PreRegistration should not be null.";
+    public static final String CPM_002_MSG = "Invalid NationalId for SingleStagePreRegistration with TrackingId: {0}";
+    public static final String CPM_003_MSG = "Invalid Origin";
+    public static final String CPM_004_MSG = "Invalid Cert Serial Number";
+    public static final String CPM_005_MSG = "Invalid Cellphone Number";
+    public static final String CPM_006_MSG = "Invalid Mother Name";
+    public static final String CPM_007_MSG = "Invalid Gregorian BirthDate";
+    public static final String CPM_008_MSG = "Invalid Lunar BirthDate";
+    public static final String CPM_009_MSG = "Invalid Gender";
+    public static final String CPM_010_MSG = "Invalid Religion";
+    public static final String CPM_011_MSG = "PreRegistration should not be null.";
+    public static final String CPM_012_MSG = "PreRegistration ID should not be empty.";
+    public static final String CPM_014_MSG = "PreRegistration CreatedOn should not be null";
+    public static final String CPM_015_MSG = "Invalid NationalId for PreRegistration with ID: {0}";
+    public static final String CPM_016_MSG = "Invalid Tracking Id";
+    public static final String CPM_017_MSG = "Invalid Origin";
+    public static final String CPM_018_MSG = "Invalid Gregorian BirthDate";
+    public static final String CPM_019_MSG = "Invalid Lunar BirthDate";
+    public static final String CPM_020_MSG = "Invalid Gender";
+    public static final String CPM_021_MSG = "Invalid Religion";
+    public static final String CPM_022_MSG = "Invalid Cellphone Number";
+    public static final String CPM_023_MSG = "Invalid Cert Serial Number";
+    public static final String CPM_024_MSG = "Invalid Mother Name";
+    public static final String CPM_025_MSG = "Invalid Payment";
+
+
+
+
 }

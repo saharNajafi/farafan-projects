@@ -604,4 +604,21 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
                     DataExceptionCode.CDI_102_MSG, e);
         }
     }
+
+    @Override
+    public boolean findByCardRequestAndCrhAction(Long cardRequestId, String crhAction) throws BaseException {
+        List<CardRequestHistoryTO> cardRequestHistoryTOList;
+        try {
+            cardRequestHistoryTOList =
+                    em.createNamedQuery("CardRequestHistoryTO.findByCardRequestAndCrhAction")
+                            .setParameter("cardRequestId", cardRequestId)
+                            .setParameter("crhAction", crhAction)
+                            .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.CRH_006,
+                    DataExceptionCode.CRH_006_MSG, e);
+        }
+        return cardRequestHistoryTOList.size() != 0;
+    }
+
 }

@@ -84,4 +84,9 @@
             name="TestCMSWS"
             implementation="com.gam.nocr.ems.web.ws.TestCMSWS"
             url-pattern="/services/TestCMSWS"/>
+
+    <endpoint
+            name="CCOSPaymentWS"
+            implementation="com.gam.nocr.ems.web.ws.CCOSPaymentWS"
+            url-pattern="/services/CCOSPaymentWS"/>
 </endpoints>

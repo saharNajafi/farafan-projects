@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.data.dao.impl;
 
+import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import gampooya.tools.date.DateUtil;
 
@@ -4753,6 +4754,40 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		} catch (Exception e) {
 			throw new DAOException(DataExceptionCode.CDI_101, DataExceptionCode.CDI_101_MSG, e);
 		}
+	}
+
+	@Override
+	public CardRequestTO findByCitizenId(CitizenTO ctz)
+			throws BaseException {
+		List<CardRequestTO> cardRequestTO;
+		try {
+			cardRequestTO = em.createNamedQuery("CardRequestTO.findByCitizen")
+					.setParameter("citizenId", ctz.getId())
+					.getResultList();
+		} catch (Exception e) {
+			throw new DataException(DataExceptionCode.CDI_003,
+					DataExceptionCode.GLB_005_MSG, e);
+		}
+		return cardRequestTO.size() != 0 ? cardRequestTO.get(0) : null;
+	}
+
+	@Override
+	public CardRequestTO findLastRequestByNationalId(String nationalId)
+			throws BaseException {
+		List<CardRequestTO> cardRequestTOList;
+		try {
+			cardRequestTOList = em.createNamedQuery("CardRequestTO.findLastRequestByNationalId")
+					.setParameter("nationalId", nationalId)
+					.getResultList();
+		} catch (Exception e) {
+			logger.error(DataExceptionCode.CDI_107_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
+			throw new DataException(DataExceptionCode.CDI_107,
+					DataExceptionCode.CDI_107_MSG, e);
+		}
+		if (!cardRequestTOList.isEmpty())
+			return cardRequestTOList.get(0);
+		else
+			return null;
 	}
 
 }

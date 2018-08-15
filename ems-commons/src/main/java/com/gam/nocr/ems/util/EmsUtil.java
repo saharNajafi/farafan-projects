@@ -675,4 +675,15 @@ public class EmsUtil {
 		}
 		return userProfile.getUserName();
 	}
+
+    public static String makeFixLengthWithZeroPadding(String input, int length) {
+        if (StringUtils.isEmpty(input)) {
+            input = "";
+        }
+        if (input.length() >= length) {
+            return input.substring(0, length - 1);
+        } else {
+            return String.format("%0" + length + "d", Long.valueOf(input));
+        }
+    }
 }

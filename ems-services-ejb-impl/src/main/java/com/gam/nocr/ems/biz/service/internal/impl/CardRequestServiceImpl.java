@@ -9,6 +9,7 @@ import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
+import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
@@ -17,23 +18,24 @@ import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
 import com.gam.nocr.ems.biz.service.external.client.ussd.*;
-import com.gam.nocr.ems.config.BizExceptionCode;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
-import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
+import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
 import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.CardRequestMapper;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.LangUtil;
+import com.gam.nocr.ems.util.NationalIDUtil;
 import com.gam.nocr.ems.util.Utils;
+import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.security.SecurityContextService;
 import org.apache.commons.lang3.StringUtils;
@@ -1707,4 +1709,561 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
     }
 
+    /**
+     * استعلام امکان درج ثبت نام تک مرحله ای
+     *
+     * @param nationalId
+     * @param birthDateSolar
+     * @param certSerialNo
+     * @param gender
+     */
+    public void checkInsertSingleStageEnrollmentPossible(
+            String nationalId, String birthDateSolar, String certSerialNo, GenderEnum gender) throws BaseException {
+        CardRequestTO cardRequestTO = fetchCardRequest(nationalId);
+        checkThereAnyProcessedPreRegistration(cardRequestTO);
+        checkThereAnyProcessedSingleStageEnrollment(cardRequestTO);
+        checkThereAnyReproductionRequest(cardRequestTO);
+        checkHasCitizenAnyShippedCard(cardRequestTO);
+        checkHasCitizenAnyDeliveredCard(cardRequestTO);
+        checkCitizenLastCardExpired(cardRequestTO);
+        checkCitizenPersonalInfoValid(nationalId, birthDateSolar, certSerialNo, gender);
+    }
+
+    private CardRequestTO fetchCardRequest(String nationalId) throws BaseException {
+        CardRequestTO cardRequestTO = null;
+        try {
+            CitizenTO citizenTO = getCitizenService().findByNationalId(nationalId);
+            if (citizenTO != null) {
+                cardRequestTO = getCardRequestService().findByCitizenId(citizenTO);
+            }
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.CRE_071, BizExceptionCode.CRE_071_MSG, e);
+        }
+        return cardRequestTO;
+    }
+
+    /**
+     * استعلام وجود ثبت نام در حال پردازش
+     *
+     * @param cardRequestTO
+     */
+    public void checkThereAnyProcessedPreRegistration(CardRequestTO cardRequestTO) throws BaseException {
+        String crhAction = "AFIS_SEND_ERROR";
+        if (cardRequestTO != null) {
+            if (!(cardRequestTO.getOrigin() == CardRequestOrigin.CRS
+                    && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
+                    || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                    || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
+                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
+                throw new ServiceException(BizExceptionCode.CRE_070, BizExceptionCode.CRE_070_MSG);
+            }
+        }
+    }
+
+    /**
+     * استعلام وجود ثبت نام تک مرحله ای در حال پردازش
+     *
+     * @param cardRequestTO
+     */
+    public void checkThereAnyProcessedSingleStageEnrollment(CardRequestTO cardRequestTO) throws BaseException {
+        String crhAction = "AFIS_SEND_ERROR";
+        if (cardRequestTO != null) {
+            if (!(cardRequestTO.getOrigin() == CardRequestOrigin.C
+                    && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
+                    || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                    || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
+                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
+                throw new ServiceException(BizExceptionCode.CRE_069, BizExceptionCode.CRE_069_MSG);
+            }
+        }
+    }
+
+    /**
+     * استعلام وجود ثبت نام(درخواست صدور مجدد)
+     *
+     * @param cardRequestTO
+     */
+    public void checkThereAnyReproductionRequest(CardRequestTO cardRequestTO) throws BaseException {
+        String crhAction = "AFIS_SEND_ERROR";
+        if (cardRequestTO != null) {
+            if (!(!cardRequestTO.getType().equals(CardRequestType.REPLICA)
+                    && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
+                    || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                    || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
+                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
+                throw new ServiceException(BizExceptionCode.CRE_059, BizExceptionCode.CRE_059_MSG);
+            }
+        }
+    }
+
+    /**
+     * استعلام وجود کارت صادر شده برای شهروند
+     *
+     * @param cardRequestTO
+     */
+    public void checkHasCitizenAnyShippedCard(CardRequestTO cardRequestTO) throws ServiceException {
+        if (cardRequestTO != null) {
+            if (!(cardRequestTO.getState().equals(CardRequestState.ISSUED)
+                    || cardRequestTO.getState().equals(CardRequestState.READY_TO_DELIVER)
+                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
+                throw new ServiceException(BizExceptionCode.CRE_060, BizExceptionCode.CRE_060_MSG);
+            }
+        }
+    }
+
+    /**
+     * استعلام وجود کارت تحویل شده برای شهروند
+     *
+     * @param cardRequestTO
+     */
+    public void checkHasCitizenAnyDeliveredCard(CardRequestTO cardRequestTO) throws ServiceException {
+        if (cardRequestTO != null) {
+            if (!(cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
+                throw new ServiceException(BizExceptionCode.CRE_062, BizExceptionCode.CRE_062_MSG);
+            }
+        }
+    }
+
+    /**
+     * استعلام وجود کارت منقضی شده  برای شهروند
+     *
+     * @param cardRequestTO
+     */
+    public void checkCitizenLastCardExpired(CardRequestTO cardRequestTO) throws ServiceException {
+        if (cardRequestTO != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(cardRequestTO.getCard().getIssuanceDate());
+            cal.add(Calendar.YEAR, 7);
+            if (!(cal.getTime().equals(new Date())
+                    || cal.getTime().after(new Date()))) {
+                throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG);
+            }
+        }
+    }
+
+    /**
+     * استعلام درستی مشخصات فردی
+     *
+     * @param nationalId
+     * @param gender
+     */
+    public void checkCitizenPersonalInfoValid(String nationalId, String birthDateSolar
+            , String certSerialNo, GenderEnum gender) throws BaseException {
+        if (!NationalIDUtil.checkValidNinStr(nationalId)) {
+            throw new ServiceException(BizExceptionCode.CRE_064, BizExceptionCode.CRE_064_MSG, new Object[]{"nationalId", nationalId});
+        }
+        if (StringUtils.isEmpty(birthDateSolar) || birthDateSolar.length() != 8) {
+            throw new ServiceException(BizExceptionCode.CRE_065, BizExceptionCode.CRE_064_MSG, new Object[]{"birthDateSolar", birthDateSolar});
+        }
+        if (StringUtils.isEmpty(certSerialNo)) {
+            throw new ServiceException(BizExceptionCode.CRE_066, BizExceptionCode.CRE_064_MSG, new Object[]{"certSerialNo", certSerialNo});
+        }
+        if (gender == null) {
+            throw new ServiceException(BizExceptionCode.CRE_067, BizExceptionCode.CRE_064_MSG, new Object[]{"gender", gender});
+        }
+        PersonEnquiryWTO personEnquiryVTOResult = getIMSOnlineService().fetchDataByOnlineEnquiryAndCheck(nationalId, true);
+        if (personEnquiryVTOResult.getSolarBirthDate() == null || !(certSerialNo.equals(String.valueOf(personEnquiryVTOResult.getBirthCertificateSerial()))
+                && nationalId.equals(String.valueOf(personEnquiryVTOResult.getNationalId()))
+                && birthDateSolar.equals(String.valueOf(personEnquiryVTOResult.getSolarBirthDate().replace("/", "")))
+                && gender.getEmsCOde().equals(personEnquiryVTOResult.getGender().toString()))) {
+            throw new ServiceException(BizExceptionCode.CRE_063, BizExceptionCode.CRE_063_MSG, new Object[]{nationalId});
+        }
+    }
+
+    public CardRequestTO findLastRequestByNationalId(String nationalId)
+            throws BaseException {
+        try {
+            return getCardRequestDAO().findLastRequestByNationalId(nationalId);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.CRE_068, BizExceptionCode.CRE_068_MSG, e);
+        }
+    }
+
+    public CardRequestTO findByCitizenId(CitizenTO citizenTO) throws BaseException {
+        try {
+            return getCardRequestDAO().findByCitizenId(citizenTO);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CRE_073, BizExceptionCode.CRE_073_MSG);
+        }
+    }
+
+    public CardRequestTO update(CardRequestTO cardRequestTO) throws BaseException {
+        try {
+            return getCardRequestDAO().create(cardRequestTO);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CRE_072, BizExceptionCode.CRE_072_MSG);
+        }
+    }
+
+    private NOCRIMSOnlineService getIMSOnlineService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider.getServiceFactory();
+        NOCRIMSOnlineService nocrImsOnlineService;
+        try {
+            nocrImsOnlineService = serviceFactory.getService(EMSLogicalNames.getExternalIMSServiceJNDIName(EMSLogicalNames.SRV_NIO), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.NIF_016,
+                    BizExceptionCode.GLB_002_MSG,
+                    e,
+                    EMSLogicalNames.SRV_NIO.split(","));
+        }
+        return nocrImsOnlineService;
+    }
+
+    public PersonEnquiryWTO updateCitizenByEstelam(CardRequestTO cardRequestTO, boolean updateCardRequest, boolean isNewCardRequest) throws BaseException {
+        String description = "";
+        String imageDescription;
+        boolean verified = false;
+        String nationalIdStr = cardRequestTO.getCitizen().getNationalID();
+        PersonEnquiryWTO personEnquiryVTOResult = getIMSOnlineService().fetchDataByOnlineEnquiryAndCheck(nationalIdStr, false);
+        if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt() || personEnquiryVTOResult.getIsExceptionMessage() || personEnquiryVTOResult.getIsDead() == 1) {
+
+            if (personEnquiryVTOResult.getIsExceptionMessage()) {
+                cardRequestTO.setEstelam2Flag(Estelam2FlagType.N);
+                personEnquiryVTOResult.setNotVerified(true);
+                getCardRequestDAO().update(cardRequestTO);
+            }
+
+            if (personEnquiryVTOResult.getIsDead() == 1) {
+                cardRequestTO.setEstelam2Flag(Estelam2FlagType.N);
+                personEnquiryVTOResult.setNotVerified(true);
+                getCardRequestDAO().update(cardRequestTO);
+            }
+
+            description = personEnquiryVTOResult.getDescription();
+            if (EmsUtil.checkString(description)) {
+                if (!EmsUtil.checkMaxFieldLength(description, 600))
+                    description = description.substring(0, 600);
+            }
+            getCardRequestHistoryService().create(cardRequestTO,
+                    description, SystemId.EMS, null,
+                    CardRequestHistoryAction.NOT_VERIFIED_BY_IMS, null);
+            return personEnquiryVTOResult;
+        }
+        StringBuilder metadata = new StringBuilder();
+        if (EmsUtil.checkString(personEnquiryVTOResult.getMetadata())) {
+            metadata.append(cardRequestTO.getPortalRequestId()).append("-");
+            logEstelamFailed("Citizen", cardRequestTO.getPortalRequestId(), nationalIdStr, null);
+            if (EmsUtil.checkString(personEnquiryVTOResult.getLogInfo())) {
+
+                Estelam2FailureLogTO estelam2LogTO = new Estelam2FailureLogTO();
+                estelam2LogTO.setNationalID(nationalIdStr);
+                estelam2LogTO.setCreateDate(new Date());
+                EstelamFailureType type = EstelamFailureType.NOT_FOUND;
+                description = personEnquiryVTOResult.getDescription();
+                if (EmsUtil.checkString(description)) {
+                    if (!EmsUtil.checkMaxFieldLength(description, 600))
+                        description = description.substring(0, 600);
+                }
+                estelam2LogTO.setDescription(description);
+                type = checkImsErrorType(personEnquiryVTOResult, type);
+                estelam2LogTO.setType(type);
+                logInsertIntoEstelam2FailureTable(estelam2LogTO, null, null);
+                getEstelam2LogDAO().create(estelam2LogTO);
+                verified = false;
+            }
+        } else {
+            verified = true;
+            imageDescription = personEnquiryVTOResult.getImageDescription();
+            updateCitizen(cardRequestTO.getCitizen(), personEnquiryVTOResult, true, isNewCardRequest);
+            if (EmsUtil.checkString(imageDescription)) {
+                if (!EmsUtil.checkMaxFieldLength(imageDescription, 600))
+                    imageDescription = imageDescription.substring(0, 600);
+                getCardRequestHistoryService().create(cardRequestTO, imageDescription, SystemId.EMS, null, CardRequestHistoryAction.IMS_IMAGE_NOT_FOUND, null);
+            }
+        }
+        CardRequestHistoryAction historyAction = null;
+        if (verified) {
+            historyAction = CardRequestHistoryAction.VERIFIED_IMS;
+            cardRequestTO.setEstelam2Flag(Estelam2FlagType.V);
+            personEnquiryVTOResult.setNotVerified(false);
+        } else {
+            historyAction = CardRequestHistoryAction.NOT_VERIFIED_BY_IMS;
+            cardRequestTO.setEstelam2Flag(Estelam2FlagType.N);
+            personEnquiryVTOResult.setNotVerified(true);
+        }
+        description = personEnquiryVTOResult.getDescription();
+        if (EmsUtil.checkString(description)) {
+            if (!EmsUtil.checkMaxFieldLength(description, 600))
+                description = description.substring(0, 600);
+        }
+        getCardRequestHistoryService().create(cardRequestTO, description, SystemId.EMS, null, historyAction, "");
+        cardRequestTO.setMetadata(metadata.toString());
+        if (updateCardRequest) {
+            update(cardRequestTO);
+        }
+        logger.info("\n\nThe cardRequestTO has been set via IMS sub system.\n");
+        return personEnquiryVTOResult;
+    }
+
+
+    private void updateCitizen(CitizenTO ctz, PersonEnquiryWTO personEnquiryVTO,
+                               Boolean isImageRequested, boolean isNewCardRequest) throws BaseException {
+        CitizenInfoTO czi = ctz.getCitizenInfo();
+        ctz.setFirstNamePersian(personEnquiryVTO.getFirstName());
+        ctz.setSurnamePersian(personEnquiryVTO.getLastName());
+        czi.setBirthCertificateId(personEnquiryVTO.getBirthCertificateId());
+        // Anbari: set Serial
+        czi.setBirthCertificateSeries(personEnquiryVTO
+                .getBirthCertificateSerial());
+        // Anbari : set NIDImage to requested citizen nidImage
+        // field
+        if (isImageRequested && personEnquiryVTO.getNidImage() != null) {
+            try {
+                getImsManagementervice().saveImsEstelamImage(
+                        ctz.getNationalID(), ctz, ImsEstelamImageType.IMS_NID_IMAGE,
+                        personEnquiryVTO.getNidImage(), isNewCardRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        czi.setFatherFirstNamePersian(personEnquiryVTO.getFatherName());
+        czi.setGender(personEnquiryVTO.getGender());
+        //Anbari: overwrite birthDate
+        czi.setBirthDateSolar(personEnquiryVTO.getSolarBirthDate());
+        try {
+            czi.setBirthDateGregorian(DateUtil.convert(personEnquiryVTO.getSolarBirthDate(), DateUtil.JALALI));
+        } catch (DateFormatException e) {
+            e.printStackTrace();
+        }
+        insertLogForCitizenInfo(ctz, czi);
+
+        getCitizenDAO().update(ctz);
+        getCitizenInfoDAO().update(czi);
+    }
+    /**
+     * getCitizenInfoDAO
+     *
+     * @return an instance of type CitizenInfoDAO
+     */
+    private CitizenInfoDAO getCitizenInfoDAO() throws BaseException {
+        DAOFactory factory = DAOFactoryProvider.getDAOFactory();
+        CitizenInfoDAO citizenInfoDAO;
+        try {
+            citizenInfoDAO = factory.getDAO(EMSLogicalNames
+                    .getDaoJNDIName(EMSLogicalNames.DAO_CITIZEN_INFO));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.MMS_004,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    EMSLogicalNames.DAO_CITIZEN_INFO.split(","));
+        }
+        return citizenInfoDAO;
+    }
+
+    private void logEstelamFailed(String person, Long reqId,
+                                  String citizenNationalID, String nId) {
+        logger.info("\n======================== Estelam Failed For " + person + "========================\n");
+        logger.info("\nRequest Id : " + reqId + "\n");
+        logger.info("\nCitizen NID : " + citizenNationalID + "\n");
+        if (!person.equals("Citizen")) {
+            logger.info("\nCitizen " + person + " NID : " + nId + "\n");
+        }
+    }
+
+    private EstelamFailureType checkImsErrorType(
+            PersonEnquiryWTO personEnquiryVTO, EstelamFailureType type) {
+        if (personEnquiryVTO.getLogInfo().equals(BizExceptionCode.GIO_008)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_029)) {
+            logPersonNotFound("Citizen");
+            type = EstelamFailureType.NOT_FOUND;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_010)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_021)) {
+            type = EstelamFailureType.INVAILD_CERTIFICATE_ID;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_011)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_022)) {
+            type = EstelamFailureType.INVAILD_BIRTH_DATE;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_012)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_023)) {
+            type = EstelamFailureType.INVAILD_CERTIFICATE_SERIAL;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_013)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_024)) {
+            type = EstelamFailureType.INVAILD_NAME;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_014)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_025)) {
+            type = EstelamFailureType.INVAILD_LAST_NAME;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_015)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_026)) {
+            type = EstelamFailureType.INVAILD_FATHER_NAME;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_016)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_027)) {
+            type = EstelamFailureType.INVAILD_GENDER;
+        } else if (personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.GIO_017)
+                || personEnquiryVTO.getLogInfo().equals(
+                BizExceptionCode.NIO_028)) {
+            type = EstelamFailureType.UNKNOWN_IMS_MESSAGE;
+        }
+        return type;
+    }
+
+    private void logInsertIntoEstelam2FailureTable(Estelam2FailureLogTO estelam2Log, Gender imsGender, Gender citizenGender) {
+        logger.info("\n======================== Insert Into Estelam 2 Failure Table ========================\n");
+        if (citizenGender != null && imsGender != null) {
+            logger.info("\n Citizen Gender : " + citizenGender + "\n");
+            logger.info("\n Ims Gender : " + imsGender + "\n");
+        }
+        logger.info("\nestelam2Log NID : " + estelam2Log.getNationalID() + "\n");
+        logger.info("\nestelam2Log createDate : " + estelam2Log.getCreateDate() + "\n");
+        logger.info("\nestelam2Log type : " + estelam2Log.getType() + "\n");
+        logger.info("\n=====================================================================================\n");
+    }
+
+    private Estelam2FailureLogDAO getEstelam2LogDAO() throws BaseException {
+        DAOFactory factory = DAOFactoryProvider.getDAOFactory();
+        Estelam2FailureLogDAO estelam2LogDAO = null;
+        try {
+            estelam2LogDAO = factory.getDAO(EMSLogicalNames
+                    .getDaoJNDIName(EMSLogicalNames.DAO_ESTELAM2_FAILURE_LOG));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.MMS_057,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    EMSLogicalNames.DAO_ESTELAM2_FAILURE_LOG.split(","));
+        }
+        return estelam2LogDAO;
+    }
+
+    private void insertLogForCitizenInfo(CitizenTO ctz, CitizenInfoTO czi) {
+        logger.info("\nCitizen FirstName : " + ctz.getFirstNamePersian() + "\n");
+        logger.info("\nCitizen LastName : " + ctz.getSurnamePersian() + "\n");
+        logger.info("\nCitizen BirthCertId : " + czi.getBirthCertificateId()
+                + "\n");
+        logger.info("\nCitizen BirthCertSerial : "
+                + czi.getBirthCertificateSeries() + "\n");
+        logger.info("\nCitizen BirthDateSolar : " + czi.getBirthDateSolar()
+                + "\n");
+    }
+
+    private IMSManagementService getImsManagementervice()
+            throws BaseException {
+        ServiceFactory factory = ServiceFactoryProvider.getServiceFactory();
+        IMSManagementService imsManagementService = null;
+        try {
+            imsManagementService = (IMSManagementService) factory
+                    .getService(EMSLogicalNames
+                            .getServiceJNDIName(EMSLogicalNames.SRV_IMS_MANAGEMENT), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.IMD_001,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_IMS_MANAGEMENT.split(","));
+        }
+        return imsManagementService;
+    }
+
+    private void logPersonNotFound(String person) {
+        logger.info("\n=====================================================================================\n");
+        logger.info("\n======================== " + person + " Not Found In Ims ========================\n");
+        logger.info("\n=====================================================================================\n");
+    }
+
+    public CardRequestTO addCardRequest(CardRequestTO entity) throws BaseException {
+        CardRequestTO newCardRequest = null;
+        try {
+            entity.setType(CardRequestType.FIRST_CARD);
+            entity.setState(CardRequestState.RESERVED);
+            entity.setEstelam2Flag(Estelam2FlagType.R);
+            entity.setRequestedSmsStatus(0);
+            entity.setOriginalCardRequestOfficeId(null);
+            checkCardRequestValid(entity);
+
+            if (entity.getId() == null) {
+                if (entity.getTrackingID() == null || entity.getTrackingID().trim().length() == 0 ||
+                        entity.getTrackingID().equals("0000000000")) {
+                    entity.setTrackingID(
+                            EmsUtil.generateTrackingId(entity.getCitizen().getNationalID()));
+                }
+                newCardRequest = getCardRequestDAO().create(entity);
+            }
+
+            return newCardRequest;
+
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            String nationalId = entity.getCitizen() != null ? entity.getCitizen().getNationalID() : null;
+            logger.error(BizExceptionCode.RSI_089_MSG,
+                    new Object[]{newCardRequest.getId()},
+                    new Object[]{"nationalId", String.valueOf(nationalId)});
+            throw new ServiceException(
+                    BizExceptionCode.RSI_089, BizExceptionCode.RSI_089_MSG, e, new Object[]{newCardRequest.getId()});
+        }
+    }
+
+    private void checkCardRequestValid(CardRequestTO crq) throws BaseException {
+        String nationalId = crq.getCitizen() != null ? crq.getCitizen().getNationalID() : null;
+        if (crq == null) {
+            throw new ServiceException(BizExceptionCode.RSI_006, BizExceptionCode.RSI_006_MSG, new Object[]{nationalId});
+        }
+        if (crq.getState() == null) {
+            throw new ServiceException(BizExceptionCode.RSI_012, BizExceptionCode.RSI_012_MSG, new Object[]{nationalId});
+        }
+        if (crq.getType() == null) {
+            throw new ServiceException(BizExceptionCode.RSI_013, BizExceptionCode.RSI_013_MSG, new Object[]{nationalId});
+        }
+        if (!EmsUtil.checkString(crq.getTrackingID()) && (crq.getTrackingID().length() != 10)) {
+            throw new ServiceException(BizExceptionCode.RSI_014, BizExceptionCode.RSI_014_MSG, new Object[]{nationalId});
+        }
+    }
+
+    private CardRequestHistoryService getCardRequestHistoryService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        CardRequestHistoryService cardRequestHistoryService;
+        try {
+            cardRequestHistoryService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST_HISTORY), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.PTL_005,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_CARD_REQUEST_HISTORY.split(","));
+        }
+        cardRequestHistoryService.setUserProfileTO(getUserProfileTO());
+        return cardRequestHistoryService;
+    }
+
+    private CitizenService getCitizenService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        CitizenService citizenService;
+        try {
+            citizenService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_CITIZEN), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.PTL_005,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_CITIZEN.split(","));
+        }
+        citizenService.setUserProfileTO(getUserProfileTO());
+        return citizenService;
+    }
+
+    private CardRequestService getCardRequestService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        CardRequestService cardRequestService;
+        try {
+            cardRequestService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.PTL_005,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_CARD_REQUEST.split(","));
+        }
+        cardRequestService.setUserProfileTO(getUserProfileTO());
+        return cardRequestService;
+    }
 }

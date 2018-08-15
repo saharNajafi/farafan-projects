@@ -5,15 +5,15 @@ import java.util.List;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
+import com.gam.nocr.ems.data.domain.CitizenTO;
+import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
+import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.CardRequestedAction;
-import com.gam.nocr.ems.data.enums.PurgeState;
-import com.gam.nocr.ems.data.enums.SystemId;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 
 /**
@@ -112,4 +112,16 @@ public interface CardRequestService extends Service {
 	public  String findCardRequestStateByNationalIdAndBirthCertificateSeries(
 			String nationalId, String birthCertificateSeries, String citizenBirthDate) throws  BaseException ;
 
+	public void checkInsertSingleStageEnrollmentPossible(
+			String nationalId, String birthDateSolar, String certSerialNo, GenderEnum gender) throws BaseException;
+
+	public CardRequestTO findLastRequestByNationalId(String nationalId) throws BaseException ;
+
+	PersonEnquiryWTO updateCitizenByEstelam(CardRequestTO cardRequest, boolean b, boolean b1) throws BaseException;
+
+	CardRequestTO addCardRequest(CardRequestTO emsCardRequest) throws BaseException;
+
+	CardRequestTO update(CardRequestTO cardRequestTO) throws BaseException;
+
+	CardRequestTO findByCitizenId(CitizenTO citizenTO) throws BaseException;
 }

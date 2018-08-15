@@ -45,6 +45,9 @@ public class EMSLogicalNames {
     public static String SRV_REPORT_MANAGEMENT = "ReportManagementService";
     public static String SRV_REPORT_REQUEST = "ReportRequestService";
     public static String SRV_CARD_REQUEST = "CardRequestService";
+    public static String SRV_OFFICE_ACTIVE_SHIFT = "OfficeActiveShiftService";
+    public static String SRV_CITIZEN = "CitizenService";
+    public static String SRV_CITIZEN_INFO = "CitizenInfoService";
     public static String SRV_EMKS = "EmksService";
     
     public static String SRV_ABOUT = "AboutService";
@@ -53,7 +56,10 @@ public class EMSLogicalNames {
     public static String SRV_PREPARED_MESSAGE = "PreparedMessageService";
     public static String SRV_OUTGOING_SMS = "OutgoingSMSService";
     public static String SRV_OFFICE_CAPACITY = "OfficeCapacityService";
-
+    public static String SRV_RESERVATION = "ReservationService";
+    public static String SRV_INTERNAL_SERVICE_CHEKER= "InternalServiceChecker";
+    public static String SRV_REGISTRATION_PAYMEN= "RegistrationPaymentService";
+    public static String SRV_CARD_REQUEST_HISTORY= "cardRequestHistoryService";
     // Proxy Services
     public static String SRV_GAAS = "GAASService";
     public static String SRV_CAS = "CASService";
@@ -68,6 +74,7 @@ public class EMSLogicalNames {
     public static String SRV_NIF = "NOCRIMSFarafanService";
     public static String SRV_IMS_BATCH = "NOCRIMSBatchService";
     public static String SRV_IMS_FARAFAN = "NOCRIMSFarafanService";
+
 
     // Data Layer Logical Names
     public static String DAO_EJB_MODULE = "ems-dao-jpa-impl/";
@@ -102,6 +109,7 @@ public class EMSLogicalNames {
     public static String DAO_BLACK_LIST = "BlackListDAO";
     public static String DAO_RATING_INFO = "RatingInfoDAO";
     public static String DAO_RESERVATION = "ReservationDAO";
+    public static String DAO_REGISTRATION_PAYMENT = "RegistrationPaymentDAO";
     public static String DAO_ENCRYPTED_CARD_REQUEST = "EncryptedCardRequestDAO";
     public static String DAO_REPORT = "ReportDAO";
     public static String DAO_REPORT_REQUEST = "ReportRequestDAO";
@@ -121,11 +129,13 @@ public class EMSLogicalNames {
     public static String DAO_IMS_ESTELAM_IMAGE = "ImsEstelamImageDAO";
     public static String DAO_OFFICE_SETTING = "OfficeSettingDAO";
     public static String DAO_OFFICE_CAPACITY = "OfficeCapacityDAO";
+    public static String DAO_OFFICE_ACTIVE_SHIFT= "OfficeActiveShiftDAO";
     public static String DAO_NIST_HEADER = "NistHeaderDAO";
     public static String DAO_XML_AFIS = "XmlAfisDAO";
     public static String DAO_CARDREQUEST_BLOBS = "CardRequestBlobsDAO";
     public static String DAO_PURGE_HISTORY = "PurgeHistoryDAO";
-    
+    public static String DAO_EXCEPTION_CODE = "ExceptionCodeDAO";
+
     /**
      * DAOs, which are required in GamIms implementation
      */

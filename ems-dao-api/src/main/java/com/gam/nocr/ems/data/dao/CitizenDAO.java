@@ -28,4 +28,5 @@ public interface CitizenDAO extends EmsBaseDAO<CitizenTO> {
     
     List<CardRequestTO> checkCitizenHasAnyUnDeliveredRequest(CitizenTO citizen) throws BaseException;
 
+    CitizenTO findByNationalId(String nationalId) throws BaseException;
 }

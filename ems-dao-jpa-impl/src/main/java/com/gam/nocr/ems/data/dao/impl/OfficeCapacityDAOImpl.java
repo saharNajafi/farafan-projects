@@ -85,4 +85,19 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
         }
     }
 
+    @Override
+    public OfficeCapacityTO findByEnrollmentOfficeId(Long eofId)
+            throws BaseException {
+        List<OfficeCapacityTO> officeCapacityTOList;
+        try {
+            officeCapacityTOList = em.createNamedQuery("OfficeCapacityTO.findByEnrollmentOfficeId")
+                    .setParameter("eofId", eofId)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.OCD_008,
+                    DataExceptionCode.OCD_008_MSG, e);
+        }
+        return officeCapacityTOList.size() != 0 ? officeCapacityTOList.get(0) : null;
+    }
+
 }

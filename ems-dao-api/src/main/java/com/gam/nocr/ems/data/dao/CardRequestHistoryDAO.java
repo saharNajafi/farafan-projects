@@ -155,5 +155,5 @@ public interface CardRequestHistoryDAO extends EmsBaseDAO<CardRequestHistoryTO> 
 
     CardRequestHistoryTO findByCardRequestId(Long cardRequestId) throws BaseException;
 
-
+    boolean findByCardRequestAndCrhAction(Long id, String crhAction) throws BaseException;
 }

@@ -442,6 +442,14 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>CCOSPaymentWS</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
     <!-- resource-ref>
         <res-ref-name>wm/JobWM</res-ref-name>
         <res-type>commonj.work.WorkManager</res-type>
@@ -565,6 +573,11 @@
     <servlet-mapping>
         <servlet-name>TestCMSWS</servlet-name>
         <url-pattern>/services/TestCMSWS</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>CCOSPaymentWS</servlet-name>
+        <url-pattern>/services/CCOSPaymentWS</url-pattern>
     </servlet-mapping>
 
     <session-config>

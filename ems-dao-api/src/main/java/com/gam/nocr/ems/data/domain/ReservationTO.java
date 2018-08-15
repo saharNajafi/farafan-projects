@@ -2,6 +2,7 @@ package com.gam.nocr.ems.data.domain;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.data.enums.BooleanType;
+import com.gam.nocr.ems.data.enums.ShiftEnum;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.JSONable;
 import flexjson.JSON;
@@ -20,6 +21,28 @@ import java.util.Date;
                 query = " select rat " +
                         " from ReservationTO rat" +
                         " where rat.cardRequest.id =:cardRequestId"
+        ),
+        @NamedQuery(
+                name = "ReservationTO.fetchReservationByPortalReservationId",
+                query = " select res " +
+                        "from ReservationTO res " +
+                        " where res.portalReservationId =:portalReservationId " +
+                        "order by res.id asc"
+        ),
+        @NamedQuery(
+                name = "ReservationTO.findReservationByCrqId",
+                query = " select res " +
+                        "from ReservationTO res " +
+                        " where res.cardRequest.id =:carqId " +
+                        "order by res.id asc"
+        ),
+        @NamedQuery(
+                name = "ReservationTO.findByEnrolAndReserveDateAndShift",
+                query = " select count (res.id) " +
+                        "from ReservationTO res " +
+                        " where res.enrollmentOffice.id =:enrollmentOfficeId " +
+                        "and  res.date=:reservationDate " +
+                        "and res.shiftNo =:shiftNo "
         )
 })
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_RESERVATION", allocationSize = 1)
@@ -31,7 +54,8 @@ public class ReservationTO extends ExtEntityTO implements JSONable {
     private BooleanType attended;
     private Long portalReservationId;
     private boolean isPaid;
-    private Date paidDate; 
+    private Date paidDate;
+    private ShiftEnum shiftNo;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -74,7 +98,7 @@ public class ReservationTO extends ExtEntityTO implements JSONable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "RSV_ATTENDED")
-    public BooleanType isAttended() {
+    public BooleanType getAttended() {
         return attended;
     }
 
@@ -95,24 +119,35 @@ public class ReservationTO extends ExtEntityTO implements JSONable {
     public String toString() {
         return toJSON();
     }
-    
+
     @Transient
     public boolean isPaid() {
-		return isPaid;
-	}
+        return isPaid;
+    }
 
-	public void setPaid(boolean isPaid) {
-		this.isPaid = isPaid;
-	}
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
 
-	@Transient
-	public Date getPaidDate() {
-		return paidDate;
-	}
+    @Transient
+    public Date getPaidDate() {
+        return paidDate;
+    }
 
-	public void setPaidDate(Date paidDate) {
-		this.paidDate = paidDate;
-	}
+    public void setPaidDate(Date paidDate) {
+        this.paidDate = paidDate;
+    }
+
+    @Basic(optional = false)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "RSV_SHIFT_NO")
+    public ShiftEnum getShiftNo() {
+        return shiftNo;
+    }
+
+    public void setShiftNo(ShiftEnum shiftNo) {
+        this.shiftNo = shiftNo;
+    }
 
     /**
      * The method toJSON is used to convert an object to an instance of type {@link String}

@@ -554,6 +554,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_103 = "EMS_D_CDI_103";
     public static final String CDI_104 = "EMS_D_CDI_104";
     public static final String CDI_106 = "EMS_D_CDI_106";
+    public static final String CDI_107 = "EMS_D_CDI_107";
 
     public static final String CDI_001_MSG = "Unable to create Card Request";
     public static final String CDI_002_MSG = "Integrity constraint violated, card with id {} not found";
@@ -584,6 +585,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_103_MSG = "an error occur in findCardRequestStateByNationalIdAndMobile method";
     public static final String CDI_104_MSG = "an error occur in findCardRequestStateByNationalIdAndBirthCertificateSeries method";
     public static final String CDI_106_MSG = "an error occur in findCardRequestStateByTrackingId method";
+    public static final String CDI_107_MSG = "the findLastRequestByNationalId operation could not be executed";
 
 
     // com.gam.nocr.ems.data.dao.impl.DocTypeDAOImpl
@@ -654,6 +656,9 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ENI_013 = "EMS_D_ENI_013";
     public static final String ENI_014 = "EMS_D_ENI_014";
     public static final String ENI_015 = "EMS_D_ENI_015";
+    public static final String ENI_016 = "EMS_D_ENI_016";
+    public static final String ENI_002_MSG = "the searchOfficeQueryByAccessibility operation could not be executed";
+    public static final String ENI_005_MSG = "the searchOfficeQueryByInstruments operation could not be executed";
     public static final String ENI_015_MSG = "an error occur in findEnrollmentOfficeById method";
 
     // com.gam.nocr.ems.data.dao.impl.Estelam2FailureLogDAOImpl
@@ -726,6 +731,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CTI_020 = "EMS_D_CTI_020";
     public static final String CTI_021 = "EMS_D_CTI_021";
     public static final String CTI_022 = "EMS_D_CTI_022";
+    public static final String CTI_023 = "EMS_D_CTI_023";
     public static final String CTI_001_MSG = "Unable to create citizen";
     public static final String CTI_002_MSG = "Unique constraint violated, citizen with this national ID already exists";
     public static final String CTI_003_MSG = "Integrity constraint violated, citizen with id {} not found";
@@ -743,6 +749,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CTI_016_MSG = "Problem when trying to load citizen for request id {}, data is invalid";
     public static final String CTI_017_MSG = "Unable to execute find operation for citizen with request id {}";
     public static final String CTI_018_MSG = "Problem when trying to load citizen for request id {}, data is invalid";
+    public static final String CTI_023_MSG = "CTZ_NATIONAL_ID cannot not be null";
 
     // com.gam.nocr.ems.data.dao.impl.CitizenInfoDAOImpl
     public static final String CZI_001 = "EMS_D_CZI_001";
@@ -1065,7 +1072,44 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OCD_005 = "EMS_D_OCD_005";
     public static final String OCD_006 = "EMS_D_OCD_006";
     public static final String OCD_007 = "EMS_D_OCD_007";
+    public static final String OCD_008 = "EMS_D_OCD_008";
     public static final String OCD_001_MSG = "Unique constraint violated, Office Capacity class has already been used";
     public static final String OCD_002_MSG = "findByEnrollmentOfficeId operation could not be executed";
     public static final String OCD_003_MSG = "Unique constraint violated, Office Capacity size has already been used";
+    public static final String OCD_008_MSG = "Unique constraint violated, Office Capacity size has already been used";
+
+    // com.farafan.crsProvider.dao.ActiveShiftDAOImpl
+    public static final String ASH_001 = "EMS_D_ASH_001";
+    public static final String ASH_002 = "EMS_D_ASH_002";
+    public static final String ASH_003 = "EMS_D_ASH_003";
+    public static final String ASH_004 = "EMS_D_ASH_004";
+    public static final String ASH_005 = "EMS_D_ASH_005";
+    public static final String ASH_006 = "EMS_D_ASH_006";
+
+    //com.gam.nocr.ems.data.dao.impl.RegistrationPaymentDAOImpl.java
+    public static final String RGP_001= "EMS_D_RGP_001";
+    public static final String RGP_001_MSG = "the findByCitizenId operation could not be executed";
+
+   //com.gam.nocr.ems.util.CrsChecker.java
+    public static final String REG_07 = "REG_07";
+    public static final String REG_08 = "REG_08";
+    public static final String REG_09 = "REG_09";
+    public static final String REG_11 = "REG_11";
+    public static final String REG_12 = "REG_12";
+    public static final String REG_13 = "REG_13";
+    public static final String REG_16 = "REG_16";
+    public static final String REG_17 = "REG_17";
+    public static final String REG_18 = "REG_18";
+    public static final String REG_20 = "REG_20";
+    public static final String REG_07_MSG = "CellPhone Number is empty";
+    public static final String REG_08_MSG = "Invalid Religion";
+    public static final String REG_09_MSG = "Invalid Gender";
+    public static final String REG_11_MSG = "Invalid Gregorian BirthDate";
+    public static final String REG_12_MSG = "Invalid Lunar BirthDate";
+    public static final String REG_13_MSG = "Mother name is empty";
+    public static final String REG_16_MSG = "Invalid mother name";
+    public static final String REG_17_MSG = "Invalid cellPhone number";
+    public static final String REG_18_MSG = "Invalid solar BirthDate";
+    public static final String REG_20_MSG = "Invalid serialNumber";
+
 }

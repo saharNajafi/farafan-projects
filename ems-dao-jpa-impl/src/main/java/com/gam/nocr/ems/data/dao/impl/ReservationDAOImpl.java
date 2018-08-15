@@ -155,16 +155,18 @@ public class ReservationDAOImpl extends EmsBaseDAOImpl<ReservationTO> implements
     }
 
     @Override
-    public ReservationTO findReservationByCardRequestId(Long cardRequestId) throws BaseException {
-        List<ReservationTO> reservationVTOList;
+    public ReservationTO findReservationByCrqId(Long carqId) throws DataException {
+        List<ReservationTO> reservationTOList;
         try {
-            reservationVTOList =
-                    em.createNamedQuery("ReservationTO.findReservationByCardRequestId")
-                    .setParameter("cardRequestId", cardRequestId)
-                    .getResultList();
+            reservationTOList =
+                    em.createNamedQuery("ReservationTO.findReservationByCrqId")
+                            .setParameter("carqId", carqId)
+                            .getResultList();
         } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.RSI_004, DataExceptionCode.GLB_005_MSG, e);
+            throw new DataException(DataExceptionCode.RSI_002, DataExceptionCode.GLB_005_MSG, e);
         }
-        return reservationVTOList != null ? reservationVTOList.get(0) : null;
+        return !reservationTOList.isEmpty() ? reservationTOList.get(0) : null;
     }
+
+
 }

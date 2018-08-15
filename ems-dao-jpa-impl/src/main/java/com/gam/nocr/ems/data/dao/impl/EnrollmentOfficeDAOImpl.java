@@ -6,6 +6,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.HibernateException;
@@ -554,6 +556,100 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 						DataExceptionCode.ENI_015_MSG, e);
 			}
 		return enrollmentOfficeList != null ? enrollmentOfficeList.get(0) : null;
+	}
+
+	@Override
+	public List searchOfficeQueryByAccessibility(
+			String climbingStairsAbility, String pupilIsVisible
+			, Long enrollmentOfficeId) throws DataException {
+		List enrollmentOfficeTOs = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String selectQuery = " SELECT * " +
+					" FROM EMST_ENROLLMENT_OFFICE EOF" +
+					" WHERE EOF_ID =:ID ";
+			params.put("ID", enrollmentOfficeId);
+			selectQuery += findByAccessibility(climbingStairsAbility, pupilIsVisible);
+			Query query = em.createNativeQuery(selectQuery);
+			for (String paramName : params.keySet()) {
+				query = query.setParameter(paramName, params.get(paramName));
+			}
+			enrollmentOfficeTOs = query.getResultList();
+		} catch (Exception e) {
+			throw new DataException(DataExceptionCode.ENI_002,
+					DataExceptionCode.ENI_002_MSG, e);
+		}
+		return !enrollmentOfficeTOs.isEmpty() ? enrollmentOfficeTOs : null;
+	}
+
+	@Override
+	public List searchOfficeQueryByInstruments(
+			String abilityToGo, String hasTwoFingersScanable
+			, Long enrollmentOfficeId) throws BaseException {
+		List enrollmentOfficeTOs;
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String selectQuery = " SELECT * " +
+					" FROM EMST_ENROLLMENT_OFFICE EOF" +
+					" WHERE EOF_ID =:ID ";
+			params.put("ID", enrollmentOfficeId);
+			selectQuery += findByInstruments(abilityToGo, hasTwoFingersScanable);
+			Query query = em.createNativeQuery(selectQuery);
+			for (String paramName : params.keySet()) {
+				query = query.setParameter(paramName, params.get(paramName));
+			}
+			enrollmentOfficeTOs = query.getResultList();
+		} catch (Exception e) {
+			throw new DataException(DataExceptionCode.ENI_005,
+					DataExceptionCode.ENI_005_MSG, e);
+		}
+		return !enrollmentOfficeTOs.isEmpty() ? enrollmentOfficeTOs : null;
+	}
+
+	private String findByAccessibility(String climbingStairsAbility, String pupilIsVisible) {
+		String query = "";
+		if (pupilIsVisible == "YES" && climbingStairsAbility == "YES")
+			query += " AND (EOF.EOF_IGNORE_ICAO_PERMITTED = 0 OR EOF.EOF_IGNORE_ICAO_PERMITTED = 1)" +
+					" AND (EOF.EOF_HAS_STAIR = 0 OR EOF.EOF_HAS_STAIR = 1)" +
+					" AND (EOF.HAS_ELEVATOR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
+
+		if (pupilIsVisible == "YES" && climbingStairsAbility == "NO")
+			query += " AND (EOF.EOF_IGNORE_ICAO_PERMITTED = 0 OR EOF.EOF_IGNORE_ICAO_PERMITTED = 1)" +
+					" AND (EOF.EOF_HAS_STAIR = 0 OR EOF.EOF_HAS_ELEVATOR = 1) ";
+
+
+		if (pupilIsVisible == "NO" && climbingStairsAbility == "YES")
+			query += " AND EOF.EOF_IGNORE_ICAO_PERMITTED = 1" +
+					" AND (EOF.EOF_HAS_STAIR = 0 OR EOF.EOF_HAS_STAIR = 1)" +
+					" AND (EOF.EOF_HAS_ELEVATOR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
+
+		if (pupilIsVisible == "NO" && climbingStairsAbility == "NO")
+			query += " AND EOF.EOF_IGNORE_ICAO_PERMITTED = 1" +
+					" AND (EOF.EOF_HAS_STAIR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
+
+		return query;
+	}
+
+	private String findByInstruments(String abilityToGo, String hasTwoFingersScanable) {
+		String query = "";
+
+		if (abilityToGo == "YES" && hasTwoFingersScanable == "YES")
+			query += " AND (EOF.EOF_HAS_PORTABILITY_EQUIPMENT = 0 OR EOF.EOF_HAS_PORTABILITY_EQUIPMENT = 1)" +
+					" AND (EOF.EOF_DEFINE_NMOC_PERMITTED = 0 OR EOF.EOF_DEFINE_NMOC_PERMITTED = 1)";
+
+		if (abilityToGo == "YES" && hasTwoFingersScanable == "NO")
+			query += " AND (EOF.EOF_HAS_PORTABILITY_EQUIPMENT = 0 OR EOF.EOF_HAS_PORTABILITY_EQUIPMENT = 1)" +
+					" AND EOF.EOF_DEFINE_NMOC_PERMITTED = 1";
+
+		if (abilityToGo == "NO" && hasTwoFingersScanable == "YES")
+			query += " AND EOF.EOF_HAS_PORTABILITY_EQUIPMENT = 1" +
+					" AND (EOF.EOF_DEFINE_NMOC_PERMITTED = 0 OR EOF.EOF_DEFINE_NMOC_PERMITTED = 1)";
+
+		if (abilityToGo == "NO" && hasTwoFingersScanable == "NO")
+			query += " AND EOF.EOF_HAS_PORTABILITY_EQUIPMENT = 1" +
+					" AND EOF.EOF_DEFINE_NMOC_PERMITTED = 1";
+
+		return query;
 	}
 	
 }

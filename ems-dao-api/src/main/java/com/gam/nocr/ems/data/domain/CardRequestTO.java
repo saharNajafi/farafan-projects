@@ -47,7 +47,58 @@ import java.util.List;
                 query = " select crq " +
                         " from CardRequestTO crq" +
                         " where crq.citizen.nationalID =:nationalId" +
-                        " order by crq.id desc ")
+                        " order by crq.id desc "),
+        @NamedQuery(
+                name = "CardRequestTO.findByCRSRequestId",
+                query = "select crq" +
+                        " from CardRequestTO crq " +
+                        " where crq.portalRequestId=:portalRequestId " +
+                        " order by crq.id desc"
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.findLastRequestByNationalId",
+                query = "select crq from CardRequestTO crq  where crq.id " +
+                        "= (select MAX(crqq.id) from CardRequestTO crqq" +
+                        " where crqq.citizen.nationalID=:nationalId)"
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.fetchCardRequest",
+                query = "select crq " +
+                        " from CardRequestTO crq " +
+                        " where crq.id =:cardRequestId "
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.findByCitizen",
+                query = "select crq " +
+                        "from CardRequestTO crq " +
+                        " where crq.citizen.id =:citizenId " +
+                        "order by crq.id desc"
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.updateCardRequestsState",
+                query = "UPDATE CardRequestTO crs " +
+                        "SET crs.state =:CARD_REQUEST_STATE " +
+                        "WHERE crs.id IN (:ID_LIST)"
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.readyEstelam2Flag",
+                query = "UPDATE CardRequestTO crs " +
+                        "SET crs.estelam2Flag =:READY, crs.requestedSmsStatus =:status " +
+                        "WHERE crs.id IN (:ID_LIST)"
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.updateCardRequestOfficeId",
+                query = "UPDATE CardRequestTO crs " +
+                        "SET crs.enrollmentOffice.id =:enrollmentOfficeId " +
+                        "WHERE crs.id = :cardRequestId " +
+                        "and crs.originalCardRequestOfficeId is null"
+        ),
+        @NamedQuery(
+                name = "CardRequestTO.updateReEnrolledDateByCardRequestId",
+                query = "UPDATE CardRequestTO crq " +
+                        "SET crq.reEnrolledDate =:reEnrolledDate " +
+                        "WHERE crq.id IN (:cardRequestId)"
+        )
 
 
 })
@@ -90,9 +141,9 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     private boolean isPaid = false;
     private Date paidDate;
     private Integer requestedSmsStatus = 0;
-
-
     private List<ReservationTO> reservations = new ArrayList<ReservationTO>(0);
+
+    private RegistrationPaymentTO registrationPaymentTO;
 
     public CardRequestTO() {
     }
@@ -329,7 +380,7 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CRQ_ORIGIN")
+    @Column(name = "CRQ_ORIGIN", columnDefinition = "NVARCHAR2(1)")
     public CardRequestOrigin getOrigin() {
         return origin;
     }
@@ -398,7 +449,7 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     }
 
 
-    @Column(name = "CRQ_CMS_REQ_ID")
+    @Column(name = "CRQ_CMS_REQ_ID", columnDefinition = "CHAR(16 BYTE)")
     public String getCmsRequestId() {
         return cmsRequestId;
     }
@@ -459,6 +510,17 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
         this.paidDate = paidDate;
     }
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CRQ_PAYMENT_ID")
+    public RegistrationPaymentTO getRegistrationPaymentTO() {
+        return registrationPaymentTO;
+    }
+
+    public void setRegistrationPaymentTO(RegistrationPaymentTO registrationPaymentTO) {
+        this.registrationPaymentTO = registrationPaymentTO;
+    }
+
     @Override
     public String toJSON() {
         String jsonObject = EmsUtil.toJSON(this);
@@ -485,6 +547,5 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
         jsonObject += "}";
         return jsonObject;
     }
-
 
 }
