@@ -148,6 +148,7 @@ Ext.define('Ems.controller.OfficeController', {
         	       click: function(sender) {
                        var form = sender.up('dialog');
                        var list = [];
+                       var flag = true;
                        var obj = { id: form.action == "edit" ? form.sendID : null };
                        if(form.action == "add") {
                         Ext.apply(obj, { enrollmentOfficeId: form.enrollmentOfficeID });
@@ -156,6 +157,12 @@ Ext.define('Ems.controller.OfficeController', {
                        if(form.action == "add") {
                            Ext.each(form.query('field'),
                                function (field) {
+                               if(field.itemId != "id") {
+                                   if (field.allowBlank == false && field.getValue() == null) {
+                                       flag = false;
+                                       field.markInvalid("پر کردن این فیلد الزامی است");
+                                   }
+                               }
                                    if (field.isHidden() == false) {
                                        obj[field.getItemId()] = field.getValue();
                                    }
@@ -167,7 +174,7 @@ Ext.define('Ems.controller.OfficeController', {
                            obj['editable'] = form.editableField;
                        }
                         list.push(obj);
-                       // if(form.isValid()) {
+                       if(flag) {
                            Ext.Ajax.request({
                                url: 'extJsController/officeCapacity' + '/save',
                                jsonData: {records: list},
@@ -193,7 +200,7 @@ Ext.define('Ems.controller.OfficeController', {
                                    Ext.Msg.alert('خطا', 'خطایی رخ داده است');
                                }
                            });
-                       // }
+                       }
                    }
             },
 

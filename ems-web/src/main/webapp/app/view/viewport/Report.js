@@ -53,6 +53,7 @@ Ext
 													tooltip : 'کارها'
 															+ '   < Ctrl+Shift+J >',
 													text : 'کارها',
+													hidden: true,
 													action : 'JobList',
 													icon : 'resources/themes/images/default/toolbar/jobConfig.png',
 													stateful : false,
@@ -60,7 +61,6 @@ Ext
 												},
 												{
 													text : 'تنظیمات سیستم',
-                                                    hidden: true,
 													tooltip : 'تنظیمات سیستم'
 															+ '   < Ctrl+Shift+C >',
 													action : 'SystemProfileList',

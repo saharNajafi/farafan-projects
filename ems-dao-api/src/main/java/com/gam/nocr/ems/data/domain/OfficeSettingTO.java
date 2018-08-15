@@ -157,7 +157,7 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.featureExtractorID = featureExtractorID;
     }
 
-    @Column(name = "OST_FEATURE_EXTRACTOR_VERSION", nullable = false, length = 5, columnDefinition = "varchar2(5) default '1.1'")
+    @Column(name = "OST_FEATURE_EXTRACTOR_VERSION", nullable = false, length = 5, columnDefinition = "varchar2(5) default '1'")
     public String getFeatureExtractorVersion() {
         return featureExtractorVersion;
     }

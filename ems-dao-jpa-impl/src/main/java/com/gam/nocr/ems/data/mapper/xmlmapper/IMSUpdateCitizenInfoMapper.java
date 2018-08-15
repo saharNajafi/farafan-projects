@@ -789,12 +789,17 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 requestInfo.appendChild(enrolledDateElement);
 
-
                 Element enrollmentOfficeElement = doc.createElement("EnrollmentOffice");
                 if (cardRequestTO.getEnrollmentOffice() != null) {
                     enrollmentOfficeElement.appendChild(doc.createTextNode(cardRequestTO.getEnrollmentOffice().getCode()));
                 }
                 requestInfo.appendChild(enrollmentOfficeElement);
+
+                Element priority = doc.createElement("Priority");
+                if (cardRequestTO.getPriority() != null) {
+                    priority.appendChild(doc.createTextNode(cardRequestTO.getPriority().toString()));
+                }
+                requestInfo.appendChild(priority);
 
                 Element originElement = doc.createElement("Origin");
                 if (cardRequestTO.getOrigin() == null) {
