@@ -3,6 +3,9 @@ package com.gam.nocr.ems.data.domain.vol;
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.data.enums.AFISState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
  */
@@ -18,7 +21,8 @@ public class IMSUpdateResultVTO extends ExtEntityTO {
     private byte[] faceLASER;
     private byte[] faceCHIP ;
     private byte[] faceMLI ;
-    
+    private List<IMSErrorInfo> errorCodes= new ArrayList<IMSErrorInfo>();
+
 
     public byte[] getFaceIMS() {
 		return faceIMS;
@@ -98,5 +102,13 @@ public class IMSUpdateResultVTO extends ExtEntityTO {
 
     public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
+    }
+
+    public List<IMSErrorInfo> getErrorCodes() {
+        return errorCodes;
+    }
+
+    public void setErrorCodes(List<IMSErrorInfo> errorCodes) {
+        this.errorCodes = errorCodes;
     }
 }

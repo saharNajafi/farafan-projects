@@ -17,10 +17,7 @@ import com.gam.nocr.ems.biz.service.IMSService;
 import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
-import com.gam.nocr.ems.data.domain.vol.IMSEnquiryVTO;
-import com.gam.nocr.ems.data.domain.vol.IMSUpdateResultVTO;
-import com.gam.nocr.ems.data.domain.vol.PersonEnquiryVTO;
-import com.gam.nocr.ems.data.domain.vol.TransferInfoVTO;
+import com.gam.nocr.ems.data.domain.vol.*;
 import com.gam.nocr.ems.data.domain.ws.ImsCitizenInfoRequestWTO;
 import com.gam.nocr.ems.data.domain.ws.ImsCitizenInfoResponseWTO;
 import com.gam.nocr.ems.data.enums.*;
@@ -584,7 +581,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
                                     + onlineEnquiryMetadata);
 
 							/*
-							 * Check whether or not the verified request is
+                             * Check whether or not the verified request is
 							 * MES-based request
 							 */
                             if (CardRequestOrigin.M.equals(cardRequestTO
@@ -4541,12 +4538,13 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000020")) // Delete
         // DOCUMENT
         {
+            String errMsg = createImsReultErrorMessage(imsUpdateResultVTO);
             getCardRequestHistoryDAO().create(crq,
-                    imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
+                    errMsg, SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_DOCUMENT_ERROR, null);
 
             doDeleteAction(crq, DoDeleteAction.DeleteDocument,
-                    imsUpdateResultVTO.getErrorMessage());
+                    errMsg);
 
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
@@ -4554,12 +4552,13 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000021")) // Delete
         // IMAGE
         {
+            String errMsg = createImsReultErrorMessage(imsUpdateResultVTO);
             getCardRequestHistoryDAO().create(crq,
-                    imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
+                    errMsg, SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_IMAGE_ERROR, null);
 
             doDeleteAction(crq, DoDeleteAction.DeleteImage,
-                    imsUpdateResultVTO.getErrorMessage());
+                    errMsg);
 
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
@@ -4603,10 +4602,11 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 						imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
 						CardRequestHistoryAction.AFIS_REJECT, null);
 						*/
+            String errMsg = createImsReultErrorMessage(imsUpdateResultVTO);
             crq.setState(CardRequestState.IMS_ERROR);
             getCardRequestDAO().update(crq);
             getCardRequestHistoryDAO().create(crq,
-                    imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
+                    errMsg, SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_REJECT, null);
 
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000004")) {
@@ -4650,6 +4650,17 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
                     imsUpdateResultVTO.getRequestID(), result,
                     CardRequestHistoryAction.AFIS_RECEIVE_ERROR);
         }
+    }
+
+    private String createImsReultErrorMessage(IMSUpdateResultVTO imsUpdateResultVTO) {
+        String errorMessage = imsUpdateResultVTO.getErrorMessage();
+        List<IMSErrorInfo> errorCodes = imsUpdateResultVTO.getErrorCodes();
+        if (errorCodes != null) {
+            for (IMSErrorInfo errorCode : errorCodes) {
+                errorMessage += errorCode.toString() + " ,";
+            }
+        }
+        return errorMessage;
     }
 
     //Anbari:IMS

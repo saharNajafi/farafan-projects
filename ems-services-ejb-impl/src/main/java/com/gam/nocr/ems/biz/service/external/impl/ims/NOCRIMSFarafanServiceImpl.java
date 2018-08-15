@@ -18,20 +18,14 @@ import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
 import com.gam.nocr.ems.data.dao.XmlAfisDAO;
 import com.gam.nocr.ems.data.domain.*;
-import com.gam.nocr.ems.data.domain.vol.BirthCertIssPlaceVTO;
-import com.gam.nocr.ems.data.domain.vol.EmsCardDeliverInfo;
-import com.gam.nocr.ems.data.domain.vol.IMSUpdateResultVTO;
-import com.gam.nocr.ems.data.domain.vol.TransferInfoVTO;
+import com.gam.nocr.ems.data.domain.vol.*;
 import com.gam.nocr.ems.data.enums.AFISState;
 import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.CardState;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.data.mapper.xmlmapper.XMLMapperProvider;
 import com.gam.nocr.ems.util.EmsUtil;
-import est.CardDeliverInfo;
-import est.ImsService;
-import est.ImsServiceService;
-import est.TransferInfo;
+import est.*;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.util.Base64;
@@ -48,6 +42,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.Exception;
 import java.net.URL;
 import java.util.*;
 
@@ -980,6 +975,14 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                 imsUpdateResultVTO.setIdentityChanged(0000);
             }
 
+            List<ErrorInfo> errCodes = transferInfo.getErrCodes();
+            if (errCodes != null && !errCodes.isEmpty()) {
+                List<IMSErrorInfo> imsErrCodes = new ArrayList<IMSErrorInfo>();
+                for (ErrorInfo errCode : errCodes) {
+                    imsErrCodes.add(new IMSErrorInfo(errCode.getCode(), errCode.getDesc()));
+                }
+                imsUpdateResultVTO.setErrorCodes(imsErrCodes);
+            }
             if (transferInfo.getErrMessage().contains("UPDT-000018") && transferInfo.getData() != null) //OK with Image : so parse the XML IMS_UPDT_000018
             {
                 if (transferInfo.getData() == null) {
