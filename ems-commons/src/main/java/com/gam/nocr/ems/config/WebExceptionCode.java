@@ -9,11 +9,13 @@ import com.gam.commons.core.BaseRuntimeExceptionCode;
  * @author: Soheil Toodeh Fallah (fallah@gamelectronics.com)
  */
 public class WebExceptionCode extends BaseRuntimeExceptionCode {
-
+    public static final String GLB_001 = "EMS_GLB_001";
+    public static final String GLB_005 = "EMS_GLB_005";
     public static final String GLB_001_MSG = "Cannot access security context data.";
     public static final String GLB_002_MSG = "Cannot instantiate service {}";
     public static final String GLB_003_MSG = " Error in operation ";
     public static final String GLB_004_MSG = "Cannot initialize Delegator";
+    public static final String GLB_005_MSG = "Input argument is null";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     //com.gam.nocr.ems.web.action.StateProviderAction
@@ -661,6 +663,28 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OFC_002 = "EMS_A_OFC_002";
     public static final String OFC_003 = "EMS_A_OFC_003";
     public static final String OFC_001_MSG = "invalid input entry, officeCapacity id is empty\";";
+
+    //com.gam.nocr.ems.web.ws.CCOSPaymentWS.java
+    public  static final String CPW_001 = "EMS_W_CPW_001";
+    public  static final String CPW_002 = "EMS_W_CPW_002";
+    public  static final String CPW_003 = "EMS_W_CPW_003";
+    public  static final String CPW_004 = "EMS_W_CPW_004";
+    public  static final String CPW_005 = "EMS_W_CPW_005";
+    public  static final String CPW_006 = "EMS_W_CPW_006";
+    public  static final String CPW_007 = "EMS_W_CPW_007";
+    public  static final String CPW_008 = "EMS_W_CPW_008";
+    public  static final String CPW_009 = "EMS_W_CPW_009";
+    public  static final String CPW_001_MSG = "Unable to check the possibility of inserting single stag";
+    public  static final String CPW_002_MSG = "Unable to check enrollment office eligibility for single stage enrollment";
+    public static final String CPW_003_MSG = "Invalid Parameter -> nationalId :";
+    public static final String CPW_005_MSG = "not exists card request with citizen nationalId";
+    public static final String CPW_006_MSG = "IMS SubSystem Has Exception";
+    public static final String CPW_007_MSG = "IMS SubSystem unable/has problem to respond now";
+    public static final String CPW_008_MSG = "RegistrationPaymentWTO argument is null";
+    public static final String CPW_009_MSG = "Error occurred in transferring Single-Stage-PreRegistration";
+
+
+
 
 
 

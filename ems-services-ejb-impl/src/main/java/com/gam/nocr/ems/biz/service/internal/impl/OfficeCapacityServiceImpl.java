@@ -221,6 +221,16 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
         return capacityTO;
     }
 
+    public OfficeCapacityTO findByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException {
+        OfficeCapacityTO officeCapacityTO = null;
+        try {
+            officeCapacityTO = getOfficeCapacityDAO().findByEnrollmentOfficeId(enrollmentOfficeId);
+        } catch (BaseException e) {
+            throw e;
+        }
+        return officeCapacityTO;
+    }
+
     private OfficeCapacityDAO getOfficeCapacityDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames

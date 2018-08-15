@@ -8,9 +8,13 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.commons.core.data.domain.UserProfileTO;
+import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
+import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
+import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
 import com.gam.nocr.ems.data.enums.OfficeSettingType;
+import com.gam.nocr.ems.data.enums.ShiftEnum;
 
 /**
  * @author: Soheil Toodeh Fallah (fallah@gamelectronics.com)
@@ -106,4 +110,11 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
 	public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)throws BaseException;
 
 	 public SearchResult fetchOfficesAutoComplete(UserProfileTO userProfileTO,String searchString, int from, int to, String orderBy, Map additionalParams) throws BaseException;
+
+    void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
+            String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException;
+
+    void updateActiveShift(CardRequestTO emsCardRequest, Long id, Integer activeDate, ShiftEnum shiftNo) throws BaseException;
+
+    void editEnrollmentOfficeAppointment(CardRequestTO cardRequestTO, OfficeAppointmentWTO officeAppointment) throws BaseException;
 }

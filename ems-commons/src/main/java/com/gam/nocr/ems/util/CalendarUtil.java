@@ -409,4 +409,22 @@ public class CalendarUtil {
         return 0;
 
     }
+
+    public static String addSlashToPersianDate(String date) {
+        String currentdate = "";
+        try {
+            date = date.replaceAll("/", "");
+            String date_year = String.valueOf(date.substring(0, 4));
+            String date_month = String.valueOf(date.substring(4, 6));
+            String date_day = String.valueOf(date.substring(6, 8));
+            if(date_month.length() != 2)
+                date_month = "0" + date_month;
+            if(date_day.length() != 2)
+                date_day = "0" + date_day;
+            currentdate = date_year + "/" + date_month + "/" + date_day;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return currentdate.trim();
+    }
 }

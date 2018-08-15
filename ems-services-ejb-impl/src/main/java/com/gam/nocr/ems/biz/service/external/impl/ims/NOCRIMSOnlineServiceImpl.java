@@ -15,6 +15,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.xml.namespace.QName;
 
+import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
@@ -466,8 +467,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 		}
 		return citizenDAO;
 	}
-    
-    
+
     
     
     
@@ -1647,5 +1647,322 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //			return personEnquiryVTO;		
 //		}
 
+    public PersonEnquiryWTO fetchDataByOnlineEnquiryAndCheck(String nationalId, boolean check) throws BaseException {
+        try {
+            PersonEnquiryWTO personEnquiryVTOResult = fetchDataByOnlineEnquiry(nationalId);
+            if (check) {
+                if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt()
+                        || personEnquiryVTOResult.getIsExceptionMessage() || personEnquiryVTOResult.getIsDead() == 1) {
+                    if (personEnquiryVTOResult.getIsExceptionMessage()) {
+                        throw new ServiceException(BizExceptionCode.NIO_001, personEnquiryVTOResult.getDescription());
+                    }
+                    if (personEnquiryVTOResult.getIsDead() == 1) {
+                        throw new ServiceException(BizExceptionCode.NOCR_IMS_05, personEnquiryVTOResult.getDescription());
+                    }
+                    if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt()) {
+                        throw new ServiceException(BizExceptionCode.NIO_002, personEnquiryVTOResult.getDescription());
+                    }
+                    throw new ServiceException(BizExceptionCode.NIO_001, BizExceptionCode.NIO_001_MSG);
+                }
+            }
+            return personEnquiryVTOResult;
+        } catch (Exception e) {
+           /* if (e instanceof BaseException)
+                throw (BaseException) e;*/
+            throw new ServiceException(BizExceptionCode.NIO_010, BizExceptionCode.NIO_010_MSG, e);
+        }
+    }
 
+    public PersonEnquiryWTO fetchDataByOnlineEnquiry(String nationalId) throws BaseException {
+        String[] strParameters = getOnlineParametersByProfileManager();
+        String username = strParameters[0];
+        String password = strParameters[1];
+        String keyhanUsername = strParameters[2];
+        String keyhanSerial = strParameters[3];
+        PersonInfo personInfo = new PersonInfo();
+        PersonEnquiryWTO personEnquiryVTOResult = new PersonEnquiryWTO();
+        personEnquiryVTOResult.setNationalId(nationalId);
+        personInfo.setNin(Long.parseLong(nationalId));
+
+        boolean metadataFlag = false;
+        boolean isAllowableExcepted = false;
+        try {
+            EstelamPort service = getService();
+            EstelamResultC estelam3sc = service.getEstelam3SC(username, password, keyhanUsername, keyhanSerial, personInfo);
+            if (estelam3sc == null) {
+
+                personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_01_MSG);
+                return personEnquiryVTOResult;
+                //throw new BaseException(BizExceptionCode.NOCR_IMS_01,BizExceptionCode.NOCR_IMS_01_MSG);
+            }
+
+            List<String> estelam3scMessage = estelam3sc.getMessage();
+            if (checkIMSMessageReturn(estelam3scMessage)) {
+                //personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_02_MSG + ":" + estelam3scMessage.get(0));
+                personEnquiryVTOResult.setMetadata(nationalId);//set MetaData
+
+//				if (estelam3sc.getEstelamResult3() != null	&& estelam3sc.getEstelamResult3().size() > 0)
+//					{
+//					if (checkIMSMessageReturn(estelam3sc.getEstelamResult3().get(0).getMessage()))
+//						{
+//							if (estelam3sc.getEstelamResult3().get(0).getMessage().contains("IS_EXCEPTED")) {
+
+                if (estelam3scMessage.contains("IS_EXCEPTED")) {
+                    String exceptionMessage = estelam3sc.getEstelamResult3().get(0).getExceptionMessage();
+                    if (checkIMSExceptionMessageReturn(exceptionMessage)) {
+
+                        List<String> allCode = getExceptionCodeDAO().getAll();
+                        List<String> matchedCode = JsonPath.read(exceptionMessage, "$..code");
+                        Boolean isExcepted = false;
+                        for (String code : matchedCode) {
+                            if (allCode.contains(code)) {
+                                isExcepted = true;
+                                break;
+                            }
+                        }
+                        if (isExcepted) {
+                            //personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                            personEnquiryVTOResult.setIsExceptionMessage(true);
+                            personEnquiryVTOResult.setDescription(exceptionMessage);
+                            return personEnquiryVTOResult;
+                        } else {
+                            isAllowableExcepted = true;
+                            personEnquiryVTOResult.setMetadata("");
+                        }
+                    }
+                }//
+
+                if (estelam3scMessage.contains("Nin.Not.Valid") || estelam3scMessage.contains("result.rec.invisible") || estelam3scMessage.contains("result.rec.review") || estelam3scMessage.contains("result.rec.return")) {
+                    personEnquiryVTOResult.setIsExceptionMessage(true);
+                    personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
+                    return personEnquiryVTOResult;
+                }
+
+                if (estelam3scMessage.contains("err.record.not.found")) {
+                    personEnquiryVTOResult.setIsRecordNotFound(true);
+                    personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
+                    return personEnquiryVTOResult;
+                }
+
+
+//							} else {
+//								personEnquiryVTOResult.setIsEstelamCorrupt(true);
+//								//personEnquiryVTOResult.setLogInfo(BizExceptionCode.NOCR_IMS_04_MSG);
+//								//personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_04_MSG);
+//								return personEnquiryVTOResult;
+//								// throw new
+//								// BaseException(BizExceptionCode.NOCR_IMS_04,
+//								// BizExceptionCode.NOCR_IMS_04_MSG);
+//							}
+
+//						}
+//					}
+                if (!isAllowableExcepted)
+                    return personEnquiryVTOResult;
+                //throw new BaseException(BizExceptionCode.NOCR_IMS_02,estelam3scMessage.get(0));
+            }
+
+
+            if (estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0) {
+                personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_03_MSG);
+                return personEnquiryVTOResult;
+                //throw new BaseException(BizExceptionCode.NOCR_IMS_03, BizExceptionCode.NOCR_IMS_03_MSG);
+            }
+
+
+            EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
+            if (estelamResult3.getDeathStatus() == 1) // is Dead
+            {
+                //personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setIsDead(estelamResult3.getDeathStatus());// store deathStatus
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_05_MSG);
+                return personEnquiryVTOResult;
+            }
+
+            //Save image just for requested citizen
+            if (estelam3sc.getImageResult() != null) {
+
+                if (checkIMSMessageReturn(estelam3sc.getImageResult().getMessage()))
+
+                    //personEnquiryVTOResult = setPersonEnquiryLogInfoImage(personEnquiryVTOInput,estelam3sc.getImageResult().getMessage());
+                    personEnquiryVTOResult.setImageDescription(estelam3sc.getImageResult().getMessage().get(0));
+                else {
+                    ImageResult imageResult = estelam3sc.getImageResult();
+                    if (imageResult.getImage() == null)
+                        personEnquiryVTOResult.setImageDescription(BizExceptionCode.NOCR_IMS_07_MSG);
+                    personEnquiryVTOResult.setNidImage(imageResult.getImage());
+                }
+
+            }
+
+            if (estelamResult3.getShenasnameNo() >= 0) {
+                if (estelamResult3.getShenasnameNo() == 0) {
+                    personEnquiryVTOResult.setBirthCertificateId(nationalId);
+                } else {
+                    personEnquiryVTOResult.setBirthCertificateId(String
+                            .valueOf(estelamResult3.getShenasnameNo()));
+                }
+
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("The IMS ShenasnameNo is :"
+                        + estelamResult3.getShenasnameNo());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_021);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+            }
+
+            if (estelamResult3.getBirthDate() != 0) {
+                String strDate = String.valueOf(estelamResult3.getBirthDate());
+                //validate of birthDate
+                if (checkValidateDate(strDate)) {
+
+                    personEnquiryVTOResult.setSolarBirthDate(strDate.substring(
+                            0, 4)
+                            + "/"
+                            + strDate.substring(4, 6)
+                            + "/"
+                            + strDate.substring(6));
+
+                } else {
+                    personEnquiryVTOResult
+                            .setDescription("The IMS BirthDate is :"
+                                    + estelamResult3.getBirthDate());
+                    personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_022);
+                    personEnquiryVTOResult.setMetadata(nationalId);
+                    metadataFlag = true;
+                }
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("The IMS BirthDate is :"
+                        + estelamResult3.getBirthDate());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_022);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+            }
+
+            //Shenasname Serial
+            //Validate ShenasnameSerial
+            String serialShenasname = String.valueOf(estelamResult3.getShenasnameSerial());
+            if (serialShenasname.length() == 6 && !serialShenasname.equals("000000")) {
+                personEnquiryVTOResult.setBirthCertificateSerial(String
+                        .valueOf(estelamResult3.getShenasnameSerial()));
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult
+                        .setDescription("The IMS ShenasnameSerial is :"
+                                + estelamResult3.getShenasnameSerial());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_023);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+            }
+
+            //Anbari: for gettting Shenasname seri from IMS
+//				if (estelamResult3.getShenasnameSerial() != 0) {
+//					personEnquiryVTOResult.setBirthCertificateSeries(String
+//							.valueOf(estelamResult3.getShenasnameSeri()));
+//				} else if (!metadataFlag) {
+//					personEnquiryVTOResult
+//							.setDescription("The IMS ShenasnameSeri is :"
+//									+ estelamResult3.getShenasnameSeri());
+//					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_033);
+//					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput.getNationalId());
+//					metadataFlag = true;
+//				}
+
+            String firstName = new String(estelamResult3.getName());
+            if (EmsUtil.checkString(firstName) && !firstName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+
+                personEnquiryVTOResult.setFirstName(new String(estelamResult3
+                        .getName(), "UTF-8").trim());
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setMetadata(nationalId);
+                personEnquiryVTOResult.setDescription("The IMS Name is :"
+                        + new String(estelamResult3.getName()));
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_024);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+//					throw new ServiceException(BizExceptionCode.NIO_024,
+//							BizExceptionCode.NIO_024_MSG);
+            }
+
+            String familyName = new String(estelamResult3.getFamily());
+            if (EmsUtil.checkString(familyName) && !familyName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+
+                personEnquiryVTOResult.setLastName(new String(estelamResult3
+                        .getFamily(), "UTF-8").trim());
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setMetadata(nationalId);
+                personEnquiryVTOResult.setDescription("The IMS Family is :"
+                        + new String(estelamResult3.getFamily()));
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_025);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+
+//					throw new ServiceException(BizExceptionCode.NIO_025,
+//							BizExceptionCode.NIO_025_MSG);
+            }
+
+            String fatherName = new String(estelamResult3.getFatherName());
+            if (EmsUtil.checkString(fatherName) && !fatherName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+                personEnquiryVTOResult.setFatherName(new String(estelamResult3
+                        .getFatherName(), "UTF-8").trim());
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("The IMS FatherName is: "
+                        + new String(estelamResult3.getFatherName()));
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_026);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+            }
+
+            if (estelamResult3.getGender() == 0
+                    || estelamResult3.getGender() == 1) {
+                logger.info("\nThe IMS Gender is : "
+                        + estelamResult3.getGender() + "\n");
+                personEnquiryVTOResult.setGender((Gender
+                        .convertFromIMSEstelamResultGender(estelamResult3
+                                .getGender())));
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("IMS Gender is : "
+                        + estelamResult3.getGender());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_027);
+                personEnquiryVTOResult.setMetadata(nationalId);
+                metadataFlag = true;
+            }
+
+            //returnMap.put(personEnquiryVTO.getNationalId(),	personEnquiryVTO);
+        }
+        //Anbari: throw NOCR_IMS_05
+        catch (Exception e) {
+
+            logger.error(BizExceptionCode.NIO_012, e.getMessage(), e);
+            personEnquiryVTOResult.setIsServiceDown(true);
+            personEnquiryVTOResult.setLogInfo(e.getMessage());
+            personEnquiryVTOResult.setDescription(e.getMessage());
+
+
+//				if(e instanceof BaseException)
+//				{
+//					String exceptionCode = ((BaseException) e).getExceptionCode();
+//
+//					if( exceptionCode != null && (BizExceptionCode.NOCR_IMS_05.equals(exceptionCode)) ||  (BizExceptionCode.NOCR_IMS_02.equals(exceptionCode)) )
+//							throw (BaseException) e;
+//					else
+//					{
+//						businessLogMap.put("exception",((BaseException) e).getExceptionCode() + ":"	+ e.getMessage());
+//						logger.error(((BaseException) e).getExceptionCode(),e.getMessage(), e);
+//						estelam2Logger.error(((BaseException) e).getExceptionCode(),e.getMessage(), e);
+//						personEnquiryVTOResult.setLogInfo(((BaseException) e).getExceptionCode());
+//
+//					}
+//				}
+//				else
+//				{
+//					businessLogMap.put("exception", BizExceptionCode.NIO_012 + ":" + e.getMessage());
+//					logger.error(BizExceptionCode.NIO_012, e.getMessage(), e);
+//					estelam2Logger.error(BizExceptionCode.NIO_012,e.getMessage(), e);
+//				}
+        }
+        return personEnquiryVTOResult;
+    }
 }

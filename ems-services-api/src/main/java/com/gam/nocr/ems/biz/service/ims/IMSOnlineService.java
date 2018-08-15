@@ -3,6 +3,7 @@ package com.gam.nocr.ems.biz.service.ims;
 import com.gam.commons.core.BaseException;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.vol.PersonEnquiryVTO;
+import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 
 import java.util.HashMap;
 
@@ -42,4 +43,5 @@ public interface IMSOnlineService {
     PersonEnquiryVTO fetchDataByOnlineEnquiryByEstelam3(PersonEnquiryVTO personEnquiryVTOInput,String citizenNID) throws BaseException;
 
 
+    PersonEnquiryWTO fetchDataByOnlineEnquiryAndCheck(String nationalIdStr, boolean b) throws BaseException;
 }

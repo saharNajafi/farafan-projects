@@ -167,7 +167,7 @@ Ext.define('Ems.controller.OfficeController', {
                            obj['editable'] = form.editableField;
                        }
                         list.push(obj);
-                       if(form.isValid()) {
+                       // if(form.isValid()) {
                            Ext.Ajax.request({
                                url: 'extJsController/officeCapacity' + '/save',
                                jsonData: {records: list},
@@ -193,7 +193,7 @@ Ext.define('Ems.controller.OfficeController', {
                                    Ext.Msg.alert('خطا', 'خطایی رخ داده است');
                                }
                            });
-                       }
+                       // }
                    }
             },
 

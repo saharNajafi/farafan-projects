@@ -8,11 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.enums.CardRequestState;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author: Haeri (haeri@gamelectronics.com)
@@ -265,4 +267,21 @@ public class CitizenDAOImpl extends EmsBaseDAOImpl<CitizenTO> implements Citizen
     		throw new DAOException(DataExceptionCode.CTI_021, DataExceptionCode.GLB_005_MSG, e);
     	}
     }
+
+
+    public CitizenTO findByNationalId(String nid) throws BaseException {
+        List<CitizenTO> citizenTo;
+        try {
+            if (StringUtils.isEmpty(nid)) {
+                throw new DataException(DataExceptionCode.CTI_023,DataExceptionCode.CTI_023_MSG);
+            }
+            citizenTo = em.createNamedQuery("CitizenTO.findByNationalId")
+                    .setParameter("nid", nid)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.CTI_015, DataExceptionCode.CTI_015_MSG, e, new String[]{String.valueOf(nid)});
+        }
+        return citizenTo.size() != 0 ? citizenTo.get(0) : null;
+    }
+
 }

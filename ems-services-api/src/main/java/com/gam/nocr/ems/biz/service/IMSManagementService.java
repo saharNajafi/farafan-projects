@@ -194,4 +194,6 @@ public interface IMSManagementService extends Service {
 	//Anbari : Async
 	Future<String> updateCitizenInfoAsync(Long requestId) throws BaseException;
 
+	void saveImsEstelamImage(String nationalID, CitizenTO ctz
+			, ImsEstelamImageType imsNidImage, byte[] nidImage, boolean isNewCardRequest) throws BaseException;
 }

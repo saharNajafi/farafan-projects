@@ -25,6 +25,9 @@ import java.io.Serializable;
                         " where oc.enrollmentOffice.id=:enrollmentOfficeId" +
                         " and oc.shiftNo=:shiftNo" +
                         " order by oc.startDate ASC "),
+        @NamedQuery(
+                name = "OfficeCapacityTO.findByEnrollmentOfficeId",
+                query = "SELECT oc FROM OfficeCapacityTO oc where oc.enrollmentOffice.id=:eofId")
   })
 public class OfficeCapacityTO extends ExtEntityTO {
 

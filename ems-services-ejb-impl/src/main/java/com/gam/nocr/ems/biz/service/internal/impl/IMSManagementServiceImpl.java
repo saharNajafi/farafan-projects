@@ -4054,6 +4054,31 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void saveImsEstelamImage(String nationalId, CitizenTO citizen,
+                                    ImsEstelamImageType imsImageType, byte[] data, boolean isNewCardRequest) throws BaseException {
+        // List<ImsEstelamImageTO> imsEstelamImageTOList =
+        // getImsEstelamImageDAO().findImsImageByNationalIdAndType(nationalId,
+        // imsImageType);
+        ImsEstelamImageTO imsImageTO = getImsEstelamImageDAO().find(ImsEstelamImageTO.class, citizen.getId());
+        if (imsImageTO == null) {
+            ImsEstelamImageTO imsEstelamImage = new ImsEstelamImageTO();
+            if (ImsEstelamImageType.IMS_NID_IMAGE.equals(imsImageType))
+                imsEstelamImage.setNationalIdImage(data);
+            imsEstelamImage.setNationalID(nationalId);
+            if (!isNewCardRequest) {
+                citizen = getCitizenDAO().find(CitizenTO.class, citizen.getId());
+            }
+            imsEstelamImage.setCitizen(citizen);
+            getImsEstelamImageDAO().create(imsEstelamImage);
+        } else {
+            if (ImsEstelamImageType.IMS_NID_IMAGE.equals(imsImageType))
+                imsImageTO.setNationalIdImage(data);
+            getImsEstelamImageDAO().update(imsImageTO);
+        }
+
+    }
+
     /**
      * this method does verification in delivery
      *

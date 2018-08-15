@@ -19,9 +19,11 @@ import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardDispatchInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
+import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
 import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
+import com.gam.nocr.ems.data.enums.GenderEnum;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
@@ -376,5 +378,17 @@ public class CardRequestDelegator implements Delegator {
 					.findCardRequestStateByNationalIdAndBirthCertificateSeries(nationalId, birthCertificateSeries, citizenBirthDate);
 	}
 
+	public void checkInsertSingleStageEnrollmentPossible(
+			UserProfileTO userProfileTO, String nationalId, String birthDateSolar, String certSerialNo, GenderEnum gender) throws BaseException{
+		  getService(userProfileTO).checkInsertSingleStageEnrollmentPossible(nationalId, birthDateSolar, certSerialNo, gender);
+	}
 
+
+	public CardRequestTO findLastRequestByNationalId(UserProfileTO userProfileTO, String nationalId) throws BaseException {
+		return  getService(userProfileTO).findLastRequestByNationalId(nationalId);
+	}
+
+	public PersonEnquiryWTO updateCitizenByEstelam(UserProfileTO userProfileTO, CardRequestTO cardRequest, boolean b, boolean b1) throws BaseException {
+		return  getService(userProfileTO).updateCitizenByEstelam(cardRequest, b, b1);
+	}
 }

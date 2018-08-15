@@ -13,6 +13,14 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "EMST_CITIZEN")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CITIZEN", allocationSize = 1)
+@NamedQueries({
+        @NamedQuery(
+                name = "CitizenTO.findByNationalId",
+                query = "select ctz " +
+                        "from CitizenTO ctz " +
+                        "where ctz.nationalID =:nid"
+        )
+})
 public class CitizenTO extends ExtEntityTO {
 
     private CitizenInfoTO citizenInfo;

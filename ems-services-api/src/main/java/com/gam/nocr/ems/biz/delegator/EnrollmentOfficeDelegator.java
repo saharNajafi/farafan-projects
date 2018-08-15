@@ -22,6 +22,7 @@ import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.RatingInfoTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
+import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
 import com.gam.nocr.ems.data.enums.OfficeCalenderType;
@@ -272,6 +273,10 @@ public class EnrollmentOfficeDelegator implements Delegator {
 	public SearchResult fetchOfficesAutoComplete(UserProfileTO userProfileTO, String searchString, int from, int to, String orderBy, Map additionalParams) throws BaseException {
         return getService(userProfileTO).fetchOfficesAutoComplete(userProfileTO,searchString, from, to, orderBy, additionalParams);
     }
-    
 
+
+    public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
+            UserProfileTO userProfileTO, String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException{
+        getService(userProfileTO).checkEnrollmentOfficeEligibleForSingleStageEnrollment(nationalId, healthStatusWTO, enrollmentOfficeId);
+    }
 }

@@ -21,6 +21,13 @@ import java.util.Date;
                         " from CardRequestHistoryTO crh" +
                         " where crh.cardRequest.id=:cardRequestId" +
                         " order by crh.id desc "
+        ),
+        @NamedQuery(name = "CardRequestHistoryTO.findByCardRequestAndCrhAction",
+                query = " select crh" +
+                        " from CardRequestHistoryTO crh" +
+                        " where crh.cardRequest.id=:cardRequestId" +
+                        " and crh.cardRequestHistoryAction=:crhAction" +
+                        " order by crh.id desc"
         )
 })
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD_REQUEST_HISTORY", allocationSize = 1)

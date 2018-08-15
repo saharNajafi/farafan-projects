@@ -7,5 +7,6 @@ public enum CardRequestOrigin {
     M, // MES
     C, // CCOS
     P,  // Portal
-    V	//VIP
+    V,	//VIP
+    CRS
 }
