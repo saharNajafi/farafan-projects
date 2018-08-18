@@ -664,7 +664,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 String faceLaserData = null;
                 String faceMliData = null;
                 byte[] fingerData = null;
-                String featureExtractorIDValue = null;
+//                String featureExtractorIDValue = null;
 
                 for (BiometricTO biometricTO : citizenInfoTO.getBiometrics()) {
 
@@ -684,7 +684,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                         case FING_ALL:
                             fingerData = biometricTO.getData();
                             BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
-                            featureExtractorIDValue = biometricInfoTO.getFeatureExtractorID();
+//                            featureExtractorIDValue = biometricInfoTO.getFeatureExtractorID();
                             break;
 
                         default:
@@ -736,14 +736,14 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 Element fingersElement = doc.createElement("Fingers");
                 biometricInfoElement.appendChild(fingersElement);
 
-                Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
+                /*Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
                 if (featureExtractorIDValue == null || Integer.valueOf(featureExtractorIDValue) < 0) {
                     Object[] args = {"FeatureExtractorID"};
                     throw new DataException(DataExceptionCode.CRC_010,
                             DataExceptionCode.GLB_001_MSG, args);
                 }
                 featureExtractorID.setValue(featureExtractorIDValue);
-                fingersElement.setAttributeNode(featureExtractorID);
+                fingersElement.setAttributeNode(featureExtractorID);*/
 
                 Element nistElement = doc.createElement("NIST");
                 nistElement.appendChild(doc.createTextNode(convertToBase64(fingerData)));
@@ -804,12 +804,12 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 requestInfo.appendChild(enrollmentOfficeElement);
 
-                Element priority = doc.createElement("Priority");
+               /* Element priority = doc.createElement("Priority");
                 if (cardRequestTO.getPriority() != null) {
                     priority.appendChild(doc.createTextNode(cardRequestTO.getPriority().toString()));
                 }
                 requestInfo.appendChild(priority);
-
+*/
                 Element originElement = doc.createElement("Origin");
                 if (cardRequestTO.getOrigin() == null) {
                     throw new DataException(

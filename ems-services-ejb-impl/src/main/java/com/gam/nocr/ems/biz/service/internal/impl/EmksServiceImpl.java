@@ -9,13 +9,12 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.BusinessLogService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.external.client.emks.lds.*;
+import com.gam.nocr.ems.biz.service.external.client.emks.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.domain.BusinessLogTO;
-import com.gam.nocr.ems.data.domain.ws.EMKSCardMoCKeysWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataResultWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataWTO;
 import com.gam.nocr.ems.data.enums.BusinessLogAction;
@@ -124,33 +123,33 @@ public class EmksServiceImpl extends EMSAbstractService implements
     }
 
 
-    @Override
-    public EMKSCardMoCKeysWTO getNIDCardMoCKeys(EMKSDataWTO emksDataWTO,
-                                                Long requestID) throws BaseException {
-        String str = "";
-        if (emksDataWTO == null)
-            throw new ServiceException(BizExceptionCode.ESI_007,
-                    BizExceptionCode.ESI_007_MSG);
-        checkValidationOnemksData(emksDataWTO);
-        str = createCardInfoXml(emksDataWTO);
-        emksLogger.info(str);
-        IServiceEMKS emksService = getEMKSService();
-        try {
-            CardMoCKeys nidCardMoCKeys = emksService.getNIDCardMoCKeys(str);
-            EMKSCardMoCKeysWTO emksDataResultWTO = new EMKSCardMoCKeysWTO();
-            emksDataResultWTO.setMoc_enc(nidCardMoCKeys.getMoCENC().getValue());
-            emksDataResultWTO.setMoc_mac(nidCardMoCKeys.getMoCMAC().getValue());
-            insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_MOC_KEYS);
-            return emksDataResultWTO;
-        } catch (IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage e) {
-            handleEmksException(e);
-            return null;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.ESI_008,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
-    }
-
+    /*  @Override
+      public EMKSCardMoCKeysWTO getNIDCardMoCKeys(EMKSDataWTO emksDataWTO,
+                                                  Long requestID) throws BaseException {
+          String str = "";
+          if (emksDataWTO == null)
+              throw new ServiceException(BizExceptionCode.ESI_007,
+                      BizExceptionCode.ESI_007_MSG);
+          checkValidationOnemksData(emksDataWTO);
+          str = createCardInfoXml(emksDataWTO);
+          emksLogger.info(str);
+          IServiceEMKS emksService = getEMKSService();
+          try {
+              CardMoCKeys nidCardMoCKeys = emksService.getNIDCardMoCKeys(str);
+              EMKSCardMoCKeysWTO emksDataResultWTO = new EMKSCardMoCKeysWTO();
+              emksDataResultWTO.setMoc_enc(nidCardMoCKeys.getMoCENC().getValue());
+              emksDataResultWTO.setMoc_mac(nidCardMoCKeys.getMoCMAC().getValue());
+              insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_MOC_KEYS);
+              return emksDataResultWTO;
+          } catch (IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage e) {
+              handleEmksException(e);
+              return null;
+          } catch (Exception e) {
+              throw new ServiceException(BizExceptionCode.ESI_008,
+                      BizExceptionCode.GLB_008_MSG, e);
+          }
+      }
+  */
     @Override
     public EMKSDataResultWTO getNIDCardPINs(EMKSDataWTO emksDataWTO,
                                             Long requestID) throws BaseException {
@@ -163,7 +162,52 @@ public class EmksServiceImpl extends EMSAbstractService implements
 
         checkValidationOnemksData(emksDataWTO);
 
-        str = createCardInfoXml(emksDataWTO);
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>")
+                .append("\n");
+        strBuilder.append("<CardInfo>").append("\n");
+        strBuilder.append("<CSN>").append(emksDataWTO.getCsn())
+                .append("</CSN>").append("\n");
+        strBuilder.append("<CRN>").append(emksDataWTO.getCrn())
+                .append("</CRN>").append("\n");
+        strBuilder.append("<PIN_KeyVersion>")
+                .append(emksDataWTO.getPinKeyVersion())
+                .append("</PIN_KeyVersion>").append("\n");
+        strBuilder.append("<PIN_AlgorithmVersion>")
+                .append(emksDataWTO.getPinAlgorithmVersion())
+                .append("</PIN_AlgorithmVersion>").append("\n");
+        strBuilder.append("<SOD_KeyVersion>")
+                .append(emksDataWTO.getSodKeyVersion())
+                .append("</SOD_KeyVersion>").append("\n");
+        strBuilder.append("<LDS_Version>").append(emksDataWTO.getLdsVersion())
+                .append("</LDS_Version>").append("\n");
+        strBuilder.append("<DP_Version>").append(emksDataWTO.getDpVersion())
+                .append("</DP_Version>").append("\n");
+        strBuilder.append("<MoC_Available>")
+                .append(emksDataWTO.getMocAvailable())
+                .append("</MoC_Available>").append("\n");
+        strBuilder.append("<BluePart>").append(emksDataWTO.getBluePart())
+                .append("</BluePart>").append("\n");
+        strBuilder.append("<DG8>").append(emksDataWTO.getDg8())
+                .append("</DG8>").append("\n");
+        strBuilder.append("<YellowPart>").append(emksDataWTO.getYellowPart())
+                .append("</YellowPart>").append("\n");
+        strBuilder.append("<YellowPart_Signature>")
+                .append(emksDataWTO.getYellowPartSignature())
+                .append("</YellowPart_Signature>").append("\n");
+        if (emksDataWTO.getMocAvailable().equals("1")) {
+            strBuilder.append("<MoC_HashData>")
+                    .append(emksDataWTO.getMocHashData())
+                    .append("</MoC_HashData>").append("\n");
+            strBuilder.append("<AntiYes_PublicKey>")
+                    .append(emksDataWTO.getAntiYesPublicKey())
+                    .append("</AntiYes_PublicKey>").append("\n");
+            strBuilder.append("<MoC_Signature>")
+                    .append(emksDataWTO.getMocSignature())
+                    .append("</MoC_Signature>").append("\n");
+        }
+        strBuilder.append("</CardInfo>");
+        str = strBuilder.toString();
 
         // <?xmlversion="1.0"encoding="utf-8"?>
         // <CardInfo>
@@ -188,7 +232,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
         emksLogger.info(str);
         IServiceEMKS emksService = getEMKSService();
         try {
-            CardKeysAndPINs nidCardPINs = emksService.getNIDCardKeysAndPINs(str);
+            CardPINs nidCardPINs = emksService.getNIDCardPINs(str);
             EMKSDataResultWTO emksDataResultWTO = new EMKSDataResultWTO();
             emksDataResultWTO.setId(nidCardPINs.getID().getValue().toString());
             emksDataResultWTO.setSign(nidCardPINs.getSign().getValue()
@@ -221,11 +265,43 @@ public class EmksServiceImpl extends EMSAbstractService implements
                     .getNMoC().getValue().toString()) + "\n");
 
 
-            insertBusuinessActionLog(requestID, str, BusinessLogAction.GET_PINS);
+            BusinessLogTO businessLogTO = new BusinessLogTO();
+            businessLogTO.setEntityID(requestID.toString());
+            businessLogTO.setAction(BusinessLogAction.GET_PINS);
+            businessLogTO.setEntityName(BusinessLogEntity.REQUEST);
+            businessLogTO.setActor("ccos");
+            businessLogTO.setAdditionalData("depI:" + userProfileTO.getDepID() + ";username:" + userProfileTO.getUserName() + ";" + str);
+            businessLogTO.setDate(new Timestamp(new Date().getTime()));
+            getBusinessLogService().insertLog(businessLogTO);
             return emksDataResultWTO;
-        } catch (IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage e) {
-            handleEmksException(e);
-            return null;
+        } catch (IServiceEMKSGetNIDCardPINsEMKSExceptionFaultFaultMessage e) {
+
+            EMKSException faultInfo = e.getFaultInfo();
+
+            logger.error(faultInfo.getErrorCode().getValue(), e.getMessage(), e);
+            emksLogger.error(faultInfo.getErrorCode().getValue(),
+                    e.getMessage(), e);
+
+            String errorMessage = e.getMessage();
+            String errorCode = faultInfo.getErrorCode().getValue();
+            if (EMKS_0001.equals(errorCode))
+                throw new ServiceException(BizExceptionCode.ESI_001,
+                        BizExceptionCode.ESI_001_MSG);
+            else if (EMKS_0002.equals(errorCode))
+                throw new ServiceException(BizExceptionCode.ESI_002,
+                        BizExceptionCode.ESI_002_MSG);
+            else if (EMKS_0003.equals(errorCode))
+                throw new ServiceException(BizExceptionCode.ESI_003,
+                        BizExceptionCode.ESI_003_MSG);
+            else if (EMKS_0004.equals(errorCode))
+                throw new ServiceException(BizExceptionCode.ESI_004,
+                        BizExceptionCode.ESI_004_MSG);
+            else if (EMKS_0099.equals(errorCode))
+                throw new ServiceException(BizExceptionCode.ESI_005,
+                        BizExceptionCode.ESI_005_MSG);
+            else
+                throw new ServiceException(BizExceptionCode.ESI_006,
+                        BizExceptionCode.ESI_006_MSG);
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.ESI_008,
                     BizExceptionCode.GLB_008_MSG, e);
@@ -243,7 +319,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
         getBusinessLogService().insertLog(businessLogTO);
     }
 
-    private void handleEmksException(Exception e) throws ServiceException {
+  /*  private void handleEmksException(Exception e) throws ServiceException {
         EMKSException faultInfo;
         if (e instanceof IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage) {
             faultInfo = ((IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage) e).getFaultInfo();
@@ -274,9 +350,9 @@ public class EmksServiceImpl extends EMSAbstractService implements
         else
             throw new ServiceException(BizExceptionCode.ESI_006,
                     BizExceptionCode.ESI_006_MSG);
-    }
+    }*/
 
-    private String createCardInfoXml(EMKSDataWTO emksDataWTO) {
+  /*  private String createCardInfoXml(EMKSDataWTO emksDataWTO) {
         String str;
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>")
@@ -327,15 +403,15 @@ public class EmksServiceImpl extends EMSAbstractService implements
         strBuilder.append("</CardInfo>");
         str = strBuilder.toString();
         return str;
-    }
+    }*/
 
     private void checkValidationOnemksData(EMKSDataWTO emksDataWTO)
             throws BaseException {
 
-        if (!EmsUtil.checkString(emksDataWTO.getCardProvider())) {
+        /*if (!EmsUtil.checkString(emksDataWTO.getCardProvider())) {
             throw new ServiceException(BizExceptionCode.ESI_033,
                     BizExceptionCode.ESI_033_MSG);
-        }
+        }*/
 
         if (!EmsUtil.checkString(emksDataWTO.getMocAvailable()))
             throw new ServiceException(BizExceptionCode.ESI_010,

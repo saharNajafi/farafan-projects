@@ -975,14 +975,14 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                 imsUpdateResultVTO.setIdentityChanged(0000);
             }
 
-            List<ErrorInfo> errCodes = transferInfo.getErrCodes();
+          /*  List<ErrorInfo> errCodes = transferInfo.getErrCodes();
             if (errCodes != null && !errCodes.isEmpty()) {
                 List<IMSErrorInfo> imsErrCodes = new ArrayList<IMSErrorInfo>();
                 for (ErrorInfo errCode : errCodes) {
                     imsErrCodes.add(new IMSErrorInfo(errCode.getCode(), errCode.getDesc()));
                 }
                 imsUpdateResultVTO.setErrorCodes(imsErrCodes);
-            }
+            }*/
             if (transferInfo.getErrMessage().contains("UPDT-000018") && transferInfo.getData() != null) //OK with Image : so parse the XML IMS_UPDT_000018
             {
                 if (transferInfo.getData() == null) {

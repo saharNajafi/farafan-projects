@@ -38,8 +38,8 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     private Boolean amputationAnnouncment = Boolean.FALSE;
     private Boolean useScannerUI = Boolean.FALSE;
     private Boolean allowEditBackground = Boolean.FALSE;
-    private String featureExtractorID = "0001";
-    private String featureExtractorVersion = "0.0";
+   /* private String featureExtractorID = "0001";
+    private String featureExtractorVersion = "0.0";*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -148,7 +148,7 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.allowEditBackground = allowEditBackground;
     }
 
-    @Column(name = "OST_FEATURE_EXTRACTOR_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '1'")
+/*    @Column(name = "OST_FEATURE_EXTRACTOR_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '1'")
     public String getFeatureExtractorID() {
         return featureExtractorID;
     }
@@ -164,7 +164,7 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
 
     public void setFeatureExtractorVersion(String featureExtractorVersion) {
         this.featureExtractorVersion = featureExtractorVersion;
-    }
+    }*/
 
     @Override
     public String toJSON() {

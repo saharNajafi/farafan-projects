@@ -21,7 +21,7 @@ public class IMSUpdateResultVTO extends ExtEntityTO {
     private byte[] faceLASER;
     private byte[] faceCHIP ;
     private byte[] faceMLI ;
-    private List<IMSErrorInfo> errorCodes= new ArrayList<IMSErrorInfo>();
+//    private List<IMSErrorInfo> errorCodes= new ArrayList<IMSErrorInfo>();
 
 
     public byte[] getFaceIMS() {
@@ -104,11 +104,11 @@ public class IMSUpdateResultVTO extends ExtEntityTO {
         this.nationalId = nationalId;
     }
 
-    public List<IMSErrorInfo> getErrorCodes() {
+ /*   public List<IMSErrorInfo> getErrorCodes() {
         return errorCodes;
     }
 
     public void setErrorCodes(List<IMSErrorInfo> errorCodes) {
         this.errorCodes = errorCodes;
-    }
+    }*/
 }

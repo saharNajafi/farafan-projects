@@ -563,7 +563,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_161_MSG = "could not add biometric info";
 	public static final String RSI_162_MSG = "LivingCity is null or 0";
 	public static final String RSI_163_MSG = "Living is null or 0";
-	public static final String RSI_164_MSG = "featureExtractorID is null";
+//	public static final String RSI_164_MSG = "featureExtractorID is null";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
 	public static final String KSI_001 = "EMS_S_KSI_001";
