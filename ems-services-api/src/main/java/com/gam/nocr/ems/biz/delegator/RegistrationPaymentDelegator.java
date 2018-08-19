@@ -22,18 +22,18 @@ public class RegistrationPaymentDelegator implements Delegator {
         try {
             registrationPaymentService = ServiceFactoryProvider.getServiceFactory().getService(
                     EMSLogicalNames.getServiceJNDIName(
-                            EMSLogicalNames.SRV_REGISTRATION_PAYMEN), EmsUtil.getUserInfo(userProfileTO));
+                            EMSLogicalNames.SRV_REGISTRATION_PAYMENT), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new DelegatorException(
                     BizExceptionCode.ODL_001, BizExceptionCode.GLB_002_MSG,
-                    e, EMSLogicalNames.SRV_REGISTRATION_PAYMEN.split(","));
+                    e, EMSLogicalNames.SRV_REGISTRATION_PAYMENT.split(","));
         }
         registrationPaymentService.setUserProfileTO(userProfileTO);
         return registrationPaymentService;
     }
 
     public Boolean hasCitizenSuccessfulPayment(UserProfileTO userProfileTO, String nationalId) throws BaseException {
-       return getService(userProfileTO).hasCitizenSuccessfulPayment(nationalId);
+        return getService(userProfileTO).hasCitizenSuccessfulPayment(nationalId);
     }
 
     public Integer getPayAmount(UserProfileTO userProfileTO, String nationalId) throws BaseException {
@@ -42,7 +42,7 @@ public class RegistrationPaymentDelegator implements Delegator {
 
     public void savePaymentInfo(UserProfileTO userProfileTO, RegistrationPaymentTO registrationPaymentTO,
                                 String nationalId, long preRegistrationId) throws BaseException {
-         getService(userProfileTO).savePaymentInfo(registrationPaymentTO, nationalId, preRegistrationId);
+        getService(userProfileTO).savePaymentInfo(registrationPaymentTO, nationalId, preRegistrationId);
     }
 
     public void assignPaymentToEnrollment(UserProfileTO userProfileTO,
