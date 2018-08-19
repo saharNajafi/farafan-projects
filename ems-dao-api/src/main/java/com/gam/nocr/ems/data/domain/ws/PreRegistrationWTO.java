@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * Created by sahar on 10/15/17.
  */
-public class PreRegistrationWTO extends SecureWTO implements Serializable {
+public class PreRegistrationWTO implements Serializable {
 
     private long id;
     private long nationalId;

@@ -1,11 +1,16 @@
 package com.gam.nocr.ems.data.dao.impl;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.DataException;
+import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
+import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -16,6 +21,23 @@ import java.util.List;
 @Remote(RegistrationPaymentDAORemote.class)
 public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPaymentTO>
 implements  RegistrationPaymentDAOLocal, RegistrationPaymentDAORemote{
+
+    @Override
+    @PersistenceContext(unitName = "EmsOraclePU")
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    @Override
+    public RegistrationPaymentTO create(RegistrationPaymentTO registrationPaymentTO) throws BaseException {
+        try {
+            RegistrationPaymentTO to = super.create(registrationPaymentTO);
+            em.flush();
+            return to;
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.RGP_002, DataExceptionCode.RGP_002_MSG, e);
+        }
+    }
 
     public RegistrationPaymentTO findByCitizenId(Long citizenId) throws BaseException {
         List<RegistrationPaymentTO> registrationPaymentTO;

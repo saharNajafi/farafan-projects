@@ -2805,7 +2805,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EMS_REG_020 = "EMS_REG_020";
 	public static final String EMS_REG_020_MSG = "an error occurred on savePaymentInfo operation";
 
-	//com.farafan.crsProvider.service.CardRequestHistoryServiceImpl.java
+	//com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
 	public  static final  String CRH_S_001 = "EMS_CRH_S_001";
 	public  static final  String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 

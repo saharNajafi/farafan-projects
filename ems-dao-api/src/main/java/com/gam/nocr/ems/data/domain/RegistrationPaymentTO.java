@@ -29,7 +29,6 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    private Long id;
     private boolean isSucceed;
     private boolean isConfirmed;
     private IPGProviderEnum paidBank;
@@ -49,16 +48,9 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @Basic(optional = false)
     @Column(name = "RPY_ID")
-    @Override
     public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+        return super.getId();
     }
 
     @Basic(optional = false)
@@ -192,26 +184,26 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
     public RegistrationPaymentTO() {
     }
 
-    public RegistrationPaymentTO(Long rpyId) {
-        this.id = rpyId;
-    }
+//    public RegistrationPaymentTO(Long rpyId) {
+//        this.setId(rpyId);
+//    }
 
-    public RegistrationPaymentTO(Long id, IPGProviderEnum paidBank, boolean isConfirmed, boolean isSucceed
-            , Integer amountPaid, Long orderId, short matchFlag) {
-        this.id = id;
-        this.paidBank = paidBank;
-        this.isConfirmed = isConfirmed;
-        this.isSucceed = isSucceed;
-        this.amountPaid = amountPaid;
-        this.orderId = orderId;
-        this.matchFlag = matchFlag;
-    }
+//    public RegistrationPaymentTO(Long id, IPGProviderEnum paidBank, boolean isConfirmed, boolean isSucceed
+//            , Integer amountPaid, Long orderId, short matchFlag) {
+//        this.setId(id);
+//        this.paidBank = paidBank;
+//        this.isConfirmed = isConfirmed;
+//        this.isSucceed = isSucceed;
+//        this.amountPaid = amountPaid;
+//        this.orderId = orderId;
+//        this.matchFlag = matchFlag;
+//    }
 
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
 
@@ -222,7 +214,7 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
             return false;
         }
         RegistrationPaymentTO other = (RegistrationPaymentTO) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
             return false;
         }
         return true;
@@ -230,7 +222,7 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gam.nocr.ems.data.domain.RegistrationPaymentTO[ id=" + id + " ]";
+        return "com.gam.nocr.ems.data.domain.RegistrationPaymentTO[ id=" + getId() + " ]";
     }
     
 }

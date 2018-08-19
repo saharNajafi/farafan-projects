@@ -22,11 +22,11 @@ public class RegistrationPaymentDelegator implements Delegator {
         try {
             registrationPaymentService = ServiceFactoryProvider.getServiceFactory().getService(
                     EMSLogicalNames.getServiceJNDIName(
-                            EMSLogicalNames.SRV_REGISTRATION_PAYMEN), EmsUtil.getUserInfo(userProfileTO));
+                            EMSLogicalNames.SRV_REGISTRATION_PAYMENT), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new DelegatorException(
                     BizExceptionCode.ODL_001, BizExceptionCode.GLB_002_MSG,
-                    e, EMSLogicalNames.SRV_REGISTRATION_PAYMEN.split(","));
+                    e, EMSLogicalNames.SRV_REGISTRATION_PAYMENT.split(","));
         }
         registrationPaymentService.setUserProfileTO(userProfileTO);
         return registrationPaymentService;

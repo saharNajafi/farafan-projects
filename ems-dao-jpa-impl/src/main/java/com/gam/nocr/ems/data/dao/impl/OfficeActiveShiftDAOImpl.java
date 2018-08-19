@@ -23,14 +23,14 @@ import java.util.List;
 @Stateless(name = "OfficeActiveShiftDAO")
 @Local(OfficeActiveShiftDAOLocal.class)
 @Remote(OfficeActiveShiftDAORemote.class)
-@LocalBean
 public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO>
 implements OfficeActiveShiftDAOLocal, OfficeActiveShiftDAORemote{
     private static final Logger logger = BaseLog
             .getLogger(OfficeActiveShiftDAOImpl.class);
 
     @Override
-    @PersistenceContext(unitName = "CrsProviderOraclePU")
+    @PersistenceContext(unitName = "EmsOraclePU")
+
     public void setEm(EntityManager em) {
         this.em = em;
     }

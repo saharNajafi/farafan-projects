@@ -156,11 +156,11 @@ public class ReservationServiceImpl extends EMSAbstractService
         RegistrationPaymentService registrationPaymentService;
         try {
             registrationPaymentService = serviceFactory.getService(EMSLogicalNames
-                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
+                    .getServiceJNDIName(EMSLogicalNames.SRV_REGISTRATION_PAYMENT), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new ServiceException(BizExceptionCode.PTL_005,
                     BizExceptionCode.GLB_002_MSG, e,
-                    EMSLogicalNames.SRV_CARD_REQUEST.split(","));
+                    EMSLogicalNames.SRV_REGISTRATION_PAYMENT.split(","));
         }
         registrationPaymentService.setUserProfileTO(getUserProfileTO());
         return registrationPaymentService;

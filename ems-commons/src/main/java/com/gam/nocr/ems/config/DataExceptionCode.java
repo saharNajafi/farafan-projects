@@ -1087,8 +1087,10 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ASH_006 = "EMS_D_ASH_006";
 
     //com.gam.nocr.ems.data.dao.impl.RegistrationPaymentDAOImpl.java
-    public static final String RGP_001= "EMS_D_RGP_001";
+    public static final String RGP_001 = "EMS_D_RGP_001";
+    public static final String RGP_002 = "EMS_D_RGP_002";
     public static final String RGP_001_MSG = "the findByCitizenId operation could not be executed";
+    public static final String RGP_002_MSG = "unable to to save registrationPayment";
 
    //com.gam.nocr.ems.util.CrsChecker.java
     public static final String REG_07 = "REG_07";

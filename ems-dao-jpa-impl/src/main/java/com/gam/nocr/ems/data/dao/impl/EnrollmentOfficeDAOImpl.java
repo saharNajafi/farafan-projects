@@ -611,7 +611,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 		if (pupilIsVisible == "YES" && climbingStairsAbility == "YES")
 			query += " AND (EOF.EOF_IGNORE_ICAO_PERMITTED = 0 OR EOF.EOF_IGNORE_ICAO_PERMITTED = 1)" +
 					" AND (EOF.EOF_HAS_STAIR = 0 OR EOF.EOF_HAS_STAIR = 1)" +
-					" AND (EOF.HAS_ELEVATOR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
+					" AND (EOF.EOF_HAS_ELEVATOR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
 
 		if (pupilIsVisible == "YES" && climbingStairsAbility == "NO")
 			query += " AND (EOF.EOF_IGNORE_ICAO_PERMITTED = 0 OR EOF.EOF_IGNORE_ICAO_PERMITTED = 1)" +

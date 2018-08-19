@@ -54,17 +54,17 @@ public class CCOSPaymentWS extends EMSWS {
     @WebMethod
     public void checkInsertSingleStageEnrollmentPossible(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-            @WebParam(name = "personalInfo", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) PersonalInfoWTO personalInfo
+            @WebParam(name = "personalInfoWTO", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) PersonalInfoWTO personalInfoWTO
     ) throws InternalException, BaseException {
-        if (personalInfo == null) {
+        if (personalInfoWTO == null) {
             throw new InternalException(WebExceptionCode.GLB_005_MSG, new EMSWebServiceFault(WebExceptionCode.GLB_005));
         }
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         try {
             cardRequestDelegator.checkInsertSingleStageEnrollmentPossible(userProfileTO,
-                    personalInfo.getNationalId(), personalInfo.getBirthDateSolar()
-                    , personalInfo.getCertSerialNo(), personalInfo.getGender());
+                    personalInfoWTO.getNationalId(), personalInfoWTO.getBirthDateSolar()
+                    , personalInfoWTO.getCertSerialNo(), personalInfoWTO.getGender());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()));
         } catch (Exception e) {
@@ -144,7 +144,7 @@ public class CCOSPaymentWS extends EMSWS {
     public Boolean hasCitizenSuccessfulPayment(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "personalInfoWTO", targetNamespace = "")
-            @XmlElement(name = "personalInfoWTO") PersonalInfoWTO personalInfoWTO
+            @XmlElement(required = true, nillable = false) PersonalInfoWTO personalInfoWTO
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         return registrationPaymentDelegator.hasCitizenSuccessfulPayment(userProfileTO, personalInfoWTO.getNationalId());
@@ -161,7 +161,7 @@ public class CCOSPaymentWS extends EMSWS {
     public Integer getPayAmount(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "personalInfoWTO", targetNamespace = "")
-            @XmlElement(name = "personalInfoWTO") PersonalInfoWTO personalInfoWTO
+            @XmlElement(required = true, nillable = false) PersonalInfoWTO personalInfoWTO
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         return registrationPaymentDelegator.getPayAmount(userProfileTO, personalInfoWTO.getNationalId());
@@ -178,7 +178,7 @@ public class CCOSPaymentWS extends EMSWS {
     public void savePaymentInfo(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "paymentWTO", targetNamespace = "")
-            @XmlElement(name = "paymentWTO") PaymentWTO paymentWTO
+            @XmlElement(required = true, nillable = false) PaymentWTO paymentWTO
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         RegistrationPaymentTO registrationPaymentTO = convertToRegistrationPayment(paymentWTO);
@@ -189,26 +189,26 @@ public class CCOSPaymentWS extends EMSWS {
     /**
      * استعلام از IMS
      *
-     * @param personalInfo
+     * @param personEnquiry
      */
     @WebMethod
     public void imsInquiry(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-            @WebParam(name = "personalInfo", targetNamespace = "")
-            @XmlElement(name = "personalInfo") PersonEnquiryWTO personalInfo
+            @WebParam(name = "personEnquiryWTO", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) PersonEnquiryWTO personEnquiry
     ) throws InternalException, BaseException {
-        if (personalInfo == null) {
+        if (personEnquiry == null) {
             throw new InternalException(WebExceptionCode.GLB_001_MSG, new EMSWebServiceFault(WebExceptionCode.GLB_001));
         }
-        if (!NationalIDUtil.checkValidNinStr(personalInfo.getNationalId())) {
-            throw new InternalException((WebExceptionCode.CPW_003_MSG + personalInfo.getNationalId()),
+        if (!NationalIDUtil.checkValidNinStr(personEnquiry.getNationalId())) {
+            throw new InternalException((WebExceptionCode.CPW_003_MSG + personEnquiry.getNationalId()),
                     new EMSWebServiceFault(WebExceptionCode.CPW_003));
         }
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         // fetch card request
-        CardRequestTO cardRequest = cardRequestDelegator.findLastRequestByNationalId(userProfileTO, personalInfo.getNationalId());
+        CardRequestTO cardRequest = cardRequestDelegator.findLastRequestByNationalId(userProfileTO, personEnquiry.getNationalId());
         if (cardRequest == null) {
-            throw new InternalException(WebExceptionCode.CPW_005_MSG + personalInfo.getNationalId(),
+            throw new InternalException(WebExceptionCode.CPW_005_MSG + personEnquiry.getNationalId(),
                     new EMSWebServiceFault(WebExceptionCode.CPW_005));
         }
         PersonEnquiryWTO personEnquiryWTO = null;
@@ -228,21 +228,20 @@ public class CCOSPaymentWS extends EMSWS {
     /**
      * درخواست شناسه پرداخت موجود
      *
-     * @param preRegistration
+     * @param preRegistrationWTO
      * @return
      * @throws BaseException
      */
     @WebMethod
     public String retrievePaymentUId(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-            @WebParam(name = "preRegistration", targetNamespace = "")
-            @XmlElement(name = "preRegistration") PreRegistrationWTO preRegistration
+            @WebParam(name = "preRegistrationWTO", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) PreRegistrationWTO preRegistrationWTO
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
-
         CardRequestTO cardRequestTO =
                 internalServiceCheckerDelegator.inquiryHasCardRequest(
-                        userProfileTO, String.valueOf(preRegistration.getNationalId()));
+                        userProfileTO, String.valueOf(preRegistrationWTO.getNationalId()));
         return EmsUtil.makeFixLengthWithZeroPadding(cardRequestTO.getCitizen().getNationalID(), 30);
     }
 
@@ -257,7 +256,7 @@ public class CCOSPaymentWS extends EMSWS {
     public void assignPaymentToEnrollment(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "paymentWTO", targetNamespace = "")
-            @XmlElement(name = "paymentWTO") PaymentWTO paymentWTO
+            @XmlElement(required = true, nillable = false) PaymentWTO paymentWTO
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         RegistrationPaymentTO registrationPaymentTO = convertToRegistrationPayment(paymentWTO);
