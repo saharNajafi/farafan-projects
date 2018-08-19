@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 1/1/18.
  */
-public class PersonalInfoWTO extends SecureWTO implements Serializable {
+public class PersonalInfoWTO implements Serializable {
     private String nationalId;
     private String birthDateSolar;
     private String certSerialNo;
