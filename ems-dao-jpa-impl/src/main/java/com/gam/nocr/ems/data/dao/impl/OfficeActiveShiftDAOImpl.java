@@ -9,7 +9,6 @@ import com.gam.nocr.ems.data.enums.ShiftEnum;
 import org.slf4j.Logger;
 
 import javax.ejb.Local;
-import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.CacheStoreMode;
@@ -23,14 +22,14 @@ import java.util.List;
 @Stateless(name = "OfficeActiveShiftDAO")
 @Local(OfficeActiveShiftDAOLocal.class)
 @Remote(OfficeActiveShiftDAORemote.class)
-@LocalBean
 public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO>
-implements OfficeActiveShiftDAOLocal, OfficeActiveShiftDAORemote{
+        implements OfficeActiveShiftDAOLocal, OfficeActiveShiftDAORemote{
     private static final Logger logger = BaseLog
             .getLogger(OfficeActiveShiftDAOImpl.class);
 
     @Override
-    @PersistenceContext(unitName = "CrsProviderOraclePU")
+    @PersistenceContext(unitName = "EmsOraclePU")
+
     public void setEm(EntityManager em) {
         this.em = em;
     }
