@@ -13,11 +13,7 @@ import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.Loggers;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.RegistrationPaymentDAO;
 import com.gam.nocr.ems.data.dao.ReservationDAO;
-import com.gam.nocr.ems.data.dao.impl.IMSUpdateDAOImpl;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
@@ -36,13 +32,11 @@ import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-
 import javax.annotation.Resource;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
-
 import java.util.Date;
 import java.util.Locale;
 
@@ -156,11 +150,11 @@ public class ReservationServiceImpl extends EMSAbstractService
         RegistrationPaymentService registrationPaymentService;
         try {
             registrationPaymentService = serviceFactory.getService(EMSLogicalNames
-                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
+                    .getServiceJNDIName(EMSLogicalNames.SRV_REGISTRATION_PAYMENT), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new ServiceException(BizExceptionCode.PTL_005,
                     BizExceptionCode.GLB_002_MSG, e,
-                    EMSLogicalNames.SRV_CARD_REQUEST.split(","));
+                    EMSLogicalNames.SRV_REGISTRATION_PAYMENT.split(","));
         }
         registrationPaymentService.setUserProfileTO(getUserProfileTO());
         return registrationPaymentService;
