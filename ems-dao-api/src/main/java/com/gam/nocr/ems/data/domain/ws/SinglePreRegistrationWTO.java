@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 1/14/18.
  */
-public class SinglePreRegistrationWTO extends SecureWTO implements Serializable {
+public class SinglePreRegistrationWTO implements Serializable {
     private String nationalId;
     private int certSerialNo;
     private int birthDateSolar;
