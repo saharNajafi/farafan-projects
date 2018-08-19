@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface CitizenInfoService extends Service {
 
-     void checkCitizenInfoValid(CitizenInfoTO czi) throws BaseException;
+    void checkCitizenInfoValid(CitizenInfoTO czi) throws BaseException;
 
     List<BirthCertIssPlaceVTO> fetchBirthCertIssPlace(String nationalID) throws BaseException;
 }
