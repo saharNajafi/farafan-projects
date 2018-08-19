@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 1/3/18.
  */
-public class PersonalHealthStatusWTO extends SecureWTO implements Serializable {
+public class PersonalHealthStatusWTO implements Serializable {
     private HealthStatusWTO healthStatusWTO;
     private String nationalId;
     private Long enrollmentOfficeId;
