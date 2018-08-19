@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @author Saeed Rastak
  */
-public class PersonEnquiryWTO extends SecureWTO implements Serializable {
+public class PersonEnquiryWTO implements Serializable {
 
     private String nationalId;
     private String firstName;
