@@ -1726,7 +1726,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         checkHasCitizenAnyShippedCard(cardRequestTO);
         checkHasCitizenAnyDeliveredCard(cardRequestTO);
         checkCitizenLastCardExpired(cardRequestTO);
-        checkCitizenPersonalInfoValid(nationalId, birthDateSolar, certSerialNo, gender);
+//        checkCitizenPersonalInfoValid(nationalId, birthDateSolar, certSerialNo, gender);
     }
 
     private CardRequestTO fetchCardRequest(String nationalId) throws BaseException {
