@@ -34,6 +34,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 public class RegistrationPaymentServiceImpl extends EMSAbstractService
         implements RegistrationPaymentServiceLocal, RegistrationPaymentServiceRemote {
 
+    private static final String DEFAULT_PAYMENT_AMOUNT = "200000";
 
     public RegistrationPaymentTO addRegistrationPayment(RegistrationPaymentTO entity) throws BaseException {
 
@@ -100,7 +101,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 getCardRequestService().update(cardRequestTO);
             }
         } catch (BaseException e) {
-           throw new ServiceException(BizExceptionCode.EMS_REG_020, BizExceptionCode.EMS_REG_020_MSG, e);
+           throw new ServiceException(BizExceptionCode.RGP_020, BizExceptionCode.RGP_020_MSG, e);
         }
     }
 
@@ -129,8 +130,13 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
      *
      * @param nationalId
      */
-    public Integer getPayAmount(String nationalId) {
-        return Integer.valueOf(Configuration.getProperty("payAmount"));
+    public Integer getPayAmount(String nationalId) throws BaseException {
+        try {
+            return Integer.valueOf(Configuration.getPropertyWithDefault("PAYMENT_AMOUNT",DEFAULT_PAYMENT_AMOUNT));
+        } catch (NumberFormatException e) {
+            throw new ServiceException(BizExceptionCode.RGP_002,
+                    BizExceptionCode.RGP_002_MSG, e);
+        }
     }
 
 

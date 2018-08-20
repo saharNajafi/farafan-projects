@@ -133,6 +133,7 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.data.mapper.tomapper.PersonTokenMapper
     public static final String PTM_001 = "EMS_M_PTM_001";
     public static final String PTM_001_MSG = "invalid personToken, id is null";
+
     //com.gam.nocr.ems.web.ws.CCOSPaymentWS.java
     public static final String CPM_001 = "EMS_CP_001";
     public static final String CPM_002 = "EMS_CPM_002";

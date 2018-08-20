@@ -1153,26 +1153,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_084 = "EMS_S_EOS_084";
 	public static final String EOS_085 = "EMS_S_EOS_085";
 	public static final String EOS_086 = "EMS_S_EOS_086";
-	public static final String EMS_REG_012 = "EMS_REG_012";
-
-	public static final String EOS_087 = "EMS_EOS_087";
-	public static final String EOS_088 = "EMS_EOS_088";
-	public static final String EOS_089 = "EMS_EOS_089";
-	public static final String EOS_090 = "EMS_EOS_090";
-	public static final String EOS_091 = "EMS_EOS_091";
-	public static final String EOS_092 = "EMS_EOS_092";
-	public static final String EOS_093 = "EMS_EOS_093";
-	public static final String EOS_094 = "EMS_EOS_094";
-	public static final String EOS_096 = "EMS_EOS_095";
-	public static final String EMS_REG_010 = "EMS_REG_010";
-	public static final String EOS_095 = "EMS_EOS_095";
-	public static final String EOS_091_MSG = "an error occurred on hasEnoughCapacityToday operation";
-	public static final String EOS_087_MSG = "there is not any capacity";
-	public static final String EOS_088_MSG = "there is not enough accessibility for single stage enrollment";
-	public static final String EOS_089_MSG = "there is not enough instruments for single stage enrollment";
-	public static final String EOS_090_MSG = "Error occurred in transferring Single-Stage-PreRegistration";
-	public static final String EOS_094_MSG = "an error occurred on hasEnoughAccessibilityForSingleStageEnrollment operation";
-	public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
+	public static final String EOS_087 = "EMS_S_EOS_087";
+	public static final String EOS_088 = "EMS_S_EOS_088";
+	public static final String EOS_089 = "EMS_S_EOS_089";
+	public static final String EOS_090 = "EMS_S_EOS_090";
+	public static final String EOS_091 = "EMS_s_EOS_091";
+	public static final String EOS_092 = "EMS_S_EOS_092";
+	public static final String EOS_093 = "EMS_S_EOS_093";
+	public static final String EOS_094 = "EMS_S_EOS_094";
+	public static final String EOS_096 = "EMS_S_EOS_095";
+	public static final String EOS_095 = "EMS_S_EOS_095";
 	public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
 	public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
 	public static final String EOS_006_MSG = "Enrollment office name is too long";
@@ -1223,10 +1213,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_079_MSG = "Enrollment office Delivery Status could not update becuase of CMS or Portal Problems!!";
 	public static final String EOS_084_MSG = "the lenght of depPhoneNumber is too short";
 	public static final String EOS_085_MSG = "depPhoneNumber cannot be null";
-	public static final String EMS_REG_012_MSG = "Active shift not found for decrease remain capacity ( {0} , {1} , {2} )";
-	public static final String EMS_REG_011_LOG_MSG = "LOG: Active shift not found for increase remain capacity ( {} , {} , {} )";
-	public static final String EMS_REG_010_MSG = "Active shift with id: {0} does not have enough remaining capacity.";
+	public static final String EOS_086_MSG = "Active shift not found for decrease remain capacity ( {0} , {1} , {2} )";
+	public static final String EOS_087_MSG = "there is not any capacity";
+	public static final String EOS_088_MSG = "there is not enough accessibility for single stage enrollment";
+	public static final String EOS_089_MSG = "there is not enough instruments for single stage enrollment";
+	public static final String EOS_090_MSG = "Active shift with id: {0} does not have enough remaining capacity.";
+	public static final String EOS_091_MSG = "an error occurred on hasEnoughCapacityToday operation";
+	public static final String EOS_094_MSG = "an error occurred on hasEnoughAccessibilityForSingleStageEnrollment operation";
+	public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
 	public static final String EOS_096_MSG = "Invalid CardRequest State for changing Reservation";
+	public static final String EOS_097_MSG = "LOG: Active shift not found for increase remain capacity ( {} , {} , {} )";
 
 
 
@@ -2802,8 +2798,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_010_MSG = "NationalId is Null";
 
 	//com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
-	public static final String EMS_REG_020 = "EMS_REG_020";
-	public static final String EMS_REG_020_MSG = "an error occurred on savePaymentInfo operation";
+	public static final String RGP_020 = "EMS_S_REG_020";
+	public static final String RGP_002 = "EMS_S_REG_002";
+	public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
+	public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
 
 	//com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
 	public  static final  String CRH_S_001 = "EMS_CRH_S_001";

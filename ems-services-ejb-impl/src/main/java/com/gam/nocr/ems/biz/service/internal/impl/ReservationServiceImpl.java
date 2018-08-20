@@ -455,8 +455,8 @@ public class ReservationServiceImpl extends EMSAbstractService
 
     public void updateCardRequest(CardRequestTO cardRequestTO) throws BaseException {
         getCardRequestService().update(cardRequestTO);
-        getCardRequestHistoryService().create(cardRequestTO, "Portal Request Id: " + cardRequestTO.getPortalRequestId() != null ? cardRequestTO.getPortalRequestId().toString() : "",
-                SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);
+       /* getCardRequestHistoryService().create(cardRequestTO, "Portal Request Id: " + cardRequestTO.getPortalRequestId() != null ? cardRequestTO.getPortalRequestId().toString() : "",
+                SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);*/
     }
 
     public ReservationTO create(ReservationTO reservationTO) throws BaseException {
