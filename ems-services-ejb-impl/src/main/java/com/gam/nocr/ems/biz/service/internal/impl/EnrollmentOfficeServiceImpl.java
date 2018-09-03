@@ -2010,7 +2010,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         OfficeActiveShiftTO activeShiftTO;
         activeShiftTO = findActiveShiftByOfficeAndDateAndShift(officeId, activeDate, shiftNo);
         if (activeShiftTO == null) {
-            throw new ServiceException(BizExceptionCode.EMS_REG_012, BizExceptionCode.EMS_REG_012_MSG, new Object[]{officeId, String.valueOf(activeDate), shiftNo});
+            throw new ServiceException(BizExceptionCode.EOS_086, BizExceptionCode.EOS_086_MSG, new Object[]{officeId, String.valueOf(activeDate), shiftNo});
         }
         decreaseActiveShiftRemainingCapacity(activeShiftTO);
         if (!cardRequest.getReservations().isEmpty()) {
@@ -2028,7 +2028,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             if (activeShiftTO != null) {
                 increaseActiveShiftRemainingCapacity(activeShiftTO);
             } else {
-                logger.error(BizExceptionCode.EMS_REG_011_LOG_MSG, new Object[]{String.valueOf(officeId), String.valueOf(activeDate), shiftNo});
+                logger.error(BizExceptionCode.EOS_097_MSG, new Object[]{String.valueOf(officeId), String.valueOf(activeDate), shiftNo});
                 //throw new ServiceException(BizExceptionCode.EMS_REG_011, BizExceptionCode.EMS_REG_011_MSG, new Object[]{officeId, String.valueOf(activeDate), shiftNo});
             }
         }
@@ -2040,7 +2040,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     private void decreaseActiveShiftRemainingCapacity(OfficeActiveShiftTO activeShiftTO) throws BaseException {
         if (activeShiftTO.getRemainCapacity() <= 0) {
-            throw new ServiceException(BizExceptionCode.EMS_REG_010, BizExceptionCode.EMS_REG_010_MSG, new Object[]{activeShiftTO.getId()});
+            throw new ServiceException(BizExceptionCode.EOS_090, BizExceptionCode.EOS_090_MSG, new Object[]{activeShiftTO.getId()});
         }
         getOfficeActiveShiftService().editActiveShiftRemainCapacity(activeShiftTO.getId(), activeShiftTO.getRemainCapacity() - 1);
     }
