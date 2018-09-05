@@ -850,10 +850,6 @@
         <level value="WARN"/>
         <appender-ref ref="ReservedSmsJobRollingAppender"/>
     </logger>
-    <logger name="org.quartz.xml" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="consoleAppender"/>
-    </logger>
     <logger name="ProcessSmsJob" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="ProcessSmsJobRollingAppender"/>
