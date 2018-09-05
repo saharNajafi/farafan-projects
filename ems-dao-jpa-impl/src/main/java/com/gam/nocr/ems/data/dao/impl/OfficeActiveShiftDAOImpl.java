@@ -30,7 +30,7 @@ implements OfficeActiveShiftDAOLocal, OfficeActiveShiftDAORemote{
             .getLogger(OfficeActiveShiftDAOImpl.class);
 
     @Override
-    @PersistenceContext(unitName = "CrsProviderOraclePU")
+    @PersistenceContext(unitName = "EmsOraclePU")
     public void setEm(EntityManager em) {
         this.em = em;
     }

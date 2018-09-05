@@ -37,7 +37,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Future;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.*;
+import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
 /**
  * <p>
@@ -60,6 +61,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     private static final Logger logger = BaseLog
             .getLogger(EnrollmentOfficeServiceImpl.class);
+
+    private static final Logger jobLogger = BaseLog.getLogger("CreateActiveShifts");
 
     private static final String DEFAULT_IS_DISABLE_USER_IN_CHANGE_MANAGER_ACTION = "true";
 
@@ -1803,7 +1806,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     //Anbari - userPerm-commented
     /*@Override
-	public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
+    public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
 			throws BaseException {
 		try {
 			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),
@@ -2111,6 +2114,49 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                             + gampooya.tools.date.DateUtil.convert(reservationTO.getDate(),
                             gampooya.tools.date.DateUtil.JALALI), SystemId.PORTAL, null,
                     CardRequestHistoryAction.TRANSFER_RESERVE, null);
+        }
+    }
+
+    @Override
+    public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException {
+        return getEnrollmentOfficeDAO().getEnrollmentOfficeList();
+    }
+
+    @Override
+    public List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException {
+        return getOfficeCapacityService().listOfficeCapacityByDate(startDate, endDate);
+    }
+
+    @Override
+    public void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException {
+        fromDate = EmsUtil.getDateAtMidnight(fromDate);
+        int persianDate = Integer.valueOf(CalendarUtil.getDateWithoutSlash(fromDate, new Locale("fa"), "YYYYMMDD"));
+        List<OfficeCapacityTO> todateOfficeCapacity = new ArrayList<OfficeCapacityTO>();
+
+        /*OfficeCapacityTO officeCapacityMorning = officeCapacityService.findbyEnrollmentOfficeIdAndDateAndShift(enrollmentOfficeTO.getId(), ShiftEnum.MORNING, persianDate);
+        OfficeCapacityTO officeCapacityEvening = officeCapacityService.findbyEnrollmentOfficeIdAndDateAndShift(enrollmentOfficeTO.getId(), ShiftEnum.EVENING, persianDate);*/
+        List<OfficeCapacityTO> officeCapacityTOs = officeCapacityMap.get(enrollmentOfficeTO.getId());
+
+        if (EmsUtil.checkListSize(officeCapacityTOs)) {
+            for (OfficeCapacityTO officeCapacityTO : officeCapacityTOs) {
+                if (officeCapacityTO.getStartDate() <= persianDate && officeCapacityTO.getEndDate() >= persianDate) {
+                    todateOfficeCapacity.add(officeCapacityTO);
+                }
+            }
+        }
+
+        if (EmsUtil.checkListSize(todateOfficeCapacity)) {
+            for (OfficeCapacityTO officeCapacityTO : todateOfficeCapacity) {
+                try {
+                    OfficeActiveShiftTO officeActiveShiftTO = getOfficeActiveShiftService().OfficeActiveShiftByOfficeIdAndRsvDate(enrollmentOfficeTO.getId(), officeCapacityTO.getShiftNo(), persianDate);
+                    getOfficeActiveShiftService().activeShiftSaveOrUpdate(officeCapacityTO, officeActiveShiftTO, enrollmentOfficeTO, fromDate);
+                } catch (Exception ex) {
+                    jobLogger.error("Error occurred on create/update active shift (" + String.valueOf(enrollmentOfficeTO.getId()) + ", "
+                            + String.valueOf(persianDate) + "," + officeCapacityTO.getShiftNo().getCode() + ")", ex);
+                    logger.error("Error occurred on create/update active shift (" + String.valueOf(enrollmentOfficeTO.getId()) + ", "
+                            + String.valueOf(persianDate) + "," + officeCapacityTO.getShiftNo().getCode() + ")", ex);
+                }
+            }
         }
     }
 

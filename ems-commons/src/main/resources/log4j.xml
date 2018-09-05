@@ -181,6 +181,20 @@
         </layout>
     </appender>
 
+    <appender name="CreateActiveShiftsRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/createActiveShifts/createActiveShifts.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+
     <appender name="CardIssuanceRequestJobRollingAppender"
               class="org.apache.log4j.RollingFileAppender">
         <param name="File"
@@ -757,6 +771,10 @@
         <level value="WARN"/>
         <appender-ref ref="CardHandingOutNotificationJobRollingAppender"/>
     </logger>
+    <logger name="CreateActiveShifts" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CreateActiveShiftsRollingAppender"/>
+    </logger>
     <logger name="cardIssuanceRequest" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="CardIssuanceRequestJobRollingAppender"/>
@@ -831,6 +849,10 @@
     <logger name="ReservedSmsJob" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="ReservedSmsJobRollingAppender"/>
+    </logger>
+    <logger name="org.quartz.xml" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
     </logger>
     <logger name="ProcessSmsJob" additivity="false">
         <level value="WARN"/>

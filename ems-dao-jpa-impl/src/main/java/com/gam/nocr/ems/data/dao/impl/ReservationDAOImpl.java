@@ -5,11 +5,16 @@ import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.ReservationTO;
+import com.gam.nocr.ems.data.enums.ShiftEnum;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -166,6 +171,34 @@ public class ReservationDAOImpl extends EmsBaseDAOImpl<ReservationTO> implements
             throw new DataException(DataExceptionCode.RSI_002, DataExceptionCode.GLB_005_MSG, e);
         }
         return !reservationTOList.isEmpty() ? reservationTOList.get(0) : null;
+    }
+
+    @Override
+    public Integer findByEnrolAndReserveDateAndShift(Long enrollmentOfficeId, Date reservationDate, ShiftEnum shiftNo) throws DataException {
+        Long reservationCount = 0L;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reservationDate);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date endDate = calendar.getTime();
+
+        try {
+            Query query = em.createNativeQuery(
+                    "select count(rsv.RSV_ID) from EMST_RESERVATION rsv where " +
+                            "rsv.RSV_ENROLLMENT_ID= :enrollmentOfficeId " +
+                            "and rsv.rsv_date BETWEEN :rsv_date_start and  :rsv_date_end " +
+                            "AND rsv.RSV_SHIFT_NO= :shiftNo");
+            query.setParameter("rsv_date_start", reservationDate);
+            query.setParameter("rsv_date_end", endDate);
+            query.setParameter("shiftNo", Integer.valueOf(shiftNo.getCode()));
+            query.setParameter("enrollmentOfficeId", enrollmentOfficeId);
+            reservationCount = ((BigDecimal) query.getSingleResult()).longValue();
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.RSI_003, DataExceptionCode.GLB_005_MSG, e);
+        }
+        return reservationCount.intValue();
     }
 
 

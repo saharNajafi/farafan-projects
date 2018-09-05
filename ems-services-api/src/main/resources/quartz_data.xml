@@ -4,11 +4,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_2_0.xsd"
 	version="2.0">
-
-	<!--<pre-processing-commands> <remove-jobs-in-group>*</remove-jobs-in-group> 
-		&lt;!&ndash; clear all jobs in scheduler &ndash;&gt; <remove-triggers-in-group>*</remove-triggers-in-group> 
-		&lt;!&ndash; clear all triggers in scheduler &ndash;&gt; </pre-processing-commands> -->
-
+	<!--<pre-processing-commands> <delete-jobs-in-group>*</delete-jobs-in-group>
+		&lt;!&ndash; clear all jobs in scheduler &ndash;&gt; <delete-triggers-in-group>*</delete-triggers-in-group>
+		&lt;!&ndash; clear all triggers in scheduler &ndash;&gt; </pre-processing-commands>-->
 	<processing-directives>
 		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
 			file), overwrite them -->
@@ -19,6 +17,28 @@
 	</processing-directives>
 
 	<schedule>
+
+		<job>
+			<name>بروزرسانی و یا ایجاد شیفت های کاری دفاتر در EMS</name>
+			<group>CreateActiveShiftJobGroup</group>
+			<description>بروزرسانی و یا ایجاد شیفت های کاری دفاتر در EMS</description>
+			<job-class>com.gam.nocr.ems.biz.job.CreateActiveShiftsJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+
+		<trigger>
+			<cron>
+				<name>CreateActiveShiftTrigger</name>
+				<group>CreateActiveShiftJobGroup</group>
+				<job-name>بروزرسانی و یا ایجاد شیفت های کاری دفاتر در EMS</job-name>
+				<job-group>CreateActiveShiftJobGroup</job-group>
+				<start-time>2010-02-09T18:00:00</start-time>
+				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+				<cron-expression>0 30 23 * * ? *</cron-expression>
+				<time-zone>Asia/Tehran</time-zone>
+			</cron>
+		</trigger>
 		<!-- CardIssuanceRequest -->
 		<job>
 			<name>ارسال درخواست جهت صدور کارت</name>
@@ -38,13 +58,7 @@
 				<job-name>ارسال درخواست جهت صدور کارت</job-name>
 				<job-group>CardIssuanceRequestJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-				<!--<misfire-instruction>MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY</misfire-instruction> -->
-				<!--<misfire-instruction>MISFIRE_INSTRUCTION_DO_NOTHING</misfire-instruction> -->
-				<!--<misfire-instruction>MISFIRE_INSTRUCTION_FIRE_NOW</misfire-instruction> -->
-				<!--<job-data-map> <entry> <key>someKey</key> <value>overriddenValue</value> 
-					</entry> </job-data-map> -->
 				<cron-expression>0 30 03 ? * *</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>

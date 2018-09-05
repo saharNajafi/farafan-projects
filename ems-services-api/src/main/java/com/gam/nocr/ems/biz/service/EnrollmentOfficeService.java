@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.biz.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -10,6 +11,7 @@ import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
@@ -117,4 +119,10 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
     void updateActiveShift(CardRequestTO emsCardRequest, Long id, Integer activeDate, ShiftEnum shiftNo) throws BaseException;
 
     void editEnrollmentOfficeAppointment(CardRequestTO cardRequestTO, OfficeAppointmentWTO officeAppointment) throws BaseException;
+
+    List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException;
+
+    List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException;
+
+    void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException;
 }
