@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.data.dao.DAOException;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
@@ -86,4 +87,6 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
 
     List searchOfficeQueryByInstruments(
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws BaseException;
+
+    List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException;
 }
