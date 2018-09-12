@@ -118,7 +118,9 @@ public class ProfileKeyName {
     public static final String KEY_REPORT_REQUEST_TRY_COUNTER = EMS_PROFILE_ROOT + ".reportRequestTryCounter";
 
     public static final String KEY_INPROGRESSED_CARD_REQUEST_STATES = EMS_PROFILE_ROOT + ".inProgressedCardRequestStates";
-    
+
+    public static final String ACTIVESHIFT_MAXIMUM_DURATION_TO_RESERVE = EMS_PROFILE_ROOT + ".activeShiftMaximumDurationToReserve";
+
     //****SMS****\\
     public static final String KEY_SMS_BODY = EMS_PROFILE_ROOT + ".smsBody";
     public static final String KEY_SMS_BODY_DOCUMENT_AUTHENTICATED = EMS_PROFILE_ROOT + ".smsBodyDocumentAuthenticate";

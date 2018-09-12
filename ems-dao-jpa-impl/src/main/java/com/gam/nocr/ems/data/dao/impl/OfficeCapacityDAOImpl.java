@@ -100,4 +100,19 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
         return officeCapacityTOList.size() != 0 ? officeCapacityTOList.get(0) : null;
     }
 
+    @Override
+    public List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws DAOException {
+        List<OfficeCapacityTO> officeCapacityTOList;
+        try {
+            officeCapacityTOList = em.createNamedQuery("OfficeCapacityTO.listOfficeCapacityByDate")
+                    .setParameter("endDate", endDate)
+                    .setParameter("startDate",startDate)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.OFC_003,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+        return officeCapacityTOList.size() != 0 ? officeCapacityTOList : null;
+    }
+
 }

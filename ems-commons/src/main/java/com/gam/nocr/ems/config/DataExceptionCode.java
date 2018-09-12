@@ -1078,6 +1078,8 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OCD_003_MSG = "Unique constraint violated, Office Capacity size has already been used";
     public static final String OCD_008_MSG = "Unique constraint violated, Office Capacity size has already been used";
 
+    public static final String OFC_003 = "EMS_D_OFC_003";
+
     // com.farafan.crsProvider.dao.ActiveShiftDAOImpl
     public static final String ASH_001 = "EMS_D_ASH_001";
     public static final String ASH_002 = "EMS_D_ASH_002";

@@ -181,6 +181,20 @@
         </layout>
     </appender>
 
+    <appender name="CreateActiveShiftsRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/jobs/createActiveShifts/createActiveShifts.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+
     <appender name="CardIssuanceRequestJobRollingAppender"
               class="org.apache.log4j.RollingFileAppender">
         <param name="File"
@@ -756,6 +770,10 @@
     <logger name="cardHandingOutNotification" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="CardHandingOutNotificationJobRollingAppender"/>
+    </logger>
+    <logger name="CreateActiveShifts" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CreateActiveShiftsRollingAppender"/>
     </logger>
     <logger name="cardIssuanceRequest" additivity="false">
         <level value="WARN"/>

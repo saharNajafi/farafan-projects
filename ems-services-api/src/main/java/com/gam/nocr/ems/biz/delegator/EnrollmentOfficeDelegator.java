@@ -1,8 +1,5 @@
 package com.gam.nocr.ems.biz.delegator;
 
-import java.util.List;
-import java.util.Map;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.delegator.Delegator;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -19,15 +16,17 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.RatingInfoDAO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.RatingInfoTO;
-import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
-import com.gam.nocr.ems.data.enums.OfficeCalenderType;
-import com.gam.nocr.ems.data.enums.OfficeSettingType;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com">Alireza Saadat</a>
@@ -35,7 +34,7 @@ import com.gam.nocr.ems.util.EmsUtil;
  */
 public class EnrollmentOfficeDelegator implements Delegator {
 
-	private EnrollmentOfficeService getService(UserProfileTO userProfileTO) throws BaseException {
+    private EnrollmentOfficeService getService(UserProfileTO userProfileTO) throws BaseException {
         EnrollmentOfficeService enrollmentOfficeService;
         try {
             enrollmentOfficeService = ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_ENROLLMENT_OFFICE), EmsUtil.getUserInfo(userProfileTO));
@@ -57,7 +56,7 @@ public class EnrollmentOfficeDelegator implements Delegator {
                     EMSLogicalNames.DAO_ENROLLMENT_OFFICE.split(","));
         }
     }
-    
+
     private RatingInfoDAO getRatingInfoDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_RATING_INFO));
@@ -76,24 +75,23 @@ public class EnrollmentOfficeDelegator implements Delegator {
 
     public long save(UserProfileTO userProfileTO, EnrollmentOfficeVTO vto) throws BaseException {
         Long eofId = getService(userProfileTO).save(vto);
-        if(eofId != null){
-        	 checkOfficeDelivery(vto,"NEW",null,vto.getOfficeDeliver()); 
+        if (eofId != null) {
+            checkOfficeDelivery(vto, "NEW", null, vto.getOfficeDeliver());
         }
         return eofId;
-        
+
     }
-    
- private void checkOfficeDelivery(EnrollmentOfficeVTO vto,String mode,EnrollmentOfficeDeliverStatus oldDeliveryState,String newDeliveryState) throws BaseException {
-    	
-    	if(vto.getOfficeType().equals(EnrollmentOfficeType.OFFICE.name()))
-    	{        	
-        	if(oldDeliveryState == EnrollmentOfficeDeliverStatus.ENABLED && "0".equals(newDeliveryState))
-        		getService(null).disableOfficeDeliveryFeature(vto.getId(),vto.getSuperiorOfficeId(),mode);
+
+    private void checkOfficeDelivery(EnrollmentOfficeVTO vto, String mode, EnrollmentOfficeDeliverStatus oldDeliveryState, String newDeliveryState) throws BaseException {
+
+        if (vto.getOfficeType().equals(EnrollmentOfficeType.OFFICE.name())) {
+            if (oldDeliveryState == EnrollmentOfficeDeliverStatus.ENABLED && "0".equals(newDeliveryState))
+                getService(null).disableOfficeDeliveryFeature(vto.getId(), vto.getSuperiorOfficeId(), mode);
 //        	else if(oldDeliveryState == EnrollmentOfficeDeliverStatus.DISABLED && "1".equals(newDeliveryState))
 //        		getService(null).enableOfficeDeliveryFeature(vto.getId(),vto.getSuperiorOfficeId(),mode);
-    	}
-		
-	}
+        }
+
+    }
 
 //    public long update(UserProfileTO userProfileTO, EnrollmentOfficeVTO to) throws BaseException {
 //         Long eofId = getService(userProfileTO).update(to);
@@ -105,38 +103,38 @@ public class EnrollmentOfficeDelegator implements Delegator {
 //         }
 //         return eofId;
 //    }
-    
-    
- public long update(UserProfileTO userProfileTO, EnrollmentOfficeVTO vto) throws BaseException {
-		EnrollmentOfficeTO eofOld = getEnrollmentOfficeDAO().find(
-		EnrollmentOfficeTO.class, vto.getId());
-		Long ratingIdOld = eofOld.getRatingInfo().getId();
-		EnrollmentOfficeDeliverStatus eofOldDelivery = eofOld.getDeliver();
-		String eofNewDelivery = vto.getOfficeDeliver();
-		Long eofId = getService(userProfileTO).update(vto);
+
+
+    public long update(UserProfileTO userProfileTO, EnrollmentOfficeVTO vto) throws BaseException {
+        EnrollmentOfficeTO eofOld = getEnrollmentOfficeDAO().find(
+                EnrollmentOfficeTO.class, vto.getId());
+        Long ratingIdOld = eofOld.getRatingInfo().getId();
+        EnrollmentOfficeDeliverStatus eofOldDelivery = eofOld.getDeliver();
+        String eofNewDelivery = vto.getOfficeDeliver();
+        Long eofId = getService(userProfileTO).update(vto);
 //		boolean equalsCalender = vto.getCalenderType().equals(
 //				OfficeCalenderType.toLong(eofOld.getCalenderType()).toString());
 //		if (eofId != null || !equalsCalender) {
-		if (eofId != null) {
-			checkOfficeDelivery(vto, "EDIT", eofOldDelivery, eofNewDelivery);
+        if (eofId != null) {
+            checkOfficeDelivery(vto, "EDIT", eofOldDelivery, eofNewDelivery);
 //			PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-			RatingInfoTO ratingInfoTO = getRatingInfoDAO().find(
-					RatingInfoTO.class, vto.getRateId());
+            RatingInfoTO ratingInfoTO = getRatingInfoDAO().find(
+                    RatingInfoTO.class, vto.getRateId());
 //			if (ratingInfoTO != null || !equalsCalender) {
-			if (ratingInfoTO != null) {
-				RatingInfoTO newRating = null;
-				String newCalender = null;
-				if (!ratingIdOld.equals(ratingInfoTO.getId()))
-					newRating = ratingInfoTO;
+            if (ratingInfoTO != null) {
+                RatingInfoTO newRating = null;
+                String newCalender = null;
+                if (!ratingIdOld.equals(ratingInfoTO.getId()))
+                    newRating = ratingInfoTO;
 //				if (!equalsCalender)
 //					newCalender = vto.getCalenderType();
 
 //				portalManagementDelegator.syncResevationFreeTimeByNewRating(
 //						eofId, newRating,newCalender);
-			}
-		}
-		return eofId;
-	}
+            }
+        }
+        return eofId;
+    }
 
 //    public boolean remove(UserProfileTO userProfileTO, String officeIds) throws BaseException {
 //        return getService(userProfileTO).remove(officeIds);
@@ -153,17 +151,17 @@ public class EnrollmentOfficeDelegator implements Delegator {
 //                                    String comment) throws BaseException {
 //        getService(userProfileTO).revokeAndSubstitute(enrollmentOfficeId, superiorEnrollmentOfficeId, reason, comment);
 //    }
-    
+
     public void substituteAndDelete(UserProfileTO userProfileTO,
-			  Long enrollmentOfficeId,
-			  Long superiorEnrollmentOfficeId) throws BaseException {
-    	getService(userProfileTO).substituteAndDelete(enrollmentOfficeId, superiorEnrollmentOfficeId);
-	}
+                                    Long enrollmentOfficeId,
+                                    Long superiorEnrollmentOfficeId) throws BaseException {
+        getService(userProfileTO).substituteAndDelete(enrollmentOfficeId, superiorEnrollmentOfficeId);
+    }
 
     public SearchResult fetchEnrollments(UserProfileTO userProfileTO, String searchString, int from, int to, String orderBy, Map additionalParams) throws BaseException {
         return getService(userProfileTO).fetchEnrollments(searchString, from, to, orderBy, additionalParams);
     }
-    
+
     public SearchResult fetchNOCRList(UserProfileTO userProfileTO, String searchString, int from, int to, String orderBy, Map additionalParams) throws BaseException {
         return getService(userProfileTO).fetchNOCRs(searchString, from, to, orderBy, additionalParams);
     }
@@ -222,61 +220,73 @@ public class EnrollmentOfficeDelegator implements Delegator {
 //                            Long enrollmentId) throws BaseException {
 //        getService(userProfileTO).deleteEnrollmentOfficeToken(enrollmentId);
 //    }
-
     public Boolean checkInProgressRequests(UserProfileTO userProfileTO,
                                            Long enrollmentId) throws BaseException {
         return getService(userProfileTO).checkInProgressRequests(enrollmentId);
     }
-    
-	// Anbari
-	public List<Long> getEnrollmentOfficeListIds() throws BaseException {
-		return getService(null).getEnrollmentOfficeListIds();
 
-	}
-	
-	// hossein message
-	public SearchResult fetchEnrollmentsByProvince(UserProfileTO userProfile,
-			String searchString, int from, int to, String orderBy,
-			Map additionalParams) throws BaseException {
-		return getService(userProfile).fetchEnrollmentsByProvince(searchString,
-				from, to, orderBy, additionalParams);
-	}
-	
-	/**
-	 * @author Madanipour
-	 * @param userProfile
-	 * @param enrollmentId
-	 * @param officeSettingType
-	 * @throws BaseException
-	 */
-	public void chageOfficeSetting(UserProfileTO userProfile,
-			long enrollmentId, String officeSettingType)
-			throws BaseException {
-		getService(userProfile).changeOfficeSetting(enrollmentId,
-				officeSettingType);
+    // Anbari
+    public List<Long> getEnrollmentOfficeListIds() throws BaseException {
+        return getService(null).getEnrollmentOfficeListIds();
 
-	}
-	
-	/**
-	 * @author Madanipour
-	 * @param userProfile
-	 * @return
-	 * @throws BaseException
-	 */
-	public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
-			throws BaseException {
-		return getService(userProfile).getAccessViewAndChangeOfficeSetting(userProfile);
-	}
+    }
 
-	
-	
-	public SearchResult fetchOfficesAutoComplete(UserProfileTO userProfileTO, String searchString, int from, int to, String orderBy, Map additionalParams) throws BaseException {
-        return getService(userProfileTO).fetchOfficesAutoComplete(userProfileTO,searchString, from, to, orderBy, additionalParams);
+    public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException {
+        return getService(null).getEnrollmentOfficeList();
+
+    }
+
+    // hossein message
+    public SearchResult fetchEnrollmentsByProvince(UserProfileTO userProfile,
+                                                   String searchString, int from, int to, String orderBy,
+                                                   Map additionalParams) throws BaseException {
+        return getService(userProfile).fetchEnrollmentsByProvince(searchString,
+                from, to, orderBy, additionalParams);
+    }
+
+    /**
+     * @param userProfile
+     * @param enrollmentId
+     * @param officeSettingType
+     * @throws BaseException
+     * @author Madanipour
+     */
+    public void chageOfficeSetting(UserProfileTO userProfile,
+                                   long enrollmentId, String officeSettingType)
+            throws BaseException {
+        getService(userProfile).changeOfficeSetting(enrollmentId,
+                officeSettingType);
+
+    }
+
+    /**
+     * @param userProfile
+     * @return
+     * @throws BaseException
+     * @author Madanipour
+     */
+    public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
+            throws BaseException {
+        return getService(userProfile).getAccessViewAndChangeOfficeSetting(userProfile);
+    }
+
+
+    public SearchResult fetchOfficesAutoComplete(UserProfileTO userProfileTO, String searchString, int from, int to, String orderBy, Map additionalParams) throws BaseException {
+        return getService(userProfileTO).fetchOfficesAutoComplete(userProfileTO, searchString, from, to, orderBy, additionalParams);
     }
 
 
     public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
-            UserProfileTO userProfileTO, String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException{
+            UserProfileTO userProfileTO, String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException {
         getService(userProfileTO).checkEnrollmentOfficeEligibleForSingleStageEnrollment(nationalId, healthStatusWTO, enrollmentOfficeId);
+    }
+
+    public List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException {
+        return getService(null).listOfficeCapacityByDate(startDate, endDate);
+    }
+
+    public void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate,
+                                                            Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException {
+        getService(null).updateActiveShiftForEnrollmentOfficeAndDate(enrollmentOfficeTO, fromDate, officeCapacityMap);
     }
 }

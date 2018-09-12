@@ -1,8 +1,6 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
 import com.gam.commons.core.BaseException;
-import com.gam.commons.core.biz.service.BizLoggable;
-import com.gam.commons.core.biz.service.Permissions;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
@@ -18,12 +16,14 @@ import com.gam.nocr.ems.data.domain.vol.OfficeCapacityVTO;
 import com.gam.nocr.ems.data.enums.ShiftEnum;
 import com.gam.nocr.ems.util.CalendarUtil;
 
-import javax.annotation.Resource;
-import javax.ejb.*;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_ENROLLMENT_OFFICE;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
@@ -52,19 +52,19 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             date = format.parse(officeCapacityVTO.getStartDate());
             if (date.before(new Date()))
                 throw new ServiceException(BizExceptionCode.OC_006, BizExceptionCode.OC_006_MSG);
-            if(officeCapacityVTO.getEnrollmentOfficeId() == null)
+            if (officeCapacityVTO.getEnrollmentOfficeId() == null)
                 throw new ServiceException(BizExceptionCode.OC_003, BizExceptionCode.OC_003_MSG);
             officeCapacityTOList =
                     getOfficeCapacityDAO().findByEnrollmentOfficeIdAndShiftNo(
                             officeCapacityVTO.getEnrollmentOfficeId(), ShiftEnum.getShift(officeCapacityVTO.getShiftNo()));
             Integer previousDay = Integer.valueOf(convertGregorianToPersian(
-                            getPreviousDay(officeCapacityVTO.getStartDate())).replace("/", ""));
+                    getPreviousDay(officeCapacityVTO.getStartDate())).replace("/", ""));
             if (officeCapacityTOList != null) {
                 for (OfficeCapacityTO officeCapacity : officeCapacityTOList) {
                     if (officeCapacity.getStartDate() == toDateWithoutSlash)
                         throw new ServiceException(BizExceptionCode.OC_007, BizExceptionCode.OC_007_MSG);
                     int currentIndex = officeCapacityTOList.indexOf(officeCapacity);
-                    if(currentIndex == 0 && toDateWithoutSlash < officeCapacity.getStartDate()){
+                    if (currentIndex == 0 && toDateWithoutSlash < officeCapacity.getStartDate()) {
                         endDate = Integer.valueOf(convertGregorianToPersian(getPreviousDay(
                                 convertPersianToGregorian(String.valueOf(
                                         officeCapacity.getStartDate())
@@ -81,11 +81,11 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                         officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
 
                     } else {
-                        if(!previuosAdded) {
+                        if (!previuosAdded) {
                             if (currentIndex > 0) {
                                 int previousIndex = currentIndex - 1;
                                 OfficeCapacityTO previousOfficeCapacity;
-                                    previousOfficeCapacity = officeCapacityTOList.get(previousIndex);
+                                previousOfficeCapacity = officeCapacityTOList.get(previousIndex);
                                 if (toDateWithoutSlash > previousOfficeCapacity.getStartDate()
                                         && toDateWithoutSlash < officeCapacity.getStartDate()) {
                                     previousOfficeCapacity.setEndDate(previousDay);
@@ -102,14 +102,14 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                     }
                 }
             } else {
-                 endDate = Integer.parseInt(ConfigurationFileHandler.getInstance().getProperty(
+                endDate = Integer.parseInt(ConfigurationFileHandler.getInstance().getProperty(
                         "officeCapacity-endDate").toString());
                 officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
             }
 
         } catch (BaseException e) {
             throw e;
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             throw new ServiceException(BizExceptionCode.OC_010, BizExceptionCode.OC_010_MSG, e);
         }
         return officeCapacityTO != null ? officeCapacityTO.getId() : null;
@@ -131,9 +131,9 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                 throw new ServiceException(BizExceptionCode.OC_013, BizExceptionCode.OC_013_MSG);
             officeCapacityTO.setCapacity(Short.parseShort(officeCapacityVTO.getCapacity()));
             officeCapacityTO = getOfficeCapacityDAO().update(officeCapacityTO);
-        }catch (BaseException e) {
+        } catch (BaseException e) {
             throw e;
-        }  catch (ParseException e) {
+        } catch (ParseException e) {
             throw new ServiceException(BizExceptionCode.OC_015, BizExceptionCode.OC_015_MSG, e);
         }
         return officeCapacityTO != null ? officeCapacityTO.getId() : null;
@@ -157,7 +157,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             officeCapacityVTO.setShiftNo(String.valueOf(officeCapacityTO.getShiftNo()));
             officeCapacityVTO.setWorkingHoursFrom(officeCapacityTO.getWorkingHoursFrom());
             officeCapacityVTO.setWorkingHoursTo(officeCapacityTO.getWorkingHoursTo());
-        }catch (BaseException e){
+        } catch (BaseException e) {
             throw e;
         }
         return officeCapacityVTO;
@@ -174,7 +174,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     }
 
     private String getPreviousDay(String endDateWithSlash) throws BaseException {
-        if(endDateWithSlash.contains("/")){
+        if (endDateWithSlash.contains("/")) {
             endDateWithSlash = endDateWithSlash.replace("/", "-");
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -186,7 +186,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
         } catch (ParseException e) {
             throw new ServiceException(BizExceptionCode.OC_008, BizExceptionCode.OC_008_MSG, e);
         }
-        return  previousDay;
+        return previousDay;
     }
 
     private String convertGregorianToPersian(String toDate) {
@@ -199,7 +199,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
 
     }
 
-    private OfficeCapacityTO createOfficeCapacity(OfficeCapacityVTO officeCapacityVTO, int endDate) throws BaseException  {
+    private OfficeCapacityTO createOfficeCapacity(OfficeCapacityVTO officeCapacityVTO, int endDate) throws BaseException {
         OfficeCapacityTO capacityTO = new OfficeCapacityTO();
         EnrollmentOfficeTO enrollmentOfficeTO;
         try {
@@ -210,7 +210,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             capacityTO.setWorkingHoursTo(officeCapacityVTO.getWorkingHoursTo());
             capacityTO.setCapacity(Short.parseShort(officeCapacityVTO.getCapacity()));
             enrollmentOfficeTO = getEnrollmentOfficeDAO().findEnrollmentOfficeById(
-                            officeCapacityVTO.getEnrollmentOfficeId());
+                    officeCapacityVTO.getEnrollmentOfficeId());
             if (enrollmentOfficeTO != null)
                 capacityTO.setEnrollmentOffice(enrollmentOfficeTO);
             capacityTO.setShiftNo(ShiftEnum.getShift(officeCapacityVTO.getShiftNo()));
@@ -229,6 +229,15 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             throw e;
         }
         return officeCapacityTO;
+    }
+
+    @Override
+    public List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException {
+        try {
+            return getOfficeCapacityDAO().listOfficeCapacityByDate(startDate, endDate);
+        } catch (BaseException e) {
+            throw e;
+        }
     }
 
     private OfficeCapacityDAO getOfficeCapacityDAO() throws BaseException {
