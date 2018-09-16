@@ -1290,7 +1290,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 + EmsUtil.toStringList(ids));
         // end
 
-        Map<String, List<EnrollmentOfficeTO>> enrollmentOffices = new HashMap<String, List<EnrollmentOfficeTO>>();
+            Map<String, List<EnrollmentOfficeTO>> enrollmentOffices = new HashMap<String, List<EnrollmentOfficeTO>>();
         enrollmentOffices.put("newEnrollmentOffice", newEnrollmentOfficeTOs);
         enrollmentOffices.put("modifiedEnrollmentOffice",
                 modifiedEnrollmentOfficeTOs);
