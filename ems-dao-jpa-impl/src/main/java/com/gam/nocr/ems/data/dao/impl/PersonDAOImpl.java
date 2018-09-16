@@ -1,24 +1,5 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import gampooya.tools.vlp.ListException;
-import gampooya.tools.vlp.ValueListHandler;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.displaytag.exception.ListHandlerException;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.commons.core.data.domain.SearchResult;
@@ -31,6 +12,18 @@ import com.gam.nocr.ems.data.enums.PersonRequestStatus;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
+import gampooya.tools.vlp.ListException;
+import gampooya.tools.vlp.ValueListHandler;
+import org.displaytag.exception.ListHandlerException;
+
+import javax.ejb.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p> TODO -- Explain this class </p>

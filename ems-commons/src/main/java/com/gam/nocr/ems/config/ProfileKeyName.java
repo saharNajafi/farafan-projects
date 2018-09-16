@@ -242,4 +242,6 @@ public class ProfileKeyName {
     public static final String KEY_PAYMENT_NO_REPLACE_AMOUNT = EMS_PROFILE_ROOT + ".replaceCardPaymentAmount";
     public static final String KEY_PAYMENT_REPLACE_AMOUNT = EMS_PROFILE_ROOT + ".noReplaceCardPaymentAmount";
 
+    public static final String KEY_OFFICE_CAPACITY_END_DATE = EMS_PROFILE_ROOT + ".officeCapacityEndDate";
+
 }
