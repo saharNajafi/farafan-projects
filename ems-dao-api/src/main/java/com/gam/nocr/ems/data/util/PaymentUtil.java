@@ -14,6 +14,7 @@ import com.gam.nocr.ems.data.enums.IPGProviderEnum;
 import com.gam.nocr.ems.data.enums.ShiftEnum;
 import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.Configuration;
+import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NationalIDUtil;
 import gampooya.tools.date.DateFormatException;
 import org.apache.commons.lang3.StringUtils;
@@ -103,7 +104,7 @@ public class PaymentUtil {
             registrationPaymentTO.setDescription("");
             registrationPaymentTO.setConfirmed(false);
             registrationPaymentTO.setSucceed(false);
-            registrationPaymentTO.setOrderId(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
+            registrationPaymentTO.setOrderId(EmsUtil.getRandomPaymentOrderId());
             registrationPaymentTO.setPaymentCode(Configuration.getProperty("PAYMENT.CODE"));
             registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFIGNED);
             registrationPaymentTO.setResCode(null);

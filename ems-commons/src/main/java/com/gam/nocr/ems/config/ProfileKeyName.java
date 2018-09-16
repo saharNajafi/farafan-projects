@@ -124,28 +124,28 @@ public class ProfileKeyName {
     public static final String KEY_SMS_BODY_DOCUMENT_AUTHENTICATED = EMS_PROFILE_ROOT + ".smsBodyDocumentAuthenticate";
     public static final String KEY_SMS_BODY_REPEALED_FIRST_CARD = EMS_PROFILE_ROOT + ".smsBodyRepealedFirstCard";
     public static final String KEY_SMS_BODY_REPEALED_OTHERS = EMS_PROFILE_ROOT + ".smsBodyRepealedOthers";
-    
+
     //***** SMS IMS get Result ***********
     public static final String KEY_SMS_BODY_DELETE_IMAGE = EMS_PROFILE_ROOT + ".smsBodyIMSDeleteImage";
     public static final String KEY_SMS_BODY_DELETE_FINGER = EMS_PROFILE_ROOT + ".smsBodyIMSDeleteFinger";
     public static final String KEY_SMS_BODY_DELETE_DOC = EMS_PROFILE_ROOT + ".smsBodyIMSDeleteDoc";
     public static final String KEY_IMS_SMS_ENABLE = EMS_PROFILE_ROOT + ".imsEnableSMS";
-    
-    
+
+
     //Estelam3
     public static final String KEY_DURATION_OF_IMS_ONLINE_RESERVATION_TO_FETCH_UP = EMS_PROFILE_ROOT + ".durationOfReservationDateToFetchUp";
     public static final String KEY_DURATION_OF_IMS_ONLINE_RESERVATION_TO_FETCH_DOWN = EMS_PROFILE_ROOT + ".durationOfReservationDateToFetchDown";
-    
+
     public static final String KEY_SKIP_CMS_CHECK = EMS_PROFILE_ROOT + ".skipCmsCheck";
     public static final String KEY_SKIP_ESTELAM_CHECK = EMS_PROFILE_ROOT + ".skipEstelamCheck";
 
     public static final String KEY_WEBSERVICE_TIMEOUT = EMS_PROFILE_ROOT + ".webservice.timeout";
     public static final String KEY_SYNC_WEBSERVICE_TIMEOUT = EMS_PROFILE_ROOT + ".sync.webservice.timeout";
     public static final String KEY_FREETIME_RESERVATION_WEBSERVICE_TIMEOUT = EMS_PROFILE_ROOT + ".freetime.webservice.timeout";
-    
+
     public static final String KEY_CARTABLE_QUERY_METHOD = EMS_PROFILE_ROOT + ".cartable.query.method";
     public static final String KEY_NUMBER_OF_Estelam2_IMS_TO_LOAD = EMS_PROFILE_ROOT + ".numberOfEstelam2ImsToLoad";
-    
+
     public static final String KEY_NUMBER_OF_REQUEST_FOR_Estelam_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfRequestForEstelamFetchLimit";
     public static final String KEY_NUMBER_OF_REQUEST_FOR_AFIS_RESULT_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfRequestForAfisResultFetchLimit";
     public static final String KEY_NUMBER_OF_REQUEST_FOR_CARD_ISSUANCE_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfRequestForCardIssuanceFetchLimit";
@@ -154,9 +154,8 @@ public class ProfileKeyName {
     public static final String KEY_NUMBER_OF_REQUEST_FOR_NOTIFICATION_CARD_FOR_IMS_CMS = EMS_PROFILE_ROOT + ".numberOfRequestForDeliveredIMSandCMSFetchLimit";
 
     public static final String Signature_Token_Expire_Notification_Days = EMS_PROFILE_ROOT + ".signatureTokenExpireNotificationDays";
-    
-    public static final String Auto_Accept_Renewal_Request = EMS_PROFILE_ROOT + ".autoAcceptRenewalRequest";
 
+    public static final String Auto_Accept_Renewal_Request = EMS_PROFILE_ROOT + ".autoAcceptRenewalRequest";
 
 
     // *** portal ***
@@ -175,66 +174,72 @@ public class ProfileKeyName {
     public static final String KEY_EMKS_NAMESPACE = EMS_PROFILE_ROOT + ".emksNamespace";
     // *** vip ***
     public static final String KEY_VIP_ENROLLMENT_OFFICE = EMS_PROFILE_ROOT + ".vipEnrollmentOffice";
-    
+
     public static final String KEY_PURGE_ACTIVATION = EMS_PROFILE_ROOT + ".purgeActivation";
     public static final String KEY_PURGE_AFTER_DELIVERY_DAYS = EMS_PROFILE_ROOT + ".purgeAfterDeliveryDays";
     public static final String KEY_PURGE_COUNT_PER_CYCLE = EMS_PROFILE_ROOT + ".purgeCountPerCycle";
     //lost card confirm
     public static final String KEY_LOST_CARD_CONFIRM = EMS_PROFILE_ROOT + ".lostCardConfirm";
-    
+
     //sms
-	public static final String KEY_NUMBER_OF_REQUEST_FOR_SEND_RESERVED_DATE_RMINDING_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfRequestForSendReservedDateRmindingSmsFetchLimit";
-	public static final String KEY_SEND_RESERVE_SMS_TIME_INTERVAL = EMS_PROFILE_ROOT + ".sendReserveSmsTimeInterval";
-	public static final String KEY_SMS_BODY_READY_TO_DELIVER =  EMS_PROFILE_ROOT + ".smsBodyReadyToDeliverCard";
-	public static final String KEY_SMS_BODY_RESERVED_REQUEST = EMS_PROFILE_ROOT + ".smsBodyReservedRequest";
-	public static final String KEY_DELETE_FROM_MSGT_ENABLE = EMS_PROFILE_ROOT + ".deleteFromMsgtEnable";
-	public static final String KEY_DELETE_FROM_MSGT_TIME_INTERVAL = EMS_PROFILE_ROOT + ".deleteFromMsgtTimeInterval";
-	public static final String KEY_NUMBER_OF_PROCESS_RESERVED_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfProcessReservedSmsFetchLimit";
-	public static final String KEY_NUMBER_OF_PROCESS_DELIVERY_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfProcessDeliverySmsFetchLimit";
-	public static final String KEY_NUMBER_OF_PROCESS_REFER_TO_CCOS_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfProcessReferToCcosSmsFetchLimit";
-	
-	
-	//Async
-	public static final String KEY_NUMBER_OF_Issuace_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".issuanceAsyncCall";
-	public static final String KEY_NUMBER_OF_HandOut_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".handoutAsyncCall";
-	public static final String KEY_NUMBER_OF_IMSUPDATE_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".imsUpdateAsyncCall";
-	public static final String KEY_ASYNC_ENABLE = EMS_PROFILE_ROOT + ".asyncEnable";
-	public static final String KEY_ASYNC_ENABLE_HANDOUT = EMS_PROFILE_ROOT + ".asyncEnableHandOut";
-	public static final String KEY_ASYNC_ENABLE_IMSUPDATE = EMS_PROFILE_ROOT + ".asyncEnableImsUpdate";
-	public static final String KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND = ".extendValidYear";
-	
-	//Anbari:Estelam
-	public static final String KEY_IMS_ESTELAM_IAMGE_ENABLE = EMS_PROFILE_ROOT + ".imsEstelamImageEnable";
-	//change manager
-	public static final String KEY_IS_DISABLE_USER_IN_CHANGE_MANAGER_ACTION = EMS_PROFILE_ROOT + ".disableUserInChangeManager";
-	
-	public static final String KEY_PARSE_NIST_ALLWAYS = EMS_PROFILE_ROOT + ".parseFingerAllAlways";
-	public static final String KEY_SAVE_XMLAFIS = EMS_PROFILE_ROOT + ".saveXmlAfis";
+    public static final String KEY_NUMBER_OF_REQUEST_FOR_SEND_RESERVED_DATE_RMINDING_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfRequestForSendReservedDateRmindingSmsFetchLimit";
+    public static final String KEY_SEND_RESERVE_SMS_TIME_INTERVAL = EMS_PROFILE_ROOT + ".sendReserveSmsTimeInterval";
+    public static final String KEY_SMS_BODY_READY_TO_DELIVER = EMS_PROFILE_ROOT + ".smsBodyReadyToDeliverCard";
+    public static final String KEY_SMS_BODY_RESERVED_REQUEST = EMS_PROFILE_ROOT + ".smsBodyReservedRequest";
+    public static final String KEY_DELETE_FROM_MSGT_ENABLE = EMS_PROFILE_ROOT + ".deleteFromMsgtEnable";
+    public static final String KEY_DELETE_FROM_MSGT_TIME_INTERVAL = EMS_PROFILE_ROOT + ".deleteFromMsgtTimeInterval";
+    public static final String KEY_NUMBER_OF_PROCESS_RESERVED_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfProcessReservedSmsFetchLimit";
+    public static final String KEY_NUMBER_OF_PROCESS_DELIVERY_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfProcessDeliverySmsFetchLimit";
+    public static final String KEY_NUMBER_OF_PROCESS_REFER_TO_CCOS_SMS_FETCH_LIMIT = EMS_PROFILE_ROOT + ".numberOfProcessReferToCcosSmsFetchLimit";
+
+
+    //Async
+    public static final String KEY_NUMBER_OF_Issuace_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".issuanceAsyncCall";
+    public static final String KEY_NUMBER_OF_HandOut_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".handoutAsyncCall";
+    public static final String KEY_NUMBER_OF_IMSUPDATE_ASYNC_CALL_COUNT = EMS_PROFILE_ROOT + ".imsUpdateAsyncCall";
+    public static final String KEY_ASYNC_ENABLE = EMS_PROFILE_ROOT + ".asyncEnable";
+    public static final String KEY_ASYNC_ENABLE_HANDOUT = EMS_PROFILE_ROOT + ".asyncEnableHandOut";
+    public static final String KEY_ASYNC_ENABLE_IMSUPDATE = EMS_PROFILE_ROOT + ".asyncEnableImsUpdate";
+    public static final String KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND = ".extendValidYear";
+
+    //Anbari:Estelam
+    public static final String KEY_IMS_ESTELAM_IAMGE_ENABLE = EMS_PROFILE_ROOT + ".imsEstelamImageEnable";
+    //change manager
+    public static final String KEY_IS_DISABLE_USER_IN_CHANGE_MANAGER_ACTION = EMS_PROFILE_ROOT + ".disableUserInChangeManager";
+
+    public static final String KEY_PARSE_NIST_ALLWAYS = EMS_PROFILE_ROOT + ".parseFingerAllAlways";
+    public static final String KEY_SAVE_XMLAFIS = EMS_PROFILE_ROOT + ".saveXmlAfis";
     //emks-webservice-timeout
-	public static final String KEY_EMKS_WEBSERVICE_TIMEOUT = EMS_PROFILE_ROOT + ".emks.webservice.timeout";
-	public static final String KEY_DISPATCH_CARTABLE_QUERY_METHOD = EMS_PROFILE_ROOT + ".dispatch.cartable.query.method";
-	
+    public static final String KEY_EMKS_WEBSERVICE_TIMEOUT = EMS_PROFILE_ROOT + ".emks.webservice.timeout";
+    public static final String KEY_DISPATCH_CARTABLE_QUERY_METHOD = EMS_PROFILE_ROOT + ".dispatch.cartable.query.method";
+
     //bizlog
-	public static final String KEY_BIZLOG_INSERT_METHOD = EMS_PROFILE_ROOT + ".bizLogInsertMethod";
-	
-	//Cache Certificate
-	public static final String KEY_IS_CERT_CACHE_ENABLE = EMS_PROFILE_ROOT + ".enableCertCache";
-	
-	//CCOS version
-	public static final String KEY_CCOS_EXACT_VERSION = EMS_PROFILE_ROOT + ".ccosExactVersion";
-	public static final String KEY_ENABLE_CCOS_VERSION_CHECK = EMS_PROFILE_ROOT + ".enableCcosVersionCheck";
-	
-	//reporting
-	public static final String KEY_REPORTING_JNDI_NAME = EMS_PROFILE_ROOT + ".reportingJndiName";
-	
-	//purge
-	public static final String KEY_NUMBER_OF_CITIZEN_TO_PURGE_BIO_FETCH_LIMIT = EMS_PROFILE_ROOT + ".purgeBioFetchLimit";
-	public static final String KEY_PURGE_BIO_TIME_INTERVAL = EMS_PROFILE_ROOT + ".purgeBioTimeInterval";
-	public static final String KEY_SAVE_PURGE_HISTORY = EMS_PROFILE_ROOT + ".savePurgeHistory";
-	
-	//Gaas DS
-	public static final String KEY_GAAS_JNDI_NAME = EMS_PROFILE_ROOT + ".gaasJndiName";
-	
-	public static final String KEY_INTERVAL_PURGE_UP = EMS_PROFILE_ROOT + ".intervalPurgeUp";
-	 public static final String KEY_INTERVAL_PURGE_DOWN = EMS_PROFILE_ROOT + ".intervalPurgeDown";
+    public static final String KEY_BIZLOG_INSERT_METHOD = EMS_PROFILE_ROOT + ".bizLogInsertMethod";
+
+    //Cache Certificate
+    public static final String KEY_IS_CERT_CACHE_ENABLE = EMS_PROFILE_ROOT + ".enableCertCache";
+
+    //CCOS version
+    public static final String KEY_CCOS_EXACT_VERSION = EMS_PROFILE_ROOT + ".ccosExactVersion";
+    public static final String KEY_ENABLE_CCOS_VERSION_CHECK = EMS_PROFILE_ROOT + ".enableCcosVersionCheck";
+
+    //reporting
+    public static final String KEY_REPORTING_JNDI_NAME = EMS_PROFILE_ROOT + ".reportingJndiName";
+
+    //purge
+    public static final String KEY_NUMBER_OF_CITIZEN_TO_PURGE_BIO_FETCH_LIMIT = EMS_PROFILE_ROOT + ".purgeBioFetchLimit";
+    public static final String KEY_PURGE_BIO_TIME_INTERVAL = EMS_PROFILE_ROOT + ".purgeBioTimeInterval";
+    public static final String KEY_SAVE_PURGE_HISTORY = EMS_PROFILE_ROOT + ".savePurgeHistory";
+
+    //Gaas DS
+    public static final String KEY_GAAS_JNDI_NAME = EMS_PROFILE_ROOT + ".gaasJndiName";
+
+    public static final String KEY_INTERVAL_PURGE_UP = EMS_PROFILE_ROOT + ".intervalPurgeUp";
+    public static final String KEY_INTERVAL_PURGE_DOWN = EMS_PROFILE_ROOT + ".intervalPurgeDown";
+
+    //Payment Amount
+    public static final String KEY_PAYMENT_AMOUNT_FIRST_CARD = EMS_PROFILE_ROOT + ".firstCardPaymentAmount";
+    public static final String KEY_PAYMENT_NO_REPLACE_AMOUNT = EMS_PROFILE_ROOT + ".replaceCardPaymentAmount";
+    public static final String KEY_PAYMENT_REPLACE_AMOUNT = EMS_PROFILE_ROOT + ".noReplaceCardPaymentAmount";
+
 }

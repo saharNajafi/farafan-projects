@@ -34,7 +34,7 @@ import javax.xml.ws.WebFault;
         parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 @Internal
 public class CCOSPaymentWS extends EMSWS {
-    private static final Logger logger = BaseLog.getLogger(CardWS.class);
+    private static final Logger logger = BaseLog.getLogger("CCOSPaymentWS");
     private CardRequestDelegator cardRequestDelegator = new CardRequestDelegator();
     private EnrollmentOfficeDelegator enrollmentOfficeDelegator = new EnrollmentOfficeDelegator();
     private InternalServiceCheckerDelegator internalServiceCheckerDelegator = new InternalServiceCheckerDelegator();
@@ -106,23 +106,21 @@ public class CCOSPaymentWS extends EMSWS {
         try {
             ReservationTO reservationTo;
             reservationTo = PaymentUtil.convertSingle(singlePreRegistrationWTO);
-            Long emsPortalRequestId;
+            CardRequestTO cardRequestTO;
             try {
-                emsPortalRequestId = reservationDelegator.transferReservationsToEMS(userProfileTO, reservationTo);
+                cardRequestTO = reservationDelegator.transferReservationsToEMS(userProfileTO, reservationTo);
             } catch (Exception ex) {
                 throw new InternalException(WebExceptionCode.CPW_009_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_009), ex);
             }
             SingleStagePreRegistrationWTO singleStagePreRegistrationWTO = new SingleStagePreRegistrationWTO();
-            singleStagePreRegistrationWTO.setOrderId(reservationTo.getCardRequest().getRegistrationPaymentTO().getOrderId());
             singleStagePreRegistrationWTO.setTrackingId(reservationTo.getCardRequest().getTrackingID());
-            singleStagePreRegistrationWTO.setPaymentCode(reservationTo.getCardRequest().getRegistrationPaymentTO().getPaymentCode());
-            singleStagePreRegistrationWTO.setPortalRequestId(emsPortalRequestId);
             Boolean verifiedByIMS = Boolean.FALSE;
             if (reservationTo.getCardRequest().
                     getEstelam2Flag() != null && reservationTo.getCardRequest().
                     getEstelam2Flag().equals(Estelam2FlagType.V)) {
                 verifiedByIMS = Boolean.TRUE;
             }
+            singleStagePreRegistrationWTO.setCardRequestId(cardRequestTO.getId());
             singleStagePreRegistrationWTO.setVerifiedByIMS(verifiedByIMS);
             return singleStagePreRegistrationWTO;
         } catch (BaseException e) {
@@ -139,7 +137,7 @@ public class CCOSPaymentWS extends EMSWS {
      * @return
      * @throws BaseException
      */
-    @WebMethod
+    /*@WebMethod
     public Boolean hasCitizenSuccessfulPayment(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "personalInfoWTO", targetNamespace = "")
@@ -153,7 +151,7 @@ public class CCOSPaymentWS extends EMSWS {
         } catch (Exception e) {
             throw new InternalException(WebExceptionCode.CPW_012_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_012), e);
         }
-    }
+    }*/
 
     /**
      * استعلام مبلغ قابل پرداخت
@@ -163,14 +161,14 @@ public class CCOSPaymentWS extends EMSWS {
      * @throws BaseException
      */
     @WebMethod
-    public Integer getPayAmount(
+    public PaymentInfoWTO getPayAmount(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "personalInfoWTO", targetNamespace = "")
             @XmlElement(required = true, nillable = false) PersonalInfoWTO personalInfoWTO
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
         try {
-            return registrationPaymentDelegator.getPayAmount(userProfileTO, personalInfoWTO.getNationalId());
+            return registrationPaymentDelegator.getPayAmountInfo(userProfileTO, personalInfoWTO.getNationalId());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()));
         } catch (Exception e) {
@@ -199,7 +197,7 @@ public class CCOSPaymentWS extends EMSWS {
         try {
             RegistrationPaymentTO registrationPaymentTO = PaymentUtil.convertToRegistrationPayment(paymentWTO);
             registrationPaymentDelegator.savePaymentInfo(userProfileTO, registrationPaymentTO,
-                    paymentWTO.getNationalId(), paymentWTO.getPreRegistrationId());
+                    paymentWTO.getNationalId());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()));
         } catch (Exception e) {
