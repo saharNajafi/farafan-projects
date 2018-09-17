@@ -93,15 +93,27 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     public void savePaymentInfo(RegistrationPaymentTO registrationPaymentTO, String nationalId) throws BaseException {
         try {
             CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
-            registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
-            RegistrationPaymentTO registrationPayment = getRegistrationPaymentDAO().create(registrationPaymentTO);
-            if (registrationPayment != null) {
+            RegistrationPaymentTO cardRequestPayment = cardRequestTO.getRegistrationPaymentTO();
+            if (cardRequestPayment != null) {
+                cardRequestPayment.setResCode(registrationPaymentTO.getResCode());
+                cardRequestPayment.setRrn(registrationPaymentTO.getRrn());
+                cardRequestPayment.setSystemTraceNo(registrationPaymentTO.getSystemTraceNo());
+                cardRequestPayment.setDescription(registrationPaymentTO.getDescription());
+                cardRequestPayment.setConfirmed(registrationPaymentTO.isConfirmed());
+                cardRequestPayment.setSucceed(registrationPaymentTO.isSucceed());
+                cardRequestPayment.setAmountPaid(registrationPaymentTO.getAmountPaid());
+                cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
+                cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
+                getCardRequestService().update(cardRequestTO);
+            } else {
+                registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
+                RegistrationPaymentTO registrationPayment = getRegistrationPaymentDAO().create(registrationPaymentTO);
                 cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
                 cardRequestTO.setPaidDate(registrationPayment.getPaymentDate());
                 cardRequestTO.setPaid(registrationPayment.isSucceed());
                 getCardRequestService().update(cardRequestTO);
             }
-        } catch (BaseException e) {
+        } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.RGP_020, BizExceptionCode.RGP_020_MSG, e);
         }
     }
