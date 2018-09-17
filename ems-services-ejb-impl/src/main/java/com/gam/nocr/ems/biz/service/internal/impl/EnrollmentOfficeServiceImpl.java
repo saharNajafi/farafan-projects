@@ -37,7 +37,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Future;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.*;
+import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
 /**
  * <p>
@@ -1290,7 +1291,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 + EmsUtil.toStringList(ids));
         // end
 
-            Map<String, List<EnrollmentOfficeTO>> enrollmentOffices = new HashMap<String, List<EnrollmentOfficeTO>>();
+        Map<String, List<EnrollmentOfficeTO>> enrollmentOffices = new HashMap<String, List<EnrollmentOfficeTO>>();
         enrollmentOffices.put("newEnrollmentOffice", newEnrollmentOfficeTOs);
         enrollmentOffices.put("modifiedEnrollmentOffice",
                 modifiedEnrollmentOfficeTOs);
@@ -1803,7 +1804,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     //Anbari - userPerm-commented
     /*@Override
-	public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
+    public Boolean getAccessViewAndChangeOfficeSetting(UserProfileTO userProfile)
 			throws BaseException {
 		try {
 			if (getUserManagementService().hasAccess(userProfileTO.getUserName(),
@@ -1840,6 +1841,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      */
     public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
             String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException {
+        if (nationalId == null) {
+            throw new ServiceException(BizExceptionCode.EOS_100, BizExceptionCode.PRR_006_MSG);
+        }
         if (!hasEnoughCapacityToday(nationalId, enrollmentOfficeId)) {
             throw new ServiceException(BizExceptionCode.EOS_087, BizExceptionCode.EOS_087_MSG);
         }
@@ -1862,37 +1866,33 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      * @param enrollmentOfficeId
      */
     public Boolean hasEnoughCapacityToday(String nationalId, Long enrollmentOfficeId) throws ServiceException {
-        boolean res = false;
-        CitizenTO citizenTO;
-        CardRequestTO cardRequestTO = null;
-        ReservationTO reservationTO = null;
-        EnrollmentOfficeTO enrollmentOfficeTO = null;
-        OfficeActiveShiftTO activeShiftTO;
-        OfficeCapacityTO officeCapacityTO;
+        Boolean result = Boolean.FALSE;
         try {
-            citizenTO = getCitizenService().findByNationalId(nationalId);
-            if (citizenTO != null)
-                cardRequestTO = getCardRequestService().findByCitizenId(citizenTO);
-            if (cardRequestTO != null)
-                reservationTO = getReservationService().findReservationByCrqId(cardRequestTO.getId());
-            if (reservationTO != null)
-                enrollmentOfficeTO =
-                        getEnrollmentOfficeDAO().findEnrollmentOfficeById(reservationTO.getEnrollmentOffice().getId());
-            if (enrollmentOfficeTO != null) {
-                if (enrollmentOfficeTO.getActive() == false)
-                    res = true;
-            } else {
-                activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
-                officeCapacityTO = getOfficeCapacityService().findByEnrollmentOfficeId(enrollmentOfficeId);
-                if (activeShiftTO != null && officeCapacityTO != null) {
-                    if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0)
-                        res = true;
+            CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
+            if (cardRequestTO != null) {
+                ReservationTO reservationTO = getReservationService().findReservationByCrqId(cardRequestTO.getId());
+                EnrollmentOfficeTO enrollmentOfficeTO = null;
+                if (reservationTO != null) {
+                    enrollmentOfficeTO =
+                            getEnrollmentOfficeDAO().findEnrollmentOfficeById(reservationTO.getEnrollmentOffice().getId());
+                }
+                if (enrollmentOfficeTO != null) {
+                    if (Boolean.FALSE.equals(enrollmentOfficeTO.getActive())) {
+                        result = Boolean.TRUE;
+                    }
+                } else {
+                    OfficeActiveShiftTO activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
+                    OfficeCapacityTO officeCapacityTO = getOfficeCapacityService().findByEnrollmentOfficeId(enrollmentOfficeId);
+                    if (activeShiftTO != null && officeCapacityTO != null) {
+                        if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0)
+                            result = Boolean.TRUE;
+                    }
                 }
             }
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.EOS_091, BizExceptionCode.EOS_091_MSG, e);
+            throw new ServiceException(BizExceptionCode.EOS_091, BizExceptionCode.EOS_091_MSG, e, new Object[]{nationalId});
         }
-        return res;
+        return result;
     }
 
     /**

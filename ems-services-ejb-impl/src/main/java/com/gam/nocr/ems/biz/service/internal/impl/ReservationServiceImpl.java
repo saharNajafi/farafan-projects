@@ -53,7 +53,6 @@ public class ReservationServiceImpl extends EMSAbstractService
         implements ReservationServiceLocal, ReservationServiceRemote {
     @Resource
     SessionContext sessionContext;
-//    private static final Long INIT_BIAS_ID = 10000000000l;
     private static final Logger logger = BaseLog.getLogger(ReservationServiceImpl.class);
 
     public ReservationTO findReservationByCrqId(Long carqId) throws BaseException {
@@ -69,7 +68,6 @@ public class ReservationServiceImpl extends EMSAbstractService
         String nationalId = null;
         try {
             CardRequestTO emsCardRequest = null;
-
             CardRequestState toState = CardRequestState.RESERVED;
             if (reservationTO.getCardRequest().getCitizen().getNationalID() != null) {
                 nationalId = reservationTO.getCardRequest().getCitizen().getNationalID();
@@ -78,9 +76,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             }
 
             if (emsCardRequest != null) {
-
                 CardRequestState fromState = emsCardRequest.getState();
-
                 if (!CardRequestState.checkStateChangeValidation(fromState,
                         toState)) {
                     if (nationalId == null) {

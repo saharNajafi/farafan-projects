@@ -245,16 +245,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_068 = "EMS_CRE_068";
 
 
-	public static final String CRE_069_MSG = "There is a processed singleStage enrollment";
-	public static final String CRE_059_MSG = "There is a reproduction request";
-	public static final String CRE_060_MSG = "Citizen has a shipped card";
-	public static final String CRE_062_MSG = "Citizen has a delivered card";
-	public static final String CRE_061_MSG = "Citizen last card expired";
+	public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
+	public static final String CRE_059_MSG = "There is a reproduction request for Card Request: {0}";
+	public static final String CRE_060_MSG = "Citizen has a shipped card for Card Request: {0}";
+	public static final String CRE_062_MSG = "Citizen has a delivered card for Card Request: {0}";
+	public static final String CRE_061_MSG = "Citizen last card expired for Card Request: {0}";
 	public static final String CRE_064_MSG = "Invalid Parameter -> {0} : {1}";
 	public static final String CRE_063_MSG = "citizen personal info is not Valid for nationalId {0}";
 	public static final String CRE_068_MSG = "an error occurred on findLastRequestByNationalId operation";
-	public static final String CRE_070_MSG = "There is a processed preRegistration";
-	public static final String CRE_071_MSG = "DB Error: Error occurred in fetching data";
+	public static final String CRE_070_MSG = "There is a processed Card Request: {0}";
+	public static final String CRE_071_MSG = "DB Error: Error occurred in fetching Card Request for NationalId: {0}";
 	public static final String CRE_072_MSG = "unable to update cardRequest";
 	public static final String CRE_073_MSG = "unable to find cardRequest";
 
@@ -1163,6 +1163,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_094 = "EMS_S_EOS_094";
 	public static final String EOS_096 = "EMS_S_EOS_095";
 	public static final String EOS_095 = "EMS_S_EOS_095";
+	public static final String EOS_100 = "EMS_S_EOS_100";
 	public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
 	public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
 	public static final String EOS_006_MSG = "Enrollment office name is too long";
@@ -1218,7 +1219,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_088_MSG = "there is not enough accessibility for single stage enrollment";
 	public static final String EOS_089_MSG = "there is not enough instruments for single stage enrollment";
 	public static final String EOS_090_MSG = "Active shift with id: {0} does not have enough remaining capacity.";
-	public static final String EOS_091_MSG = "an error occurred on hasEnoughCapacityToday operation";
+	public static final String EOS_091_MSG = "an error occurred on hasEnoughCapacityToday operation for NationalId: {0}";
 	public static final String EOS_094_MSG = "an error occurred on hasEnoughAccessibilityForSingleStageEnrollment operation";
 	public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
 	public static final String EOS_096_MSG = "Invalid CardRequest State for changing Reservation";
@@ -2399,8 +2400,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 
 	public static final String NIO_030 = "EMS_S_NIO_030";
 	public static final String NIO_031 = "EMS_S_NIO_031";
-	public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system.";
-	public static final String NIO_010_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system.";
+	public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system for NationalId: {0}.";
 	public static final String NIO_014_MSG = "The returned value of the service of getEstelam2 is null. ";
 	public static final String NIO_015_MSG = "No record was found for this person in IMS to return. The main exception message which has returned from IMS is: ";
 	public static final String NIO_016_MSG = "Identity recognition exception. The IMS needs to review the person profile again. The main exception message which has returned from IMS is: ";

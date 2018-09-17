@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
@@ -4784,6 +4785,7 @@ CardRequestDAOLocal, CardRequestDAORemote {
 			throws BaseException {
 		List<CardRequestTO> cardRequestTOList;
 		try {
+			nationalId = StringUtils.leftPad(nationalId, 10, "0");
 			cardRequestTOList = em.createNamedQuery("CardRequestTO.findLastRequestByNationalId")
 					.setParameter("nationalId", nationalId)
 					.getResultList();

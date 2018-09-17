@@ -156,6 +156,9 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
 
             return result;
         } catch (Exception e) {
+            if (e instanceof ServiceException) {
+                throw (ServiceException) e;
+            }
             throw new ServiceException(BizExceptionCode.RGP_002,
                     BizExceptionCode.RGP_002_MSG, e);
         }

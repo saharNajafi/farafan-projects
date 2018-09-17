@@ -15,7 +15,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_002_MSG = "Cannot instantiate service {}";
     public static final String GLB_003_MSG = " Error in operation ";
     public static final String GLB_004_MSG = "Cannot initialize Delegator";
-    public static final String GLB_005_MSG = "Input argument is null";
+    public static final String GLB_005_MSG = "personalInfoWTO Input argument is null";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     //com.gam.nocr.ems.web.action.StateProviderAction
@@ -684,6 +684,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public  static final String CPW_015 = "EMS_W_CPW_015";
     public  static final String CPW_016 = "EMS_W_CPW_016";
     public  static final String CPW_017 = "EMS_W_CPW_017";
+    public  static final String CPW_018 = "EMS_W_CPW_018";
     public  static final String CPW_001_MSG = "Unable to check the possibility of inserting single stag";
     public  static final String CPW_002_MSG = "Unable to check enrollment office eligibility for single stage enrollment";
     public static final String CPW_003_MSG = "Invalid Parameter -> nationalId :";
@@ -700,6 +701,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_015_MSG = "Error occurred assign Payment To Enrollment";
     public static final String CPW_016_MSG = "an error occurred on convert To registrationPaymentTO TO  RegistrationPaymentTO";
     public static final String CPW_017_MSG = "an error occurred on convert To singlePreRegistrationWTO TO ReservationTO";
+    public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
 
 
 

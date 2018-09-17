@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by safiary on 8/20/18.
@@ -30,7 +29,7 @@ import java.util.UUID;
 public class PaymentUtil {
 
     public static RegistrationPaymentTO convertToRegistrationPayment(
-            PaymentWTO paymentWTO) throws  BaseException {
+            PaymentWTO paymentWTO) throws BaseException {
         try {
             RegistrationPaymentTO registrationPaymentTO = new RegistrationPaymentTO();
             RegistrationPaymentWTO registrationPaymentWTO = paymentWTO.getRegistrationPaymentWTO();
@@ -48,21 +47,20 @@ public class PaymentUtil {
             registrationPaymentTO.setMatchFlag((short) 1);
             return registrationPaymentTO;
         } catch (Exception e) {
-            throw new BaseException(WebExceptionCode.CPW_016_MSG,WebExceptionCode.CPW_016,e);
+            throw new BaseException(WebExceptionCode.CPW_016_MSG, WebExceptionCode.CPW_016, e);
         }
     }
 
     public static ReservationTO convertSingle(SinglePreRegistrationWTO singlePreRegistrationWTO) throws BaseException {
         try {
             checkSinglePreRegistrationTransfer(singlePreRegistrationWTO);
-            ReservationTO reservationTO = new ReservationTO();
-            CardRequestTO cardRequestTO = new CardRequestTO();
             CitizenTO ctz = new CitizenTO();
             CitizenInfoTO czi = new CitizenInfoTO();
             String doesNotExist = Configuration.getProperty("dont.exit");
             ctz.setFirstNamePersian(doesNotExist);
             ctz.setSurnamePersian(doesNotExist);
             ctz.setNationalID(StringUtils.leftPad(singlePreRegistrationWTO.getNationalId(), 10, "0"));
+            CardRequestTO cardRequestTO = new CardRequestTO();
             cardRequestTO.setPortalEnrolledDate(new Date());
             cardRequestTO.setTrackingID(NationalIDUtil.generateTrackingId(ctz.getNationalID()));
             cardRequestTO.setOrigin(CardRequestOrigin.valueOf(singlePreRegistrationWTO.getOrigin()));
@@ -77,7 +75,8 @@ public class PaymentUtil {
             try {
                 czi.setGender(GenderEnum.getEMSGender(singlePreRegistrationWTO.getGender()));
             } catch (IllegalArgumentException e) {
-                throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e, new String[]{singlePreRegistrationWTO.getGender().toString()});
+                throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e,
+                        new String[]{singlePreRegistrationWTO.getGender().toString()});
             }
             czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
             czi.setMobile(singlePreRegistrationWTO.getCellphoneNumber());
@@ -96,10 +95,7 @@ public class PaymentUtil {
                 throw new BaseException(MapperExceptionCode.CRM_007, MapperExceptionCode.GLB_001_MSG, e);
             }
             czi.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-
-            // if (singlePreRegistrationWTO.getRegistrationPaymentWTO() != null) {
             RegistrationPaymentTO registrationPaymentTO = new RegistrationPaymentTO();
-            //RegistrationPaymentWTO registrationPaymentWTO = singlePreRegistrationWTO.getRegistrationPaymentWTO();
             registrationPaymentTO.setAmountPaid(0);
             registrationPaymentTO.setDescription("");
             registrationPaymentTO.setConfirmed(false);
@@ -111,9 +107,9 @@ public class PaymentUtil {
             registrationPaymentTO.setSystemTraceNo(null);
             registrationPaymentTO.setMatchFlag((short) 1);
             cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
+            ReservationTO reservationTO = new ReservationTO();
             reservationTO.setPaidDate(null);
             reservationTO.setPaid(false);
-            //}
             ctz.setCitizenInfo(czi);
             czi.setCitizen(ctz);
             cardRequestTO.setCitizen(ctz);
@@ -129,7 +125,7 @@ public class PaymentUtil {
             cardRequestTO.setReservationDate(reservationDate);
             return reservationTO;
         } catch (Exception e) {
-            throw new BaseException(WebExceptionCode.CPW_017_MSG,WebExceptionCode.CPW_017,e);
+            throw new BaseException(WebExceptionCode.CPW_017, WebExceptionCode.CPW_017_MSG, e);
         }
     }
 
@@ -144,28 +140,35 @@ public class PaymentUtil {
             throw new BaseException(MapperExceptionCode.CRM_009, MapperExceptionCode.CRM_009_MSG);
         }*/
         if (StringUtils.isEmpty(singlePreRegistrationWTO.getOrigin())) {
-            throw new BaseException(MapperExceptionCode.CPM_003, MapperExceptionCode.CPM_003_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_003, MapperExceptionCode.CPM_003_MSG, new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (!NationalIDUtil.checkValidCertSerialNo(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()))) {
-            throw new BaseException(MapperExceptionCode.CPM_004, MapperExceptionCode.CPM_004_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_004, MapperExceptionCode.CPM_004_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (StringUtils.isEmpty(singlePreRegistrationWTO.getCellphoneNumber())) {
-            throw new BaseException(MapperExceptionCode.CPM_005, MapperExceptionCode.CPM_005_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_005, MapperExceptionCode.CPM_005_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (StringUtils.isEmpty(singlePreRegistrationWTO.getMotherName())) {
-            throw new BaseException(MapperExceptionCode.CPM_006, MapperExceptionCode.CPM_006_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_006, MapperExceptionCode.CPM_006_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (singlePreRegistrationWTO.getBirthDateGregorian() == null) {
-            throw new BaseException(MapperExceptionCode.CPM_007, MapperExceptionCode.CPM_007_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_007, MapperExceptionCode.CPM_007_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (StringUtils.isEmpty(singlePreRegistrationWTO.getBirthDateLunar())) {
-            throw new BaseException(MapperExceptionCode.CPM_008, MapperExceptionCode.CPM_008_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_008, MapperExceptionCode.CPM_008_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (singlePreRegistrationWTO.getGender() == null) {
-            throw new BaseException(MapperExceptionCode.CPM_009, MapperExceptionCode.CPM_009_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_009, MapperExceptionCode.CPM_009_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
         if (singlePreRegistrationWTO.getReligion() == null) {
-            throw new BaseException(MapperExceptionCode.CPM_010, MapperExceptionCode.CPM_010_MSG);
+            throw new BaseException(MapperExceptionCode.CPM_010, MapperExceptionCode.CPM_010_MSG,
+                    new Object[]{singlePreRegistrationWTO.getNationalId()});
         }
     }
 

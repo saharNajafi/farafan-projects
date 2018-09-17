@@ -17,9 +17,14 @@ import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
-import com.gam.nocr.ems.biz.service.external.client.ussd.*;
+import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
+import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS_Service;
+import com.gam.nocr.ems.biz.service.external.client.ussd.ExternalInterfaceException_Exception;
 import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
-import com.gam.nocr.ems.config.*;
+import com.gam.nocr.ems.config.BizExceptionCode;
+import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.config.ProfileHelper;
+import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
@@ -1208,7 +1213,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                             .getBirthCertificateSeries().equals(birthCertificateSeries))
                         state = labels.getString("state.invalidBirthCertificateSeries");
 
-                    else if(!cardRequestTO.getCitizen().getCitizenInfo()
+                    else if (!cardRequestTO.getCitizen().getCitizenInfo()
                             .getBirthDateSolar().equals(citizenBirthDate))
                         state = labels.getString("state.invalidBirthCertificateSeries");
                     else
@@ -1730,16 +1735,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     }
 
     private CardRequestTO fetchCardRequest(String nationalId) throws BaseException {
-        CardRequestTO cardRequestTO = null;
         try {
-            CitizenTO citizenTO = getCitizenService().findByNationalId(nationalId);
-            if (citizenTO != null) {
-                cardRequestTO = getCardRequestService().findByCitizenId(citizenTO);
-            }
+            return findLastRequestByNationalId(nationalId);
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.CRE_071, BizExceptionCode.CRE_071_MSG, e);
+            throw new ServiceException(BizExceptionCode.CRE_071, BizExceptionCode.CRE_071_MSG, e, new Object[]{nationalId});
         }
-        return cardRequestTO;
     }
 
     /**
@@ -1755,7 +1755,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                     && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
-                throw new ServiceException(BizExceptionCode.CRE_070, BizExceptionCode.CRE_070_MSG);
+                throw new ServiceException(BizExceptionCode.CRE_070, BizExceptionCode.CRE_070_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
@@ -1773,7 +1773,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                     && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
-                throw new ServiceException(BizExceptionCode.CRE_069, BizExceptionCode.CRE_069_MSG);
+                throw new ServiceException(BizExceptionCode.CRE_069, BizExceptionCode.CRE_069_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
@@ -1791,7 +1791,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                     && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
-                throw new ServiceException(BizExceptionCode.CRE_059, BizExceptionCode.CRE_059_MSG);
+                throw new ServiceException(BizExceptionCode.CRE_059, BizExceptionCode.CRE_059_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
@@ -1806,7 +1806,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (!(cardRequestTO.getState().equals(CardRequestState.ISSUED)
                     || cardRequestTO.getState().equals(CardRequestState.READY_TO_DELIVER)
                     || cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
-                throw new ServiceException(BizExceptionCode.CRE_060, BizExceptionCode.CRE_060_MSG);
+                throw new ServiceException(BizExceptionCode.CRE_060, BizExceptionCode.CRE_060_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
@@ -1819,7 +1819,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     public void checkHasCitizenAnyDeliveredCard(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
             if (!(cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
-                throw new ServiceException(BizExceptionCode.CRE_062, BizExceptionCode.CRE_062_MSG);
+                throw new ServiceException(BizExceptionCode.CRE_062, BizExceptionCode.CRE_062_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
@@ -1836,7 +1836,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             cal.add(Calendar.YEAR, 7);
             if (!(cal.getTime().equals(new Date())
                     || cal.getTime().after(new Date()))) {
-                throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG);
+                throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
@@ -2031,6 +2031,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         getCitizenDAO().update(ctz);
         getCitizenInfoDAO().update(czi);
     }
+
     /**
      * getCitizenInfoDAO
      *
