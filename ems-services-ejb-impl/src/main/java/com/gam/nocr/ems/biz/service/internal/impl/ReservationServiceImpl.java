@@ -239,8 +239,8 @@ public class ReservationServiceImpl extends EMSAbstractService
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
             }*/
-            getCardRequestHistoryService().create(emsCardRequest, "CRS Request Id: " + emsCardRequest.getPortalRequestId().toString(),
-                    SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);
+           /* getCardRequestHistoryService().create(emsCardRequest, "CRS Request Id: " + emsCardRequest.getPortalRequestId().toString(),
+                    SystemId.CCOS, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);*/
             reservationTO.getCardRequest().setId(emsCardRequest.getId());
             getEnrollmentOfficeService().updateActiveShift(emsCardRequest, reservationTO.getEnrollmentOffice().getId(),
                     activeDate, reservationTO.getShiftNo());

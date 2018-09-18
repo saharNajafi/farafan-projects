@@ -707,6 +707,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             sessionContext.setRollbackOnly();
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             sessionContext.setRollbackOnly();
             throw new ServiceException(BizExceptionCode.EOS_039, BizExceptionCode.GLB_008_MSG, e);
         }
@@ -1871,21 +1872,17 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
             if (cardRequestTO != null) {
                 ReservationTO reservationTO = getReservationService().findReservationByCrqId(cardRequestTO.getId());
-                EnrollmentOfficeTO enrollmentOfficeTO = null;
-                if (reservationTO != null) {
-                    enrollmentOfficeTO =
-                            getEnrollmentOfficeDAO().findEnrollmentOfficeById(reservationTO.getEnrollmentOffice().getId());
-                }
-                if (enrollmentOfficeTO != null) {
-                    if (Boolean.FALSE.equals(enrollmentOfficeTO.getActive())) {
+                if (reservationTO != null && reservationTO.getEnrollmentOffice() != null) {
+                    if (Boolean.FALSE.equals(reservationTO.getEnrollmentOffice().getActive())) {
                         result = Boolean.TRUE;
                     }
-                } else {
-                    OfficeActiveShiftTO activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
-                    OfficeCapacityTO officeCapacityTO = getOfficeCapacityService().findByEnrollmentOfficeId(enrollmentOfficeId);
-                    if (activeShiftTO != null && officeCapacityTO != null) {
-                        if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0)
-                            result = Boolean.TRUE;
+                }
+            } else {
+                OfficeActiveShiftTO activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
+                OfficeCapacityTO officeCapacityTO = activeShiftTO.getOfficeCapacity();
+                if (activeShiftTO != null && officeCapacityTO != null) {
+                    if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0) {
+                        result = Boolean.TRUE;
                     }
                 }
             }
@@ -1904,17 +1901,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      */
     public Boolean hasEnoughAccessibilityForSingleStageEnrollment(
             String climbingStairsAbility, String pupilIsVisible, Long enrollmentOfficeId) throws ServiceException {
-        boolean res = false;
-        List enrollmentOfficeTO;
         try {
-            enrollmentOfficeTO = getEnrollmentOfficeDAO().searchOfficeQueryByAccessibility(
+            return getEnrollmentOfficeDAO().hasOfficeQueryByAccessibility(
                     climbingStairsAbility, pupilIsVisible, enrollmentOfficeId);
-            if (enrollmentOfficeTO != null)
-                res = true;
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.EOS_094, BizExceptionCode.EOS_094_MSG, e);
         }
-        return res;
     }
 
     /**
@@ -1926,17 +1918,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      */
     public Boolean hasEnoughInstrumentsForSingleStageEnrollment(
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws ServiceException {
-        boolean res = false;
-        List enrollmentOfficeTO;
         try {
-            enrollmentOfficeTO =
-                    getEnrollmentOfficeDAO().searchOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeId);
-            if (enrollmentOfficeTO != null)
-                res = true;
+            return getEnrollmentOfficeDAO().hasOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeId);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.EOS_095, BizExceptionCode.EOS_095_MSG, e);
         }
-        return res;
     }
 
     private CitizenService getCitizenService() throws BaseException {

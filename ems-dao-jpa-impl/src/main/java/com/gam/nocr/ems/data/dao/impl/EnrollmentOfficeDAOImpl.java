@@ -559,13 +559,13 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 	}
 
 	@Override
-	public List searchOfficeQueryByAccessibility(
+	public Boolean hasOfficeQueryByAccessibility(
 			String climbingStairsAbility, String pupilIsVisible
 			, Long enrollmentOfficeId) throws DataException {
-		List enrollmentOfficeTOs = null;
+		BigDecimal count;
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			String selectQuery = " SELECT * " +
+			String selectQuery = " SELECT COUNT(1) " +
 					" FROM EMST_ENROLLMENT_OFFICE EOF" +
 					" WHERE EOF_ID =:ID ";
 			params.put("ID", enrollmentOfficeId);
@@ -574,22 +574,22 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			for (String paramName : params.keySet()) {
 				query = query.setParameter(paramName, params.get(paramName));
 			}
-			enrollmentOfficeTOs = query.getResultList();
+			count = (BigDecimal) query.getSingleResult();
 		} catch (Exception e) {
 			throw new DataException(DataExceptionCode.ENI_002,
 					DataExceptionCode.ENI_002_MSG, e);
 		}
-		return !enrollmentOfficeTOs.isEmpty() ? enrollmentOfficeTOs : null;
+		return count!=null && !count.equals(BigDecimal.ZERO);
 	}
 
 	@Override
-	public List searchOfficeQueryByInstruments(
+	public Boolean hasOfficeQueryByInstruments(
 			String abilityToGo, String hasTwoFingersScanable
 			, Long enrollmentOfficeId) throws BaseException {
-		List enrollmentOfficeTOs;
 		Map<String, Object> params = new HashMap<String, Object>();
+		BigDecimal count;
 		try {
-			String selectQuery = " SELECT * " +
+			String selectQuery = " SELECT COUNT(1) " +
 					" FROM EMST_ENROLLMENT_OFFICE EOF" +
 					" WHERE EOF_ID =:ID ";
 			params.put("ID", enrollmentOfficeId);
@@ -598,12 +598,12 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			for (String paramName : params.keySet()) {
 				query = query.setParameter(paramName, params.get(paramName));
 			}
-			enrollmentOfficeTOs = query.getResultList();
+			count = (BigDecimal) query.getSingleResult();
 		} catch (Exception e) {
 			throw new DataException(DataExceptionCode.ENI_005,
 					DataExceptionCode.ENI_005_MSG, e);
 		}
-		return !enrollmentOfficeTOs.isEmpty() ? enrollmentOfficeTOs : null;
+		return count!=null && !count.equals(BigDecimal.ZERO);
 	}
 
 	private String findByAccessibility(String climbingStairsAbility, String pupilIsVisible) {
