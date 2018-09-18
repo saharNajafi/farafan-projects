@@ -22,7 +22,12 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery( name = "RegistrationPayment.findByCitizenId"
                 , query = " select rp from RegistrationPaymentTO rp" +
-                " where rp.citizenTO.id =:citizenId")
+                " where rp.citizenTO.id =:citizenId"),
+        @NamedQuery( name = "RegistrationPayment.findByNationalId"
+                , query = "select crq.registrationPaymentTO from CardRequestTO crq  where crq.id " +
+                "= (select MAX(crqq.id) from CardRequestTO crqq" +
+                " where crqq.citizen.nationalID=:nationalId)")
+
 })
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_REGISTRATION_PAYMENT", allocationSize = 1)
 public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {

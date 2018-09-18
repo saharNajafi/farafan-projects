@@ -23,6 +23,8 @@ import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
 
+import java.util.Date;
+
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_REGISTRATION_PAYMENT;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 
@@ -102,11 +104,14 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 cardRequestPayment.setConfirmed(registrationPaymentTO.isConfirmed());
                 cardRequestPayment.setSucceed(registrationPaymentTO.isSucceed());
                 cardRequestPayment.setAmountPaid(registrationPaymentTO.getAmountPaid());
+                cardRequestPayment.setPaidBank(registrationPaymentTO.getPaidBank());
+                cardRequestPayment.setPaymentDate(new Date());
                 cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
                 cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
                 getCardRequestService().update(cardRequestTO);
             } else {
                 registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
+                registrationPaymentTO.setPaymentDate(new Date());
                 RegistrationPaymentTO registrationPayment = getRegistrationPaymentDAO().create(registrationPaymentTO);
                 cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
                 cardRequestTO.setPaidDate(registrationPayment.getPaymentDate());
@@ -146,13 +151,9 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public PaymentInfoWTO getPayAmountInfo(String nationalId) throws BaseException {
         try {
-            CardRequestTO lastRequestByNationalId = getCardRequestService().findLastRequestByNationalId(nationalId);
-            if (lastRequestByNationalId == null) {
-                throw new ServiceException(BizExceptionCode.ISC_002, BizExceptionCode.ISC_002_MSG, new Object[]{nationalId});
-            }
-            RegistrationPaymentTO registrationPaymentTO = lastRequestByNationalId.getRegistrationPaymentTO();
+            RegistrationPaymentTO registrationPaymentTO = getRegistrationPaymentDAO().findLastCardRequestPaymentByNationalId(nationalId);
             if (registrationPaymentTO == null) {
-                throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{lastRequestByNationalId.getId()});
+                throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
             }
             Long orderId = registrationPaymentTO.getOrderId();
             PaymentInfoWTO result = new PaymentInfoWTO();

@@ -2797,7 +2797,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_008_MSG = "card request with citizen national id {0} does not exists!";
 	public static final String ISC_009_MSG = "Edit Serial Number is forbidden now for card request: {0}";
 	public static final String ISC_010_MSG = "NationalId is Null";
-	public static final String ISC_011_MSG = "PreRegistration Payment not found for card request: {0}";
+	public static final String ISC_011_MSG = "PreRegistration Payment not found for national id: {0}";
 
 	//com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
 	public static final String RGP_020 = "EMS_S_REG_020";

@@ -48,7 +48,21 @@ public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPayme
             throw new DataException(DataExceptionCode.RGP_001,
                     DataExceptionCode.RGP_001_MSG, e);
         }
-        return registrationPaymentTO.size() !=0 ? registrationPaymentTO.get(0) : null;
+        return !registrationPaymentTO.isEmpty() ? registrationPaymentTO.get(0) : null;
+    }
+
+    @Override
+    public RegistrationPaymentTO findLastCardRequestPaymentByNationalId(String nationalId) throws DataException {
+        List<RegistrationPaymentTO> registrationPaymentTO;
+        try {
+            registrationPaymentTO =  em.createNamedQuery("RegistrationPayment.findByNationalId")
+                    .setParameter("nationalId", nationalId)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.RGP_003,
+                    DataExceptionCode.RGP_003_MSG, e);
+        }
+        return !registrationPaymentTO.isEmpty() ? registrationPaymentTO.get(0) : null;
     }
 
 
