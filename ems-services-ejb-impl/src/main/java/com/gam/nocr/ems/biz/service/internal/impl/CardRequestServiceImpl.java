@@ -1545,9 +1545,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 if (reservationHistoryCount >= 9)
                     state = labels.getString("state.multiReservation");
             }*/
-            if (cardRequestTO.getState() == CardRequestState.RESERVED) {
+            if (cardRequestTO.getState() == CardRequestState.RESERVED ||
+                    cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED ||
+                    cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS ) {
                 return findEnrollmentOffice(cardRequestTO);
             }
+
             if (cardRequestTO.getEstelam2Flag() == Estelam2FlagType.N) {
                 return findCardRequestHistory(cardRequestTO.getId());
             }
@@ -1570,8 +1573,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 return labels.getString("state.pendingIssuance");
             if (cardRequestTO.getState() == CardRequestState.CMS_PRODUCTION_ERROR)
                 return labels.getString("state.CMSProductionError");
-            if (cardRequestTO.getState() == CardRequestState.ISSUED)
-                return labels.getString("state.Issued");
+            if (cardRequestTO.getState() == CardRequestState.ISSUED) {
+                if(cardRequestTO.getCard().getReceiveDate() != null) {
+                    return labels.getString("state.Issued");
+                }else {
+                    return labels.getString("state.notReceipt");}
+            }
+
             if (cardRequestTO.getState() == CardRequestState.READY_TO_DELIVER)
                 return findReadyToDeliverState(cardRequestTO);
             switch (cardRequestTO.getState()) {
