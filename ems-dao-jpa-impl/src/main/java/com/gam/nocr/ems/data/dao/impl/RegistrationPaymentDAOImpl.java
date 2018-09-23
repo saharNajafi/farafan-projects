@@ -4,7 +4,6 @@ import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
-import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -20,7 +19,7 @@ import java.util.List;
 @Local(RegistrationPaymentDAOLocal.class)
 @Remote(RegistrationPaymentDAORemote.class)
 public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPaymentTO>
-implements  RegistrationPaymentDAOLocal, RegistrationPaymentDAORemote{
+        implements  RegistrationPaymentDAOLocal, RegistrationPaymentDAORemote{
 
     @Override
     @PersistenceContext(unitName = "EmsOraclePU")
@@ -49,7 +48,21 @@ implements  RegistrationPaymentDAOLocal, RegistrationPaymentDAORemote{
             throw new DataException(DataExceptionCode.RGP_001,
                     DataExceptionCode.RGP_001_MSG, e);
         }
-        return registrationPaymentTO.size() !=0 ? registrationPaymentTO.get(0) : null;
+        return !registrationPaymentTO.isEmpty() ? registrationPaymentTO.get(0) : null;
+    }
+
+    @Override
+    public RegistrationPaymentTO findLastCardRequestPaymentByNationalId(String nationalId) throws DataException {
+        List<RegistrationPaymentTO> registrationPaymentTO;
+        try {
+            registrationPaymentTO =  em.createNamedQuery("RegistrationPayment.findByNationalId")
+                    .setParameter("nationalId", nationalId)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.RGP_003,
+                    DataExceptionCode.RGP_003_MSG, e);
+        }
+        return !registrationPaymentTO.isEmpty() ? registrationPaymentTO.get(0) : null;
     }
 
 

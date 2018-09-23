@@ -589,8 +589,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
             office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
             office.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
-            office.setActive(enrollmentOfficeVTO.getActive() == null ? Boolean.FALSE : Boolean.TRUE);
-            office.setPostNeeded(enrollmentOfficeVTO.getPostNeeded() == null ? Boolean.FALSE : Boolean.TRUE);
+            office.setActive(enrollmentOfficeVTO.getActive());
+            office.setPostNeeded(enrollmentOfficeVTO.getPostNeeded());
             office.setPostDestinationCode(enrollmentOfficeVTO.getPostDestinationCode());
             if (EnrollmentOfficeType.NOCR.equals(office.getType()) &&
                     EnrollmentOfficeType.OFFICE.name().equals(enrollmentOfficeVTO.getOfficeType()))
@@ -1843,6 +1843,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      */
     public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
             String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException {
+        if (nationalId == null) {
+            throw new ServiceException(BizExceptionCode.EOS_100, BizExceptionCode.PRR_006_MSG);
+        }
         if (!hasEnoughCapacityToday(nationalId, enrollmentOfficeId)) {
             throw new ServiceException(BizExceptionCode.EOS_087, BizExceptionCode.EOS_087_MSG);
         }
@@ -1865,37 +1868,29 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      * @param enrollmentOfficeId
      */
     public Boolean hasEnoughCapacityToday(String nationalId, Long enrollmentOfficeId) throws ServiceException {
-        boolean res = false;
-        CitizenTO citizenTO;
-        CardRequestTO cardRequestTO = null;
-        ReservationTO reservationTO = null;
-        EnrollmentOfficeTO enrollmentOfficeTO = null;
-        OfficeActiveShiftTO activeShiftTO;
-        OfficeCapacityTO officeCapacityTO;
+        Boolean result = Boolean.FALSE;
         try {
-            citizenTO = getCitizenService().findByNationalId(nationalId);
-            if (citizenTO != null)
-                cardRequestTO = getCardRequestService().findByCitizenId(citizenTO);
-            if (cardRequestTO != null)
-                reservationTO = getReservationService().findReservationByCrqId(cardRequestTO.getId());
-            if (reservationTO != null)
-                enrollmentOfficeTO =
-                        getEnrollmentOfficeDAO().findEnrollmentOfficeById(reservationTO.getEnrollmentOffice().getId());
-            if (enrollmentOfficeTO != null) {
-                if (enrollmentOfficeTO.getActive() == false)
-                    res = true;
+            CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
+            if (cardRequestTO != null) {
+                ReservationTO reservationTO = getReservationService().findReservationByCrqId(cardRequestTO.getId());
+                if (reservationTO != null && reservationTO.getEnrollmentOffice() != null) {
+                    if (Boolean.FALSE.equals(reservationTO.getEnrollmentOffice().getActive())) {
+                        result = Boolean.TRUE;
+                    }
+                }
             } else {
-                activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
-                officeCapacityTO = getOfficeCapacityService().findByEnrollmentOfficeId(enrollmentOfficeId);
+                OfficeActiveShiftTO activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
+                OfficeCapacityTO officeCapacityTO = activeShiftTO.getOfficeCapacity();
                 if (activeShiftTO != null && officeCapacityTO != null) {
-                    if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0)
-                        res = true;
+                    if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0) {
+                        result = Boolean.TRUE;
+                    }
                 }
             }
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.EOS_091, BizExceptionCode.EOS_091_MSG, e);
+            throw new ServiceException(BizExceptionCode.EOS_091, BizExceptionCode.EOS_091_MSG, e, new Object[]{nationalId});
         }
-        return res;
+        return result;
     }
 
     /**
@@ -1907,17 +1902,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      */
     public Boolean hasEnoughAccessibilityForSingleStageEnrollment(
             String climbingStairsAbility, String pupilIsVisible, Long enrollmentOfficeId) throws ServiceException {
-        boolean res = false;
-        List enrollmentOfficeTO;
         try {
-            enrollmentOfficeTO = getEnrollmentOfficeDAO().searchOfficeQueryByAccessibility(
+            return getEnrollmentOfficeDAO().hasOfficeQueryByAccessibility(
                     climbingStairsAbility, pupilIsVisible, enrollmentOfficeId);
-            if (enrollmentOfficeTO != null)
-                res = true;
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.EOS_094, BizExceptionCode.EOS_094_MSG, e);
         }
-        return res;
     }
 
     /**
@@ -1929,17 +1919,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      */
     public Boolean hasEnoughInstrumentsForSingleStageEnrollment(
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws ServiceException {
-        boolean res = false;
-        List enrollmentOfficeTO;
         try {
-            enrollmentOfficeTO =
-                    getEnrollmentOfficeDAO().searchOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeId);
-            if (enrollmentOfficeTO != null)
-                res = true;
+            return getEnrollmentOfficeDAO().hasOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeId);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.EOS_095, BizExceptionCode.EOS_095_MSG, e);
         }
-        return res;
     }
 
     private CitizenService getCitizenService() throws BaseException {
@@ -2013,7 +1997,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         OfficeActiveShiftTO activeShiftTO;
         activeShiftTO = findActiveShiftByOfficeAndDateAndShift(officeId, activeDate, shiftNo);
         if (activeShiftTO == null) {
-            throw new ServiceException(BizExceptionCode.EMS_REG_012, BizExceptionCode.EMS_REG_012_MSG, new Object[]{officeId, String.valueOf(activeDate), shiftNo});
+            throw new ServiceException(BizExceptionCode.EOS_086, BizExceptionCode.EOS_086_MSG, new Object[]{officeId, String.valueOf(activeDate), shiftNo});
         }
         decreaseActiveShiftRemainingCapacity(activeShiftTO);
         if (!cardRequest.getReservations().isEmpty()) {
@@ -2031,7 +2015,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             if (activeShiftTO != null) {
                 increaseActiveShiftRemainingCapacity(activeShiftTO);
             } else {
-                logger.error(BizExceptionCode.EMS_REG_011_LOG_MSG, new Object[]{String.valueOf(officeId), String.valueOf(activeDate), shiftNo});
+                logger.error(BizExceptionCode.EOS_097_MSG, new Object[]{String.valueOf(officeId), String.valueOf(activeDate), shiftNo});
                 //throw new ServiceException(BizExceptionCode.EMS_REG_011, BizExceptionCode.EMS_REG_011_MSG, new Object[]{officeId, String.valueOf(activeDate), shiftNo});
             }
         }
@@ -2043,7 +2027,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     private void decreaseActiveShiftRemainingCapacity(OfficeActiveShiftTO activeShiftTO) throws BaseException {
         if (activeShiftTO.getRemainCapacity() <= 0) {
-            throw new ServiceException(BizExceptionCode.EMS_REG_010, BizExceptionCode.EMS_REG_010_MSG, new Object[]{activeShiftTO.getId()});
+            throw new ServiceException(BizExceptionCode.EOS_090, BizExceptionCode.EOS_090_MSG, new Object[]{activeShiftTO.getId()});
         }
         getOfficeActiveShiftService().editActiveShiftRemainCapacity(activeShiftTO.getId(), activeShiftTO.getRemainCapacity() - 1);
     }

@@ -7,12 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -422,6 +417,14 @@ public class EmsUtil {
             logger.error(e.getMessage(), e);
             return profileDefaultValue;
         }
+    }
+
+    /**
+     * Create Random Payment Order ID
+     * @return Payment OrderID
+     */
+    public static Long getRandomPaymentOrderId() {
+        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
     }
 
     /**

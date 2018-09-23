@@ -12,14 +12,18 @@ import com.gam.nocr.ems.biz.service.CitizenService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.RegistrationPaymentDAO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
+import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
+
+import java.util.Date;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_REGISTRATION_PAYMENT;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
@@ -34,6 +38,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 public class RegistrationPaymentServiceImpl extends EMSAbstractService
         implements RegistrationPaymentServiceLocal, RegistrationPaymentServiceRemote {
 
+    private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_CARD = "200000";
 
     public RegistrationPaymentTO addRegistrationPayment(RegistrationPaymentTO entity) throws BaseException {
 
@@ -85,22 +90,36 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
      * ثبت پرداخت
      *
      * @param registrationPaymentTO
-     * @param preRegistrationId
      * @param nationalId
      */
-    public void savePaymentInfo(RegistrationPaymentTO registrationPaymentTO, String nationalId, long preRegistrationId) throws BaseException {
+    public void savePaymentInfo(RegistrationPaymentTO registrationPaymentTO, String nationalId) throws BaseException {
         try {
             CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
-            registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
-            RegistrationPaymentTO registrationPayment = getRegistrationPaymentDAO().create(registrationPaymentTO);
-            if (registrationPayment != null) {
+            RegistrationPaymentTO cardRequestPayment = cardRequestTO.getRegistrationPaymentTO();
+            if (cardRequestPayment != null) {
+                cardRequestPayment.setResCode(registrationPaymentTO.getResCode());
+                cardRequestPayment.setRrn(registrationPaymentTO.getRrn());
+                cardRequestPayment.setSystemTraceNo(registrationPaymentTO.getSystemTraceNo());
+                cardRequestPayment.setDescription(registrationPaymentTO.getDescription());
+                cardRequestPayment.setConfirmed(registrationPaymentTO.isConfirmed());
+                cardRequestPayment.setSucceed(registrationPaymentTO.isSucceed());
+                cardRequestPayment.setAmountPaid(registrationPaymentTO.getAmountPaid());
+                cardRequestPayment.setPaidBank(registrationPaymentTO.getPaidBank());
+                cardRequestPayment.setPaymentDate(new Date());
+                cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
+                cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
+                getCardRequestService().update(cardRequestTO);
+            } else {
+                registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
+                registrationPaymentTO.setPaymentDate(new Date());
+                RegistrationPaymentTO registrationPayment = getRegistrationPaymentDAO().create(registrationPaymentTO);
                 cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
                 cardRequestTO.setPaidDate(registrationPayment.getPaymentDate());
                 cardRequestTO.setPaid(registrationPayment.isSucceed());
                 getCardRequestService().update(cardRequestTO);
             }
-        } catch (BaseException e) {
-           throw new ServiceException(BizExceptionCode.EMS_REG_020, BizExceptionCode.EMS_REG_020_MSG, e);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.RGP_020, BizExceptionCode.RGP_020_MSG, e);
         }
     }
 
@@ -117,8 +136,8 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
             if (cardRequestTO != null) {
                 cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
+                getCardRequestService().update(cardRequestTO);
             }
-            getCardRequestService().update(cardRequestTO);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -129,8 +148,33 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
      *
      * @param nationalId
      */
-    public Integer getPayAmount(String nationalId) {
-        return Integer.valueOf(Configuration.getProperty("payAmount"));
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public PaymentInfoWTO getPayAmountInfo(String nationalId) throws BaseException {
+        try {
+            RegistrationPaymentTO registrationPaymentTO = getRegistrationPaymentDAO().findLastCardRequestPaymentByNationalId(nationalId);
+            if (registrationPaymentTO == null) {
+                throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
+            }
+            Long orderId = registrationPaymentTO.getOrderId();
+            PaymentInfoWTO result = new PaymentInfoWTO();
+            // TODO implement dynamic payment amount based on card-request state history
+            //first card, delivered, multiple delivered,...
+            String paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_CARD,
+                    DEFAULT_PAYMENT_AMOUNT_FIRST_CARD);
+            Integer amount = Integer.valueOf(paymentAmount);
+            result.setPaymentAmount(amount);
+            result.setOrderId(String.valueOf(orderId));
+            result.setPaymentCode(Configuration.getProperty("PAYMENT.CODE"));
+            //todo add payment code  & order id
+
+            return result;
+        } catch (Exception e) {
+            if (e instanceof ServiceException) {
+                throw (ServiceException) e;
+            }
+            throw new ServiceException(BizExceptionCode.RGP_002,
+                    BizExceptionCode.RGP_002_MSG, e);
+        }
     }
 
 

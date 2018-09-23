@@ -15,7 +15,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_002_MSG = "Cannot instantiate service {}";
     public static final String GLB_003_MSG = " Error in operation ";
     public static final String GLB_004_MSG = "Cannot initialize Delegator";
-    public static final String GLB_005_MSG = "Input argument is null";
+    public static final String GLB_005_MSG = "personalInfoWTO Input argument is null";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     //com.gam.nocr.ems.web.action.StateProviderAction
@@ -676,6 +676,15 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public  static final String CPW_007 = "EMS_W_CPW_007";
     public  static final String CPW_008 = "EMS_W_CPW_008";
     public  static final String CPW_009 = "EMS_W_CPW_009";
+    public  static final String CPW_010 = "EMS_W_CPW_010";
+    public  static final String CPW_011 = "EMS_W_CPW_011";
+    public  static final String CPW_012 = "EMS_W_CPW_012";
+    public  static final String CPW_013 = "EMS_W_CPW_013";
+    public  static final String CPW_014 = "EMS_W_CPW_014";
+    public  static final String CPW_015 = "EMS_W_CPW_015";
+    public  static final String CPW_016 = "EMS_W_CPW_016";
+    public  static final String CPW_017 = "EMS_W_CPW_017";
+    public  static final String CPW_018 = "EMS_W_CPW_018";
     public  static final String CPW_001_MSG = "Unable to check the possibility of inserting single stag";
     public  static final String CPW_002_MSG = "Unable to check enrollment office eligibility for single stage enrollment";
     public static final String CPW_003_MSG = "Invalid Parameter -> nationalId :";
@@ -684,6 +693,15 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_007_MSG = "IMS SubSystem unable/has problem to respond now";
     public static final String CPW_008_MSG = "RegistrationPaymentWTO argument is null";
     public static final String CPW_009_MSG = "Error occurred in transferring Single-Stage-PreRegistration";
+    public static final String CPW_010_MSG = "Error occurred in save Payment Info";
+    public static final String CPW_011_MSG = "Error occurred in get Payment Amount";
+    public static final String CPW_012_MSG = "Error occurred in has Citizen Successful Payment";
+    public static final String CPW_013_MSG = "Error occurred in transfer Single Stage PreRegistration To Ems";
+    public static final String CPW_014_MSG = "Error occurred in retrieve Payment orderId";
+    public static final String CPW_015_MSG = "Error occurred assign Payment To Enrollment";
+    public static final String CPW_016_MSG = "an error occurred on convert To registrationPaymentTO TO  RegistrationPaymentTO";
+    public static final String CPW_017_MSG = "an error occurred on convert To singlePreRegistrationWTO TO ReservationTO";
+    public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
 
 
 

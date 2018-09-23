@@ -80,12 +80,12 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
 			String searchString, int from, int to, String orderBy,
 			Map additionalParams) throws BaseException;
 
-    public EnrollmentOfficeTO findEnrollmentOfficeById(Long eofId) throws BaseException;
+    EnrollmentOfficeTO findEnrollmentOfficeById(Long eofId) throws BaseException;
 
-    List searchOfficeQueryByAccessibility(
+    Boolean hasOfficeQueryByAccessibility(
             String climbingStairsAbility, String pupilIsVisible, Long enrollmentOfficeId) throws BaseException;
 
-    List searchOfficeQueryByInstruments(
+    Boolean hasOfficeQueryByInstruments(
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws BaseException;
 
     List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException;

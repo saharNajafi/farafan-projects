@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
@@ -3005,7 +3006,7 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		StringBuffer queryBuffer = new StringBuffer();
 		try {
 			queryBuffer
-					.append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction  ")
+					.append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode  ")
 					.append(" from ( ")
 					.append("select ct.ctz_first_name_fa as firstname, ct.ctz_surname_fa as lastname, ")
 					.append("(select inf.czi_father_first_name_fa from emst_citizen_info inf where inf.czi_id = ct.ctz_id) fathername, ")
@@ -3038,9 +3039,11 @@ CardRequestDAOLocal, CardRequestDAORemote {
 					.append("r.crq_paid_date as paidDate, ")
 					.append("r.crq_requested_action as requestedAction, ")
 					.append("r.crq_type as requestType, ")
-					.append("(case when r.crq_origin= 'V' then 1 else 0 end) hasVipImage ")
+					.append("(case when r.crq_origin= 'V' then 1 else 0 end) hasVipImage, ")
+					.append("pay.rpy_is_succeed paymentSuccess, pay.rpy_res_code  paymentResCode ")
 					.append("from emst_card_request r inner join emst_citizen ct ")
 					.append("on r.crq_citizen_id = ct.ctz_id ")
+					.append("left join emst_registration_payment pay on r.crq_payment_id = pay.rpy_id ")
 					.append("where r.CRQ_ESTELAM2_FLAG = 'V' ");
 
 			Set<String> parts = criteria.getParts();
@@ -3416,6 +3419,12 @@ CardRequestDAOLocal, CardRequestDAORemote {
 
 					obj.setPaidDate(data[15] == null ? null : (Timestamp) data[15]);
 					obj.setRequestedAction(data[16] == null ? null : data[16].toString());
+					Boolean isSuccessfulPayment =  Boolean.FALSE;
+					if (data[17]!=null && "1".equals(data[17].toString())){
+						isSuccessfulPayment = Boolean.TRUE;
+					}
+					String paymentResCode = data[18]==null ? null : data[18].toString();
+					obj.setPaymentStatus(isSuccessfulPayment && "0".equals(paymentResCode));
 					result.add(obj);
 				}
 			}
@@ -4776,6 +4785,7 @@ CardRequestDAOLocal, CardRequestDAORemote {
 			throws BaseException {
 		List<CardRequestTO> cardRequestTOList;
 		try {
+			nationalId = StringUtils.leftPad(nationalId, 10, "0");
 			cardRequestTOList = em.createNamedQuery("CardRequestTO.findLastRequestByNationalId")
 					.setParameter("nationalId", nationalId)
 					.getResultList();

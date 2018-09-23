@@ -192,7 +192,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PDI_010_MSG = "violate foreign key constraint, the person already has profile";
     public static final String PDI_017_MSG = "violate foreign key constraint, the person already assigned as manager";
     public static final String PDI_025_MSG = "Integrity constraint violated, no enrollment office with this id exists";
-    
+
 
     // com.gam.nocr.ems.data.dao.impl.SMSDAOImpl
     public static final String SDI_001 = "EMS_D_SDI_001";
@@ -201,7 +201,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
 
     // com.gam.nocr.ems.data.dao.impl.EncryptedCardRequestDAOImpl
     public static final String ECI_001 = "EMS_D_ECI_001";
-    
+
     // com.gam.nocr.ems.data.dao.impl.ImsEstelamImageDAOImpl
     public static final String IDI_001 = "EMS_D_IDI_001";
     public static final String IDI_002 = "EMS_D_IDI_002";
@@ -412,7 +412,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DSI_072 = "EMS_D_DSI_072";
     public static final String DSI_073 = "EMS_D_DSI_073";
     public static final String DSI_074 = "EMS_D_DSI_074";
-//    public static final String DSI_074 = "EMS_D_DSI_074";
+    //    public static final String DSI_074 = "EMS_D_DSI_074";
     public static final String DSI_075 = "EMS_D_DSI_075";
     public static final String DSI_076 = "EMS_D_DSI_076";
     public static final String DSI_077 = "EMS_D_DSI_077";
@@ -428,7 +428,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DSI_070_MSG = "Can not find card request with specified cmsId";
     public static final String DSI_072_MSG = "Lost cards count should be larger than zero";
     public static final String DSI_073_MSG = "This situation should not be happened!";
-    
+
     //
     public static final String DSI_001_MSG = "violate unique constraint, container id or container type or sender id already exists";
     public static final String DSI_002_MSG = "violate unique constraint, card serial number already exists";
@@ -525,7 +525,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_074 = "EMS_D_CDI_074";
     public static final String CDI_075 = "EMS_D_CDI_075";
     public static final String CDI_076 = "EMS_D_CDI_076";
-	public static final String CDI_077 = "EMS_D_CDI_077";
+    public static final String CDI_077 = "EMS_D_CDI_077";
     public static final String CDI_078 = "EMS_D_CDI_078";
     public static final String CDI_079 = "EMS_D_CDI_079";
     public static final String CDI_080 = "EMS_D_CDI_080";
@@ -613,19 +613,19 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DCT_008_MSG = "Unable to delete doc types";
     public static final String DCT_010_MSG = "Unique constraint violation, document type with this name already exists";
     public static final String DCT_012_MSG = "Unique constraint violation, document type with this name already exists";
-    public static final String DCT_014_MSG = "Document type ids not given for delete";   
-    
+    public static final String DCT_014_MSG = "Document type ids not given for delete";
+
 
     // com.gam.nocr.ems.data.dao.impl.LocationDAOImpl
     public static final String LDI_001 = "EMS_D_LDI_001";
     public static final String LDI_002 = "EMS_D_LDI_002";
     public static final String LDI_003 = "EMS_D_LDI_003";
     public static final String LDI_004 = "EMS_D_LDI_004";
-    
-    
+
+
     // com.gam.nocr.ems.data.dao.impl.CardRequestBlobsDAOImpl
     public static final String CRB_001 = "EMS_D_CRB_001";
-    
+
     // com.gam.nocr.ems.data.dao.impl.ServiceDocumentTypeDAOImpl
     public static final String STI_001 = "EMS_D_STI_001";
     public static final String STI_002 = "EMS_D_STI_002";
@@ -940,7 +940,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String BDI_005_MSG = "Unable to remove finger biometric data which belong to the citizen with id {}.";
     public static final String BDI_006_MSG = "unique constraint violated. current biometric type already exists for this citizen. citizen id is : ";
     public static final String BDI_007_MSG = "Unable to remove face biometric data which belong to the citizen with id {}.";
-    
+
     //com.gam.nocr.ems.data.dao.BiometricInfoDAOImpl
     public static final String BII_001 = "EMS_D_BII_001";
     public static final String BII_002 = "EMS_D_BII_002";
@@ -1022,45 +1022,45 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
 
     // com.gam.nocr.ems.data.dao.ReligionDAOImpl
     public static final String RLG_001 = "EMS_D_RLG_001";
-    
- // com.gam.nocr.ems.data.dao.HolidayDAOImpl
+
+    // com.gam.nocr.ems.data.dao.HolidayDAOImpl
     public static final String HDI_001 = "EMS_D_HOL_001";
     public static final String HDI_001_MSG = "violate unique constraint, holidayDate already exists";
-    
+
     // com.gam.nocr.ems.data.dao.impl.MessageDAOImpl
     public static final String MDI_001 = "EMS_D_MDI_001";
     public static final String MDI_002 = "EMS_D_MDI_002";
     public static final String MDI_001_MSG = "unable to to save message";
     public static final String MDI_002_MSG = "unable to get the count of message";
-    
+
     // com.gam.nocr.ems.data.dao.impl.MessagePersonDAOImpl
     public static final String MPI_001 = "EMS_D_MPI_001";
     public static final String MPI_002 = "EMS_D_MPI_002";
     public static final String MPI_003 = "EMS_D_MPI_003";
     public static final String MPI_002_MSG = "unable to check the message has been inserted or not";
     public static final String MPI_003_MSG = "unable to change state of the message from unread to read";
-    
+
     // com.gam.nocr.ems.data.dao.impl.MessageDestinationDAOImpl
     public static final String MDD_001 = "EMS_D_MDD_001";
     public static final String MDD_002 = "EMS_D_MDD_002";
     public static final String MDD_001_MSG = "Unable to change state of the message from unread to read";
     public static final String MDD_002_MSG = "Unable to find message for message id {}";
-    
+
     // com.gam.nocr.ems.data.dao.impl.AboutDAOImpl
     public static final String ADI_001 = "EMS_D_ADI_001";
     public static final String ADI_002 = "EMS_D_ADI_002";
     public static final String ADI_002_MSG = "The operation to get aboutTo failed";
-    
+
     // com.gam.nocr.ems.data.dao.impl.PhotoVipDAOImpl
     public static final String PHI_001 = "EMS_D_PHI_001";
-    
+
     // com.gam.nocr.ems.data.dao.impl.NistHeaderDAOImpl
     public static final String NHD_001 = "EMS_D_NHD_001";
     public static final String NHD_002 = "EMS_D_NHD_002";
     public static final String NHD_001_MSG = "The operation to save nist header data failed";
     public static final String NHD_002_MSG = "The operation to find nist header data failed";
 
-//	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
+    //	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
     public static final String WST_002 = "EMS_WST_002";
     public static final String WST_002_MSG = "WorkStationId doesn't exist";
 
@@ -1091,10 +1091,12 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.data.dao.impl.RegistrationPaymentDAOImpl.java
     public static final String RGP_001 = "EMS_D_RGP_001";
     public static final String RGP_002 = "EMS_D_RGP_002";
+    public static final String RGP_003 = "EMS_D_RGP_003";
     public static final String RGP_001_MSG = "the findByCitizenId operation could not be executed";
     public static final String RGP_002_MSG = "unable to to save registrationPayment";
+    public static final String RGP_003_MSG = "unable to to findLastCardRequestPaymentByNationalId";
 
-   //com.gam.nocr.ems.util.CrsChecker.java
+    //com.gam.nocr.ems.util.CrsChecker.java
     public static final String REG_07 = "REG_07";
     public static final String REG_08 = "REG_08";
     public static final String REG_09 = "REG_09";

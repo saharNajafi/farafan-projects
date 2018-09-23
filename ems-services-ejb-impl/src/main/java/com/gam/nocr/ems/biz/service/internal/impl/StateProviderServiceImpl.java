@@ -259,7 +259,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
 
                     }
 
-                } else if (stateId.endsWith("featureExtractorID")) {
+                } /*else if (stateId.endsWith("featureExtractorID")) {
                     if (!StringUtils.isEmpty(officeSettingTO.getFeatureExtractorID()))
                         stateProviderTO.setValue(officeSettingTO.getFeatureExtractorID());
                     else
@@ -271,7 +271,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     else
 
                         stateProviderTO.setValue("");
-                } else {
+                }*/ else {
                     value = (String) profileManager.getProfile(ProfileKeyName.STATE_ROOT + "." + stateId, true, null, null);
                     if (value != null && value.trim().length() > 0)
                         stateProviderTO.setValue(value);

@@ -1,26 +1,5 @@
 package com.gam.nocr.ems.biz.service.external.impl.ims;
 
-import java.net.URL;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.xml.namespace.QName;
-
-import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-
-import servicePortUtil.ServicePorts;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -32,43 +11,35 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
-import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.commons.core.util.SecureString;
 import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.BusinessLogService;
 import com.gam.nocr.ems.biz.service.IMSManagementService;
-import com.gam.nocr.ems.biz.service.internal.impl.IMSManagementServiceLocal;
-import com.gam.nocr.ems.config.BizExceptionCode;
-import com.gam.nocr.ems.config.ConstValues;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
-import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.CitizenDAO;
 import com.gam.nocr.ems.data.dao.ExceptionCodeDAO;
-import com.gam.nocr.ems.data.domain.BusinessLogTO;
-import com.gam.nocr.ems.data.domain.ChildTO;
-import com.gam.nocr.ems.data.domain.CitizenInfoTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.SpouseTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.PersonEnquiryVTO;
-import com.gam.nocr.ems.data.enums.BusinessLogAction;
-import com.gam.nocr.ems.data.enums.BusinessLogActionAttitude;
-import com.gam.nocr.ems.data.enums.BusinessLogEntity;
-import com.gam.nocr.ems.data.enums.Gender;
-import com.gam.nocr.ems.data.enums.ImsEstelamImageType;
+import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.jayway.jsonpath.JsonPath;
-
-import est.Estelam;
-import est.EstelamPort;
-import est.EstelamResult;
-import est.EstelamResult3;
-import est.EstelamResultC;
-import est.ImageResult;
-import est.ImsService;
-import est.ImsServiceService;
-import est.PersonInfo;
+import est.*;
 import gampooya.tools.date.DateUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import servicePortUtil.ServicePorts;
+
+import javax.annotation.Resource;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.xml.namespace.QName;
+import java.lang.Exception;
+import java.net.URL;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -77,16 +48,16 @@ import gampooya.tools.date.DateUtil;
 @Local(NOCRIMSOnlineServiceLocal.class)
 @Remote(NOCRIMSOnlineServiceRemote.class)
 public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMSOnlineServiceLocal, NOCRIMSOnlineServiceRemote {
-	
-	
-	@Resource
-	SessionContext sessionContext;
+
+
+    @Resource
+    SessionContext sessionContext;
 
     private static final Logger logger = BaseLog.getLogger(NOCRIMSOnlineServiceImpl.class);
     private static final Logger ImsLogger = BaseLog.getLogger("ImsLogger");
     private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
     private static final Logger estelam2Logger = BaseLog
-			.getLogger("Estelam2Logger");
+            .getLogger("Estelam2Logger");
 
     private static final String DEFAULT_ONLINE_WSDL_URL = "http://webservice-idc.nocrservices.org/iwsd/Estelam?wsdl";
     private static final String DEFAULT_ONLINE_NAMESPACE = "http://est";
@@ -154,17 +125,17 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
             ImsLogger.debug("=======================================================================================");
             logger.debug("=======================================================================================");
             ImsLogger.debug("=======================================================================================");
-            
+
             //Commented for ThreadLocal
             //EstelamPort port = new Estelam(new URL(wsdlUrl), new QName(namespace, serviceName)).getEstelamPort();
             EstelamPort port = ServicePorts.getEstelamPort();
-			if (port == null) {
-				threadLocalLogger.debug("**************************** new EstelamPort in Estelam getService()");
-				port = new Estelam(new URL(wsdlUrl), new QName(namespace, serviceName)).getEstelamPort();
-				ServicePorts.setEstelamPort(port);
-			} else {
-				threadLocalLogger.debug("***************************** using EstelamPort from ThradLocal");
-			}
+            if (port == null) {
+                threadLocalLogger.debug("**************************** new EstelamPort in Estelam getService()");
+                port = new Estelam(new URL(wsdlUrl), new QName(namespace, serviceName)).getEstelamPort();
+                ServicePorts.setEstelamPort(port);
+            } else {
+                threadLocalLogger.debug("***************************** using EstelamPort from ThradLocal");
+            }
             EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
             return port;
         } catch (Exception e) {
@@ -172,23 +143,23 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
             throw new ServiceException(BizExceptionCode.NIO_002, BizExceptionCode.GLB_002_MSG, e);
         }
     }
-    
-    
+
+
     private IMSManagementService getImsManagementervice()
-			throws BaseException {
-		ServiceFactory factory = ServiceFactoryProvider.getServiceFactory();
-		IMSManagementService imsManagementService = null;
-		try {
-			imsManagementService = (IMSManagementService) factory
-					.getService(EMSLogicalNames
-							.getServiceJNDIName(EMSLogicalNames.SRV_IMS_MANAGEMENT), EmsUtil.getUserInfo(userProfileTO));
-		} catch (ServiceFactoryException e) {
-			throw new DelegatorException(BizExceptionCode.IMD_001,
-					BizExceptionCode.GLB_002_MSG, e,
-					EMSLogicalNames.SRV_IMS_MANAGEMENT.split(","));
-		}
-		return imsManagementService;
-	}
+            throws BaseException {
+        ServiceFactory factory = ServiceFactoryProvider.getServiceFactory();
+        IMSManagementService imsManagementService = null;
+        try {
+            imsManagementService = (IMSManagementService) factory
+                    .getService(EMSLogicalNames
+                            .getServiceJNDIName(EMSLogicalNames.SRV_IMS_MANAGEMENT), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.IMD_001,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_IMS_MANAGEMENT.split(","));
+        }
+        return imsManagementService;
+    }
 
     /**
      * @param logAction
@@ -437,300 +408,294 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
             }
             citizenTO.setCitizenInfo(citizenInfoTO);
         } catch (Exception e) {
-           throw new ServiceException(BizExceptionCode.NIO_020, BizExceptionCode.NIO_020_MSG + e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.NIO_020, BizExceptionCode.NIO_020_MSG + e.getMessage(), e);
         }
     }
-    
-    
+
+
     private ExceptionCodeDAO getExceptionCodeDAO() throws BaseException {
-		try {
-			return DAOFactoryProvider.getDAOFactory()
-					.getDAO(EMSLogicalNames
-							.getDaoJNDIName(EMSLogicalNames.DAO_ExceptionCodeDAO));
-		} catch (DAOFactoryException e) {
-			throw new ServiceException(BizExceptionCode.EXC_001,
-					BizExceptionCode.GLB_001_MSG, e,
-					EMSLogicalNames.DAO_ExceptionCodeDAO.split(","));
-		}
-	}
-    
-	private CitizenDAO getCitizenDAO() throws BaseException {
-		DAOFactory factory = DAOFactoryProvider.getDAOFactory();
-		CitizenDAO citizenDAO = null;
-		try {
-			citizenDAO = factory.getDAO(EMSLogicalNames
-					.getDaoJNDIName(EMSLogicalNames.DAO_CITIZEN));
-		} catch (DAOFactoryException e) {
-			throw new ServiceException(BizExceptionCode.MMS_027,
-					BizExceptionCode.GLB_001_MSG, e,
-					EMSLogicalNames.DAO_CITIZEN.split(","));
-		}
-		return citizenDAO;
-	}
+        try {
+            return DAOFactoryProvider.getDAOFactory()
+                    .getDAO(EMSLogicalNames
+                            .getDaoJNDIName(EMSLogicalNames.DAO_ExceptionCodeDAO));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.EXC_001,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    EMSLogicalNames.DAO_ExceptionCodeDAO.split(","));
+        }
+    }
 
-    
-    
-    
-	private CitizenTO setCitizenDataNew(HashMap<String, String> personInfoMap,CitizenTO ctz, EstelamResultC estelam3sc)
-			throws Exception {
-		try {	
-			
-			
-			CitizenTO citizenTO = getCitizenDAO().findByNationalID(ctz.getNationalID());
-			CitizenInfoTO citizenInfoTO = citizenTO.getCitizenInfo();
-			
-			EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
-			String nationalId = StringUtils.leftPad(String.valueOf(estelamResult3.getNin()), 10, "0");
-			if (CITIZEN_KEY.equals(personInfoMap.get(nationalId))) {
-				citizenTO.setNationalID(nationalId);
-				
-				
-				if (estelamResult3.getShenasnameNo() >= 0) {
-					if (estelamResult3.getShenasnameNo() == 0) {						
-						citizenInfoTO.setBirthCertificateId(nationalId);
-					} else {
-						citizenInfoTO.setBirthCertificateId(String.valueOf(estelamResult3.getShenasnameNo()));
-					}
+    private CitizenDAO getCitizenDAO() throws BaseException {
+        DAOFactory factory = DAOFactoryProvider.getDAOFactory();
+        CitizenDAO citizenDAO = null;
+        try {
+            citizenDAO = factory.getDAO(EMSLogicalNames
+                    .getDaoJNDIName(EMSLogicalNames.DAO_CITIZEN));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(BizExceptionCode.MMS_027,
+                    BizExceptionCode.GLB_001_MSG, e,
+                    EMSLogicalNames.DAO_CITIZEN.split(","));
+        }
+        return citizenDAO;
+    }
 
-				}
-				else
-				{
-					throw new ServiceException(BizExceptionCode.NIO_021,BizExceptionCode.NIO_033_MSG);
-					
-				}
-				
-				
-				
-				if (estelamResult3.getBirthDate() != 0) {
-					String strDate = String.valueOf(estelamResult3.getBirthDate());
-					//validate of birthDate 
-					if (checkValidateDate(strDate)) {
-						
-						citizenInfoTO.setBirthDateSolar(strDate.substring(0, 4)
-								+ "/"
-								+ strDate.substring(4, 6)
-								+ "/"
-								+ strDate.substring(6, 8));
-						citizenInfoTO.setBirthDateGregorian(DateUtil.convert(citizenInfoTO.getBirthDateSolar(), DateUtil.JALALI));
-						citizenInfoTO.setBirthDateLunar(DateUtil.convert(citizenInfoTO.getBirthDateGregorian(), DateUtil.HIJRI));
 
-					} else {
-						throw new ServiceException(BizExceptionCode.NIO_022,BizExceptionCode.NIO_037_MSG);
-						
-						}
-					} else {
-						throw new ServiceException(BizExceptionCode.NIO_022,BizExceptionCode.NIO_037_MSG);
-						
-					}
+    private CitizenTO setCitizenDataNew(HashMap<String, String> personInfoMap, CitizenTO ctz, EstelamResultC estelam3sc)
+            throws Exception {
+        try {
 
-					//Shenasname Serial
-					String serialShenasname = String.valueOf(estelamResult3.getShenasnameSerial());				
-					if (serialShenasname.length() == 6 && !serialShenasname.equals("000000")) {
-						citizenInfoTO.setBirthCertificateSeries(String.valueOf(estelamResult3.getShenasnameSerial()));
-					} else {
-						throw new ServiceException(BizExceptionCode.NIO_023,BizExceptionCode.NIO_036_MSG);
-						
-					}					
-					
-					
-					String firstName = new String(estelamResult3.getName());
-					if (EmsUtil.checkString(firstName) && !firstName.equals(ConstValues.DEFAULT_NAMES_FA)) {
-						
-						citizenTO.setFirstNamePersian(new String(estelamResult3.getName(), "UTF-8"));
-					} else {
-						
-						throw new ServiceException(BizExceptionCode.NIO_024,BizExceptionCode.NIO_024_MSG);
-					}
 
-					String familyName = new String(estelamResult3.getFamily());
-					if (EmsUtil.checkString(familyName) && !familyName.equals(ConstValues.DEFAULT_NAMES_FA) ) {
-						citizenTO.setSurnamePersian(new String(estelamResult3.getFamily(), "UTF-8"));
-					} else  {					
+            CitizenTO citizenTO = getCitizenDAO().findByNationalID(ctz.getNationalID());
+            CitizenInfoTO citizenInfoTO = citizenTO.getCitizenInfo();
 
-						throw new ServiceException(BizExceptionCode.NIO_025,BizExceptionCode.NIO_025_MSG);
-					}
+            EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
+            String nationalId = StringUtils.leftPad(String.valueOf(estelamResult3.getNin()), 10, "0");
+            if (CITIZEN_KEY.equals(personInfoMap.get(nationalId))) {
+                citizenTO.setNationalID(nationalId);
 
-					String fatherName = new String(estelamResult3.getFatherName());
-					if (EmsUtil.checkString(fatherName) && !fatherName.equals(ConstValues.DEFAULT_NAMES_FA)) {
-						citizenInfoTO.setFatherFirstNamePersian(new String(estelamResult3.getFatherName(), "UTF-8"));
-					} else {
-						throw new ServiceException(BizExceptionCode.NIO_026,BizExceptionCode.NIO_038_MSG);						
-					}
 
-					if (estelamResult3.getGender() == 0 || estelamResult3.getGender() == 1) {						
-						
-						citizenInfoTO.setGender(Gender.convertFromIMSEstelamResultGender(estelamResult3.getGender()));
-					
-					} else {
-						throw new ServiceException(BizExceptionCode.NIO_027,BizExceptionCode.NIO_039_MSG);						
-					}
-					
-					logger.info("\n\nCitizen : " + "\nCitizenName : "
-							+ citizenTO.getFirstNamePersian() + " "
-							+ citizenTO.getSurnamePersian() + ""
-							+ "\n CitizenNationalId : " + citizenTO.getNationalID()
-							+ "\n");
-					ImsLogger.info("\n\nCitizen : " + "\nCitizenName : "
-							+ citizenTO.getFirstNamePersian() + " "
-							+ citizenTO.getSurnamePersian() + ""
-							+ "\n CitizenNationalId : " + citizenTO.getNationalID()
-							+ "\n");
+                if (estelamResult3.getShenasnameNo() >= 0) {
+                    if (estelamResult3.getShenasnameNo() == 0) {
+                        citizenInfoTO.setBirthCertificateId(nationalId);
+                    } else {
+                        citizenInfoTO.setBirthCertificateId(String.valueOf(estelamResult3.getShenasnameNo()));
+                    }
 
-				
-				
-				//Anbari: Save image just for requested citizen
-				if (estelam3sc.getImageResult() != null) {
+                } else {
+                    throw new ServiceException(BizExceptionCode.NIO_021, BizExceptionCode.NIO_033_MSG);
 
-					if (!checkIMSMessageReturn(estelam3sc.getImageResult().getMessage())) {
-						ImageResult imageResult = estelam3sc.getImageResult();
-						try {
-							byte[] nid_image = imageResult.getImage();
-							getImsManagementervice().saveImsEstelamImage(nationalId,citizenTO,ImsEstelamImageType.IMS_NID_IMAGE,nid_image);
-							//sessionContext.getBusinessObject(IMSManagementServiceLocal.class).saveImsEstelamImage(nationalId,citizenTO,ImsEstelamImageType.IMS_NID_IMAGE,nid_image);							
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
+                }
 
-				} 
 
-			} else if (FATHER_KEY.equals(personInfoMap.get(nationalId))) {
-				citizenInfoTO.setFatherNationalID(nationalId);
-				// citizenInfoTO.setFatherFirstNamePersian(new
-				// String(estelamResult.getName(), "UTF-8"));
-				citizenInfoTO.setFatherFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);
-				citizenInfoTO.setFatherSurname(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setFatherFatherName(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setFatherBirthCertificateId(String.valueOf(estelamResult3.getShenasnameNo()));
-				// citizenInfoTO.setFatherBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
-				citizenInfoTO.setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-				String fBirthDate = String.valueOf(estelamResult3.getBirthDate());
-				citizenInfoTO.setFatherBirthDateSolar(DateUtil.convert(
-						fBirthDate.substring(0, 4) + "/"
-								+ fBirthDate.substring(4, 6) + "/"
-								+ fBirthDate.substring(6, 8), DateUtil.JALALI));
-				logger.info("\n\nFATHER : " + "\nFatherName : "
-						+ citizenInfoTO.getFatherFirstNamePersian() + " "
-						+ citizenInfoTO.getFatherSurname() + ""
-						+ "\n FatherNationalId : "
-						+ citizenInfoTO.getFatherNationalID() + "\n");
-				ImsLogger.info("\n\nFATHER : " + "\nFatherName : "
-						+ citizenInfoTO.getFatherFirstNamePersian() + " "
-						+ citizenInfoTO.getFatherSurname() + ""
-						+ "\n FatherNationalId : "
-						+ citizenInfoTO.getFatherNationalID() + "\n");
+                if (estelamResult3.getBirthDate() != 0) {
+                    String strDate = String.valueOf(estelamResult3.getBirthDate());
+                    //validate of birthDate
+                    if (checkValidateDate(strDate)) {
 
-			} else if (MOTHER_KEY.equals(personInfoMap.get(nationalId))) {
-				citizenInfoTO.setMotherNationalID(nationalId);
-				citizenInfoTO.setMotherFirstNamePersian(new String(estelamResult3.getName(), "UTF-8"));
-				citizenInfoTO.setMotherSurname(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setMotherFatherName(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setMotherBirthCertificateId(String.valueOf(estelamResult3.getShenasnameNo()));
-				// citizenInfoTO.setMotherBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
-				citizenInfoTO.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-				String mBirthDate = String.valueOf(estelamResult3.getBirthDate());
-				citizenInfoTO.setMotherBirthDateSolar(DateUtil.convert(
-						mBirthDate.substring(0, 4) + "/"
-								+ mBirthDate.substring(4, 6) + "/"
-								+ mBirthDate.substring(6, 8), DateUtil.JALALI));
-				logger.info("\n\nMOTHER : " + "\nMotherName : "
-						+ citizenInfoTO.getMotherFirstNamePersian() + " "
-						+ citizenInfoTO.getMotherSurname() + ""
-						+ "\n MotherNationalId : "
-						+ citizenInfoTO.getMotherNationalID() + "\n");
-				ImsLogger.info("\n\nMOTHER : " + "\nMotherName : "
-						+ citizenInfoTO.getMotherFirstNamePersian() + " "
-						+ citizenInfoTO.getMotherSurname() + ""
-						+ "\n MotherNationalId : "
-						+ citizenInfoTO.getMotherNationalID() + "\n");
+                        citizenInfoTO.setBirthDateSolar(strDate.substring(0, 4)
+                                + "/"
+                                + strDate.substring(4, 6)
+                                + "/"
+                                + strDate.substring(6, 8));
+                        citizenInfoTO.setBirthDateGregorian(DateUtil.convert(citizenInfoTO.getBirthDateSolar(), DateUtil.JALALI));
+                        citizenInfoTO.setBirthDateLunar(DateUtil.convert(citizenInfoTO.getBirthDateGregorian(), DateUtil.HIJRI));
 
-			} else if (SPOUSE_KEY.equals(personInfoMap.get(nationalId))) {
-				List<SpouseTO> spouseTOs = citizenInfoTO.getSpouses();
-				for (SpouseTO spouseTO : spouseTOs) {
-					if (nationalId.equals(spouseTO.getSpouseNationalID())) {
-						spouseTO.setSpouseNationalID(nationalId);
-						spouseTO.setSpouseFirstNamePersian(new String(
-								estelamResult3.getName(), "UTF-8"));
-						spouseTO.setSpouseSurnamePersian(new String(
-								estelamResult3.getFamily(), "UTF-8"));
-						spouseTO.setSpouseFatherName(ConstValues.DEFAULT_NAMES_FA);
-						spouseTO.setSpouseBirthCertificateId(String
-								.valueOf(estelamResult3.getShenasnameNo()));
-						// spouseTO.setSpouseBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
-						spouseTO.setSpouseBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-						String sBirthDate = String.valueOf(estelamResult3
-								.getBirthDate());
-						logger.info("\n\n SPOUSE BIRTHDATE BEFORE CONVERT : "
-								+ sBirthDate + "\n");
-						ImsLogger
-								.info("\n\n SPOUSE BIRTHDATE BEFORE CONVERT : "
-										+ sBirthDate + "\n");
-						spouseTO.setSpouseBirthDate(DateUtil.convert(
-								sBirthDate.substring(0, 4) + "/"
-										+ sBirthDate.substring(4, 6) + "/"
-										+ sBirthDate.substring(6, 8),
-								DateUtil.JALALI));
-						logger.info("\n\n SPOUSE BIRTHDATE AFTER CONVERT : "
-								+ DateUtil.convert(
-										spouseTO.getSpouseBirthDate(),
-										DateUtil.JALALI) + "\n");
-						ImsLogger.info("\n\n SPOUSE BIRTHDATE AFTER CONVERT : "
-								+ DateUtil.convert(
-										spouseTO.getSpouseBirthDate(),
-										DateUtil.JALALI) + "\n");
-						logger.info("\n\nSPOUSE : " + "\nSpouseName : "
-								+ spouseTO.getSpouseFirstNamePersian() + " "
-								+ spouseTO.getSpouseSurnamePersian() + ""
-								+ "\n SpouseNationalId : "
-								+ spouseTO.getSpouseNationalID() + "\n");
-						ImsLogger.info("\n\nSPOUSE : " + "\nSpouseName : "
-								+ spouseTO.getSpouseFirstNamePersian() + " "
-								+ spouseTO.getSpouseSurnamePersian() + ""
-								+ "\n SpouseNationalId : "
-								+ spouseTO.getSpouseNationalID() + "\n");
-					}
-				}
+                    } else {
+                        throw new ServiceException(BizExceptionCode.NIO_022, BizExceptionCode.NIO_037_MSG);
 
-			} else if (CHILD_KEY.equals(personInfoMap.get(nationalId))) {
-				List<ChildTO> childTOs = citizenInfoTO.getChildren();
-				for (ChildTO childTO : childTOs) {
-					if (nationalId.equals(childTO.getChildNationalID())) {
-						childTO.setChildNationalID(nationalId);
-						childTO.setChildFirstNamePersian(new String(
-								estelamResult3.getName(), "UTF-8"));
-						childTO.setChildFatherName(ConstValues.DEFAULT_NAMES_FA);
-						childTO.setChildBirthCertificateId(String
-								.valueOf(estelamResult3.getShenasnameNo()));
-						// childTO.setChildBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
-						childTO.setChildBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-						childTO.setChildGender(Gender
-								.convertFromIMSEstelamResultGender(estelamResult3
-										.getGender()));
-						String cBirthDate = String.valueOf(estelamResult3
-								.getBirthDate());
-						childTO.setChildBirthDateSolar(DateUtil.convert(
-								cBirthDate.substring(0, 4) + "/"
-										+ cBirthDate.substring(4, 6) + "/"
-										+ cBirthDate.substring(6, 8),
-								DateUtil.JALALI));
-						logger.info("\n\nCHILD : " + "\nChildName : "
-								+ childTO.getChildFirstNamePersian() + ""
-								+ "\n ChildNationalId : "
-								+ childTO.getChildNationalID() + "\n");
-						ImsLogger.info("\n\nCHILD : " + "\nChildName : "
-								+ childTO.getChildFirstNamePersian() + ""
-								+ "\n ChildNationalId : "
-								+ childTO.getChildNationalID() + "\n");
-					}
-				}
+                    }
+                } else {
+                    throw new ServiceException(BizExceptionCode.NIO_022, BizExceptionCode.NIO_037_MSG);
 
-			}
-			citizenTO.setCitizenInfo(citizenInfoTO);
-			return citizenTO;
-		} catch (Exception e) {
-			throw e;
-		}
-	}
+                }
+
+                //Shenasname Serial
+                String serialShenasname = String.valueOf(estelamResult3.getShenasnameSerial());
+                if (serialShenasname.length() == 6 && !serialShenasname.equals("000000")) {
+                    citizenInfoTO.setBirthCertificateSeries(String.valueOf(estelamResult3.getShenasnameSerial()));
+                } else {
+                    throw new ServiceException(BizExceptionCode.NIO_023, BizExceptionCode.NIO_036_MSG);
+
+                }
+
+
+                String firstName = new String(estelamResult3.getName());
+                if (EmsUtil.checkString(firstName) && !firstName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+
+                    citizenTO.setFirstNamePersian(new String(estelamResult3.getName(), "UTF-8"));
+                } else {
+
+                    throw new ServiceException(BizExceptionCode.NIO_024, BizExceptionCode.NIO_024_MSG);
+                }
+
+                String familyName = new String(estelamResult3.getFamily());
+                if (EmsUtil.checkString(familyName) && !familyName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+                    citizenTO.setSurnamePersian(new String(estelamResult3.getFamily(), "UTF-8"));
+                } else {
+
+                    throw new ServiceException(BizExceptionCode.NIO_025, BizExceptionCode.NIO_025_MSG);
+                }
+
+                String fatherName = new String(estelamResult3.getFatherName());
+                if (EmsUtil.checkString(fatherName) && !fatherName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+                    citizenInfoTO.setFatherFirstNamePersian(new String(estelamResult3.getFatherName(), "UTF-8"));
+                } else {
+                    throw new ServiceException(BizExceptionCode.NIO_026, BizExceptionCode.NIO_038_MSG);
+                }
+
+                if (estelamResult3.getGender() == 0 || estelamResult3.getGender() == 1) {
+
+                    citizenInfoTO.setGender(Gender.convertFromIMSEstelamResultGender(estelamResult3.getGender()));
+
+                } else {
+                    throw new ServiceException(BizExceptionCode.NIO_027, BizExceptionCode.NIO_039_MSG);
+                }
+
+                logger.info("\n\nCitizen : " + "\nCitizenName : "
+                        + citizenTO.getFirstNamePersian() + " "
+                        + citizenTO.getSurnamePersian() + ""
+                        + "\n CitizenNationalId : " + citizenTO.getNationalID()
+                        + "\n");
+                ImsLogger.info("\n\nCitizen : " + "\nCitizenName : "
+                        + citizenTO.getFirstNamePersian() + " "
+                        + citizenTO.getSurnamePersian() + ""
+                        + "\n CitizenNationalId : " + citizenTO.getNationalID()
+                        + "\n");
+
+
+                //Anbari: Save image just for requested citizen
+                if (estelam3sc.getImageResult() != null) {
+
+                    if (!checkIMSMessageReturn(estelam3sc.getImageResult().getMessage())) {
+                        ImageResult imageResult = estelam3sc.getImageResult();
+                        try {
+                            byte[] nid_image = imageResult.getImage();
+                            getImsManagementervice().saveImsEstelamImage(nationalId, citizenTO, ImsEstelamImageType.IMS_NID_IMAGE, nid_image);
+                            //sessionContext.getBusinessObject(IMSManagementServiceLocal.class).saveImsEstelamImage(nationalId,citizenTO,ImsEstelamImageType.IMS_NID_IMAGE,nid_image);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+            } else if (FATHER_KEY.equals(personInfoMap.get(nationalId))) {
+                citizenInfoTO.setFatherNationalID(nationalId);
+                // citizenInfoTO.setFatherFirstNamePersian(new
+                // String(estelamResult.getName(), "UTF-8"));
+                citizenInfoTO.setFatherFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);
+                citizenInfoTO.setFatherSurname(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO.setFatherFatherName(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO.setFatherBirthCertificateId(String.valueOf(estelamResult3.getShenasnameNo()));
+                // citizenInfoTO.setFatherBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
+                citizenInfoTO.setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+                String fBirthDate = String.valueOf(estelamResult3.getBirthDate());
+                citizenInfoTO.setFatherBirthDateSolar(DateUtil.convert(
+                        fBirthDate.substring(0, 4) + "/"
+                                + fBirthDate.substring(4, 6) + "/"
+                                + fBirthDate.substring(6, 8), DateUtil.JALALI));
+                logger.info("\n\nFATHER : " + "\nFatherName : "
+                        + citizenInfoTO.getFatherFirstNamePersian() + " "
+                        + citizenInfoTO.getFatherSurname() + ""
+                        + "\n FatherNationalId : "
+                        + citizenInfoTO.getFatherNationalID() + "\n");
+                ImsLogger.info("\n\nFATHER : " + "\nFatherName : "
+                        + citizenInfoTO.getFatherFirstNamePersian() + " "
+                        + citizenInfoTO.getFatherSurname() + ""
+                        + "\n FatherNationalId : "
+                        + citizenInfoTO.getFatherNationalID() + "\n");
+
+            } else if (MOTHER_KEY.equals(personInfoMap.get(nationalId))) {
+                citizenInfoTO.setMotherNationalID(nationalId);
+                citizenInfoTO.setMotherFirstNamePersian(new String(estelamResult3.getName(), "UTF-8"));
+                citizenInfoTO.setMotherSurname(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO.setMotherFatherName(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO.setMotherBirthCertificateId(String.valueOf(estelamResult3.getShenasnameNo()));
+                // citizenInfoTO.setMotherBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
+                citizenInfoTO.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+                String mBirthDate = String.valueOf(estelamResult3.getBirthDate());
+                citizenInfoTO.setMotherBirthDateSolar(DateUtil.convert(
+                        mBirthDate.substring(0, 4) + "/"
+                                + mBirthDate.substring(4, 6) + "/"
+                                + mBirthDate.substring(6, 8), DateUtil.JALALI));
+                logger.info("\n\nMOTHER : " + "\nMotherName : "
+                        + citizenInfoTO.getMotherFirstNamePersian() + " "
+                        + citizenInfoTO.getMotherSurname() + ""
+                        + "\n MotherNationalId : "
+                        + citizenInfoTO.getMotherNationalID() + "\n");
+                ImsLogger.info("\n\nMOTHER : " + "\nMotherName : "
+                        + citizenInfoTO.getMotherFirstNamePersian() + " "
+                        + citizenInfoTO.getMotherSurname() + ""
+                        + "\n MotherNationalId : "
+                        + citizenInfoTO.getMotherNationalID() + "\n");
+
+            } else if (SPOUSE_KEY.equals(personInfoMap.get(nationalId))) {
+                List<SpouseTO> spouseTOs = citizenInfoTO.getSpouses();
+                for (SpouseTO spouseTO : spouseTOs) {
+                    if (nationalId.equals(spouseTO.getSpouseNationalID())) {
+                        spouseTO.setSpouseNationalID(nationalId);
+                        spouseTO.setSpouseFirstNamePersian(new String(
+                                estelamResult3.getName(), "UTF-8"));
+                        spouseTO.setSpouseSurnamePersian(new String(
+                                estelamResult3.getFamily(), "UTF-8"));
+                        spouseTO.setSpouseFatherName(ConstValues.DEFAULT_NAMES_FA);
+                        spouseTO.setSpouseBirthCertificateId(String
+                                .valueOf(estelamResult3.getShenasnameNo()));
+                        // spouseTO.setSpouseBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
+                        spouseTO.setSpouseBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+                        String sBirthDate = String.valueOf(estelamResult3
+                                .getBirthDate());
+                        logger.info("\n\n SPOUSE BIRTHDATE BEFORE CONVERT : "
+                                + sBirthDate + "\n");
+                        ImsLogger
+                                .info("\n\n SPOUSE BIRTHDATE BEFORE CONVERT : "
+                                        + sBirthDate + "\n");
+                        spouseTO.setSpouseBirthDate(DateUtil.convert(
+                                sBirthDate.substring(0, 4) + "/"
+                                        + sBirthDate.substring(4, 6) + "/"
+                                        + sBirthDate.substring(6, 8),
+                                DateUtil.JALALI));
+                        logger.info("\n\n SPOUSE BIRTHDATE AFTER CONVERT : "
+                                + DateUtil.convert(
+                                spouseTO.getSpouseBirthDate(),
+                                DateUtil.JALALI) + "\n");
+                        ImsLogger.info("\n\n SPOUSE BIRTHDATE AFTER CONVERT : "
+                                + DateUtil.convert(
+                                spouseTO.getSpouseBirthDate(),
+                                DateUtil.JALALI) + "\n");
+                        logger.info("\n\nSPOUSE : " + "\nSpouseName : "
+                                + spouseTO.getSpouseFirstNamePersian() + " "
+                                + spouseTO.getSpouseSurnamePersian() + ""
+                                + "\n SpouseNationalId : "
+                                + spouseTO.getSpouseNationalID() + "\n");
+                        ImsLogger.info("\n\nSPOUSE : " + "\nSpouseName : "
+                                + spouseTO.getSpouseFirstNamePersian() + " "
+                                + spouseTO.getSpouseSurnamePersian() + ""
+                                + "\n SpouseNationalId : "
+                                + spouseTO.getSpouseNationalID() + "\n");
+                    }
+                }
+
+            } else if (CHILD_KEY.equals(personInfoMap.get(nationalId))) {
+                List<ChildTO> childTOs = citizenInfoTO.getChildren();
+                for (ChildTO childTO : childTOs) {
+                    if (nationalId.equals(childTO.getChildNationalID())) {
+                        childTO.setChildNationalID(nationalId);
+                        childTO.setChildFirstNamePersian(new String(
+                                estelamResult3.getName(), "UTF-8"));
+                        childTO.setChildFatherName(ConstValues.DEFAULT_NAMES_FA);
+                        childTO.setChildBirthCertificateId(String
+                                .valueOf(estelamResult3.getShenasnameNo()));
+                        // childTO.setChildBirthCertificateSeries(String.valueOf(estelamResult.getShenasnameSerial()));
+                        childTO.setChildBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+                        childTO.setChildGender(Gender
+                                .convertFromIMSEstelamResultGender(estelamResult3
+                                        .getGender()));
+                        String cBirthDate = String.valueOf(estelamResult3
+                                .getBirthDate());
+                        childTO.setChildBirthDateSolar(DateUtil.convert(
+                                cBirthDate.substring(0, 4) + "/"
+                                        + cBirthDate.substring(4, 6) + "/"
+                                        + cBirthDate.substring(6, 8),
+                                DateUtil.JALALI));
+                        logger.info("\n\nCHILD : " + "\nChildName : "
+                                + childTO.getChildFirstNamePersian() + ""
+                                + "\n ChildNationalId : "
+                                + childTO.getChildNationalID() + "\n");
+                        ImsLogger.info("\n\nCHILD : " + "\nChildName : "
+                                + childTO.getChildFirstNamePersian() + ""
+                                + "\n ChildNationalId : "
+                                + childTO.getChildNationalID() + "\n");
+                    }
+                }
+
+            }
+            citizenTO.setCitizenInfo(citizenInfoTO);
+            return citizenTO;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
     /**
      * The method getOnlineEnquiry is used to get the online enquiry from the sub system 'IMS'
@@ -764,7 +729,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                 if (personInfo != null) {
                     String errorMessage = null;
                     List<EstelamResult> estelamResults = getService().getEstelam2SC(username, password, keyhanUsername, keyhanSerial, personInfo);
-                    
+
                     if (!EmsUtil.checkListSize(estelamResults)) {
                         enquiryFlag = false;
 
@@ -775,7 +740,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                         }
 
                         logger.error("\n=== ONLINE ENQUIRY RESULT ERROR MESSAGE ===\n");
-                        logger.error(BizExceptionCode.NIO_010, BizExceptionCode.NIO_010_MSG + ":" + errorMessage);
+                        logger.error(BizExceptionCode.NIO_010, BizExceptionCode.NIO_001_MSG.replace("{0}", personEnquiryVTO.getNationalId()) + ":" + errorMessage);
                         businessLogMap.put("errorMessage", errorMessage);
                     }
 
@@ -957,7 +922,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
      * @return an instance of type {@link com.gam.nocr.ems.data.domain.CitizenTO}
      * @throws com.gam.commons.core.BaseException
      */
-    
+
     //Anbari : Modified for new IMS Estelam mechanism
     @Override
     public CitizenTO fetchCitizenInfoByOnlineEnquiry(CitizenTO citizenTO) throws BaseException {
@@ -1013,72 +978,70 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
             String password = strParameters[1];
             String keyhanUsername = strParameters[2];
             String keyhanSerial = strParameters[3];
-           
+
             for (PersonInfo personInfo : personInfoList) {
-            	 String nin = EmsUtil.convertLongNidToString(personInfo.getNin()) ;
-             	 String key = personInfoMap.get(nin);
-            	
-            	///Anbari: Estelam3SC
-            	EstelamPort service = getService();
-				EstelamResultC estelam3sc = service.getEstelam3SC(username, password, keyhanUsername, keyhanSerial, personInfo);				
-				
-            	if (CITIZEN_KEY.equals(key)) {
-            		
-            		if(estelam3sc == null){					
-    					throw new BaseException(BizExceptionCode.NOCR_IMS_01,BizExceptionCode.NOCR_IMS_01_MSG);
-    				}
-            		
-            		if(estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0 )
-    				{
-    					throw new BaseException(BizExceptionCode.NOCR_IMS_03, BizExceptionCode.NOCR_IMS_03_MSG);
-    				}
-    				List<String> estelam3scMessage = estelam3sc.getMessage();
-					if (checkIMSMessageReturn(estelam3scMessage)) {
-						if (estelam3scMessage.contains("IS_EXCEPTED")) {
-							String exceptionMessage = estelam3sc.getEstelamResult3().get(0).getExceptionMessage();
-							if (checkIMSExceptionMessageReturn(exceptionMessage)) {
+                String nin = EmsUtil.convertLongNidToString(personInfo.getNin());
+                String key = personInfoMap.get(nin);
 
-								List<String> allCode = getExceptionCodeDAO().getAll();
-								List<String> matchedCode = JsonPath.read(exceptionMessage, "$..code");
-								Boolean isExcepted = false;
-								for (String code : matchedCode) {
-									if (allCode.contains(code)) {
-										isExcepted = true;
-										break;
-									}
-								}
-								if (isExcepted)
-									throw new BaseException(BizExceptionCode.NOCR_IMS_05,estelam3sc.getEstelamResult3().get(0).getExceptionMessage());
+                ///Anbari: Estelam3SC
+                EstelamPort service = getService();
+                EstelamResultC estelam3sc = service.getEstelam3SC(username, password, keyhanUsername, keyhanSerial, personInfo);
 
-							}
-						} 
-					}
-					if(estelam3scMessage.contains("Nin.Not.Valid") || estelam3scMessage.contains("result.rec.invisible") || estelam3scMessage.contains("result.rec.review") || estelam3scMessage.contains("result.rec.return") )
-					{
-						throw new BaseException(BizExceptionCode.NOCR_IMS_05,estelam3sc.getEstelamResult3().get(0).getExceptionMessage());				
-						
-					}
-    				
+                if (CITIZEN_KEY.equals(key)) {
+
+                    if (estelam3sc == null) {
+                        throw new BaseException(BizExceptionCode.NOCR_IMS_01, BizExceptionCode.NOCR_IMS_01_MSG);
+                    }
+
+                    if (estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0) {
+                        throw new BaseException(BizExceptionCode.NOCR_IMS_03, BizExceptionCode.NOCR_IMS_03_MSG);
+                    }
+                    List<String> estelam3scMessage = estelam3sc.getMessage();
+                    if (checkIMSMessageReturn(estelam3scMessage)) {
+                        if (estelam3scMessage.contains("IS_EXCEPTED")) {
+                            String exceptionMessage = estelam3sc.getEstelamResult3().get(0).getExceptionMessage();
+                            if (checkIMSExceptionMessageReturn(exceptionMessage)) {
+
+                                List<String> allCode = getExceptionCodeDAO().getAll();
+                                List<String> matchedCode = JsonPath.read(exceptionMessage, "$..code");
+                                Boolean isExcepted = false;
+                                for (String code : matchedCode) {
+                                    if (allCode.contains(code)) {
+                                        isExcepted = true;
+                                        break;
+                                    }
+                                }
+                                if (isExcepted)
+                                    throw new BaseException(BizExceptionCode.NOCR_IMS_05, estelam3sc.getEstelamResult3().get(0).getExceptionMessage());
+
+                            }
+                        }
+                    }
+                    if (estelam3scMessage.contains("Nin.Not.Valid") || estelam3scMessage.contains("result.rec.invisible") || estelam3scMessage.contains("result.rec.review") || estelam3scMessage.contains("result.rec.return")) {
+                        throw new BaseException(BizExceptionCode.NOCR_IMS_05, estelam3sc.getEstelamResult3().get(0).getExceptionMessage());
+
+                    }
+
 //    				if(checkIMSMessageReturn(estelam3sc.getEstelamResult3().get(0).getMessage()))
 //    				{
 //    					if(checkIMSExceptionMessageReturn(estelam3sc.getEstelamResult3().get(0).getExceptionMessage()) || estelam3sc.getEstelamResult3().get(0).getMessage().contains("IS_EXCEPTED"))
 //    							throw new BaseException(BizExceptionCode.NOCR_IMS_05,estelam3sc.getEstelamResult3().get(0).getExceptionMessage());											
 //    					
 //    				}				
-    				
-    				EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
-    				
-					if (estelamResult3 == null) {
-						throw new ServiceException(BizExceptionCode.NOCR_IMS_02,BizExceptionCode.NIO_032_MSG);
-					}
 
-					if (estelamResult3.getDeathStatus() == 1) // is Dead
-					{
-						throw new BaseException(BizExceptionCode.NOCR_IMS_06,BizExceptionCode.NOCR_IMS_05_MSG);
-					}                  
-	    				//Save Citizen Date
-	                 citizenTO = setCitizenDataNew(personInfoMap, citizenTO,estelam3sc);
-            	}                
+                    EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
+
+                    if (estelamResult3 == null) {
+                        throw new ServiceException(BizExceptionCode.NOCR_IMS_02, BizExceptionCode.NIO_032_MSG);
+                    }
+
+                    if (estelamResult3.getDeathStatus() == 1) // is Dead
+                    {
+                        throw new BaseException(BizExceptionCode.NOCR_IMS_06, BizExceptionCode.NOCR_IMS_05_MSG);
+                    }
+                    //Save Citizen Date
+                    citizenTO = setCitizenDataNew(personInfoMap, citizenTO, estelam3sc);
+                }
 //            	else if (FATHER_KEY.equals(key) || MOTHER_KEY.equals(key) || SPOUSE_KEY.equals(key) || CHILD_KEY.equals(key)){ //relatives
 //            		boolean foundException = checkCitizenInfoIMSValidatipn(estelam3sc);            		
 //                    if (foundException){
@@ -1091,11 +1054,11 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //                    }
 //                    
 //            	}
-            	else {
-            		String errormessage = " THIS IS A BUG - unknown key: " + key ;
-            		logger.error("\n========================= " + errormessage + " ======================================\n");
-            		throw new ServiceException(BizExceptionCode.NIO_030, BizExceptionCode.NIO_030_MSG + errormessage);
-            	}         	
+                else {
+                    String errormessage = " THIS IS A BUG - unknown key: " + key;
+                    logger.error("\n========================= " + errormessage + " ======================================\n");
+                    throw new ServiceException(BizExceptionCode.NIO_030, BizExceptionCode.NIO_030_MSG + errormessage);
+                }
 
             }
 
@@ -1106,66 +1069,65 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
         }
         return citizenTO;
     }
-    
-    private Boolean checkCitizenInfoIMSValidatipn(EstelamResultC estelam3sc) throws BaseException, ServiceException {
-		if(estelam3sc == null){					
-			return false;
-		}
-		List<String> estelam3scMessage = estelam3sc.getMessage();
-		if(checkIMSMessageReturn(estelam3scMessage)){
-			return false;
-		}
-		if(estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0 )
-		{
-			return false;
-		}		
-		
-		EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
-		
-		if (estelamResult3 == null) {
-			return false;
-		}
-		
-		return true;
-		
-	}
 
-	private void removeInvalidCitizenData(CitizenTO citizenTO, String key,
-			String nationalId) throws BaseException {
-		try {
-			CitizenInfoTO citizenInfoTO = citizenTO.getCitizenInfo();
-			if (FATHER_KEY.equals(key)) {
-				citizenInfoTO.setFatherNationalID(ConstValues.DEFAULT_NID);
+    private Boolean checkCitizenInfoIMSValidatipn(EstelamResultC estelam3sc) throws BaseException, ServiceException {
+        if (estelam3sc == null) {
+            return false;
+        }
+        List<String> estelam3scMessage = estelam3sc.getMessage();
+        if (checkIMSMessageReturn(estelam3scMessage)) {
+            return false;
+        }
+        if (estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0) {
+            return false;
+        }
+
+        EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
+
+        if (estelamResult3 == null) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private void removeInvalidCitizenData(CitizenTO citizenTO, String key,
+                                          String nationalId) throws BaseException {
+        try {
+            CitizenInfoTO citizenInfoTO = citizenTO.getCitizenInfo();
+            if (FATHER_KEY.equals(key)) {
+                citizenInfoTO.setFatherNationalID(ConstValues.DEFAULT_NID);
 //				citizenInfoTO
 //						.setFatherFirstNamePersian(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO
-						.setFatherFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);
-				citizenInfoTO.setFatherSurname(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setFatherFatherName(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO
-						.setFatherBirthCertificateId(ConstValues.DEFAULT_NUMBER);
-				citizenInfoTO
-						.setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-				citizenInfoTO.setFatherBirthDateSolar(DateUtil.convert(
-						ConstValues.DEFAULT_DATE, DateUtil.JALALI));
-			} else if (MOTHER_KEY.equals(key)) {
-				citizenInfoTO.setMotherNationalID(ConstValues.DEFAULT_NID);
+                citizenInfoTO
+                        .setFatherFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);
+                citizenInfoTO.setFatherSurname(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO.setFatherFatherName(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO
+                        .setFatherBirthCertificateId(ConstValues.DEFAULT_NUMBER);
+                citizenInfoTO
+                        .setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+                citizenInfoTO.setFatherBirthDateSolar(DateUtil.convert(
+                        ConstValues.DEFAULT_DATE, DateUtil.JALALI));
+            } else if (MOTHER_KEY.equals(key)) {
+                citizenInfoTO.setMotherNationalID(ConstValues.DEFAULT_NID);
 //				citizenInfoTO
 //						.setMotherFirstNamePersian(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setMotherSurname(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO.setMotherFatherName(ConstValues.DEFAULT_NAMES_FA);
-				citizenInfoTO
-						.setMotherBirthCertificateId(ConstValues.DEFAULT_NUMBER);
-				citizenInfoTO
-						.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-				citizenInfoTO.setMotherBirthDateSolar(DateUtil.convert(
-						ConstValues.DEFAULT_DATE, DateUtil.JALALI));
-			} else if (CHILD_KEY.equals(key)) {
-				List<ChildTO> childTOs = citizenInfoTO.getChildren();
-				List<ChildTO> toBeRemoved = new ArrayList<ChildTO>();
-				for (ChildTO childTO : childTOs) {
-					if (nationalId.equals(childTO.getChildNationalID())) {
-						toBeRemoved.add(childTO);
+                citizenInfoTO.setMotherSurname(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO.setMotherFatherName(ConstValues.DEFAULT_NAMES_FA);
+                citizenInfoTO
+                        .setMotherBirthCertificateId(ConstValues.DEFAULT_NUMBER);
+                citizenInfoTO
+                        .setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+                citizenInfoTO.setMotherBirthDateSolar(DateUtil.convert(
+                        ConstValues.DEFAULT_DATE, DateUtil.JALALI));
+            } else if (CHILD_KEY.equals(key)) {
+                List<ChildTO> childTOs = citizenInfoTO.getChildren();
+                List<ChildTO> toBeRemoved = new ArrayList<ChildTO>();
+                for (ChildTO childTO : childTOs) {
+                    if (nationalId.equals(childTO.getChildNationalID())) {
+                        toBeRemoved.add(childTO);
 //						childTO.setChildNationalID(ConstValues.DEFAULT_NID);
 //						childTO.setChildFirstNamePersian(ConstValues.DEFAULT_NAMES_FA);
 //						childTO.setChildFatherName(ConstValues.DEFAULT_NAMES_FA);
@@ -1174,23 +1136,22 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //						childTO.setChildGender(Gender.valueOf(ConstValues.DEFAULT_GENDER));
 //						childTO.setChildBirthDateSolar(DateUtil.convert(
 //								ConstValues.DEFAULT_DATE, DateUtil.JALALI));
-					}
-				}
-				for (ChildTO childTO : toBeRemoved) {
-					childTOs.remove(childTO);
-				}
-				if (childTOs.isEmpty()){
-					citizenInfoTO.setChildren(null);
-				}
-				else {
-					citizenInfoTO.setChildren(childTOs);
-				}
-			} else if (SPOUSE_KEY.equals(key)) {
-				List<SpouseTO> spouseTOs = citizenInfoTO.getSpouses();
-				List<SpouseTO> toBeRemoved = new ArrayList<SpouseTO>();
-				for (SpouseTO spouseTO : spouseTOs) {
-					if (nationalId.equals(spouseTO.getSpouseNationalID())) {
-						toBeRemoved.add(spouseTO);
+                    }
+                }
+                for (ChildTO childTO : toBeRemoved) {
+                    childTOs.remove(childTO);
+                }
+                if (childTOs.isEmpty()) {
+                    citizenInfoTO.setChildren(null);
+                } else {
+                    citizenInfoTO.setChildren(childTOs);
+                }
+            } else if (SPOUSE_KEY.equals(key)) {
+                List<SpouseTO> spouseTOs = citizenInfoTO.getSpouses();
+                List<SpouseTO> toBeRemoved = new ArrayList<SpouseTO>();
+                for (SpouseTO spouseTO : spouseTOs) {
+                    if (nationalId.equals(spouseTO.getSpouseNationalID())) {
+                        toBeRemoved.add(spouseTO);
 //						spouseTO.setSpouseNationalID(ConstValues.DEFAULT_NID);
 //						spouseTO.setSpouseFirstNamePersian(ConstValues.DEFAULT_NAMES_FA);
 //						spouseTO.setSpouseSurnamePersian(ConstValues.DEFAULT_NAMES_FA);
@@ -1203,119 +1164,110 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //								ConstValues.DEFAULT_DATE, DateUtil.JALALI));
 //						spouseTO.setSpouseBirthDate(DateUtil.convert(
 //								ConstValues.DEFAULT_DATE, DateUtil.JALALI));
-					}
-				}
-				for (SpouseTO spouseTO : toBeRemoved) {
-					spouseTOs.remove(spouseTO);
-				}
-				if (spouseTOs.isEmpty()){
-					citizenInfoTO.setSpouses(null);
-				}
-				else {
-					citizenInfoTO.setSpouses(spouseTOs);
-				}
-			}
-			citizenTO.setCitizenInfo(citizenInfoTO);
-		} catch (Exception e) {
-			 throw new ServiceException(BizExceptionCode.NIO_031, BizExceptionCode.NIO_031_MSG + e.getMessage(), e);
-		}
-	}
+                    }
+                }
+                for (SpouseTO spouseTO : toBeRemoved) {
+                    spouseTOs.remove(spouseTO);
+                }
+                if (spouseTOs.isEmpty()) {
+                    citizenInfoTO.setSpouses(null);
+                } else {
+                    citizenInfoTO.setSpouses(spouseTOs);
+                }
+            }
+            citizenTO.setCitizenInfo(citizenInfoTO);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.NIO_031, BizExceptionCode.NIO_031_MSG + e.getMessage(), e);
+        }
+    }
 
-	
-	//Anbari: Estelam3
-	@Override
-	public PersonEnquiryVTO fetchDataByOnlineEnquiryByEstelam3(
-			PersonEnquiryVTO personEnquiryVTOInput,String citizenNID) throws BaseException {
-		
-		String[] strParameters = getOnlineParametersByProfileManager();
-		String username = strParameters[0];
-		String password = strParameters[1];
-		String keyhanUsername = strParameters[2];
-		String keyhanSerial = strParameters[3];
-		PersonInfo personInfo = new PersonInfo();
-		PersonEnquiryVTO personEnquiryVTOResult = new PersonEnquiryVTO();
-		personInfo.setNin(Long.parseLong(personEnquiryVTOInput.getNationalId()));
-		
-		
-		boolean metadataFlag = false;
-		boolean isAllowableExcepted = false;
 
-			try {
-				EstelamPort service = getService();
-				EstelamResultC estelam3sc = service.getEstelam3SC(username, password, keyhanUsername, keyhanSerial, personInfo);				
-				if(estelam3sc == null){	
-					
-					personEnquiryVTOResult.setIsEstelamCorrupt(true);
-					personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_01_MSG);
-					return personEnquiryVTOResult;
-					//throw new BaseException(BizExceptionCode.NOCR_IMS_01,BizExceptionCode.NOCR_IMS_01_MSG);
-				}
-				
-				List<String> estelam3scMessage = estelam3sc.getMessage();
-				if(checkIMSMessageReturn(estelam3scMessage)){
-					//personEnquiryVTOResult.setIsEstelamCorrupt(true);
-					personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_02_MSG + ":" + estelam3scMessage.get(0));
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput.getNationalId());//set MetaData
-					
+    //Anbari: Estelam3
+    @Override
+    public PersonEnquiryVTO fetchDataByOnlineEnquiryByEstelam3(
+            PersonEnquiryVTO personEnquiryVTOInput, String citizenNID) throws BaseException {
+
+        String[] strParameters = getOnlineParametersByProfileManager();
+        String username = strParameters[0];
+        String password = strParameters[1];
+        String keyhanUsername = strParameters[2];
+        String keyhanSerial = strParameters[3];
+        PersonInfo personInfo = new PersonInfo();
+        PersonEnquiryVTO personEnquiryVTOResult = new PersonEnquiryVTO();
+        personInfo.setNin(Long.parseLong(personEnquiryVTOInput.getNationalId()));
+
+
+        boolean metadataFlag = false;
+        boolean isAllowableExcepted = false;
+
+        try {
+            EstelamPort service = getService();
+            EstelamResultC estelam3sc = service.getEstelam3SC(username, password, keyhanUsername, keyhanSerial, personInfo);
+            if (estelam3sc == null) {
+
+                personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_01_MSG);
+                return personEnquiryVTOResult;
+                //throw new BaseException(BizExceptionCode.NOCR_IMS_01,BizExceptionCode.NOCR_IMS_01_MSG);
+            }
+
+            List<String> estelam3scMessage = estelam3sc.getMessage();
+            if (checkIMSMessageReturn(estelam3scMessage)) {
+                //personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_02_MSG + ":" + estelam3scMessage.get(0));
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput.getNationalId());//set MetaData
+
 //				if (estelam3sc.getEstelamResult3() != null	&& estelam3sc.getEstelamResult3().size() > 0)
 //					{
 //					if (checkIMSMessageReturn(estelam3sc.getEstelamResult3().get(0).getMessage()))
 //						{
 //							if (estelam3sc.getEstelamResult3().get(0).getMessage().contains("IS_EXCEPTED")) {
-					
-						if (estelam3scMessage.contains("IS_EXCEPTED")) {
-								if (personEnquiryVTOInput.getNationalId().equals(citizenNID)) {
-									String exceptionMessage = estelam3sc.getEstelamResult3().get(0).getExceptionMessage();
-									if(checkIMSExceptionMessageReturn(exceptionMessage))
-											{								
-										
-													List<String> allCode = getExceptionCodeDAO().getAll();
-										 			List<String> matchedCode = JsonPath.read(exceptionMessage, "$..code");
-										 			Boolean isExcepted = false;
-										 			for (String code : matchedCode) {
-										 				if(allCode.contains(code))
-										 				{
-										 					isExcepted = true;
-										 					break;
-										 				}
-										 			}
-										 			if(isExcepted)
-										 			{
-														//personEnquiryVTOResult.setIsEstelamCorrupt(true);
-														personEnquiryVTOResult.setIsExceptionMessage(true);
-														personEnquiryVTOResult.setDescription(exceptionMessage);
-														return personEnquiryVTOResult;
-										 			}
-										 			else{
-										 				isAllowableExcepted = true;
-										 				personEnquiryVTOResult.setMetadata("");
-										 			}
-											}
-								} else {
-									personEnquiryVTOResult = setPersonEnquiryLogInfo(
-											personEnquiryVTOInput, estelam3sc
-													.getEstelamResult3().get(0)
-													.getMessage());
-									// returnMap.put(personEnquiryVTO.getNationalId(),personEnquiryVTO);
-								}
-						}//
-						
-						if(estelam3scMessage.contains("Nin.Not.Valid") || estelam3scMessage.contains("result.rec.invisible") || estelam3scMessage.contains("result.rec.review") || estelam3scMessage.contains("result.rec.return") )
-						{
-							personEnquiryVTOResult.setIsExceptionMessage(true);
-							personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
-							return personEnquiryVTOResult;							
-						}
-						
-						if(estelam3scMessage.contains("err.record.not.found"))
-						{
-							personEnquiryVTOResult.setIsRecordNotFound(true);
-							personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
-							return personEnquiryVTOResult;
-						}
-						
-						
-						
+
+                if (estelam3scMessage.contains("IS_EXCEPTED")) {
+                    if (personEnquiryVTOInput.getNationalId().equals(citizenNID)) {
+                        String exceptionMessage = estelam3sc.getEstelamResult3().get(0).getExceptionMessage();
+                        if (checkIMSExceptionMessageReturn(exceptionMessage)) {
+
+                            List<String> allCode = getExceptionCodeDAO().getAll();
+                            List<String> matchedCode = JsonPath.read(exceptionMessage, "$..code");
+                            Boolean isExcepted = false;
+                            for (String code : matchedCode) {
+                                if (allCode.contains(code)) {
+                                    isExcepted = true;
+                                    break;
+                                }
+                            }
+                            if (isExcepted) {
+                                //personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                                personEnquiryVTOResult.setIsExceptionMessage(true);
+                                personEnquiryVTOResult.setDescription(exceptionMessage);
+                                return personEnquiryVTOResult;
+                            } else {
+                                isAllowableExcepted = true;
+                                personEnquiryVTOResult.setMetadata("");
+                            }
+                        }
+                    } else {
+                        personEnquiryVTOResult = setPersonEnquiryLogInfo(
+                                personEnquiryVTOInput, estelam3sc
+                                        .getEstelamResult3().get(0)
+                                        .getMessage());
+                        // returnMap.put(personEnquiryVTO.getNationalId(),personEnquiryVTO);
+                    }
+                }//
+
+                if (estelam3scMessage.contains("Nin.Not.Valid") || estelam3scMessage.contains("result.rec.invisible") || estelam3scMessage.contains("result.rec.review") || estelam3scMessage.contains("result.rec.return")) {
+                    personEnquiryVTOResult.setIsExceptionMessage(true);
+                    personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
+                    return personEnquiryVTOResult;
+                }
+
+                if (estelam3scMessage.contains("err.record.not.found")) {
+                    personEnquiryVTOResult.setIsRecordNotFound(true);
+                    personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
+                    return personEnquiryVTOResult;
+                }
+
 
 //							} else {
 //								personEnquiryVTOResult.setIsEstelamCorrupt(true);
@@ -1329,115 +1281,110 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 
 //						}
 //					}				
-					if(!isAllowableExcepted)
-						return personEnquiryVTOResult;					
-					//throw new BaseException(BizExceptionCode.NOCR_IMS_02,estelam3scMessage.get(0));
-				}		
-				
-				
-				
-				if(estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0 )
-				{
-					personEnquiryVTOResult.setIsEstelamCorrupt(true);
-					personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_03_MSG);
-					return personEnquiryVTOResult;	
-					//throw new BaseException(BizExceptionCode.NOCR_IMS_03, BizExceptionCode.NOCR_IMS_03_MSG);
-				}
-				
-				
-				
-				EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
-				if(estelamResult3.getDeathStatus() == 1 && personEnquiryVTOInput.getNationalId().equals(citizenNID)) // is Dead
-				{
-					//personEnquiryVTOResult.setIsEstelamCorrupt(true);
-					personEnquiryVTOResult.setIsDead(estelamResult3.getDeathStatus());// store deathStatus
-					personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_05_MSG);
-					return personEnquiryVTOResult;					
-				}								
-				
-				//Save image just for requested citizen
-				if(estelam3sc.getImageResult() != null && personEnquiryVTOInput.getNationalId().equals(citizenNID)) 
-				{
-					
-					if(checkIMSMessageReturn(estelam3sc.getImageResult().getMessage()))
+                if (!isAllowableExcepted)
+                    return personEnquiryVTOResult;
+                //throw new BaseException(BizExceptionCode.NOCR_IMS_02,estelam3scMessage.get(0));
+            }
 
-						//personEnquiryVTOResult = setPersonEnquiryLogInfoImage(personEnquiryVTOInput,estelam3sc.getImageResult().getMessage());
-						personEnquiryVTOResult.setImageDescription(estelam3sc.getImageResult().getMessage().get(0));
-					else
-					{
-						ImageResult imageResult = estelam3sc.getImageResult();
-						if(imageResult.getImage() == null )
-							personEnquiryVTOResult.setImageDescription(BizExceptionCode.NOCR_IMS_07_MSG);
-						personEnquiryVTOResult.setNidImage(imageResult.getImage());
-					}						
-						
-				}								
 
-				if (estelamResult3.getShenasnameNo() >= 0) {
-					if (estelamResult3.getShenasnameNo() == 0) {
-						personEnquiryVTOResult.setBirthCertificateId(personEnquiryVTOInput
-								.getNationalId());
-					} else {
-						personEnquiryVTOResult.setBirthCertificateId(String
-								.valueOf(estelamResult3.getShenasnameNo()));
-					}
+            if (estelam3sc.getEstelamResult3() == null || estelam3sc.getEstelamResult3().size() == 0) {
+                personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_03_MSG);
+                return personEnquiryVTOResult;
+                //throw new BaseException(BizExceptionCode.NOCR_IMS_03, BizExceptionCode.NOCR_IMS_03_MSG);
+            }
 
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult.setDescription("The IMS ShenasnameNo is :"
-							+ estelamResult3.getShenasnameNo());
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_021);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
-				}
 
-				if (estelamResult3.getBirthDate() != 0) {
-				String strDate = String.valueOf(estelamResult3.getBirthDate());
-				//validate of birthDate 
-				if (checkValidateDate(strDate)) {
+            EstelamResult3 estelamResult3 = estelam3sc.getEstelamResult3().get(0);
+            if (estelamResult3.getDeathStatus() == 1 && personEnquiryVTOInput.getNationalId().equals(citizenNID)) // is Dead
+            {
+                //personEnquiryVTOResult.setIsEstelamCorrupt(true);
+                personEnquiryVTOResult.setIsDead(estelamResult3.getDeathStatus());// store deathStatus
+                personEnquiryVTOResult.setDescription(BizExceptionCode.NOCR_IMS_05_MSG);
+                return personEnquiryVTOResult;
+            }
 
-					personEnquiryVTOResult.setSolarBirthDate(strDate.substring(
-							0, 4)
-							+ "/"
-							+ strDate.substring(4, 6)
-							+ "/"
-							+ strDate.substring(6));
+            //Save image just for requested citizen
+            if (estelam3sc.getImageResult() != null && personEnquiryVTOInput.getNationalId().equals(citizenNID)) {
 
-				} else {
-						personEnquiryVTOResult
-								.setDescription("The IMS BirthDate is :"
-										+ estelamResult3.getBirthDate());
-						personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_022);
-						personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-								.getNationalId());
-						metadataFlag = true;
-					}
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult.setDescription("The IMS BirthDate is :"
-							+ estelamResult3.getBirthDate());
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_022);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
-				}
+                if (checkIMSMessageReturn(estelam3sc.getImageResult().getMessage()))
 
-				//Shenasname Serial
-				//Validate ShenasnameSerial
-				String serialShenasname = String.valueOf(estelamResult3.getShenasnameSerial());				
-				if (serialShenasname.length() == 6 && !serialShenasname.equals("000000")) {
-					personEnquiryVTOResult.setBirthCertificateSerial(String
-							.valueOf(estelamResult3.getShenasnameSerial()));
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult
-							.setDescription("The IMS ShenasnameSerial is :"
-									+ estelamResult3.getShenasnameSerial());
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_023);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
-				}
-				
-				//Anbari: for gettting Shenasname seri from IMS
+                    //personEnquiryVTOResult = setPersonEnquiryLogInfoImage(personEnquiryVTOInput,estelam3sc.getImageResult().getMessage());
+                    personEnquiryVTOResult.setImageDescription(estelam3sc.getImageResult().getMessage().get(0));
+                else {
+                    ImageResult imageResult = estelam3sc.getImageResult();
+                    if (imageResult.getImage() == null)
+                        personEnquiryVTOResult.setImageDescription(BizExceptionCode.NOCR_IMS_07_MSG);
+                    personEnquiryVTOResult.setNidImage(imageResult.getImage());
+                }
+
+            }
+
+            if (estelamResult3.getShenasnameNo() >= 0) {
+                if (estelamResult3.getShenasnameNo() == 0) {
+                    personEnquiryVTOResult.setBirthCertificateId(personEnquiryVTOInput
+                            .getNationalId());
+                } else {
+                    personEnquiryVTOResult.setBirthCertificateId(String
+                            .valueOf(estelamResult3.getShenasnameNo()));
+                }
+
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("The IMS ShenasnameNo is :"
+                        + estelamResult3.getShenasnameNo());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_021);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
+            }
+
+            if (estelamResult3.getBirthDate() != 0) {
+                String strDate = String.valueOf(estelamResult3.getBirthDate());
+                //validate of birthDate
+                if (checkValidateDate(strDate)) {
+
+                    personEnquiryVTOResult.setSolarBirthDate(strDate.substring(
+                            0, 4)
+                            + "/"
+                            + strDate.substring(4, 6)
+                            + "/"
+                            + strDate.substring(6));
+
+                } else {
+                    personEnquiryVTOResult
+                            .setDescription("The IMS BirthDate is :"
+                                    + estelamResult3.getBirthDate());
+                    personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_022);
+                    personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                            .getNationalId());
+                    metadataFlag = true;
+                }
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("The IMS BirthDate is :"
+                        + estelamResult3.getBirthDate());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_022);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
+            }
+
+            //Shenasname Serial
+            //Validate ShenasnameSerial
+            String serialShenasname = String.valueOf(estelamResult3.getShenasnameSerial());
+            if (serialShenasname.length() == 6 && !serialShenasname.equals("000000")) {
+                personEnquiryVTOResult.setBirthCertificateSerial(String
+                        .valueOf(estelamResult3.getShenasnameSerial()));
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult
+                        .setDescription("The IMS ShenasnameSerial is :"
+                                + estelamResult3.getShenasnameSerial());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_023);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
+            }
+
+            //Anbari: for gettting Shenasname seri from IMS
 //				if (estelamResult3.getShenasnameSerial() != 0) {
 //					personEnquiryVTOResult.setBirthCertificateSeries(String
 //							.valueOf(estelamResult3.getShenasnameSeri()));
@@ -1449,96 +1396,93 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput.getNationalId());
 //					metadataFlag = true;
 //				}
-				
-				String firstName = new String(estelamResult3.getName());
-				if (EmsUtil.checkString(firstName) && !firstName.equals(ConstValues.DEFAULT_NAMES_FA)) {
 
-					personEnquiryVTOResult.setFirstName(new String(estelamResult3
-							.getName(), "UTF-8").trim());
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					personEnquiryVTOResult.setDescription("The IMS Name is :"
-							+ new String(estelamResult3.getName()));
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_024);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
+            String firstName = new String(estelamResult3.getName());
+            if (EmsUtil.checkString(firstName) && !firstName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+
+                personEnquiryVTOResult.setFirstName(new String(estelamResult3
+                        .getName(), "UTF-8").trim());
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                personEnquiryVTOResult.setDescription("The IMS Name is :"
+                        + new String(estelamResult3.getName()));
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_024);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
 //					throw new ServiceException(BizExceptionCode.NIO_024,
 //							BizExceptionCode.NIO_024_MSG);
-				}
+            }
 
-				String familyName = new String(estelamResult3.getFamily());
-				if (EmsUtil.checkString(familyName) && !familyName.equals(ConstValues.DEFAULT_NAMES_FA) ) {
+            String familyName = new String(estelamResult3.getFamily());
+            if (EmsUtil.checkString(familyName) && !familyName.equals(ConstValues.DEFAULT_NAMES_FA)) {
 
-					personEnquiryVTOResult.setLastName(new String(estelamResult3
-							.getFamily(), "UTF-8").trim());
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					personEnquiryVTOResult.setDescription("The IMS Family is :"
-							+ new String(estelamResult3.getFamily()));
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_025);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
+                personEnquiryVTOResult.setLastName(new String(estelamResult3
+                        .getFamily(), "UTF-8").trim());
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                personEnquiryVTOResult.setDescription("The IMS Family is :"
+                        + new String(estelamResult3.getFamily()));
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_025);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
 
 //					throw new ServiceException(BizExceptionCode.NIO_025,
 //							BizExceptionCode.NIO_025_MSG);
-				}
+            }
 
-				String fatherName = new String(estelamResult3.getFatherName());
-				if (EmsUtil.checkString(fatherName) && !fatherName.equals(ConstValues.DEFAULT_NAMES_FA)) {
-					personEnquiryVTOResult.setFatherName(new String(estelamResult3
-							.getFatherName(), "UTF-8").trim());
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult.setDescription("The IMS FatherName is: "
-							+ new String(estelamResult3.getFatherName()));
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_026);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
-				}
+            String fatherName = new String(estelamResult3.getFatherName());
+            if (EmsUtil.checkString(fatherName) && !fatherName.equals(ConstValues.DEFAULT_NAMES_FA)) {
+                personEnquiryVTOResult.setFatherName(new String(estelamResult3
+                        .getFatherName(), "UTF-8").trim());
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("The IMS FatherName is: "
+                        + new String(estelamResult3.getFatherName()));
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_026);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
+            }
 
-				if (estelamResult3.getGender() == 0
-						|| estelamResult3.getGender() == 1) {
-					logger.info("\nThe IMS Gender is : "
-							+ estelamResult3.getGender() + "\n");
-					estelam2Logger.info("\nThe IMS Gender is : "
-							+ estelamResult3.getGender() + "\n");
-					personEnquiryVTOResult.setGender((Gender
-							.convertFromIMSEstelamResultGender(estelamResult3
-									.getGender())));
-					logger.info("\nThe personEnquiryVTO Gender is : "
-							+ personEnquiryVTOInput.getGender() + "\n");
-					estelam2Logger.info("\nThe personEnquiryVTO Gender is : "
-							+ personEnquiryVTOInput.getGender() + "\n");
-				} else if (!metadataFlag) {
-					personEnquiryVTOResult.setDescription("IMS Gender is : "
-							+ estelamResult3.getGender()
-							+ ";\n The person Gender is : "
-							+ personEnquiryVTOInput.getGender());
-					personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_027);
-					personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
-							.getNationalId());
-					metadataFlag = true;
-				}				
+            if (estelamResult3.getGender() == 0
+                    || estelamResult3.getGender() == 1) {
+                logger.info("\nThe IMS Gender is : "
+                        + estelamResult3.getGender() + "\n");
+                estelam2Logger.info("\nThe IMS Gender is : "
+                        + estelamResult3.getGender() + "\n");
+                personEnquiryVTOResult.setGender((Gender
+                        .convertFromIMSEstelamResultGender(estelamResult3
+                                .getGender())));
+                logger.info("\nThe personEnquiryVTO Gender is : "
+                        + personEnquiryVTOInput.getGender() + "\n");
+                estelam2Logger.info("\nThe personEnquiryVTO Gender is : "
+                        + personEnquiryVTOInput.getGender() + "\n");
+            } else if (!metadataFlag) {
+                personEnquiryVTOResult.setDescription("IMS Gender is : "
+                        + estelamResult3.getGender()
+                        + ";\n The person Gender is : "
+                        + personEnquiryVTOInput.getGender());
+                personEnquiryVTOResult.setLogInfo(BizExceptionCode.NIO_027);
+                personEnquiryVTOResult.setMetadata(personEnquiryVTOInput
+                        .getNationalId());
+                metadataFlag = true;
+            }
 
-				//returnMap.put(personEnquiryVTO.getNationalId(),	personEnquiryVTO);
-			}
-			//Anbari: throw NOCR_IMS_05 
-			catch (Exception e) {
-				
-				logger.error(BizExceptionCode.NIO_012, e.getMessage(), e);
-				estelam2Logger.error(BizExceptionCode.NIO_012,e.getMessage(), e);
-				personEnquiryVTOResult.setIsServiceDown(true);
-				personEnquiryVTOResult.setLogInfo(e.getMessage());
-				personEnquiryVTOResult.setDescription(e.getMessage());
-					
-				
-				
-				
-				
+            //returnMap.put(personEnquiryVTO.getNationalId(),	personEnquiryVTO);
+        }
+        //Anbari: throw NOCR_IMS_05
+        catch (Exception e) {
+
+            logger.error(BizExceptionCode.NIO_012, e.getMessage(), e);
+            estelam2Logger.error(BizExceptionCode.NIO_012, e.getMessage(), e);
+            personEnquiryVTOResult.setIsServiceDown(true);
+            personEnquiryVTOResult.setLogInfo(e.getMessage());
+            personEnquiryVTOResult.setDescription(e.getMessage());
+
+
 //				if(e instanceof BaseException)
 //				{
 //					String exceptionCode = ((BaseException) e).getExceptionCode();
@@ -1560,11 +1504,11 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //					logger.error(BizExceptionCode.NIO_012, e.getMessage(), e);
 //					estelam2Logger.error(BizExceptionCode.NIO_012,e.getMessage(), e);				
 //				}				
-			}
+        }
 
-			// Anbari bussLog commited
-			//String additionalData = EmsUtil.convertStringToJSONFormat("imsFetchInfo", businessLogMap);
-			//createBusinessLog(BusinessLogAction.FETCH_CITIZEN_INFO_FROM_IMS,BusinessLogEntity.IMS, "System", additionalData, true);
+        // Anbari bussLog commited
+        //String additionalData = EmsUtil.convertStringToJSONFormat("imsFetchInfo", businessLogMap);
+        //createBusinessLog(BusinessLogAction.FETCH_CITIZEN_INFO_FROM_IMS,BusinessLogEntity.IMS, "System", additionalData, true);
 
 //			if (personEnquiryVTOInput.getNationalId().equals(citizenNID)) {
 //				// PersonEnquiryVTO person = returnMap.get(personEnquiryVTO
@@ -1572,63 +1516,62 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
 //				if (personEnquiryVTOInput.getMetadata() != null)
 //					break;
 //			}		
-		//return returnMap;
-		return personEnquiryVTOResult;
+        //return returnMap;
+        return personEnquiryVTOResult;
 
-	}
-	
-	
-	// Anbari:IMS
-	private boolean checkValidateDate(String strDate) {
+    }
 
-		if (strDate.length() == 8) {
 
-			if (strDate.equals("10000000"))
-				return false;
+    // Anbari:IMS
+    private boolean checkValidateDate(String strDate) {
 
-			String year = strDate.substring(0, 4);
-			String mounth = strDate.substring(4, 6);
-			String day = strDate.substring(6, 8);
+        if (strDate.length() == 8) {
 
-			if (year.equals("1000") || mounth.equals("00") || day.equals("00"))
-				return false;
-			else
-				return true;
+            if (strDate.equals("10000000"))
+                return false;
 
-		}
+            String year = strDate.substring(0, 4);
+            String mounth = strDate.substring(4, 6);
+            String day = strDate.substring(6, 8);
 
-		return false;
-	}
+            if (year.equals("1000") || mounth.equals("00") || day.equals("00"))
+                return false;
+            else
+                return true;
 
-	private boolean checkIMSExceptionMessageReturn(String exceptionMessage) {
-		return exceptionMessage != null && !"".equals(exceptionMessage)  && !" ".equals(exceptionMessage);
-	}
+        }
 
-	private boolean checkIMSMessageReturn(List<String> message) {
-		return message != null && message.size() > 0 && !message.get(0).equals(" ") && !message.get(0).equals("");
-	}
-	
-	//Anbari
-	PersonEnquiryVTO setPersonEnquiryLogInfo(PersonEnquiryVTO personEnquiryVTO, List<String> messageList)
-	{
-		int i = 0;
-		String messages="";
-		Map<Object, Object> businessLogMap = new HashMap<Object, Object>();
-		for (String errMSG : messageList) {
-			if (errMSG != null && !errMSG.isEmpty()) {
-				businessLogMap.put("exception" + i, errMSG);
-				i++;
-				messages+="exception" + i+":"+errMSG+";";
-				personEnquiryVTO.setLogInfo(BizExceptionCode.NIO_028);
-				personEnquiryVTO.setMetadata(personEnquiryVTO.getNationalId());
-			}
+        return false;
+    }
 
-		}
-		personEnquiryVTO.setDescription(messages);		
-		return personEnquiryVTO;		
-	}
-	
-	//Anbari
+    private boolean checkIMSExceptionMessageReturn(String exceptionMessage) {
+        return exceptionMessage != null && !"".equals(exceptionMessage) && !" ".equals(exceptionMessage);
+    }
+
+    private boolean checkIMSMessageReturn(List<String> message) {
+        return message != null && message.size() > 0 && !message.get(0).equals(" ") && !message.get(0).equals("");
+    }
+
+    //Anbari
+    PersonEnquiryVTO setPersonEnquiryLogInfo(PersonEnquiryVTO personEnquiryVTO, List<String> messageList) {
+        int i = 0;
+        String messages = "";
+        Map<Object, Object> businessLogMap = new HashMap<Object, Object>();
+        for (String errMSG : messageList) {
+            if (errMSG != null && !errMSG.isEmpty()) {
+                businessLogMap.put("exception" + i, errMSG);
+                i++;
+                messages += "exception" + i + ":" + errMSG + ";";
+                personEnquiryVTO.setLogInfo(BizExceptionCode.NIO_028);
+                personEnquiryVTO.setMetadata(personEnquiryVTO.getNationalId());
+            }
+
+        }
+        personEnquiryVTO.setDescription(messages);
+        return personEnquiryVTO;
+    }
+
+    //Anbari
 //		PersonEnquiryVTO setPersonEnquiryLogInfoImage(PersonEnquiryVTO personEnquiryVTO, List<String> messageList)
 //		{
 //			int i = 0;
@@ -1662,14 +1605,14 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                     if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt()) {
                         throw new ServiceException(BizExceptionCode.NIO_002, personEnquiryVTOResult.getDescription());
                     }
-                    throw new ServiceException(BizExceptionCode.NIO_001, BizExceptionCode.NIO_001_MSG);
+                    throw new ServiceException(BizExceptionCode.NIO_001, BizExceptionCode.NIO_001_MSG, new Object[]{nationalId});
                 }
             }
             return personEnquiryVTOResult;
         } catch (Exception e) {
            /* if (e instanceof BaseException)
                 throw (BaseException) e;*/
-            throw new ServiceException(BizExceptionCode.NIO_010, BizExceptionCode.NIO_010_MSG, e);
+            throw new ServiceException(BizExceptionCode.NIO_010, BizExceptionCode.NIO_001_MSG, e, new Object[]{nationalId});
         }
     }
 

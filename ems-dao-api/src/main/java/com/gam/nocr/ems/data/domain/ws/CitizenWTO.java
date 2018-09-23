@@ -87,6 +87,7 @@ public class CitizenWTO {
 	private Timestamp paidDate;
 
 	private static final Logger logger = BaseLog.getLogger(EmsUtil.class);
+	private Boolean paymentStatus = Boolean.FALSE;
 
 	public CitizenWTO() {
 	}
@@ -628,4 +629,11 @@ public class CitizenWTO {
 		this.userCityType = userCityType;
 	}
 
+	public void setPaymentStatus(Boolean paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Boolean getPaymentStatus() {
+		return paymentStatus;
+	}
 }

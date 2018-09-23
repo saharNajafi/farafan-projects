@@ -4538,13 +4538,12 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000020")) // Delete
         // DOCUMENT
         {
-            String errMsg = createImsReultErrorMessage(imsUpdateResultVTO);
             getCardRequestHistoryDAO().create(crq,
-                    errMsg, SystemId.IMS, null,
+                    imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_DOCUMENT_ERROR, null);
 
             doDeleteAction(crq, DoDeleteAction.DeleteDocument,
-                    errMsg);
+                    imsUpdateResultVTO.getErrorMessage());
 
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
@@ -4552,13 +4551,12 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000021")) // Delete
         // IMAGE
         {
-            String errMsg = createImsReultErrorMessage(imsUpdateResultVTO);
             getCardRequestHistoryDAO().create(crq,
-                    errMsg, SystemId.IMS, null,
+                    imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_IMAGE_ERROR, null);
 
             doDeleteAction(crq, DoDeleteAction.DeleteImage,
-                    errMsg);
+                    imsUpdateResultVTO.getErrorMessage());
 
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
@@ -4602,11 +4600,10 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 						imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
 						CardRequestHistoryAction.AFIS_REJECT, null);
 						*/
-            String errMsg = createImsReultErrorMessage(imsUpdateResultVTO);
             crq.setState(CardRequestState.IMS_ERROR);
             getCardRequestDAO().update(crq);
             getCardRequestHistoryDAO().create(crq,
-                    errMsg, SystemId.IMS, null,
+                    imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_REJECT, null);
 
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000004")) {
@@ -4652,7 +4649,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
         }
     }
 
-    private String createImsReultErrorMessage(IMSUpdateResultVTO imsUpdateResultVTO) {
+    /*private String createImsReultErrorMessage(IMSUpdateResultVTO imsUpdateResultVTO) {
         String errorMessage = imsUpdateResultVTO.getErrorMessage();
         List<IMSErrorInfo> errorCodes = imsUpdateResultVTO.getErrorCodes();
         if (errorCodes != null) {
@@ -4661,7 +4658,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             }
         }
         return errorMessage;
-    }
+    }*/
 
     //Anbari:IMS
     private void setIdentityChangeAndAfisState(CardRequestTO crq, IMSUpdateResultVTO imsUpdateResultVTO) throws BaseException,

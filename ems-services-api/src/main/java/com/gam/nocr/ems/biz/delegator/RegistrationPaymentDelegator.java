@@ -10,6 +10,7 @@ import com.gam.nocr.ems.biz.service.RegistrationPaymentService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
+import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 /**
@@ -33,16 +34,16 @@ public class RegistrationPaymentDelegator implements Delegator {
     }
 
     public Boolean hasCitizenSuccessfulPayment(UserProfileTO userProfileTO, String nationalId) throws BaseException {
-       return getService(userProfileTO).hasCitizenSuccessfulPayment(nationalId);
+        return getService(userProfileTO).hasCitizenSuccessfulPayment(nationalId);
     }
 
-    public Integer getPayAmount(UserProfileTO userProfileTO, String nationalId) throws BaseException {
-        return getService(userProfileTO).getPayAmount(nationalId);
+    public PaymentInfoWTO getPayAmountInfo(UserProfileTO userProfileTO, String nationalId) throws BaseException {
+        return getService(userProfileTO).getPayAmountInfo(nationalId);
     }
 
     public void savePaymentInfo(UserProfileTO userProfileTO, RegistrationPaymentTO registrationPaymentTO,
-                                String nationalId, long preRegistrationId) throws BaseException {
-         getService(userProfileTO).savePaymentInfo(registrationPaymentTO, nationalId, preRegistrationId);
+                                String nationalId) throws BaseException {
+        getService(userProfileTO).savePaymentInfo(registrationPaymentTO, nationalId);
     }
 
     public void assignPaymentToEnrollment(UserProfileTO userProfileTO,

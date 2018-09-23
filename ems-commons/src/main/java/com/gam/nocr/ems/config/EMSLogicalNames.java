@@ -49,7 +49,7 @@ public class EMSLogicalNames {
     public static String SRV_CITIZEN = "CitizenService";
     public static String SRV_CITIZEN_INFO = "CitizenInfoService";
     public static String SRV_EMKS = "EmksService";
-    
+
     public static String SRV_ABOUT = "AboutService";
     public static String SRV_HELP = "HelpService";
     public static String SRV_MESSAGE = "MessageService";

@@ -7,21 +7,11 @@ import java.io.Serializable;
  */
 public class SingleStagePreRegistrationWTO implements Serializable {
 
-    private Long portalRequestId;
     private String trackingId;
-    private String paymentCode;
-    private Long orderId;
     private Boolean verifiedByIMS;
+    private Long cardRequestId;
 
     public SingleStagePreRegistrationWTO() {
-    }
-
-    public Long getPortalRequestId() {
-        return portalRequestId;
-    }
-
-    public void setPortalRequestId(Long portalRequestId) {
-        this.portalRequestId = portalRequestId;
     }
 
     public String getTrackingId() {
@@ -32,27 +22,19 @@ public class SingleStagePreRegistrationWTO implements Serializable {
         this.trackingId = trackingId;
     }
 
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getPaymentCode() {
-        return paymentCode;
-    }
-
-    public void setPaymentCode(String paymentCode) {
-        this.paymentCode = paymentCode;
-    }
-
     public void setVerifiedByIMS(Boolean verifiedByIMS) {
         this.verifiedByIMS = verifiedByIMS;
     }
 
     public Boolean getVerifiedByIMS() {
         return verifiedByIMS;
+    }
+
+    public void setCardRequestId(Long cardRequestId) {
+        this.cardRequestId = cardRequestId;
+    }
+
+    public Long getCardRequestId() {
+        return cardRequestId;
     }
 }

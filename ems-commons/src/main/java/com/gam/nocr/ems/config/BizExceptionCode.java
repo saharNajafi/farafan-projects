@@ -5,7 +5,7 @@ import com.gam.commons.core.BaseRuntimeExceptionCode;
 /**
  * Collection of constant values representing business layer error codes and
  * their corresponding messages (to log in console)
- * 
+ *
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
  * @author Soheil Toodeh Fallah (fallah@gamelectronics.com)
  */
@@ -40,8 +40,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
-	public static final String CHG_007 = "CRS_A_CHG_007";
 	public static final String CHG_006 = "CRS_A_CHG_006";
+	public static final String CHG_007 = "CRS_A_CHG_007";
 	public static final String CHG_005_MSG = "Error Occurred on call creating active shifts web service";
 
     public static final String NOCR_IMS_01 = "EMS_S_NOCR_IMS_01";
@@ -134,9 +134,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	// com.gam.nocr.ems.biz.delegator.CardRequestDelegator
 	public static final String CRD_001 = "EMS_S_CRD_001";
 	public static final String CRD_002 = "EMS_S_CRD_002";
-    
-    // com.gam.nocr.ems.biz.delegator.EmksDelegator
-    public static final String EMD_001 = "EMS_S_EMD_001";
+
+	// com.gam.nocr.ems.biz.delegator.EmksDelegator
+	public static final String EMD_001 = "EMS_S_EMD_001";
 
 	// com.gam.nocr.ems.biz.delegator.MessageDelegator
 	public static final String MSD_001 = "EMS_S_MSD_001";
@@ -248,16 +248,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_068 = "EMS_CRE_068";
 
 
-	public static final String CRE_069_MSG = "There is a processed singleStage enrollment";
-	public static final String CRE_059_MSG = "There is a reproduction request";
-	public static final String CRE_060_MSG = "Citizen has a shipped card";
-	public static final String CRE_062_MSG = "Citizen has a delivered card";
-	public static final String CRE_061_MSG = "Citizen last card expired";
+	public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
+	public static final String CRE_059_MSG = "There is a reproduction request for Card Request: {0}";
+	public static final String CRE_060_MSG = "Citizen has a shipped card for Card Request: {0}";
+	public static final String CRE_062_MSG = "Citizen has a delivered card for Card Request: {0}";
+	public static final String CRE_061_MSG = "Citizen last card expired for Card Request: {0}";
 	public static final String CRE_064_MSG = "Invalid Parameter -> {0} : {1}";
 	public static final String CRE_063_MSG = "citizen personal info is not Valid for nationalId {0}";
 	public static final String CRE_068_MSG = "an error occurred on findLastRequestByNationalId operation";
-	public static final String CRE_070_MSG = "There is a processed preRegistration";
-	public static final String CRE_071_MSG = "DB Error: Error occurred in fetching data";
+	public static final String CRE_070_MSG = "There is a processed Card Request: {0}";
+	public static final String CRE_071_MSG = "DB Error: Error occurred in fetching Card Request for NationalId: {0}";
 	public static final String CRE_072_MSG = "unable to update cardRequest";
 	public static final String CRE_073_MSG = "unable to find cardRequest";
 
@@ -610,7 +610,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String SPI_001_MSG = "Can not save System Profile.";
 	public static final String SPI_002_MSG = "Can not remove System Profile.";
 	public static final String SPI_003_MSG = "Can not reload System Profile.";
-    
+
 	// com.gam.nocr.ems.biz.service.internal.impl.PersonManagementServiceImpl
 	public static final String PSI_001 = "EMS_S_PSI_001";
 	public static final String PSI_002 = "EMS_S_PSI_002";
@@ -692,8 +692,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	// public static final String PSI_078 = "EMS_S_PSI_078";
 	// public static final String PSI_079 = "EMS_S_PSI_079";
 	public static final String PSI_080 = "EMS_S_PSI_080";
-    public static final String PSI_081 = "EMS_S_PSI_081";
-    public static final String PSI_082 = "EMS_S_PSI_082";
+	public static final String PSI_081 = "EMS_S_PSI_081";
+	public static final String PSI_082 = "EMS_S_PSI_082";
 	public static final String PSI_002_MSG = "There should be a person to persist, it couldn't be null";
 	public static final String PSI_003_MSG = "personId couldn't be null, please insert an ID";
 	public static final String PSI_006_MSG = "invalid input entry, birth certificate number is empty";
@@ -739,7 +739,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String PSI_072_MSG = "system administrator cannot be deleted";
 	public static final String PSI_073_MSG = "";
 	public static final String PSI_075_MSG = "The user is manager of an office, you should change the office manager at the first";
-//	public static final String PSI_075_MSG = "The office has Delivered token, changing manager is not possible at the moment";
+	//	public static final String PSI_075_MSG = "The office has Delivered token, changing manager is not possible at the moment";
 	public static final String PSI_076_MSG = "national id is invalid";
 	// public static final String PSI_077_MSG =
 	// "Invalid personId. The personId with the value of 'null', is not acceptable.";
@@ -749,38 +749,38 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	// "The person with the id of '{}', was not found.";
 	public static final String PSI_080_MSG = "cannot change department of NOCR manager";
 
-    // com.gam.nocr.ems.biz.service.internal.impl.UserManagementServiceImpl
-    public static final String USI_001 = "EMS_S_USI_001";
-    public static final String USI_002 = "EMS_S_USI_002";
-    public static final String USI_003 = "EMS_S_USI_003";
-    public static final String USI_004 = "EMS_S_USI_004";
-    public static final String USI_005 = "EMS_S_USI_005";
-    public static final String USI_006 = "EMS_S_USI_006";
-    public static final String USI_007 = "EMS_S_USI_007";
-    public static final String USI_008 = "EMS_S_USI_008";
-    public static final String USI_009 = "EMS_S_USI_009";
-    public static final String USI_010 = "EMS_S_USI_010";
-    public static final String USI_011 = "EMS_S_USI_011";
-    public static final String USI_012 = "EMS_S_USI_012";
-    public static final String USI_013 = "EMS_S_USI_013";
-    public static final String USI_014 = "EMS_S_USI_014";
-    public static final String USI_015 = "EMS_S_USI_015";
-    public static final String USI_016 = "EMS_S_USI_016";
-    public static final String USI_003_MSG = "invalid input entry, userVTO is null. change password operation cannot be done";
-    public static final String USI_004_MSG = "invalid input entry, oldPassword is empty";
-    public static final String USI_005_MSG = "cannot find userId assigned to this person";
-    public static final String USI_006_MSG = "password encoding failed";
-    public static final String USI_007_MSG = "find operation failed, cannot find any person with this personId";
-    public static final String USI_008_MSG = "invalid input entry, newPassword is empty";
-    public static final String USI_009_MSG = "invalid input entry, confirmPassword is empty";
-    public static final String USI_010_MSG = "new password doesn't match confirm password, please try again";
-    public static final String USI_016_MSG = "can not read JobSchedulerEnabled variable from nocr.properties";
+	// com.gam.nocr.ems.biz.service.internal.impl.UserManagementServiceImpl
+	public static final String USI_001 = "EMS_S_USI_001";
+	public static final String USI_002 = "EMS_S_USI_002";
+	public static final String USI_003 = "EMS_S_USI_003";
+	public static final String USI_004 = "EMS_S_USI_004";
+	public static final String USI_005 = "EMS_S_USI_005";
+	public static final String USI_006 = "EMS_S_USI_006";
+	public static final String USI_007 = "EMS_S_USI_007";
+	public static final String USI_008 = "EMS_S_USI_008";
+	public static final String USI_009 = "EMS_S_USI_009";
+	public static final String USI_010 = "EMS_S_USI_010";
+	public static final String USI_011 = "EMS_S_USI_011";
+	public static final String USI_012 = "EMS_S_USI_012";
+	public static final String USI_013 = "EMS_S_USI_013";
+	public static final String USI_014 = "EMS_S_USI_014";
+	public static final String USI_015 = "EMS_S_USI_015";
+	public static final String USI_016 = "EMS_S_USI_016";
+	public static final String USI_003_MSG = "invalid input entry, userVTO is null. change password operation cannot be done";
+	public static final String USI_004_MSG = "invalid input entry, oldPassword is empty";
+	public static final String USI_005_MSG = "cannot find userId assigned to this person";
+	public static final String USI_006_MSG = "password encoding failed";
+	public static final String USI_007_MSG = "find operation failed, cannot find any person with this personId";
+	public static final String USI_008_MSG = "invalid input entry, newPassword is empty";
+	public static final String USI_009_MSG = "invalid input entry, confirmPassword is empty";
+	public static final String USI_010_MSG = "new password doesn't match confirm password, please try again";
+	public static final String USI_016_MSG = "can not read JobSchedulerEnabled variable from nocr.properties";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.BusinessLogServiceImpl
 	public static final String BSI_001 = "EMS_S_BSI_001";
 	public static final String BSI_002 = "EMS_S_BSI_002";
 	public static final String BSI_003 = "EMS_S_BSI_003";
-	public static final String BSI_004 = "EMS_S_BSI_004";	
+	public static final String BSI_004 = "EMS_S_BSI_004";
 
 	// com.gam.nocr.ems.biz.service.external.impl.CardIssuanceRequestServiceImpl
 	public static final String CRI_001 = "EMS_S_CRI_001";
@@ -809,7 +809,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRI_016_MSG = "The requestType with the value of '{}' is invalid.";
 	public static final String CRI_019_MSG = "The old message request id for the process of card issuance, could not be retrieved via the CMS error message of : ";
 
-	
+
 	// com.gam.nocr.ems.biz.service.external.impl.CMSServiceImpl
 	public static final String CSI_001 = "EMS_S_CSI_001";
 	public static final String CSI_002 = "EMS_S_CSI_002";
@@ -970,8 +970,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CSI_149_MSG = "The String signed request is null. So there is no signed request to send it for CMS subsystem.";
 	public static final String CSI_150_MSG = "Problem when trying to look up CMS web service with url: {}";
 
-	
-	
+
+
 	// com.gam.nocr.ems.biz.service.external.impl.GAASServiceImpl
 	public static final String GSI_001 = "EMS_S_GSI_001";
 	public static final String GSI_002 = "EMS_S_GSI_002";
@@ -1156,26 +1156,17 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_084 = "EMS_S_EOS_084";
 	public static final String EOS_085 = "EMS_S_EOS_085";
 	public static final String EOS_086 = "EMS_S_EOS_086";
-	public static final String EMS_REG_012 = "EMS_REG_012";
-
-	public static final String EOS_087 = "EMS_EOS_087";
-	public static final String EOS_088 = "EMS_EOS_088";
-	public static final String EOS_089 = "EMS_EOS_089";
-	public static final String EOS_090 = "EMS_EOS_090";
-	public static final String EOS_091 = "EMS_EOS_091";
-	public static final String EOS_092 = "EMS_EOS_092";
-	public static final String EOS_093 = "EMS_EOS_093";
-	public static final String EOS_094 = "EMS_EOS_094";
-	public static final String EOS_096 = "EMS_EOS_095";
-	public static final String EMS_REG_010 = "EMS_REG_010";
-	public static final String EOS_095 = "EMS_EOS_095";
-	public static final String EOS_091_MSG = "an error occurred on hasEnoughCapacityToday operation";
-	public static final String EOS_087_MSG = "there is not any capacity";
-	public static final String EOS_088_MSG = "there is not enough accessibility for single stage enrollment";
-	public static final String EOS_089_MSG = "there is not enough instruments for single stage enrollment";
-	public static final String EOS_090_MSG = "Error occurred in transferring Single-Stage-PreRegistration";
-	public static final String EOS_094_MSG = "an error occurred on hasEnoughAccessibilityForSingleStageEnrollment operation";
-	public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
+	public static final String EOS_087 = "EMS_S_EOS_087";
+	public static final String EOS_088 = "EMS_S_EOS_088";
+	public static final String EOS_089 = "EMS_S_EOS_089";
+	public static final String EOS_090 = "EMS_S_EOS_090";
+	public static final String EOS_091 = "EMS_s_EOS_091";
+	public static final String EOS_092 = "EMS_S_EOS_092";
+	public static final String EOS_093 = "EMS_S_EOS_093";
+	public static final String EOS_094 = "EMS_S_EOS_094";
+	public static final String EOS_096 = "EMS_S_EOS_095";
+	public static final String EOS_095 = "EMS_S_EOS_095";
+	public static final String EOS_100 = "EMS_S_EOS_100";
 	public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
 	public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
 	public static final String EOS_006_MSG = "Enrollment office name is too long";
@@ -1226,10 +1217,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_079_MSG = "Enrollment office Delivery Status could not update becuase of CMS or Portal Problems!!";
 	public static final String EOS_084_MSG = "the lenght of depPhoneNumber is too short";
 	public static final String EOS_085_MSG = "depPhoneNumber cannot be null";
-	public static final String EMS_REG_012_MSG = "Active shift not found for decrease remain capacity ( {0} , {1} , {2} )";
-	public static final String EMS_REG_011_LOG_MSG = "LOG: Active shift not found for increase remain capacity ( {} , {} , {} )";
-	public static final String EMS_REG_010_MSG = "Active shift with id: {0} does not have enough remaining capacity.";
+	public static final String EOS_086_MSG = "Active shift not found for decrease remain capacity ( {0} , {1} , {2} )";
+	public static final String EOS_087_MSG = "there is not any capacity";
+	public static final String EOS_088_MSG = "there is not enough accessibility for single stage enrollment";
+	public static final String EOS_089_MSG = "there is not enough instruments for single stage enrollment";
+	public static final String EOS_090_MSG = "Active shift with id: {0} does not have enough remaining capacity.";
+	public static final String EOS_091_MSG = "an error occurred on hasEnoughCapacityToday operation for NationalId: {0}";
+	public static final String EOS_094_MSG = "an error occurred on hasEnoughAccessibilityForSingleStageEnrollment operation";
+	public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
 	public static final String EOS_096_MSG = "Invalid CardRequest State for changing Reservation";
+	public static final String EOS_097_MSG = "LOG: Active shift not found for increase remain capacity ( {} , {} , {} )";
 
 
 
@@ -1303,51 +1300,51 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String DSI_039_MSG = "cannot set child department as parent department";
 
 	// com.gam.nocr.ems.biz.service.external.impl.PKIServiceImpl
-    public static final String PKI_001 = "EMS_S_PKI_001";
-    public static final String PKI_002 = "EMS_S_PKI_002";
-    public static final String PKI_003 = "EMS_S_PKI_003";
-    public static final String PKI_004 = "EMS_S_PKI_004";
-    public static final String PKI_005 = "EMS_S_PKI_005";
-    public static final String PKI_006 = "EMS_S_PKI_006";
-    public static final String PKI_007 = "EMS_S_PKI_007";
-    public static final String PKI_008 = "EMS_S_PKI_008";
-    public static final String PKI_009 = "EMS_S_PKI_009";
-    public static final String PKI_010 = "EMS_S_PKI_010";
-    public static final String PKI_011 = "EMS_S_PKI_011";
-    public static final String PKI_012 = "EMS_S_PKI_012";
-    public static final String PKI_013 = "EMS_S_PKI_013";
-    public static final String PKI_014 = "EMS_S_PKI_014";
-    public static final String PKI_015 = "EMS_S_PKI_015";
-    public static final String PKI_016 = "EMS_S_PKI_016";
-    public static final String PKI_017 = "EMS_S_PKI_017";
-    public static final String PKI_018 = "EMS_S_PKI_018";
-    public static final String PKI_019 = "EMS_S_PKI_019";
-    public static final String PKI_020 = "EMS_S_PKI_020";
-    public static final String PKI_021 = "EMS_S_PKI_021";
-    public static final String PKI_022 = "EMS_S_PKI_022";
-    public static final String PKI_023 = "EMS_S_PKI_023";
-    public static final String PKI_024 = "EMS_S_PKI_024";
-    public static final String PKI_025 = "EMS_S_PKI_025";
-    public static final String PKI_026 = "EMS_S_PKI_026";
-    public static final String PKI_027 = "EMS_S_PKI_027";
-    public static final String PKI_028 = "EMS_S_PKI_028";
-    public static final String PKI_029 = "EMS_S_PKI_029";
-    public static final String PKI_030 = "EMS_S_PKI_030";
-    public static final String PKI_031 = "EMS_S_PKI_031";
-    public static final String PKI_032 = "EMS_S_PKI_032";
-    public static final String PKI_033 = "EMS_S_PKI_033";
-    public static final String PKI_034 = "EMS_S_PKI_034";
-    public static final String PKI_001_MSG = "The request cannot be handled by PKI webservice.";
-    public static final String PKI_003_MSG = "Security problem. The signature on the xml string response could not be verified.";
-    public static final String PKI_012_MSG = "Security problem. There is no signature on the xml string response to be verified.";
-    public static final String PKI_013_MSG = "The offerId of token type '{}' could not be fetched by using profileManager. So the default value is used instead.";
-    public static final String PKI_014_MSG = "The parameter of type 'PersonTokenTO' is null.";
-    public static final String PKI_015_MSG = "The parameter of type 'CertificateTo' is null.";
-    public static final String PKI_017_MSG = "The protocol version could not be fetched by using profileManager. So the default value is used instead.";
-    public static final String PKI_018_MSG = "The parameter of type 'TokenTO' is null.";
-    public static final String PKI_020_MSG = "The parameter of type 'NetworkTokenTO' is null.";
-    public static final String PKI_025_MSG = "The parameter of type 'PersonTokenTO' is null.";
-    public static final String PKI_026_MSG = "The parameter of type 'CertificateTo' is null.";
+	public static final String PKI_001 = "EMS_S_PKI_001";
+	public static final String PKI_002 = "EMS_S_PKI_002";
+	public static final String PKI_003 = "EMS_S_PKI_003";
+	public static final String PKI_004 = "EMS_S_PKI_004";
+	public static final String PKI_005 = "EMS_S_PKI_005";
+	public static final String PKI_006 = "EMS_S_PKI_006";
+	public static final String PKI_007 = "EMS_S_PKI_007";
+	public static final String PKI_008 = "EMS_S_PKI_008";
+	public static final String PKI_009 = "EMS_S_PKI_009";
+	public static final String PKI_010 = "EMS_S_PKI_010";
+	public static final String PKI_011 = "EMS_S_PKI_011";
+	public static final String PKI_012 = "EMS_S_PKI_012";
+	public static final String PKI_013 = "EMS_S_PKI_013";
+	public static final String PKI_014 = "EMS_S_PKI_014";
+	public static final String PKI_015 = "EMS_S_PKI_015";
+	public static final String PKI_016 = "EMS_S_PKI_016";
+	public static final String PKI_017 = "EMS_S_PKI_017";
+	public static final String PKI_018 = "EMS_S_PKI_018";
+	public static final String PKI_019 = "EMS_S_PKI_019";
+	public static final String PKI_020 = "EMS_S_PKI_020";
+	public static final String PKI_021 = "EMS_S_PKI_021";
+	public static final String PKI_022 = "EMS_S_PKI_022";
+	public static final String PKI_023 = "EMS_S_PKI_023";
+	public static final String PKI_024 = "EMS_S_PKI_024";
+	public static final String PKI_025 = "EMS_S_PKI_025";
+	public static final String PKI_026 = "EMS_S_PKI_026";
+	public static final String PKI_027 = "EMS_S_PKI_027";
+	public static final String PKI_028 = "EMS_S_PKI_028";
+	public static final String PKI_029 = "EMS_S_PKI_029";
+	public static final String PKI_030 = "EMS_S_PKI_030";
+	public static final String PKI_031 = "EMS_S_PKI_031";
+	public static final String PKI_032 = "EMS_S_PKI_032";
+	public static final String PKI_033 = "EMS_S_PKI_033";
+	public static final String PKI_034 = "EMS_S_PKI_034";
+	public static final String PKI_001_MSG = "The request cannot be handled by PKI webservice.";
+	public static final String PKI_003_MSG = "Security problem. The signature on the xml string response could not be verified.";
+	public static final String PKI_012_MSG = "Security problem. There is no signature on the xml string response to be verified.";
+	public static final String PKI_013_MSG = "The offerId of token type '{}' could not be fetched by using profileManager. So the default value is used instead.";
+	public static final String PKI_014_MSG = "The parameter of type 'PersonTokenTO' is null.";
+	public static final String PKI_015_MSG = "The parameter of type 'CertificateTo' is null.";
+	public static final String PKI_017_MSG = "The protocol version could not be fetched by using profileManager. So the default value is used instead.";
+	public static final String PKI_018_MSG = "The parameter of type 'TokenTO' is null.";
+	public static final String PKI_020_MSG = "The parameter of type 'NetworkTokenTO' is null.";
+	public static final String PKI_025_MSG = "The parameter of type 'PersonTokenTO' is null.";
+	public static final String PKI_026_MSG = "The parameter of type 'CertificateTo' is null.";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.DispatchingServiceImpl
 	public static final String DPI_001 = "EMS_S_DPI_001";
@@ -1488,223 +1485,223 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String SPS_001 = "EMS_S_SPS_001";
 
 
-	
-    // com.gam.nocr.ems.biz.service.internal.impl.TokenManagementServiceImpl
-    public static final String TMS_001 = "EMS_S_TMS_001";
-    public static final String TMS_002 = "EMS_S_TMS_002";
-    public static final String TMS_003 = "EMS_S_TMS_003";
-    public static final String TMS_004 = "EMS_S_TMS_004";
-    public static final String TMS_005 = "EMS_S_TMS_005";
-    public static final String TMS_006 = "EMS_S_TMS_006";
-    public static final String TMS_007 = "EMS_S_TMS_007";
-    public static final String TMS_008 = "EMS_S_TMS_008";
-    public static final String TMS_009 = "EMS_S_TMS_009";
-    public static final String TMS_010 = "EMS_S_TMS_010";
-    public static final String TMS_011 = "EMS_S_TMS_011";
-    public static final String TMS_012 = "EMS_S_TMS_012";
-    public static final String TMS_013 = "EMS_S_TMS_013";
-    public static final String TMS_014 = "EMS_S_TMS_014";
-    public static final String TMS_015 = "EMS_S_TMS_015";
-    public static final String TMS_016 = "EMS_S_TMS_016";
-    public static final String TMS_017 = "EMS_S_TMS_017";
-    public static final String TMS_018 = "EMS_S_TMS_018";
-    public static final String TMS_019 = "EMS_S_TMS_019";
-    public static final String TMS_020 = "EMS_S_TMS_020";
-    public static final String TMS_021 = "EMS_S_TMS_021";
-    public static final String TMS_022 = "EMS_S_TMS_022";
-    public static final String TMS_023 = "EMS_S_TMS_023";
-    public static final String TMS_024 = "EMS_S_TMS_024";
-    public static final String TMS_025 = "EMS_S_TMS_025";
-    public static final String TMS_026 = "EMS_S_TMS_026";
-    public static final String TMS_027 = "EMS_S_TMS_027";
-    public static final String TMS_028 = "EMS_S_TMS_028";
-    public static final String TMS_029 = "EMS_S_TMS_029";
-    public static final String TMS_030 = "EMS_S_TMS_030";
-    public static final String TMS_031 = "EMS_S_TMS_031";
-    public static final String TMS_032 = "EMS_S_TMS_032";
-    public static final String TMS_033 = "EMS_S_TMS_033";
-    public static final String TMS_034 = "EMS_S_TMS_034";
-    public static final String TMS_035 = "EMS_S_TMS_035";
-    public static final String TMS_036 = "EMS_S_TMS_036";
-    public static final String TMS_037 = "EMS_S_TMS_037";
-    public static final String TMS_038 = "EMS_S_TMS_038";
-    public static final String TMS_039 = "EMS_S_TMS_039";
-    public static final String TMS_040 = "EMS_S_TMS_040";
-    public static final String TMS_041 = "EMS_S_TMS_041";
-    public static final String TMS_042 = "EMS_S_TMS_042";
-    public static final String TMS_045 = "EMS_S_TMS_045";
-    public static final String TMS_046 = "EMS_S_TMS_046";
-    public static final String TMS_047 = "EMS_S_TMS_047";
-    public static final String TMS_048 = "EMS_S_TMS_048";
-    public static final String TMS_049 = "EMS_S_TMS_049";
-    public static final String TMS_050 = "EMS_S_TMS_050";
-    public static final String TMS_051 = "EMS_S_TMS_051";
-    public static final String TMS_052 = "EMS_S_TMS_052";
-    public static final String TMS_053 = "EMS_S_TMS_053";
-    public static final String TMS_054 = "EMS_S_TMS_054";
-    public static final String TMS_055 = "EMS_S_TMS_055";
-    public static final String TMS_056 = "EMS_S_TMS_056";
-    public static final String TMS_057 = "EMS_S_TMS_057";
-    public static final String TMS_058 = "EMS_S_TMS_058";
-    public static final String TMS_059 = "EMS_S_TMS_059";
-    public static final String TMS_060 = "EMS_S_TMS_060";
-    public static final String TMS_061 = "EMS_S_TMS_061";
-    public static final String TMS_062 = "EMS_S_TMS_062";
-    public static final String TMS_063 = "EMS_S_TMS_063";
-    public static final String TMS_064 = "EMS_S_TMS_064";
-    public static final String TMS_065 = "EMS_S_TMS_065";
-    public static final String TMS_066 = "EMS_S_TMS_066";
-    public static final String TMS_067 = "EMS_S_TMS_067";
-    public static final String TMS_068 = "EMS_S_TMS_068";
-    public static final String TMS_007_MSG = "The request to achieve a new token of type 'NETWORK' was not allowable";
-    public static final String TMS_008_MSG = "The request to achieve a new person token of the same type was not allowable";
-    public static final String TMS_010_MSG = "The person with the specified person id could not be found.";
-    public static final String TMS_011_MSG = "The enrollmentOffice with the specified enrollmentId could not be found.";
-    public static final String TMS_017_MSG = "The required token has not been issuing til now.";
-    public static final String TMS_018_MSG = "the token with specified id could not be found";
-    public static final String TMS_021_MSG = "the token with specified person and tokenType could not be found.";
-    public static final String TMS_022_MSG = "the token with specified enrollmentOffice and tokenType could not be found.";
-    public static final String TMS_027_MSG = "The required CertificateTo instance with the given usage could not be found.";
-    public static final String TMS_030_MSG = "The person which belongs to the personTokenTO with Id {}, could not be found.";
-    public static final String TMS_031_MSG = "The person with Id {} could not be enabled.";
-    public static final String TMS_032_MSG = "The enrollmentOffice which belongs to the networkTokenTO with Id {}, could not be found.";
-    public static final String TMS_039_MSG = "Invalid TokenId. The tokenId with null value is invalid.";
-    public static final String TMS_040_MSG = "Invalid TokenOrigin. The current value is 'null'; But, the expected values are 'PERSON' or 'NETWORK'.";
-    public static final String TMS_042_MSG = "Invalid Request. There is no probability to delete the selected token, because the issuance request to the sub system 'PKI', has been sent, formerly.";
-    public static final String TMS_047_MSG = "Invalid Request. The person token with the state of 'DELIVERED' already exists.";
-    public static final String TMS_050_MSG = "Invalid Request. The network token with the state of 'DELIVERED' already exists.";
-    public static final String TMS_057_MSG = "Invalid Request. No need ro issue network token for NOCR enrollment offices";
-    public static final String TMS_060_MSG = "Invalid Request. Another renewal request has been submited for same person";
-    public static final String TMS_063_MSG = "Old token could not be found.";
+
+	// com.gam.nocr.ems.biz.service.internal.impl.TokenManagementServiceImpl
+	public static final String TMS_001 = "EMS_S_TMS_001";
+	public static final String TMS_002 = "EMS_S_TMS_002";
+	public static final String TMS_003 = "EMS_S_TMS_003";
+	public static final String TMS_004 = "EMS_S_TMS_004";
+	public static final String TMS_005 = "EMS_S_TMS_005";
+	public static final String TMS_006 = "EMS_S_TMS_006";
+	public static final String TMS_007 = "EMS_S_TMS_007";
+	public static final String TMS_008 = "EMS_S_TMS_008";
+	public static final String TMS_009 = "EMS_S_TMS_009";
+	public static final String TMS_010 = "EMS_S_TMS_010";
+	public static final String TMS_011 = "EMS_S_TMS_011";
+	public static final String TMS_012 = "EMS_S_TMS_012";
+	public static final String TMS_013 = "EMS_S_TMS_013";
+	public static final String TMS_014 = "EMS_S_TMS_014";
+	public static final String TMS_015 = "EMS_S_TMS_015";
+	public static final String TMS_016 = "EMS_S_TMS_016";
+	public static final String TMS_017 = "EMS_S_TMS_017";
+	public static final String TMS_018 = "EMS_S_TMS_018";
+	public static final String TMS_019 = "EMS_S_TMS_019";
+	public static final String TMS_020 = "EMS_S_TMS_020";
+	public static final String TMS_021 = "EMS_S_TMS_021";
+	public static final String TMS_022 = "EMS_S_TMS_022";
+	public static final String TMS_023 = "EMS_S_TMS_023";
+	public static final String TMS_024 = "EMS_S_TMS_024";
+	public static final String TMS_025 = "EMS_S_TMS_025";
+	public static final String TMS_026 = "EMS_S_TMS_026";
+	public static final String TMS_027 = "EMS_S_TMS_027";
+	public static final String TMS_028 = "EMS_S_TMS_028";
+	public static final String TMS_029 = "EMS_S_TMS_029";
+	public static final String TMS_030 = "EMS_S_TMS_030";
+	public static final String TMS_031 = "EMS_S_TMS_031";
+	public static final String TMS_032 = "EMS_S_TMS_032";
+	public static final String TMS_033 = "EMS_S_TMS_033";
+	public static final String TMS_034 = "EMS_S_TMS_034";
+	public static final String TMS_035 = "EMS_S_TMS_035";
+	public static final String TMS_036 = "EMS_S_TMS_036";
+	public static final String TMS_037 = "EMS_S_TMS_037";
+	public static final String TMS_038 = "EMS_S_TMS_038";
+	public static final String TMS_039 = "EMS_S_TMS_039";
+	public static final String TMS_040 = "EMS_S_TMS_040";
+	public static final String TMS_041 = "EMS_S_TMS_041";
+	public static final String TMS_042 = "EMS_S_TMS_042";
+	public static final String TMS_045 = "EMS_S_TMS_045";
+	public static final String TMS_046 = "EMS_S_TMS_046";
+	public static final String TMS_047 = "EMS_S_TMS_047";
+	public static final String TMS_048 = "EMS_S_TMS_048";
+	public static final String TMS_049 = "EMS_S_TMS_049";
+	public static final String TMS_050 = "EMS_S_TMS_050";
+	public static final String TMS_051 = "EMS_S_TMS_051";
+	public static final String TMS_052 = "EMS_S_TMS_052";
+	public static final String TMS_053 = "EMS_S_TMS_053";
+	public static final String TMS_054 = "EMS_S_TMS_054";
+	public static final String TMS_055 = "EMS_S_TMS_055";
+	public static final String TMS_056 = "EMS_S_TMS_056";
+	public static final String TMS_057 = "EMS_S_TMS_057";
+	public static final String TMS_058 = "EMS_S_TMS_058";
+	public static final String TMS_059 = "EMS_S_TMS_059";
+	public static final String TMS_060 = "EMS_S_TMS_060";
+	public static final String TMS_061 = "EMS_S_TMS_061";
+	public static final String TMS_062 = "EMS_S_TMS_062";
+	public static final String TMS_063 = "EMS_S_TMS_063";
+	public static final String TMS_064 = "EMS_S_TMS_064";
+	public static final String TMS_065 = "EMS_S_TMS_065";
+	public static final String TMS_066 = "EMS_S_TMS_066";
+	public static final String TMS_067 = "EMS_S_TMS_067";
+	public static final String TMS_068 = "EMS_S_TMS_068";
+	public static final String TMS_007_MSG = "The request to achieve a new token of type 'NETWORK' was not allowable";
+	public static final String TMS_008_MSG = "The request to achieve a new person token of the same type was not allowable";
+	public static final String TMS_010_MSG = "The person with the specified person id could not be found.";
+	public static final String TMS_011_MSG = "The enrollmentOffice with the specified enrollmentId could not be found.";
+	public static final String TMS_017_MSG = "The required token has not been issuing til now.";
+	public static final String TMS_018_MSG = "the token with specified id could not be found";
+	public static final String TMS_021_MSG = "the token with specified person and tokenType could not be found.";
+	public static final String TMS_022_MSG = "the token with specified enrollmentOffice and tokenType could not be found.";
+	public static final String TMS_027_MSG = "The required CertificateTo instance with the given usage could not be found.";
+	public static final String TMS_030_MSG = "The person which belongs to the personTokenTO with Id {}, could not be found.";
+	public static final String TMS_031_MSG = "The person with Id {} could not be enabled.";
+	public static final String TMS_032_MSG = "The enrollmentOffice which belongs to the networkTokenTO with Id {}, could not be found.";
+	public static final String TMS_039_MSG = "Invalid TokenId. The tokenId with null value is invalid.";
+	public static final String TMS_040_MSG = "Invalid TokenOrigin. The current value is 'null'; But, the expected values are 'PERSON' or 'NETWORK'.";
+	public static final String TMS_042_MSG = "Invalid Request. There is no probability to delete the selected token, because the issuance request to the sub system 'PKI', has been sent, formerly.";
+	public static final String TMS_047_MSG = "Invalid Request. The person token with the state of 'DELIVERED' already exists.";
+	public static final String TMS_050_MSG = "Invalid Request. The network token with the state of 'DELIVERED' already exists.";
+	public static final String TMS_057_MSG = "Invalid Request. No need ro issue network token for NOCR enrollment offices";
+	public static final String TMS_060_MSG = "Invalid Request. Another renewal request has been submited for same person";
+	public static final String TMS_063_MSG = "Old token could not be found.";
 
 
-    // com.gam.nocr.ems.biz.service.internal.impl.CardManagementServiceImpl
-    public static final String CMS_001 = "EMS_S_CMS_001";
-    public static final String CMS_002 = "EMS_S_CMS_002";
-    public static final String CMS_003 = "EMS_S_CMS_003";
-    public static final String CMS_004 = "EMS_S_CMS_004";
-    public static final String CMS_005 = "EMS_S_CMS_005";
-    public static final String CMS_006 = "EMS_S_CMS_006";
-    public static final String CMS_007 = "EMS_S_CMS_007";
-    public static final String CMS_008 = "EMS_S_CMS_008";
-    public static final String CMS_009 = "EMS_S_CMS_009";
-    public static final String CMS_010 = "EMS_S_CMS_010";
-    public static final String CMS_011 = "EMS_S_CMS_011";
-    public static final String CMS_012 = "EMS_S_CMS_012";
-    public static final String CMS_013 = "EMS_S_CMS_013";
-    public static final String CMS_014 = "EMS_S_CMS_014";
-    public static final String CMS_015 = "EMS_S_CMS_015";
-    public static final String CMS_016 = "EMS_S_CMS_016";
-    public static final String CMS_017 = "EMS_S_CMS_017";
-    public static final String CMS_018 = "EMS_S_CMS_018";
-    public static final String CMS_019 = "EMS_S_CMS_019";
-    public static final String CMS_020 = "EMS_S_CMS_020";
-    public static final String CMS_021 = "EMS_S_CMS_021";
-    public static final String CMS_022 = "EMS_S_CMS_022";
-    public static final String CMS_023 = "EMS_S_CMS_023";
-    public static final String CMS_024 = "EMS_S_CMS_024";
-    public static final String CMS_025 = "EMS_S_CMS_025";
-    public static final String CMS_026 = "EMS_S_CMS_026";
-    public static final String CMS_027 = "EMS_S_CMS_027";
-    public static final String CMS_028 = "EMS_S_CMS_028";
-    public static final String CMS_029 = "EMS_S_CMS_029";
-    public static final String CMS_030 = "EMS_S_CMS_030";
-    public static final String CMS_031 = "EMS_S_CMS_031";
-    public static final String CMS_032 = "EMS_S_CMS_032";
-    public static final String CMS_033 = "EMS_S_CMS_033";
-    public static final String CMS_034 = "EMS_S_CMS_034";
-    public static final String CMS_035 = "EMS_S_CMS_035";
-    public static final String CMS_036 = "EMS_S_CMS_036";
-    public static final String CMS_037 = "EMS_S_CMS_037";
-    public static final String CMS_038 = "EMS_S_CMS_038";
-    public static final String CMS_039 = "EMS_S_CMS_039";
-    public static final String CMS_040 = "EMS_S_CMS_040";
-    public static final String CMS_041 = "EMS_S_CMS_041";
-    public static final String CMS_042 = "EMS_S_CMS_042";
-    public static final String CMS_043 = "EMS_S_CMS_043";
-    public static final String CMS_044 = "EMS_S_CMS_044";
-    public static final String CMS_045 = "EMS_S_CMS_045";
-    public static final String CMS_046 = "EMS_S_CMS_046";
-    public static final String CMS_047 = "EMS_S_CMS_047";
-    public static final String CMS_048 = "EMS_S_CMS_048";
-    public static final String CMS_049 = "EMS_S_CMS_049";
-    public static final String CMS_050 = "EMS_S_CMS_050";
-    public static final String CMS_051 = "EMS_S_CMS_051";
-    public static final String CMS_052 = "EMS_S_CMS_052";
-    public static final String CMS_053 = "EMS_S_CMS_053";
-    public static final String CMS_054 = "EMS_S_CMS_054";
-    public static final String CMS_055 = "EMS_S_CMS_055";
-    public static final String CMS_056 = "EMS_S_CMS_056";
-    public static final String CMS_057 = "EMS_S_CMS_057";
-    public static final String CMS_058 = "EMS_S_CMS_058";
-    public static final String CMS_059 = "EMS_S_CMS_059";
-    public static final String CMS_060 = "EMS_S_CMS_060";
-    public static final String CMS_061 = "EMS_S_CMS_061";
-    public static final String CMS_062 = "EMS_S_CMS_062";
-    public static final String CMS_063 = "EMS_S_CMS_063";
-    public static final String CMS_064 = "EMS_S_CMS_064";
-    public static final String CMS_065 = "EMS_S_CMS_065";
-    public static final String CMS_066 = "EMS_S_CMS_066";
-    public static final String CMS_067 = "EMS_S_CMS_067";
-    public static final String CMS_068 = "EMS_S_CMS_068";
-    public static final String CMS_069 = "EMS_S_CMS_069";
-    public static final String CMS_070 = "EMS_S_CMS_070";
-    public static final String CMS_071 = "EMS_S_CMS_071";
-    public static final String CMS_072 = "EMS_S_CMS_072";
-    public static final String CMS_073 = "EMS_S_CMS_073";
-    public static final String CMS_074 = "EMS_S_CMS_074";
-    public static final String CMS_075 = "EMS_S_CMS_075";
-    public static final String CMS_076 = "EMS_S_CMS_076";
-    public static final String CMS_077 = "EMS_S_CMS_077";
-    public static final String CMS_078 = "EMS_S_CMS_078";
-    public static final String CMS_079 = "EMS_S_CMS_079";
-    public static final String CMS_080 = "EMS_S_CMS_080";
-    public static final String CMS_081 = "EMS_S_CMS_081";
-    public static final String CMS_082 = "EMS_S_CMS_082";
-    public static final String CMS_083 = "EMS_S_CMS_083";
-    public static final String CMS_084 = "EMS_S_CMS_084";
-    public static final String CMS_085 = "EMS_S_CMS_085";
-    public static final String CMS_086 = "EMS_S_CMS_086";
-    public static final String CMS_087 = "EMS_S_CMS_087";
-    public static final String CMS_088 = "EMS_S_CMS_088";
-    public static final String CMS_089 = "EMS_S_CMS_089";
-    public static final String CMS_090 = "EMS_S_CMS_090";
-    public static final String CMS_091 = "EMS_S_CMS_091";
-    public static final String CMS_092 = "EMS_S_CMS_092";
-    public static final String CMS_093 = "EMS_S_CMS_093";
-    public static final String CMS_100 = "EMS_S_CMS_100";
+	// com.gam.nocr.ems.biz.service.internal.impl.CardManagementServiceImpl
+	public static final String CMS_001 = "EMS_S_CMS_001";
+	public static final String CMS_002 = "EMS_S_CMS_002";
+	public static final String CMS_003 = "EMS_S_CMS_003";
+	public static final String CMS_004 = "EMS_S_CMS_004";
+	public static final String CMS_005 = "EMS_S_CMS_005";
+	public static final String CMS_006 = "EMS_S_CMS_006";
+	public static final String CMS_007 = "EMS_S_CMS_007";
+	public static final String CMS_008 = "EMS_S_CMS_008";
+	public static final String CMS_009 = "EMS_S_CMS_009";
+	public static final String CMS_010 = "EMS_S_CMS_010";
+	public static final String CMS_011 = "EMS_S_CMS_011";
+	public static final String CMS_012 = "EMS_S_CMS_012";
+	public static final String CMS_013 = "EMS_S_CMS_013";
+	public static final String CMS_014 = "EMS_S_CMS_014";
+	public static final String CMS_015 = "EMS_S_CMS_015";
+	public static final String CMS_016 = "EMS_S_CMS_016";
+	public static final String CMS_017 = "EMS_S_CMS_017";
+	public static final String CMS_018 = "EMS_S_CMS_018";
+	public static final String CMS_019 = "EMS_S_CMS_019";
+	public static final String CMS_020 = "EMS_S_CMS_020";
+	public static final String CMS_021 = "EMS_S_CMS_021";
+	public static final String CMS_022 = "EMS_S_CMS_022";
+	public static final String CMS_023 = "EMS_S_CMS_023";
+	public static final String CMS_024 = "EMS_S_CMS_024";
+	public static final String CMS_025 = "EMS_S_CMS_025";
+	public static final String CMS_026 = "EMS_S_CMS_026";
+	public static final String CMS_027 = "EMS_S_CMS_027";
+	public static final String CMS_028 = "EMS_S_CMS_028";
+	public static final String CMS_029 = "EMS_S_CMS_029";
+	public static final String CMS_030 = "EMS_S_CMS_030";
+	public static final String CMS_031 = "EMS_S_CMS_031";
+	public static final String CMS_032 = "EMS_S_CMS_032";
+	public static final String CMS_033 = "EMS_S_CMS_033";
+	public static final String CMS_034 = "EMS_S_CMS_034";
+	public static final String CMS_035 = "EMS_S_CMS_035";
+	public static final String CMS_036 = "EMS_S_CMS_036";
+	public static final String CMS_037 = "EMS_S_CMS_037";
+	public static final String CMS_038 = "EMS_S_CMS_038";
+	public static final String CMS_039 = "EMS_S_CMS_039";
+	public static final String CMS_040 = "EMS_S_CMS_040";
+	public static final String CMS_041 = "EMS_S_CMS_041";
+	public static final String CMS_042 = "EMS_S_CMS_042";
+	public static final String CMS_043 = "EMS_S_CMS_043";
+	public static final String CMS_044 = "EMS_S_CMS_044";
+	public static final String CMS_045 = "EMS_S_CMS_045";
+	public static final String CMS_046 = "EMS_S_CMS_046";
+	public static final String CMS_047 = "EMS_S_CMS_047";
+	public static final String CMS_048 = "EMS_S_CMS_048";
+	public static final String CMS_049 = "EMS_S_CMS_049";
+	public static final String CMS_050 = "EMS_S_CMS_050";
+	public static final String CMS_051 = "EMS_S_CMS_051";
+	public static final String CMS_052 = "EMS_S_CMS_052";
+	public static final String CMS_053 = "EMS_S_CMS_053";
+	public static final String CMS_054 = "EMS_S_CMS_054";
+	public static final String CMS_055 = "EMS_S_CMS_055";
+	public static final String CMS_056 = "EMS_S_CMS_056";
+	public static final String CMS_057 = "EMS_S_CMS_057";
+	public static final String CMS_058 = "EMS_S_CMS_058";
+	public static final String CMS_059 = "EMS_S_CMS_059";
+	public static final String CMS_060 = "EMS_S_CMS_060";
+	public static final String CMS_061 = "EMS_S_CMS_061";
+	public static final String CMS_062 = "EMS_S_CMS_062";
+	public static final String CMS_063 = "EMS_S_CMS_063";
+	public static final String CMS_064 = "EMS_S_CMS_064";
+	public static final String CMS_065 = "EMS_S_CMS_065";
+	public static final String CMS_066 = "EMS_S_CMS_066";
+	public static final String CMS_067 = "EMS_S_CMS_067";
+	public static final String CMS_068 = "EMS_S_CMS_068";
+	public static final String CMS_069 = "EMS_S_CMS_069";
+	public static final String CMS_070 = "EMS_S_CMS_070";
+	public static final String CMS_071 = "EMS_S_CMS_071";
+	public static final String CMS_072 = "EMS_S_CMS_072";
+	public static final String CMS_073 = "EMS_S_CMS_073";
+	public static final String CMS_074 = "EMS_S_CMS_074";
+	public static final String CMS_075 = "EMS_S_CMS_075";
+	public static final String CMS_076 = "EMS_S_CMS_076";
+	public static final String CMS_077 = "EMS_S_CMS_077";
+	public static final String CMS_078 = "EMS_S_CMS_078";
+	public static final String CMS_079 = "EMS_S_CMS_079";
+	public static final String CMS_080 = "EMS_S_CMS_080";
+	public static final String CMS_081 = "EMS_S_CMS_081";
+	public static final String CMS_082 = "EMS_S_CMS_082";
+	public static final String CMS_083 = "EMS_S_CMS_083";
+	public static final String CMS_084 = "EMS_S_CMS_084";
+	public static final String CMS_085 = "EMS_S_CMS_085";
+	public static final String CMS_086 = "EMS_S_CMS_086";
+	public static final String CMS_087 = "EMS_S_CMS_087";
+	public static final String CMS_088 = "EMS_S_CMS_088";
+	public static final String CMS_089 = "EMS_S_CMS_089";
+	public static final String CMS_090 = "EMS_S_CMS_090";
+	public static final String CMS_091 = "EMS_S_CMS_091";
+	public static final String CMS_092 = "EMS_S_CMS_092";
+	public static final String CMS_093 = "EMS_S_CMS_093";
+	public static final String CMS_100 = "EMS_S_CMS_100";
 
-    public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
-    public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
-    public static final String CMS_005_MSG = "The request of type 'REPLACE' is not allowable. ";
-    public static final String CMS_006_MSG = "The request of type 'EXTEND' is not allowable. ";
-    public static final String CMS_011_MSG = "The required request with the specified requestId could not be found. ";
-    public static final String CMS_014_MSG = "Invalid request. request which belongs to citizen with national Id of {} has not been a valid one.";
-    public static final String CMS_015_MSG = "Cannot find request id {}";
-    public static final String CMS_016_MSG = "Cannot deliver when receipt text is null or empty";
-    public static final String CMS_017_MSG = "Cannot deliver when signed receipt is null";
-    public static final String CMS_018_MSG = "No card has been found for request with id {}";
-    public static final String CMS_022_MSG = "No citizen has been found for request with id {}";
-    public static final String CMS_029_MSG = "Invalid request!. The request is not in a state which can invoke the unsuccessful delivery service.";
-    public static final String CMS_030_MSG = "Invalid request!. The request is not in a state which can invoke the unsuccessful delivery service.";
-    public static final String CMS_058_MSG = "Invalid CRN. The given CRN cannot be null.";
-    public static final String CMS_059_MSG = "There has been found no CRN which is related to the given request id.";
-    public static final String CMS_060_MSG = "Invalid CRN. The given CRN cannot be matched with the expected one which has been stored on database.";
-    public static final String CMS_063_MSG = "Invalid card id. The given card id cannot be null.";
-    public static final String CMS_065_MSG = "There is not any card with the given card id.";
-    public static final String CMS_066_MSG = "The card state must be 'shipped'.";
-    public static final String CMS_067_MSG = "The lost date for card is null.";
-    public static final String CMS_070_MSG = "Invalid batch id. The given batch id cannot be null.";
-    public static final String CMS_071_MSG = "There is not any batch with the given batch id.";
-    public static final String CMS_072_MSG = "The batch state must be 'shipped'.";
-    public static final String CMS_073_MSG = "The lost date for batch is null.";
-    public static final String CMS_083_MSG = "The IMS service is down.";
-    public static final String CMS_084_MSG = "The estelam result is failed.Try again.";
-    public static final String CMS_085_MSG = "The finger_all is empty or null.";
-    public static final String CMS_088_MSG = "The request id which is on card is null";
-    public static final String CMS_089_MSG = "record does not exist in IMS";
-    public static final String CMS_074_MSG = "The request is not allowable because of ccos lost or missed request pending ";
-    public static final String CMS_075_MSG = "The request of type 'EXTEND' is not allowable because of issuance Date ";
+	public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
+	public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
+	public static final String CMS_005_MSG = "The request of type 'REPLACE' is not allowable. ";
+	public static final String CMS_006_MSG = "The request of type 'EXTEND' is not allowable. ";
+	public static final String CMS_011_MSG = "The required request with the specified requestId could not be found. ";
+	public static final String CMS_014_MSG = "Invalid request. request which belongs to citizen with national Id of {} has not been a valid one.";
+	public static final String CMS_015_MSG = "Cannot find request id {}";
+	public static final String CMS_016_MSG = "Cannot deliver when receipt text is null or empty";
+	public static final String CMS_017_MSG = "Cannot deliver when signed receipt is null";
+	public static final String CMS_018_MSG = "No card has been found for request with id {}";
+	public static final String CMS_022_MSG = "No citizen has been found for request with id {}";
+	public static final String CMS_029_MSG = "Invalid request!. The request is not in a state which can invoke the unsuccessful delivery service.";
+	public static final String CMS_030_MSG = "Invalid request!. The request is not in a state which can invoke the unsuccessful delivery service.";
+	public static final String CMS_058_MSG = "Invalid CRN. The given CRN cannot be null.";
+	public static final String CMS_059_MSG = "There has been found no CRN which is related to the given request id.";
+	public static final String CMS_060_MSG = "Invalid CRN. The given CRN cannot be matched with the expected one which has been stored on database.";
+	public static final String CMS_063_MSG = "Invalid card id. The given card id cannot be null.";
+	public static final String CMS_065_MSG = "There is not any card with the given card id.";
+	public static final String CMS_066_MSG = "The card state must be 'shipped'.";
+	public static final String CMS_067_MSG = "The lost date for card is null.";
+	public static final String CMS_070_MSG = "Invalid batch id. The given batch id cannot be null.";
+	public static final String CMS_071_MSG = "There is not any batch with the given batch id.";
+	public static final String CMS_072_MSG = "The batch state must be 'shipped'.";
+	public static final String CMS_073_MSG = "The lost date for batch is null.";
+	public static final String CMS_083_MSG = "The IMS service is down.";
+	public static final String CMS_084_MSG = "The estelam result is failed.Try again.";
+	public static final String CMS_085_MSG = "The finger_all is empty or null.";
+	public static final String CMS_088_MSG = "The request id which is on card is null";
+	public static final String CMS_089_MSG = "record does not exist in IMS";
+	public static final String CMS_074_MSG = "The request is not allowable because of ccos lost or missed request pending ";
+	public static final String CMS_075_MSG = "The request of type 'EXTEND' is not allowable because of issuance Date ";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.LocationServiceImpl
 	public static final String LMS_001 = "EMS_S_LMS_001";
@@ -1856,8 +1853,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String HMS_020 = "EMS_S_HMS_020";
 	public static final String HMS_012_MSG = "A comma-separated list of holiday ids must be given in order to remove them";
 	public static final String HMS_014_MSG = "List of holiday ids to remove is invalid";
-	
-	
+
+
 	public static final String EXC_001 = "EMS_S_EXC_001";
 
 
@@ -1872,7 +1869,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String PGS_008 = "EMS_S_PGS_008";
 	public static final String PGS_009 = "EMS_S_PGS_009";
 	public static final String PGS_010 = "EMS_S_PGS_010";
-	
+
 	// com.gam.nocr.ems.biz.service.internal.impl.IMSManagementServiceImpl
 	public static final String MMS_001 = "EMS_S_MMS_001";
 	public static final String MMS_002 = "EMS_S_MMS_002";
@@ -1971,39 +1968,39 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String MMS_068_MSG = "The dead value from IMS is unvalid.";
 	public static final String MMS_069_MSG = "The estelam result is unknown";
 	public static final String MMS_070_MSG = "The citizen info which received from IMS are empty or null";
-	
 
-    // com.gam.nocr.ems.biz.service.internal.impl.PortalManagementServiceImpl
-    public static final String PTL_001 = "EMS_S_PTL_001";
-    public static final String PTL_002 = "EMS_S_PTL_002";
-    public static final String PTL_003 = "EMS_S_PTL_003";
-    public static final String PTL_004 = "EMS_S_PTL_004";
-    public static final String PTL_005 = "EMS_S_PTL_005";
-    public static final String PTL_006 = "EMS_S_PTL_006";
-    public static final String PTL_007 = "EMS_S_PTL_007";
-    public static final String PTL_008 = "EMS_S_PTL_008";
-    public static final String PTL_009 = "EMS_S_PTL_009";
-    public static final String PTL_010 = "EMS_S_PTL_010";
-    public static final String PTL_011 = "EMS_S_PTL_011";
-    public static final String PTL_012 = "EMS_S_PTL_012";
-    public static final String PTL_013 = "EMS_S_PTL_013";
-    public static final String PTL_014 = "EMS_S_PTL_014";
-    public static final String PTL_015 = "EMS_S_PTL_015";
-    public static final String PTL_016 = "EMS_S_PTL_016";
-    public static final String PTL_017 = "EMS_S_PTL_017";
-    public static final String PTL_018 = "EMS_S_PTL_018";
-    public static final String PTL_019 = "EMS_S_PTL_019";
-    public static final String PTL_020 = "EMS_S_PTL_020";
-    public static final String PTL_021 = "EMS_S_PTL_021";
-    public static final String PTL_022 = "EMS_S_PTL_022";
-    public static final String PTL_023 = "EMS_S_PTL_023";
-    public static final String PTL_024 = "EMS_S_PTL_024";
-    public static final String PTL_003_MSG = "The value list handler could not be initialized.";
-    public static final String PTL_004_MSG = "A problem occurred in loading list encounter.";
-    public static final String PTL_007_MSG = "invalid portal request id, cannot find any request with this portal request id";
-    public static final String PTL_010_MSG = "NO new request sent from CCOS";
-    public static final String PTL_011_MSG = "State Transition is not allowable";
-    public static final String PTL_012_MSG = "Exception occured in Transfer Reservation method for portalCardRequestId";
+
+	// com.gam.nocr.ems.biz.service.internal.impl.PortalManagementServiceImpl
+	public static final String PTL_001 = "EMS_S_PTL_001";
+	public static final String PTL_002 = "EMS_S_PTL_002";
+	public static final String PTL_003 = "EMS_S_PTL_003";
+	public static final String PTL_004 = "EMS_S_PTL_004";
+	public static final String PTL_005 = "EMS_S_PTL_005";
+	public static final String PTL_006 = "EMS_S_PTL_006";
+	public static final String PTL_007 = "EMS_S_PTL_007";
+	public static final String PTL_008 = "EMS_S_PTL_008";
+	public static final String PTL_009 = "EMS_S_PTL_009";
+	public static final String PTL_010 = "EMS_S_PTL_010";
+	public static final String PTL_011 = "EMS_S_PTL_011";
+	public static final String PTL_012 = "EMS_S_PTL_012";
+	public static final String PTL_013 = "EMS_S_PTL_013";
+	public static final String PTL_014 = "EMS_S_PTL_014";
+	public static final String PTL_015 = "EMS_S_PTL_015";
+	public static final String PTL_016 = "EMS_S_PTL_016";
+	public static final String PTL_017 = "EMS_S_PTL_017";
+	public static final String PTL_018 = "EMS_S_PTL_018";
+	public static final String PTL_019 = "EMS_S_PTL_019";
+	public static final String PTL_020 = "EMS_S_PTL_020";
+	public static final String PTL_021 = "EMS_S_PTL_021";
+	public static final String PTL_022 = "EMS_S_PTL_022";
+	public static final String PTL_023 = "EMS_S_PTL_023";
+	public static final String PTL_024 = "EMS_S_PTL_024";
+	public static final String PTL_003_MSG = "The value list handler could not be initialized.";
+	public static final String PTL_004_MSG = "A problem occurred in loading list encounter.";
+	public static final String PTL_007_MSG = "invalid portal request id, cannot find any request with this portal request id";
+	public static final String PTL_010_MSG = "NO new request sent from CCOS";
+	public static final String PTL_011_MSG = "State Transition is not allowable";
+	public static final String PTL_012_MSG = "Exception occured in Transfer Reservation method for portalCardRequestId";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.ReportManagementServiceImpl
 	public static final String RMG_001 = "EMS_S_RMG_001";
@@ -2207,7 +2204,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String PRR_006 = "EMS_S_PRR_006";
 	public static final String PRR_007 = "EMS_S_PRR_007";
 	public static final String PRR_008 = "EMS_S_PRR_008";
-    public static final String PBS_011 = "EMS_S_PBS_011";
+	public static final String PBS_011 = "EMS_S_PBS_011";
 	public static final String PRR_007_MSG = "Change Enrollment office location has forbidden now!";
 	public static final String REG_20_MSG = "Invalid serialNumber";//REG_20_MSG
 	public static final String REG_21_MSG = "Invalid NationalId";//REG_21_MSG
@@ -2406,8 +2403,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 
 	public static final String NIO_030 = "EMS_S_NIO_030";
 	public static final String NIO_031 = "EMS_S_NIO_031";
-	public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system.";
-	public static final String NIO_010_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system.";
+	public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system for NationalId: {0}.";
 	public static final String NIO_014_MSG = "The returned value of the service of getEstelam2 is null. ";
 	public static final String NIO_015_MSG = "No record was found for this person in IMS to return. The main exception message which has returned from IMS is: ";
 	public static final String NIO_016_MSG = "Identity recognition exception. The IMS needs to review the person profile again. The main exception message which has returned from IMS is: ";
@@ -2569,10 +2565,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String HES_003_MSG = "instance of helpTO is null";
 	public static final String HES_006_MSG = "help ids for removing are null or empty";
 	public static final String HES_007_MSG = "List of help ids to remove is invalid";
-	
-	
-	
-	
+
+
+
+
 	// com.gam.nocr.ems.biz.service.aspects.Authorizer
 	public static final String AUT_001 = "EMS_S_AUT_001";
 	public static final String AUT_002 = "EMS_S_AUT_002";
@@ -2589,44 +2585,44 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String BZI_004 = "EMS_S_BZL_004";
 	public static final String BZL_001_MSG = "The logEntityName: {} for the is incorrect";
 	public static final String BZL_002_MSG = "The logAction: {} is incorrect";
-    
-    //com.gam.nocr.ems.biz.service.internal.impl.EmksServiceImpl
-    public static final String ESI_001 = "EMS_S_ESI_001";
-    public static final String ESI_002 = "EMS_S_ESI_002";
-    public static final String ESI_003 = "EMS_S_ESI_003";
-    public static final String ESI_004 = "EMS_S_ESI_004";
-    public static final String ESI_005 = "EMS_S_ESI_005";
-    public static final String ESI_006 = "EMS_S_ESI_006";
-    public static final String ESI_007 = "EMS_S_ESI_007";
-    public static final String ESI_008 = "EMS_S_ESI_008";
-    public static final String ESI_009 = "EMS_S_ESI_009";
-    public static final String ESI_010 = "EMS_S_ESI_010";
-    public static final String ESI_011 = "EMS_S_ESI_011";
-    public static final String ESI_012 = "EMS_S_ESI_012";
-    public static final String ESI_013 = "EMS_S_ESI_013";
-    public static final String ESI_014 = "EMS_S_ESI_014";
-    public static final String ESI_015 = "EMS_S_ESI_015";
-    public static final String ESI_016 = "EMS_S_ESI_016";
-    public static final String ESI_017 = "EMS_S_ESI_017";
-    public static final String ESI_018 = "EMS_S_ESI_018";
-    public static final String ESI_019 = "EMS_S_ESI_019";
-    public static final String ESI_020 = "EMS_S_ESI_020";
-    public static final String ESI_021 = "EMS_S_ESI_021";
-    public static final String ESI_022 = "EMS_S_ESI_022";
-    public static final String ESI_023 = "EMS_S_ESI_023";
-    public static final String ESI_024 = "EMS_S_ESI_024";
-    public static final String ESI_025 = "EMS_S_ESI_025";
-    public static final String ESI_026 = "EMS_S_ESI_026";
-    public static final String ESI_027 = "EMS_S_ESI_027";
-    public static final String ESI_028 = "EMS_S_ESI_028";
-    public static final String ESI_029 = "EMS_S_ESI_029";
-    public static final String ESI_030 = "EMS_S_ESI_030";
-    public static final String ESI_031 = "EMS_S_ESI_031";
-    public static final String ESI_032 = "EMS_S_ESI_032";
-    public static final String ESI_033 = "EMS_S_ESI_033";
+
+	//com.gam.nocr.ems.biz.service.internal.impl.EmksServiceImpl
+	public static final String ESI_001 = "EMS_S_ESI_001";
+	public static final String ESI_002 = "EMS_S_ESI_002";
+	public static final String ESI_003 = "EMS_S_ESI_003";
+	public static final String ESI_004 = "EMS_S_ESI_004";
+	public static final String ESI_005 = "EMS_S_ESI_005";
+	public static final String ESI_006 = "EMS_S_ESI_006";
+	public static final String ESI_007 = "EMS_S_ESI_007";
+	public static final String ESI_008 = "EMS_S_ESI_008";
+	public static final String ESI_009 = "EMS_S_ESI_009";
+	public static final String ESI_010 = "EMS_S_ESI_010";
+	public static final String ESI_011 = "EMS_S_ESI_011";
+	public static final String ESI_012 = "EMS_S_ESI_012";
+	public static final String ESI_013 = "EMS_S_ESI_013";
+	public static final String ESI_014 = "EMS_S_ESI_014";
+	public static final String ESI_015 = "EMS_S_ESI_015";
+	public static final String ESI_016 = "EMS_S_ESI_016";
+	public static final String ESI_017 = "EMS_S_ESI_017";
+	public static final String ESI_018 = "EMS_S_ESI_018";
+	public static final String ESI_019 = "EMS_S_ESI_019";
+	public static final String ESI_020 = "EMS_S_ESI_020";
+	public static final String ESI_021 = "EMS_S_ESI_021";
+	public static final String ESI_022 = "EMS_S_ESI_022";
+	public static final String ESI_023 = "EMS_S_ESI_023";
+	public static final String ESI_024 = "EMS_S_ESI_024";
+	public static final String ESI_025 = "EMS_S_ESI_025";
+	public static final String ESI_026 = "EMS_S_ESI_026";
+	public static final String ESI_027 = "EMS_S_ESI_027";
+	public static final String ESI_028 = "EMS_S_ESI_028";
+	public static final String ESI_029 = "EMS_S_ESI_029";
+	public static final String ESI_030 = "EMS_S_ESI_030";
+	public static final String ESI_031 = "EMS_S_ESI_031";
+	public static final String ESI_032 = "EMS_S_ESI_032";
+	public static final String ESI_033 = "EMS_S_ESI_033";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
-    
-    public static final String ESI_001_MSG = "CardInfo is invalid";
+
+	public static final String ESI_001_MSG = "CardInfo is invalid";
 	public static final String ESI_002_MSG = "Card verification failed";
 	public static final String ESI_003_MSG = "Key/PIN generation failed";
 	public static final String ESI_004_MSG = "Infrastructure error";
@@ -2656,33 +2652,33 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_031_MSG = "EMKS GetSignature WebService Exception ...";
 	public static final String ESI_033_MSG = "CardProvider must not be null";
 
-    //com.gam.nocr.ems.biz.job.PortalReservationJob
+	//com.gam.nocr.ems.biz.job.PortalReservationJob
 	public static final String RSV_01 = "EMS_S_RSV_01";
 	public static final String RSV_02 = "EMS_S_RSV_02";
 	public static final String RSV_03 = "EMS_S_RSV_03";
 	public static final String RSV_04 = "EMS_S_RSV_04";
 	public static final String RSV_05 = "EMS_S_RSV_05";
 	public static final String RSV_06 = "EMS_S_RSV_06";
-	
+
 	// com.gam.nocr.ems.biz.job.CardIssuanceRequestJob
 	public static final String ISU_01 = "EMS_S_ISU_01";
 	public static final String ISU_02 = "EMS_S_ISU_02";
 	public static final String ISU_03 = "EMS_S_ISU_03";
-	
-	
+
+
 	// com.gam.nocr.ems.biz.job.CardHandingOutNotificationJob
 	public static final String CHO_01 = "EMS_S_CHO_01";
 	public static final String CHO_02 = "EMS_S_CHO_02";
-	
+
 	// com.gam.nocr.ems.biz.job.IMSUpdateCitizensInfoJob
 	public static final String IUC_01 = "EMS_S_IUC_01";
 	public static final String IUC_02 = "EMS_S_IUC_02";
-	
-	
+
+
 	public static final String ES2_01 = "EMS_S_ES2_01";
 	public static final String ES2_02 = "EMS_S_ES2_02";
 	public static final String ES2_03 = "EMS_S_ES2_03";
-    
+
 	// com.gam.nocr.ems.data.domain.aspects.ESAPIFilter
 	public static final String ESF_001 = "EMS_S_ESF_001";
 	public static final String ESF_002 = "EMS_S_ESF_002";
@@ -2697,7 +2693,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String DOV_001 = "EMS_S_DOV_001";
 	public static final String DOV_002 = "EMS_S_DOV_002";
 	public static final String DOV_003 = "EMS_S_DOV_003";
-	
+
 	// com.gam.nocr.ems.biz.service.internal.impl.OutgoingSMSServiceImpl
 	public static final String OSS_001 = "EMS_S_OSS_001";
 	public static final String OSS_002 = "EMS_S_OSS_002";
@@ -2773,7 +2769,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	//com.gam.nocr.ems.biz.service.internal.impl.ActiveShiftServiceImpl
 	public static final String OASH_001 = "EMS_OASH_001";
 
-//com.gam.nocr.ems.biz.service.internal.impl.ReservationServiceImpl
+	//com.gam.nocr.ems.biz.service.internal.impl.ReservationServiceImpl
 	public static final String RS_001 = "EMS_RS_001";
 	public static final String RS_002 = "EMS_RS_002";
 	public static final String RS_003 = "EMS_RS_003";
@@ -2795,6 +2791,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_007 = "EMS_S_ISC_007";
 	public static final String ISC_008 = "EMS_S_ISC_008";
 	public static final String ISC_009 = "EMS_S_ISC_009";
+	public static final String ISC_010 = "EMS_S_ISC_010";
 	public static final String ISC_001_MSG = "PreRequest ID is Null";
 	public static final String ISC_002_MSG = "Can not found card request with nationalId {0} ";
 	public static final String ISC_003_MSG = "Card request is null";
@@ -2803,10 +2800,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_008_MSG = "card request with citizen national id {0} does not exists!";
 	public static final String ISC_009_MSG = "Edit Serial Number is forbidden now for card request: {0}";
 	public static final String ISC_010_MSG = "NationalId is Null";
+	public static final String ISC_011_MSG = "PreRegistration Payment not found for national id: {0}";
 
 	//com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
-	public static final String EMS_REG_020 = "EMS_REG_020";
-	public static final String EMS_REG_020_MSG = "an error occurred on savePaymentInfo operation";
+	public static final String RGP_020 = "EMS_S_REG_020";
+	public static final String RGP_002 = "EMS_S_REG_002";
+	public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
+	public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
 
 	//com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
 	public  static final  String CRH_S_001 = "EMS_CRH_S_001";

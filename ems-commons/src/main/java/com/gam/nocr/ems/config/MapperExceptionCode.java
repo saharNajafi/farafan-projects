@@ -50,8 +50,6 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRM_020_MSG = "LivingVillageId is null";
 
 
-
-
     //com.gam.nocr.ems.data.mapper.tomapper.SpouseMapper
     public static final String SPM_001 = "EMS_M_SPM_001";
     public static final String SPM_002 = "EMS_M_SPM_002";
@@ -92,7 +90,7 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String BIM_004 = "EMS_M_BIM_004";
     public static final String BIM_005 = "EMS_M_BIM_005";
     public static final String BIM_006 = "EMS_M_BIM_006";
-//    public static final String BIM_007 = "EMS_M_BIM_007";
+    //    public static final String BIM_007 = "EMS_M_BIM_007";
     public static final String BIM_001_MSG = "BiometricWTO cannot be null";
     public static final String BIM_002_MSG = "Problem when converting Biometric type. Type is invalid";
     public static final String BIM_003_MSG = "BiometricTO cannot be null";
@@ -100,7 +98,7 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String BIM_005_MSG = "Cannot convert BiometricTO to BiometricWTO";
     public static final String BIM_006_MSG = "Meta data item cannot be null";
 //    public static final String BIM_007_MSG = "Data for photo vip cannot be null";
-    
+
     //com.gam.nocr.ems.data.mapper.tomapper.PersonMapper
     public static final String PRM_001 = "EMS_M_PRM_001";
     public static final String PRM_002 = "EMS_M_PRM_002";
@@ -129,10 +127,11 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
 
     //com.gam.nocr.ems.data.mapper.tomapper.ReportRequestMapper
     public static final String RRM_001 = "EMS_M_RRM_001";
-    
+
     //com.gam.nocr.ems.data.mapper.tomapper.PersonTokenMapper
     public static final String PTM_001 = "EMS_M_PTM_001";
     public static final String PTM_001_MSG = "invalid personToken, id is null";
+
     //com.gam.nocr.ems.web.ws.CCOSPaymentWS.java
     public static final String CPM_001 = "EMS_CP_001";
     public static final String CPM_002 = "EMS_CPM_002";
@@ -160,14 +159,14 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPM_025 = "CPM_025_MSG";
     public static final String CPM_001_MSG = "PreRegistration should not be null.";
     public static final String CPM_002_MSG = "Invalid NationalId for SingleStagePreRegistration with TrackingId: {0}";
-    public static final String CPM_003_MSG = "Invalid Origin";
-    public static final String CPM_004_MSG = "Invalid Cert Serial Number";
-    public static final String CPM_005_MSG = "Invalid Cellphone Number";
-    public static final String CPM_006_MSG = "Invalid Mother Name";
-    public static final String CPM_007_MSG = "Invalid Gregorian BirthDate";
-    public static final String CPM_008_MSG = "Invalid Lunar BirthDate";
-    public static final String CPM_009_MSG = "Invalid Gender";
-    public static final String CPM_010_MSG = "Invalid Religion";
+    public static final String CPM_003_MSG = "Invalid Origin for NationalId: {0}";
+    public static final String CPM_004_MSG = "Invalid Cert Serial Number for NationalId: {0}";
+    public static final String CPM_005_MSG = "Invalid Cellphone Number for NationalId: {0}";
+    public static final String CPM_006_MSG = "Invalid Mother Name for NationalId: {0}";
+    public static final String CPM_007_MSG = "Invalid Gregorian BirthDate for NationalId: {0}";
+    public static final String CPM_008_MSG = "Invalid Lunar BirthDate for NationalId: {0}";
+    public static final String CPM_009_MSG = "Invalid Gender for NationalId: {0}";
+    public static final String CPM_010_MSG = "Invalid Religion for NationalId: {0}";
     public static final String CPM_011_MSG = "PreRegistration should not be null.";
     public static final String CPM_012_MSG = "PreRegistration ID should not be empty.";
     public static final String CPM_014_MSG = "PreRegistration CreatedOn should not be null";
@@ -182,8 +181,6 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPM_023_MSG = "Invalid Cert Serial Number";
     public static final String CPM_024_MSG = "Invalid Mother Name";
     public static final String CPM_025_MSG = "Invalid Payment";
-
-
 
 
 }

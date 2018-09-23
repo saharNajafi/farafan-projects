@@ -13,11 +13,7 @@ import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.Loggers;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.RegistrationPaymentDAO;
 import com.gam.nocr.ems.data.dao.ReservationDAO;
-import com.gam.nocr.ems.data.dao.impl.IMSUpdateDAOImpl;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
@@ -36,13 +32,11 @@ import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-
 import javax.annotation.Resource;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
-
 import java.util.Date;
 import java.util.Locale;
 
@@ -59,7 +53,6 @@ public class ReservationServiceImpl extends EMSAbstractService
         implements ReservationServiceLocal, ReservationServiceRemote {
     @Resource
     SessionContext sessionContext;
-    private static final Long INIT_BIAS_ID = 10000000000l;
     private static final Logger logger = BaseLog.getLogger(ReservationServiceImpl.class);
 
     public ReservationTO findReservationByCrqId(Long carqId) throws BaseException {
@@ -71,11 +64,10 @@ public class ReservationServiceImpl extends EMSAbstractService
         }
     }
 
-    public Long transferReservationsToEMS(ReservationTO reservationTO) throws BaseException {
+    public CardRequestTO transferReservationsToEMS(ReservationTO reservationTO) throws BaseException {
         String nationalId = null;
         try {
             CardRequestTO emsCardRequest = null;
-
             CardRequestState toState = CardRequestState.RESERVED;
             if (reservationTO.getCardRequest().getCitizen().getNationalID() != null) {
                 nationalId = reservationTO.getCardRequest().getCitizen().getNationalID();
@@ -84,9 +76,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             }
 
             if (emsCardRequest != null) {
-
                 CardRequestState fromState = emsCardRequest.getState();
-
                 if (!CardRequestState.checkStateChangeValidation(fromState,
                         toState)) {
                     if (nationalId == null) {
@@ -121,7 +111,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             logger.error(BizExceptionCode.RS_006_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
             throw new BaseException(BizExceptionCode.GLB_009, BizExceptionCode.GLB_009_MSG, e);
         }
-        return 0L;
+        return null;
     }
 
     private ReservationDAO getReservationDAO() throws BaseException {
@@ -166,7 +156,7 @@ public class ReservationServiceImpl extends EMSAbstractService
         return registrationPaymentService;
     }
 
-    private Long reserve(ReservationTO reservationTO, CardRequestTO cardRequestTO)
+    private CardRequestTO reserve(ReservationTO reservationTO, CardRequestTO cardRequestTO)
             throws BaseException {
         String nationalId = cardRequestTO != null && cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getNationalID() : null;
         CardRequestTO emsCardRequest = new CardRequestTO();
@@ -184,9 +174,9 @@ public class ReservationServiceImpl extends EMSAbstractService
             getCardRequestService().addCardRequest(emsCardRequest);
             Integer activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, false);
-            if (emsCardRequest.getPortalRequestId() == null) {
+            /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
-            }
+            }*/
             getCardRequestHistoryService().create(emsCardRequest, "CRS Request Id: " + emsCardRequest.getPortalRequestId().toString(),
                     SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);
             reservationTO.getCardRequest().setId(emsCardRequest.getId());
@@ -199,8 +189,7 @@ public class ReservationServiceImpl extends EMSAbstractService
                             + DateUtil.convert(reservationTO.getDate(),
                             DateUtil.JALALI), SystemId.PORTAL, null,
                     CardRequestHistoryAction.TRANSFER_RESERVE, null);
-            return emsCardRequest.getPortalRequestId();
-
+            return emsCardRequest;
         } catch (BaseException e) {
             logger.error(BizExceptionCode.RS_004_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
             throw e;
@@ -211,7 +200,7 @@ public class ReservationServiceImpl extends EMSAbstractService
         }
     }
 
-    private Long updateReserve(ReservationTO reservationTO, CardRequestTO cardRequestTO)
+    private CardRequestTO updateReserve(ReservationTO reservationTO, CardRequestTO cardRequestTO)
             throws BaseException {
         String nationalId = cardRequestTO != null && cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getNationalID() : null;
         try {
@@ -220,7 +209,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             editPersonalInformation(emsCardRequest, cardRequestTO);
             OfficeAppointmentWTO officeAppointment = createOfficeAppointmentWTO(reservationTO, emsCardRequest);
             getEnrollmentOfficeService().editEnrollmentOfficeAppointment(cardRequestTO, officeAppointment);
-            return cardRequestTO.getPortalRequestId();
+            return cardRequestTO;
         } catch (BaseException e) {
             logger.error(BizExceptionCode.RS_005_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
             throw e;
@@ -231,7 +220,7 @@ public class ReservationServiceImpl extends EMSAbstractService
         }
     }
 
-    private Long newReserve(ReservationTO reservationTO)
+    private CardRequestTO newReserve(ReservationTO reservationTO)
             throws BaseException {
         CardRequestTO emsCardRequest = reservationTO.getCardRequest();
         String nationalId = emsCardRequest != null && emsCardRequest.getCitizen() != null ? emsCardRequest.getCitizen().getNationalID() : null;
@@ -247,12 +236,11 @@ public class ReservationServiceImpl extends EMSAbstractService
             getCardRequestService().addCardRequest(emsCardRequest);
             Integer activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, true);
-
-            if (emsCardRequest.getPortalRequestId() == null) {
+            /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
-            }
-            getCardRequestHistoryService().create(emsCardRequest, "CRS Request Id: " + emsCardRequest.getPortalRequestId().toString(),
-                    SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);
+            }*/
+           /* getCardRequestHistoryService().create(emsCardRequest, "CRS Request Id: " + emsCardRequest.getPortalRequestId().toString(),
+                    SystemId.CCOS, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);*/
             reservationTO.getCardRequest().setId(emsCardRequest.getId());
             getEnrollmentOfficeService().updateActiveShift(emsCardRequest, reservationTO.getEnrollmentOffice().getId(),
                     activeDate, reservationTO.getShiftNo());
@@ -263,7 +251,7 @@ public class ReservationServiceImpl extends EMSAbstractService
                             + DateUtil.convert(reservationTO.getDate(),
                             DateUtil.JALALI), SystemId.PORTAL, null,
                     CardRequestHistoryAction.TRANSFER_RESERVE, null);
-            return emsCardRequest.getPortalRequestId();
+            return emsCardRequest;
 
         } catch (BaseException e) {
             logger.error(BizExceptionCode.RS_002_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
@@ -461,8 +449,8 @@ public class ReservationServiceImpl extends EMSAbstractService
 
     public void updateCardRequest(CardRequestTO cardRequestTO) throws BaseException {
         getCardRequestService().update(cardRequestTO);
-        getCardRequestHistoryService().create(cardRequestTO, "Portal Request Id: " + cardRequestTO.getPortalRequestId() != null ? cardRequestTO.getPortalRequestId().toString() : "",
-                SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);
+       /* getCardRequestHistoryService().create(cardRequestTO, "Portal Request Id: " + cardRequestTO.getPortalRequestId() != null ? cardRequestTO.getPortalRequestId().toString() : "",
+                SystemId.PORTAL, null, CardRequestHistoryAction.TRANSFER_FROM_PORTAL, null);*/
     }
 
     public ReservationTO create(ReservationTO reservationTO) throws BaseException {

@@ -10,6 +10,7 @@ import com.gam.nocr.ems.biz.service.RegistrationPaymentService;
 import com.gam.nocr.ems.biz.service.ReservationService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.ReservationTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
@@ -33,7 +34,7 @@ public class ReservationDelegator implements Delegator {
         return ReservationService;
     }
 
-    public Long transferReservationsToEMS(UserProfileTO userProfileTO, ReservationTO reservationTo) throws BaseException {
+    public CardRequestTO transferReservationsToEMS(UserProfileTO userProfileTO, ReservationTO reservationTo) throws BaseException {
         return getService(userProfileTO).transferReservationsToEMS(reservationTo);
     }
 }

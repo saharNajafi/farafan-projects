@@ -635,6 +635,19 @@
         </layout>
     </appender>
 
+    <appender name="CCOSPaymentWSLoggerRollingAppender"
+              class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File"
+               value="${log_dir}/ccos/payment/CCOSPaymentWSLogger.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="imsVerificationInDeliverye: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+
     <appender name="BizLogRollingAppender" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="${log_dir}/bizlog.log"/>
         <param name="MaxFileSize" value="100MB"/>
@@ -929,6 +942,11 @@
     <logger name="imsVerificationInDelivery" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="ImsVerificationInDeliveryRollingAppender"/>
+    </logger>
+
+    <logger name="CCOSPaymentWSLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="CCOSPaymentWSLoggerRollingAppender"/>
     </logger>
 
     <logger name="BusinessLogger" additivity="false">

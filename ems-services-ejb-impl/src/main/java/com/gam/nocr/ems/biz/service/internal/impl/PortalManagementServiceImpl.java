@@ -731,7 +731,6 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	@Override
-
 	public Boolean transferReservationsToEMS(ReservationTO reservationTO)
 			throws BaseException {
 		boolean loopFlag = true;
