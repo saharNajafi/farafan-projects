@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 public class ExceptionHandler {
 
     static final Logger logger = BaseLog.getLogger(ExceptionHandler.class);
-    static final Logger wsLogger = BaseLog.getLogger("WebServiceLogger");
 
     private static final String PROJECT_RESOURCENAME_CONST = "Ems.ErrorCode.";
     private static final String MESSAGE_ERROR_CONST = "";
@@ -165,15 +164,11 @@ public class ExceptionHandler {
                 InternalException internalException = (InternalException) e;
                 logger.error(internalException.getMessage(), internalException.getFaultInfo()
                         .getCode(), e);
-                wsLogger.error(internalException.getMessage(), internalException.getFaultInfo()
-                        .getCode(), e);
                 throw (InternalException) e;
             } else if (e instanceof Exception) {
                 //  It's an unhandled exception. So just log the error message and and throw it with a default error
                 //  code
                 logger.error(
-                        WebExceptionCode.EXH_002 + WebExceptionCode.GLB_003_MSG + e.getMessage(), e);
-                wsLogger.error(
                         WebExceptionCode.EXH_002 + WebExceptionCode.GLB_003_MSG + e.getMessage(), e);
                 throw new InternalException(WebExceptionCode.EXH_002, new EMSWebServiceFault(
                         WebExceptionCode.EXH_002, 0, ""), e);
@@ -200,16 +195,11 @@ public class ExceptionHandler {
                 InternalException internalException = (InternalException) e;
                 logger.error(internalException.getMessage(), internalException.getFaultInfo()
                         .getCode(), e);
-                wsLogger.error(internalException.getMessage(), internalException.getFaultInfo()
-                        .getCode(), e);
                 throw (InternalException) e;
             } else if (e instanceof Exception) {
                 //  It's an unhandled exception. So just log the error message and and throw it with a default error
                 logger.error(
                         WebExceptionCode.EXH_002 + WebExceptionCode.GLB_003_MSG + e.getMessage(), e);
-                wsLogger.error(
-                        WebExceptionCode.EXH_002 + WebExceptionCode.GLB_003_MSG + e.getMessage(), e);
-
                 throw new InternalException(WebExceptionCode.EXH_002, new EMSWebServiceFault(
                         WebExceptionCode.EXH_002, 0, ""), e);
             }
