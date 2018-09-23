@@ -638,7 +638,7 @@
               class="org.apache.log4j.RollingFileAppender">
         <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
         <param name="File"
-               value="${log_dir}/CCOSPaymentWSLogger.log"/>
+               value="${log_dir}/ccos-payment/CCOSPaymentWSLogger.log"/>
         <param name="MaxFileSize" value="50MB"/>
         <param name="MaxBackupIndex" value="5"/>
         <layout class="org.apache.log4j.PatternLayout">
