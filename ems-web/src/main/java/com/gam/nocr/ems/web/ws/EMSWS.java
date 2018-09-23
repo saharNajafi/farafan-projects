@@ -24,6 +24,9 @@ import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
 import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
 
+import javax.jws.WebParam;
+import java.text.MessageFormat;
+
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
@@ -39,6 +42,19 @@ public class EMSWS {
     private static final String DEFAULT_CCOS_EXACT_VERSION = "2.0.2.23";
     private static final String DEFAULT_ENABLE_CCOS_CHECK = "1";
 
+
+    public UserProfileTO validateCCOSUser(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO, Logger logger) throws InternalException {
+        UserProfileTO userProfileTO;
+        try {
+            userProfileTO = validateRequest(securityContextWTO);
+        } catch (InternalException internalException) {
+            logger.error(internalException.getMessage(), internalException.getFaultInfo()
+                    .getCode(), internalException);
+            throw internalException;
+        }
+        return userProfileTO;
+    }
+
     /**
      * Validates the username, personID and the workstation that the request is coming from. The workstation should
      * belongs to the same enrollment office that current user is member of
@@ -49,8 +65,6 @@ public class EMSWS {
      * thrown
      * @throws InternalException
      */
-
-
     public UserProfileTO validateRequest(SecurityContextWTO securityContextWTO) throws InternalException {
         try {
             if (securityContextWTO == null || securityContextWTO.getUsername() == null || securityContextWTO.getUsername().trim().length() == 0) {
@@ -205,5 +219,23 @@ public class EMSWS {
             throw new DelegatorException(BizExceptionCode.PDL_001, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_PERSON.split(","));
         }
         return personManagementService;
+    }
+
+    public void throwInternalException(String code, String message, Object[] args, Exception e, Logger logger) throws InternalException {
+        if (args != null) {
+            message = MessageFormat.format(message, args);
+        }
+        InternalException internalException = new InternalException(message, new EMSWebServiceFault(code));
+        logger.error(internalException.getMessage(), internalException.getFaultInfo()
+                .getCode(), e);
+        throw internalException;
+    }
+
+    public void throwInternalException(String code, String message, Exception e, Logger logger) throws InternalException {
+        this.throwInternalException(code, message, null, e, logger);
+    }
+
+    public void throwInternalException(String code, String message, Logger logger) throws InternalException {
+        this.throwInternalException(code, message, null, null, logger);
     }
 }
