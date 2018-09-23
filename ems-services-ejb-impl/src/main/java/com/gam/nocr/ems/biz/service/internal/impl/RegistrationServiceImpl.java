@@ -1016,7 +1016,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
     private void createFakePaymentForCCOSVIPAndReplica(CardRequestTO newCardRequest) throws BaseException {
         RegistrationPaymentTO registrationPaymentTO = new RegistrationPaymentTO();
-        registrationPaymentTO.setDescription("پرداخت به طور سیستمی با موفقیت انجام شد.");
+        registrationPaymentTO.setDescription(Configuration.getProperty("FAKE.CCOS.PAYMENT.DESCRIPTION"));
         Long paymentOrderId = EmsUtil.getRandomPaymentOrderId();
         registrationPaymentTO.setOrderId(paymentOrderId);
         registrationPaymentTO.setSucceed(true);
