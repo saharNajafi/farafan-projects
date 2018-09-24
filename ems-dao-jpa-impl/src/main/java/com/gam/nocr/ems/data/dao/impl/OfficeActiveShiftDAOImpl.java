@@ -23,7 +23,7 @@ import java.util.List;
 @Local(OfficeActiveShiftDAOLocal.class)
 @Remote(OfficeActiveShiftDAORemote.class)
 public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO>
-        implements OfficeActiveShiftDAOLocal, OfficeActiveShiftDAORemote{
+implements OfficeActiveShiftDAOLocal, OfficeActiveShiftDAORemote{
     private static final Logger logger = BaseLog
             .getLogger(OfficeActiveShiftDAOImpl.class);
 
