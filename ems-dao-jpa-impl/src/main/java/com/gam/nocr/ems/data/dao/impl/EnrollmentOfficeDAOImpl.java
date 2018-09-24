@@ -79,7 +79,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 //                    "AND ((EOF.type = 'OFFICE' and EOF.id IN " +
 //                    "(SELECT NTK.enrollmentOffice.id FROM NetworkTokenTO NTK WHERE NTK.enrollmentOffice.id = EOF.id " +
 //                    "and NTK.state = :DELIVERED_TOKEN_STATE)) " +
-//                    "or (EOF.type = 'NOCR')) " + 
+//                    "or (EOF.type = 'NOCR')) " +
 					+ "ORDER BY EOF.id", EnrollmentOfficeTO.class)
 //                    .setParameter("DELIVERED_TOKEN_STATE", TokenState.DELIVERED)
 					.getResultList();
@@ -595,6 +595,17 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 					DataExceptionCode.ENI_005_MSG, e);
 		}
 		return count!=null && !count.equals(BigDecimal.ZERO);
+	}
+
+	@Override
+	public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException {
+		try {
+			return em.createQuery(
+					"select eo from EnrollmentOfficeTO eo "
+							+ "order by eo.id asc ", EnrollmentOfficeTO.class).getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
+		}
 	}
 
 	private String findByAccessibility(String climbingStairsAbility, String pupilIsVisible) {
