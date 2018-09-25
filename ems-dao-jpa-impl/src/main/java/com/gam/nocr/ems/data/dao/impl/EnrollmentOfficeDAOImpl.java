@@ -71,9 +71,9 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 		List<EnrollmentOfficeTO> enrollmentOfficeTOList;
 		try {
 //EditedByAdldoost
-            enrollmentOfficeTOList = em.createQuery("SELECT EOF FROM EnrollmentOfficeTO EOF " +
-                    "WHERE (EOF.lastSyncDate IS NULL ) " 
-                    + "and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
+			enrollmentOfficeTOList = em.createQuery("SELECT EOF FROM EnrollmentOfficeTO EOF " +
+					"WHERE (EOF.lastSyncDate IS NULL ) "
+					+ "and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
 					+ "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
 					+ "or eof.type = 'NOCR') "
 //                    "AND ((EOF.type = 'OFFICE' and EOF.id IN " +
@@ -88,32 +88,32 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			throw new DAOException(DataExceptionCode.ENI_002, DataExceptionCode.GLB_005_MSG, e);
 		}
 
-        if (EmsUtil.checkListSize(enrollmentOfficeTOList)) {
-            for (EnrollmentOfficeTO enrollmentOfficeTO : enrollmentOfficeTOList) {
-                enrollmentOfficeTO.getParentDepartment().getName();
-                if (enrollmentOfficeTO.getSuperiorOffice() != null){
-                	enrollmentOfficeTO.getSuperiorOffice().getName();
-                }
-                if (enrollmentOfficeTO.getParentDepartment().getLocation().getCounty() != null)
-                    enrollmentOfficeTO.getParentDepartment().getLocation().getCounty().getName();
-                if (enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict() != null)
-                    enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict().getName();
-            }
-        }
+		if (EmsUtil.checkListSize(enrollmentOfficeTOList)) {
+			for (EnrollmentOfficeTO enrollmentOfficeTO : enrollmentOfficeTOList) {
+				enrollmentOfficeTO.getParentDepartment().getName();
+				if (enrollmentOfficeTO.getSuperiorOffice() != null){
+					enrollmentOfficeTO.getSuperiorOffice().getName();
+				}
+				if (enrollmentOfficeTO.getParentDepartment().getLocation().getCounty() != null)
+					enrollmentOfficeTO.getParentDepartment().getLocation().getCounty().getName();
+				if (enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict() != null)
+					enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict().getName();
+			}
+		}
 
 		return enrollmentOfficeTOList;
 	}
 
-    /**
-     * The method findActiveModifiedEnrollmentOffices is used to find the modified enrollment offices in spite of the
-     * value of 'lastSyncDate' and 'lastModifiedDate'
-     *
-     * @return a list of type {@EnrollmentOfficeTO}
-     * @throws com.gam.commons.core.BaseException
-     */
-    @Override
-    public List<EnrollmentOfficeTO> findActiveModifiedEnrollmentOffices() throws BaseException {
-        List<EnrollmentOfficeTO> enrollmentOfficeTOList;
+	/**
+	 * The method findActiveModifiedEnrollmentOffices is used to find the modified enrollment offices in spite of the
+	 * value of 'lastSyncDate' and 'lastModifiedDate'
+	 *
+	 * @return a list of type {@EnrollmentOfficeTO}
+	 * @throws com.gam.commons.core.BaseException
+	 */
+	@Override
+	public List<EnrollmentOfficeTO> findActiveModifiedEnrollmentOffices() throws BaseException {
+		List<EnrollmentOfficeTO> enrollmentOfficeTOList;
 		try {
 			// // Edited By Adldoost
 			// enrollmentOfficeTOList =
@@ -146,35 +146,35 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			em.flush();
 
 		} catch (Exception e) {
-            throw new DAOException(DataExceptionCode.ENI_004, DataExceptionCode.GLB_005_MSG, e);
-        }
+			throw new DAOException(DataExceptionCode.ENI_004, DataExceptionCode.GLB_005_MSG, e);
+		}
 
-        if (EmsUtil.checkListSize(enrollmentOfficeTOList)) {
-            for (EnrollmentOfficeTO enrollmentOfficeTO : enrollmentOfficeTOList) {
-                enrollmentOfficeTO.getParentDepartment().getName();
-                if (enrollmentOfficeTO.getSuperiorOffice() != null){
-                	enrollmentOfficeTO.getSuperiorOffice().getName();
-                }
-                if (enrollmentOfficeTO.getParentDepartment().getLocation().getCounty() != null)
-                    enrollmentOfficeTO.getParentDepartment().getLocation().getCounty().getName();
-                if (enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict() != null)
-                    enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict().getName();
-            }
-        }
+		if (EmsUtil.checkListSize(enrollmentOfficeTOList)) {
+			for (EnrollmentOfficeTO enrollmentOfficeTO : enrollmentOfficeTOList) {
+				enrollmentOfficeTO.getParentDepartment().getName();
+				if (enrollmentOfficeTO.getSuperiorOffice() != null){
+					enrollmentOfficeTO.getSuperiorOffice().getName();
+				}
+				if (enrollmentOfficeTO.getParentDepartment().getLocation().getCounty() != null)
+					enrollmentOfficeTO.getParentDepartment().getLocation().getCounty().getName();
+				if (enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict() != null)
+					enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict().getName();
+			}
+		}
 
 		return enrollmentOfficeTOList;
 	}
 
-    /**
-     * The method findInActiveModifiedEnrollmentOffices is used to find the inactive modified enrollment offices in spite
-     * of the value of 'lastSyncDate' and 'lastModifiedDate'
-     *
-     * @return a list of type {@EnrollmentOfficeTO}
-     * @throws com.gam.commons.core.BaseException
-     */
-    @Override
-    public List<EnrollmentOfficeTO> findInActiveModifiedEnrollmentOffices() throws BaseException {
-        List<EnrollmentOfficeTO> enrollmentOfficeTOList;
+	/**
+	 * The method findInActiveModifiedEnrollmentOffices is used to find the inactive modified enrollment offices in spite
+	 * of the value of 'lastSyncDate' and 'lastModifiedDate'
+	 *
+	 * @return a list of type {@EnrollmentOfficeTO}
+	 * @throws com.gam.commons.core.BaseException
+	 */
+	@Override
+	public List<EnrollmentOfficeTO> findInActiveModifiedEnrollmentOffices() throws BaseException {
+		List<EnrollmentOfficeTO> enrollmentOfficeTOList;
 		try {
 			// //Edited By Adldoost
 			// enrollmentOfficeTOList =
@@ -206,21 +206,21 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 							EnrollmentOfficeTO.class).getResultList();
 			em.flush();
 		} catch (Exception e) {
-            throw new DAOException(DataExceptionCode.ENI_003, DataExceptionCode.GLB_005_MSG, e);
-        }
+			throw new DAOException(DataExceptionCode.ENI_003, DataExceptionCode.GLB_005_MSG, e);
+		}
 
-        if (EmsUtil.checkListSize(enrollmentOfficeTOList)) {
-            for (EnrollmentOfficeTO enrollmentOfficeTO : enrollmentOfficeTOList) {
-                enrollmentOfficeTO.getParentDepartment().getName();
-                if (enrollmentOfficeTO.getSuperiorOffice() != null){
-                	enrollmentOfficeTO.getSuperiorOffice().getName();
-                }
-                if (enrollmentOfficeTO.getParentDepartment().getLocation().getCounty() != null)
-                    enrollmentOfficeTO.getParentDepartment().getLocation().getCounty().getName();
-                if (enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict() != null)
-                    enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict().getName();
-            }
-        }
+		if (EmsUtil.checkListSize(enrollmentOfficeTOList)) {
+			for (EnrollmentOfficeTO enrollmentOfficeTO : enrollmentOfficeTOList) {
+				enrollmentOfficeTO.getParentDepartment().getName();
+				if (enrollmentOfficeTO.getSuperiorOffice() != null){
+					enrollmentOfficeTO.getSuperiorOffice().getName();
+				}
+				if (enrollmentOfficeTO.getParentDepartment().getLocation().getCounty() != null)
+					enrollmentOfficeTO.getParentDepartment().getLocation().getCounty().getName();
+				if (enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict() != null)
+					enrollmentOfficeTO.getParentDepartment().getLocation().getDistrict().getName();
+			}
+		}
 
 		return enrollmentOfficeTOList;
 	}
@@ -305,22 +305,22 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			return null;
 	}
 
-    @Override
-    public List<Long> fetchOtherNocrOfficeCountWithSameParentById(Long enrollmentOfficeId) throws BaseException {
-        try {
-            return em.createQuery("select count(eof.id) from EnrollmentOfficeTO eof " +
-                    "where eof.parentDepartment.id in " +
-                    "(select t1.parentDepartment.id from EnrollmentOfficeTO t1 where t1.id = :enrollmentOfficeId) " +
-                    "and eof.id not in (:enrollmentOfficeId) " +
-                    "and eof.type = :type", Long.class)
-                    .setParameter("enrollmentOfficeId", enrollmentOfficeId)
-                    .setParameter("type", EnrollmentOfficeType.NOCR)
-                    .getResultList();
-        } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.ENI_008, DataExceptionCode.GLB_005_MSG, e);
-        }
-    }
-    
+	@Override
+	public List<Long> fetchOtherNocrOfficeCountWithSameParentById(Long enrollmentOfficeId) throws BaseException {
+		try {
+			return em.createQuery("select count(eof.id) from EnrollmentOfficeTO eof " +
+					"where eof.parentDepartment.id in " +
+					"(select t1.parentDepartment.id from EnrollmentOfficeTO t1 where t1.id = :enrollmentOfficeId) " +
+					"and eof.id not in (:enrollmentOfficeId) " +
+					"and eof.type = :type", Long.class)
+					.setParameter("enrollmentOfficeId", enrollmentOfficeId)
+					.setParameter("type", EnrollmentOfficeType.NOCR)
+					.getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.ENI_008, DataExceptionCode.GLB_005_MSG, e);
+		}
+	}
+
 	@Override
 	public EnrollmentOfficeTO loadLazyChildren(EnrollmentOfficeTO enrollmentOffice)
 			throws BaseException {
@@ -334,11 +334,11 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 				dbEnrollmentOffice.getSuperiorOffice().getAddress();
 				dbEnrollmentOffice.getSuperiorOffice().getPostalCode();
 				dbEnrollmentOffice.getSuperiorOffice().getPhone();
-				dbEnrollmentOffice.getSuperiorOffice().getFax();				
+				dbEnrollmentOffice.getSuperiorOffice().getFax();
 			}
 			Hibernate.initialize(dbEnrollmentOffice.getParentDepartment().getLocation().getProvince());
 			if(dbEnrollmentOffice.getParentDepartment().getLocation().getProvince() != null)
-				dbEnrollmentOffice.getParentDepartment().getLocation().getProvince().getName();				
+				dbEnrollmentOffice.getParentDepartment().getLocation().getProvince().getName();
 			return dbEnrollmentOffice;
 		} catch (HibernateException e) {
 			throw new DAOException(DataExceptionCode.ENI_009, DataExceptionCode.GLB_005_MSG, e);
@@ -346,17 +346,17 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 	}
 
 	// Anbari
-		@Override
-		public List<Long> getEnrollmentOfficeListIds()
-				throws BaseException {
-			try {
-				return em.createQuery(
-						"select eo.id from EnrollmentOfficeTO eo "
-								+ "order by eo.id asc ", Long.class).getResultList();
-			} catch (Exception e) {
-				throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
-			}
+	@Override
+	public List<Long> getEnrollmentOfficeListIds()
+			throws BaseException {
+		try {
+			return em.createQuery(
+					"select eo.id from EnrollmentOfficeTO eo "
+							+ "order by eo.id asc ", Long.class).getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
 		}
+	}
 
     @Override
     public int updateEOFEnableFlag(Long eofId, EOFDeliveryState state)
@@ -382,48 +382,48 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 	@Override
 	public List<Long> getEnrollmentOfficeListIdsByEOFType(
 			EnrollmentOfficeType eofType) throws BaseException {
-		  try {
-	            return em.createQuery("select eof.id from EnrollmentOfficeTO eof " +
-	                    "where eof.type = :enrollmentOfficeType ", Long.class)
-	                    .setParameter("enrollmentOfficeType", eofType)
-	                    .getResultList();
-	        } catch (Exception e) {
-	            throw new DAOException(DataExceptionCode.ENI_011, DataExceptionCode.GLB_005_MSG, e);
-	        }
+		try {
+			return em.createQuery("select eof.id from EnrollmentOfficeTO eof " +
+					"where eof.type = :enrollmentOfficeType ", Long.class)
+					.setParameter("enrollmentOfficeType", eofType)
+					.getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.ENI_011, DataExceptionCode.GLB_005_MSG, e);
+		}
 	}
 
 	//Anbari
 	@Override
 	public List<Long> getEnrollmentOfficeListIdsByProvince(Long provinceId)
 			throws BaseException {
-		 try {
-	            return em.createQuery("select eof.id from EnrollmentOfficeTO eof,DepartmentTO dep,LocationTO loc " +
-	                    "where eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId ", Long.class)
-	                    .setParameter("provinceId", provinceId)
-	                    .getResultList();
-	        } catch (Exception e) {
-	            throw new DAOException(DataExceptionCode.ENI_012, DataExceptionCode.GLB_005_MSG, e);
-	        }
+		try {
+			return em.createQuery("select eof.id from EnrollmentOfficeTO eof,DepartmentTO dep,LocationTO loc " +
+					"where eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId ", Long.class)
+					.setParameter("provinceId", provinceId)
+					.getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.ENI_012, DataExceptionCode.GLB_005_MSG, e);
+		}
 	}
 
 	//Anbari
 	@Override
 	public List<Long> getEnrollmentOfficeListIdsByProvinceAndType(
 			Long provinceId, EnrollmentOfficeType eofType) throws BaseException {
-		 try {
-	            return em.createQuery("select eof.id from EnrollmentOfficeTO eof,DepartmentTO dep,LocationTO loc " +
-	                    "where eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId and eof.type =:eofType ", Long.class)
-	                    .setParameter("provinceId", provinceId)
-	                    .setParameter("eofType", eofType)
-	                    .getResultList();
-	        } catch (Exception e) {
-	            throw new DAOException(DataExceptionCode.ENI_013, DataExceptionCode.GLB_005_MSG, e);
-	        }
+		try {
+			return em.createQuery("select eof.id from EnrollmentOfficeTO eof,DepartmentTO dep,LocationTO loc " +
+					"where eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId and eof.type =:eofType ", Long.class)
+					.setParameter("provinceId", provinceId)
+					.setParameter("eofType", eofType)
+					.getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.ENI_013, DataExceptionCode.GLB_005_MSG, e);
+		}
 	}
 
 	@Override
 	public List<EMSAutocompleteTO> fetchOfficesAutoComplete(UserProfileTO userProfileTO,String searchString, int from, int to,
-			String orderBy, Map additionalParams) throws BaseException {
+															String orderBy, Map additionalParams) throws BaseException {
 		Long personID = null;
 		try {
 			List<EMSAutocompleteTO> result=new ArrayList<EMSAutocompleteTO>();
@@ -439,15 +439,15 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 							"prior e.eof_id=e.eof_superior_office start with" +
 							" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+personID
 							+" ))) and dep.DEP_ID=eo.EOF_ID and dep.DEP_NAME like '%"+searchString+"%'");
-			
+
 			if(type!=null && type.equals("delivery"))
 				queryBuffer.append(" and (eo.EOF_TYPE = 'NOCR' or (eo.EOF_TYPE = 'OFFICE' and eo.EOF_DELIVER_TYPE = '1'))");
-			
-			
-			
+
+
+
 			List resultList= em
 					.createNativeQuery(queryBuffer.toString()).setFirstResult(from).setMaxResults(to-from).getResultList();
-			
+
 			if (resultList != null) {
 				for (Object record : resultList) {
 					Object[] data = (Object[]) record;
@@ -458,7 +458,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 				}
 			}
 			return result;
-			
+
 		} catch (Exception e) {
 			throw new DAOException(DataExceptionCode.ENI_013,
 					DataExceptionCode.GLB_005_MSG, e);
@@ -467,9 +467,9 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 
 	@Override
 	public Integer countOfficesAutoComplete(UserProfileTO userProfileTO,
-			String searchString, int from, int to, String orderBy,
-			Map additionalParams) throws BaseException {
-		
+											String searchString, int from, int to, String orderBy,
+											Map additionalParams) throws BaseException {
+
 		Long personID = null;
 		try {
 			String type=null;
@@ -487,7 +487,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 
 			if(type!=null && type.equals("delivery"))
 				queryBuffer.append(" and (eo.EOF_TYPE = 'NOCR' or (eo.EOF_TYPE = 'OFFICE' and eo.EOF_DELIVER_TYPE = '1'))");
-			
+
 			Number number = (Number)em
 					.createNativeQuery(queryBuffer.toString()).getSingleResult();
 			if (number != null) {
@@ -499,9 +499,9 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 					DataExceptionCode.GLB_005_MSG, e);
 		}
 	}
-	
+
 	/**
-	 * @author Madanipour	 
+	 * @author Madanipour
 	 */
 	@Override
 	public List<OfficeSettingTO> fetchOfficeSetting(Long enrollmentOfficeId)
@@ -521,7 +521,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         }
 
 	}
-	
+
 	//Anbari
 	private PersonDAO getPersonDAO() throws BaseException {
 		try {
@@ -543,20 +543,20 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 					.setParameter("eofId", eofId)
 					.getResultList();
 		}catch (Exception e) {
-				throw new DAOException(DataExceptionCode.ENI_015,
-						DataExceptionCode.ENI_015_MSG, e);
-			}
+			throw new DAOException(DataExceptionCode.ENI_015,
+					DataExceptionCode.ENI_015_MSG, e);
+		}
 		return enrollmentOfficeList != null ? enrollmentOfficeList.get(0) : null;
 	}
 
 	@Override
-	public List searchOfficeQueryByAccessibility(
+	public Boolean hasOfficeQueryByAccessibility(
 			String climbingStairsAbility, String pupilIsVisible
 			, Long enrollmentOfficeId) throws DataException {
-		List enrollmentOfficeTOs = null;
+		BigDecimal count;
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			String selectQuery = " SELECT * " +
+			String selectQuery = " SELECT COUNT(1) " +
 					" FROM EMST_ENROLLMENT_OFFICE EOF" +
 					" WHERE EOF_ID =:ID ";
 			params.put("ID", enrollmentOfficeId);
@@ -565,22 +565,22 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			for (String paramName : params.keySet()) {
 				query = query.setParameter(paramName, params.get(paramName));
 			}
-			enrollmentOfficeTOs = query.getResultList();
+			count = (BigDecimal) query.getSingleResult();
 		} catch (Exception e) {
 			throw new DataException(DataExceptionCode.ENI_002,
 					DataExceptionCode.ENI_002_MSG, e);
 		}
-		return !enrollmentOfficeTOs.isEmpty() ? enrollmentOfficeTOs : null;
+		return count!=null && !count.equals(BigDecimal.ZERO);
 	}
 
 	@Override
-	public List searchOfficeQueryByInstruments(
+	public Boolean hasOfficeQueryByInstruments(
 			String abilityToGo, String hasTwoFingersScanable
 			, Long enrollmentOfficeId) throws BaseException {
-		List enrollmentOfficeTOs;
 		Map<String, Object> params = new HashMap<String, Object>();
+		BigDecimal count;
 		try {
-			String selectQuery = " SELECT * " +
+			String selectQuery = " SELECT COUNT(1) " +
 					" FROM EMST_ENROLLMENT_OFFICE EOF" +
 					" WHERE EOF_ID =:ID ";
 			params.put("ID", enrollmentOfficeId);
@@ -589,12 +589,12 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 			for (String paramName : params.keySet()) {
 				query = query.setParameter(paramName, params.get(paramName));
 			}
-			enrollmentOfficeTOs = query.getResultList();
+			count = (BigDecimal) query.getSingleResult();
 		} catch (Exception e) {
 			throw new DataException(DataExceptionCode.ENI_005,
 					DataExceptionCode.ENI_005_MSG, e);
 		}
-		return !enrollmentOfficeTOs.isEmpty() ? enrollmentOfficeTOs : null;
+		return count!=null && !count.equals(BigDecimal.ZERO);
 	}
 
 	private String findByAccessibility(String climbingStairsAbility, String pupilIsVisible) {
@@ -602,7 +602,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 		if (pupilIsVisible == "YES" && climbingStairsAbility == "YES")
 			query += " AND (EOF.EOF_IGNORE_ICAO_PERMITTED = 0 OR EOF.EOF_IGNORE_ICAO_PERMITTED = 1)" +
 					" AND (EOF.EOF_HAS_STAIR = 0 OR EOF.EOF_HAS_STAIR = 1)" +
-					" AND (EOF.HAS_ELEVATOR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
+					" AND (EOF.EOF_HAS_ELEVATOR = 0 OR EOF.EOF_HAS_ELEVATOR = 1)";
 
         if (pupilIsVisible == "YES" && climbingStairsAbility == "NO")
             query += " AND (EOF.EOF_IGNORE_ICAO_PERMITTED = 0 OR EOF.EOF_IGNORE_ICAO_PERMITTED = 1)" +
@@ -642,5 +642,5 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 
 		return query;
 	}
-	
+
 }

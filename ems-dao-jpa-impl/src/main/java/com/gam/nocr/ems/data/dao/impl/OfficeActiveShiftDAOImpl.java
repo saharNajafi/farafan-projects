@@ -29,6 +29,7 @@ public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO
 
     @Override
     @PersistenceContext(unitName = "EmsOraclePU")
+
     public void setEm(EntityManager em) {
         this.em = em;
     }
