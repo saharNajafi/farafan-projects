@@ -30,6 +30,7 @@ public class PaymentUtil {
 
     public static RegistrationPaymentTO convertToRegistrationPayment(
             PaymentWTO paymentWTO) throws BaseException {
+
         try {
             RegistrationPaymentTO registrationPaymentTO = new RegistrationPaymentTO();
             RegistrationPaymentWTO registrationPaymentWTO = paymentWTO.getRegistrationPaymentWTO();
