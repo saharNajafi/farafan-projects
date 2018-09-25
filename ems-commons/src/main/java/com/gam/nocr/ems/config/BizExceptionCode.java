@@ -40,6 +40,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String GLB_028_MSG = "Cannot instantiate service {}";
 	public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
+	public static final String CHG_006 = "CRS_A_CHG_006";
+	public static final String CHG_007 = "CRS_A_CHG_007";
+	public static final String CHG_005_MSG = "Error Occurred on call creating active shifts web service";
 
 	public static final String NOCR_IMS_01 = "EMS_S_NOCR_IMS_01";
 	public static final String NOCR_IMS_02 = "EMS_S_NOCR_IMS_02";
