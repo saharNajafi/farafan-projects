@@ -3,8 +3,10 @@ package com.gam.nocr.ems.web.ws;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.Internal;
+import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.delegator.*;
+import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
@@ -110,6 +112,8 @@ public class CCOSPaymentWS extends EMSWS {
             CardRequestTO cardRequestTO = null;
             try {
                 cardRequestTO = reservationDelegator.transferReservationsToEMS(userProfileTO, reservationTo);
+            } catch (BaseException e) {
+                throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
             } catch (Exception ex) {
                 throwInternalException(WebExceptionCode.CPW_009, WebExceptionCode.CPW_009_MSG, ex, ccosLogger);
             }
@@ -124,6 +128,10 @@ public class CCOSPaymentWS extends EMSWS {
             singleStagePreRegistrationWTO.setCardRequestId(cardRequestTO.getId());
             singleStagePreRegistrationWTO.setVerifiedByIMS(verifiedByIMS);
             return singleStagePreRegistrationWTO;
+        } catch (InternalException internalException) {
+            ccosLogger.error(internalException.getMessage(), internalException.getFaultInfo()
+                    .getCode(), internalException);
+            throw internalException;
         } catch (BaseException e) {
             throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
         } catch (Exception e) {
