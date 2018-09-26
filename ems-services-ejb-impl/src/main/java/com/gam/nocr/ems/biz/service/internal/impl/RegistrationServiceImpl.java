@@ -976,6 +976,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         /*Create Fake Success Payment*/
         createFakePaymentForCCOSVIPAndReplica(newCardRequest);
+        newCardRequest.setPaid(true);
         /*Create Fake Success Payment*/
 
         if (newCardRequest.getId() == null) {
@@ -2803,6 +2804,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             cardRequestTO.setCitizen(newCitizen);
             /*Create Fake Success Payment*/
             createFakePaymentForCCOSVIPAndReplica(cardRequestTO);
+            cardRequestTO.setPaid(true);
             /*Create Fake Success Payment*/
             CardRequestTO newCardRequest = getCardRequestDAO().create(cardRequestTO);
             getCardRequestHistoryDAO().create(new CardRequestTO(newCardRequest.getId()), "Pish SabteName VIP : " + cardRequestTO.getType(), SystemId.CCOS, null,
