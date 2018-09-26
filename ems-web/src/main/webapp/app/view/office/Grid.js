@@ -285,7 +285,42 @@ Ext.define('Ems.view.office.Grid', {
       	           		   }
       	           	   }
                  	   }
+                    },
+            {
+                tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان برای سالمندان',
+                action: 'changeAllowAmputatedFingerStatusForElderly',
+                getClass: function (value, metadata, record) {
+                    if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
+                        if(record.raw != undefined){
+                            var officeSettingType = record.raw.allowAmputatedFingerStatusForElderly;
+                            if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-AllowAmputatedFingerStatusForElderlyActive-icon';
+                            else
+                                return 'girdAction-AllowAmputatedFingerStatusForElderlyInactive-icon';
+                        }else{
+                            return 'girdAction-AllowAmputatedFingerStatusForElderlyInactive-icon';
+                        }
                     }
+                }
+            }   ,
+
+            {
+                tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان',
+                action: 'changeAllowChangeFingerStatusDuringCaptureForElderly',
+                getClass: function (value, metadata, record) {
+                    if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
+                        if(record.raw != undefined){
+                            var officeSettingType = record.raw.allowChangeFingerStatusDuringCaptureForElderly;
+                            if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-AllowChangeFingerStatusDuringCaptureForElderlyActive-icon';
+                            else
+                                return 'girdAction-AllowChangeFingerStatusDuringCaptureForElderlyInactive-icon';
+                        }else{
+                            return 'girdAction-AllowChangeFingerStatusDuringCaptureForElderlyInactive-icon';
+                        }
+                    }
+                }
+            }
 
             
         ],

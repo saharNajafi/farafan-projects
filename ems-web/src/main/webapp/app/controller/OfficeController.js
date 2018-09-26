@@ -666,6 +666,50 @@ Ext.define('Ems.controller.OfficeController', {
     			  [grid, record.get("id") ,'ALLOW_EDIT_BACKGROUND']));
     	  
       },
+    doChangeAllowAmputatedFingerStatusForElderly: function (grid, rowIndex) {
+        var gridStore = grid.getStore();
+        var record = gridStore.getAt(rowIndex);
+        var officeSettingType;
+        if(record.raw != undefined){
+            officeSettingType = record.raw.allowAmputatedFingerStatusForElderly;
+        }else {
+            officeSettingType = record.data.allowAmputatedFingerStatusForElderly;
+        }
+        var message;
+        if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1"){
+            message = 'آیا از غیرفعالسازی مکان انتخاب وضعیت قطع برای انگشتان برای سالمندان <b>{0}</b>  اطمینان دارید؟';
+        }
+        else{
+            message = 'آیا از فعالسازی مکان انتخاب وضعیت قطع برای انگشتان برای سالمندان <b>{0}</b>  اطمینان دارید؟';
+        }
+        message = message.replace('{0}', record.get(EmsObjectName.officeNewEdit.oficName));
+        Tools.messageBoxConfirm(message, Ext.bind(this.changeOfficeSetting,
+            this,
+            [grid, record.get("id") ,'ALLOW_AMPUTATED_FINGER_STATUS_FOR_ELDERLY']));
+
+    },
+    doChangeAllowChangeFingerStatusDuringCaptureForElderly: function (grid, rowIndex) {
+        var gridStore = grid.getStore();
+        var record = gridStore.getAt(rowIndex);
+        var officeSettingType;
+        if(record.raw != undefined){
+            officeSettingType = record.raw.allowChangeFingerStatusDuringCaptureForElderly;
+        }else {
+            officeSettingType = record.data.allowChangeFingerStatusDuringCaptureForElderly;
+        }
+        var message;
+        if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1"){
+            message = 'آیا از غیرفعالسازی امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان <b>{0}</b>  اطمینان دارید؟';
+        }
+        else{
+            message = 'آیا از فعالسازی امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان <b>{0}</b>  اطمینان دارید؟';
+        }
+        message = message.replace('{0}', record.get(EmsObjectName.officeNewEdit.oficName));
+        Tools.messageBoxConfirm(message, Ext.bind(this.changeOfficeSetting,
+            this,
+            [grid, record.get("id") ,'ALLOW_CHANGE_FINGER_STATUS_DURING_CAPTURE_FOR_ELDERLY']));
+
+    },
       doChangeUseScannerUI: function (grid, rowIndex) {
     	  
     	  
