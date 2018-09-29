@@ -877,7 +877,6 @@
     </logger>
 
     <!--Jobs Loggers -->
-
     <logger name="reportJMS" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="ReportsJMSRollingAppender"/>

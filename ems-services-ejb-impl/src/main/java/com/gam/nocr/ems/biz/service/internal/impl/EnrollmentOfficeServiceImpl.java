@@ -707,7 +707,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             sessionContext.setRollbackOnly();
             throw e;
         } catch (Exception e) {
-            e.printStackTrace();
             sessionContext.setRollbackOnly();
             throw new ServiceException(BizExceptionCode.EOS_039, BizExceptionCode.GLB_008_MSG, e);
         }
