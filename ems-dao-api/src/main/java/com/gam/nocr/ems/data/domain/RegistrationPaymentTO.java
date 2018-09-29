@@ -23,7 +23,7 @@ import java.util.Date;
         @NamedQuery( name = "RegistrationPayment.findByCitizenId"
                 , query = " select rp from RegistrationPaymentTO rp" +
                 " where rp.citizenTO.id =:citizenId"),
-        @NamedQuery( name = "RegistrationPayment.findByNationalId"
+        @NamedQuery( name = "RegistrationPayment.findLastCardRequestPaymentByNationalId"
                 , query = "select crq.registrationPaymentTO from CardRequestTO crq  where crq.id " +
                 "= (select MAX(crqq.id) from CardRequestTO crqq" +
                 " where crqq.citizen.nationalID=:nationalId)")

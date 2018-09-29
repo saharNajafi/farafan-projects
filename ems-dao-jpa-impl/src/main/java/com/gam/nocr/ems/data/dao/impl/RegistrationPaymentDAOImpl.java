@@ -58,7 +58,7 @@ public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPayme
         List<RegistrationPaymentTO> registrationPaymentTO;
         try {
             nationalId = StringUtils.leftPad(String.valueOf(nationalId), 10, "0");
-            registrationPaymentTO = em.createNamedQuery("RegistrationPayment.findByNationalId")
+            registrationPaymentTO = em.createNamedQuery("RegistrationPayment.findLastCardRequestPaymentByNationalId")
                     .setParameter("nationalId", nationalId)
                     .getResultList();
         } catch (Exception e) {
