@@ -666,14 +666,14 @@ Ext.define('Ems.controller.OfficeController', {
     			  [grid, record.get("id") ,'ALLOW_EDIT_BACKGROUND']));
     	  
       },
-    doChangeAllowAmputatedFingerStatusForElderly: function (grid, rowIndex) {
+    doChangeAllowAmputatedFinger: function (grid, rowIndex) {
         var gridStore = grid.getStore();
         var record = gridStore.getAt(rowIndex);
         var officeSettingType;
         if(record.raw != undefined){
-            officeSettingType = record.raw.allowAmputatedFingerStatusForElderly;
+            officeSettingType = record.raw.allowAmputatedFinger;
         }else {
-            officeSettingType = record.data.allowAmputatedFingerStatusForElderly;
+            officeSettingType = record.data.allowAmputatedFinger;
         }
         var message;
         if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1"){
@@ -685,17 +685,17 @@ Ext.define('Ems.controller.OfficeController', {
         message = message.replace('{0}', record.get(EmsObjectName.officeNewEdit.oficName));
         Tools.messageBoxConfirm(message, Ext.bind(this.changeOfficeSetting,
             this,
-            [grid, record.get("id") ,'ALLOW_AMPUTATED_FINGER_STATUS_FOR_ELDERLY']));
+            [grid, record.get("id") ,'ALLOW_AMPUTATED_FINGER']));
 
     },
-    doChangeAllowChangeFingerStatusDuringCaptureForElderly: function (grid, rowIndex) {
+    doChangeAllowChangeFinger: function (grid, rowIndex) {
         var gridStore = grid.getStore();
         var record = gridStore.getAt(rowIndex);
         var officeSettingType;
         if(record.raw != undefined){
-            officeSettingType = record.raw.allowChangeFingerStatusDuringCaptureForElderly;
+            officeSettingType = record.raw.allowChangeFinger;
         }else {
-            officeSettingType = record.data.allowChangeFingerStatusDuringCaptureForElderly;
+            officeSettingType = record.data.allowChangeFinger;
         }
         var message;
         if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1"){
@@ -707,7 +707,7 @@ Ext.define('Ems.controller.OfficeController', {
         message = message.replace('{0}', record.get(EmsObjectName.officeNewEdit.oficName));
         Tools.messageBoxConfirm(message, Ext.bind(this.changeOfficeSetting,
             this,
-            [grid, record.get("id") ,'ALLOW_CHANGE_FINGER_STATUS_DURING_CAPTURE_FOR_ELDERLY']));
+            [grid, record.get("id") ,'ALLOW_CHANGE_FINGER']));
 
     },
       doChangeUseScannerUI: function (grid, rowIndex) {

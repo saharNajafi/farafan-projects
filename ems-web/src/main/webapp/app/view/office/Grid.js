@@ -288,17 +288,17 @@ Ext.define('Ems.view.office.Grid', {
                     },
             {
                 tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان برای سالمندان',
-                action: 'changeAllowAmputatedFingerStatusForElderly',
+                action: 'changeAllowAmputatedFinger',
                 getClass: function (value, metadata, record) {
                     if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
                         if(record.raw != undefined){
-                            var officeSettingType = record.raw.allowAmputatedFingerStatusForElderly;
+                            var officeSettingType = record.raw.allowAmputatedFinger;
                             if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-                                return 'girdAction-AllowAmputatedFingerStatusForElderlyActive-icon';
+                                return 'girdAction-AllowAmputatedFingerActive-icon';
                             else
-                                return 'girdAction-AllowAmputatedFingerStatusForElderlyInactive-icon';
+                                return 'girdAction-AllowAmputatedFingerInactive-icon';
                         }else{
-                            return 'girdAction-AllowAmputatedFingerStatusForElderlyInactive-icon';
+                            return 'girdAction-AllowAmputatedFingerInactive-icon';
                         }
                     }
                 }
@@ -306,17 +306,17 @@ Ext.define('Ems.view.office.Grid', {
 
             {
                 tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان',
-                action: 'changeAllowChangeFingerStatusDuringCaptureForElderly',
+                action: 'changeAllowChangeFinger',
                 getClass: function (value, metadata, record) {
                     if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
                         if(record.raw != undefined){
-                            var officeSettingType = record.raw.allowChangeFingerStatusDuringCaptureForElderly;
+                            var officeSettingType = record.raw.allowChangeFinger;
                             if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-                                return 'girdAction-AllowChangeFingerStatusDuringCaptureForElderlyActive-icon';
+                                return 'girdAction-AllowChangeFingerActive-icon';
                             else
-                                return 'girdAction-AllowChangeFingerStatusDuringCaptureForElderlyInactive-icon';
+                                return 'girdAction-AllowChangeFingerInactive-icon';
                         }else{
-                            return 'girdAction-AllowChangeFingerStatusDuringCaptureForElderlyInactive-icon';
+                            return 'girdAction-AllowChangeFingerInactive-icon';
                         }
                     }
                 }

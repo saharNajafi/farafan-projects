@@ -700,25 +700,25 @@ background-image: none !important;
     cursor: pointer;
 }
 
-.girdAction-AllowAmputatedFingerStatusForElderlyActive-icon {
+.girdAction-AllowAmputatedFingerActive-icon {
     background: url('resources/themes/images/officeSetting/ElderyMode01.png') no-repeat right;
     width: 13px;
     height: 16px;
     cursor: pointer;
 }
-.girdAction-AllowAmputatedFingerStatusForElderlyInactive-icon {
+.girdAction-AllowAmputatedFingerInactive-icon {
     background: url('resources/themes/images/officeSetting/ElderyMode02.png') no-repeat right;
     width: 13px;
     height: 16px;
     cursor: pointer;
 }
-    .girdAction-AllowChangeFingerStatusDuringCaptureForElderlyActive-icon {
+    .girdAction-AllowChangeFingerActive-icon {
         background: url('resources/themes/images/officeSetting/ElderyMode01.png') no-repeat right;
         width: 13px;
         height: 16px;
         cursor: pointer;
     }
-.girdAction-AllowChangeFingerStatusDuringCaptureForElderlyInactive-icon {
+.girdAction-AllowChangeFingerInactive-icon {
     background: url('resources/themes/images/officeSetting/ElderyMode02.png') no-repeat right;
     width: 13px;
     height: 16px;
