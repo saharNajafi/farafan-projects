@@ -30,6 +30,8 @@ Ext.define('Ems.model.OfficeModel', {
         ,EmsObjectName.officeNewEdit.nMocGeneration
         ,EmsObjectName.officeNewEdit.amputationAnnouncment
         ,EmsObjectName.officeNewEdit.useScannerUI
+        ,EmsObjectName.officeNewEdit.allowAmputatedFinger
+        ,EmsObjectName.officeNewEdit.allowChangeFinger
         ,EmsObjectName.officeNewEdit.allowEditBackground
         
 

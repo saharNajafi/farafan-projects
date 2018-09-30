@@ -246,7 +246,23 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     else
                         stateProviderTO.setValue("false");
 
-                } else if (stateId.endsWith("tokenExpire")) {
+                } else if (stateId
+                        .endsWith("allowAmputatedFinger")) {
+
+                    if (officeSettingTO.getAllowAmputatedFinger())
+                        stateProviderTO.setValue("true");
+                    else
+                        stateProviderTO.setValue("false");
+
+                }else if (stateId
+                        .endsWith("allowChangeFinger")) {
+
+                    if (officeSettingTO.getAllowChangeFinger())
+                        stateProviderTO.setValue("true");
+                    else
+                        stateProviderTO.setValue("false");
+
+                }else if (stateId.endsWith("tokenExpire")) {
                     try {
                         ProfileManager pm = ProfileHelper.getProfileManager();
                         String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);
