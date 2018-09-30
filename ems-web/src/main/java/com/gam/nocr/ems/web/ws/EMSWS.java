@@ -24,7 +24,6 @@ import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
 import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
 
-import javax.jws.WebParam;
 import java.text.MessageFormat;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
@@ -43,7 +42,7 @@ public class EMSWS {
     private static final String DEFAULT_ENABLE_CCOS_CHECK = "1";
 
 
-    public UserProfileTO validateCCOSUser(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO, Logger logger) throws InternalException {
+    public UserProfileTO validateCCOSUser(SecurityContextWTO securityContextWTO, Logger logger) throws InternalException {
         UserProfileTO userProfileTO;
         try {
             userProfileTO = validateRequest(securityContextWTO);

@@ -1,9 +1,11 @@
 package com.gam.nocr.ems.data.dao.impl;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -19,7 +21,7 @@ import java.util.List;
 @Local(RegistrationPaymentDAOLocal.class)
 @Remote(RegistrationPaymentDAORemote.class)
 public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPaymentTO>
-        implements  RegistrationPaymentDAOLocal, RegistrationPaymentDAORemote{
+        implements RegistrationPaymentDAOLocal, RegistrationPaymentDAORemote {
 
     @Override
     @PersistenceContext(unitName = "EmsOraclePU")
@@ -41,7 +43,7 @@ public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPayme
     public RegistrationPaymentTO findByCitizenId(Long citizenId) throws BaseException {
         List<RegistrationPaymentTO> registrationPaymentTO;
         try {
-            registrationPaymentTO =  em.createNamedQuery("RegistrationPayment.findByCitizenId")
+            registrationPaymentTO = em.createNamedQuery("RegistrationPayment.findByCitizenId")
                     .setParameter("citizenId", citizenId)
                     .getResultList();
         } catch (Exception e) {
@@ -55,7 +57,8 @@ public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPayme
     public RegistrationPaymentTO findLastCardRequestPaymentByNationalId(String nationalId) throws DataException {
         List<RegistrationPaymentTO> registrationPaymentTO;
         try {
-            registrationPaymentTO =  em.createNamedQuery("RegistrationPayment.findByNationalId")
+            nationalId = StringUtils.leftPad(String.valueOf(nationalId), 10, "0");
+            registrationPaymentTO = em.createNamedQuery("RegistrationPayment.findLastCardRequestPaymentByNationalId")
                     .setParameter("nationalId", nationalId)
                     .getResultList();
         } catch (Exception e) {

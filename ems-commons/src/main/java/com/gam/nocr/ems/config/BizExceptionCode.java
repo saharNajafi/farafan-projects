@@ -480,7 +480,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_045_MSG = "CZI_MOTHER_BIRTH_CERT_SERIES must be exactly 6 characters";
 	public static final String RSI_046_MSG = "CZI_ADDRESS may be at most 300 characters";
 	public static final String RSI_047_MSG = "CZI_PHONE may be at most 20 characters";
-	public static final String RSI_048_MSG = "CZI_MOBILE may be at most 20 characters";
+	public static final String RSI_048_MSG = "CZI_MOBILE may be at most 11 characters";
 	public static final String RSI_049_MSG = "Card request with id {} not found";
 	public static final String RSI_050_MSG = "Citizen info not found for card request with id {}";
 	public static final String RSI_051_MSG = "BiometricTO cannot be null";
