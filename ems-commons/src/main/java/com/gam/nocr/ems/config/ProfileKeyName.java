@@ -241,9 +241,10 @@ public class ProfileKeyName {
 
     //Payment Amount
     public static final String KEY_PAYMENT_AMOUNT_FIRST_CARD = EMS_PROFILE_ROOT + ".firstCardPaymentAmount";
-    public static final String KEY_PAYMENT_NO_REPLACE_AMOUNT = EMS_PROFILE_ROOT + ".replaceCardPaymentAmount";
-    public static final String KEY_PAYMENT_REPLACE_AMOUNT = EMS_PROFILE_ROOT + ".noReplaceCardPaymentAmount";
-
+    public static final String KEY_PAYMENT_AMOUNT_FIRST_REPLICA = EMS_PROFILE_ROOT + ".firstReplicaCardPaymentAmount";
+    public static final String KEY_PAYMENT_AMOUNT_SECOND_REPLICA = EMS_PROFILE_ROOT + ".secondReplicaCardPaymentAmount";
+    public static final String KEY_PAYMENT_AMOUNT_THIRD_REPLICA = EMS_PROFILE_ROOT + ".thirdReplicaCardPaymentAmount";
+    public static final String KEY_PAYMENT_AMOUNT_REPLACE = EMS_PROFILE_ROOT + ".replaceCardPaymentAmount";
     public static final String KEY_OFFICE_CAPACITY_END_DATE = EMS_PROFILE_ROOT + ".officeCapacityEndDate";
 
 }

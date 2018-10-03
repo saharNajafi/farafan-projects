@@ -4,6 +4,9 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
+import com.gam.nocr.ems.data.enums.CardRequestType;
+
+import java.util.Map;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 8/8/18.
@@ -20,4 +23,7 @@ public interface RegistrationPaymentService extends Service {
     void assignPaymentToEnrollment(RegistrationPaymentTO registrationPaymentTO, String nationalId) throws BaseException;
 
     RegistrationPaymentTO addRegistrationPayment(RegistrationPaymentTO registrationPaymentTO) throws BaseException;
+
+    Map getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId)throws BaseException;
+
 }

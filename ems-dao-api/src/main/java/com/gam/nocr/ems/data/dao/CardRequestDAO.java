@@ -13,12 +13,7 @@ import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
-import com.gam.nocr.ems.data.enums.CardRequestOrigin;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.CardRequestedAction;
-import com.gam.nocr.ems.data.enums.DepartmentDispatchSendType;
-import com.gam.nocr.ems.data.enums.SMSTypeState;
-import com.gam.nocr.ems.data.enums.SystemId;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 
 /**
@@ -494,4 +489,6 @@ public interface CardRequestDAO extends EmsBaseDAO<CardRequestTO> {
 	CardRequestTO findByCitizenId(CitizenTO ctz) throws BaseException;
 
 	CardRequestTO findLastRequestByNationalId(String nationalId) throws BaseException;
+
+	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
 }

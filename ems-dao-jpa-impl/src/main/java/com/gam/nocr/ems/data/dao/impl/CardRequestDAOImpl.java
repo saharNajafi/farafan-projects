@@ -4800,4 +4800,23 @@ CardRequestDAOLocal, CardRequestDAORemote {
 			return null;
 	}
 
+    @Override
+    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType cardRequestType) throws BaseException {
+        Long replicaTypeCount;
+        try {
+            Query query = em.createQuery(
+                    "select count(*) " +
+                            "from CardRequestTO crq " +
+                            "where crq.citizen.nationalID=:NATIONALID " +
+                            "and crq.type=:TYPE");
+            query.setParameter("NATIONALID", nationalId);
+            query.setParameter("TYPE", cardRequestType);
+            replicaTypeCount = (Long) query.getSingleResult();
+        } catch (Exception e) {
+            logger.error(DataExceptionCode.CDI_108_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
+            throw new DataException(DataExceptionCode.CDI_108,
+                    DataExceptionCode.CDI_108_MSG, e);
+        }
+        return replicaTypeCount;
+    }
 }
