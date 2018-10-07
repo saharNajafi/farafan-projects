@@ -3,9 +3,6 @@
  */
 package com.gam.nocr.ems.data.mapper.xmlmapper;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CARD_REQUEST;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -17,7 +14,6 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.ConstValues;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.enums.AFISState;
@@ -250,9 +246,9 @@ public class CardRequestCMSMapper implements XMLMapper {
 								.valueOf(dbEnrollmentOffice.getId())));
 					else
 						userSiteID.appendChild(doc.createTextNode(String
-							.valueOf(dbEnrollmentOffice.getSuperiorOffice()
-									.getId())));
-					
+								.valueOf(dbEnrollmentOffice.getSuperiorOffice()
+										.getId())));
+
 				}
 			}
 			enrollmentInfo.appendChild(userSiteID);
@@ -632,8 +628,8 @@ public class CardRequestCMSMapper implements XMLMapper {
 						// Refactored by Saeed
 						marriageDateJalaliElement.appendChild(doc
 								.createTextNode(DateUtil.convert(citizenInfoTO
-										.getSpouses().get(i)
-										.getSpouseMarriageDate(),
+												.getSpouses().get(i)
+												.getSpouseMarriageDate(),
 										DateUtil.JALALI)));
 					}
 					spouseElement.appendChild(marriageDateJalaliElement);
@@ -679,8 +675,8 @@ public class CardRequestCMSMapper implements XMLMapper {
 							.getChildBirthDateSolar() != null) {
 						childBirthDateJalaliElement.appendChild(doc
 								.createTextNode(DateUtil.convert(citizenInfoTO
-										.getChildren().get(i)
-										.getChildBirthDateSolar(),
+												.getChildren().get(i)
+												.getChildBirthDateSolar(),
 										DateUtil.JALALI)));
 					}
 					childElement.appendChild(childBirthDateJalaliElement);
@@ -691,8 +687,8 @@ public class CardRequestCMSMapper implements XMLMapper {
 							.getChildDeathDateSolar() != null) {
 						childDeathDateJalaliElement.appendChild(doc
 								.createTextNode(DateUtil.convert(citizenInfoTO
-										.getChildren().get(i)
-										.getChildDeathDateSolar(),
+												.getChildren().get(i)
+												.getChildDeathDateSolar(),
 										DateUtil.JALALI)));
 						childElement.appendChild(childDeathDateJalaliElement);
 					}
@@ -836,8 +832,7 @@ public class CardRequestCMSMapper implements XMLMapper {
 			if (mohFlag || mocCount > 0) {
 				Element fingersElement = doc.createElement("Fingers");
 				biometricIndfoElement.appendChild(fingersElement);
-				Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
-				Attr sensorModel = doc.createAttribute("SensorModel");
+				/*Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
 				String featureExtractorIDValue = attributesMap.get("featureExtractorID");
 				if(featureExtractorIDValue == null || Integer.valueOf(featureExtractorIDValue) < 0){
 					Object[] args = {"FeatureExtractorID" };
@@ -845,14 +840,15 @@ public class CardRequestCMSMapper implements XMLMapper {
 							DataExceptionCode.GLB_001_MSG, args);
 				}
 				featureExtractorID.setValue(attributesMap.get("featureExtractorID"));
-				sensorModel.setValue("0000");
-				fingersElement.setAttributeNode(featureExtractorID);
-				fingersElement.setAttributeNode(sensorModel);
+				fingersElement.setAttributeNode(featureExtractorID);*/
 				if (mohFlag) {
-					Element imagesElement = doc.createElement("Images");
 					Element imageElement = doc.createElement("Image");
-					fingersElement.appendChild(imagesElement);
-					imagesElement.appendChild(imageElement);
+					fingersElement.appendChild(imageElement);
+
+					Element sensorModelElement = doc
+							.createElement("SensorModel");
+					sensorModelElement.appendChild(doc.createTextNode("0000"));
+					imageElement.appendChild(sensorModelElement);
 
 					Element positionForImageElement = doc
 							.createElement("Position");
@@ -1012,7 +1008,7 @@ public class CardRequestCMSMapper implements XMLMapper {
 		}
 	}
 
-    private EnrollmentOfficeDAO getEnrollmentOfficeDAO() throws BaseException {
+	private EnrollmentOfficeDAO getEnrollmentOfficeDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_ENROLLMENT_OFFICE));
         } catch (DAOFactoryException e) {
