@@ -2779,6 +2779,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 cardRequestTO.getCitizen().getCitizenInfo().setBirthCertificateIssuancePlace(birthCertIssPlaceVTOList.get(0).getDepName());
             else
                 throw new ServiceException(BizExceptionCode.RSI_150, BizExceptionCode.RSI_107_MSG + cardRequestTO.getCitizen().getNationalID());
+            cardRequestTO.setType(CardRequestType.FIRST_CARD);
             String generateTrackingId = EmsUtil.generateTrackingId(cardRequestTO.getCitizen().getNationalID() + new Date());
             cardRequestTO.setTrackingID(generateTrackingId);
             cardRequestTO.setOrigin(CardRequestOrigin.C);
