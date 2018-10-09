@@ -247,7 +247,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             reservationTO = addReservation(reservationTO);
             getCardRequestHistoryService().create(
                     reservationTO.getCardRequest(),
-                    "CRS Reservation Date: " + DateUtil.convert(reservationTO.getDate(), DateUtil.JALALI)
+                    "CCOS Reservation Date: " + DateUtil.convert(reservationTO.getDate(), DateUtil.JALALI)
                     , SystemId.CCOS, null, CardRequestHistoryAction.TRANSFER_RESERVE, null);
             return emsCardRequest;
 
