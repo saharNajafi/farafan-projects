@@ -120,6 +120,16 @@ public class WorkstationDAOImpl extends EmsBaseDAOImpl<WorkstationTO> implements
         for (String id : workstationIds.split(","))
             ids.add(Long.parseLong(id.trim()));
 
+        em.createQuery(" DELETE FROM WorkstationInfoTO EW " +
+                " where EW.workstation.id in (:ids) ")
+                .setParameter("ids", ids)
+                .executeUpdate();
+
+        em.createQuery(" DELETE FROM WorkstationPluginsTO EW " +
+                " where EW.workstationTO.id in (:ids) ")
+                .setParameter("ids", ids)
+                .executeUpdate();
+
         int workstationDeletedCount = em.createQuery(" DELETE FROM WorkstationTO EW " +
                 " where EW.id in (:ids) ")
                 .setParameter("ids", ids)

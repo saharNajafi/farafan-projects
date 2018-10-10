@@ -126,6 +126,7 @@ public class WorkstationServiceImpl extends EMSAbstractService implements Workst
             } else {
                 WorkstationTO workstationTO = getWorkstationDAO().find(WorkstationTO.class, to.getId());
                 to.setEnrollmentOffice(new EnrollmentOfficeTO(to.getEnrollmentOfficeId()));
+                to.setWorkstationPluginsTOList(workstationTO.getWorkstationPluginsTOList());
                 to.setState(workstationTO.getState());
             }
             validate(to);
