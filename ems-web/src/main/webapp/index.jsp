@@ -699,6 +699,31 @@ background-image: none !important;
     height: 16px;
     cursor: pointer;
 }
+
+.girdAction-AllowAmputatedFingerActive-icon {
+    background: url('resources/themes/images/officeSetting/ElderyMode01.png') no-repeat right;
+    width: 13px;
+    height: 16px;
+    cursor: pointer;
+}
+.girdAction-AllowAmputatedFingerInactive-icon {
+    background: url('resources/themes/images/officeSetting/ElderyMode02.png') no-repeat right;
+    width: 13px;
+    height: 16px;
+    cursor: pointer;
+}
+    .girdAction-AllowChangeFingerActive-icon {
+        background: url('resources/themes/images/officeSetting/ElderyMode01.png') no-repeat right;
+        width: 13px;
+        height: 16px;
+        cursor: pointer;
+    }
+.girdAction-AllowChangeFingerInactive-icon {
+    background: url('resources/themes/images/officeSetting/ElderyMode02.png') no-repeat right;
+    width: 13px;
+    height: 16px;
+    cursor: pointer;
+}
 </style>
 
 <link href="/wr/ext/4.1-beta-1/rtl/resources/css/ext-all.css" rel="stylesheet" type="text/css"/>

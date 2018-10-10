@@ -285,7 +285,42 @@ Ext.define('Ems.view.office.Grid', {
       	           		   }
       	           	   }
                  	   }
+                    },
+            {
+                tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان برای سالمندان',
+                action: 'changeAllowAmputatedFinger',
+                getClass: function (value, metadata, record) {
+                    if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
+                        if(record.raw != undefined){
+                            var officeSettingType = record.raw.allowAmputatedFinger;
+                            if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-AllowAmputatedFingerActive-icon';
+                            else
+                                return 'girdAction-AllowAmputatedFingerInactive-icon';
+                        }else{
+                            return 'girdAction-AllowAmputatedFingerInactive-icon';
+                        }
                     }
+                }
+            }   ,
+
+            {
+                tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان',
+                action: 'changeAllowChangeFinger',
+                getClass: function (value, metadata, record) {
+                    if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
+                        if(record.raw != undefined){
+                            var officeSettingType = record.raw.allowChangeFinger;
+                            if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-AllowChangeFingerActive-icon';
+                            else
+                                return 'girdAction-AllowChangeFingerInactive-icon';
+                        }else{
+                            return 'girdAction-AllowChangeFingerInactive-icon';
+                        }
+                    }
+                }
+            }
 
             
         ],

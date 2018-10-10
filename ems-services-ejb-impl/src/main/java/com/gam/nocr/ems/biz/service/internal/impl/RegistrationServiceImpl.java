@@ -69,8 +69,6 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     private static final String DEFAULT_KEY_IMS_ESTELAM_IAMGE_ENABLE = "1";
     private static final Logger vipLogger = BaseLog
             .getLogger("VipLogger");
-    private static final String DEFAULT_PAYMENT_REPLACE_AMOUNT = "400000";
-    private static final String DEFAULT_PAYMENT_NO_REPLACE_AMOUNT = "200000";
 
     @Resource
     SessionContext sessionContext;
@@ -1027,14 +1025,11 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         registrationPaymentTO.setPaymentDate(new Date());
         registrationPaymentTO.setMatchFlag((short) 1);
         registrationPaymentTO.setPaidBank(IPGProviderEnum.SADAD);
-        registrationPaymentTO.setPaymentCode(Configuration.getProperty("PAYMENT.CODE"));
-        Integer paymentAmount;
-        if (CardRequestType.REPLICA.equals(newCardRequest.getType())) {
-            paymentAmount = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_REPLACE_AMOUNT, DEFAULT_PAYMENT_REPLACE_AMOUNT));
-        } else {
-            paymentAmount = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_NO_REPLACE_AMOUNT, DEFAULT_PAYMENT_NO_REPLACE_AMOUNT));
-        }
-        registrationPaymentTO.setAmountPaid(paymentAmount);
+       String nationalId = newCardRequest.getCitizen().getNationalID();
+        Map<String, String> registrationPaymentResult =
+                getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);
+        registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
+        registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
         getRegistrationPaymentDAO().create(registrationPaymentTO);
         newCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
     }
@@ -2784,7 +2779,6 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 cardRequestTO.getCitizen().getCitizenInfo().setBirthCertificateIssuancePlace(birthCertIssPlaceVTOList.get(0).getDepName());
             else
                 throw new ServiceException(BizExceptionCode.RSI_150, BizExceptionCode.RSI_107_MSG + cardRequestTO.getCitizen().getNationalID());
-
             cardRequestTO.setType(CardRequestType.FIRST_CARD);
             String generateTrackingId = EmsUtil.generateTrackingId(cardRequestTO.getCitizen().getNationalID() + new Date());
             cardRequestTO.setTrackingID(generateTrackingId);
@@ -2951,5 +2945,35 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         return wto;
     }
 
+    private CardRequestService getCardRequestService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        CardRequestService cardRequestService;
+        try {
+            cardRequestService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.PTL_005,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_CARD_REQUEST.split(","));
+        }
+        cardRequestService.setUserProfileTO(getUserProfileTO());
+        return cardRequestService;
+    }
 
+    private RegistrationPaymentService getRegistrationPaymentService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        RegistrationPaymentService registrationPaymentService;
+        try {
+            registrationPaymentService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_REGISTRATION_PAYMENT), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.PTL_005,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_REGISTRATION_PAYMENT.split(","));
+        }
+        registrationPaymentService.setUserProfileTO(getUserProfileTO());
+        return registrationPaymentService;
+    }
 }

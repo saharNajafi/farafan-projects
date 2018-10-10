@@ -18,12 +18,15 @@ import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
+import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_REGISTRATION_PAYMENT;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
@@ -39,6 +42,10 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         implements RegistrationPaymentServiceLocal, RegistrationPaymentServiceRemote {
 
     private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_CARD = "200000";
+    private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA = "400000";
+    private static final String DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA = "700000";
+    private static final String DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA = "1000000";
+    private static final String DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE = "300000";
 
     public RegistrationPaymentTO addRegistrationPayment(RegistrationPaymentTO entity) throws BaseException {
 
@@ -151,22 +158,19 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public PaymentInfoWTO getPayAmountInfo(String nationalId) throws BaseException {
         try {
-            RegistrationPaymentTO registrationPaymentTO = getRegistrationPaymentDAO().findLastCardRequestPaymentByNationalId(nationalId);
-            if (registrationPaymentTO == null) {
+            PaymentInfoWTO result = new PaymentInfoWTO();
+            CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
+            if (cardRequestTO.getRegistrationPaymentTO() == null) {
                 throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
             }
-            Long orderId = registrationPaymentTO.getOrderId();
-            PaymentInfoWTO result = new PaymentInfoWTO();
-            // TODO implement dynamic payment amount based on card-request state history
+            Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
+            //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
-            String paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_CARD,
-                    DEFAULT_PAYMENT_AMOUNT_FIRST_CARD);
-            Integer amount = Integer.valueOf(paymentAmount);
-            result.setPaymentAmount(amount);
+            Map<String, String> registrationPaymentResult =
+                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);
+            result.setPaymentAmount(Integer.valueOf(registrationPaymentResult.get("paymentAmount")) );
             result.setOrderId(String.valueOf(orderId));
-            result.setPaymentCode(Configuration.getProperty("PAYMENT.CODE"));
-            //todo add payment code  & order id
-
+            result.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             return result;
         } catch (Exception e) {
             if (e instanceof ServiceException) {
@@ -175,6 +179,49 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             throw new ServiceException(BizExceptionCode.RGP_002,
                     BizExceptionCode.RGP_002_MSG, e);
         }
+    }
+
+    public Map<String, String> getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId) {
+        String paymentAmount = null;
+        String paymentCode = null;
+        Map map = new HashMap<String, String>();
+        if (cardRequestType.equals(CardRequestType.REPLICA)) {
+            Long replicaTypeCount = 0L;
+            try {
+                replicaTypeCount =
+                        getCardRequestService().countCardRequestByNationalIdAndType(nationalId, cardRequestType);
+            } catch (BaseException e) {
+                e.printStackTrace();
+            }
+            if(replicaTypeCount == 1){
+                paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,
+                        DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA);
+                paymentCode = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
+            }
+            if(replicaTypeCount == 2){
+                paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_SECOND_REPLICA,
+                        DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA);
+                paymentCode = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
+            }
+            if(replicaTypeCount >= 3){
+                paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_THIRD_REPLICA,
+                        DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA);
+                paymentCode = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
+            }
+        }
+        else if(cardRequestType.equals(CardRequestType.FIRST_CARD)) {
+            paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_CARD,
+                    DEFAULT_PAYMENT_AMOUNT_FIRST_CARD);
+            paymentCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
+        }
+        else if(cardRequestType.equals(CardRequestType.REPLACE)) {
+            paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_REPLACE,
+                    DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE);
+            paymentCode = Configuration.getProperty("PAYMENT.REPLACE.CODE");
+        }
+        map.put("paymentAmount", paymentAmount);
+        map.put("paymentCode", paymentCode);
+        return map;
     }
 
 

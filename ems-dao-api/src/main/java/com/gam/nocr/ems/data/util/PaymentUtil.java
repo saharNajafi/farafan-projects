@@ -102,7 +102,7 @@ public class PaymentUtil {
             registrationPaymentTO.setConfirmed(false);
             registrationPaymentTO.setSucceed(false);
             registrationPaymentTO.setOrderId(EmsUtil.getRandomPaymentOrderId());
-            registrationPaymentTO.setPaymentCode(Configuration.getProperty("PAYMENT.CODE"));
+            registrationPaymentTO.setPaymentCode(Configuration.getProperty("PAYMENT.FIRST.CARD.CODE"));
             registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFIGNED);
             registrationPaymentTO.setResCode(null);
             registrationPaymentTO.setSystemTraceNo(null);

@@ -246,6 +246,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_066 = "EMS_CRE_066";
 	public static final String CRE_067 = "EMS_CRE_067";
 	public static final String CRE_068 = "EMS_CRE_068";
+	public static final String CRE_074 = "EMS_CRE_074";
 
 
 	public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
@@ -260,6 +261,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_071_MSG = "DB Error: Error occurred in fetching Card Request for NationalId: {0}";
 	public static final String CRE_072_MSG = "unable to update cardRequest";
 	public static final String CRE_073_MSG = "unable to find cardRequest";
+	public static final String CRE_074_MSG = "unable to count cardRequest replica types";
 
 
 

@@ -38,6 +38,8 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     private Boolean amputationAnnouncment = Boolean.FALSE;
     private Boolean useScannerUI = Boolean.FALSE;
     private Boolean allowEditBackground = Boolean.FALSE;
+    private Boolean allowAmputatedFinger = Boolean.FALSE;
+    private Boolean allowChangeFinger = Boolean.TRUE;
    /* private String featureExtractorID = "0001";
     private String featureExtractorVersion = "0.0";*/
 
@@ -147,6 +149,28 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     public void setAllowEditBackground(Boolean allowEditBackground) {
         this.allowEditBackground = allowEditBackground;
     }
+
+    @Column(name = "OST_ALLOW_AMPUTATED_FINGER")
+    public Boolean getAllowAmputatedFinger() {
+        return allowAmputatedFinger;
+    }
+
+    public void setAllowAmputatedFinger(Boolean allowAmputatedFinger) {
+        this.allowAmputatedFinger = allowAmputatedFinger;
+    }
+
+    @Column(name = "OST_ALLOW_CHANGE_FINGER")
+    public Boolean getAllowChangeFinger() {
+        return allowChangeFinger;
+    }
+
+    public void setAllowChangeFinger(Boolean allowChangeFinger) {
+        this.allowChangeFinger = allowChangeFinger;
+    }
+
+
+
+
 
 /*    @Column(name = "OST_FEATURE_EXTRACTOR_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '1'")
     public String getFeatureExtractorID() {

@@ -1758,7 +1758,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     public void checkThereAnyProcessedPreRegistration(CardRequestTO cardRequestTO) throws BaseException {
         String crhAction = "AFIS_SEND_ERROR";
         if (cardRequestTO != null) {
-            if (!(cardRequestTO.getOrigin() == CardRequestOrigin.CRS
+            if (!(cardRequestTO.getOrigin() == CardRequestOrigin.P
                     && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
@@ -2275,4 +2275,15 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         cardRequestService.setUserProfileTO(getUserProfileTO());
         return cardRequestService;
     }
+
+    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException{
+        Long replicaTypeCount = null;
+        try {
+            replicaTypeCount = getCardRequestDAO().countCardRequestByNationalIdAndType(nationalId, type);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CRE_074, BizExceptionCode.CRE_074_MSG);
+        }
+        return replicaTypeCount;
+    }
+
 }
