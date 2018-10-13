@@ -1,0 +1,1 @@
+change constraint with name =  CKC_BIM_TYPE in EMST_BIOMETRIC table and add two type FING_NORMAL_1 and FING_NORMAL_2
