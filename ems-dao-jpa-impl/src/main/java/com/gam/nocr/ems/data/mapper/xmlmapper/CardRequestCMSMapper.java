@@ -178,6 +178,7 @@ public class CardRequestCMSMapper implements XMLMapper {
 			}
 
 			int mocCount = 0;
+			int mohCount = 0;
 			boolean mohFlag = false;
 			byte[] fingerMinOne = null;
 			String fingerMinOneMetaDate = null;
@@ -185,6 +186,8 @@ public class CardRequestCMSMapper implements XMLMapper {
 			String fingerMinTwoMetaDate = null;
 			byte[] fingerCandidate = null;
 			String fingerCandidateMetaDate = null;
+			String fingerNormalOneMetaDate = null;
+			String fingerNormalTwoMetaDate = null;
 			for (BiometricTO biometricTO : citizenInfoTO.getBiometrics()) {
 				BiometricType biometricType = biometricTO.getType();
 				if (BiometricType.FING_MIN_1.equals(biometricType)) {
@@ -201,6 +204,16 @@ public class CardRequestCMSMapper implements XMLMapper {
 					fingerCandidate = biometricTO.getData();
 					fingerCandidateMetaDate = biometricTO.getMetaData();
 					mohFlag = true;
+
+				}else if (BiometricType.FING_NORMAL_1.equals(biometricType)) {
+					fingerCandidate = biometricTO.getData();
+					fingerNormalOneMetaDate = biometricTO.getMetaData();
+					mohCount += 1;
+
+				}else if (BiometricType.FING_NORMAL_2.equals(biometricType)) {
+					fingerCandidate = biometricTO.getData();
+					fingerNormalTwoMetaDate = biometricTO.getMetaData();
+					mohCount += 1;
 				}
 			}
 
@@ -482,6 +495,11 @@ public class CardRequestCMSMapper implements XMLMapper {
 			moCFingersCount.appendChild(doc.createTextNode(String
 					.valueOf(mocCount)));
 			identification.appendChild(moCFingersCount);
+//todo Sahar
+			Element moHFingersCount = doc.createElement("MoHFingersCount");
+			moHFingersCount.appendChild(doc.createTextNode(String
+					.valueOf(mohCount)));
+			identification.appendChild(moHFingersCount);
 
 			Element address = doc.createElement("Address");
 			citizenInfoElement.appendChild(address);

@@ -14,8 +14,10 @@ public enum BiometricType {
     FING_MIN_1,
     FING_MIN_2,
     //vip
-    VIP_IMAGE;
- 
+    VIP_IMAGE,
+    FING_NORMAL_1,
+    FING_NORMAL_2;
+
 
     public static String toWTOString(BiometricType type) {
         if (type == null) {
@@ -41,6 +43,10 @@ public enum BiometricType {
                 return "8";
             case VIP_IMAGE:
                 return "9";
+            case FING_NORMAL_1:
+                return "10";
+            case FING_NORMAL_2:
+                return "11";
             
         }
 
@@ -69,10 +75,14 @@ public enum BiometricType {
             case '8':
                 return FING_MIN_2;
             case '9':
-                return VIP_IMAGE;    
-          
+                return VIP_IMAGE;
         }
-
+        if(type.equals("10")){
+            return FING_NORMAL_1;
+        }
+        if(type.equals("11")){
+            return FING_NORMAL_2;
+        }
         return null;
     }
 }
