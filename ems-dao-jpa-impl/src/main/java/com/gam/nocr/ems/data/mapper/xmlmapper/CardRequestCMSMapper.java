@@ -174,6 +174,7 @@ public class CardRequestCMSMapper implements XMLMapper {
 			}
 
 			int mocCount = 0;
+			int mohCount = 0;
 			boolean mohFlag = false;
 			byte[] fingerMinOne = null;
 			String fingerMinOneMetaDate = null;
@@ -181,6 +182,8 @@ public class CardRequestCMSMapper implements XMLMapper {
 			String fingerMinTwoMetaDate = null;
 			byte[] fingerCandidate = null;
 			String fingerCandidateMetaDate = null;
+			String fingerNormalOneMetaDate = null;
+			String fingerNormalTwoMetaDate = null;
 			for (BiometricTO biometricTO : citizenInfoTO.getBiometrics()) {
 				BiometricType biometricType = biometricTO.getType();
 				if (BiometricType.FING_MIN_1.equals(biometricType)) {
@@ -197,6 +200,16 @@ public class CardRequestCMSMapper implements XMLMapper {
 					fingerCandidate = biometricTO.getData();
 					fingerCandidateMetaDate = biometricTO.getMetaData();
 					mohFlag = true;
+
+				}else if (BiometricType.FING_NORMAL_1.equals(biometricType)) {
+					fingerCandidate = biometricTO.getData();
+					fingerNormalOneMetaDate = biometricTO.getMetaData();
+					mohCount += 1;
+
+				}else if (BiometricType.FING_NORMAL_2.equals(biometricType)) {
+					fingerCandidate = biometricTO.getData();
+					fingerNormalTwoMetaDate = biometricTO.getMetaData();
+					mohCount += 1;
 				}
 			}
 
@@ -478,6 +491,11 @@ public class CardRequestCMSMapper implements XMLMapper {
 			moCFingersCount.appendChild(doc.createTextNode(String
 					.valueOf(mocCount)));
 			identification.appendChild(moCFingersCount);
+//todo Sahar
+			Element moHFingersCount = doc.createElement("MoHFingersCount");
+			moHFingersCount.appendChild(doc.createTextNode(String
+					.valueOf(mohCount)));
+			identification.appendChild(moHFingersCount);
 
 			Element address = doc.createElement("Address");
 			citizenInfoElement.appendChild(address);
@@ -832,7 +850,8 @@ public class CardRequestCMSMapper implements XMLMapper {
 			if (mohFlag || mocCount > 0) {
 				Element fingersElement = doc.createElement("Fingers");
 				biometricIndfoElement.appendChild(fingersElement);
-				/*Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
+				Attr featureExtractorID = doc.createAttribute("FeatureExtractorID");
+				Attr sensorModel = doc.createAttribute("SensorModel");
 				String featureExtractorIDValue = attributesMap.get("featureExtractorID");
 				if(featureExtractorIDValue == null || Integer.valueOf(featureExtractorIDValue) < 0){
 					Object[] args = {"FeatureExtractorID" };
@@ -840,15 +859,14 @@ public class CardRequestCMSMapper implements XMLMapper {
 							DataExceptionCode.GLB_001_MSG, args);
 				}
 				featureExtractorID.setValue(attributesMap.get("featureExtractorID"));
-				fingersElement.setAttributeNode(featureExtractorID);*/
+				sensorModel.setValue("0000");
+				fingersElement.setAttributeNode(featureExtractorID);
+				fingersElement.setAttributeNode(sensorModel);
 				if (mohFlag) {
+					Element imagesElement = doc.createElement("Images");
 					Element imageElement = doc.createElement("Image");
-					fingersElement.appendChild(imageElement);
-
-					Element sensorModelElement = doc
-							.createElement("SensorModel");
-					sensorModelElement.appendChild(doc.createTextNode("0000"));
-					imageElement.appendChild(sensorModelElement);
+					fingersElement.appendChild(imagesElement);
+					imagesElement.appendChild(imageElement);
 
 					Element positionForImageElement = doc
 							.createElement("Position");
