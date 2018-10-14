@@ -108,6 +108,7 @@ public class PaymentUtil {
             registrationPaymentTO.setSystemTraceNo(null);
             registrationPaymentTO.setMatchFlag((short) 1);
             cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
+            cardRequestTO.setPaid(false);
             ReservationTO reservationTO = new ReservationTO();
             reservationTO.setPaidDate(null);
             reservationTO.setPaid(false);
