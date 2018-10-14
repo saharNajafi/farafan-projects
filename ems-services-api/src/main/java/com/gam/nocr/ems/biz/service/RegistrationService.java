@@ -39,11 +39,11 @@ public interface RegistrationService extends Service {
 
     public boolean remove(long requestId) throws BaseException;
 
-    public void addFingerData(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
-//    public void addFingerData(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorID) throws BaseException;
+ // public void addFingerData(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
+    public void addFingerData(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorID) throws BaseException;
 
-    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
-//    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorID) throws BaseException;
+//    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
+    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorID) throws BaseException;
 
     public void addFaceData(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
 
@@ -133,14 +133,14 @@ public interface RegistrationService extends Service {
 	void checkPreviousCardRequestNotStopped(CitizenTO citizenTo)
 			throws BaseException;
 
+/*	public Boolean saveFromVip(CardRequestTO requestTO,
+			ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
+			ArrayList<DocumentTO> documents) throws BaseException;*/
+
 	public Boolean saveFromVip(CardRequestTO requestTO,
 			ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
-			ArrayList<DocumentTO> documents) throws BaseException;
-
-	/*public Boolean saveFromVip(CardRequestTO requestTO,
-			ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
 			ArrayList<DocumentTO> documents, String featureExtractorID) throws BaseException;
-*/
+
 	public PhotoVipWTO getPhotoVip(Long cardRquestId) throws BaseException;
 
 	public Long updateVipRegistrationRequestFromCccos(
