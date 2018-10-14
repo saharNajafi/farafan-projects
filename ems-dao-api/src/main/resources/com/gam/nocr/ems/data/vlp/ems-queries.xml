@@ -176,8 +176,8 @@
 					ost.ost_amputation_announcment amputation_announcment,
 					ost.ost_allow_edit_background allow_edit_background,
 					ost.ost_use_scanner_ui use_scanner_ui,
-					ost.OST_ALLOW_AMPUTATED_FINGER,
-					ost.OST_ALLOW_CHANGE_FINGER
+					ost.OST_ALW_AMPT_FING_STA_ELD,
+					ost.OST_ALW_CHG_FING_DUR_CAP_ELD
 				</part>
 				    from
                 emst_location l,
@@ -317,8 +317,8 @@
                 <field name="active" column="EOF_IS_ACTIVE"/>
                 <field name="postNeeded" column="EOF_IS_POST_NEEDED"/>
                 <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
-                <field name="allowAmputatedFinger" column="OST_ALLOW_AMPUTATED_FINGER"/>
-                <field name="allowChangeFinger" column="OST_ALLOW_CHANGE_FINGER"/>
+                <field name="allowAmputatedFinger" column="OST_ALW_AMPT_FING_STA_ELD"/>
+                <field name="allowChangeFinger" column="OST_ALW_CHG_FING_DUR_CAP_ELD"/>
 			</dto-fields>
 		</dto>
 	</list>
