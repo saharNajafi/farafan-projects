@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class EMKSDataWTO implements Serializable {
     private String csn;
     private String crn;
-    //	private String cardProvider;
+    private String cardProvider;
     private String pinKeyVersion;
     private String pinAlgorithmVersion;
     private String sodKeyVersion;
@@ -21,6 +21,10 @@ public class EMKSDataWTO implements Serializable {
     private String mocHashData;
     private String antiYesPublicKey;
     private String mocSignature;
+    private String smKeyVersion;
+    private String smAlgorithmVersion;
+    private String mocAlgorithmVersion;
+    private String mocKeyVersion;
 
     public EMKSDataWTO() {
     }
@@ -41,15 +45,13 @@ public class EMKSDataWTO implements Serializable {
         this.crn = crn;
     }
 
-/*
     public String getCardProvider() {
-		return cardProvider;
-	}
+        return cardProvider;
+    }
 
-	public void setCardProvider(String cardProvider) {
-		this.cardProvider = cardProvider;
-	}
-*/
+    public void setCardProvider(String cardProvider) {
+        this.cardProvider = cardProvider;
+    }
 
     public String getPinKeyVersion() {
         return pinKeyVersion;
@@ -154,6 +156,39 @@ public class EMKSDataWTO implements Serializable {
     public void setMocSignature(String mocSignature) {
         this.mocSignature = mocSignature;
     }
+
+    public String getSmKeyVersion() {
+        return smKeyVersion;
+    }
+
+    public void setSmKeyVersion(String smKeyVersion) {
+        this.smKeyVersion = smKeyVersion;
+    }
+
+    public String getSmAlgorithmVersion() {
+        return smAlgorithmVersion;
+    }
+
+    public void setSmAlgorithmVersion(String smAlgorithmVersion) {
+        this.smAlgorithmVersion = smAlgorithmVersion;
+    }
+
+    public String getMocAlgorithmVersion() {
+        return mocAlgorithmVersion;
+    }
+
+    public void setMocAlgorithmVersion(String mocAlgorithmVersion) {
+        this.mocAlgorithmVersion = mocAlgorithmVersion;
+    }
+
+    public String getMocKeyVersion() {
+        return mocKeyVersion;
+    }
+
+    public void setMocKeyVersion(String mocKeyVersion) {
+        this.mocKeyVersion = mocKeyVersion;
+    }
+
 
     @Override
     public String toString() {

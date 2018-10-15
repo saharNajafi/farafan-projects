@@ -35,9 +35,9 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class EMKSException {
 
-    @XmlElementRef(name = "ErrorCode", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    @XmlElementRef(name = "ErrorCode", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
     protected JAXBElement<String> errorCode;
-    @XmlElementRef(name = "Inner", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    @XmlElementRef(name = "Inner", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
     protected JAXBElement<Exception> inner;
 
     /**
@@ -61,7 +61,7 @@ public class EMKSException {
      *     
      */
     public void setErrorCode(JAXBElement<String> value) {
-        this.errorCode = ((JAXBElement<String> ) value);
+        this.errorCode = value;
     }
 
     /**
@@ -85,7 +85,7 @@ public class EMKSException {
      *     
      */
     public void setInner(JAXBElement<Exception> value) {
-        this.inner = ((JAXBElement<Exception> ) value);
+        this.inner = value;
     }
 
 }

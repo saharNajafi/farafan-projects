@@ -9,6 +9,11 @@ public class EMKSDataResultWTO implements Serializable{
 	private String id;
 	private String sign;
 	private String nmoc;
+	private String smPin;
+	private String smd;
+	private String asd;
+	private String mac;
+	private String enc;
 
 	public EMKSDataResultWTO() {
 	}
@@ -35,6 +40,48 @@ public class EMKSDataResultWTO implements Serializable{
 
 	public void setNmoc(String nmoc) {
 		this.nmoc = nmoc;
+	}
+
+	public void setSmPin(String smPin) {
+		this.smPin = smPin;
+	}
+
+	public String getSmPin() {
+		return smPin;
+	}
+
+	public void setSmd(String smd) {
+		this.smd = smd;
+	}
+
+	public String getSmd() {
+		return smd;
+	}
+
+
+	public void setAsd(String asd) {
+		this.asd = asd;
+	}
+
+	public String getAsd() {
+		return asd;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
+
+	public void setEnc(String enc) {
+		this.enc = enc;
+	}
+
+	public String getEnc() {
+		return enc;
 	}
 
 	@Override

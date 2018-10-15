@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "GetNIDCardMoCKeysResponse")
 public class GetNIDCardMoCKeysResponse {
 
-    @XmlElementRef(name = "GetNIDCardMoCKeysResult", namespace = "http://tempuri.org/", type = JAXBElement.class)
+    @XmlElementRef(name = "GetNIDCardMoCKeysResult", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
     protected JAXBElement<CardMoCKeys> getNIDCardMoCKeysResult;
 
     /**
@@ -59,7 +59,7 @@ public class GetNIDCardMoCKeysResponse {
      *     
      */
     public void setGetNIDCardMoCKeysResult(JAXBElement<CardMoCKeys> value) {
-        this.getNIDCardMoCKeysResult = ((JAXBElement<CardMoCKeys> ) value);
+        this.getNIDCardMoCKeysResult = value;
     }
 
 }

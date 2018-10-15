@@ -35,9 +35,9 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class CardMoCKeys {
 
-    @XmlElementRef(name = "MoC_ENC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    @XmlElementRef(name = "MoC_ENC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
     protected JAXBElement<String> moCENC;
-    @XmlElementRef(name = "MoC_MAC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    @XmlElementRef(name = "MoC_MAC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
     protected JAXBElement<String> moCMAC;
 
     /**
@@ -61,7 +61,7 @@ public class CardMoCKeys {
      *     
      */
     public void setMoCENC(JAXBElement<String> value) {
-        this.moCENC = ((JAXBElement<String> ) value);
+        this.moCENC = value;
     }
 
     /**
@@ -85,7 +85,7 @@ public class CardMoCKeys {
      *     
      */
     public void setMoCMAC(JAXBElement<String> value) {
-        this.moCMAC = ((JAXBElement<String> ) value);
+        this.moCMAC = value;
     }
 
 }

@@ -6,7 +6,7 @@ import com.gam.commons.core.biz.service.Internal;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.delegator.EmksDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
-//import com.gam.nocr.ems.data.domain.ws.EMKSCardMoCKeysWTO;
+import com.gam.nocr.ems.data.domain.ws.EMKSCardMoCKeysWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataResultWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataWTO;
 import com.gam.nocr.ems.data.domain.ws.SecurityContextWTO;
@@ -118,7 +118,7 @@ public class EmksWS extends EMSWS {
      * @param securityContextWTO The login and session information of the user
      * @throws InternalException
      */
-    /*@WebMethod
+    @WebMethod
     public EMKSCardMoCKeysWTO GetNIDCardMoCKeys(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "emksDataWTO") EMKSDataWTO emksDataWTO,
@@ -149,7 +149,6 @@ public class EmksWS extends EMSWS {
             throw new InternalException(WebExceptionCode.EKW_004,
                     new EMSWebServiceFault(WebExceptionCode.EKW_004_MSG), e);
         }
-
-    }*/
+    }
 
 }
