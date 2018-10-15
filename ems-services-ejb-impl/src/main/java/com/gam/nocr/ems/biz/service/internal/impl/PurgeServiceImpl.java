@@ -1,24 +1,8 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CARD_REQUEST;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Schedule;
-import javax.ejb.Stateless;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
-import com.gam.commons.core.data.dao.DAOException;
 import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
@@ -26,25 +10,27 @@ import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
-import com.gam.nocr.ems.data.dao.BiometricDAO;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.CitizenDAO;
-import com.gam.nocr.ems.data.dao.DocumentDAO;
-import com.gam.nocr.ems.data.dao.PurgeStatusDAO;
-import com.gam.nocr.ems.data.dao.impl.BiometricDAOLocal;
+import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.dao.impl.CardRequestDAOImpl;
-import com.gam.nocr.ems.data.dao.impl.CardRequestDAOLocal;
-import com.gam.nocr.ems.data.dao.impl.PurgeStatusDAOLocal;
 import com.gam.nocr.ems.data.domain.BiometricTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.DocumentTO;
-import com.gam.nocr.ems.data.domain.DocumentTypeTO;
 import com.gam.nocr.ems.data.domain.PurgeStatusTO;
 import com.gam.nocr.ems.data.enums.BiometricType;
 import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.slf4j.Logger;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CARD_REQUEST;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 
 @Stateless(name = "PurgeService")
 @Local(PurgeServiceLocal.class)
@@ -235,6 +221,14 @@ public class PurgeServiceImpl extends EMSAbstractService implements PurgeService
 					bio.setData(bytes);
 				}
 				else if(bio.getType() == BiometricType.FING_MIN_2)
+				{
+					bio.setData(bytes);
+				}
+				else if(bio.getType() == BiometricType.FING_NORMAL_1)
+				{
+					bio.setData(bytes);
+				}
+				else if(bio.getType() == BiometricType.FING_NORMAL_2)
 				{
 					bio.setData(bytes);
 				}

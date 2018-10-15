@@ -138,6 +138,8 @@ public class BiometricDAOImpl extends EmsBaseDAOImpl<BiometricTO> implements Bio
         fingerTypes.add(BiometricType.FING_MIN_1);
         fingerTypes.add(BiometricType.FING_MIN_2);
         fingerTypes.add(BiometricType.FING_ALL);
+        fingerTypes.add(BiometricType.FING_NORMAL_1);
+        fingerTypes.add(BiometricType.FING_NORMAL_2);
 
         try {
             int result = em.createQuery("DELETE FROM BiometricTO bio " +
