@@ -893,7 +893,7 @@ public class CardRequestCMSMapper implements XMLMapper {
                                 .createTextNode(fingerIndex));
                         firstNormalElement.appendChild(positionForImageElement);
 
-                        Element compressionFormatForImageElement = doc
+                        /*Element compressionFormatForImageElement = doc
                                 .createElement("CompressionFormat");
                         compressionFormatForImageElement.appendChild(doc
                                 .createTextNode("WSQ"));
@@ -903,7 +903,7 @@ public class CardRequestCMSMapper implements XMLMapper {
                                 .createElement("CompressionRatio");
                         compressionRatioForImageElement.appendChild(doc
                                 .createTextNode("15:1"));
-                        firstNormalElement.appendChild(compressionRatioForImageElement);
+                        firstNormalElement.appendChild(compressionRatioForImageElement);*/
 
                         Element dataForImageElement = doc.createElement("Data");
                         dataForImageElement.appendChild(doc
@@ -937,7 +937,7 @@ public class CardRequestCMSMapper implements XMLMapper {
                                 .createTextNode(fingerIndex));
                         secondNormalElement.appendChild(positionForImageElement);
 
-                        Element compressionFormatForImageElement = doc
+                       /* Element compressionFormatForImageElement = doc
                                 .createElement("CompressionFormat");
                         compressionFormatForImageElement.appendChild(doc
                                 .createTextNode("WSQ"));
@@ -947,7 +947,7 @@ public class CardRequestCMSMapper implements XMLMapper {
                                 .createElement("CompressionRatio");
                         compressionRatioForImageElement.appendChild(doc
                                 .createTextNode("15:1"));
-                        secondNormalElement.appendChild(compressionRatioForImageElement);
+                        secondNormalElement.appendChild(compressionRatioForImageElement);*/
 
                         Element dataForImageElement = doc.createElement("Data");
                         dataForImageElement.appendChild(doc

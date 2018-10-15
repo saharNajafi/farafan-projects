@@ -962,6 +962,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CSI_147 = "EMS_S_CSI_147";
 	public static final String CSI_149 = "EMS_S_CSI_149";
 	public static final String CSI_150 = "EMS_S_CSI_150";
+	public static final String CSI_151 = "EMS_S_CSI_151";
+	public static final String CSI_152 = "EMS_S_CSI_152";
 	public static final String CSI_001_MSG = "The request cannot be handled by CMS webservice.";
 	public static final String CSI_138_MSG = "The required parameters which belongs to issue card service could not be fetched by profileManager. The default values were used instead.";
 	public static final String CSI_139_MSG = "Anonymous behaviour from CMS. The parameter nationalId {} is valid but the return value is null.";
