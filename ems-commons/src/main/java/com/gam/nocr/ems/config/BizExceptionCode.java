@@ -440,6 +440,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_162 = "EMS_S_RSI_162";
 	public static final String RSI_163 = "EMS_S_RSI_163";
 	public static final String RSI_164 = "EMS_S_RSI_164";
+    public static final String RSI_165 = "EMS_S_RSI_165";
+    public static final String RSI_166 = "EMS_S_RSI_166";
 
 	public static final String RSI_006_MSG = "Card request cannot not be null";
 	public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
@@ -569,6 +571,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_162_MSG = "LivingCity is null or 0";
 	public static final String RSI_163_MSG = "Living is null or 0";
 	public static final String RSI_164_MSG = "featureExtractorID is null";
+    public static final String RSI_165_MSG = "Save biometric data encounter error due to large normal1 finger size (default value 2KB)";
+    public static final String RSI_166_MSG = "Save biometric data encounter error due to large normal2 finger size (default value 2KB)";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
 	public static final String KSI_001 = "EMS_S_KSI_001";

@@ -344,6 +344,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 case FING_MIN_2:
                     result = true;
                     break;
+                case FING_NORMAL_1:
+                    result = true;
+                    break;
+                case FING_NORMAL_2:
+                    result = true;
+                    break;
             }
             if (result)
                 break;
@@ -1552,7 +1558,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }*/
             if (cardRequestTO.getState() == CardRequestState.RESERVED ||
                     cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED ||
-                    cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS ) {
+                    cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS) {
                 return findEnrollmentOffice(cardRequestTO);
             }
 
@@ -1579,10 +1585,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getState() == CardRequestState.CMS_PRODUCTION_ERROR)
                 return labels.getString("state.CMSProductionError");
             if (cardRequestTO.getState() == CardRequestState.ISSUED) {
-                if(cardRequestTO.getCard().getReceiveDate() != null) {
+                if (cardRequestTO.getCard().getReceiveDate() != null) {
                     return labels.getString("state.Issued");
-                }else {
-                    return labels.getString("state.notReceipt");}
+                } else {
+                    return labels.getString("state.notReceipt");
+                }
             }
 
             if (cardRequestTO.getState() == CardRequestState.READY_TO_DELIVER)
@@ -2276,7 +2283,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return cardRequestService;
     }
 
-    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException{
+    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException {
         Long replicaTypeCount = null;
         try {
             replicaTypeCount = getCardRequestDAO().countCardRequestByNationalIdAndType(nationalId, type);

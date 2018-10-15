@@ -28,7 +28,6 @@ import com.gam.nocr.ems.data.domain.ws.*;
 import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.DocumentTypeMapper;
 import com.gam.nocr.ems.util.CcosRequestStateBundle;
-import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
@@ -61,6 +60,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
     private static final String DEFAULT_CARD_REQUEST_IDLE_PERIOD = "365";
     private static final String DEFAULT_KEY_FING_CANDIDATE_SIZE_KB = "12";
+    private static final String DEFAULT_KEY_FING_NORMAL_1_SIZE_KB = "2";
+    private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "2";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB = "400";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = "100";
     private static final String DEFAULT_SKIP_CMS_CHECK = "false";
@@ -1024,7 +1025,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         registrationPaymentTO.setPaymentDate(new Date());
         registrationPaymentTO.setMatchFlag((short) 1);
         registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFIGNED);
-       String nationalId = newCardRequest.getCitizen().getNationalID();
+        String nationalId = newCardRequest.getCitizen().getNationalID();
         Map<String, String> registrationPaymentResult =
                 getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);
         registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
@@ -1360,6 +1361,34 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
                     if (bio.getData().length > (fingCandidateSize * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_094, BizExceptionCode.RSI_094_MSG);
+                } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
+
+                    Integer fingCandidateSize;
+
+                    try {
+                        fingCandidateSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_1_SIZE_KB
+                                , DEFAULT_KEY_FING_NORMAL_1_SIZE_KB));
+                    } catch (NumberFormatException e) {
+                        logger.error(e.getMessage(), e);
+                        fingCandidateSize = Integer.valueOf(DEFAULT_KEY_FING_NORMAL_1_SIZE_KB);
+                    }
+
+                    if (bio.getData().length > (fingCandidateSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_165, BizExceptionCode.RSI_165_MSG);
+                } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
+
+                    Integer fingCandidateSize;
+
+                    try {
+                        fingCandidateSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_2_SIZE_KB
+                                , DEFAULT_KEY_FING_NORMAL_2_SIZE_KB));
+                    } catch (NumberFormatException e) {
+                        logger.error(e.getMessage(), e);
+                        fingCandidateSize = Integer.valueOf(DEFAULT_KEY_FING_NORMAL_2_SIZE_KB);
+                    }
+
+                    if (bio.getData().length > (fingCandidateSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_166, BizExceptionCode.RSI_166_MSG);
                 }
                 addBiometric(biometricDAO, citizenInfoInDb, bio);
             }
