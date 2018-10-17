@@ -328,28 +328,23 @@ public class EmksServiceImpl extends EMSAbstractService implements
             throws BaseException {
 
         if (!EmsUtil.checkString(emksDataWTO.getCardProvider())) {
-            throw new ServiceException(BizExceptionCode.ESI_033,
-                    BizExceptionCode.ESI_033_MSG);
+            emksDataWTO.setCardProvider("");
         }
 
         if (!EmsUtil.checkString(emksDataWTO.getMocAlgorithmVersion())) {
-            throw new ServiceException(BizExceptionCode.ESI_034,
-                    BizExceptionCode.ESI_034_MSG);
+            emksDataWTO.setMocAlgorithmVersion("");
         }
 
         if (!EmsUtil.checkString(emksDataWTO.getMocKeyVersion())) {
-            throw new ServiceException(BizExceptionCode.ESI_035,
-                    BizExceptionCode.ESI_035_MSG);
+            emksDataWTO.setMocKeyVersion("");
         }
 
         if (!EmsUtil.checkString(emksDataWTO.getSmAlgorithmVersion())) {
-            throw new ServiceException(BizExceptionCode.ESI_036,
-                    BizExceptionCode.ESI_036_MSG);
+            emksDataWTO.setSmAlgorithmVersion("");
         }
 
         if (!EmsUtil.checkString(emksDataWTO.getSmKeyVersion())) {
-            throw new ServiceException(BizExceptionCode.ESI_037,
-                    BizExceptionCode.ESI_037_MSG);
+            emksDataWTO.setSmKeyVersion("");
         }
 
         if (!EmsUtil.checkString(emksDataWTO.getMocAvailable()))
