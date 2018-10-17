@@ -707,7 +707,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OST_001 = "EMS_A_OST_001";
     public static final String OST_002 = "EMS_A_OST_002";
     public static final String OST_003 = "EMS_A_OST_003";
-    public static final String OST_002_MSG = "invalid input entry, enrollment office id is empty\";";
+    public static final String OST_002_MSG = "invalid input entry, enrollment office id is empty";
 
 
 

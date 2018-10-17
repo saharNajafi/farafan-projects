@@ -20,7 +20,7 @@ import javax.persistence.*;
 })
 public class FeatureExtractIdsTO extends ExtEntityTO{
 
-    private String featureExtractId = "0001";
+    private String featureExtractId = "02";
 
     public FeatureExtractIdsTO(){}
 
@@ -31,7 +31,7 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         return super.getId();
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '0001'")
+    @Column(name = "FEI_FEATURE_EXTRACT_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '02'")
     public String getFeatureExtractId() {
         return featureExtractId;
     }

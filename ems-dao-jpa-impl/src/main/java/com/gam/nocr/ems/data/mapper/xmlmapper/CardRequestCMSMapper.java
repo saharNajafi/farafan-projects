@@ -856,7 +856,9 @@ public class CardRequestCMSMapper implements XMLMapper {
                         attributesMap.get("featureExtractorID") != null) {
                     featureExtractorID.setValue(attributesMap.get("featureExtractorID"));
                 } else {
-                    featureExtractorID.setValue("0");
+                    Object[] args = {"FeatureExtractorID" };
+                    throw new DataException(DataExceptionCode.CRC_010,
+                            DataExceptionCode.GLB_001_MSG, args);
                 }
 
                 fingersElement.setAttributeNode(featureExtractorID);

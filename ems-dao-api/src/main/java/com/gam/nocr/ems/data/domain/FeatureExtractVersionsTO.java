@@ -20,7 +20,7 @@ import javax.persistence.*;
 })
 public class FeatureExtractVersionsTO extends ExtEntityTO {
 
-    private String featureExtractVersion = "0.0";
+    private String featureExtractVersion = "01";
 
     public FeatureExtractVersionsTO() {
     }
@@ -32,7 +32,7 @@ public class FeatureExtractVersionsTO extends ExtEntityTO {
         return super.getId();
     }
 
-    @Column(name = "FEV_FEATURE_EXTRACT_VERSION", nullable = false, length = 5, columnDefinition = "varchar2(5) default '1'")
+    @Column(name = "FEV_FEATURE_EXTRACT_VERSION", nullable = false, length = 5, columnDefinition = "varchar2(5) default '01'")
     public String getFeatureExtractVersion() {
         return featureExtractVersion;
     }

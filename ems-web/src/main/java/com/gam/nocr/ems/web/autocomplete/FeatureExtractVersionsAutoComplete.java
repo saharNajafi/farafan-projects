@@ -20,7 +20,7 @@ public class FeatureExtractVersionsAutoComplete extends BaseAutocompleteHandler{
 
     @Override
     protected String getAutocompleteProfileKeyName() {
-        return "fe atureExtractVersions";
+        return "featureExtractVersions";
     }
 
     @Override
