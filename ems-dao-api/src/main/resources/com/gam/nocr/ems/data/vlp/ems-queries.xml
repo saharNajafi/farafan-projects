@@ -1632,4 +1632,39 @@
 	</list>
 	<!-- officeCapacity List -->
 
+	<!-- officeSetting List -->
+	<list>
+		<list-name>officeSettingList</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT
+					fei.FEI_FEATURE_EXTRACTOR_ID
+					fei.FEI_ID,
+					fev.FEV_ID,
+					fev.FEV_FEATURE_EXTRACTOR_VERSION,
+					ost.OST_ENROLL_OFFICE_ID
+				</part>
+				from EMST_OFFICE_SETTING ost
+				, EMST_FEATURE_EXTRACT_IDS fei
+				, EMST_FEATURE_EXTRACT_VERSIONS fev
+				WHERE ost.OST_ENROLL_OFFICE_ID = ({enrollmentOfficeID})
+				and ost.OST_FEATURE_EXTRACT_IDS = fei.FEI_ID
+				and ost.OST_FEATURE_EXTRACT_IDS = fev.FEV_ID
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO</dto-class>
+			<dto-fields>
+				<field name="featureExtractorID" column="FEI_FEATURE_EXTRACTOR_ID"/>
+				<field name="featureExtractorVersion" column="FEV_FEATURE_EXTRACTOR_VERSION"/>
+				<field name="feiId" column="FEI_ID"/>
+				<field name="FevId" column="FEV_ID"/>
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- officeSetting List -->
 </lists>

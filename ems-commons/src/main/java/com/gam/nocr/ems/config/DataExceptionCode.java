@@ -1122,4 +1122,15 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String REG_18_MSG = "Invalid solar BirthDate";
     public static final String REG_20_MSG = "Invalid serialNumber";
 
+    //com.gam.nocr.ems.data.dao.impl.FeatureExtractIdsDAOImpl.java
+    public static final String FEI_001 = "EMS_D_FEI_01";
+    public static final String FEI_001_MSG = "findById operation could not be executed";
+
+    //com.gam.nocr.ems.data.dao.impl.FeatureExtractVersionsDAOImpl.java
+    public static final String FEV_001 = "EMS_D_FEV_01";
+    public static final String FEV_001_MSG = "findById operation could not be executed";
+
+    //com.gam.nocr.ems.data.dao.impl.OfficeSettingDAOImpl.java
+    public static final String OST_01 = "EMS_D_OST_01";
+    public static final String OST_01_MSG = "findById operation could not be executed";
 }

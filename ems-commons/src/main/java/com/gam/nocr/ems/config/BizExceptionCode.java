@@ -2814,4 +2814,39 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public  static final  String CRH_S_001 = "EMS_CRH_S_001";
 	public  static final  String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 
+	//com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractIdsServiceImpl.java
+	public  static final  String FEI_001 = "EMS_S_FEI_001";
+	public  static final  String FEI_002 = "EMS_S_FEI_002";
+	public  static final  String FEI_003 = "EMS_S_FEI_003";
+	public  static final  String FEI_004 = "EMS_S_FEI_004";
+
+	//com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractVersionsServiceImpl.java
+	public  static final  String FEV_001 = "EMS_S_FEV_001";
+	public  static final  String FEV_002 = "EMS_S_FEV_002";
+	public  static final  String FEV_003 = "EMS_S_FEV_003";
+	public  static final  String FEV_004 = "EMS_S_FEV_004";
+
+	//com.gam.nocr.ems.biz.service.internal.impl.OfficeSettingServiceImpl.java
+	public static final String OST_001 = "EMS_S_OST_001";
+	public static final String OST_002 = "EMS_S_OST_002";
+	public static final String OST_003 = "EMS_S_OST_003";
+	public static final String OST_004 = "EMS_S_OST_004";
+	public static final String OST_005 = "EMS_S_OST_005";
+	public static final String OST_006 = "EMS_S_OST_006";
+	public static final String OST_007 = "EMS_S_OST_007";
+	public static final String OST_008 = "EMS_S_OST_008";
+	public static final String OST_009 = "EMS_S_OST_009";
+	public static final String OST_010 = "EMS_S_OST_010";
+	public static final String OST_011 = "EMS_S_OST_011";
+	public static final String OST_012 = "EMS_S_OST_012";
+	public static final String OST_013 = "EMS_S_OST_013";
+	public static final String OST_001_MSG = "EnrollmentOfficeid is null";
+	public static final String OST_002_MSG = "Could not find officeCapacity with id {}\";";
+	public static final String OST_003_MSG = "OfficeSetting id {} does not exist for editing";
+	public static final String OST_004_MSG = "an error occurred on save operation";
+	public static final String OST_007_MSG = "Could not find featureExtractIds with id {}\";\"";
+	public static final String OST_008_MSG = "Could not find featureExtractVersions with id {}\";\"";
+	public static final String OST_011_MSG = "an error occurred on update operation";
+	public static final String OST_012_MSG = "an error occurred on load operation";
+	public static final String OST_013_MSG = "an error occurred on save operation";
 }

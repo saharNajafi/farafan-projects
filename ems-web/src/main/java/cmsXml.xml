@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xsd:element name="Request">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="EnrollmentInfo">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="EnrollDate" type="xsd:date"/>
+                            <xsd:element name="UserSiteID" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="CitizenInfo">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Identification">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="FirstNamePersian" type="xsd:string"/>
+                                        <xsd:element name="FirstNameEnglish" type="xsd:string"/>
+                                        <xsd:element name="SurnamePersian" type="xsd:string"/>
+                                        <xsd:element name="SurnameEnglish" type="xsd:string"/>
+                                        <xsd:element name="BirthDateJalali" type="dateFormat"/>
+                                        <xsd:element name="BirthDateHijri" type="dateFormat"/>
+                                        <xsd:element name="BirthDateGregorian" type="dateFormat"/>
+                                        <xsd:element name="FatherFirstNamePersian" type="xsd:string"/>
+                                        <xsd:element name="FatherFirstNameEnglish" type="xsd:string"/>
+                                        <xsd:element name="FatherBirthDateJalali" type="dateFormat"/>
+                                        <xsd:element name="FatherNID" type="NIDFormat"/>
+                                        <xsd:element name="NationalID" type="NIDFormat"/>
+                                        <xsd:element name="Reduplicate" type="xsd:int"/>
+                                        <xsd:element name="Sex" type="sexType"/>
+                                        <xsd:element name="BirthCertificateIssuancePlacePersian" type="xsd:string"/>
+                                        <xsd:element name="MotherFirstNamePersian" type="xsd:string"/>
+                                        <xsd:element name="MotherBirthDateJalali" type="dateFormat"/>
+                                        <xsd:element name="MotherNID" type="NIDFormat"/>
+                                        <xsd:element name="IdentityChange" type="identityChangeType"/>
+                                        <xsd:element name="Email" type="email"/>
+                                        <xsd:element name="Religion" type="xsd:string"/>
+                                        <xsd:element name="AFISValidate" type="afisValidateType"/>
+                                        <xsd:element name="MoCFingersCount" type="mocFingersCountType"/>
+                                        <xsd:element name="MoHFingersCount" type="mohFingersCountType"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Address">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="PostalCode" type="postalCodeFormat"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="Family">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="CurrentSpousesCount" type="spousesRecordsCountType"/>
+                                        <xsd:element name="CurrentChildrenCount" type="childrenCountType"/>
+                                        <xsd:element name="TotalSpousesCount" type="spousesCountType"/>
+                                        <xsd:element name="TotalChildrenCount" type="childrenCountType"/>
+                                        <xsd:element name="SpousesRecordsCount" type="spousesRecordsCountType"/>
+                                        <xsd:element name="ChildrenRecordsCount" type="childrenRecordsCountType"/>
+                                        <xsd:element name="Spouses" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="Spouse" minOccurs="0" maxOccurs="4">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="FirstNamePersian" type="xsd:string"/>
+                                                                <xsd:element name="SurnamePersian" type="xsd:string"/>
+                                                                <xsd:element name="NID" type="NIDFormat"/>
+                                                                <xsd:element name="MarriageDateJalali"
+                                                                             type="dateFormat"/>
+                                                                <xsd:element name="MarriageStatus"
+                                                                             type="marriageStatusType"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Children" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="Child" minOccurs="0" maxOccurs="20">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="FirstNamePersian" type="xsd:string"/>
+                                                                <xsd:element name="BirthDateJalali" type="dateFormat"/>
+                                                                <xsd:element name="DeathDateJalali" type="dateFormat"
+                                                                             minOccurs="0" maxOccurs="1"/>
+                                                                <xsd:element name="Sex" type="sexType"/>
+                                                                <xsd:element name="NID" type="NIDFormat"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="BiometricInfo">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="FaceImages">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+
+                                        <xsd:element name="Chip" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="CompressionFormat" type="xsd:string"/>
+                                                    <xsd:element name="CompressionRatio" type="xsd:string"/>
+                                                    <xsd:element name="Height" type="xsd:string"/>
+                                                    <xsd:element name="Width" type="xsd:string"/>
+                                                    <xsd:element name="Resolution" type="xsd:string"/>
+                                                    <xsd:element name="Data" type="xsd:base64Binary"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+
+
+                                        <xsd:element name="Laser">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="CompressionFormat" type="xsd:string"/>
+                                                    <xsd:element name="CompressionRatio" type="xsd:string"/>
+                                                    <xsd:element name="Height" type="xsd:string"/>
+                                                    <xsd:element name="Width" type="xsd:string"/>
+                                                    <xsd:element name="Resolution" type="xsd:string"/>
+                                                    <xsd:element name="Data" type="xsd:base64Binary"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+
+                                        <xsd:element name="MLI" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="CompressionFormat" type="xsd:string"/>
+                                                    <xsd:element name="CompressionRatio" type="xsd:string"/>
+                                                    <xsd:element name="Height" type="xsd:string"/>
+                                                    <xsd:element name="Width" type="xsd:string"/>
+                                                    <xsd:element name="Resolution" type="xsd:string"/>
+                                                    <xsd:element name="Data" type="xsd:base64Binary"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+
+                            <xsd:element name="Fingers" minOccurs="0" maxOccurs="1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+
+                                        <xsd:element name="Images" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+
+                                                    <xsd:element name="Image" minOccurs="0" maxOccurs="2">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="Position" type="mohFingerPosition"/>
+                                                                <xsd:element name="CompressionFormat"
+                                                                             type="xsd:string"/>
+                                                                <xsd:element name="CompressionRatio" type="xsd:string"/>
+                                                                <xsd:element name="Data" type="xsd:base64Binary"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+
+
+                                        <xsd:element name="Templates" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="Template" minOccurs="0" maxOccurs="2">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="Data" type="xsd:base64Binary"/>
+                                                                <xsd:element name="Position" type="mocFingerPosition"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+
+
+                                    </xsd:sequence>
+                                    <xsd:attribute name="FeatureExtractorID" type="xsd:int"/>
+                                    <xsd:attribute name="SensorModel" type="sensorModelType"/>
+                                </xsd:complexType>
+                            </xsd:element>
+
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="type" type="xsd:string"/>
+            <xsd:attribute name="identifier" type="xsd:integer"/>
+            <xsd:attribute name="MOC" type="xsd:boolean"/>
+            <xsd:attribute name="MOH" type="xsd:boolean"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="dateFormat">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[1-9][0-9]{3}[/][0-9]{2}[/][0-9]{2}"/> <!--yyyy/MM/DD-->
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="NIDFormat">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{10}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="postalCodeFormat">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{10}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="sexType">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Male</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Female</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="255">
+                <xsd:annotation>
+                    <xsd:documentation>Unspecified</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="identityChangeType">
+        <xsd:restriction base="xsd:hexBinary">
+            <xsd:maxLength value="4"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="email">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[^@]+@[^\.]+\..+"/>
+            <!-- <xsd:pattern value="((\S*\s*)*&lt;(([a-zA-Z0-9!#$%&amp;'\*\+/=\?\^`\{\}\|~\._-])|(&quot;.+&quot;)|(\\.))+@([a-zA-Z0-9-])+(([a-zA-Z0-9-])*\.([a-zA-Z0-9-])+)+&gt;)|((([a-zA-Z0-9!#$%&amp;'\*\+/=\?\^`\{\}\|~\._-])|(&quot;.+&quot;)|(\\.))+@([a-zA-Z0-9-])+(([a-zA-Z0-9-])*\.([a-zA-Z0-9-])+)+)"/> -->
+            <!--<xsd:pattern value="[^@]+@[^\.]+\..+"/>-->
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="afisValidateType">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="0">
+                <xsd:annotation>
+                    <xsd:documentation>There is no AFIS</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>AFIS check is done</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>VIP, AFIS check is not done</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="mocFingersCountType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="2"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="mohFingersCountType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="2"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="spousesRecordsCountType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="4"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="spousesCountType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="255"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="childrenRecordsCountType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="20"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="childrenCountType">
+        <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="255"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="marriageStatusType">
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>Stable</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>Death</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>Divorce</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="mocFingerPosition">
+        <xsd:restriction base="xsd:hexBinary">
+            <xsd:enumeration value="00">
+                <xsd:annotation>
+                    <xsd:documentation>Default Value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="05">
+                <xsd:annotation>
+                    <xsd:documentation>Right Thumb</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="09">
+                <xsd:annotation>
+                    <xsd:documentation>Right Pointer finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="0D">
+                <xsd:annotation>
+                    <xsd:documentation>Right Middle finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="11">
+                <xsd:annotation>
+                    <xsd:documentation>Right Ring finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="15">
+                <xsd:annotation>
+                    <xsd:documentation>Right Little finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="06">
+                <xsd:annotation>
+                    <xsd:documentation>Left Thumb</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="0A">
+                <xsd:annotation>
+                    <xsd:documentation>Left Pointer finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="0E">
+                <xsd:annotation>
+                    <xsd:documentation>Left Middle finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="12">
+                <xsd:annotation>
+                    <xsd:documentation>Left Ring finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="16">
+                <xsd:annotation>
+                    <xsd:documentation>Left Little finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="sensorModelType">
+        <xsd:restriction base="xsd:hexBinary">
+            <xsd:maxLength value="4"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="mohFingerPosition">
+        <xsd:restriction base="xsd:hexBinary">
+            <xsd:enumeration value="FF">
+                <xsd:annotation>
+                    <xsd:documentation>Default Value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="00">
+                <xsd:annotation>
+                    <xsd:documentation>Unknown</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="01">
+                <xsd:annotation>
+                    <xsd:documentation>Right thumb</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="02">
+                <xsd:annotation>
+                    <xsd:documentation>Right index finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="03">
+                <xsd:annotation>
+                    <xsd:documentation>Right middle finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="04">
+                <xsd:annotation>
+                    <xsd:documentation>Right ring finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="05">
+                <xsd:annotation>
+                    <xsd:documentation>Right little finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="06">
+                <xsd:annotation>
+                    <xsd:documentation>Left thumb</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="07">
+                <xsd:annotation>
+                    <xsd:documentation>Left index finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="08">
+                <xsd:annotation>
+                    <xsd:documentation>Left middle finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="09">
+                <xsd:annotation>
+                    <xsd:documentation>Left ring finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="0A">
+                <xsd:annotation>
+                    <xsd:documentation>Left little finger</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

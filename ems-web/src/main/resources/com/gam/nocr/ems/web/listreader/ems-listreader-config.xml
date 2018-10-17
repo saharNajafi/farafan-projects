@@ -60,7 +60,10 @@
                    type='com.gam.nocr.ems.web.listreader.processor.BatchProcessor'/>
         <processor name='officeCapacity-processor'
                    type='com.gam.nocr.ems.web.listreader.processor.OfficeCapacityProcessor'/>
-            
+        <processor name='officeSetting-processor'
+                   type='com.gam.nocr.ems.web.listreader.processor.OfficeSettingProcessor'/>
+
+
     </processors>
     <wrappers>
         <wrapper name='card-request-wrapper' type='com.gam.nocr.ems.web.listreader.wrapper.CardRequestWrapper'/>
@@ -195,6 +198,9 @@
 		</list>
         <list name='officeCapacityList' processor='officeCapacity-processor'>
             <access permission="EMS_VIEW_OFFICE_CAPACITY_LIST"/>
+        </list>
+        <list name='officeSettingList' processor='officeSetting-processor'>
+            <access permission="EMS_VIEW_OFFICE_SETTING_LIST"/>
         </list>
     </lists>
 </listreader-config>

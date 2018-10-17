@@ -536,5 +536,58 @@
 	</list>
 	<!-- EnrollmentOfficeByProvince -->
 
+	<!-- FeatureExtractIds autoComplete -->
+	<list>
+		<list-name>featureExtractIdsAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					fei.FEI_ID,
+					fei.FEI_FEATURE_EXTRACT_ID
+				</part>
+				FROM EMST_FEATURE_EXTRACT_IDS fei
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="id" column="FEI_ID" />
+				<field name="acId" column="FEI_ID" />
+				<field name="acName" column="FEI_FEATURE_EXTRACT_ID" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- FeatureExtractIds autoComplete -->
+
+	<!-- FeatureExtractVersions autoComplete -->
+	<list>
+		<list-name>featureExtractVersionsAC</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					fev.FEV_ID,
+					fev.FEV_FEATURE_EXTRACT_VERSION,
+				</part>
+				FROM EMST_FEATURE_EXTRACT_VERSIONS fev
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="id" column="FEV_ID"/>
+				<field name="acId" column="FEV_ID"/>
+				<field name="acName" column="FEV_FEATURE_EXTRACT_VERSION"/>
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- FeatureExtractVersions autoComplete -->
 
 </lists>

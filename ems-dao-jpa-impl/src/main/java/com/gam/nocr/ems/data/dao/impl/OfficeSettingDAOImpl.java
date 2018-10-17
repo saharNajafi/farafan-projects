@@ -59,4 +59,16 @@ public class OfficeSettingDAOImpl extends EmsBaseDAOImpl<OfficeSettingTO> implem
 
 	}
 
+	@Override
+	public OfficeSettingTO findById(Long id) throws BaseException{
+		try {
+			return (OfficeSettingTO) em.createNamedQuery("OfficeSettingTO.findById")
+					.setParameter("id", id)
+					.getSingleResult();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.OST_01, DataExceptionCode.OST_01_MSG, e);
+		}
+
+	}
+
 }

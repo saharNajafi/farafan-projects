@@ -12,20 +12,27 @@ import javax.persistence.*;
 @Entity
 @Table(name = "EMST_FEATURE_EXTRACT_VERSIONS")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMST_FEATURE_EXTRACT_VERSIONS", allocationSize = 1)
+@NamedQueries({
+        @NamedQuery(name = "FeatureExtractVersionsTO.findById"
+        , query = "select fev" +
+                " from FeatureExtractVersionsTO fev" +
+                " where fev.id=:id")
+})
 public class FeatureExtractVersionsTO extends ExtEntityTO {
 
-    private String featureExtractVersion;
+    private String featureExtractVersion = "0.0";
 
-    public FeatureExtractVersionsTO(){}
+    public FeatureExtractVersionsTO() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @Column(name = "FXV_ID")
+    @Column(name = "FEV_ID")
     public Long getId() {
         return super.getId();
     }
 
-    @Column(name = "FXV_FEATURE_EXTRACT_VERSION")
+    @Column(name = "FEV_FEATURE_EXTRACT_VERSION", nullable = false, length = 5, columnDefinition = "varchar2(5) default '1'")
     public String getFeatureExtractVersion() {
         return featureExtractVersion;
     }
@@ -33,6 +40,7 @@ public class FeatureExtractVersionsTO extends ExtEntityTO {
     public void setFeatureExtractVersion(String featureExtractVersion) {
         this.featureExtractVersion = featureExtractVersion;
     }
+
 
     @Override
     public boolean equals(Object obj) {

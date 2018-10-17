@@ -12,20 +12,26 @@ import javax.persistence.*;
 @Entity
 @Table(name = "EMST_FEATURE_EXTRACT_IDS")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMST_FEATURE_EXTRACT_IDS", allocationSize = 1)
+@NamedQueries({
+        @NamedQuery(name = "FeatureExtractIdsTO.findById"
+                , query = "select fei" +
+                " from FeatureExtractIdsTO fei" +
+                " where fei.id=:id")
+})
 public class FeatureExtractIdsTO extends ExtEntityTO{
 
-    private String featureExtractId;
+    private String featureExtractId = "0001";
 
     public FeatureExtractIdsTO(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @Column(name = "FXI_ID")
+    @Column(name = "FEI_ID")
     public Long getId() {
         return super.getId();
     }
 
-    @Column(name = "FXI_FEATURE_EXTRACT_ID")
+    @Column(name = "FEI_FEATURE_EXTRACT_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '0001'")
     public String getFeatureExtractId() {
         return featureExtractId;
     }

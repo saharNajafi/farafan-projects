@@ -703,6 +703,12 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_017_MSG = "an error occurred on convert To singlePreRegistrationWTO TO ReservationTO";
     public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
 
+    //com.gam.nocr.ems.web.action.OfficeSettingAction.java
+    public static final String OST_001 = "EMS_A_OST_001";
+    public static final String OST_002 = "EMS_A_OST_002";
+    public static final String OST_003 = "EMS_A_OST_003";
+    public static final String OST_002_MSG = "invalid input entry, enrollment office id is empty\";";
+
 
 
 
