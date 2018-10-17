@@ -167,8 +167,8 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.allowChangeFingerStatusDuringCaptureForElderly = allowChangeFingerStatusDuringCaptureForElderly;
     }
 
-    @OneToOne
-    @JoinColumn("OST_FEATURE_EXTRACT_IDS")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OST_FEATURE_EXTRACTID_ID")
     public FeatureExtractIdsTO getFeatureExtractIdsTO() {
         return featureExtractIdsTO;
     }
@@ -177,8 +177,8 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.featureExtractIdsTO = featureExtractIdsTO;
     }
 
-    @OneToOne
-    @JoinColumn("OST_FEATURE_EXTRACT_VERSIONS")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OST_FEATURE_EXTRACTVERSION_ID")
     public FeatureExtractVersionsTO getFeatureExtractVersionsTO() {
         return featureExtractVersionsTO;
     }
