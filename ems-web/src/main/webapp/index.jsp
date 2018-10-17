@@ -259,6 +259,12 @@
     height: 16px;
     cursor: pointer;
 }
+.girdAction-OfficeSetting-icon{
+    background: url('resources/themes/images/officeSetting/officesetting.png') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 .girdAction-ReIssueRequestDeactive-icon{
     background: url('resources/themes/images/officeSetting/reissuerequest02.png') no-repeat right;
     width: 16px;
