@@ -259,6 +259,12 @@
     height: 16px;
     cursor: pointer;
 }
+.girdAction-OfficeSetting-icon{
+    background: url('resources/themes/images/officeSetting/officesetting.png') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 .girdAction-ReIssueRequestDeactive-icon{
     background: url('resources/themes/images/officeSetting/reissuerequest02.png') no-repeat right;
     width: 16px;
@@ -701,25 +707,25 @@ background-image: none !important;
 }
 
 .girdAction-AllowAmputatedFingerActive-icon {
-    background: url('resources/themes/images/officeSetting/ElderyMode01.png') no-repeat right;
+    background: url('resources/themes/images/officeSetting/AllowAmputatedFingerStatusForElderly.png') no-repeat right;
     width: 13px;
     height: 16px;
     cursor: pointer;
 }
 .girdAction-AllowAmputatedFingerInactive-icon {
-    background: url('resources/themes/images/officeSetting/ElderyMode02.png') no-repeat right;
+    background: url('resources/themes/images/officeSetting/AllowAmputatedFingerStatusForElderly_inactive.png') no-repeat right;
     width: 13px;
     height: 16px;
     cursor: pointer;
 }
     .girdAction-AllowChangeFingerActive-icon {
-        background: url('resources/themes/images/officeSetting/ElderyMode01.png') no-repeat right;
+        background: url('resources/themes/images/officeSetting/AllowChangeFingerStatusDuringCaptureForElderly.png') no-repeat right;
         width: 13px;
         height: 16px;
         cursor: pointer;
     }
 .girdAction-AllowChangeFingerInactive-icon {
-    background: url('resources/themes/images/officeSetting/ElderyMode02.png') no-repeat right;
+    background: url('resources/themes/images/officeSetting/AllowChangeFingerStatusDuringCaptureForElderly_inactive.png') no-repeat right;
     width: 13px;
     height: 16px;
     cursor: pointer;

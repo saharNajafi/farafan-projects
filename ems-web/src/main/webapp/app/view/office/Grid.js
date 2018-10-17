@@ -2,6 +2,7 @@ Ext.define('Ems.view.office.Grid', {
         extend: 'Gam.grid.Crud',
         requires: [
             'Ems.view.office.Dialog' ,
+            'Ems.view.office.Setting.Dialog' ,
             'Ems.view.office.OfficeStatusCombobox' ,
             'Ems.store.OfficeStore'
         ],
@@ -31,6 +32,16 @@ Ext.define('Ems.view.office.Grid', {
                 stateId: this.stateId + 'Capacity',
                 getClass: function (value, metadata, record) {
                     return 'girdAction-OfficeCapacity-icon';
+                }
+            },
+            {
+                // icon: 'resources/themes/images/user/UserList.png',
+                tooltip: 'تنظیمات',
+                action: 'settingOffice',
+                stateful: true,
+                stateId: this.stateId + 'Setting',
+                getClass: function (value, metadata, record) {
+                    return 'girdAction-OfficeSetting-icon';
                 }
             },
             {

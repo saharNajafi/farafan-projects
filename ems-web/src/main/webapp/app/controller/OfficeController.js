@@ -40,6 +40,9 @@ Ext.define('Ems.controller.OfficeController', {
         'Ems.view.office.OfficeName.NOCRAutoComplete',
         'Ems.view.office.NewEdit.OfficeDeliverRadioGroup',
         'Ems.controller.util.ExcelExporter'
+        // 'Ems.view.office.Setting.AutoCompleteFeatureExtractID',
+        // 'Ems.view.office.Setting.AutoCompleteFeatureExtractVersion',
+        // 'Ems.view.office.Setting.Dialog'
     ],
 
     views: [
@@ -259,6 +262,15 @@ Ext.define('Ems.controller.OfficeController', {
         if (capacityGrid != null) {
             win.show();
         }
+    },
+
+    /*
+     Author: Navid
+     Description: write doSettingOffice method for first test
+     */
+    doSettingOffice: function(grid, rowIndex) {
+        var win = Ext.create('Ems.view.office.Setting.Dialog', { height: 200});
+        win.show();
     },
 
     doUserListOffice: function (grid, rowIndex) {

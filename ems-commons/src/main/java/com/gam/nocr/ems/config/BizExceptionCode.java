@@ -440,6 +440,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_162 = "EMS_S_RSI_162";
 	public static final String RSI_163 = "EMS_S_RSI_163";
 	public static final String RSI_164 = "EMS_S_RSI_164";
+    public static final String RSI_165 = "EMS_S_RSI_165";
+    public static final String RSI_166 = "EMS_S_RSI_166";
 
 	public static final String RSI_006_MSG = "Card request cannot not be null";
 	public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
@@ -569,6 +571,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String RSI_162_MSG = "LivingCity is null or 0";
 	public static final String RSI_163_MSG = "Living is null or 0";
 	public static final String RSI_164_MSG = "featureExtractorID is null";
+    public static final String RSI_165_MSG = "Save biometric data encounter error due to large normal1 finger size (default value 2KB)";
+    public static final String RSI_166_MSG = "Save biometric data encounter error due to large normal2 finger size (default value 2KB)";
 
 	// com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
 	public static final String KSI_001 = "EMS_S_KSI_001";
@@ -962,6 +966,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CSI_147 = "EMS_S_CSI_147";
 	public static final String CSI_149 = "EMS_S_CSI_149";
 	public static final String CSI_150 = "EMS_S_CSI_150";
+	public static final String CSI_151 = "EMS_S_CSI_151";
+	public static final String CSI_152 = "EMS_S_CSI_152";
 	public static final String CSI_001_MSG = "The request cannot be handled by CMS webservice.";
 	public static final String CSI_138_MSG = "The required parameters which belongs to issue card service could not be fetched by profileManager. The default values were used instead.";
 	public static final String CSI_139_MSG = "Anonymous behaviour from CMS. The parameter nationalId {} is valid but the return value is null.";
@@ -2622,6 +2628,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_031 = "EMS_S_ESI_031";
 	public static final String ESI_032 = "EMS_S_ESI_032";
 	public static final String ESI_033 = "EMS_S_ESI_033";
+	public static final String ESI_034 = "EMS_S_ESI_034";
+	public static final String ESI_035 = "EMS_S_ESI_035";
+	public static final String ESI_036 = "EMS_S_ESI_036";
+	public static final String ESI_037 = "EMS_S_ESI_037";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
 
 	public static final String ESI_001_MSG = "CardInfo is invalid";
@@ -2653,6 +2663,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ESI_030_MSG = "EMKS WebService Exception ...";
 	public static final String ESI_031_MSG = "EMKS GetSignature WebService Exception ...";
 	public static final String ESI_033_MSG = "CardProvider must not be null";
+	public static final String ESI_034_MSG = "mocAlgorithmVersion must not be null";
+	public static final String ESI_035_MSG = "mocKeyVersion must not be null";
+	public static final String ESI_036_MSG = "smAlgorithmVersion must not be null";
+	public static final String ESI_037_MSG = "smKeyVersion must not be null";
 
 	//com.gam.nocr.ems.biz.job.PortalReservationJob
 	public static final String RSV_01 = "EMS_S_RSV_01";

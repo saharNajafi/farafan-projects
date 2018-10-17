@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "GetNIDCardKeysAndPINs")
 public class GetNIDCardKeysAndPINs {
 
-    @XmlElementRef(name = "CardInfo", namespace = "http://tempuri.org/", type = JAXBElement.class)
+    @XmlElementRef(name = "CardInfo", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
     protected JAXBElement<String> cardInfo;
 
     /**
@@ -59,7 +59,7 @@ public class GetNIDCardKeysAndPINs {
      *     
      */
     public void setCardInfo(JAXBElement<String> value) {
-        this.cardInfo = ((JAXBElement<String> ) value);
+        this.cardInfo = value;
     }
 
 }

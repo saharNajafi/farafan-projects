@@ -28,7 +28,9 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GetNIDCardKeysAndPINsResponseGetNIDCardKeysAndPINsResult_QNAME = new QName("http://tempuri.org/", "GetNIDCardKeysAndPINsResult");
+    private final static QName _CardMoCKeysMoCENC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "MoC_ENC");
+    private final static QName _CardMoCKeysMoCMAC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "MoC_MAC");
+    private final static QName _GetSignatureRndData_QNAME = new QName("http://tempuri.org/", "RndData");
     private final static QName _AnyURI_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
     private final static QName _Char_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "char");
     private final static QName _UnsignedByte_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "unsignedByte");
@@ -54,21 +56,20 @@ public class ObjectFactory {
     private final static QName _UnsignedLong_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "unsignedLong");
     private final static QName _CardMoCKeys_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "CardMoCKeys");
     private final static QName _Boolean_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "boolean");
+    private final static QName _GetNIDCardMoCKeysResponseGetNIDCardMoCKeysResult_QNAME = new QName("http://tempuri.org/", "GetNIDCardMoCKeysResult");
+    private final static QName _GetNIDCardMoCKeysCardInfo_QNAME = new QName("http://tempuri.org/", "CardInfo");
     private final static QName _EMKSExceptionErrorCode_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ErrorCode");
     private final static QName _EMKSExceptionInner_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "Inner");
-    private final static QName _CardKeysAndPINsSM_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "SM");
+    private final static QName _GetNIDCardKeysAndPINsResponseGetNIDCardKeysAndPINsResult_QNAME = new QName("http://tempuri.org/", "GetNIDCardKeysAndPINsResult");
+    private final static QName _CardKeysAndPINsMAC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "MAC");
+    private final static QName _CardKeysAndPINsPINSM_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "PIN_SM");
     private final static QName _CardKeysAndPINsID_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ID");
-    private final static QName _CardKeysAndPINsASDMAC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ASD_MAC");
-    private final static QName _CardKeysAndPINsASDENC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ASD_ENC");
+    private final static QName _CardKeysAndPINsSMd_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "SMd");
+    private final static QName _CardKeysAndPINsENC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ENC");
+    private final static QName _CardKeysAndPINsASd_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ASd");
     private final static QName _CardKeysAndPINsSign_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "Sign");
     private final static QName _CardKeysAndPINsNMoC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "NMoC");
-    private final static QName _CardKeysAndPINsASD_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "ASD");
-    private final static QName _GetNIDCardMoCKeysCardInfo_QNAME = new QName("http://tempuri.org/", "CardInfo");
-    private final static QName _CardMoCKeysMoCENC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "MoC_ENC");
-    private final static QName _CardMoCKeysMoCMAC_QNAME = new QName("http://schemas.datacontract.org/2004/07/EMKS_WCFService", "MoC_MAC");
-    private final static QName _GetSignatureRndData_QNAME = new QName("http://tempuri.org/", "RndData");
     private final static QName _GetSignatureResponseGetSignatureResult_QNAME = new QName("http://tempuri.org/", "GetSignatureResult");
-    private final static QName _GetNIDCardMoCKeysResponseGetNIDCardMoCKeysResult_QNAME = new QName("http://tempuri.org/", "GetNIDCardMoCKeysResult");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.gam.nocr.ems.biz.service.external.client.emks.lds
@@ -78,19 +79,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetNIDCardKeysAndPINsResponse }
-     * 
-     */
-    public GetNIDCardKeysAndPINsResponse createGetNIDCardKeysAndPINsResponse() {
-        return new GetNIDCardKeysAndPINsResponse();
-    }
-
-    /**
      * Create an instance of {@link Exception }
      * 
      */
     public Exception createException() {
         return new Exception();
+    }
+
+    /**
+     * Create an instance of {@link CardMoCKeys }
+     * 
+     */
+    public CardMoCKeys createCardMoCKeys() {
+        return new CardMoCKeys();
     }
 
     /**
@@ -118,19 +119,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CardMoCKeys }
+     * Create an instance of {@link GetNIDCardKeysAndPINsResponse }
      * 
      */
-    public CardMoCKeys createCardMoCKeys() {
-        return new CardMoCKeys();
-    }
-
-    /**
-     * Create an instance of {@link GetSignature }
-     * 
-     */
-    public GetSignature createGetSignature() {
-        return new GetSignature();
+    public GetNIDCardKeysAndPINsResponse createGetNIDCardKeysAndPINsResponse() {
+        return new GetNIDCardKeysAndPINsResponse();
     }
 
     /**
@@ -142,14 +135,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSignatureResponse }
-     * 
-     */
-    public GetSignatureResponse createGetSignatureResponse() {
-        return new GetSignatureResponse();
-    }
-
-    /**
      * Create an instance of {@link GetNIDCardMoCKeysResponse }
      * 
      */
@@ -158,12 +143,46 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CardKeysAndPINs }{@code >}}
+     * Create an instance of {@link GetSignature }
      * 
      */
-    @XmlElementDecl(namespace = "http://tempuri.org/", name = "GetNIDCardKeysAndPINsResult", scope = GetNIDCardKeysAndPINsResponse.class)
-    public JAXBElement<CardKeysAndPINs> createGetNIDCardKeysAndPINsResponseGetNIDCardKeysAndPINsResult(CardKeysAndPINs value) {
-        return new JAXBElement<CardKeysAndPINs>(_GetNIDCardKeysAndPINsResponseGetNIDCardKeysAndPINsResult_QNAME, CardKeysAndPINs.class, GetNIDCardKeysAndPINsResponse.class, value);
+    public GetSignature createGetSignature() {
+        return new GetSignature();
+    }
+
+    /**
+     * Create an instance of {@link GetSignatureResponse }
+     * 
+     */
+    public GetSignatureResponse createGetSignatureResponse() {
+        return new GetSignatureResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "MoC_ENC", scope = CardMoCKeys.class)
+    public JAXBElement<String> createCardMoCKeysMoCENC(String value) {
+        return new JAXBElement<String>(_CardMoCKeysMoCENC_QNAME, String.class, CardMoCKeys.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "MoC_MAC", scope = CardMoCKeys.class)
+    public JAXBElement<String> createCardMoCKeysMoCMAC(String value) {
+        return new JAXBElement<String>(_CardMoCKeysMoCMAC_QNAME, String.class, CardMoCKeys.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "RndData", scope = GetSignature.class)
+    public JAXBElement<String> createGetSignatureRndData(String value) {
+        return new JAXBElement<String>(_GetSignatureRndData_QNAME, String.class, GetSignature.class, value);
     }
 
     /**
@@ -392,6 +411,33 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CardMoCKeys }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "GetNIDCardMoCKeysResult", scope = GetNIDCardMoCKeysResponse.class)
+    public JAXBElement<CardMoCKeys> createGetNIDCardMoCKeysResponseGetNIDCardMoCKeysResult(CardMoCKeys value) {
+        return new JAXBElement<CardMoCKeys>(_GetNIDCardMoCKeysResponseGetNIDCardMoCKeysResult_QNAME, CardMoCKeys.class, GetNIDCardMoCKeysResponse.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "CardInfo", scope = GetNIDCardMoCKeys.class)
+    public JAXBElement<String> createGetNIDCardMoCKeysCardInfo(String value) {
+        return new JAXBElement<String>(_GetNIDCardMoCKeysCardInfo_QNAME, String.class, GetNIDCardMoCKeys.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "CardInfo", scope = GetNIDCardKeysAndPINs.class)
+    public JAXBElement<String> createGetNIDCardKeysAndPINsCardInfo(String value) {
+        return new JAXBElement<String>(_GetNIDCardMoCKeysCardInfo_QNAME, String.class, GetNIDCardKeysAndPINs.class, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
@@ -410,12 +456,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CardKeysAndPINs }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "GetNIDCardKeysAndPINsResult", scope = GetNIDCardKeysAndPINsResponse.class)
+    public JAXBElement<CardKeysAndPINs> createGetNIDCardKeysAndPINsResponseGetNIDCardKeysAndPINsResult(CardKeysAndPINs value) {
+        return new JAXBElement<CardKeysAndPINs>(_GetNIDCardKeysAndPINsResponseGetNIDCardKeysAndPINsResult_QNAME, CardKeysAndPINs.class, GetNIDCardKeysAndPINsResponse.class, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "SM", scope = CardKeysAndPINs.class)
-    public JAXBElement<String> createCardKeysAndPINsSM(String value) {
-        return new JAXBElement<String>(_CardKeysAndPINsSM_QNAME, String.class, CardKeysAndPINs.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "MAC", scope = CardKeysAndPINs.class)
+    public JAXBElement<String> createCardKeysAndPINsMAC(String value) {
+        return new JAXBElement<String>(_CardKeysAndPINsMAC_QNAME, String.class, CardKeysAndPINs.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "PIN_SM", scope = CardKeysAndPINs.class)
+    public JAXBElement<String> createCardKeysAndPINsPINSM(String value) {
+        return new JAXBElement<String>(_CardKeysAndPINsPINSM_QNAME, String.class, CardKeysAndPINs.class, value);
     }
 
     /**
@@ -431,18 +495,27 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "ASD_MAC", scope = CardKeysAndPINs.class)
-    public JAXBElement<String> createCardKeysAndPINsASDMAC(String value) {
-        return new JAXBElement<String>(_CardKeysAndPINsASDMAC_QNAME, String.class, CardKeysAndPINs.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "SMd", scope = CardKeysAndPINs.class)
+    public JAXBElement<String> createCardKeysAndPINsSMd(String value) {
+        return new JAXBElement<String>(_CardKeysAndPINsSMd_QNAME, String.class, CardKeysAndPINs.class, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "ASD_ENC", scope = CardKeysAndPINs.class)
-    public JAXBElement<String> createCardKeysAndPINsASDENC(String value) {
-        return new JAXBElement<String>(_CardKeysAndPINsASDENC_QNAME, String.class, CardKeysAndPINs.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "ENC", scope = CardKeysAndPINs.class)
+    public JAXBElement<String> createCardKeysAndPINsENC(String value) {
+        return new JAXBElement<String>(_CardKeysAndPINsENC_QNAME, String.class, CardKeysAndPINs.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "ASd", scope = CardKeysAndPINs.class)
+    public JAXBElement<String> createCardKeysAndPINsASd(String value) {
+        return new JAXBElement<String>(_CardKeysAndPINsASd_QNAME, String.class, CardKeysAndPINs.class, value);
     }
 
     /**
@@ -467,72 +540,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "ASD", scope = CardKeysAndPINs.class)
-    public JAXBElement<String> createCardKeysAndPINsASD(String value) {
-        return new JAXBElement<String>(_CardKeysAndPINsASD_QNAME, String.class, CardKeysAndPINs.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://tempuri.org/", name = "CardInfo", scope = GetNIDCardMoCKeys.class)
-    public JAXBElement<String> createGetNIDCardMoCKeysCardInfo(String value) {
-        return new JAXBElement<String>(_GetNIDCardMoCKeysCardInfo_QNAME, String.class, GetNIDCardMoCKeys.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "MoC_ENC", scope = CardMoCKeys.class)
-    public JAXBElement<String> createCardMoCKeysMoCENC(String value) {
-        return new JAXBElement<String>(_CardMoCKeysMoCENC_QNAME, String.class, CardMoCKeys.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", name = "MoC_MAC", scope = CardMoCKeys.class)
-    public JAXBElement<String> createCardMoCKeysMoCMAC(String value) {
-        return new JAXBElement<String>(_CardMoCKeysMoCMAC_QNAME, String.class, CardMoCKeys.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://tempuri.org/", name = "RndData", scope = GetSignature.class)
-    public JAXBElement<String> createGetSignatureRndData(String value) {
-        return new JAXBElement<String>(_GetSignatureRndData_QNAME, String.class, GetSignature.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://tempuri.org/", name = "CardInfo", scope = GetNIDCardKeysAndPINs.class)
-    public JAXBElement<String> createGetNIDCardKeysAndPINsCardInfo(String value) {
-        return new JAXBElement<String>(_GetNIDCardMoCKeysCardInfo_QNAME, String.class, GetNIDCardKeysAndPINs.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
     @XmlElementDecl(namespace = "http://tempuri.org/", name = "GetSignatureResult", scope = GetSignatureResponse.class)
     public JAXBElement<String> createGetSignatureResponseGetSignatureResult(String value) {
         return new JAXBElement<String>(_GetSignatureResponseGetSignatureResult_QNAME, String.class, GetSignatureResponse.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CardMoCKeys }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://tempuri.org/", name = "GetNIDCardMoCKeysResult", scope = GetNIDCardMoCKeysResponse.class)
-    public JAXBElement<CardMoCKeys> createGetNIDCardMoCKeysResponseGetNIDCardMoCKeysResult(CardMoCKeys value) {
-        return new JAXBElement<CardMoCKeys>(_GetNIDCardMoCKeysResponseGetNIDCardMoCKeysResult_QNAME, CardMoCKeys.class, GetNIDCardMoCKeysResponse.class, value);
     }
 
 }

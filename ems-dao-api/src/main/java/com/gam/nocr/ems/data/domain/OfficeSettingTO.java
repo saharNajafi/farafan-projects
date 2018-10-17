@@ -36,10 +36,11 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     private Boolean amputationAnnouncment = Boolean.FALSE;
     private Boolean useScannerUI = Boolean.FALSE;
     private Boolean allowEditBackground = Boolean.FALSE;
-    private Boolean allowAmputatedFinger = Boolean.FALSE;
-    private Boolean allowChangeFinger = Boolean.TRUE;
+    private Boolean allowAmputatedFingerStatusForElderly = Boolean.FALSE;
+    private Boolean allowChangeFingerStatusDuringCaptureForElderly = Boolean.TRUE;
     private FeatureExtractIdsTO featureExtractIdsTO;
     private FeatureExtractVersionsTO featureExtractVersionsTO;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -148,22 +149,22 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.allowEditBackground = allowEditBackground;
     }
 
-    @Column(name = "OST_ALLOW_AMPUTATED_FINGER")
-    public Boolean getAllowAmputatedFinger() {
-        return allowAmputatedFinger;
+    @Column(name = "OST_ALW_AMPT_FING_STA_ELD")
+    public Boolean getAllowAmputatedFingerStatusForElderly() {
+        return allowAmputatedFingerStatusForElderly;
     }
 
-    public void setAllowAmputatedFinger(Boolean allowAmputatedFinger) {
-        this.allowAmputatedFinger = allowAmputatedFinger;
+    public void setAllowAmputatedFingerStatusForElderly(Boolean allowAmputatedFingerStatusForElderly) {
+        this.allowAmputatedFingerStatusForElderly = allowAmputatedFingerStatusForElderly;
     }
 
-    @Column(name = "OST_ALLOW_CHANGE_FINGER")
-    public Boolean getAllowChangeFinger() {
-        return allowChangeFinger;
+    @Column(name = "OST_ALW_CHG_FING_DUR_CAP_ELD")
+    public Boolean getAllowChangeFingerStatusDuringCaptureForElderly() {
+        return allowChangeFingerStatusDuringCaptureForElderly;
     }
 
-    public void setAllowChangeFinger(Boolean allowChangeFinger) {
-        this.allowChangeFinger = allowChangeFinger;
+    public void setAllowChangeFingerStatusDuringCaptureForElderly(Boolean allowChangeFingerStatusDuringCaptureForElderly) {
+        this.allowChangeFingerStatusDuringCaptureForElderly = allowChangeFingerStatusDuringCaptureForElderly;
     }
 
     @OneToOne

@@ -2,12 +2,12 @@ package com.gam.nocr.ems.biz.service.external.impl;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.ValidationException;
 import com.gam.commons.core.biz.service.AbstractService;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
-import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.profile.ProfileManager;
@@ -19,7 +19,6 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.BiometricInfoDAO;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.CardApplicationInfoVTO;
@@ -30,7 +29,6 @@ import com.gam.nocr.ems.data.mapper.xmlmapper.XMLMapperProvider;
 import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
-
 import servicePortUtil.ServicePorts;
 
 import javax.ejb.Local;
@@ -49,6 +47,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,7 +148,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
     private static final Logger logger = BaseLog.getLogger(CMSServiceImpl.class);
     private static final Logger cmsLogger = BaseLog.getLogger("CmsLogger");
     private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
-    
+
 
     DocumentRequestWSLocal service = null;
 
@@ -192,18 +191,18 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
 
             //Commented for ThreadLocal
             //DocumentRequestWSLocal port = new DocumentRequestWSService(new URL(wsdlUrl), new QName(namespace, serviceName)).getDocumentRequestWSPort();
-			DocumentRequestWSLocal port = ServicePorts.getDocumentCMSPort();
-			if (port == null) {
-				threadLocalLogger.debug("**************************** new DocumentRequestWSLocal in CMS getService()");
-				port = new DocumentRequestWSService(new URL(wsdlUrl),
-						new QName(namespace, serviceName))
-						.getDocumentRequestWSPort();
-				ServicePorts.setDocumentCMSPort(port);
-			}else {
-				threadLocalLogger.debug("***************************** using DocumentRequestWSLocal(CMS) from ThradLocal");
-			}
-			EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-			return port;
+            DocumentRequestWSLocal port = ServicePorts.getDocumentCMSPort();
+            if (port == null) {
+                threadLocalLogger.debug("**************************** new DocumentRequestWSLocal in CMS getService()");
+                port = new DocumentRequestWSService(new URL(wsdlUrl),
+                        new QName(namespace, serviceName))
+                        .getDocumentRequestWSPort();
+                ServicePorts.setDocumentCMSPort(port);
+            } else {
+                threadLocalLogger.debug("***************************** using DocumentRequestWSLocal(CMS) from ThradLocal");
+            }
+            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+            return port;
         } catch (NullPointerException e) {
             logger.error(BizExceptionCode.CSI_150, BizExceptionCode.CSI_150_MSG, e);
             cmsLogger.error(BizExceptionCode.CSI_150 + " : " + BizExceptionCode.CSI_150_MSG, e);
@@ -287,8 +286,8 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
      */
     private UserSiteInfo convertToUserSiteInfo(EnrollmentOfficeTO dbEnrollmentOffice, int enableStatus) throws BaseException {
         try {
-        	
-        	//Anbari
+
+            //Anbari
             UserSiteInfo userSiteInfo = null;
             if (dbEnrollmentOffice != null) {
                 userSiteInfo = new UserSiteInfo();
@@ -296,7 +295,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                 userSiteInfo.setUserSiteCode(dbEnrollmentOffice.getCode());
                 userSiteInfo.setUserSiteName(dbEnrollmentOffice.getName());
                 userSiteInfo.setIsPostNeeded(dbEnrollmentOffice.getPostNeeded() ? 1 : 2);
-                userSiteInfo.setPostDestinationCode(dbEnrollmentOffice.getPostDestinationCode()!= null ? dbEnrollmentOffice.getPostDestinationCode():"");
+                userSiteInfo.setPostDestinationCode(dbEnrollmentOffice.getPostDestinationCode() != null ? dbEnrollmentOffice.getPostDestinationCode() : "");
                 String userSiteContact = dbEnrollmentOffice.getAddress() + ", " +
                         dbEnrollmentOffice.getPhone() + ", " +
                         dbEnrollmentOffice.getFax();
@@ -304,27 +303,24 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                     userSiteContact = userSiteContact.substring(0, 250);
                 }
                 userSiteInfo.setUserSiteContact(userSiteContact);
-                userSiteInfo.setUserSitePostalCode(dbEnrollmentOffice.getPostalCode()); 
-                
+                userSiteInfo.setUserSitePostalCode(dbEnrollmentOffice.getPostalCode());
+
                 // Anbari (if office has got enable delivery feature act like NOCR office)
-                if(dbEnrollmentOffice.getSuperiorOffice() == null || EnrollmentOfficeDeliverStatus.ENABLED.equals(dbEnrollmentOffice.getDeliver()))
-                {               
-                
-	                userSiteInfo.setNocrOfficeID(String.valueOf(dbEnrollmentOffice.getId()));
-	                userSiteInfo.setNocrOfficeCode(dbEnrollmentOffice.getCode());
-	                userSiteInfo.setNocrOfficeName(dbEnrollmentOffice.getName());
-	                String nocrOfficeContact = dbEnrollmentOffice.getAddress() + ", " +
-	                        dbEnrollmentOffice.getPhone() + ", " +
-	                        dbEnrollmentOffice.getFax();
-	                if (nocrOfficeContact.length() > 250) {
-	                    nocrOfficeContact = nocrOfficeContact.substring(0, 250);
-	                }
-	                userSiteInfo.setNocrOfficeContact(nocrOfficeContact);
-	                userSiteInfo.setNocrOfficePostalCode(dbEnrollmentOffice.getPostalCode());
-                }
-                else
-                {                	
-                    
+                if (dbEnrollmentOffice.getSuperiorOffice() == null || EnrollmentOfficeDeliverStatus.ENABLED.equals(dbEnrollmentOffice.getDeliver())) {
+
+                    userSiteInfo.setNocrOfficeID(String.valueOf(dbEnrollmentOffice.getId()));
+                    userSiteInfo.setNocrOfficeCode(dbEnrollmentOffice.getCode());
+                    userSiteInfo.setNocrOfficeName(dbEnrollmentOffice.getName());
+                    String nocrOfficeContact = dbEnrollmentOffice.getAddress() + ", " +
+                            dbEnrollmentOffice.getPhone() + ", " +
+                            dbEnrollmentOffice.getFax();
+                    if (nocrOfficeContact.length() > 250) {
+                        nocrOfficeContact = nocrOfficeContact.substring(0, 250);
+                    }
+                    userSiteInfo.setNocrOfficeContact(nocrOfficeContact);
+                    userSiteInfo.setNocrOfficePostalCode(dbEnrollmentOffice.getPostalCode());
+                } else {
+
                     userSiteInfo.setNocrOfficeID(String.valueOf(dbEnrollmentOffice.getSuperiorOffice().getId()));
                     userSiteInfo.setNocrOfficeCode(dbEnrollmentOffice.getSuperiorOffice().getCode());
                     userSiteInfo.setNocrOfficeName(dbEnrollmentOffice.getSuperiorOffice().getName());
@@ -336,7 +332,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                     }
                     userSiteInfo.setNocrOfficeContact(nocrOfficeContact);
                     userSiteInfo.setNocrOfficePostalCode(dbEnrollmentOffice.getSuperiorOffice().getPostalCode());
-                	
+
                 }
 //                if (dbEnrollmentOffice.getParentDepartment().getLocation().getType().equals("1")) {
 //                    if (dbEnrollmentOffice.getParentDepartment().getLocation().getCounty() != null)
@@ -347,12 +343,12 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
 //                        userSiteInfo.setNocrOfficeStateName(dbEnrollmentOffice.getParentDepartment().
 //                                getLocation().getDistrict().getName());
 //                }
-                
+
                 if (dbEnrollmentOffice.getParentDepartment().getLocation().getType().equals("1") ||
-                		dbEnrollmentOffice.getParentDepartment().getLocation().getType().equals("2")){
-                	 userSiteInfo.setNocrOfficeStateName(dbEnrollmentOffice.getParentDepartment().getLocation().getProvince().getName());
+                        dbEnrollmentOffice.getParentDepartment().getLocation().getType().equals("2")) {
+                    userSiteInfo.setNocrOfficeStateName(dbEnrollmentOffice.getParentDepartment().getLocation().getProvince().getName());
                 }
-               
+
                 userSiteInfo.setStatus(enableStatus);
             }
             return userSiteInfo;
@@ -361,7 +357,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
             throw new ServiceException(BizExceptionCode.CSI_147, BizExceptionCode.GLB_008_MSG, e);
         }
     }
-    
+
     private EnrollmentOfficeDAO getEnrollmentOfficeDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_ENROLLMENT_OFFICE));
@@ -425,7 +421,6 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
      * @param doc
      * @return
      * @throws javax.xml.transform.TransformerException
-     *
      */
     private String convertDocumentToString(Document doc) throws BaseException {
         DOMSource domSource = new DOMSource(doc);
@@ -505,6 +500,19 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
         map.put("recordedChildrenCount", recordedChildrenCount);
         map.put("featureExtractorID", biometricInfoTO.getFeatureExtractorID());
         byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTO, map);
+
+        String validateXml = new String(byteRequest);
+        try {
+            xmlMapperProvider.validateAgainstXSD(new ByteArrayInputStream(validateXml.getBytes("UTF-8")),
+                    getClass().getClassLoader().getResourceAsStream("com/gam/nocr/cms/CMSIssuanceCardRequest.xsd"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error("Invalid XML Encoding for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")");
+            throw new ServiceException(BizExceptionCode.CSI_152, "Invalid XML Encoding for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")", e);
+        } catch (ValidationException ve) {
+            logger.error("Error in XSD Validation for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")", ve);
+            throw new ServiceException(BizExceptionCode.CSI_151, ve.getCause().getMessage(), ve);
+        }
+
         if (byteRequest != null && byteRequest.length != 0) {
 
             /**
@@ -1215,7 +1223,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                 logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_CMS.split(","));
                 cmsLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_CMS.split(","));
                 //it is a correct state.no change is need---ganjyar
-               throw serviceException;
+                throw serviceException;
 
             } else if (CA_NET_000001.equals(errorCode)) {
                 ServiceException serviceException = new ServiceException(
@@ -1650,7 +1658,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                         EMSLogicalNames.SRV_CMS.split(","));
                 logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_CMS.split(","));
                 cmsLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_CMS.split(","));
-              //it is a correct state.no change is need---ganjyar
+                //it is a correct state.no change is need---ganjyar
                 throw serviceException;
 
             } else if (CA_NET_000001.equals(errorCode)) {
@@ -2369,7 +2377,7 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
 
         UserSiteInfo userSiteInfo = null;
         if (enrollmentOfficeTO != null) {
-        	EnrollmentOfficeTO dbEnrollmentOffice = getEnrollmentOfficeDAO().loadLazyChildren(enrollmentOfficeTO);
+            EnrollmentOfficeTO dbEnrollmentOffice = getEnrollmentOfficeDAO().loadLazyChildren(enrollmentOfficeTO);
             userSiteInfo = convertToUserSiteInfo(dbEnrollmentOffice, enableStatus);
         }
         try {

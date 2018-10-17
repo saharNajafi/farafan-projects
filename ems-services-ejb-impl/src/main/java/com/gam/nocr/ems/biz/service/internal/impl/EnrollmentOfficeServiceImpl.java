@@ -1770,11 +1770,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
             } else if (OfficeSettingType.ALLOW_AMPUTATED_FINGER.toString().equals(
                     officeSettingType)) {
-                officeSettingTO.setAllowAmputatedFinger(changeSetting(officeSettingTO.getAllowAmputatedFinger()));
+                officeSettingTO.setAllowAmputatedFingerStatusForElderly(changeSetting(officeSettingTO.getAllowAmputatedFingerStatusForElderly()));
 
             } else if (OfficeSettingType.ALLOW_CHANGE_FINGER.toString().equals(
                     officeSettingType)) {
-                officeSettingTO.setAllowChangeFinger(changeSetting(officeSettingTO.getAllowChangeFinger()));
+                officeSettingTO.setAllowChangeFingerStatusDuringCaptureForElderly(changeSetting(officeSettingTO.getAllowChangeFingerStatusDuringCaptureForElderly()));
             }
 
         } catch (Exception exception) {

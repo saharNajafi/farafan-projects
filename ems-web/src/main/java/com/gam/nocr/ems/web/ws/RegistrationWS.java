@@ -378,7 +378,8 @@ public class RegistrationWS extends EMSWS {
             if (bio.getType() == null) {
                 throw new InternalException(WebExceptionCode.RSW_037_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_037));
             }
-            if (bio.getType() == BiometricType.FING_ALL || bio.getType() == BiometricType.FING_CANDIDATE || bio.getType() == BiometricType.FING_MIN_1 || bio.getType() == BiometricType.FING_MIN_2) {
+            if (bio.getType() == BiometricType.FING_ALL || bio.getType() == BiometricType.FING_CANDIDATE || bio.getType() == BiometricType.FING_MIN_1 || bio.getType() == BiometricType.FING_MIN_2
+                    || bio.getType() == BiometricType.FING_NORMAL_1 || bio.getType() == BiometricType.FING_NORMAL_2) {
                 throw new InternalException(WebExceptionCode.RSW_034_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_034));
             }
             biometrics.add(bio);
@@ -937,7 +938,8 @@ public class RegistrationWS extends EMSWS {
                 if (bio.getType() == null) {
                     throw new InternalException(WebExceptionCode.RSW_071_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_071));
                 }
-                if (bio.getType() == BiometricType.FING_ALL || bio.getType() == BiometricType.FING_CANDIDATE || bio.getType() == BiometricType.FING_MIN_1 || bio.getType() == BiometricType.FING_MIN_2) {
+                if (bio.getType() == BiometricType.FING_ALL || bio.getType() == BiometricType.FING_CANDIDATE || bio.getType() == BiometricType.FING_MIN_1 || bio.getType() == BiometricType.FING_MIN_2
+                        || bio.getType() == BiometricType.FING_NORMAL_1 || bio.getType() == BiometricType.FING_NORMAL_2) {
                     throw new InternalException(WebExceptionCode.RSW_072_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_072));
                 }
                 faces.add(bio);
