@@ -557,7 +557,7 @@
 			<dto-fields>
 				<field name="id" column="FEI_ID" />
 				<field name="acId" column="FEI_ID" />
-				<field name="acName" column="FEI_FEATURE_EXTRACT_NAME" />
+				<field name="acName" column="FEI_FEATURE_EXTRACT_ID_NAME" />
 			</dto-fields>
 		</dto>
 	</list>

@@ -179,10 +179,10 @@
 					ost.OST_ALW_AMPT_FING_STA_ELD,
 					ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
 					ost.OST_ID,
-					fei.FEI_FEATURE_EXTRACTOR_NAME,
+					fei.FEI_FEATURE_EXTRACT_ID_NAME,
 					fei.FEI_ID,
 					fev.FEV_ID,
-					fev.FEV_FEATURE_EXTRACTOR_VERSION
+					fev.FEV_FEATURE_EXTRACT_VERSION,
 				</part>
 				    from
                 emst_location l,
@@ -199,10 +199,10 @@
                 l.loc_province_id=lp.loc_id and
                 d.dep_id=e.eof_id and
                 ost.OST_ENROLL_OFFICE_ID = e.eof_id and
-                e.eof_manager_id=p.per_id(+) and
-				ost.OST_FEATURE_EXTRACT_IDS = fei.FEI_ID and
-				ost.OST_FEATURE_EXTRACT_IDS = fev.FEV_ID and
-				e.eof_id in (
+                e.eof_manager_id=p.per_id(+)
+				and ost.OST_FEATURE_EXTRACTID_ID = fei.FEI_ID
+				and ost.OST_FEATURE_EXTRACTVERSION_ID = fev.FEV_ID
+				and e.eof_id in (
 				<dependency name="personAllDepartmentWithSubDepartment" />
 				)
 				<part name="name">
@@ -329,8 +329,8 @@
                 <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
                 <field name="allowAmputatedFinger" column="OST_ALW_AMPT_FING_STA_ELD"/>
                 <field name="allowChangeFinger" column="OST_ALW_CHG_FING_DUR_CAP_ELD"/>
-				<field name="featureExtractorName" column="FEI_FEATURE_EXTRACTOR_NAME"/>
-				<field name="featureExtractorVersion" column="FEV_FEATURE_EXTRACTOR_VERSION"/>
+				<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_ID_NAME"/>
+				<field name="featureExtractVersion" column="FEV_FEATURE_EXTRACT_VERSION"/>
 				<field name="feiId" column="FEI_ID"/>
 				<field name="FevId" column="FEV_ID"/>
 				<field name="ostId" column="OST_ID"/>
@@ -1656,27 +1656,26 @@
 					select count(*)
 				</part>
 				<part name="main">
-					SELECT
-					ost.OST_ID
-					fei.FEI_FEATURE_EXTRACTOR_NAME
+					ost.OST_ID,
+					fei.FEI_FEATURE_EXTRACT_ID_NAME,
 					fei.FEI_ID,
 					fev.FEV_ID,
-					fev.FEV_FEATURE_EXTRACTOR_VERSION,
+					fev.FEV_FEATURE_EXTRACT_VERSION,
 					ost.OST_ENROLL_OFFICE_ID
 				</part>
 				from EMST_OFFICE_SETTING ost
 				, EMST_FEATURE_EXTRACT_IDS fei
 				, EMST_FEATURE_EXTRACT_VERSIONS fev
-				WHERE ost.OST_ENROLL_OFFICE_ID = ({enrollmentOfficeID})
-				and ost.OST_FEATURE_EXTRACT_IDS = fei.FEI_ID
-				and ost.OST_FEATURE_EXTRACT_IDS = fev.FEV_ID
+				WHERE ost.OST_ENROLL_OFFICE_ID = :enrollmentOfficeID
+				and ost.OST_FEATURE_EXTRACTID_ID = fei.FEI_ID
+				and ost.OST_FEATURE_EXTRACTVERSION_ID = fev.FEV_ID
 			</main-query>
 		</query>
 		<dto>
 			<dto-class>com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO</dto-class>
 			<dto-fields>
-				<field name="featureExtractorNAME" column="FEI_FEATURE_EXTRACTOR_NAME"/>
-				<field name="featureExtractorVersion" column="FEV_FEATURE_EXTRACTOR_VERSION"/>
+				<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_ID_NAME"/>
+				<field name="featureExtractVersion" column="FEV_FEATURE_EXTRACT_VERSION"/>
 				<field name="feiId" column="FEI_ID"/>
 				<field name="FevId" column="FEV_ID"/>
 				<field name="ostId" column="OST_ID"/>
