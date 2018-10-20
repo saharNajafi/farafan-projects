@@ -3,10 +3,8 @@ package com.gam.nocr.ems.web.action;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
 import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
-import com.gam.nocr.ems.biz.delegator.FeatureExtractIdsDelegator;
 import com.gam.nocr.ems.biz.delegator.OfficeSettingDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
-import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
 import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
 import gampooya.tools.security.BusinessSecurityException;
 
@@ -34,7 +32,7 @@ public class OfficeSettingAction extends ListControllerImpl<OfficeSettingVTO> {
             }
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.OST_001, WebExceptionCode.GLB_001_MSG, e);
+            throw new ActionException(WebExceptionCode.OSA_001, WebExceptionCode.GLB_001_MSG, e);
         }
     }
 
@@ -45,13 +43,13 @@ public class OfficeSettingAction extends ListControllerImpl<OfficeSettingVTO> {
             if (ids != null)
                 officeSettingVTO = officeSettingDelegator.load(getUserProfile(), Long.parseLong(ids));
             else
-                throw new ActionException(WebExceptionCode.OST_002, WebExceptionCode.OST_002_MSG);
+                throw new ActionException(WebExceptionCode.OSA_002, WebExceptionCode.OSA_002_MSG);
             List<OfficeSettingVTO> officeSettingVTOs = new ArrayList<OfficeSettingVTO>();
             officeSettingVTOs.add(officeSettingVTO);
             setRecords(officeSettingVTOs);
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.OST_003, WebExceptionCode.GLB_001_MSG, e);
+            throw new ActionException(WebExceptionCode.OSA_003, WebExceptionCode.GLB_001_MSG, e);
         }
     }
 }

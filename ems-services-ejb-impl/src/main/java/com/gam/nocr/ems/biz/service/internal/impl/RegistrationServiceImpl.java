@@ -60,8 +60,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
     private static final String DEFAULT_CARD_REQUEST_IDLE_PERIOD = "365";
     private static final String DEFAULT_KEY_FING_CANDIDATE_SIZE_KB = "12";
-    private static final String DEFAULT_KEY_FING_NORMAL_1_SIZE_KB = "2";
-    private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "2";
+    private static final String DEFAULT_KEY_FING_NORMAL_1_SIZE_KB = "1.5";
+    private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "1.5";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB = "400";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = "100";
     private static final String DEFAULT_SKIP_CMS_CHECK = "false";
@@ -1363,31 +1363,31 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                         throw new ServiceException(BizExceptionCode.RSI_094, BizExceptionCode.RSI_094_MSG);
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
-                    Integer fingCandidateSize;
+                    Float fingCandidateSize;
 
                     try {
-                        fingCandidateSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_1_SIZE_KB
+                        fingCandidateSize = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_1_SIZE_KB
                                 , DEFAULT_KEY_FING_NORMAL_1_SIZE_KB));
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
-                        fingCandidateSize = Integer.valueOf(DEFAULT_KEY_FING_NORMAL_1_SIZE_KB);
+                        fingCandidateSize = Float.valueOf(DEFAULT_KEY_FING_NORMAL_1_SIZE_KB);
                     }
 
-                    if (bio.getData().length > (fingCandidateSize * 1024))
+                    if (bio.getData().length > ((int)(fingCandidateSize * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_165, BizExceptionCode.RSI_165_MSG);
                 } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
 
-                    Integer fingCandidateSize;
+                    Float fingCandidateSize;
 
                     try {
-                        fingCandidateSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_2_SIZE_KB
+                        fingCandidateSize = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_2_SIZE_KB
                                 , DEFAULT_KEY_FING_NORMAL_2_SIZE_KB));
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
-                        fingCandidateSize = Integer.valueOf(DEFAULT_KEY_FING_NORMAL_2_SIZE_KB);
+                        fingCandidateSize = Float.valueOf(DEFAULT_KEY_FING_NORMAL_2_SIZE_KB);
                     }
 
-                    if (bio.getData().length > (fingCandidateSize * 1024))
+                    if (bio.getData().length > ((int)(fingCandidateSize * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_166, BizExceptionCode.RSI_166_MSG);
                 }
                 addBiometric(biometricDAO, citizenInfoInDb, bio);

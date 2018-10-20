@@ -571,8 +571,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_162_MSG = "LivingCity is null or 0";
     public static final String RSI_163_MSG = "Living is null or 0";
     public static final String RSI_164_MSG = "featureExtractorID is null";
-    public static final String RSI_165_MSG = "Save biometric data encounter error due to large normal1 finger size (default value 2KB)";
-    public static final String RSI_166_MSG = "Save biometric data encounter error due to large normal2 finger size (default value 2KB)";
+    public static final String RSI_165_MSG = "Save biometric data encounter error due to large normal1 finger size (default value 1.5KB)";
+    public static final String RSI_166_MSG = "Save biometric data encounter error due to large normal2 finger size (default value 1.5KB)";
 
     // com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
     public static final String KSI_001 = "EMS_S_KSI_001";
