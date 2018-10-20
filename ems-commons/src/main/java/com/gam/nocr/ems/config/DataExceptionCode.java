@@ -1131,6 +1131,6 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String FEV_001_MSG = "findById operation could not be executed";
 
     //com.gam.nocr.ems.data.dao.impl.OfficeSettingDAOImpl.java
-    public static final String OST_01 = "EMS_D_OST_01";
-    public static final String OST_01_MSG = "findById operation could not be executed";
+    public static final String OST_001 = "EMS_D_OST_001";
+    public static final String OST_001_MSG = "findById operation could not be executed";
 }

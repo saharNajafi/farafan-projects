@@ -664,7 +664,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OFC_001 = "EMS_A_OFC_001";
     public static final String OFC_002 = "EMS_A_OFC_002";
     public static final String OFC_003 = "EMS_A_OFC_003";
-    public static final String OFC_001_MSG = "invalid input entry, officeCapacity id is empty\";";
+    public static final String OFC_001_MSG = "invalid input entry, officeCapacity id is empty";
 
     //com.gam.nocr.ems.web.ws.CCOSPaymentWS.java
     public  static final String CPW_001 = "EMS_W_CPW_001";
@@ -704,10 +704,10 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
 
     //com.gam.nocr.ems.web.action.OfficeSettingAction.java
-    public static final String OST_001 = "EMS_A_OST_001";
-    public static final String OST_002 = "EMS_A_OST_002";
-    public static final String OST_003 = "EMS_A_OST_003";
-    public static final String OST_002_MSG = "invalid input entry, enrollment office id is empty";
+    public static final String OSA_001 = "EMS_A_OSA_001";
+    public static final String OSA_002 = "EMS_A_OSA_002";
+    public static final String OSA_003 = "EMS_A_OSA_003";
+    public static final String OSA_002_MSG = "invalid input entry, enrollment office id is empty";
 
 
 
