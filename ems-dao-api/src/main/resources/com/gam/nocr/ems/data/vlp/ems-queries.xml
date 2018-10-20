@@ -177,7 +177,12 @@
 					ost.ost_allow_edit_background allow_edit_background,
 					ost.ost_use_scanner_ui use_scanner_ui,
 					ost.OST_ALW_AMPT_FING_STA_ELD,
-					ost.OST_ALW_CHG_FING_DUR_CAP_ELD
+					ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
+					ost.OST_ID,
+					fei.FEI_FEATURE_EXTRACTOR_NAME,
+					fei.FEI_ID,
+					fev.FEV_ID,
+					fev.FEV_FEATURE_EXTRACTOR_VERSION
 				</part>
 				    from
                 emst_location l,
@@ -185,13 +190,18 @@
                 emst_department d,
                 emst_enrollment_office e,
                 emst_office_setting ost,
-                emst_person p
+                emst_person p,
+				EMST_OFFICE_SETTING ost,
+				EMST_FEATURE_EXTRACT_IDS fei,
+				EMST_FEATURE_EXTRACT_VERSIONS fev
                 where
                 l.loc_id = d.dep_location_id and
                 l.loc_province_id=lp.loc_id and
                 d.dep_id=e.eof_id and
                 ost.OST_ENROLL_OFFICE_ID = e.eof_id and
                 e.eof_manager_id=p.per_id(+) and
+				ost.OST_FEATURE_EXTRACT_IDS = fei.FEI_ID and
+				ost.OST_FEATURE_EXTRACT_IDS = fev.FEV_ID and
 				e.eof_id in (
 				<dependency name="personAllDepartmentWithSubDepartment" />
 				)
@@ -319,6 +329,11 @@
                 <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
                 <field name="allowAmputatedFinger" column="OST_ALW_AMPT_FING_STA_ELD"/>
                 <field name="allowChangeFinger" column="OST_ALW_CHG_FING_DUR_CAP_ELD"/>
+				<field name="featureExtractorName" column="FEI_FEATURE_EXTRACTOR_NAME"/>
+				<field name="featureExtractorVersion" column="FEV_FEATURE_EXTRACTOR_VERSION"/>
+				<field name="feiId" column="FEI_ID"/>
+				<field name="FevId" column="FEV_ID"/>
+				<field name="ostId" column="OST_ID"/>
 			</dto-fields>
 		</dto>
 	</list>
@@ -1664,7 +1679,7 @@
 				<field name="featureExtractorVersion" column="FEV_FEATURE_EXTRACTOR_VERSION"/>
 				<field name="feiId" column="FEI_ID"/>
 				<field name="FevId" column="FEV_ID"/>
-				<field name="id" column="OST_ID"/>
+				<field name="ostId" column="OST_ID"/>
 			</dto-fields>
 		</dto>
 	</list>
