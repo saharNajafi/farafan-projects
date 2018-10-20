@@ -180,9 +180,7 @@
 					ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
 					ost.OST_ID,
 					fei.FEI_FEATURE_EXTRACT_ID_NAME,
-					fei.FEI_ID,
-					fev.FEV_ID,
-					fev.FEV_FEATURE_EXTRACT_VERSION,
+					fev.FEV_FEATURE_EXTRACT_VERSION
 				</part>
 				    from
                 emst_location l,
@@ -191,7 +189,6 @@
                 emst_enrollment_office e,
                 emst_office_setting ost,
                 emst_person p,
-				EMST_OFFICE_SETTING ost,
 				EMST_FEATURE_EXTRACT_IDS fei,
 				EMST_FEATURE_EXTRACT_VERSIONS fev
                 where
@@ -331,8 +328,6 @@
                 <field name="allowChangeFinger" column="OST_ALW_CHG_FING_DUR_CAP_ELD"/>
 				<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_ID_NAME"/>
 				<field name="featureExtractVersion" column="FEV_FEATURE_EXTRACT_VERSION"/>
-				<field name="feiId" column="FEI_ID"/>
-				<field name="FevId" column="FEV_ID"/>
 				<field name="ostId" column="OST_ID"/>
 			</dto-fields>
 		</dto>

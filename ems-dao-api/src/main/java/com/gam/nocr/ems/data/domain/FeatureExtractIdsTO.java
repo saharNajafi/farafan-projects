@@ -21,7 +21,7 @@ import javax.persistence.*;
 public class FeatureExtractIdsTO extends ExtEntityTO{
 
     private String featureExtractId = "02";
-    private String featureExtractIdName= "متیران";
+    private String featureExtractIdName = "متیران";
 
     public FeatureExtractIdsTO(){}
 
@@ -42,8 +42,7 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         this.featureExtractId = featureExtractId;
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_ID_NAME", nullable = false
-            , length = 20, columnDefinition = "varchar2(20)")
+    @Column(name = "FEI_FEATURE_EXTRACT_ID_NAME", length = 15, columnDefinition = "varchar2(15)")
     public String getFeatureExtractIdName() {
         return featureExtractIdName;
     }
