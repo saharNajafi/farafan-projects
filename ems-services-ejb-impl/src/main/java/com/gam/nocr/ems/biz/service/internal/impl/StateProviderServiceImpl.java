@@ -21,7 +21,6 @@ import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
 import gampooya.tools.security.SecurityContextService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import javax.ejb.Local;
@@ -262,6 +261,16 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     else
                         stateProviderTO.setValue("false");
 
+                } else if (stateId.endsWith("featureExtractorID")) {
+                    if (officeSettingTO.getFeatureExtractIdsTO() != null)
+                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractId());
+                    else
+                        stateProviderTO.setValue("");
+                } else if (stateId.endsWith("featureExtractorVersion")) {
+                    if (officeSettingTO.getFeatureExtractVersionsTO() != null)
+                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractVersionsTO().getFeatureExtractVersion());
+                    else
+                        stateProviderTO.setValue("");
                 } else if (stateId.endsWith("tokenExpire")) {
                     try {
                         ProfileManager pm = ProfileHelper.getProfileManager();

@@ -197,8 +197,8 @@
                 d.dep_id=e.eof_id and
                 ost.OST_ENROLL_OFFICE_ID = e.eof_id and
                 e.eof_manager_id=p.per_id(+)
-				and ost.OST_FEATURE_EXTRACTID_ID = fei.FEI_ID
-				and ost.OST_FEATURE_EXTRACTVERSION_ID = fev.FEV_ID
+				and ost.OST_FEATURE_EXTRACTID_ID = fei.FEI_ID(+)
+				and ost.OST_FEATURE_EXTRACTVERSION_ID = fev.FEV_ID(+)
 				and e.eof_id in (
 				<dependency name="personAllDepartmentWithSubDepartment" />
 				)
