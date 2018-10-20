@@ -1009,7 +1009,7 @@
 				</order-by>
 			</main-query>
 		</query>
-		<dto>
+		 <dto>
 			<dto-class>com.gam.nocr.ems.data.domain.vol.CardRequestVTO</dto-class>
 			<dto-fields>
 				<field name="id" column="crq_id" />
@@ -1642,7 +1642,8 @@
 				</part>
 				<part name="main">
 					SELECT
-					fei.FEI_FEATURE_EXTRACTOR_ID
+					ost.OST_ID
+					fei.FEI_FEATURE_EXTRACTOR_NAME
 					fei.FEI_ID,
 					fev.FEV_ID,
 					fev.FEV_FEATURE_EXTRACTOR_VERSION,
@@ -1659,10 +1660,11 @@
 		<dto>
 			<dto-class>com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO</dto-class>
 			<dto-fields>
-				<field name="featureExtractorID" column="FEI_FEATURE_EXTRACTOR_ID"/>
+				<field name="featureExtractorNAME" column="FEI_FEATURE_EXTRACTOR_NAME"/>
 				<field name="featureExtractorVersion" column="FEV_FEATURE_EXTRACTOR_VERSION"/>
 				<field name="feiId" column="FEI_ID"/>
 				<field name="FevId" column="FEV_ID"/>
+				<field name="id" column="OST_ID"/>
 			</dto-fields>
 		</dto>
 	</list>

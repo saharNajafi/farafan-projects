@@ -547,7 +547,7 @@
 				<part name="main">
 					SELECT distinct
 					fei.FEI_ID,
-					fei.FEI_FEATURE_EXTRACT_ID
+					fei.FEI_FEATURE_EXTRACT_NAME
 				</part>
 				FROM EMST_FEATURE_EXTRACT_IDS fei
 			</main-query>
@@ -557,7 +557,7 @@
 			<dto-fields>
 				<field name="id" column="FEI_ID" />
 				<field name="acId" column="FEI_ID" />
-				<field name="acName" column="FEI_FEATURE_EXTRACT_ID" />
+				<field name="acName" column="FEI_FEATURE_EXTRACT_NAME" />
 			</dto-fields>
 		</dto>
 	</list>

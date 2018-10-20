@@ -9,7 +9,7 @@ import com.gam.commons.core.data.domain.ExtEntityTO;
 public class OfficeSettingVTO extends ExtEntityTO {
 
     private Long id;
-    private String featureExtractorID;
+    private String featureExtractorName;
     private String featureExtractorVersion;
     private Long feiId;
     private Long fevId;
@@ -22,12 +22,12 @@ public class OfficeSettingVTO extends ExtEntityTO {
         this.id = id;
     }
 
-    public String getFeatureExtractorID() {
-        return featureExtractorID;
+    public String getFeatureExtractorName() {
+        return featureExtractorName;
     }
 
-    public void setFeatureExtractorID(String featureExtractorID) {
-        this.featureExtractorID = featureExtractorID;
+    public void setFeatureExtractorName(String featureExtractorName) {
+        this.featureExtractorName = featureExtractorName;
     }
 
     public String getFeatureExtractorVersion() {
