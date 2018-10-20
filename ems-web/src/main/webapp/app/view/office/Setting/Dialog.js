@@ -13,13 +13,15 @@ Ext.define('Ems.view.office.Setting.Dialog', {
 
     autoScroll: true,
 
-    width: 400,
+    width: 350,
 
-    height: 200,
+    sendID: null,
+
+    height: 150,
 
     action: "add",
 
-    title: 'تنظیمات',
+    title: 'تنظیمات lds',
 
     requires: [
         ,'Ems.store.OfficeSettingFeatureExtractIDStore'
@@ -34,27 +36,24 @@ Ext.define('Ems.view.office.Setting.Dialog', {
     buildFormItems: function () {
         return [
             {
-                xtype: 'numberfield',
-                itemId: 'officeID',
-                fieldLabel: 'dsfsdf'
-            },
-            {
                 xtype: 'combobox',
                 store: {type: 'officesettingfeatureextractidstore'},
-                valueField: 'id',
-                displayField: 'title',
+                valueField: 'feiId',
+                displayField: 'featureExtractorNAME',
                 itemId: 'extractID',
                 forceSelection: true,
-                fieldLabel: 'تست۱'
+                labelWidth: 140,
+                fieldLabel: 'featureExtractID'
             },
             {
                 xtype: 'combobox',
                 store: {type: 'officesettingfeatureextractversionstore'},
-                valueField: 'id',
-                displayField: 'title',
+                valueField: 'fevId',
+                displayField: 'featureExtractorVersion',
                 itemId: 'extractVersion',
+                labelWidth: 140,
                 forceSelection: true,
-                fieldLabel: 'تست۲'
+                fieldLabel: 'featureExtractVersion'
             }
         ]
     }

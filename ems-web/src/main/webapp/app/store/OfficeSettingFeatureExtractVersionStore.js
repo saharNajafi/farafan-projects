@@ -12,7 +12,8 @@ Ext.define('Ems.store.OfficeSettingFeatureExtractVersionStore', {
     require: [ 'Ems.model.OfficeSettingFeatureExtractVersionModel' ],
     model: 'Ems.model.OfficeSettingFeatureExtractVersionModel',
 
-    autocompleteName: 'extractversion'
+    listName: 'featureExtractVersionsAC',
+    baseUrl: 'extJsController/officeSetting'
 
 });
 

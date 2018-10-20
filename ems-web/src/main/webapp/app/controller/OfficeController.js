@@ -142,6 +142,12 @@ Ext.define('Ems.controller.OfficeController', {
                 }
             },
 
+            'officesettingdialog cancelbtn': {
+                click: function (sender) {
+                    sender.up('dialog').close();
+                }
+            },
+
             'officecapacitydialog cancelbtn': {
         	       click: function (sender) {
                        sender.up('dialog').close();
@@ -207,6 +213,42 @@ Ext.define('Ems.controller.OfficeController', {
                    }
             },
 
+            'officesettingdialog savebtn': {
+                click: function(sender) {
+                    var form = sender.up('dialog');
+                    var me = this;
+                    var obj = {};
+                    if(form.sendID != null) {
+                        obj = { id : form.sendID };
+                    }
+                    Ext.Ajax.request({
+                        url: 'extJsController/officeSetting' + '/save',
+                        jsonData: Ext.apply(obj, { featureExtractIds: form.down('#extractID').getValue(), featureExtractVersions: form.down('#extractVersion').getValue() }),
+                        success: function (response) {
+                            if (Ext.JSON.decode(response.responseText).success) {
+                                Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
+                                Ext.StoreManager.get('idOfficeCapacityStore').load();
+                                form.close();
+                            }
+                            else {
+                                // var msg = Ext.JSON.decode(response.responseText).messageInfo.message;
+                                // var showMsg = "";
+                                // if (msg[msg.length - 1] == "6") {
+                                //     showMsg = "تاریخ شروع باید از تاریخ امروز بزرگتر باشد";
+                                // }
+                                // else if (msg[msg.length - 1] == "7") {
+                                //     showMsg = "این سطر در سیستم وجود دارد. لطفا آن را ویرایش کنید";
+                                // }
+                                Ext.Msg.alert('خطا', showMsg);
+                            }
+                        },
+                        failure: function () {
+                            Ext.Msg.alert('خطا', 'خطایی رخ داده است');
+                        }
+                    });
+                }
+            },
+
                "[action=exportExcel]": {
                    click: function (btn) {
                        var grid = btn.up('toolbar').up('grid');
@@ -269,7 +311,16 @@ Ext.define('Ems.controller.OfficeController', {
      Description: write doSettingOffice method for first test
      */
     doSettingOffice: function(grid, rowIndex) {
-        var win = Ext.create('Ems.view.office.Setting.Dialog', { height: 200});
+        var win = Ext.create('Ems.view.office.Setting.Dialog', { height: 130});
+        var record = grid.store.getAt(rowIndex);
+        var extractID = win.down('#extractID');
+        var extractVersion = win.down('#extractVersion');
+        // if(record.get('id') != null) {
+        //     extractID.store.reload({ callback: function() { extractID.setValue(record.get('id')) } });
+        // }
+        // if(record.get('id') != null) {
+        //     extractVersion.store.reload({ callback: function() { extractVersion.setValue(record.get('id')) } });
+        // }
         win.show();
     },
 
