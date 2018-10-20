@@ -12,8 +12,8 @@ Ext.define('Ems.store.OfficeSettingFeatureExtractIDStore', {
     require: [ 'Ems.model.OfficeSettingFeatureExtractIDModel' ],
     model: 'Ems.model.OfficeSettingFeatureExtractIDModel',
 
-    listName: 'officeCapacityList',
-    baseUrl: 'extJsController/officeCapacity'
+    listName: 'featureExtractIdsAC',
+    baseUrl: 'extJsController/officeSetting'
 
 });
 

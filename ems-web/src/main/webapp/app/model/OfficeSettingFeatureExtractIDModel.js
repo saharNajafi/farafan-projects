@@ -8,7 +8,7 @@
 Ext.define("Ems.model.OfficeSettingFeatureExtractIDModel", {
     extend: 'Ems.model.AutocompleteSimpleModel',
     fields: [
-        'id' ,
-        'name'
+        'feiId' ,
+        'featureExtractorNAME'
     ]
 });
