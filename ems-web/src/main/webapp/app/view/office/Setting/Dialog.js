@@ -21,11 +21,17 @@ Ext.define('Ems.view.office.Setting.Dialog', {
 
     action: "add",
 
-    title: 'تنظیمات lds',
+    extractID: null,
+
+    extractVersion: null,
+
+    title: 'تنظیمات 4545lds',
 
     requires: [
         ,'Ems.store.OfficeSettingFeatureExtractIDStore'
         ,'Ems.store.OfficeSettingFeatureExtractVersionStore'
+        ,'Ems.view.office.Setting.AutoCompleteFeatureExtractID'
+        ,,'Ems.view.office.Setting.AutoCompleteFeatureExtractVersion'
     ],
 
     initComponent: function () {
@@ -36,24 +42,20 @@ Ext.define('Ems.view.office.Setting.Dialog', {
     buildFormItems: function () {
         return [
             {
-                xtype: 'combobox',
-                store: {type: 'officesettingfeatureextractidstore'},
-                valueField: 'feiId',
-                displayField: 'featureExtractorNAME',
-                itemId: 'extractID',
-                forceSelection: true,
-                labelWidth: 140,
-                fieldLabel: 'featureExtractID'
+                xtype: 'autoCompleteFeatureExtractID',
+                fieldLabel: 'featureExtractID',
+                id: 'feid',
+                name: 'feid',
+                labelWidth: 135,
+                allowBlank: false
             },
             {
-                xtype: 'combobox',
-                store: {type: 'officesettingfeatureextractversionstore'},
-                valueField: 'fevId',
-                displayField: 'featureExtractorVersion',
-                itemId: 'extractVersion',
-                labelWidth: 140,
-                forceSelection: true,
-                fieldLabel: 'featureExtractVersion'
+                xtype: 'autoCompleteFeatureExtractVersion',
+                fieldLabel: 'featureExtractVersion',
+                labelWidth: 135,
+                id: 'feversion',
+                name: 'feversion',
+                allowBlank: false
             }
         ]
     }

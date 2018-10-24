@@ -547,7 +547,7 @@
 				<part name="main">
 					SELECT distinct
 					fei.FEI_ID,
-					fei.FEI_FEATURE_EXTRACT_NAME
+					fei.FEI_FEATURE_EXTRACT_ID_NAME
 				</part>
 				FROM EMST_FEATURE_EXTRACT_IDS fei
 			</main-query>
@@ -574,7 +574,7 @@
 				<part name="main">
 					SELECT distinct
 					fev.FEV_ID,
-					fev.FEV_FEATURE_EXTRACT_VERSION,
+					fev.FEV_FEATURE_EXTRACT_VERSION
 				</part>
 				FROM EMST_FEATURE_EXTRACT_VERSIONS fev
 			</main-query>

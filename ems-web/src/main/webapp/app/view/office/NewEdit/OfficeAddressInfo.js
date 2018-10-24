@@ -41,7 +41,13 @@ Ext.define('Ems.view.office.NewEdit.OfficeAddressInfo', {
                 xtype: 'textfield',
                 allowBlank: false,
                 fieldLabel: 'کد پستی',
-                anchor: '-10', id: EmsObjectName.officeNewEdit.oficPostCode, name: EmsObjectName.officeNewEdit.oficPostCode, regex: /^[0-9]+$/, maxLength: 10, minLength: 10, enforceMaxLength: 5
+                anchor: '-10', id: EmsObjectName.officeNewEdit.oficPostCode,
+                name: EmsObjectName.officeNewEdit.oficPostCode,
+                // regex: /^[0-9]+$/,
+                maskRe: /\d/i,
+                maxLength: 10,
+                minLength: 10,
+                enforceMaxLength: 5
                 //,regexText: "کد پستی 10 رقمی را وارد کنید"
 
 
