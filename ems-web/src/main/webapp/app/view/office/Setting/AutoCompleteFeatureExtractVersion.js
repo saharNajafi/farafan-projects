@@ -6,18 +6,24 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Ems.view.office.OfficeName.AutoCompleteFeatureExtractVersion', {
+Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractVersion', {
     extend: 'Gam.form.field.Autocomplete',
-    alias: 'widget.officenamefeatureextractversion',
+    alias: 'widget.autoCompleteFeatureExtractVersion',
 
     requires: [
-        'Ems.store.OfficeSettingFeatureExtractVersionStore', 'Ems.model.OfficeSettingFeatureExtractVersionModel' ],
+        'Ems.store.OfficeSettingFeatureExtractVersionStore',
+        'Ems.model.OfficeSettingFeatureExtractVersionModel'
+    ],
 
     store: {type: 'officesettingfeatureextractversionstore'},
 
-    id: 'officeSettingFeatureExtractVersionAutocomplet',
+    multiSelect: false,
+
+    valueField: 'fevId',
+    displayField: 'featureExtractorVersion',
+
+    listWidth: 290,
 
     emptyText: 'انتخاب کنید...'
-
 });
 

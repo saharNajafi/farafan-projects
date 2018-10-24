@@ -5,15 +5,15 @@
  * Time: 11:25 AM
  * To change this template use File | Settings | File Templates.
  */
+
 Ext.define('Ems.store.OfficeSettingFeatureExtractVersionStore', {
-    extend: 'Gam.data.store.grid.Grid',
+
+    extend: 'Gam.data.store.Autocomplete',
     alias: 'store.officesettingfeatureextractversionstore',
 
-    require: [ 'Ems.model.OfficeSettingFeatureExtractVersionModel' ],
+    require: ['Ems.model.AutocompleteSimpleModel'],
     model: 'Ems.model.OfficeSettingFeatureExtractVersionModel',
 
-    listName: 'featureExtractVersionsAC',
-    baseUrl: 'extJsController/officeSetting'
-
+    autocompleteName: 'featureExtractVersions'
 });
 

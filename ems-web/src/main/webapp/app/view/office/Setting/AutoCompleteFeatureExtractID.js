@@ -8,20 +8,24 @@
 
 Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractID', {
     extend: 'Gam.form.field.Autocomplete',
-    alias: 'widget.officenamefeatureextractid',
+    alias: 'widget.autoCompleteFeatureExtractID',
 
     requires: [
-        'Ems.store.OfficeSettingFeatureExtractIDStore', 'Ems.model.OfficeSettingFeatureExtractIDModel' ],
+        'Ems.store.OfficeSettingFeatureExtractIDStore',
+        'Ems.model.OfficeSettingFeatureExtractIDModel'
+    ],
 
     store: {type: 'officesettingfeatureextractidstore'},
 
-    id: 'officeSettingFeatureExtractIDAutocomplet',
-    // setValue: Ext.emptyFn  ,
-    //valueField:'acId',
+    multiSelect: false,
 
-    //listWidth: 290   ,
-    //width:310,
+    valueField: 'feiId',
+
+    displayField: 'featureExtractorNAME',
+
+    listWidth: 290,
+
+    hiddenName: EmsObjectName.officeNewEdit.oficRatingId,
+
     emptyText: 'انتخاب کنید...'
-
 });
-
