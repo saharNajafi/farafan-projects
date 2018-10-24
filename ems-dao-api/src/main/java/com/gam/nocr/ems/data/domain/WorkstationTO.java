@@ -141,7 +141,7 @@ public class WorkstationTO extends ExtEntityTO implements JSONable {
 //	}
 
 
-    @OneToMany(mappedBy = "workstationTO",cascade = {CascadeType.MERGE,CascadeType.PERSIST},orphanRemoval = true)
+    @OneToMany(mappedBy = "workstationTO"/*,cascade = {CascadeType.MERGE,CascadeType.PERSIST},orphanRemoval = true*/)
     public List<WorkstationPluginsTO> getWorkstationPluginsTOList() {
         return workstationPluginsTOList;
     }
