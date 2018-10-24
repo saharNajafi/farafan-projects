@@ -19,8 +19,11 @@ Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractVersion', {
 
     multiSelect: false,
 
-    valueField: 'fevId',
-    displayField: 'featureExtractorVersion',
+    valueField: 'acId',
+
+    displayField: 'acName',
+
+    forceSelection: false,
 
     listWidth: 290,
 

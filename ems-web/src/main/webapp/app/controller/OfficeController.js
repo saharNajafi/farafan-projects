@@ -223,7 +223,7 @@ Ext.define('Ems.controller.OfficeController', {
                     }
                     Ext.Ajax.request({
                         url: 'extJsController/officeSetting' + '/save',
-                        jsonData: Ext.apply(obj, { featureExtractIds: form.down('#extractID').getValue(), featureExtractVersions: form.down('#extractVersion').getValue() }),
+                        jsonData: Ext.apply(obj, { featureExtractIds: form.extractID == null ? form.down('#feid').getValue(): form.extractID, featureExtractVersions: form.extractVersion == null ? form.down('#feversion').getValue() : form.extractVersion }),
                         success: function (response) {
                             if (Ext.JSON.decode(response.responseText).success) {
                                 Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
@@ -313,14 +313,16 @@ Ext.define('Ems.controller.OfficeController', {
     doSettingOffice: function(grid, rowIndex) {
         var win = Ext.create('Ems.view.office.Setting.Dialog', { height: 130});
         var record = grid.store.getAt(rowIndex);
-        var extractID = win.down('#extractID');
-        var extractVersion = win.down('#extractVersion');
-        // if(record.get('id') != null) {
-        //     extractID.store.reload({ callback: function() { extractID.setValue(record.get('id')) } });
-        // }
-        // if(record.get('id') != null) {
-        //     extractVersion.store.reload({ callback: function() { extractVersion.setValue(record.get('id')) } });
-        // }
+        var extractID = win.down('#feid');
+        var extractVersion = win.down('#feversion');
+        if(record.get('featureExtractName') != null) {
+            extractID.setRawValue(record.get('featureExtractName'));
+            win.extractID = record.get('feiId');
+        }
+        if(record.get('featureExtractVersion') != null) {
+            extractVersion.setRawValue(record.get('featureExtractVersion'));
+            win.extractVersion = record.get('fevId');
+        }
         win.show();
     },
 

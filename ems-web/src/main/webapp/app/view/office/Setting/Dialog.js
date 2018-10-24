@@ -21,6 +21,10 @@ Ext.define('Ems.view.office.Setting.Dialog', {
 
     action: "add",
 
+    extractID: null,
+
+    extractVersion: null,
+
     title: 'تنظیمات 4545lds',
 
     requires: [
