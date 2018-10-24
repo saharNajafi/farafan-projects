@@ -21,7 +21,7 @@ public class OfficeSettingAction extends ListControllerImpl<OfficeSettingVTO> {
         this.records = records;
     }
 
-    public String update() throws BaseException {
+    public String save() throws BaseException {
         try {
             OfficeSettingDelegator officeSettingDelegator = new OfficeSettingDelegator();
             for (OfficeSettingVTO to : records) {

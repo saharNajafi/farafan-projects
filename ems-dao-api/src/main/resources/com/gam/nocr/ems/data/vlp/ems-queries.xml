@@ -1676,7 +1676,7 @@
 				<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_ID_NAME"/>
 				<field name="featureExtractVersion" column="FEV_FEATURE_EXTRACT_VERSION"/>
 				<field name="feiId" column="FEI_ID"/>
-				<field name="FevId" column="FEV_ID"/>
+				<field name="fevId" column="FEV_ID"/>
 				<field name="ostId" column="OST_ID"/>
 			</dto-fields>
 		</dto>

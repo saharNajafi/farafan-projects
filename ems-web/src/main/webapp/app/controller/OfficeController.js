@@ -227,7 +227,7 @@ Ext.define('Ems.controller.OfficeController', {
                         success: function (response) {
                             if (Ext.JSON.decode(response.responseText).success) {
                                 Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
-                                Ext.StoreManager.get('idOfficeCapacityStore').load();
+                                Ext.StoreManager.get('idOfficeSettingStore').load();
                                 form.close();
                             }
                             else {
