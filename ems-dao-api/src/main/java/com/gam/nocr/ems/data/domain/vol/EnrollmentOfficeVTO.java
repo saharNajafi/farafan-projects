@@ -76,9 +76,9 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private String featureExtractName;
     private String featureExtractVersion;
     private Long ostId;
-
-    
     private String officeSettingType;
+    private Long feiId;
+    private Long fevId;
 
     public String getName() {
         return name;
@@ -584,5 +584,21 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
 
     public void setOstId(Long ostId) {
         this.ostId = ostId;
+    }
+
+    public Long getFeiId() {
+        return feiId;
+    }
+
+    public void setFeiId(Long feiId) {
+        this.feiId = feiId;
+    }
+
+    public Long getFevId() {
+        return fevId;
+    }
+
+    public void setFevId(Long fevId) {
+        this.fevId = fevId;
     }
 }

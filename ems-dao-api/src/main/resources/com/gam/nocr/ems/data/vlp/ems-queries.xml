@@ -180,7 +180,9 @@
 					ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
 					ost.OST_ID,
 					fei.FEI_FEATURE_EXTRACT_ID_NAME,
-					fev.FEV_FEATURE_EXTRACT_VERSION
+					fev.FEV_FEATURE_EXTRACT_VERSION,
+					fei.FEI_ID,
+					fev.FEV_ID
 				</part>
 				    from
                 emst_location l,
@@ -329,6 +331,8 @@
 				<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_ID_NAME"/>
 				<field name="featureExtractVersion" column="FEV_FEATURE_EXTRACT_VERSION"/>
 				<field name="ostId" column="OST_ID"/>
+				<field name="feiId" column="FEI_ID"/>
+				<field name="FevId" column="FEV_ID"/>
 			</dto-fields>
 		</dto>
 	</list>
