@@ -574,7 +574,7 @@
 				<part name="main">
 					SELECT distinct
 					fev.FEV_ID,
-					fev.FEV_FEATURE_EXTRACT_VERSION,
+					fev.FEV_FEATURE_EXTRACT_VERSION
 				</part>
 				FROM EMST_FEATURE_EXTRACT_VERSIONS fev
 			</main-query>
