@@ -59,8 +59,8 @@ Ext.define('Ems.view.office.NewEdit.OfficeAddressInfo', {
                 anchor: '-10',
                 id: EmsObjectName.officeNewEdit.oficAddress,
                 name: EmsObjectName.officeNewEdit.oficAddress,
-                maxLength: 255,
-                enforceMaxLength: 255,
+                maxLength: 500,
+                enforceMaxLength: 500,
                 regexText: 'طول رشته بیشتر از حد مجاز می باشد'
 
             }

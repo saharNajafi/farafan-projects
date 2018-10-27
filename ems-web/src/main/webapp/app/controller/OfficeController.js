@@ -338,6 +338,8 @@ Ext.define('Ems.controller.OfficeController', {
             setTimeout(function() {extractVersion.select(extractVersion.store.getNodeById(1));}, 300);
             setTimeout(function () { extractVersion.onTriggerClick(); extractID.onTriggerClick(); }, 300);
         }
+        var officeSettingCall = Ext.create('Ems.store.OfficeSettingStore');
+        officeSettingCall.load({ params: { enrollmentOfficeId: record.get('id') }});
     },
 
     doUserListOffice: function (grid, rowIndex) {
