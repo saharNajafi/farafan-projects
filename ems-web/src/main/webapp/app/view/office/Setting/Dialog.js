@@ -23,6 +23,8 @@ Ext.define('Ems.view.office.Setting.Dialog', {
 
     extractID: null,
 
+    officeSettingID: null,
+
     extractVersion: null,
 
     title: 'تنظیمات 4545lds',
@@ -46,16 +48,16 @@ Ext.define('Ems.view.office.Setting.Dialog', {
                 fieldLabel: 'featureExtractID',
                 id: 'feid',
                 name: 'feid',
-                labelWidth: 135,
-                allowBlank: false
+                labelWidth: 135
+               // allowBlank: false
             },
             {
                 xtype: 'autoCompleteFeatureExtractVersion',
                 fieldLabel: 'featureExtractVersion',
                 labelWidth: 135,
                 id: 'feversion',
-                name: 'feversion',
-                allowBlank: false
+                name: 'feversion'
+                //allowBlank: false
             }
         ]
     }

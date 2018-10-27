@@ -76,6 +76,7 @@ Ext.define('Ems.model.OfficeModel', {
         ,'featureExtractVersion'
         ,'feiId'
         ,'fevId'
+        ,'ostId'
 
         
     ]
