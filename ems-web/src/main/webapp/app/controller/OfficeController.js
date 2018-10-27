@@ -329,14 +329,14 @@ Ext.define('Ems.controller.OfficeController', {
             //extractID.setRawValue(record.get('featureExtractName'));
             win.extractID = record.get('feiId');
             extractID.onTriggerClick();
-            setTimeout(function() {extractID.select(extractID.store.getNodeById(1));}, 500);
+            setTimeout(function() {extractID.select(extractID.store.getNodeById(1));}, 300);
         }
         if(record.get('featureExtractVersion') != null) {
             //extractVersion.setRawValue(record.get('featureExtractVersion'));
             win.extractVersion = record.get('fevId');
             extractVersion.onTriggerClick();
-            setTimeout(function() {extractVersion.select(extractVersion.store.getNodeById(1));}, 500);
-            setTimeout(function () { extractVersion.onTriggerClick(); extractID.onTriggerClick(); }, 500);
+            setTimeout(function() {extractVersion.select(extractVersion.store.getNodeById(1));}, 300);
+            setTimeout(function () { extractVersion.onTriggerClick(); extractID.onTriggerClick(); }, 300);
         }
     },
 
