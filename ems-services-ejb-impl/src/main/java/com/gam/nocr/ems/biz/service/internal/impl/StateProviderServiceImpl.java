@@ -261,14 +261,14 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     else
                         stateProviderTO.setValue("false");
 
-                } else if (stateId.endsWith("featureExtractorID")) {
+                } else if (stateId.endsWith("featureExtractorIDNormal")) {
                     if (officeSettingTO.getFeatureExtractIdsTO() != null)
-                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractId());
+                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdNormal());
                     else
                         stateProviderTO.setValue("");
-                } else if (stateId.endsWith("featureExtractorVersion")) {
+                } else if (stateId.endsWith("featureExtractorIDCC")) {
                     if (officeSettingTO.getFeatureExtractVersionsTO() != null)
-                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractVersionsTO().getFeatureExtractVersion());
+                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdCC());
                     else
                         stateProviderTO.setValue("");
                 } else if (stateId.endsWith("tokenExpire")) {

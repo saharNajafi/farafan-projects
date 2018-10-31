@@ -87,7 +87,7 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
                         BizExceptionCode.OST_002_MSG, new Long[]{enrollmentOfficeId});
             officeSettingVTO.setId(officeSettingTO.getId());
             if(officeSettingTO.getFeatureExtractIdsTO()!= null) {
-                officeSettingVTO.setFeatureExtractName(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdName());
+                officeSettingVTO.setFeatureExtractName(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdNormalName());
                 officeSettingVTO.setFeiId(officeSettingTO.getFeatureExtractIdsTO().getId());
             }
             if(officeSettingTO.getFeatureExtractVersionsTO()!= null) {

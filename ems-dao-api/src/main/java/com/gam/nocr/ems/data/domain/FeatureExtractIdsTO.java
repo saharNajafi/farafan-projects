@@ -20,8 +20,10 @@ import javax.persistence.*;
 })
 public class FeatureExtractIdsTO extends ExtEntityTO{
 
-    private String featureExtractId = "02";
-    private String featureExtractIdName = "متیران";
+    private String featureExtractIdNormal = "02";
+    private String featureExtractIdCC = "02";
+    private String featureExtractIdNormalName = "متیران";
+    private String featureExtractIdCCName = "متیران";
 
     public FeatureExtractIdsTO(){}
 
@@ -32,25 +34,43 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         return super.getId();
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_ID", nullable = false
+    @Column(name = "FEI_FEATURE_EXTRACT_ID_NORMAL", nullable = false
             , length = 4, columnDefinition = "varchar2(4) default '02'")
-    public String getFeatureExtractId() {
-        return featureExtractId;
+    public String getFeatureExtractIdNormal() {
+        return featureExtractIdNormal;
     }
 
-    public void setFeatureExtractId(String featureExtractId) {
-        this.featureExtractId = featureExtractId;
+    public void setFeatureExtractIdNormal(String featureExtractIdNormal) {
+        this.featureExtractIdNormal = featureExtractIdNormal;
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_ID_NAME", length = 15, columnDefinition = "varchar2(15)")
-    public String getFeatureExtractIdName() {
-        return featureExtractIdName;
+    @Column(name = "FEI_FEATURE_EXTRACT_ID_CC", nullable = false
+            , length = 4, columnDefinition = "varchar2(4) default '02'")
+    public String getFeatureExtractIdCC() {
+        return featureExtractIdCC;
     }
 
-    public void setFeatureExtractIdName(String featureExtractIdName) {
-        this.featureExtractIdName = featureExtractIdName;
+    public void setFeatureExtractIdCC(String featureExtractIdCC) {
+        this.featureExtractIdCC = featureExtractIdCC;
     }
 
+    @Column(name = "FEI_FTR_EXT_NRM_NAME", length = 15, columnDefinition = "varchar2(15)")
+    public String getFeatureExtractIdNormalName() {
+        return featureExtractIdNormalName;
+    }
+
+    public void setFeatureExtractIdNormalName(String featureExtractIdNormalName) {
+        this.featureExtractIdNormalName = featureExtractIdNormalName;
+    }
+
+    @Column(name = "FEI_FTR_EXT_CC_NAME", length = 15, columnDefinition = "varchar2(15)")
+    public String getFeatureExtractIdCCName() {
+        return featureExtractIdCCName;
+    }
+
+    public void setFeatureExtractIdCCName(String featureExtractIdCCName) {
+        this.featureExtractIdCCName = featureExtractIdCCName;
+    }
 
 
     @Override
