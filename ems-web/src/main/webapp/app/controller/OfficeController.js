@@ -223,11 +223,17 @@ Ext.define('Ems.controller.OfficeController', {
                     }
                     Ext.Ajax.request({
                         url: 'extJsController/officeSetting' + '/save',
-                        jsonData: Ext.apply(obj, { featureExtractIds: form.extractID == null ? form.down('#feid').getValue(): form.extractID, featureExtractVersions: form.extractVersion == null ? form.down('#feversion').getValue() : form.extractVersion }),
+                        jsonData: Ext.apply(obj, {
+                            feiId: form.down('#feid').getValue(),
+                            fevId: form.down('#feversion').getValue(),
+                            featureExtractName: form.down('#feid').getRawValue(),
+                            featureExtractVersion: form.down('#feversion').getRawValue(),
+                            id: form.officeSettingID
+                        }),
                         success: function (response) {
                             if (Ext.JSON.decode(response.responseText).success) {
                                 Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
-                                Ext.StoreManager.get('idOfficeSettingStore').load();
+                                Ext.StoreManager.get('officeList').load();
                                 form.close();
                             }
                             else {
@@ -315,15 +321,25 @@ Ext.define('Ems.controller.OfficeController', {
         var record = grid.store.getAt(rowIndex);
         var extractID = win.down('#feid');
         var extractVersion = win.down('#feversion');
-        if(record.get('featureExtractName') != null) {
-            extractID.setRawValue(record.get('featureExtractName'));
-            win.extractID = record.get('feiId');
-        }
-        if(record.get('featureExtractVersion') != null) {
-            extractVersion.setRawValue(record.get('featureExtractVersion'));
-            win.extractVersion = record.get('fevId');
+        if(record.get('ostId') != null) {
+         win.officeSettingID = record.get('ostId');
         }
         win.show();
+        if(record.get('featureExtractName') != null) {
+            //extractID.setRawValue(record.get('featureExtractName'));
+            win.extractID = record.get('feiId');
+            extractID.onTriggerClick();
+            setTimeout(function() {extractID.select(extractID.store.getNodeById(1));}, 300);
+        }
+        if(record.get('featureExtractVersion') != null) {
+            //extractVersion.setRawValue(record.get('featureExtractVersion'));
+            win.extractVersion = record.get('fevId');
+            extractVersion.onTriggerClick();
+            setTimeout(function() {extractVersion.select(extractVersion.store.getNodeById(1));}, 300);
+            setTimeout(function () { extractVersion.onTriggerClick(); extractID.onTriggerClick(); }, 300);
+        }
+        var officeSettingCall = Ext.create('Ems.store.OfficeSettingStore');
+        officeSettingCall.load({ params: { enrollmentOfficeId: record.get('id') }});
     },
 
     doUserListOffice: function (grid, rowIndex) {
