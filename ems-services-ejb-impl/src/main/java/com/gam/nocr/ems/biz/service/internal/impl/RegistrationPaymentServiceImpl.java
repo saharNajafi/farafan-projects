@@ -163,14 +163,15 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             if (cardRequestTO.getRegistrationPaymentTO() == null) {
                 throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
             }
-            Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
+            RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
+           // Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
             //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
-            Map<String, String> registrationPaymentResult =
-                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);
-            result.setPaymentAmount(Integer.valueOf(registrationPaymentResult.get("paymentAmount")) );
-            result.setOrderId(String.valueOf(orderId));
-            result.setPaymentCode(registrationPaymentResult.get("paymentCode"));
+           /* Map<String, String> registrationPaymentResult =
+                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);*/
+            result.setPaymentAmount(cardRequestTO.getRegistrationPaymentTO().getAmountPaid());
+            result.setOrderId(String.valueOf(registrationPaymentTO.getOrderId()));
+            result.setPaymentCode(registrationPaymentTO.getPaymentCode());
             return result;
         } catch (Exception e) {
             if (e instanceof ServiceException) {
@@ -193,17 +194,17 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             } catch (BaseException e) {
                 e.printStackTrace();
             }
-            if(replicaTypeCount == 1){
+            if(replicaTypeCount == 0){
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA);
                 paymentCode = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
             }
-            if(replicaTypeCount == 2){
+            if(replicaTypeCount == 1){
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_SECOND_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA);
                 paymentCode = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
             }
-            if(replicaTypeCount >= 3){
+            if(replicaTypeCount >= 2){
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_THIRD_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA);
                 paymentCode = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
