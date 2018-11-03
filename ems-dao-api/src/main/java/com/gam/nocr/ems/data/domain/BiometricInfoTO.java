@@ -23,15 +23,16 @@ import com.gam.nocr.ems.util.EmsUtil;
 @Entity
 @Table(name = "EMST_BIOMETRIC_INFO")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_BIOMETRIC_INFO")
-public class BiometricInfoTO extends ExtEntityTO  {
+public class BiometricInfoTO extends ExtEntityTO {
 
-	private String nationalID;
+    private String nationalID;
     private BiometricInfoType type;
     private MinutiaType minType;
     private CitizenTO citizen;
     private FingerQualityType fingerQualityType = FingerQualityType.UNDEFINED;
-    private String featureExtractorID = "0201";
-    
+    private String featureExtractorIdNormal = "0201";
+    private String featureExtractorIdCC = "0201";
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -45,7 +46,7 @@ public class BiometricInfoTO extends ExtEntityTO  {
     public String getNationalID() {
         return nationalID;
     }
-    
+
     @OneToOne
     @JoinColumn(name = "BII_CITIZEN_ID")
     public CitizenTO getCitizen() {
@@ -62,51 +63,56 @@ public class BiometricInfoTO extends ExtEntityTO  {
 
 
     @Enumerated(EnumType.ORDINAL)
-   	@Column(name = "BII_TYPE")
+    @Column(name = "BII_TYPE")
     public BiometricInfoType getType() {
-		return type;
-	}
-    
+        return type;
+    }
+
     public void setType(BiometricInfoType type) {
-		this.type = type;
-	}
+        this.type = type;
+    }
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "BII_MINUTIA_TYPE")
     public MinutiaType getMinType() {
-    	return minType;
+        return minType;
     }
-    
+
     public void setMinType(MinutiaType minType) {
-    	this.minType = minType;
+        this.minType = minType;
     }
-    
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "BII_FING_QUALITY")
     public FingerQualityType getFingerQualityType() {
-		return fingerQualityType;
-	}
-
-	public void setFingerQualityType(FingerQualityType fingerQualityType) {
-		this.fingerQualityType = fingerQualityType;
-	}
-
-    @Column(name = "BMI_FEATURE_EXTRACTOR_ID",nullable = false,length = 4, columnDefinition = "varchar2(4) default '0201'")
-    public String getFeatureExtractorID() {
-        return featureExtractorID;
+        return fingerQualityType;
     }
 
-    public void setFeatureExtractorID(String featureExtractorID) {
-        this.featureExtractorID = featureExtractorID;
+    public void setFingerQualityType(FingerQualityType fingerQualityType) {
+        this.fingerQualityType = fingerQualityType;
+    }
+
+    @Column(name = "BMI_FEATURE_EXTRACT_ID_NORMAL", nullable = false, length = 4, columnDefinition = "varchar2(4) default '0201'")
+    public String getFeatureExtractorIdNormal() {
+        return featureExtractorIdNormal;
+    }
+
+    public void setFeatureExtractorIdNormal(String featureExtractorIdNormal) {
+        this.featureExtractorIdNormal = featureExtractorIdNormal;
+    }
+    @Column(name = "BMI_FEATURE_EXTRACT_ID_CC", nullable = false, length = 4, columnDefinition = "varchar2(4) default '0201'")
+    public String getFeatureExtractorIdCC() {
+        return featureExtractorIdCC;
+    }
+
+    public void setFeatureExtractorIdCC(String featureExtractorIdCC) {
+        this.featureExtractorIdCC = featureExtractorIdCC;
     }
 
     @Override
     public String toString() {
-    	return EmsUtil.toJSON(this);
+        return EmsUtil.toJSON(this);
     }
-
-    
-
 
 
 }

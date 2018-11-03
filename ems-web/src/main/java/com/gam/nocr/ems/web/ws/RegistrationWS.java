@@ -242,7 +242,8 @@ public class RegistrationWS extends EMSWS {
     @WebMethod
     public void saveFingerInfo(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
                                @WebParam(name = "requestID") long requestID,
-                               @WebParam(name = "featureExtractorID") String featureExtractorID,
+                               @WebParam(name = "featureExtractorIdNormal") String featureExtractorIdNormal,
+                               @WebParam(name = "featureExtractorIdCC") String featureExtractorIdCC,
                                @WebParam(name = "biometricWTO") BiometricWTO[] biometricWTOs) throws InternalException {
 
         UserProfileTO up = super.validateRequest(securityContextWTO);
@@ -253,8 +254,12 @@ public class RegistrationWS extends EMSWS {
             throw new InternalException(WebExceptionCode.RSW_038_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_038));
         }
 
-        if (!EmsUtil.checkString(featureExtractorID)) {
+        if (!EmsUtil.checkString(featureExtractorIdNormal)) {
             throw new InternalException(WebExceptionCode.RSW_086_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_086));
+        }
+
+        if (!EmsUtil.checkString(featureExtractorIdCC)) {
+            throw new InternalException(WebExceptionCode.RSW_087_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_087));
         }
 
         BiometricTO bio;
@@ -280,7 +285,7 @@ public class RegistrationWS extends EMSWS {
 
         try {
 //          registrationDelegator.addFingerData(up, requestID, biometrics);
-            registrationDelegator.addFingerData(up, requestID, biometrics, featureExtractorID);
+            registrationDelegator.addFingerData(up, requestID, biometrics, featureExtractorIdNormal,featureExtractorIdCC);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
         } catch (Exception e) {
@@ -738,7 +743,8 @@ public class RegistrationWS extends EMSWS {
                                  @WebParam(name = "citizenWTO") CitizenWTO citizenWTO,
                                  @WebParam(name = "fingers") BiometricWTO[] fingersWTO,
                                  @WebParam(name = "faces") BiometricWTO[] facesWTO,
-                                 @WebParam(name = "featureExtractorID") String featureExtractorID,
+                                 @WebParam(name = "featureExtractorIdNormal") String featureExtractorIdNormal,
+                                 @WebParam(name = "featureExtractorIdCC") String featureExtractorIdCC,
                                  @WebParam(name = "documents") DocumentWTO[] documentsWTO,
                                  @WebParam(name = "signature") byte[] signature) throws InternalException {
         UserProfileTO up = super.validateRequest(securityContextWTO);
@@ -751,7 +757,7 @@ public class RegistrationWS extends EMSWS {
 
         try {
 //            delegator.register(up, cardRequestTO, fingers, faces, documents, signature);
-            delegator.register(up, cardRequestTO, fingers, faces, documents, signature, featureExtractorID);
+            delegator.register(up, cardRequestTO, fingers, faces, documents, signature, featureExtractorIdNormal,featureExtractorIdCC);
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
