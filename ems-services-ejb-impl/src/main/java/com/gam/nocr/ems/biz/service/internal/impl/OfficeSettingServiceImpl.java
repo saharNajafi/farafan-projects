@@ -16,7 +16,9 @@ import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,36 +33,38 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
 
     @Override
     public Long save(OfficeSettingVTO officeSettingVTO) throws BaseException {
-        OfficeSettingTO officeSettingTO = new OfficeSettingTO();
-        Set<FeatureExtractIdsTO> featureExtractIdsTOList;
-        try {
-            featureExtractIdsTOList =
-                    getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC());
-            officeSettingTO.setFeatureExtractIdsTO(featureExtractIdsTOList);
-            officeSettingTO = getOfficeSettingDAO().create(officeSettingTO);
-        } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.OST_013, BizExceptionCode.OST_013_MSG, e);
-        }
-        return officeSettingTO.getId();
+//        OfficeSettingTO officeSettingTO = new OfficeSettingTO();
+//        Set<FeatureExtractIdsTO> featureExtractIdsTOList;
+//        try {
+//            featureExtractIdsTOList =
+//                    getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC());
+//            officeSettingTO.setFeatureExtractIdsTO(featureExtractIdsTOList);
+//            officeSettingTO = getOfficeSettingDAO().create(officeSettingTO);
+//        } catch (BaseException e) {
+//            throw new ServiceException(BizExceptionCode.OST_013, BizExceptionCode.OST_013_MSG, e);
+//        }
+//        return officeSettingTO.getId();
+        return null;
     }
 
     @Override
     public Long update(OfficeSettingVTO officeSettingVTO) throws BaseException {
         OfficeSettingTO officeSettingTO;
         Set<FeatureExtractIdsTO> featureExtractIdsTOList;
-        try {
-            officeSettingTO = getOfficeSettingDAO().findById(officeSettingVTO.getId());
-            if (officeSettingTO == null)
-                throw new ServiceException(BizExceptionCode.OST_003,
-                        BizExceptionCode.OST_003_MSG, new Long[]{officeSettingVTO.getId()});
-            featureExtractIdsTOList =
-                    getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC());
-            officeSettingTO.setFeatureExtractIdsTO(featureExtractIdsTOList);
-            getOfficeSettingDAO().update(officeSettingTO);
-        } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.OST_011, BizExceptionCode.OST_011_MSG, e);
-        }
-        return officeSettingTO != null ? officeSettingTO.getId() : null;
+//        try {
+//            officeSettingTO = getOfficeSettingDAO().findById(officeSettingVTO.getId());
+//            if (officeSettingTO == null)
+//                throw new ServiceException(BizExceptionCode.OST_003,
+//                        BizExceptionCode.OST_003_MSG, new Long[]{officeSettingVTO.getId()});
+//            featureExtractIdsTOList =
+//                    getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC());
+//            officeSettingTO.setFeatureExtractIdsTO(featureExtractIdsTOList);
+//            getOfficeSettingDAO().update(officeSettingTO);
+//        } catch (BaseException e) {
+//            throw new ServiceException(BizExceptionCode.OST_011, BizExceptionCode.OST_011_MSG, e);
+//        }
+//        return officeSettingTO != null ? officeSettingTO.getId() : null;
+        return null;
     }
 
     private Set<FeatureExtractIdsTO> getFeatureExtractIdsList(Long fenId, Long fecId) {
@@ -84,28 +88,34 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
         return featureExtractIdsTOList;
     }
 
-//    @Override
-//    public OfficeSettingVTO load(Long enrollmentOfficeId) throws BaseException {
-//        OfficeSettingTO officeSettingTO;
-//        OfficeSettingVTO officeSettingVTO = new OfficeSettingVTO();
-//        try {
-//            if (enrollmentOfficeId == null)
-//                throw new ServiceException(BizExceptionCode.OST_001, BizExceptionCode.OST_001_MSG);
-//            officeSettingTO = getOfficeSettingDAO().findByOfficeId(enrollmentOfficeId);
-//            if (officeSettingTO == null)
-//                throw new ServiceException(BizExceptionCode.OST_002,
-//                        BizExceptionCode.OST_002_MSG, new Long[]{enrollmentOfficeId});
-//            officeSettingVTO.setId(officeSettingTO.getId());
-//            if (officeSettingTO.getFeatureExtractIdsTO() != null) {
-//                officeSettingVTO.setFeatureExtractNormalName(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdNormalName());
-//                officeSettingVTO.setFenId(officeSettingTO.getFeatureExtractIdsTO().getId());
-//            }
-//
-//        } catch (BaseException e) {
-//            throw new ServiceException(BizExceptionCode.OST_012, BizExceptionCode.OST_012_MSG, e);
-//        }
-//        return officeSettingVTO;
-//    }
+    @Override
+    public List<OfficeSettingVTO> load(Long enrollmentOfficeId) throws BaseException {
+        OfficeSettingTO officeSettingTO;
+        OfficeSettingVTO officeSettingVTO = new OfficeSettingVTO();
+        List<OfficeSettingVTO> officeSettingVTOs = new ArrayList<OfficeSettingVTO>();
+
+        try {
+            if (enrollmentOfficeId == null)
+                throw new ServiceException(BizExceptionCode.OST_001, BizExceptionCode.OST_001_MSG);
+            officeSettingTO = getOfficeSettingDAO().findByOfficeId(enrollmentOfficeId);
+            if (officeSettingTO == null)
+                throw new ServiceException(BizExceptionCode.OST_002,
+                        BizExceptionCode.OST_002_MSG, new Long[]{enrollmentOfficeId});
+            officeSettingVTO.setOsdId(officeSettingTO.getId());
+            if (officeSettingTO.getFeatureExtractIdsTO().size() > 0) {
+                for(FeatureExtractIdsTO featureExtractIdsTO : officeSettingTO.getFeatureExtractIdsTO()){
+                    officeSettingVTO.setFeiId(featureExtractIdsTO.getId());
+                    officeSettingVTO.setFeatureExtractName(featureExtractIdsTO.getFeatureExtractName());
+                    officeSettingVTO.setFeatureExtractType(String.valueOf(featureExtractIdsTO.getFeatureExtractType()));
+                    officeSettingVTOs.add(officeSettingVTO);
+                }
+            }
+
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.OST_012, BizExceptionCode.OST_012_MSG, e);
+        }
+        return officeSettingVTOs;
+    }
 
     private OfficeSettingDAO getOfficeSettingDAO() throws BaseException {
         try {

@@ -11,6 +11,8 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
+import java.util.List;
+
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/15/18.
  */
@@ -40,7 +42,7 @@ public Long update(UserProfileTO userProfile, OfficeSettingVTO to) throws BaseEx
         return getService(userProfile).update(to);
     }
 
-//    public OfficeSettingVTO load(UserProfileTO userProfile, Long officeId) throws BaseException {
-//        return getService(userProfile).load(officeId);
-//    }
+    public List<OfficeSettingVTO> load(UserProfileTO userProfile, Long officeId) throws BaseException {
+        return getService(userProfile).load(officeId);
+    }
 }

@@ -9,33 +9,40 @@ import com.gam.commons.core.data.domain.ExtEntityTO;
  */
 public class OfficeSettingVTO extends ExtEntityTO {
 
-    private Long id;
-    private Long feiCC;
-    private Long feiN;
+    private Long feiId;
+    private Long osdId;
+    private String featureExtractName;
+    private String featureExtractType;
 
-    @Override
-    public Long getId() {
-        return id;
+    public Long getOsdId() {
+        return osdId;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    public void setOsdId(Long osdId) {
+        this.osdId = osdId;
     }
 
-    public Long getFeiCC() {
-        return feiCC;
+    public String getFeatureExtractName() {
+        return featureExtractName;
     }
 
-    public void setFeiCC(Long feiCC) {
-        this.feiCC = feiCC;
+    public void setFeatureExtractName(String featureExtractName) {
+        this.featureExtractName = featureExtractName;
     }
 
-    public Long getFeiN() {
-        return feiN;
+    public String getFeatureExtractType() {
+        return featureExtractType;
     }
 
-    public void setFeiN(Long feiN) {
-        this.feiN = feiN;
+    public void setFeatureExtractType(String featureExtractType) {
+        this.featureExtractType = featureExtractType;
+    }
+
+    public Long getFeiId() {
+        return feiId;
+    }
+
+    public void setFeiId(Long feiId) {
+        this.feiId = feiId;
     }
 }

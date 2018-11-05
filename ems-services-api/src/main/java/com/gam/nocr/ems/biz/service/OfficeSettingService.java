@@ -4,6 +4,8 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
 
+import java.util.List;
+
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/15/18.
  */
@@ -11,7 +13,7 @@ public interface OfficeSettingService extends Service {
 
     Long update(OfficeSettingVTO to) throws BaseException;
 
-//    OfficeSettingVTO load(Long id) throws BaseException;
+    List<OfficeSettingVTO> load(Long id) throws BaseException;
 
     Long save(OfficeSettingVTO to) throws BaseException;
 }
