@@ -6,14 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Ems.store.OfficeSettingFeatureExtractVersionStore', {
+Ext.define('Ems.store.OfficeSettingFeatureExtractCCStore', {
 
     extend: 'Gam.data.store.Autocomplete',
-    alias: 'store.officesettingfeatureextractversionstore',
+    alias: 'store.officesettingfeatureextractccstore',
 
     require: ['Ems.model.AutocompleteSimpleModel'],
-    model: 'Ems.model.OfficeSettingFeatureExtractVersionModel',
+    model: 'Ems.model.OfficeSettingFeatureExtractCCModel',
 
-    autocompleteName: 'featureExtractVersions'
+    autocompleteName: 'featureExtractIdsCC'
 });
 

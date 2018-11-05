@@ -73,12 +73,8 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private String postDestinationCode;
     private String allowAmputatedFinger;
     private String allowChangeFinger;
-    private String featureExtractName;
-    private String featureExtractVersion;
-    private Long ostId;
     private String officeSettingType;
-    private Long feiId;
-    private Long fevId;
+
 
     public String getName() {
         return name;
@@ -560,45 +556,5 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
 
     public void setAllowChangeFinger(String allowChangeFinger) {
         this.allowChangeFinger = allowChangeFinger;
-    }
-
-    public String getFeatureExtractName() {
-        return featureExtractName;
-    }
-
-    public void setFeatureExtractName(String featureExtractName) {
-        this.featureExtractName = featureExtractName;
-    }
-
-    public String getFeatureExtractVersion() {
-        return featureExtractVersion;
-    }
-
-    public void setFeatureExtractVersion(String featureExtractVersion) {
-        this.featureExtractVersion = featureExtractVersion;
-    }
-
-    public Long getOstId() {
-        return ostId;
-    }
-
-    public void setOstId(Long ostId) {
-        this.ostId = ostId;
-    }
-
-    public Long getFeiId() {
-        return feiId;
-    }
-
-    public void setFeiId(Long feiId) {
-        this.feiId = feiId;
-    }
-
-    public Long getFevId() {
-        return fevId;
-    }
-
-    public void setFevId(Long fevId) {
-        this.fevId = fevId;
     }
 }

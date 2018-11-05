@@ -36,7 +36,6 @@ public class EMSLogicalNames {
     public static String SRV_RATING = "RatingService";
     public static String SRV_OFFICE_SETTING = "OfficeSettingService";
     public static String SRV_FEATURE_EXTRACT_IDS = "FeatureExtractIdsService";
-    public static String SRV_FEATURE_EXTRACT_VERSIONS = "FeatureExtractVersionsService";
     public static String SRV_LOCATION = "LocationService";
     public static String SRV_HOLIDAY= "HolidayService";
     public static String SRV_TOKEN_MANAGEMENT = "TokenManagementService";
@@ -133,7 +132,6 @@ public class EMSLogicalNames {
     public static String DAO_OFFICE_SETTING = "OfficeSettingDAO";
     public static String DAO_OFFICE_CAPACITY = "OfficeCapacityDAO";
     public static String DAO_FEATURE_EXTRACT_IDS = "FeatureExtractIdsDAO";
-    public static String DAO_FEATURE_EXTRACT_VERSIONS = "FeatureExtractVersionsDAO";
     public static String DAO_OFFICE_ACTIVE_SHIFT= "OfficeActiveShiftDAO";
     public static String DAO_NIST_HEADER = "NistHeaderDAO";
     public static String DAO_XML_AFIS = "XmlAfisDAO";

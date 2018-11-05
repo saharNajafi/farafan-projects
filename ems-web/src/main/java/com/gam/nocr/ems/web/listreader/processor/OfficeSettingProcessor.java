@@ -21,7 +21,7 @@ public class OfficeSettingProcessor extends EMSVLPListProcessor {
         HashMap parameters = new HashMap();
         ValueListProvider vlp = getValueListProvider();
         StringBuilder parts = new StringBuilder();
-        parameters.put("enrollmentOfficeID", paramProvider.getParameter("enrollmentOfficeID"));
+        parameters.put("enrollmentOfficeId", paramProvider.getParameter("enrollmentOfficeId"));
         ValueListHandler vlh;
         try {
             vlh = vlp.loadList("officeSettingList",

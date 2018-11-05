@@ -2826,13 +2826,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRH_S_001 = "EMS_CRH_S_001";
     public static final String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 
-    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractIdsServiceImpl.java
+    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractNormalServiceImpl.java
     public static final String FEI_001 = "EMS_S_FEI_001";
     public static final String FEI_002 = "EMS_S_FEI_002";
     public static final String FEI_003 = "EMS_S_FEI_003";
     public static final String FEI_004 = "EMS_S_FEI_004";
 
-    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractVersionsServiceImpl.java
+    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractCCServiceImpl.java
     public static final String FEV_001 = "EMS_S_FEV_001";
     public static final String FEV_002 = "EMS_S_FEV_002";
     public static final String FEV_003 = "EMS_S_FEV_003";
@@ -2856,8 +2856,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OST_002_MSG = "Could not find officeCapacity with id {0}";
     public static final String OST_003_MSG = "OfficeSetting id {} does not exist for editing";
     public static final String OST_004_MSG = "an error occurred on save operation";
-    public static final String OST_007_MSG = "Could not find featureExtractIds with id {0}";
-    public static final String OST_008_MSG = "Could not find featureExtractVersions with id {0}";
+    public static final String OST_007_MSG = "Could not find featureExtractNormal with id {0}";
+    public static final String OST_008_MSG = "Could not find featureExtractCC with id {0}";
     public static final String OST_011_MSG = "an error occurred on update operation";
     public static final String OST_012_MSG = "an error occurred on load operation";
     public static final String OST_013_MSG = "an error occurred on save operation";

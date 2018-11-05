@@ -320,8 +320,8 @@ Ext.define('Ems.controller.NavigationHeaderController', {
 
             	debugger;
             	var accessViewAndChangeOfficeSetting = (Ext.decode(response.responseText)).accessViewAndChangeOfficeSetting;
-            	EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting; 
-            	
+            	EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
+
             },
             failure: function (response) {
                 Tools.errorFailure();

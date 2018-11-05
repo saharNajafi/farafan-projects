@@ -8,8 +8,10 @@ import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.OfficeSettingService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
+import com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTO;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.List;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/15/18.
@@ -32,15 +34,12 @@ public class OfficeSettingDelegator {
         return officeSettingService;
     }
 
-    public Long save(UserProfileTO userProfile, OfficeSettingVTO to) throws BaseException {
+    public Long save(UserProfileTO userProfile, FeatureExtractIdsVTO to) throws BaseException {
         return getService(userProfile).save(to);
     }
 
-public Long update(UserProfileTO userProfile, OfficeSettingVTO to) throws BaseException {
+public Long update(UserProfileTO userProfile, FeatureExtractIdsVTO to) throws BaseException {
         return getService(userProfile).update(to);
     }
 
-    public OfficeSettingVTO load(UserProfileTO userProfile, Long officeId) throws BaseException {
-        return getService(userProfile).load(officeId);
-    }
 }

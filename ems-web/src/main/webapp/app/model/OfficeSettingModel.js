@@ -1,10 +1,10 @@
 Ext.define('Ems.model.OfficeSettingModel', {
     extend: 'Gam.data.model.Model',
     fields: [
-        { name: 'featureExtractName', type: 'string' },
-        { name: 'featureExtractVersion', type: 'string' },
-        { name: 'feiId', type: 'number' },
-        { name: 'fevId', type: 'number' },
-        { name: 'id', type: 'number' },
+        { name: 'featureExtractNormal', type: 'string' },
+        { name: 'featureExtractCC', type: 'string' },
+        { name: 'feiN', type: 'number' },
+        { name: 'feiCC', type: 'number' },
+        { name: 'id', type: 'number' }
     ]
 });

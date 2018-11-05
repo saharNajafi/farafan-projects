@@ -8,5 +8,5 @@ import javax.ejb.Remote;
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/16/18.
  */
 @Remote
-public interface FeatureExtractIdsDAORemote extends FeatureExtractIdsDAO{
+public interface FeatureExtractIdsDAORemote extends FeatureExtractIdsDAO {
 }

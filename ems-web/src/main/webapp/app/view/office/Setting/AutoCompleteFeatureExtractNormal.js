@@ -6,20 +6,20 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractID', {
+Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractNormal', {
     extend: 'Gam.form.field.Autocomplete',
-    alias: 'widget.autoCompleteFeatureExtractID',
+    alias: 'widget.autoCompleteFeatureExtractNormal',
 
     requires: [
-        'Ems.store.OfficeSettingFeatureExtractIDStore',
-        'Ems.model.OfficeSettingFeatureExtractIDModel'
+        'Ems.store.OfficeSettingFeatureExtractNormalStore',
+        'Ems.model.OfficeSettingFeatureExtractNormalModel'
     ],
 
-    store: {type: 'officesettingfeatureextractidstore'},
+    store: {type: 'officesettingfeatureextractnormalstore'},
 
     multiSelect: false,
 
-    forceSelection: false,
+    // forceSelection: false,
 
     valueField: 'acId',
 

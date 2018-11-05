@@ -9,10 +9,10 @@ import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.FeatureExtractIdsService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
-import com.gam.nocr.ems.data.domain.OfficeSettingTO;
-import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
+import com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTO;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.List;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/13/18.
@@ -34,10 +34,19 @@ public class FeatureExtractIdsDelegator {
         return featureExtractIdsService;
     }
 
-    public SearchResult fetchFeatureExtractIdList(UserProfileTO userProfile, String searchString
+    public SearchResult fetchFeatureExtractIdsNormalList(UserProfileTO userProfile, String searchString
             , int from, int to, String orderBy) throws BaseException {
-        return getService(userProfile).fetchFeatureExtractIdList(searchString, from, to, orderBy);
+        return getService(userProfile).fetchFeatureExtractIdsNormalList(searchString, from, to, orderBy);
     }
 
+  public SearchResult fetchFeatureExtractIdsCCList(UserProfileTO userProfile, String searchString
+            , int from, int to, String orderBy) throws BaseException {
+        return getService(userProfile).fetchFeatureExtractIdsCCList(searchString, from, to, orderBy);
+    }
+
+
+    public List<FeatureExtractIdsVTO> load(UserProfileTO userProfile, Long officeId) throws BaseException {
+        return getService(userProfile).load(officeId);
+    }
 
 }

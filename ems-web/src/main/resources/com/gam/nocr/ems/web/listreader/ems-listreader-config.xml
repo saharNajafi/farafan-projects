@@ -199,8 +199,8 @@
         <list name='officeCapacityList' processor='officeCapacity-processor'>
             <access permission="EMS_VIEW_OFFICE_CAPACITY_LIST"/>
         </list>
-        <list name='officeSettingList' processor='officeSetting-processor'>
-            <access permission="EMS_VIEW_OFFICE_SETTING_LIST"/>
-        </list>
+        <!--<list name='officeSettingList' processor='officeSetting-processor'>-->
+            <!--<access permission="EMS_VIEW_OFFICE_SETTING_LIST"/>-->
+        <!--</list>-->
     </lists>
 </listreader-config>

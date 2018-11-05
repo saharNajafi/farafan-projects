@@ -6,16 +6,16 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractVersion', {
+Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractCC', {
     extend: 'Gam.form.field.Autocomplete',
-    alias: 'widget.autoCompleteFeatureExtractVersion',
+    alias: 'widget.autoCompleteFeatureExtractCC',
 
     requires: [
-        'Ems.store.OfficeSettingFeatureExtractVersionStore',
-        'Ems.model.OfficeSettingFeatureExtractVersionModel'
+        'Ems.store.OfficeSettingFeatureExtractCCStore',
+        'Ems.model.OfficeSettingFeatureExtractCCModel'
     ],
 
-    store: {type: 'officesettingfeatureextractversionstore'},
+    store: {type: 'officesettingfeatureextractccstore'},
 
     multiSelect: false,
 

@@ -4,7 +4,7 @@ import com.gam.commons.autocomplete.AutocompleteTO;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.commons.core.data.domain.UserProfileTO;
-import com.gam.nocr.ems.biz.delegator.FeatureExtractVersionsDelegator;
+import com.gam.nocr.ems.biz.delegator.FeatureExtractIdsDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
 import org.slf4j.Logger;
@@ -14,13 +14,13 @@ import java.util.Map;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/13/18.
  */
-public class FeatureExtractVersionsAutoComplete extends BaseAutocompleteHandler{
+public class FeatureExtractCCAutoComplete extends BaseAutocompleteHandler{
 
-    private static final Logger logger = BaseLog.getLogger(FeatureExtractVersionsAutoComplete.class);
+    private static final Logger logger = BaseLog.getLogger(FeatureExtractCCAutoComplete.class);
 
     @Override
     protected String getAutocompleteProfileKeyName() {
-        return "featureExtractVersions";
+        return "featureExtractIdsCC";
     }
 
     @Override
@@ -29,15 +29,18 @@ public class FeatureExtractVersionsAutoComplete extends BaseAutocompleteHandler{
     }
 
     @Override
-    public SearchResult getSearchResult(String searchString, int from, int to, Integer depId, Integer perId, String orderBy, Map additionalParams) {
+    public SearchResult getSearchResult(
+            String searchString, int from
+            , int to, Integer depId, Integer perId
+            , String orderBy, Map additionalParams) {
         try {
             UserProfileTO userProfile = new UserProfileTO();
             if (perId != null)
                 userProfile.setPersonID(perId);
             if (depId != null)
                 userProfile.setDepID(depId);
-            FeatureExtractVersionsDelegator featureExtractVersionsDelegator = new FeatureExtractVersionsDelegator();
-            return featureExtractVersionsDelegator.FeatureExtractVersionList(userProfile, searchString, from, to, orderBy);
+            FeatureExtractIdsDelegator featureExtractIdsDelegator = new FeatureExtractIdsDelegator();
+            return featureExtractIdsDelegator.fetchFeatureExtractIdsCCList(userProfile, searchString, from, to, orderBy);
 
         } catch (Throwable t) {
             logger.error(WebExceptionCode.GLB_ERR_MSG, t);

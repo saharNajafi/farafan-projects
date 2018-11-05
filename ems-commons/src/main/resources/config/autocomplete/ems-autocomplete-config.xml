@@ -35,9 +35,9 @@
 			type="com.gam.nocr.ems.web.autocomplete.EnrollmentOfficeByProvinceAutocomplete" />
 		<handler name="office"
 			type="com.gam.nocr.ems.web.autocomplete.OfficeAutocomplete" />
-		<handler name="featureExtractIds"
-				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractIdsAutoComplete" />
-		<handler name="featureExtractVersions"
-				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractVersionsAutoComplete" />
+		<handler name="featureExtractIdsNormal"
+				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractNormalAutoComplete" />
+		<handler name="featureExtractIdsCC"
+				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractCCAutoComplete" />
 	</handlers>
 </autocomplete-config>

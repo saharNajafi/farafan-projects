@@ -536,9 +536,9 @@
 	</list>
 	<!-- EnrollmentOfficeByProvince -->
 
-	<!-- FeatureExtractIds autoComplete -->
+	<!-- featureExtractIdsNormal autoComplete -->
 	<list>
-		<list-name>featureExtractIdsAC</list-name>
+		<list-name>featureExtractIdsNormalAC</list-name>
 		<query>
 			<main-query>
 				<part name="count">
@@ -546,10 +546,11 @@
 				</part>
 				<part name="main">
 					SELECT distinct
-					fei.FEI_ID,
-					fei.FEI_FEATURE_EXTRACT_ID_NAME
+					fen.FEI_ID,
+					fen.FEI_FEATURE_EXTRACT_NAME
 				</part>
-				FROM EMST_FEATURE_EXTRACT_IDS fei
+				FROM EMST_FEATURE_EXTRACT_IDS fen
+				WHERE fen.FEI_FEATURE_EXTRACT_TYPE = "NORMAL"
 			</main-query>
 		</query>
 		<dto>
@@ -557,15 +558,15 @@
 			<dto-fields>
 				<field name="id" column="FEI_ID" />
 				<field name="acId" column="FEI_ID" />
-				<field name="acName" column="FEI_FEATURE_EXTRACT_ID_NAME" />
+				<field name="acName" column="FEI_FEATURE_EXTRACT_NAME" />
 			</dto-fields>
 		</dto>
 	</list>
-	<!-- FeatureExtractIds autoComplete -->
+	<!-- featureExtractIdsNormal autoComplete -->
 
-	<!-- FeatureExtractVersions autoComplete -->
+	<!-- featureExtractIdsCC autoComplete -->
 	<list>
-		<list-name>featureExtractVersionsAC</list-name>
+		<list-name>featureExtractIdsCCAC</list-name>
 		<query>
 			<main-query>
 				<part name="count">
@@ -573,21 +574,21 @@
 				</part>
 				<part name="main">
 					SELECT distinct
-					fev.FEV_ID,
-					fev.FEV_FEATURE_EXTRACT_VERSION
+					fec.FEI_ID,
+					fec.FEI_FEATURE_EXTRACT_NAME
 				</part>
-				FROM EMST_FEATURE_EXTRACT_VERSIONS fev
+				FROM EMST_FEATURE_EXTRACT_IDS fec
+				WHERE fec.FEN_FEATURE_EXTRACT_TYPE = "CC"
 			</main-query>
 		</query>
 		<dto>
 			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
 			<dto-fields>
-				<field name="id" column="FEV_ID"/>
-				<field name="acId" column="FEV_ID"/>
-				<field name="acName" column="FEV_FEATURE_EXTRACT_VERSION"/>
+				<field name="id" column="FEI_ID" />
+				<field name="acId" column="FEI_ID" />
+				<field name="acName" column="FEI_FEATURE_EXTRACT_NAME" />
 			</dto-fields>
 		</dto>
 	</list>
-	<!-- FeatureExtractVersions autoComplete -->
-
+	<!-- featureExtractIdCC autoComplete -->
 </lists>

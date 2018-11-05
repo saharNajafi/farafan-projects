@@ -6,5 +6,5 @@ import javax.ejb.Local;
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/13/18.
  */
 @Local
-public interface FeatureExtractIdsServiceLocal extends FeatureExtractIdsService{
+public interface FeatureExtractIdsServiceLocal extends FeatureExtractIdsService {
 }

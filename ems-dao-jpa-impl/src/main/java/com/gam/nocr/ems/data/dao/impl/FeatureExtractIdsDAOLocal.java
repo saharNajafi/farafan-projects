@@ -8,5 +8,5 @@ import javax.ejb.Local;
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/16/18.
  */
 @Local
-public interface FeatureExtractIdsDAOLocal extends FeatureExtractIdsDAO{
+public interface FeatureExtractIdsDAOLocal extends FeatureExtractIdsDAO {
 }
