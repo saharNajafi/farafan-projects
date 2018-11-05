@@ -170,13 +170,13 @@ public class EmksServiceImpl extends EMSAbstractService implements
         try {
             CardKeysAndPINs nidCardPINs = emksService.getNIDCardKeysAndPINs(str);
             EMKSDataResultWTO emksDataResultWTO = new EMKSDataResultWTO();
-            emksDataResultWTO.setId(nidCardPINs.getID().getValue().toString());
-            emksDataResultWTO.setSign(nidCardPINs.getSign().getValue().toString());
-            emksDataResultWTO.setSmPin(nidCardPINs.getPINSM().getValue().toString());
-            emksDataResultWTO.setSmd(nidCardPINs.getSMd().getValue().toString());
-            emksDataResultWTO.setAsd(nidCardPINs.getASd().getValue().toString());
-            emksDataResultWTO.setMac(nidCardPINs.getMAC().getValue().toString());
-            emksDataResultWTO.setEnc(nidCardPINs.getENC().getValue().toString());
+            emksDataResultWTO.setId(nidCardPINs.getID() != null ? nidCardPINs.getID().getValue().toString() : "");
+            emksDataResultWTO.setSign(nidCardPINs.getSign() != null ? nidCardPINs.getSign().getValue().toString() : "");
+            emksDataResultWTO.setSmPin(nidCardPINs.getPINSM() != null ? nidCardPINs.getPINSM().getValue().toString() : "");
+            emksDataResultWTO.setSmd(nidCardPINs.getSMd() != null ? nidCardPINs.getSMd().getValue().toString() : "");
+            emksDataResultWTO.setAsd(nidCardPINs.getASd() != null ? nidCardPINs.getASd().getValue().toString() : "");
+            emksDataResultWTO.setMac(nidCardPINs.getMAC() != null ? nidCardPINs.getMAC().getValue().toString() : "");
+            emksDataResultWTO.setEnc(nidCardPINs.getENC() != null ? nidCardPINs.getENC().getValue().toString() : "");
             if (emksDataWTO.getMocAvailable().equals("0")) {
                 if (nidCardPINs.getNMoC() == null)
                     throw new BaseException("101",
