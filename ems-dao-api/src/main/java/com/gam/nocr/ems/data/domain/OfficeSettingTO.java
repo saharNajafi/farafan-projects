@@ -1,12 +1,16 @@
 package com.gam.nocr.ems.data.domain;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.JSONable;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "EMST_OFFICE_SETTING")
@@ -38,8 +42,7 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     private Boolean allowEditBackground = Boolean.FALSE;
     private Boolean allowAmputatedFingerStatusForElderly = Boolean.FALSE;
     private Boolean allowChangeFingerStatusDuringCaptureForElderly = Boolean.TRUE;
-    private FeatureExtractIdsTO featureExtractIdsTO;
-    private FeatureExtractVersionsTO featureExtractVersionsTO;
+    private Set<FeatureExtractIdsTO> featureExtractIdsTO;
 
 
     @Id
@@ -167,25 +170,22 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.allowChangeFingerStatusDuringCaptureForElderly = allowChangeFingerStatusDuringCaptureForElderly;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OST_FEATURE_EXTRACTID_ID")
-    public FeatureExtractIdsTO getFeatureExtractIdsTO() {
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "OST_FEI"
+            ,joinColumns = @JoinColumn(name = "OST_ID"
+            , referencedColumnName = "OST_ID")
+            , inverseJoinColumns = @JoinColumn(name = "FEI_ID"
+            , referencedColumnName = "FEI_ID"))
+    public Set<FeatureExtractIdsTO> getFeatureExtractIdsTO() {
         return featureExtractIdsTO;
     }
 
-    public void setFeatureExtractIdsTO(FeatureExtractIdsTO featureExtractIdsTO) {
+    public void setFeatureExtractIdsTO(Set<FeatureExtractIdsTO> featureExtractIdsTO) {
         this.featureExtractIdsTO = featureExtractIdsTO;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OST_FEATURE_EXTRACTVERSION_ID")
-    public FeatureExtractVersionsTO getFeatureExtractVersionsTO() {
-        return featureExtractVersionsTO;
-    }
 
-    public void setFeatureExtractVersionsTO(FeatureExtractVersionsTO featureExtractVersionsTO) {
-        this.featureExtractVersionsTO = featureExtractVersionsTO;
-    }
 
     @Override
     public String toJSON() {

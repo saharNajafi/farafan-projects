@@ -5,10 +5,10 @@
  * Time: 6:12 PM
  * To change this template use File | Settings | File Templates.
  */
-Ext.define("Ems.model.OfficeSettingFeatureExtractVersionModel", {
+Ext.define("Ems.model.OfficeSettingFeatureExtractCCModel", {
     extend: 'Ems.model.AutocompleteSimpleModel',
     fields: [
-        'fevId' ,
-        'featureExtractorVersion'
+        'feiCC' ,
+        'featureExtractCC'
     ]
 });

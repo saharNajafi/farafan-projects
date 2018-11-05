@@ -35,21 +35,21 @@ public class OfficeSettingAction extends ListControllerImpl<OfficeSettingVTO> {
             throw new ActionException(WebExceptionCode.OSA_001, WebExceptionCode.GLB_001_MSG, e);
         }
     }
-
-    public String load() throws BaseException {
-        OfficeSettingDelegator officeSettingDelegator = new OfficeSettingDelegator();
-        OfficeSettingVTO officeSettingVTO = null;
-        try {
-            if (ids != null)
-                officeSettingVTO = officeSettingDelegator.load(getUserProfile(), Long.parseLong(ids));
-            else
-                throw new ActionException(WebExceptionCode.OSA_002, WebExceptionCode.OSA_002_MSG);
-            List<OfficeSettingVTO> officeSettingVTOs = new ArrayList<OfficeSettingVTO>();
-            officeSettingVTOs.add(officeSettingVTO);
-            setRecords(officeSettingVTOs);
-            return SUCCESS_RESULT;
-        } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.OSA_003, WebExceptionCode.GLB_001_MSG, e);
-        }
-    }
+//
+//    public String load() throws BaseException {
+//        OfficeSettingDelegator officeSettingDelegator = new OfficeSettingDelegator();
+//        OfficeSettingVTO officeSettingVTO = null;
+//        try {
+//            if (ids != null)
+//                officeSettingVTO = officeSettingDelegator.load(getUserProfile(), Long.parseLong(ids));
+//            else
+//                throw new ActionException(WebExceptionCode.OSA_002, WebExceptionCode.OSA_002_MSG);
+//            List<OfficeSettingVTO> officeSettingVTOs = new ArrayList<OfficeSettingVTO>();
+//            officeSettingVTOs.add(officeSettingVTO);
+//            setRecords(officeSettingVTOs);
+//            return SUCCESS_RESULT;
+//        } catch (BusinessSecurityException e) {
+//            throw new ActionException(WebExceptionCode.OSA_003, WebExceptionCode.GLB_001_MSG, e);
+//        }
+//    }
 }

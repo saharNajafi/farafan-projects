@@ -11,7 +11,7 @@ public interface OfficeSettingService extends Service {
 
     Long update(OfficeSettingVTO to) throws BaseException;
 
-    OfficeSettingVTO load(Long id) throws BaseException;
+//    OfficeSettingVTO load(Long id) throws BaseException;
 
     Long save(OfficeSettingVTO to) throws BaseException;
 }

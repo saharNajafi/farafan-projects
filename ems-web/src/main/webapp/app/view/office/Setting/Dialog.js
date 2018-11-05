@@ -21,19 +21,19 @@ Ext.define('Ems.view.office.Setting.Dialog', {
 
     action: "add",
 
-    extractID: null,
+    extractNormalID: null,
 
     officeSettingID: null,
 
-    extractVersion: null,
+    extractCCID: null,
 
     title: 'تنظیمات 4545lds',
 
     requires: [
-        ,'Ems.store.OfficeSettingFeatureExtractIDStore'
-        ,'Ems.store.OfficeSettingFeatureExtractVersionStore'
-        ,'Ems.view.office.Setting.AutoCompleteFeatureExtractID'
-        ,,'Ems.view.office.Setting.AutoCompleteFeatureExtractVersion'
+        ,'Ems.store.OfficeSettingFeatureExtractNormalStore'
+        ,'Ems.store.OfficeSettingFeatureExtractCCStore'
+        ,'Ems.view.office.Setting.AutoCompleteFeatureExtractNormal'
+        ,'Ems.view.office.Setting.AutoCompleteFeatureExtractCC'
     ],
 
     initComponent: function () {
@@ -44,19 +44,19 @@ Ext.define('Ems.view.office.Setting.Dialog', {
     buildFormItems: function () {
         return [
             {
-                xtype: 'autoCompleteFeatureExtractID',
-                fieldLabel: 'featureExtractID',
-                id: 'feid',
-                name: 'feid',
+                xtype: 'autoCompleteFeatureExtractNormal',
+                fieldLabel: 'featureExtractNormal',
+                id: 'feiN',
+                name: 'feiN',
                 labelWidth: 135
                // allowBlank: false
             },
             {
-                xtype: 'autoCompleteFeatureExtractVersion',
-                fieldLabel: 'featureExtractVersion',
+                xtype: 'autoCompleteFeatureExtractCC',
+                fieldLabel: 'featureExtractCC',
                 labelWidth: 135,
-                id: 'feversion',
-                name: 'feversion'
+                id: 'feiCC',
+                name: 'feiCC'
                 //allowBlank: false
             }
         ]

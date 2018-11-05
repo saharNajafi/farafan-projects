@@ -1,6 +1,7 @@
 package com.gam.nocr.ems.data.domain;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
+import com.gam.nocr.ems.data.enums.FeatureExtractType;
 import com.gam.nocr.ems.util.EmsUtil;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -20,10 +21,8 @@ import javax.persistence.*;
 })
 public class FeatureExtractIdsTO extends ExtEntityTO{
 
-    private String featureExtractIdNormal = "02";
-    private String featureExtractIdCC = "02";
-    private String featureExtractIdNormalName = "متیران";
-    private String featureExtractIdCCName = "متیران";
+    private String featureExtractName;
+    private FeatureExtractType featureExtractType;
 
     public FeatureExtractIdsTO(){}
 
@@ -34,44 +33,24 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         return super.getId();
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_ID_NORMAL", nullable = false
-            , length = 4, columnDefinition = "varchar2(4) default '02'")
-    public String getFeatureExtractIdNormal() {
-        return featureExtractIdNormal;
+    @Column(name = "FEI_FEATURE_EXTRACT_NAME", length = 15, columnDefinition = "varchar2(15)")
+    public String getFeatureExtractName() {
+        return featureExtractName;
     }
 
-    public void setFeatureExtractIdNormal(String featureExtractIdNormal) {
-        this.featureExtractIdNormal = featureExtractIdNormal;
+    public void setFeatureExtractName(String featureExtractName) {
+        this.featureExtractName = featureExtractName;
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_ID_CC", nullable = false
-            , length = 4, columnDefinition = "varchar2(4) default '02'")
-    public String getFeatureExtractIdCC() {
-        return featureExtractIdCC;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "FEI_FEATURE_EXTRACT_TYPE", nullable = false)
+    public FeatureExtractType getFeatureExtractType() {
+        return featureExtractType;
     }
 
-    public void setFeatureExtractIdCC(String featureExtractIdCC) {
-        this.featureExtractIdCC = featureExtractIdCC;
+    public void setFeatureExtractType(FeatureExtractType featureExtractType) {
+        this.featureExtractType = featureExtractType;
     }
-
-    @Column(name = "FEI_FTR_EXT_NRM_NAME", length = 15, columnDefinition = "varchar2(15)")
-    public String getFeatureExtractIdNormalName() {
-        return featureExtractIdNormalName;
-    }
-
-    public void setFeatureExtractIdNormalName(String featureExtractIdNormalName) {
-        this.featureExtractIdNormalName = featureExtractIdNormalName;
-    }
-
-    @Column(name = "FEI_FTR_EXT_CC_NAME", length = 15, columnDefinition = "varchar2(15)")
-    public String getFeatureExtractIdCCName() {
-        return featureExtractIdCCName;
-    }
-
-    public void setFeatureExtractIdCCName(String featureExtractIdCCName) {
-        this.featureExtractIdCCName = featureExtractIdCCName;
-    }
-
 
     @Override
     public boolean equals(Object obj) {

@@ -40,7 +40,7 @@ public Long update(UserProfileTO userProfile, OfficeSettingVTO to) throws BaseEx
         return getService(userProfile).update(to);
     }
 
-    public OfficeSettingVTO load(UserProfileTO userProfile, Long officeId) throws BaseException {
-        return getService(userProfile).load(officeId);
-    }
+//    public OfficeSettingVTO load(UserProfileTO userProfile, Long officeId) throws BaseException {
+//        return getService(userProfile).load(officeId);
+//    }
 }

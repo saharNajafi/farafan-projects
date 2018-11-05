@@ -221,15 +221,21 @@ Ext.define('Ems.controller.OfficeController', {
                     if(form.sendID != null) {
                         obj = { id : form.sendID };
                     }
+                        obj['featureExtractNormal'] = form.down('#feiN').getRawValue(),
+                        obj['featureExtractCC'] = form.down('#feiCC').getRawValue(),
+                        obj['feiN'] = form.down('#feiN').getValue(),
+                        obj['feiCC'] = form.down('#feiCC').getValue(),
+                        obj['id'] = form.officeSettingID;
                     Ext.Ajax.request({
                         url: 'extJsController/officeSetting' + '/save',
-                        jsonData: Ext.apply(obj, {
-                            feiId: form.down('#feid').getValue(),
-                            fevId: form.down('#feversion').getValue(),
-                            featureExtractName: form.down('#feid').getRawValue(),
-                            featureExtractVersion: form.down('#feversion').getRawValue(),
-                            id: form.officeSettingID
-                        }),
+                        jsonData: {records: list},
+                        // jsonData: Ext.apply(obj, {
+                        //     feiId: form.down('#feid').getValue(),
+                        //     fevId: form.down('#feversion').getValue(),
+                        //     featureExtractName: form.down('#feid').getRawValue(),
+                        //     featureExtractVersion: form.down('#feversion').getRawValue(),
+                        //     id: form.officeSettingID
+                        // }),
                         success: function (response) {
                             if (Ext.JSON.decode(response.responseText).success) {
                                 Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
@@ -319,27 +325,27 @@ Ext.define('Ems.controller.OfficeController', {
     doSettingOffice: function(grid, rowIndex) {
         var win = Ext.create('Ems.view.office.Setting.Dialog', { height: 130});
         var record = grid.store.getAt(rowIndex);
-        var extractID = win.down('#feid');
-        var extractVersion = win.down('#feversion');
+        var extractN = win.down('#feiN');
+        var extractCC = win.down('#feiCC');
         if(record.get('ostId') != null) {
          win.officeSettingID = record.get('ostId');
         }
         win.show();
-        if(record.get('featureExtractName') != null) {
+        if(record.get('featureExtractType') == "NORMAL") {
             //extractID.setRawValue(record.get('featureExtractName'));
-            win.extractID = record.get('feiId');
-            extractID.onTriggerClick();
-            setTimeout(function() {extractID.select(extractID.store.getNodeById(1));}, 300);
+            win.extractN = record.get('feiId');
+            extractN.onTriggerClick();
+            setTimeout(function() {extractN.select(extractN.store.getNodeById(1));}, 300);
         }
-        if(record.get('featureExtractVersion') != null) {
+        if(record.get('featureExtractType') == "CC") {
             //extractVersion.setRawValue(record.get('featureExtractVersion'));
-            win.extractVersion = record.get('fevId');
-            extractVersion.onTriggerClick();
-            setTimeout(function() {extractVersion.select(extractVersion.store.getNodeById(1));}, 300);
-            setTimeout(function () { extractVersion.onTriggerClick(); extractID.onTriggerClick(); }, 300);
+            win.extractCC = record.get('feiId');
+            extractCC.onTriggerClick();
+            setTimeout(function() {extractCC.select(extractCC.store.getNodeById(1));}, 300);
+            setTimeout(function () { extractCC.onTriggerClick(); extractN.onTriggerClick(); }, 300);
         }
-        var officeSettingCall = Ext.create('Ems.store.OfficeSettingStore');
-        officeSettingCall.load({ params: { enrollmentOfficeId: record.get('id') }});
+        // var officeSettingCall = Ext.create('Ems.store.OfficeSettingStore');
+        // officeSettingCall.load({ params: { enrollmentOfficeId: record.get('id') }});
     },
 
     doUserListOffice: function (grid, rowIndex) {

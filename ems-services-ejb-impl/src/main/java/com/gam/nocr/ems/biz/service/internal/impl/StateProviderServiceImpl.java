@@ -17,9 +17,11 @@ import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.OfficeSettingDAO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
+import com.gam.nocr.ems.data.enums.FeatureExtractType;
 import gampooya.tools.security.SecurityContextService;
 import org.slf4j.Logger;
 
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Soheil Toodeh Fallah (fallah@gamelectronics.com)
@@ -261,17 +264,31 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     else
                         stateProviderTO.setValue("false");
 
-                } else if (stateId.endsWith("featureExtractorIDNormal")) {
-                    if (officeSettingTO.getFeatureExtractIdsTO() != null)
-                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdNormal());
+                }
+                else if (stateId.endsWith("featureExtractIDNormal")) {
+                    if (officeSettingTO.getFeatureExtractIdsTO() != null) {
+                        Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
+                        for (FeatureExtractIdsTO fei : featureExtractIds){
+                            if(fei.getFeatureExtractType().equals(FeatureExtractType.NORMAL)){
+                                stateProviderTO.setValue(fei.getFeatureExtractName());
+                            }
+                        }
+                    }
                     else
                         stateProviderTO.setValue("");
-                } else if (stateId.endsWith("featureExtractorIDCC")) {
-                    if (officeSettingTO.getFeatureExtractVersionsTO() != null)
-                        stateProviderTO.setValue(officeSettingTO.getFeatureExtractIdsTO().getFeatureExtractIdCC());
+                } else if (stateId.endsWith("featureExtractIDCC")) {
+                    if (officeSettingTO.getFeatureExtractIdsTO() != null) {
+                        Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
+                        for (FeatureExtractIdsTO fei : featureExtractIds){
+                            if(fei.getFeatureExtractType().equals(FeatureExtractType.CC)){
+                                stateProviderTO.setValue(fei.getFeatureExtractName());
+                            }
+                        }
+                    }
                     else
                         stateProviderTO.setValue("");
-                } else if (stateId.endsWith("tokenExpire")) {
+                }
+                else if (stateId.endsWith("tokenExpire")) {
                     try {
                         ProfileManager pm = ProfileHelper.getProfileManager();
                         String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);

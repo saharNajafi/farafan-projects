@@ -14,13 +14,13 @@ import java.util.Map;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/13/18.
  */
-public class FeatureExtractIdsAutoComplete extends BaseAutocompleteHandler {
+public class FeatureExtractNormalAutoComplete extends BaseAutocompleteHandler {
 
-    private static final Logger logger = BaseLog.getLogger(FeatureExtractIdsAutoComplete.class);
+    private static final Logger logger = BaseLog.getLogger(FeatureExtractNormalAutoComplete.class);
 
     @Override
     protected String getAutocompleteProfileKeyName() {
-        return "featureExtractIds";
+        return "featureExtractIdsNormal";
     }
 
     @Override
@@ -29,16 +29,17 @@ public class FeatureExtractIdsAutoComplete extends BaseAutocompleteHandler {
     }
 
     @Override
-    public SearchResult getSearchResult(String searchString, int from, int to, Integer depId, Integer perId, String orderBy, Map additionalParams) {
-
+    public SearchResult getSearchResult(String searchString, int from, int to, Integer depId
+            , Integer perId, String orderBy, Map additionalParams) {
         try {
             UserProfileTO userProfile = new UserProfileTO();
             if (perId != null)
                 userProfile.setPersonID(perId);
             if (depId != null)
                 userProfile.setDepID(depId);
-            FeatureExtractIdsDelegator featureExtractIdsDelegator = new FeatureExtractIdsDelegator();
-            return featureExtractIdsDelegator.fetchFeatureExtractIdList(userProfile, searchString, from, to, orderBy);
+            FeatureExtractIdsDelegator featureExtractNormalDelegator = new FeatureExtractIdsDelegator();
+            return featureExtractNormalDelegator.fetchFeatureExtractIdsNormalList(
+                    userProfile, searchString, from, to, orderBy);
         } catch (Throwable t) {
             logger.error(WebExceptionCode.GLB_ERR_MSG, t);
         }

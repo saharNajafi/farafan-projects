@@ -8,5 +8,5 @@ import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
  */
 public interface FeatureExtractIdsDAO extends EmsBaseDAO<FeatureExtractIdsTO> {
 
-    FeatureExtractIdsTO findById(Long feiId) throws BaseException;
+    FeatureExtractIdsTO findById(Long fenId) throws BaseException;
 }
