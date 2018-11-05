@@ -5,26 +5,27 @@ import com.gam.commons.core.web.struts2.extJsController.ActionException;
 import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.OfficeSettingDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
-import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
+import com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTO;
 import gampooya.tools.security.BusinessSecurityException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/14/18.
  */
-public class OfficeSettingAction extends ListControllerImpl<OfficeSettingVTO> {
+public class OfficeSettingAction extends ListControllerImpl<FeatureExtractIdsVTO> {
+
+    private String enrollmentId;
 
     @Override
-    public void setRecords(List<OfficeSettingVTO> records) {
+    public void setRecords(List<FeatureExtractIdsVTO> records) {
         this.records = records;
     }
 
     public String save() throws BaseException {
         try {
             OfficeSettingDelegator officeSettingDelegator = new OfficeSettingDelegator();
-            for (OfficeSettingVTO to : records) {
+            for (FeatureExtractIdsVTO to : records) {
                 if (to.getId() == null)
                     officeSettingDelegator.save(getUserProfile(), to);
                 else
@@ -35,18 +36,5 @@ public class OfficeSettingAction extends ListControllerImpl<OfficeSettingVTO> {
             throw new ActionException(WebExceptionCode.OSA_001, WebExceptionCode.GLB_001_MSG, e);
         }
     }
-    public String load() throws BaseException {
-        OfficeSettingDelegator officeSettingDelegator = new OfficeSettingDelegator();
-        List<OfficeSettingVTO> officeSettingVTOs = null;
-        try {
-            if (ids != null)
-                officeSettingVTOs = officeSettingDelegator.load(getUserProfile(), Long.parseLong(ids));
-            else
-                throw new ActionException(WebExceptionCode.OSA_002, WebExceptionCode.OSA_002_MSG);
-            setRecords(officeSettingVTOs);
-            return SUCCESS_RESULT;
-        } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.OSA_003, WebExceptionCode.GLB_001_MSG, e);
-        }
-    }
+
 }

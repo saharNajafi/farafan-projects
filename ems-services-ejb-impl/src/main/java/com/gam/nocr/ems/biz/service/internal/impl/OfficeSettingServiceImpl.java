@@ -11,7 +11,7 @@ import com.gam.nocr.ems.data.dao.FeatureExtractIdsDAO;
 import com.gam.nocr.ems.data.dao.OfficeSettingDAO;
 import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
-import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
+import com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTO;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -32,7 +32,7 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
 
 
     @Override
-    public Long save(OfficeSettingVTO officeSettingVTO) throws BaseException {
+    public Long save(FeatureExtractIdsVTO officeSettingVTO) throws BaseException {
 //        OfficeSettingTO officeSettingTO = new OfficeSettingTO();
 //        Set<FeatureExtractIdsTO> featureExtractIdsTOList;
 //        try {
@@ -48,7 +48,7 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public Long update(OfficeSettingVTO officeSettingVTO) throws BaseException {
+    public Long update(FeatureExtractIdsVTO officeSettingVTO) throws BaseException {
         OfficeSettingTO officeSettingTO;
         Set<FeatureExtractIdsTO> featureExtractIdsTOList;
 //        try {
@@ -86,48 +86,6 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
             e.printStackTrace();
         }
         return featureExtractIdsTOList;
-    }
-
-    @Override
-    public List<OfficeSettingVTO> load(Long enrollmentOfficeId) throws BaseException {
-        OfficeSettingTO officeSettingTO;
-        OfficeSettingVTO officeSettingVTO = new OfficeSettingVTO();
-        List<OfficeSettingVTO> officeSettingVTOs = new ArrayList<OfficeSettingVTO>();
-
-        try {
-            if (enrollmentOfficeId == null)
-                throw new ServiceException(BizExceptionCode.OST_001, BizExceptionCode.OST_001_MSG);
-            officeSettingTO = getOfficeSettingDAO().findByOfficeId(enrollmentOfficeId);
-            if (officeSettingTO == null)
-                throw new ServiceException(BizExceptionCode.OST_002,
-                        BizExceptionCode.OST_002_MSG, new Long[]{enrollmentOfficeId});
-            officeSettingVTO.setOsdId(officeSettingTO.getId());
-            if (officeSettingTO.getFeatureExtractIdsTO().size() > 0) {
-                for(FeatureExtractIdsTO featureExtractIdsTO : officeSettingTO.getFeatureExtractIdsTO()){
-                    officeSettingVTO.setFeiId(featureExtractIdsTO.getId());
-                    officeSettingVTO.setFeatureExtractName(featureExtractIdsTO.getFeatureExtractName());
-                    officeSettingVTO.setFeatureExtractType(String.valueOf(featureExtractIdsTO.getFeatureExtractType()));
-                    officeSettingVTOs.add(officeSettingVTO);
-                }
-            }
-
-        } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.OST_012, BizExceptionCode.OST_012_MSG, e);
-        }
-        return officeSettingVTOs;
-    }
-
-    private OfficeSettingDAO getOfficeSettingDAO() throws BaseException {
-        try {
-            return DAOFactoryProvider
-                    .getDAOFactory()
-                    .getDAO(EMSLogicalNames
-                            .getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_SETTING));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.OST_003,
-                    BizExceptionCode.GLB_001_MSG, e,
-                    EMSLogicalNames.DAO_OFFICE_SETTING.split(","));
-        }
     }
 
     private FeatureExtractIdsDAO getFeatureExtractIdsDAO() throws BaseException {

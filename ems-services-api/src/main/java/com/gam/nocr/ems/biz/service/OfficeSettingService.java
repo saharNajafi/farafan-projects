@@ -2,7 +2,7 @@ package com.gam.nocr.ems.biz.service;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
-import com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO;
+import com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTO;
 
 import java.util.List;
 
@@ -11,9 +11,7 @@ import java.util.List;
  */
 public interface OfficeSettingService extends Service {
 
-    Long update(OfficeSettingVTO to) throws BaseException;
+    Long update(FeatureExtractIdsVTO to) throws BaseException;
 
-    List<OfficeSettingVTO> load(Long id) throws BaseException;
-
-    Long save(OfficeSettingVTO to) throws BaseException;
+    Long save(FeatureExtractIdsVTO to) throws BaseException;
 }

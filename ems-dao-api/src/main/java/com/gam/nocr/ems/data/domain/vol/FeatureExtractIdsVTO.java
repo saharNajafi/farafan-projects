@@ -7,7 +7,7 @@ import com.gam.commons.core.data.domain.ExtEntityTO;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/15/18.
  */
-public class OfficeSettingVTO extends ExtEntityTO {
+public class FeatureExtractIdsVTO extends ExtEntityTO {
 
     private Long feiId;
     private Long osdId;

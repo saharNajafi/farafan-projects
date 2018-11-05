@@ -1661,7 +1661,7 @@
 			<!--</main-query>-->
 		<!--</query>-->
 		<!--<dto>-->
-			<!--<dto-class>com.gam.nocr.ems.data.domain.vol.OfficeSettingVTO</dto-class>-->
+			<!--<dto-class>com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTOsVTO</dto-class>-->
 			<!--<dto-fields>-->
 				<!--<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_NAME"/>-->
 				<!--<field name="featureExtractType" column="FEI_FEATURE_EXTRACT_TYPE"/>-->
