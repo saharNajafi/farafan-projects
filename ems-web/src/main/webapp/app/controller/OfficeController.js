@@ -221,14 +221,17 @@ Ext.define('Ems.controller.OfficeController', {
                     if(form.sendID != null) {
                         obj = { id : form.sendID };
                     }
-                        obj['featureExtractNormal'] = form.down('#feiN').getRawValue(),
-                        obj['featureExtractCC'] = form.down('#feiCC').getRawValue(),
-                        obj['feiN'] = form.down('#feiN').getValue(),
-                        obj['feiCC'] = form.down('#feiCC').getValue(),
-                        obj['id'] = form.officeSettingID;
                     Ext.Ajax.request({
                         url: 'extJsController/officeSetting' + '/save',
-                        jsonData: {records: list},
+                        jsonData: {
+                            records: [
+                                {
+                                    feiN: form.down('#feiN').getValue(),
+                                    feiCC: form.down('#feiCC').getValue(),
+                                    ostId: form.officeSettingID
+                                }
+                             ]
+                        },
                         // jsonData: Ext.apply(obj, {
                         //     feiId: form.down('#feid').getValue(),
                         //     fevId: form.down('#feversion').getValue(),
@@ -327,23 +330,45 @@ Ext.define('Ems.controller.OfficeController', {
         var record = grid.store.getAt(rowIndex);
         var extractN = win.down('#feiN');
         var extractCC = win.down('#feiCC');
-        if(record.get('ostId') != null) {
-         win.officeSettingID = record.get('ostId');
-        }
         win.show();
-        if(record.get('featureExtractType') == "NORMAL") {
-            //extractID.setRawValue(record.get('featureExtractName'));
-            win.extractN = record.get('feiId');
-            extractN.onTriggerClick();
-            setTimeout(function() {extractN.select(extractN.store.getNodeById(1));}, 300);
-        }
-        if(record.get('featureExtractType') == "CC") {
-            //extractVersion.setRawValue(record.get('featureExtractVersion'));
-            win.extractCC = record.get('feiId');
-            extractCC.onTriggerClick();
-            setTimeout(function() {extractCC.select(extractCC.store.getNodeById(1));}, 300);
-            setTimeout(function () { extractCC.onTriggerClick(); extractN.onTriggerClick(); }, 300);
-        }
+        win.officeSettingID = record.get('ostId');
+        Ext.Ajax.request({
+            method: 'POST',
+            url: 'extJsController/featureExtract/load',
+            jsonData: { enrollmentOfficeId: record.get('id') },
+            success: function (response) {
+                // var data = Ext.JSON.decode(response.responseText).records;
+                // win.show();
+                // for(var i = 0; i < data.length; i++) {
+                //     var rec = data[i];
+                //     if(rec.featureExtractType == "CC") {
+                //          extractCC.onTriggerClick();
+                //          setTimeout(function() {extractCC.select(extractCC.store.getNodeById(rec.feiId));}, 1000);
+                //     }
+                //     else {
+                //         extractN.onTriggerClick();
+                //         setTimeout(function() {extractN.select(extractN.store.getNodeById(rec.feiId));}, 1000);
+                //     }
+                // }
+                alert('success');
+            },
+            failure: function () {
+                alert('fail');
+            }
+        });
+        // if(record.get('featureExtractType') == "NORMAL") {
+        //     //extractID.setRawValue(record.get('featureExtractName'));
+        //     win.extractN = record.get('feiId');
+        //     extractN.onTriggerClick();
+        //     setTimeout(function() {extractN.select(extractN.store.getNodeById(1));}, 300);
+        // }
+        // if(record.get('featureExtractType') == "CC") {
+        //     //extractVersion.setRawValue(record.get('featureExtractVersion'));
+        //     win.extractCC = record.get('feiId');
+        //     extractCC.onTriggerClick();
+        //     setTimeout(function() {extractCC.select(extractCC.store.getNodeById(1));}, 300);
+        //     setTimeout(function () { extractCC.onTriggerClick(); extractN.onTriggerClick(); }, 300);
+        // }
         // var officeSettingCall = Ext.create('Ems.store.OfficeSettingStore');
         // officeSettingCall.load({ params: { enrollmentOfficeId: record.get('id') }});
     },
