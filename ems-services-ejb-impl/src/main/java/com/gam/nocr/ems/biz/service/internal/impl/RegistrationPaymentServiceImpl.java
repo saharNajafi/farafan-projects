@@ -46,6 +46,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     private static final String DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA = "700000";
     private static final String DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA = "1000000";
     private static final String DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE = "300000";
+    private static final String DEFAULT_KEY_PAYMENT_AMOUNT_EXTEND = "200000";
 
     public RegistrationPaymentTO addRegistrationPayment(RegistrationPaymentTO entity) throws BaseException {
 
@@ -219,6 +220,11 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_REPLACE,
                     DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE);
             paymentCode = Configuration.getProperty("PAYMENT.REPLACE.CODE");
+        } else if(cardRequestType.equals(CardRequestType.EXTEND)) {
+            paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_EXTEND,
+                    DEFAULT_KEY_PAYMENT_AMOUNT_EXTEND);
+            //todo:should change to extend payment code (Namjoofar).
+            paymentCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
         }
         map.put("paymentAmount", paymentAmount);
         map.put("paymentCode", paymentCode);

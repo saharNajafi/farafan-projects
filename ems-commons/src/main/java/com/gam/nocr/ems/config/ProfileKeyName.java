@@ -245,6 +245,7 @@ public class ProfileKeyName {
     public static final String KEY_PAYMENT_AMOUNT_SECOND_REPLICA = EMS_PROFILE_ROOT + ".secondReplicaCardPaymentAmount";
     public static final String KEY_PAYMENT_AMOUNT_THIRD_REPLICA = EMS_PROFILE_ROOT + ".thirdReplicaCardPaymentAmount";
     public static final String KEY_PAYMENT_AMOUNT_REPLACE = EMS_PROFILE_ROOT + ".replaceCardPaymentAmount";
+    public static final String KEY_PAYMENT_AMOUNT_EXTEND = EMS_PROFILE_ROOT + ".extendCardPaymentAmount";
     public static final String KEY_OFFICE_CAPACITY_END_DATE = EMS_PROFILE_ROOT + ".officeCapacityEndDate";
 
 }
