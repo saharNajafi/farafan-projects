@@ -972,9 +972,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             newCardRequest.setCitizen(citizenLoadedFromDb);
         }
 
-        /*Create Fake Success Payment*/
+
         createFakePaymentForCCOSVIPAndReplica(newCardRequest);
-        /*Create Fake Success Payment*/
+
 
         if (newCardRequest.getId() == null) {
             if (newCardRequest.getTrackingID() == null || newCardRequest.getTrackingID().trim().length() == 0 ||
@@ -1013,25 +1013,27 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     }
 
     private void createFakePaymentForCCOSVIPAndReplica(CardRequestTO newCardRequest) throws BaseException {
-        RegistrationPaymentTO registrationPaymentTO = new RegistrationPaymentTO();
-        registrationPaymentTO.setDescription("");
-        Long paymentOrderId = EmsUtil.getRandomPaymentOrderId();
-        registrationPaymentTO.setOrderId(paymentOrderId);
-        registrationPaymentTO.setSucceed(false);
-        registrationPaymentTO.setResCode(null);
-        registrationPaymentTO.setCitizenTO(newCardRequest.getCitizen());
-        registrationPaymentTO.setConfirmed(false);
-        registrationPaymentTO.setPaymentDate(new Date());
-        registrationPaymentTO.setMatchFlag((short) 1);
-        registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFIGNED);
-       String nationalId = newCardRequest.getCitizen().getNationalID();
-        Map<String, String> registrationPaymentResult =
-                getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);
-        registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
-        registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
-        getRegistrationPaymentDAO().create(registrationPaymentTO);
-        newCardRequest.setPaid(false);
-        newCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
+        if (newCardRequest.getRegistrationPaymentTO() == null) {
+            RegistrationPaymentTO registrationPaymentTO = new RegistrationPaymentTO();
+            registrationPaymentTO.setDescription("");
+            Long paymentOrderId = EmsUtil.getRandomPaymentOrderId();
+            registrationPaymentTO.setOrderId(paymentOrderId);
+            registrationPaymentTO.setSucceed(false);
+            registrationPaymentTO.setResCode(null);
+            registrationPaymentTO.setCitizenTO(newCardRequest.getCitizen());
+            registrationPaymentTO.setConfirmed(false);
+            registrationPaymentTO.setPaymentDate(new Date());
+            registrationPaymentTO.setMatchFlag((short) 1);
+            registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFIGNED);
+            String nationalId = newCardRequest.getCitizen().getNationalID();
+            Map<String, String> registrationPaymentResult =
+                    getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);
+            registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
+            registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
+            getRegistrationPaymentDAO().create(registrationPaymentTO);
+            newCardRequest.setPaid(false);
+            newCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
+        }
     }
 
     @Override
@@ -1265,6 +1267,13 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             getCardManagementService().checkRequestValidation(
                     newCardRequest.getCitizen().getNationalID(),
                     newCardRequest.getType());
+        }
+        try {
+            RegistrationPaymentTO registrationPaymentTO = getCardRequestDAO().find(CardRequestTO.class, newCardRequest.getId())
+                    .getRegistrationPaymentTO();
+            newCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
+        }catch (Exception e){
+            newCardRequest.setRegistrationPaymentTO(null);
         }
 
         Long requestId = save(newCardRequest);
