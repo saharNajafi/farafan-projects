@@ -550,7 +550,7 @@
 					fen.FEI_FEATURE_EXTRACT_NAME
 				</part>
 				FROM EMST_FEATURE_EXTRACT_IDS fen
-				WHERE fen.FEI_FEATURE_EXTRACT_TYPE = "NORMAL"
+				WHERE fen.FEI_FEATURE_EXTRACT_TYPE = 'NORMAL'
 			</main-query>
 		</query>
 		<dto>
@@ -578,7 +578,7 @@
 					fec.FEI_FEATURE_EXTRACT_NAME
 				</part>
 				FROM EMST_FEATURE_EXTRACT_IDS fec
-				WHERE fec.FEN_FEATURE_EXTRACT_TYPE = "CC"
+				WHERE fec.FEI_FEATURE_EXTRACT_TYPE = 'CC'
 			</main-query>
 		</query>
 		<dto>

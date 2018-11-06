@@ -7,7 +7,7 @@ public enum FeatureExtractType {
     NORMAL,
     CC;
 
-    public static String toStringType(FeatureExtractType type ) {
+    public static String convertToString(FeatureExtractType type ) {
         if( type == null){
             return null;
         }

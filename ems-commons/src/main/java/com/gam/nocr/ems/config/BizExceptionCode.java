@@ -96,6 +96,12 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     // com.gam.nocr.ems.biz.delegator.RatingDelegator
     public static final String RTL_001 = "EMS_S_RTL_001";
 
+    // com.gam.nocr.ems.biz.delegator.OfficeSettingDelegator
+    public static final String OSTD_001 = "EMS_S_OSTD_001";
+
+    // com.gam.nocr.ems.biz.delegator.FeatureExtractIdsDelegator
+    public static final String FEID_001 = "EMS_S_FEID_001";
+
     // com.gam.nocr.ems.biz.delegator.RegistrationDelegator
     public static final String RDL_001 = "EMS_S_RDL_001";
 
@@ -2831,6 +2837,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String FEI_002 = "EMS_S_FEI_002";
     public static final String FEI_003 = "EMS_S_FEI_003";
     public static final String FEI_004 = "EMS_S_FEI_004";
+    public static final String FEI_005 = "EMS_S_FEI_005";
+    public static final String FEI_006 = "EMS_S_FEI_006";
+    public static final String FEI_007 = "EMS_S_FEI_007";
+    public static final String FEI_008 = "EMS_S_FEI_008";
+    public static final String FEI_005_MSG = "EnrollmentOfficeid is null";
+    public static final String FEI_006_MSG = "Could not find officeSetting with id {0}";
+    public static final String FEI_007_MSG = "an error occurred on load operation";
 
     //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractCCServiceImpl.java
     public static final String FEV_001 = "EMS_S_FEV_001";
@@ -2852,6 +2865,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OST_011 = "EMS_S_OST_011";
     public static final String OST_012 = "EMS_S_OST_012";
     public static final String OST_013 = "EMS_S_OST_013";
+    public static final String OST_014 = "EMS_S_OST_014";
+    public static final String OST_015 = "EMS_S_OST_015";
     public static final String OST_001_MSG = "EnrollmentOfficeid is null";
     public static final String OST_002_MSG = "Could not find officeCapacity with id {0}";
     public static final String OST_003_MSG = "OfficeSetting id {} does not exist for editing";
@@ -2861,4 +2876,5 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OST_011_MSG = "an error occurred on update operation";
     public static final String OST_012_MSG = "an error occurred on load operation";
     public static final String OST_013_MSG = "an error occurred on save operation";
+    public static final String OST_014_MSG = "an error occurred on getFeatureExtractIdsList operation";
 }

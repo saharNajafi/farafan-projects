@@ -9,11 +9,11 @@ import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
-import com.gam.nocr.ems.data.dao.FeatureExtractIdsDAO;
 import com.gam.nocr.ems.data.dao.OfficeSettingDAO;
 import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTO;
+import com.gam.nocr.ems.data.enums.FeatureExtractType;
 import gampooya.tools.vlp.ListException;
 import gampooya.tools.vlp.ValueListHandler;
 import org.displaytag.exception.ListHandlerException;
@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/13/18.
  */
 
-@Stateless(name = "FeatureExtractIdSService")
+@Stateless(name = "FeatureExtractIdsService")
 @Local(FeatureExtractIdsServiceLocal.class)
 @Remote(FeatureExtractIdsServiceRemote.class)
 public class FeatureExtractIdsServiceImpl extends EMSAbstractService
@@ -48,7 +48,7 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
             }
             try {
                 ValueListHandler vlh = EMSValueListProvider.getProvider().loadList(
-                        "featureExtractIdsAC", ("main" + parts).split(","), ("count" + parts).split(","), param, orderBy, null);
+                        "featureExtractIdsNormalAC", ("main" + parts).split(","), ("count" + parts).split(","), param, orderBy, null);
                 List list = vlh.getList(from, to, true);
                 return new SearchResult(vlh.size(), list);
             } catch (ListException e) {
@@ -95,28 +95,30 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
     @Override
     public List<FeatureExtractIdsVTO> load(Long enrollmentOfficeId) throws BaseException {
         OfficeSettingTO officeSettingTO;
-        FeatureExtractIdsVTO officeSettingVTO = new FeatureExtractIdsVTO();
+
         List<FeatureExtractIdsVTO> featureExtractIdsVTOs = new ArrayList<FeatureExtractIdsVTO>();
 
         try {
             if (enrollmentOfficeId == null)
-                throw new ServiceException(BizExceptionCode.OST_001, BizExceptionCode.OST_001_MSG);
+                throw new ServiceException(BizExceptionCode.FEI_005, BizExceptionCode.FEI_005_MSG);
             officeSettingTO = getOfficeSettingDAO().findByOfficeId(enrollmentOfficeId);
             if (officeSettingTO == null)
-                throw new ServiceException(BizExceptionCode.OST_002,
-                        BizExceptionCode.OST_002_MSG, new Long[]{enrollmentOfficeId});
-            officeSettingVTO.setOsdId(officeSettingTO.getId());
+                throw new ServiceException(BizExceptionCode.FEI_006,
+                        BizExceptionCode.FEI_006_MSG, new Long[]{enrollmentOfficeId});
             if (officeSettingTO.getFeatureExtractIdsTO().size() > 0) {
                 for(FeatureExtractIdsTO featureExtractIdsTO : officeSettingTO.getFeatureExtractIdsTO()){
-                    officeSettingVTO.setFeiId(featureExtractIdsTO.getId());
-                    officeSettingVTO.setFeatureExtractName(featureExtractIdsTO.getFeatureExtractName());
-                    officeSettingVTO.setFeatureExtractType(String.valueOf(featureExtractIdsTO.getFeatureExtractType()));
-                    featureExtractIdsVTOs.add(officeSettingVTO);
+                    FeatureExtractIdsVTO featureExtractIdsVTO = new FeatureExtractIdsVTO();
+                    featureExtractIdsVTO.setFeiId(featureExtractIdsTO.getId());
+                    featureExtractIdsVTO.setFeatureExtractName(featureExtractIdsTO.getFeatureExtractName());
+                    featureExtractIdsVTO.setFeatureExtractType(
+                            FeatureExtractType.convertToString(featureExtractIdsTO.getFeatureExtractType()));
+                    featureExtractIdsVTO.setOsdId(officeSettingTO.getId());
+                    featureExtractIdsVTOs.add(featureExtractIdsVTO);
                 }
             }
 
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.OST_012, BizExceptionCode.OST_012_MSG, e);
+            throw new ServiceException(BizExceptionCode.FEI_007, BizExceptionCode.FEI_007_MSG, e);
         }
         return featureExtractIdsVTOs;
     }
@@ -128,7 +130,7 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
                     .getDAO(EMSLogicalNames
                             .getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_SETTING));
         } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.OST_003,
+            throw new ServiceException(BizExceptionCode.FEI_007,
                     BizExceptionCode.GLB_001_MSG, e,
                     EMSLogicalNames.DAO_OFFICE_SETTING.split(","));
         }

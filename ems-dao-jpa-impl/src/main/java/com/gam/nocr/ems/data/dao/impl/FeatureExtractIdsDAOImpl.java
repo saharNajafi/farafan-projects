@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 10/16/18.
  */
-@Stateless(name = "FeatureExtractNormalDAO")
+@Stateless(name = "FeatureExtractIdsDAO")
 @Local(FeatureExtractIdsDAOLocal.class)
 @Remote(FeatureExtractIdsDAORemote.class)
 public class FeatureExtractIdsDAOImpl extends EmsBaseDAOImpl<FeatureExtractIdsTO>

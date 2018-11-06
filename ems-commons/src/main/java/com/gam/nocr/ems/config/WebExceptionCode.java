@@ -711,6 +711,11 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OSA_003 = "EMS_A_OSA_003";
     public static final String OSA_002_MSG = "invalid input entry, enrollment office id is empty";
 
+    //com.gam.nocr.ems.web.action.FeatureExtractIdsAction.java
+    public static final String FEI_001 = "EMS_A_FEI_001";
+    public static final String FEI_002 = "EMS_A_FEI_002";
+    public static final String FEI_001_MSG = "invalid input entry, enrollment office id is empty";
+
 
 
 

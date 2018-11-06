@@ -228,17 +228,10 @@ Ext.define('Ems.controller.OfficeController', {
                                 {
                                     feiN: form.down('#feiN').getValue(),
                                     feiCC: form.down('#feiCC').getValue(),
-                                    ostId: form.officeSettingID
+                                    id: form.officeSettingID
                                 }
                              ]
                         },
-                        // jsonData: Ext.apply(obj, {
-                        //     feiId: form.down('#feid').getValue(),
-                        //     fevId: form.down('#feversion').getValue(),
-                        //     featureExtractName: form.down('#feid').getRawValue(),
-                        //     featureExtractVersion: form.down('#feversion').getRawValue(),
-                        //     id: form.officeSettingID
-                        // }),
                         success: function (response) {
                             if (Ext.JSON.decode(response.responseText).success) {
                                 Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
@@ -337,40 +330,25 @@ Ext.define('Ems.controller.OfficeController', {
             url: 'extJsController/featureExtract/load',
             jsonData: { enrollmentOfficeId: record.get('id') },
             success: function (response) {
-                // var data = Ext.JSON.decode(response.responseText).records;
-                // win.show();
-                // for(var i = 0; i < data.length; i++) {
-                //     var rec = data[i];
-                //     if(rec.featureExtractType == "CC") {
-                //          extractCC.onTriggerClick();
-                //          setTimeout(function() {extractCC.select(extractCC.store.getNodeById(rec.feiId));}, 1000);
-                //     }
-                //     else {
-                //         extractN.onTriggerClick();
-                //         setTimeout(function() {extractN.select(extractN.store.getNodeById(rec.feiId));}, 1000);
-                //     }
-                // }
-                alert('success');
+                var data = Ext.JSON.decode(response.responseText).records;
+                win.show();
+                for(var i = 0; i < data.length; i++) {
+                    var rec = data[i];
+                    if(rec.featureExtractType == "2") {
+                         extractCC.onTriggerClick();
+                         setTimeout(function() {extractCC.select(extractCC.store.getNodeById(rec.feiId));}, 300);
+                    }
+                    else {
+                        extractN.onTriggerClick();
+                        setTimeout(function() {extractN.select(extractN.store.getNodeById(rec.feiId));}, 300);
+                    }
+                }
+
             },
             failure: function () {
                 alert('fail');
             }
         });
-        // if(record.get('featureExtractType') == "NORMAL") {
-        //     //extractID.setRawValue(record.get('featureExtractName'));
-        //     win.extractN = record.get('feiId');
-        //     extractN.onTriggerClick();
-        //     setTimeout(function() {extractN.select(extractN.store.getNodeById(1));}, 300);
-        // }
-        // if(record.get('featureExtractType') == "CC") {
-        //     //extractVersion.setRawValue(record.get('featureExtractVersion'));
-        //     win.extractCC = record.get('feiId');
-        //     extractCC.onTriggerClick();
-        //     setTimeout(function() {extractCC.select(extractCC.store.getNodeById(1));}, 300);
-        //     setTimeout(function () { extractCC.onTriggerClick(); extractN.onTriggerClick(); }, 300);
-        // }
-        // var officeSettingCall = Ext.create('Ems.store.OfficeSettingStore');
-        // officeSettingCall.load({ params: { enrollmentOfficeId: record.get('id') }});
     },
 
     doUserListOffice: function (grid, rowIndex) {

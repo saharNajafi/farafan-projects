@@ -177,7 +177,8 @@
 					ost.ost_allow_edit_background allow_edit_background,
 					ost.ost_use_scanner_ui use_scanner_ui,
 					ost.OST_ALW_AMPT_FING_STA_ELD,
-					ost.OST_ALW_CHG_FING_DUR_CAP_ELD
+					ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
+					ost.OST_ID
 
 				</part>
 				    from
@@ -320,6 +321,7 @@
                 <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
                 <field name="allowAmputatedFinger" column="OST_ALW_AMPT_FING_STA_ELD"/>
                 <field name="allowChangeFinger" column="OST_ALW_CHG_FING_DUR_CAP_ELD"/>
+				<field name="ostId" column="OST_ID"/>
 			</dto-fields>
 		</dto>
 	</list>
@@ -1632,43 +1634,4 @@
 		</dto>
 	</list>
 	<!-- officeCapacity List -->
-
-	<!--&lt;!&ndash; officeSetting List &ndash;&gt;-->
-	<!--<list>-->
-		<!--<list-name>officeSettingList</list-name>-->
-		<!--<query>-->
-			<!--<main-query>-->
-				<!--<part name="count">-->
-					<!--select count(*)-->
-				<!--</part>-->
-				<!--<part name="main">-->
-					<!--select-->
-					<!--ost.OST_ID,-->
-					<!--fei.FEI_FEATURE_EXTRACT_NAME,-->
-					<!--fei.FEI_ID,-->
-					<!--fei.FEI_FEATURE_EXTRACT_TYPE-->
-				<!--</part>-->
-				<!--from-->
-				<!--emst_office_setting ost-->
-				<!--inner join-->
-				<!--OST_FEI osf-->
-				<!--on ost.OST_ID = osf.OST_ID-->
-				<!--inner join-->
-				<!--EMST_FEATURE_EXTRACT_IDS fei-->
-				<!--on-->
-				<!--osf.FEI_ID = fei.FEI_ID-->
-				<!--WHERE ost.OST_ENROLL_OFFICE_ID = ({enrollmentOfficeId})-->
-			<!--</main-query>-->
-		<!--</query>-->
-		<!--<dto>-->
-			<!--<dto-class>com.gam.nocr.ems.data.domain.vol.FeatureExtractIdsVTOsVTO</dto-class>-->
-			<!--<dto-fields>-->
-				<!--<field name="featureExtractName" column="FEI_FEATURE_EXTRACT_NAME"/>-->
-				<!--<field name="featureExtractType" column="FEI_FEATURE_EXTRACT_TYPE"/>-->
-				<!--<field name="ostId" column="OST_ID"/>-->
-				<!--<field name="feiId" column="FEI_ID"/>-->
-			<!--</dto-fields>-->
-		<!--</dto>-->
-	<!--</list>-->
-	<!-- officeSetting List -->
 </lists>

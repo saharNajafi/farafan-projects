@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class FeatureExtractIdsAction extends ListControllerImpl<FeatureExtractIdsVTO> {
 
-    private String enrollmentOfficeId;
+    private Long enrollmentOfficeId;
 
     @Override
     public void setRecords(List<FeatureExtractIdsVTO> records) {
@@ -23,19 +23,28 @@ public class FeatureExtractIdsAction extends ListControllerImpl<FeatureExtractId
     }
 
     public String load() throws BaseException {
+
         FeatureExtractIdsDelegator featureExtractIdsDelegator = new FeatureExtractIdsDelegator();
+
         List<FeatureExtractIdsVTO> featureExtractIdsVTOs  = null;
         try {
             if (enrollmentOfficeId != null)
-                featureExtractIdsVTOs = featureExtractIdsDelegator.load(
-                        getUserProfile(), Long.parseLong(enrollmentOfficeId));
+                featureExtractIdsVTOs = featureExtractIdsDelegator.load(getUserProfile(), enrollmentOfficeId);
             else
-                throw new ActionException(WebExceptionCode.OSA_002, WebExceptionCode.OSA_002_MSG);
+                throw new ActionException(WebExceptionCode.FEI_001, WebExceptionCode.FEI_001_MSG);
             setRecords(featureExtractIdsVTOs);
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.OSA_003, WebExceptionCode.GLB_001_MSG, e);
+            throw new ActionException(WebExceptionCode.FEI_002, WebExceptionCode.GLB_001_MSG, e);
         }
+    }
+
+    public Long getEnrollmentOfficeId() {
+        return enrollmentOfficeId;
+    }
+
+    public void setEnrollmentOfficeId(Long enrollmentOfficeId) {
+        this.enrollmentOfficeId = enrollmentOfficeId;
     }
 }
 
