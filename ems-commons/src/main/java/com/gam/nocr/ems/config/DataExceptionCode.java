@@ -1123,10 +1123,10 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String REG_20_MSG = "Invalid serialNumber";
 
     //com.gam.nocr.ems.data.dao.impl.FeatureExtractIdsDAOImpl.java
-    public static final String FEI_D_001 = "EMS_D_FEN_01";
-    public static final String FEI_D_001_MSG = "findById operation could not be executed";
+    public static final String FEID_001 = "EMS_D_FEN_01";
+    public static final String FEID_001_MSG = "findById operation could not be executed";
 
     //com.gam.nocr.ems.data.dao.impl.OfficeSettingDAOImpl.java
-    public static final String OST_D_001 = "EMS_D_OST_001";
-    public static final String OST_D_001_MSG = "findById operation could not be executed";
+    public static final String OSTD_001 = "EMS_D_OST_001";
+    public static final String OSTD_001_MSG = "findById operation could not be executed";
 }

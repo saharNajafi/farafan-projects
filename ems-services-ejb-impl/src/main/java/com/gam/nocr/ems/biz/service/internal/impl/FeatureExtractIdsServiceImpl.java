@@ -52,14 +52,14 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
                 List list = vlh.getList(from, to, true);
                 return new SearchResult(vlh.size(), list);
             } catch (ListException e) {
-                throw new ServiceException(BizExceptionCode.FEI_S_001, BizExceptionCode.GLB_006_MSG, e);
+                throw new ServiceException(BizExceptionCode.FEIS_001, BizExceptionCode.GLB_006_MSG, e);
             } catch (ListHandlerException e) {
-                throw new ServiceException(BizExceptionCode.FEI_S_002, BizExceptionCode.GLB_007_MSG, e);
+                throw new ServiceException(BizExceptionCode.FEIS_002, BizExceptionCode.GLB_007_MSG, e);
             }
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.FEI_S_003, BizExceptionCode.GLB_008_MSG, e);
+            throw new ServiceException(BizExceptionCode.FEIS_003, BizExceptionCode.GLB_008_MSG, e);
         }
     }
 
@@ -81,14 +81,14 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
                 List list = vlh.getList(from, to, true);
                 return new SearchResult(vlh.size(), list);
             } catch (ListException e) {
-                throw new ServiceException(BizExceptionCode.FEI_S_004, BizExceptionCode.GLB_006_MSG, e);
+                throw new ServiceException(BizExceptionCode.FEIS_004, BizExceptionCode.GLB_006_MSG, e);
             } catch (ListHandlerException e) {
-                throw new ServiceException(BizExceptionCode.FEI_S_008, BizExceptionCode.GLB_007_MSG, e);
+                throw new ServiceException(BizExceptionCode.FEIS_008, BizExceptionCode.GLB_007_MSG, e);
             }
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.FEI_S_009, BizExceptionCode.GLB_008_MSG, e);
+            throw new ServiceException(BizExceptionCode.FEIS_009, BizExceptionCode.GLB_008_MSG, e);
         }
     }
 
@@ -100,11 +100,11 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
 
         try {
             if (enrollmentOfficeId == null)
-                throw new ServiceException(BizExceptionCode.FEI_S_005, BizExceptionCode.FEI_S_005_MSG);
+                throw new ServiceException(BizExceptionCode.FEIS_005, BizExceptionCode.FEIS_005_MSG);
             officeSettingTO = getOfficeSettingDAO().findByOfficeId(enrollmentOfficeId);
             if (officeSettingTO == null)
-                throw new ServiceException(BizExceptionCode.FEI_S_006,
-                        BizExceptionCode.FEI_S_006_MSG, new Long[]{enrollmentOfficeId});
+                throw new ServiceException(BizExceptionCode.FEIS_006,
+                        BizExceptionCode.FEIS_006_MSG, new Long[]{enrollmentOfficeId});
             if (officeSettingTO.getFeatureExtractIdsTO().size() > 0) {
                 for(FeatureExtractIdsTO featureExtractIdsTO : officeSettingTO.getFeatureExtractIdsTO()){
                     FeatureExtractIdsVTO featureExtractIdsVTO = new FeatureExtractIdsVTO();
@@ -118,7 +118,7 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
             }
 
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.FEI_S_007, BizExceptionCode.FEI_S_007_MSG, e);
+            throw new ServiceException(BizExceptionCode.FEIS_007, BizExceptionCode.FEIS_007_MSG, e);
         }
         return featureExtractIdsVTOs;
     }
@@ -130,7 +130,7 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
                     .getDAO(EMSLogicalNames
                             .getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_SETTING));
         } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.FEI_S_010,
+            throw new ServiceException(BizExceptionCode.FEIS_010,
                     BizExceptionCode.GLB_001_MSG, e,
                     EMSLogicalNames.DAO_OFFICE_SETTING.split(","));
         }

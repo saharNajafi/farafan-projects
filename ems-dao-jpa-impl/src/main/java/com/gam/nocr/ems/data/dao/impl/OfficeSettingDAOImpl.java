@@ -61,7 +61,7 @@ public class OfficeSettingDAOImpl extends EmsBaseDAOImpl<OfficeSettingTO> implem
 					.setParameter("id", id)
 					.getResultList();
 		} catch (Exception e) {
-			throw new DAOException(DataExceptionCode.OST_D_001, DataExceptionCode.OST_D_001_MSG, e);
+			throw new DAOException(DataExceptionCode.OSTD_001, DataExceptionCode.OSTD_001_MSG, e);
 		}
 	   return officeSettingTOList.size() != 0 ? officeSettingTOList.get(0) : null;
 	}
