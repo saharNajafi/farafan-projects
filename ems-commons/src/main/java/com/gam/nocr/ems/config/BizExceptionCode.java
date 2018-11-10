@@ -2791,11 +2791,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RS_003 = "EMS_S_RS_003";
     public static final String RS_004 = "EMS_S_RS_004";
     public static final String RS_005 = "EMS_S_RS_005";
+    public static final String RS_006 = "EMS_S_RS_006";
     public static final String RS_002_MSG = "the newReserve operation could not be executed";
     public static final String RS_003_MSG = "there is a request with this portal request id {0}";
     public static final String RS_004_MSG = "the reserve operation could not be executed";
     public static final String RS_005_MSG = "the updateReserve operation could not be executed";
     public static final String RS_006_MSG = "there is a request with nationalId";
+    public static final String RS_007_MSG = "there is not a payment for this request";
 
     //com.gam.nocr.ems.biz.service.internal.impl.InternalServiceCheckerImpl.java
     public static final String ISC_001 = "EMS_S_ISC_001";

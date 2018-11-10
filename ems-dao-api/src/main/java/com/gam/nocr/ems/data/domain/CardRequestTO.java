@@ -511,7 +511,7 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     }
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CRQ_PAYMENT_ID")
     public RegistrationPaymentTO getRegistrationPaymentTO() {
         return registrationPaymentTO;

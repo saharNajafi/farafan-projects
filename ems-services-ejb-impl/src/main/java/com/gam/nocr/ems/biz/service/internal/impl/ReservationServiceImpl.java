@@ -23,6 +23,7 @@ import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
 import com.gam.nocr.ems.data.domain.ws.RegistrationOfficeWTO;
 import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.CardRequestState;
+import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.data.util.CrsChecker;
 import com.gam.nocr.ems.util.CalendarUtil;
@@ -39,6 +40,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_RESERVATION;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
@@ -231,6 +233,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             }
             CitizenTO citizenTO = getCitizenService().addCitizen(reservationTO.getCardRequest().getCitizen());
             emsCardRequest.setCitizen(citizenTO);
+            emsCardRequest.setType(CardRequestType.FIRST_CARD);
             fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
@@ -266,8 +269,16 @@ public class ReservationServiceImpl extends EMSAbstractService
         if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
             RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
             registrationPaymentTO.setCitizenTO(citizenTO);
+            Map<String, String> registrationPaymentResult =
+                    getRegistrationPaymentService().getPaymentAmountAndPaymentCode(emsCardRequest.getType(), citizenTO.getNationalID());
+            registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
+            registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             registrationPaymentTO = getRegistrationPaymentService().addRegistrationPayment(registrationPaymentTO);
             emsCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
+        }
+        else{
+            throw new ServiceException(BizExceptionCode.RS_006,
+                    BizExceptionCode.RS_007_MSG);
         }
     }
 
