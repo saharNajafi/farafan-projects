@@ -34,7 +34,7 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         return super.getId();
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_NAME", length = 15, columnDefinition = "varchar2(15)")
+    @Column(name = "FEI_FEATURE_EXTRACT_NAME", length = 20, columnDefinition = "varchar2(20)")
     public String getFeatureExtractName() {
         return featureExtractName;
     }
