@@ -2832,49 +2832,33 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRH_S_001 = "EMS_CRH_S_001";
     public static final String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 
-    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractNormalServiceImpl.java
-    public static final String FEI_001 = "EMS_S_FEI_001";
-    public static final String FEI_002 = "EMS_S_FEI_002";
-    public static final String FEI_003 = "EMS_S_FEI_003";
-    public static final String FEI_004 = "EMS_S_FEI_004";
-    public static final String FEI_005 = "EMS_S_FEI_005";
-    public static final String FEI_006 = "EMS_S_FEI_006";
-    public static final String FEI_007 = "EMS_S_FEI_007";
-    public static final String FEI_008 = "EMS_S_FEI_008";
-    public static final String FEI_005_MSG = "EnrollmentOfficeid is null";
-    public static final String FEI_006_MSG = "Could not find officeSetting with id {0}";
-    public static final String FEI_007_MSG = "an error occurred on load operation";
+    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractIdsServiceImpl.java
+    public static final String FEI_S_001 = "EMS_S_FEI_001";
+    public static final String FEI_S_002 = "EMS_S_FEI_002";
+    public static final String FEI_S_003 = "EMS_S_FEI_003";
+    public static final String FEI_S_004 = "EMS_S_FEI_004";
+    public static final String FEI_S_005 = "EMS_S_FEI_005";
+    public static final String FEI_S_006 = "EMS_S_FEI_006";
+    public static final String FEI_S_007 = "EMS_S_FEI_007";
+    public static final String FEI_S_008 = "EMS_S_FEI_008";
+    public static final String FEI_S_009 = "EMS_S_FEI_009";
+    public static final String FEI_S_010 = "EMS_S_FEI_010";
+    public static final String FEI_S_005_MSG = "EnrollmentOfficeId is null";
+    public static final String FEI_S_006_MSG = "Could not find officeSetting with id {0}";
+    public static final String FEI_S_007_MSG = "an error occurred on load operation";
 
-    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractCCServiceImpl.java
-    public static final String FEV_001 = "EMS_S_FEV_001";
-    public static final String FEV_002 = "EMS_S_FEV_002";
-    public static final String FEV_003 = "EMS_S_FEV_003";
-    public static final String FEV_004 = "EMS_S_FEV_004";
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeSettingServiceImpl.java
-    public static final String OST_001 = "EMS_S_OST_001";
-    public static final String OST_002 = "EMS_S_OST_002";
-    public static final String OST_003 = "EMS_S_OST_003";
-    public static final String OST_004 = "EMS_S_OST_004";
-    public static final String OST_005 = "EMS_S_OST_005";
-    public static final String OST_006 = "EMS_S_OST_006";
-    public static final String OST_007 = "EMS_S_OST_007";
-    public static final String OST_008 = "EMS_S_OST_008";
-    public static final String OST_009 = "EMS_S_OST_009";
-    public static final String OST_010 = "EMS_S_OST_010";
-    public static final String OST_011 = "EMS_S_OST_011";
-    public static final String OST_012 = "EMS_S_OST_012";
-    public static final String OST_013 = "EMS_S_OST_013";
-    public static final String OST_014 = "EMS_S_OST_014";
-    public static final String OST_015 = "EMS_S_OST_015";
-    public static final String OST_001_MSG = "EnrollmentOfficeid is null";
-    public static final String OST_002_MSG = "Could not find officeCapacity with id {0}";
-    public static final String OST_003_MSG = "OfficeSetting id {} does not exist for editing";
-    public static final String OST_004_MSG = "an error occurred on save operation";
-    public static final String OST_007_MSG = "Could not find featureExtractNormal with id {0}";
-    public static final String OST_008_MSG = "Could not find featureExtractCC with id {0}";
-    public static final String OST_011_MSG = "an error occurred on update operation";
-    public static final String OST_012_MSG = "an error occurred on load operation";
-    public static final String OST_013_MSG = "an error occurred on save operation";
-    public static final String OST_014_MSG = "an error occurred on getFeatureExtractIdsList operation";
+    public static final String OST_S_003 = "EMS_S_OST_003";
+    public static final String OST_S_006 = "EMS_S_OST_006";
+    public static final String OST_S_007 = "EMS_S_OST_007";
+    public static final String OST_S_008 = "EMS_S_OST_008";
+    public static final String OST_S_011 = "EMS_S_OST_011";
+    public static final String OST_S_014 = "EMS_S_OST_014";
+    public static final String OST_S_015 = "EMS_S_OST_015";
+    public static final String OST_S_003_MSG = "OfficeSetting id {} does not exist for editing";
+    public static final String OST_S_007_MSG = "Could not find featureExtractNormal with id {0}";
+    public static final String OST_S_008_MSG = "Could not find featureExtractCC with id {0}";
+    public static final String OST_S_011_MSG = "an error occurred on update operation";
+    public static final String OST_S_014_MSG = "an error occurred on getFeatureExtractIdsList operation";
 }

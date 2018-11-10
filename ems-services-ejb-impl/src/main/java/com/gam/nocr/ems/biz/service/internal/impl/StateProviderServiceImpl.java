@@ -270,7 +270,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
                         for (FeatureExtractIdsTO fei : featureExtractIds){
                             if(fei.getFeatureExtractType().equals(FeatureExtractType.NORMAL)){
-                                stateProviderTO.setValue(fei.getFeatureExtractName());
+                                stateProviderTO.setValue(fei.getFeatureExtractId());
                             }
                         }
                     }
@@ -281,7 +281,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
                         for (FeatureExtractIdsTO fei : featureExtractIds){
                             if(fei.getFeatureExtractType().equals(FeatureExtractType.CC)){
-                                stateProviderTO.setValue(fei.getFeatureExtractName());
+                                stateProviderTO.setValue(fei.getFeatureExtractId());
                             }
                         }
                     }
