@@ -170,8 +170,7 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.allowChangeFingerStatusDuringCaptureForElderly = allowChangeFingerStatusDuringCaptureForElderly;
     }
 
-    @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "OST_FEI"
             ,joinColumns = @JoinColumn(name = "OST_ID"
             , referencedColumnName = "OST_ID")

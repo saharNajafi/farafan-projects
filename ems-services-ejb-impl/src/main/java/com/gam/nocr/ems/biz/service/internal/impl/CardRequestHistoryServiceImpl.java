@@ -46,7 +46,7 @@ public class CardRequestHistoryServiceImpl extends EMSAbstractService
         try {
             return getCardRequestHistoryDAO().findByCardRequestAndCrhAction(cardRequestId, crhAction);
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.CRH_S_001, BizExceptionCode.CRH_S_001_MSG, e);
+            throw new ServiceException(BizExceptionCode.CRHS_001, BizExceptionCode.CRHS_001_MSG, e);
         }
     }
 

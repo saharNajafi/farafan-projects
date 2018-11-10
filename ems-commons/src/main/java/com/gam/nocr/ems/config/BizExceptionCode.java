@@ -41,8 +41,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
-    public static final String CHG_006 = "CRS_A_CHG_006";
-    public static final String CHG_007 = "CRS_A_CHG_007";
+   // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
+    public static final String CHG_006 = "EMS_S_CHG_006";
+    public static final String CHG_007 = "EMS_S_CHG_007";
     public static final String CHG_005_MSG = "Error Occurred on call creating active shifts web service";
 
     public static final String NOCR_IMS_01 = "EMS_S_NOCR_IMS_01";
@@ -212,6 +213,22 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRE_056 = "EMS_S_CRE_056";
     public static final String CRE_057 = "EMS_S_CRE_057";
     public static final String CRE_058 = "EMS_S_CRE_058";
+    public static final String CRE_059 = "EMS_S_CRE_059";
+    public static final String CRE_060 = "EMS_S_CRE_060";
+    public static final String CRE_061 = "EMS_S_CRE_061";
+    public static final String CRE_062 = "EMS_S_CRE_062";
+    public static final String CRE_063 = "EMS_S_CRE_063";
+    public static final String CRE_064 = "EMS_S_CRE_064";
+    public static final String CRE_065 = "EMS_S_CRE_065";
+    public static final String CRE_066 = "EMS_S_CRE_066";
+    public static final String CRE_067 = "EMS_S_CRE_067";
+    public static final String CRE_068 = "EMS_S_CRE_068";
+    public static final String CRE_069 = "EMS_S_CRE_069";
+    public static final String CRE_070 = "EMS_S_CRE_070";
+    public static final String CRE_071 = "EMS_S_CRE_071";
+    public static final String CRE_072 = "EMS_S_CRE_072";
+    public static final String CRE_073 = "EMS_S_CRE_073";
+    public static final String CRE_074 = "EMS_S_CRE_074";
     public static final String CRE_001_MSG = "Card request id cannot not be null";
     public static final String CRE_002_MSG = "Card request action cannot not be null";
     public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -238,32 +255,14 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRE_055_MSG = "Cannot instantiate CardRequestStateWS service";
     public static final String CRE_056_MSG = "Can not Find Card request";
     public static final String CRE_057_MSG = "There is a processed preRegistration";
-    public static final String CRE_070 = "EMS_CRE_070";
-    public static final String CRE_071 = "EMS_CRE_071";
-    public static final String CRE_072 = "EMS_CRE_072";
-    public static final String CRE_073 = "EMS_CRE_073";
-    public static final String CRE_069 = "EMS_CRE_069";
-    public static final String CRE_059 = "EMS_CRE_059";
-    public static final String CRE_060 = "EMS_CRE_060";
-    public static final String CRE_061 = "EMS_CRE_061";
-    public static final String CRE_062 = "EMS_CRE_062";
-    public static final String CRE_063 = "EMS_CRE_063";
-    public static final String CRE_064 = "EMS_CRE_064";
-    public static final String CRE_065 = "EMS_CRE_065";
-    public static final String CRE_066 = "EMS_CRE_066";
-    public static final String CRE_067 = "EMS_CRE_067";
-    public static final String CRE_068 = "EMS_CRE_068";
-    public static final String CRE_074 = "EMS_CRE_074";
-
-
-    public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
     public static final String CRE_059_MSG = "There is a reproduction request for Card Request: {0}";
     public static final String CRE_060_MSG = "Citizen has a shipped card for Card Request: {0}";
-    public static final String CRE_062_MSG = "Citizen has a delivered card for Card Request: {0}";
     public static final String CRE_061_MSG = "Citizen last card expired for Card Request: {0}";
-    public static final String CRE_064_MSG = "Invalid Parameter -> {0} : {1}";
+    public static final String CRE_062_MSG = "Citizen has a delivered card for Card Request: {0}";
     public static final String CRE_063_MSG = "citizen personal info is not Valid for nationalId {0}";
+    public static final String CRE_064_MSG = "Invalid Parameter -> {0} : {1}";
     public static final String CRE_068_MSG = "an error occurred on findLastRequestByNationalId operation";
+    public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
     public static final String CRE_070_MSG = "There is a processed Card Request: {0}";
     public static final String CRE_071_MSG = "DB Error: Error occurred in fetching Card Request for NationalId: {0}";
     public static final String CRE_072_MSG = "unable to update cardRequest";
@@ -449,7 +448,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_165 = "EMS_S_RSI_165";
     public static final String RSI_166 = "EMS_S_RSI_166";
     public static final String RSI_167 = "EMS_S_RSI_167";
-
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -2217,7 +2215,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PRR_006 = "EMS_S_PRR_006";
     public static final String PRR_007 = "EMS_S_PRR_007";
     public static final String PRR_008 = "EMS_S_PRR_008";
-    public static final String PBS_011 = "EMS_S_PBS_011";
     public static final String PRR_007_MSG = "Change Enrollment office location has forbidden now!";
     public static final String REG_20_MSG = "Invalid serialNumber";//REG_20_MSG
     public static final String REG_21_MSG = "Invalid NationalId";//REG_21_MSG
@@ -2413,7 +2410,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_028 = "EMS_S_NIO_028";
     public static final String NIO_029 = "EMS_S_NIO_029";
     public static final String NIO_032 = "EMS_S_NIO_032";
-
     public static final String NIO_030 = "EMS_S_NIO_030";
     public static final String NIO_031 = "EMS_S_NIO_031";
     public static final String NIO_033 = "EMS_S_NIO_033";
@@ -2427,7 +2423,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_024_MSG = "The name is is empty or null";
     public static final String NIO_025_MSG = "The lastname is empty or null";
     public static final String NIO_029_MSG = "The record was not found by the service 'fetchDataByOnlineEnquiryByEstelam2' of the sub system 'IMS'";
-
     public static final String NIO_030_MSG = "Invalid key - this exception should not happen at all !!!";
     public static final String NIO_031_MSG = "Exception was happened in setting the Default values to Citizen after calling IMS getestelam2sc and record not found in replica request.";
     public static final String NIO_032_MSG = "The returned value of the service of getEstelam3 is null. ";
@@ -2436,6 +2431,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_037_MSG = "IMS INVALID SOLAR BIRTHDATE ";
     public static final String NIO_038_MSG = "IMS INVALID FATHER NAME ";
     public static final String NIO_039_MSG = "IMS INVALID GENDER NAME ";
+
+
     // com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSFarafanServiceImpl
     public static final String NIF_001 = "EMS_S_NIF_001";
     public static final String NIF_002 = "EMS_S_NIF_002";
@@ -2637,7 +2634,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_036 = "EMS_S_ESI_036";
     public static final String ESI_037 = "EMS_S_ESI_037";
 //    public static final String ESI_030 = "EMS_S_ESI_030";
-
     public static final String ESI_001_MSG = "CardInfo is invalid";
     public static final String ESI_002_MSG = "Card verification failed";
     public static final String ESI_003_MSG = "Key/PIN generation failed";
@@ -2726,34 +2722,34 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OSS_009 = "EMS_S_OSS_009";
 
     //	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
-    public static final String WST_001 = "EMSWorkstationPMService0001";
-    public static final String WST_002 = "EMSWorkstationPMService0002";
-    public static final String WST_003 = "EMSWorkstationPMService0003";
-    public static final String WST_004 = "EMSWorkstationPMService0004";
-    public static final String WST_005 = "EMSWorkstationPMService0005";
-    public static final String WST_006 = "EMSWorkstationPMService0006";
-    public static final String WST_007 = "EMSWorkstationPMService0007";
-    public static final String WST_008 = "EMSWorkstationPMService0008";
-    public static final String WST_009 = "EMSWorkstationPMService0009";
-    public static final String WST_010 = "EMSWorkstationPMService0010";
-    public static final String WST_011 = "EMSWorkstationPMService0011";
-    public static final String WST_012 = "EMSWorkstationPMService0012";
-    public static final String WST_013 = "EMSWorkstationPMService0013";
-    public static final String WST_014 = "EMSWorkstationPMService0014";
-    public static final String EMSWorkstationPMService0001 = "WorkstationCode is invalid";
-    public static final String EMSWorkstationPMService0002 = "WorkstationCode is empty";
-    public static final String EMSWorkstationPMService0003 = "WorkstationCode is too short";
-    public static final String EMSWorkstationPMService0004 = "WorkstationCode is too long";
-    public static final String EMSWorkstationPMService0005 = "Minimum duration is not met";
-    public static final String EMSWorkstationPMService0006 = "Workstation is inactive";
-    public static final String EMSWorkstationPMService0007 = "Workstation is inactive";
-    public static final String EMSWorkstationPMService0008 = "IP address format is invalid";
-    public static final String EMSWorkstationPMService0009 = "MAC address could not be empty";
-    public static final String EMSWorkstationPMService0010 = "MAC address is too short";
-    public static final String EMSWorkstationPMService0011 = "MAC address is too long";
-    public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
-    public static final String EMSWorkstationPMService0013 = "Username could not be empty";
-    public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
+    public static final String WST_001 = "EMS_S_WST_001";
+    public static final String WST_002 = "EMS_S_WST_002";
+    public static final String WST_003 = "EMS_S_WST_003";
+    public static final String WST_004 = "EMS_S_WST_004";
+    public static final String WST_005 = "EMS_S_WST_005";
+    public static final String WST_006 = "EMS_S_WST_006";
+    public static final String WST_007 = "EMS_S_WST_007";
+    public static final String WST_008 = "EMS_S_WST_008";
+    public static final String WST_009 = "EMS_S_WST_009";
+    public static final String WST_010 = "EMS_S_WST_010";
+    public static final String WST_011 = "EMS_S_WST_011";
+    public static final String WST_012 = "EMS_S_WST_012";
+    public static final String WST_013 = "EMS_S_WST_013";
+    public static final String WST_014 = "EMS_S_WST_014";
+    public static final String WST_001_MSG = "WorkstationCode is invalid";
+    public static final String WST_002_MSG = "WorkstationCode is empty";
+    public static final String WST_003_MSG = "WorkstationCode is too short";
+    public static final String WST_004_MSG = "WorkstationCode is too long";
+    public static final String WST_005_MSG = "Minimum duration is not met";
+    public static final String WST_006_MSG = "Workstation is inactive";
+    public static final String WST_007_MSG = "Workstation is inactive";
+    public static final String WST_008_MSG = "IP address format is invalid";
+    public static final String WST_009_MSG = "MAC address could not be empty";
+    public static final String WST_010_MSG = "MAC address is too short";
+    public static final String WST_011_MSG = "MAC address is too long";
+    public static final String WST_012_MSG = "OS version could not be empty";
+    public static final String WST_013_MSG = "Username could not be empty";
+    public static final String WST_014_MSG= "Computer name could not be empty";
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
     public static final String OC_001 = "EMS_S_OC_001";
@@ -2790,11 +2786,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OASH_001 = "EMS_OASH_001";
 
     //com.gam.nocr.ems.biz.service.internal.impl.ReservationServiceImpl
-    public static final String RS_001 = "EMS_RS_001";
-    public static final String RS_002 = "EMS_RS_002";
-    public static final String RS_003 = "EMS_RS_003";
-    public static final String RS_004 = "EMS_RS_004";
-    public static final String RS_005 = "EMS_RS_005";
+    public static final String RS_001 = "EMS_S_RS_001";
+    public static final String RS_002 = "EMS_S_RS_002";
+    public static final String RS_003 = "EMS_S_RS_003";
+    public static final String RS_004 = "EMS_S_RS_004";
+    public static final String RS_005 = "EMS_S_RS_005";
     public static final String RS_002_MSG = "the newReserve operation could not be executed";
     public static final String RS_003_MSG = "there is a request with this portal request id {0}";
     public static final String RS_004_MSG = "the reserve operation could not be executed";
@@ -2823,14 +2819,14 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ISC_011_MSG = "PreRegistration Payment not found for national id: {0}";
 
     //com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
-    public static final String RGP_020 = "EMS_S_REG_020";
     public static final String RGP_002 = "EMS_S_REG_002";
-    public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
+    public static final String RGP_020 = "EMS_S_REG_020";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
+ public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
-    public static final String CRH_S_001 = "EMS_CRH_S_001";
-    public static final String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
+    public static final String CRHS_001 = "EMS_S_CRH_001";
+    public static final String CRHS_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 
     //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractIdsServiceImpl.java
     public static final String FEIS_001 = "EMS_S_FEI_001";
@@ -2857,8 +2853,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OSTS_006 = "EMS_S_OST_006";
     public static final String OSTS_007 = "EMS_S_OST_007";
     public static final String OSTS_001_MSG = "OfficeSetting id {} does not exist for editing";
+    public static final String OSTS_002_MSG = "an error occurred on update operation";
     public static final String OSTS_003_MSG = "Could not find featureExtractNormal with id {0}";
     public static final String OSTS_004_MSG = "Could not find featureExtractCC with id {0}";
-    public static final String OSTS_002_MSG = "an error occurred on update operation";
     public static final String OSTS_005_MSG = "an error occurred on getFeatureExtractIdsList operation";
 }
