@@ -171,7 +171,7 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "OST_FEI"
+    @JoinTable(name = "OFFICE_SETTING_FEATURE_EXTRACT"
             ,joinColumns = @JoinColumn(name = "OST_ID"
             , referencedColumnName = "OST_ID")
             , inverseJoinColumns = @JoinColumn(name = "FEI_ID"
