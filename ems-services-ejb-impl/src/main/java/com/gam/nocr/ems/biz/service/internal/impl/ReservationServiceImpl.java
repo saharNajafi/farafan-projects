@@ -412,15 +412,15 @@ public class ReservationServiceImpl extends EMSAbstractService
 
         // check personal information
         if (emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar() == null) {
-            throw new DataException(DataExceptionCode.REG_18, DataExceptionCode.REG_18_MSG);
+            throw new DataException(DataExceptionCode.REG_018, DataExceptionCode.REG_18_MSG);
         }
         CrsChecker.checkLunarDate(emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateLunar());
         CrsChecker.checkBirthDateGregorian(emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateGregorian());
         if (emsCardRequestTO.getCitizen().getCitizenInfo().getGender() == null) {
-            throw new DataException(DataExceptionCode.REG_09, DataExceptionCode.REG_09_MSG);
+            throw new DataException(DataExceptionCode.REG_009, DataExceptionCode.REG_09_MSG);
         }
         if (emsCardRequestTO.getCitizen().getCitizenInfo().getReligion() == null) {
-            throw new DataException(DataExceptionCode.REG_08, DataExceptionCode.REG_08_MSG);
+            throw new DataException(DataExceptionCode.REG_008, DataExceptionCode.REG_08_MSG);
         }
 
         cardRequestTO.setPortalRequestId(emsCardRequestTO.getPortalRequestId());
