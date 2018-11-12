@@ -61,6 +61,7 @@ Ext.define('Ems.view.office.NewEdit.ManagementInfo', {
                 regex: Tools.regexCellPhone(),
                 regexText: 'این فیلد باید یکx شماره 11 رقمی در قالب 09xxxxxxxxx باشد',
                 maxLength: 11,
+                maskRe: /\d/i,
                 enforceMaxLength: 11
             },
             {
