@@ -138,8 +138,8 @@ public class EmksServiceImpl extends EMSAbstractService implements
         try {
             CardMoCKeys nidCardMoCKeys = emksService.getNIDCardMoCKeys(str);
             EMKSCardMoCKeysWTO emksDataResultWTO = new EMKSCardMoCKeysWTO();
-            emksDataResultWTO.setMoc_enc(nidCardMoCKeys.getMoCENC().getValue().toString());
-            emksDataResultWTO.setMoc_mac(nidCardMoCKeys.getMoCMAC().getValue().toString());
+            emksDataResultWTO.setMoc_enc(nidCardMoCKeys.getMoCENC() != null ? nidCardMoCKeys.getMoCENC().getValue().toString() : "");
+            emksDataResultWTO.setMoc_mac(nidCardMoCKeys.getMoCMAC() != null ? nidCardMoCKeys.getMoCMAC().getValue().toString() : "");
             insertBusinessActionLog(requestID, str, BusinessLogAction.GET_MOC_KEYS);
             return emksDataResultWTO;
         } catch (IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage e) {
@@ -472,29 +472,6 @@ public class EmksServiceImpl extends EMSAbstractService implements
                     BizExceptionCode.ESI_035_MSG);
         }
 
-        if (emksDataWTO.getMocAvailable().equals("1")) {
-            if (!EmsUtil.checkString(emksDataWTO.getAntiYesPublicKey()))
-                throw new ServiceException(BizExceptionCode.ESI_023,
-                        BizExceptionCode.ESI_023_MSG);
-            if (!EmsUtil.checkString(emksDataWTO.getMocHashData()))
-                throw new ServiceException(BizExceptionCode.ESI_024,
-                        BizExceptionCode.ESI_024_MSG);
-            if (!EmsUtil.checkString(emksDataWTO.getMocSignature()))
-                throw new ServiceException(BizExceptionCode.ESI_025,
-                        BizExceptionCode.ESI_025_MSG);
-
-        } else if (emksDataWTO.getMocAvailable().equals("0")) {
-
-            if (EmsUtil.checkString(emksDataWTO.getAntiYesPublicKey()))
-                throw new ServiceException(BizExceptionCode.ESI_026,
-                        BizExceptionCode.ESI_026_MSG);
-            if (EmsUtil.checkString(emksDataWTO.getMocHashData()))
-                throw new ServiceException(BizExceptionCode.ESI_027,
-                        BizExceptionCode.ESI_027_MSG);
-            if (EmsUtil.checkString(emksDataWTO.getMocSignature()))
-                throw new ServiceException(BizExceptionCode.ESI_028,
-                        BizExceptionCode.ESI_028_MSG);
-        }
     }
 
     @Override
