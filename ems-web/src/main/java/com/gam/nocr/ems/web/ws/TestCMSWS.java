@@ -1,6 +1,5 @@
 package com.gam.nocr.ems.web.ws;
 
-import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.nocr.ems.biz.delegator.CardIssuanceRequestDelegator;
@@ -59,12 +58,12 @@ public class TestCMSWS extends WSSecurity {
     public void sendCardIssuanceRequestToCms(@WebParam(name = "cardRequestIds") List<Long> cardRequestIds) throws ExternalInterfaceException {
         //  Make sure the caller is the CMS (not anyone else)
         System.out.println("Start CARD Request ID For Sending To CMS: " + cardRequestIds);
-        try {
+       /* try {
             super.authenticate(webServiceContext);
         } catch (BaseException e) {
             logger.error("EMS-INTL-000001 - EMS internal error", e);
             throw new ExternalInterfaceException("EMS-INTL-000001", "Unauthorized SSL connection!");
-        }
+        }*/
 
         CardIssuanceRequestDelegator cardIssuanceRequestDelegator = new CardIssuanceRequestDelegator();
 
