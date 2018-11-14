@@ -41,7 +41,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
-   // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
+    // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
     public static final String CHG_006 = "EMS_S_CHG_006";
     public static final String CHG_007 = "EMS_S_CHG_007";
     public static final String CHG_005_MSG = "Error Occurred on call creating active shifts web service";
@@ -2633,7 +2633,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_035 = "EMS_S_ESI_035";
     public static final String ESI_036 = "EMS_S_ESI_036";
     public static final String ESI_037 = "EMS_S_ESI_037";
-//    public static final String ESI_030 = "EMS_S_ESI_030";
+    //    public static final String ESI_030 = "EMS_S_ESI_030";
     public static final String ESI_001_MSG = "CardInfo is invalid";
     public static final String ESI_002_MSG = "Card verification failed";
     public static final String ESI_003_MSG = "Key/PIN generation failed";
@@ -2749,7 +2749,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WST_011_MSG = "MAC address is too long";
     public static final String WST_012_MSG = "OS version could not be empty";
     public static final String WST_013_MSG = "Username could not be empty";
-    public static final String WST_014_MSG= "Computer name could not be empty";
+    public static final String WST_014_MSG = "Computer name could not be empty";
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
     public static final String OC_001 = "EMS_S_OC_001";
@@ -2852,223 +2852,22 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String FEV_004 = "EMS_S_FEV_004";
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeSettingServiceImpl.java
-    public static final String OST_001 = "EMS_S_OST_001";
-    public static final String OST_002 = "EMS_S_OST_002";
-    public static final String OST_003 = "EMS_S_OST_003";
-    public static final String OST_004 = "EMS_S_OST_004";
-    public static final String OST_005 = "EMS_S_OST_005";
-    public static final String OST_006 = "EMS_S_OST_006";
-    public static final String OST_007 = "EMS_S_OST_007";
-    public static final String OST_008 = "EMS_S_OST_008";
-    public static final String OST_009 = "EMS_S_OST_009";
-    public static final String OST_010 = "EMS_S_OST_010";
-    public static final String OST_011 = "EMS_S_OST_011";
-    public static final String OST_012 = "EMS_S_OST_012";
-    public static final String OST_013 = "EMS_S_OST_013";
-    public static final String OST_014 = "EMS_S_OST_014";
-    public static final String OST_015 = "EMS_S_OST_015";
-    public static final String OST_001_MSG = "EnrollmentOfficeid is null";
-    public static final String OST_002_MSG = "Could not find officeCapacity with id {0}";
-    public static final String OST_003_MSG = "OfficeSetting id {} does not exist for editing";
-    public static final String OST_004_MSG = "an error occurred on save operation";
-    public static final String OST_007_MSG = "Could not find featureExtractNormal with id {0}";
-    public static final String OST_008_MSG = "Could not find featureExtractCC with id {0}";
-    public static final String OST_011_MSG = "an error occurred on update operation";
-    public static final String OST_012_MSG = "an error occurred on load operation";
-    public static final String OST_013_MSG = "an error occurred on save operation";
-    public static final String OST_014_MSG = "an error occurred on getFeatureExtractIdsList operation";
-=======
-	public static final String ESI_001_MSG = "CardInfo is invalid";
-	public static final String ESI_002_MSG = "Card verification failed";
-	public static final String ESI_003_MSG = "Key/PIN generation failed";
-	public static final String ESI_004_MSG = "Infrastructure error";
-	public static final String ESI_005_MSG = "Unknown Error from Emks";
-	public static final String ESI_006_MSG = "Exception happened is unknown";
-	public static final String ESI_007_MSG = "the emksDataWTO is null";
-	public static final String ESI_010_MSG = "MocAvailable is null";
-	public static final String ESI_011_MSG = "MocAvailable must be 0 or 1";
-	public static final String ESI_012_MSG = "csn is null";
-	public static final String ESI_013_MSG = "crn is null";
-	public static final String ESI_014_MSG = "pinKeyVersion is null";
-	public static final String ESI_015_MSG = "pinAlgorithmVersion is null";
-	public static final String ESI_016_MSG = "sodKeyVersion is null";
-	public static final String ESI_017_MSG = "ldsVersion is null";
-	public static final String ESI_018_MSG = "dpVersion is null";
-	public static final String ESI_019_MSG = "bluePart is null";
-	public static final String ESI_020_MSG = "Dg8 is null";
-	public static final String ESI_021_MSG = "YellowPart is null";
-	public static final String ESI_022_MSG = "YellowPartSignature is null";
-	public static final String ESI_023_MSG = "AntiYesPublicKey is null";
-	public static final String ESI_024_MSG = "MocHashData is null";
-	public static final String ESI_025_MSG = "MocSignature is null";
-	public static final String ESI_026_MSG = "AntiYesPublicKey must be null";
-	public static final String ESI_027_MSG = "MocHashData must be null";
-	public static final String ESI_028_MSG = "MocSignature must be null";
-	public static final String ESI_030_MSG = "EMKS WebService Exception ...";
-	public static final String ESI_031_MSG = "EMKS GetSignature WebService Exception ...";
-	public static final String ESI_033_MSG = "CardProvider must not be null";
+    public static final String OSTS_001 = "EMS_S_OST_001";
+    public static final String OSTS_002 = "EMS_S_OST_002";
+    public static final String OSTS_003 = "EMS_S_OST_003";
+    public static final String OSTS_004 = "EMS_S_OST_004";
+    public static final String OSTS_005 = "EMS_S_OST_005";
+    public static final String OSTS_006 = "EMS_S_OST_006";
+    public static final String OSTS_007 = "EMS_S_OST_007";
+    public static final String OSTS_001_MSG = "OfficeSetting id {} does not exist for editing";
+    public static final String OSTS_002_MSG = "an error occurred on update operation";
+    public static final String OSTS_003_MSG = "Could not find featureExtractNormal with id {0}";
+    public static final String OSTS_004_MSG = "Could not find featureExtractCC with id {0}";
+    public static final String OSTS_005_MSG = "an error occurred on getFeatureExtractIdsList operation";
 
-	//com.gam.nocr.ems.biz.job.PortalReservationJob
-	public static final String RSV_01 = "EMS_S_RSV_01";
-	public static final String RSV_02 = "EMS_S_RSV_02";
-	public static final String RSV_03 = "EMS_S_RSV_03";
-	public static final String RSV_04 = "EMS_S_RSV_04";
-	public static final String RSV_05 = "EMS_S_RSV_05";
-	public static final String RSV_06 = "EMS_S_RSV_06";
-
-	// com.gam.nocr.ems.biz.job.CardIssuanceRequestJob
-	public static final String ISU_01 = "EMS_S_ISU_01";
-	public static final String ISU_02 = "EMS_S_ISU_02";
-	public static final String ISU_03 = "EMS_S_ISU_03";
+    //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
+    public static final String CRH_S_001 = "EMS_CRH_S_001";
+    public static final String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 
 
-	// com.gam.nocr.ems.biz.job.CardHandingOutNotificationJob
-	public static final String CHO_01 = "EMS_S_CHO_01";
-	public static final String CHO_02 = "EMS_S_CHO_02";
-
-	// com.gam.nocr.ems.biz.job.IMSUpdateCitizensInfoJob
-	public static final String IUC_01 = "EMS_S_IUC_01";
-	public static final String IUC_02 = "EMS_S_IUC_02";
-
-
-	public static final String ES2_01 = "EMS_S_ES2_01";
-	public static final String ES2_02 = "EMS_S_ES2_02";
-	public static final String ES2_03 = "EMS_S_ES2_03";
-
-	// com.gam.nocr.ems.data.domain.aspects.ESAPIFilter
-	public static final String ESF_001 = "EMS_S_ESF_001";
-	public static final String ESF_002 = "EMS_S_ESF_002";
-
-	// com.gam.nocr.ems.biz.aspects
-	public static final String EXH_001 = "EMS_J_EXH_001";
-
-	// com.gam.nocr.ems.biz.delegetor.BusinessLogDelegator
-	public static final String BGD_001 = "EMS_L_BGD_001";
-
-	// com.gam.nocr.ems.biz.service.internal.impl.doOCSPVerification
-	public static final String DOV_001 = "EMS_S_DOV_001";
-	public static final String DOV_002 = "EMS_S_DOV_002";
-	public static final String DOV_003 = "EMS_S_DOV_003";
-
-	// com.gam.nocr.ems.biz.service.internal.impl.OutgoingSMSServiceImpl
-	public static final String OSS_001 = "EMS_S_OSS_001";
-	public static final String OSS_002 = "EMS_S_OSS_002";
-	public static final String OSS_003 = "EMS_S_OSS_003";
-	public static final String OSS_004 = "EMS_S_OSS_004";
-	public static final String OSS_005 = "EMS_S_OSS_005";
-	public static final String OSS_006 = "EMS_S_OSS_006";
-	public static final String OSS_007 = "EMS_S_OSS_007";
-	public static final String OSS_008 = "EMS_S_OSS_008";
-	public static final String OSS_009 = "EMS_S_OSS_009";
-
-	//	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
-	public static final String WST_001 = "EMSWorkstationPMService0001";
-	public static final String WST_002 = "EMSWorkstationPMService0002";
-	public static final String WST_003 = "EMSWorkstationPMService0003";
-	public static final String WST_004 = "EMSWorkstationPMService0004";
-	public static final String WST_005 = "EMSWorkstationPMService0005";
-	public static final String WST_006 = "EMSWorkstationPMService0006";
-	public static final String WST_007 = "EMSWorkstationPMService0007";
-	public static final String WST_008 = "EMSWorkstationPMService0008";
-	public static final String WST_009 = "EMSWorkstationPMService0009";
-	public static final String WST_010 = "EMSWorkstationPMService0010";
-	public static final String WST_011 = "EMSWorkstationPMService0011";
-	public static final String WST_012 = "EMSWorkstationPMService0012";
-	public static final String WST_013 = "EMSWorkstationPMService0013";
-	public static final String WST_014 = "EMSWorkstationPMService0014";
-	public static final String EMSWorkstationPMService0001 = "WorkstationCode is invalid";
-	public static final String EMSWorkstationPMService0002 = "WorkstationCode is empty";
-	public static final String EMSWorkstationPMService0003 = "WorkstationCode is too short";
-	public static final String EMSWorkstationPMService0004 = "WorkstationCode is too long";
-	public static final String EMSWorkstationPMService0005 = "Minimum duration is not met";
-	public static final String EMSWorkstationPMService0006 = "Workstation is inactive";
-	public static final String EMSWorkstationPMService0007 = "Workstation is inactive";
-	public static final String EMSWorkstationPMService0008 = "IP address format is invalid";
-	public static final String EMSWorkstationPMService0009 = "MAC address could not be empty";
-	public static final String EMSWorkstationPMService0010 = "MAC address is too short";
-	public static final String EMSWorkstationPMService0011 = "MAC address is too long";
-	public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
-	public static final String EMSWorkstationPMService0013 = "Username could not be empty";
-	public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
-
-	//com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
-	public static final String OC_001 = "EMS_S_OC_001";
-	public static final String OC_002 = "EMS_S_OC_002";
-	public static final String OC_003 = "EMS_S_OC_003";
-	public static final String OC_004 = "EMS_S_OC_004";
-	public static final String OC_005 = "EMS_S_OC_005";
-	public static final String OC_006 = "EMS_S_OC_006";
-	public static final String OC_007 = "EMS_S_OC_007";
-	public static final String OC_008 = "EMS_S_OC_008";
-	public static final String OC_009 = "EMS_S_OC_009";
-	public static final String OC_010 = "EMS_S_OC_010";
-	public static final String OC_011 = "EMS_S_OC_011";
-	public static final String OC_012 = "EMS_S_OC_012";
-	public static final String OC_013 = "EMS_S_OC_013";
-	public static final String OC_014 = "EMS_S_OC_014";
-	public static final String OC_015 = "EMS_S_OC_015";
-	public static final String OC_001_MSG = "OfficeCapacityId id is null";
-	public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
-	public static final String OC_003_MSG = "EnrollmentOffice id is null";
-	public static final String OC_004_MSG = "Could not find officeCapacityList with enrollmentOfficeId {}\";";
-	public static final String OC_005_MSG = "Could not find officeCapacity with id {}\";";
-	public static final String OC_006_MSG = "startDate must be bigger than current date";
-	public static final String OC_007_MSG = "there is an OfficeCapacity, You should edit it";
-	public static final String OC_008_MSG = "getPreviousDay operation could not be executed";
-	public static final String OC_009_MSG = "createOfficeCapacity operation could not be executed";
-	public static final String OC_010_MSG = "save operation could not be executed";
-	public static final String OC_011_MSG = "update operation could not be executed";
-	public static final String OC_012_MSG = "load operation could not be executed";
-	public static final String OC_013_MSG = "officeCapacity is not editable";
-	public static final String OC_015_MSG = "An error has occured during converting date";
-
-	//com.gam.nocr.ems.biz.service.internal.impl.ActiveShiftServiceImpl
-	public static final String OASH_001 = "EMS_OASH_001";
-
-	//com.gam.nocr.ems.biz.service.internal.impl.ReservationServiceImpl
-	public static final String RS_001 = "EMS_RS_001";
-	public static final String RS_002 = "EMS_RS_002";
-	public static final String RS_003 = "EMS_RS_003";
-	public static final String RS_004 = "EMS_RS_004";
-	public static final String RS_005 = "EMS_RS_005";
-	public static final String RS_006 = "EMS_RS_006";
-	public static final String RS_002_MSG = "the newReserve operation could not be executed";
-	public static final String RS_003_MSG = "there is a request with this portal request id {0}";
-	public static final String RS_004_MSG = "the reserve operation could not be executed";
-	public static final String RS_005_MSG = "the updateReserve operation could not be executed";
-	public static final String RS_006_MSG = "there is a request with nationalId";
-	public static final String RS_007_MSG = "there is not a payment for this request";
-
-	//com.gam.nocr.ems.biz.service.internal.impl.InternalServiceCheckerImpl.java
-	public static final String ISC_001 = "EMS_S_ISC_001";
-	public static final String ISC_002 = "EMS_S_ISC_002";
-	public static final String ISC_003 = "EMS_S_ISC_003";
-	public static final String ISC_004 = "EMS_S_ISC_004";
-	public static final String ISC_005 = "EMS_S_ISC_005";
-	public static final String ISC_006 = "EMS_S_ISC_006";
-	public static final String ISC_007 = "EMS_S_ISC_007";
-	public static final String ISC_008 = "EMS_S_ISC_008";
-	public static final String ISC_009 = "EMS_S_ISC_009";
-	public static final String ISC_010 = "EMS_S_ISC_010";
-	public static final String ISC_001_MSG = "PreRequest ID is Null";
-	public static final String ISC_002_MSG = "Can not found card request with nationalId {0} ";
-	public static final String ISC_003_MSG = "Card request is null";
-	public static final String ISC_004_MSG = "Authenticity is in a state which does not allow to edit";
-	public static final String ISC_006_MSG = "Edit personal information is forbidden now for card request: {0}";
-	public static final String ISC_008_MSG = "card request with citizen national id {0} does not exists!";
-	public static final String ISC_009_MSG = "Edit Serial Number is forbidden now for card request: {0}";
-	public static final String ISC_010_MSG = "NationalId is Null";
-	public static final String ISC_011_MSG = "PreRegistration Payment not found for national id: {0}";
-
-	//com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
-	public static final String RGP_020 = "EMS_S_REG_020";
-	public static final String RGP_002 = "EMS_S_REG_002";
-	public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
-	public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
-
-	//com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
-	public  static final  String CRH_S_001 = "EMS_CRH_S_001";
-	public  static final  String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
-
->>>>>>> Temporary merge branch 2
 }
