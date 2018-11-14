@@ -41,7 +41,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
-   // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
+    // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
     public static final String CHG_006 = "EMS_S_CHG_006";
     public static final String CHG_007 = "EMS_S_CHG_007";
     public static final String CHG_005_MSG = "Error Occurred on call creating active shifts web service";
@@ -2633,7 +2633,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_035 = "EMS_S_ESI_035";
     public static final String ESI_036 = "EMS_S_ESI_036";
     public static final String ESI_037 = "EMS_S_ESI_037";
-//    public static final String ESI_030 = "EMS_S_ESI_030";
+    //    public static final String ESI_030 = "EMS_S_ESI_030";
     public static final String ESI_001_MSG = "CardInfo is invalid";
     public static final String ESI_002_MSG = "Card verification failed";
     public static final String ESI_003_MSG = "Key/PIN generation failed";
@@ -2749,7 +2749,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WST_011_MSG = "MAC address is too long";
     public static final String WST_012_MSG = "OS version could not be empty";
     public static final String WST_013_MSG = "Username could not be empty";
-    public static final String WST_014_MSG= "Computer name could not be empty";
+    public static final String WST_014_MSG = "Computer name could not be empty";
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
     public static final String OC_001 = "EMS_S_OC_001";
@@ -2824,13 +2824,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_002 = "EMS_S_REG_002";
     public static final String RGP_020 = "EMS_S_REG_020";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
- public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
+    public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";
     public static final String CRHS_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
 
-    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractIdsServiceImpl.java
+    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractNormalServiceImpl.java
     public static final String FEIS_001 = "EMS_S_FEI_001";
     public static final String FEIS_002 = "EMS_S_FEI_002";
     public static final String FEIS_003 = "EMS_S_FEI_003";
@@ -2845,6 +2845,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String FEIS_006_MSG = "Could not find officeSetting with id {0}";
     public static final String FEIS_007_MSG = "an error occurred on load operation";
 
+    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractCCServiceImpl.java
+    public static final String FEV_001 = "EMS_S_FEV_001";
+    public static final String FEV_002 = "EMS_S_FEV_002";
+    public static final String FEV_003 = "EMS_S_FEV_003";
+    public static final String FEV_004 = "EMS_S_FEV_004";
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeSettingServiceImpl.java
     public static final String OSTS_001 = "EMS_S_OST_001";
@@ -2859,4 +2864,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OSTS_003_MSG = "Could not find featureExtractNormal with id {0}";
     public static final String OSTS_004_MSG = "Could not find featureExtractCC with id {0}";
     public static final String OSTS_005_MSG = "an error occurred on getFeatureExtractIdsList operation";
+
+    //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
+    public static final String CRH_S_001 = "EMS_CRH_S_001";
+    public static final String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
+
+
 }
