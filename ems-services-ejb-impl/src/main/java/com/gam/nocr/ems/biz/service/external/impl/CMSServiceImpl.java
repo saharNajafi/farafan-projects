@@ -507,9 +507,11 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
                     getClass().getClassLoader().getResourceAsStream("com/gam/nocr/cms/CMSIssuanceCardRequest.xsd"));
         } catch (UnsupportedEncodingException e) {
             logger.error("Invalid XML Encoding for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")");
+            cmsLogger.error("Invalid XML Encoding for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")");
             throw new ServiceException(BizExceptionCode.CSI_152, "Invalid XML Encoding for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")", e);
         } catch (ValidationException ve) {
             logger.error("Error in XSD Validation for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")", ve);
+            cmsLogger.error("Error in XSD Validation for sending to CMS (CardRequest Id: " + cardRequestTO.getId() + ")", ve);
             throw new ServiceException(BizExceptionCode.CSI_151, ve.getCause().getMessage(), ve);
         }
 

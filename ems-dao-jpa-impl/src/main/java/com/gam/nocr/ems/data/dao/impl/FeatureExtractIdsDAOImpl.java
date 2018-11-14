@@ -35,8 +35,8 @@ public class FeatureExtractIdsDAOImpl extends EmsBaseDAOImpl<FeatureExtractIdsTO
                     .setParameter("id", fenId)
                     .getResultList();
         } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.FEN_001,
-                    DataExceptionCode.FEN_001_MSG, e);
+            throw new DAOException(DataExceptionCode.FEID_001,
+                    DataExceptionCode.FEID_001_MSG, e);
         }
         return featureExtractIdsTOList.size() != 0 ? featureExtractIdsTOList.get(0) : null;
     }

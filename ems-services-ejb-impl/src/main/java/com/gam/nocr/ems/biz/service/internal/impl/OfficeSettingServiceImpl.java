@@ -35,14 +35,14 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
         try {
             officeSettingTO = getOfficeSettingDAO().findById(officeSettingVTO.getId());
             if (officeSettingTO == null)
-                throw new ServiceException(BizExceptionCode.OST_003,
-                        BizExceptionCode.OST_003_MSG, new Long[]{officeSettingVTO.getId()});
+                throw new ServiceException(BizExceptionCode.OSTS_001,
+                        BizExceptionCode.OSTS_001_MSG, new Long[]{officeSettingVTO.getId()});
             featureExtractIdsTOList =
                     getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC());
             officeSettingTO.setFeatureExtractIdsTO(featureExtractIdsTOList);
             getOfficeSettingDAO().update(officeSettingTO);
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.OST_011, BizExceptionCode.OST_011_MSG, e);
+            throw new ServiceException(BizExceptionCode.OSTS_002, BizExceptionCode.OSTS_002_MSG, e);
         }
         return officeSettingTO != null ? officeSettingTO.getId() : null;
     }
@@ -55,15 +55,15 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
             featureExtractNormal = getFeatureExtractIdsDAO().findById(fenId);
             featureExtractCC = getFeatureExtractIdsDAO().findById(fecId);
             if (featureExtractNormal == null)
-                throw new ServiceException(BizExceptionCode.OST_007
-                        , BizExceptionCode.OST_007_MSG, new Long[]{fenId});
+                throw new ServiceException(BizExceptionCode.OSTS_003
+                        , BizExceptionCode.OSTS_003_MSG, new Long[]{fenId});
             if (featureExtractCC == null)
-                throw new ServiceException(BizExceptionCode.OST_008
-                        , BizExceptionCode.OST_008_MSG, new Long[]{fecId});
+                throw new ServiceException(BizExceptionCode.OSTS_004
+                         , BizExceptionCode.OSTS_004_MSG, new Long[]{fecId});
             featureExtractIdsTOList.add(featureExtractNormal);
             featureExtractIdsTOList.add(featureExtractCC);
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.OST_014, BizExceptionCode.OST_014_MSG, e);
+            throw new ServiceException(BizExceptionCode.OSTS_005, BizExceptionCode.OSTS_005_MSG, e);
         }
         return featureExtractIdsTOList;
     }
@@ -75,7 +75,7 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
                     .getDAO(EMSLogicalNames
                             .getDaoJNDIName(EMSLogicalNames.DAO_FEATURE_EXTRACT_IDS));
         } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.OST_006,
+            throw new ServiceException(BizExceptionCode.OSTS_006,
                     BizExceptionCode.GLB_001_MSG, e,
                     EMSLogicalNames.DAO_FEATURE_EXTRACT_IDS.split(","));
         }
@@ -88,7 +88,7 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
                     .getDAO(EMSLogicalNames
                             .getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_SETTING));
         } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.OST_015,
+            throw new ServiceException(BizExceptionCode.OSTS_007,
                     BizExceptionCode.GLB_001_MSG, e,
                     EMSLogicalNames.DAO_OFFICE_SETTING.split(","));
         }

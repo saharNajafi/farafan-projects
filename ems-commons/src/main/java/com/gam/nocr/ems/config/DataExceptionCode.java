@@ -327,15 +327,15 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WDI_010 = "EMS_D_WDI_010";
     public static final String WDI_011 = "EMS_D_WDI_011";
     public static final String WDI_012 = "EMS_D_WDI_012";
+    public static final String WDI_013 = "EMS_D_WDI_013";
     public static final String WDI_014 = "EMS_D_WDI_014";
     public static final String WDI_015 = "EMS_D_WDI_015";
-    public static final String WDI_013 = "EMS_D_WDI_013";
     public static final String WDI_002_MSG = "violate unique constraint, activation code already exists";
     public static final String WDI_003_MSG = "violate unique constraint, workstation code for this enrollment office already exists";
     public static final String WDI_004_MSG = "unable to to save workstation";
+    public static final String WDI_005_MSG = "unable to to find department";
     public static final String WDI_006_MSG = "unable to to save workstationInfo";
     public static final String WDI_007_MSG = "unable to to save workstationPlugins";
-    public static final String WDI_005_MSG = "unable to to find department";
     public static final String WDI_010_MSG = "workstation activation code is repetitive";
 
     // com.gam.nocr.ems.data.dao.impl.DispatchDAOImpl
@@ -1065,7 +1065,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NHD_002_MSG = "The operation to find nist header data failed";
 
     //	com.gam.nocr.ems.biz.service.internal.impl.WorkstationServiceImpl
-    public static final String WST_002 = "EMS_WST_002";
+    public static final String WST_002 = "EMS_D_WST_002";
     public static final String WST_002_MSG = "WorkStationId doesn't exist";
 
     //com.gam.nocr.ems.data.dao.impl.OfficeCapacityDAOImpl.java
@@ -1101,16 +1101,16 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_003_MSG = "unable to to findLastCardRequestPaymentByNationalId";
 
     //com.gam.nocr.ems.util.CrsChecker.java
-    public static final String REG_07 = "REG_07";
-    public static final String REG_08 = "REG_08";
-    public static final String REG_09 = "REG_09";
-    public static final String REG_11 = "REG_11";
-    public static final String REG_12 = "REG_12";
-    public static final String REG_13 = "REG_13";
-    public static final String REG_16 = "REG_16";
-    public static final String REG_17 = "REG_17";
-    public static final String REG_18 = "REG_18";
-    public static final String REG_20 = "REG_20";
+    public static final String REG_007 = "EMS_D_REG_07";
+    public static final String REG_008 = "EMS_D_REG_08";
+    public static final String REG_009 = "EMS_D_REG_09";
+    public static final String REG_011 = "EMS_D_REG_11";
+    public static final String REG_012 = "EMS_D_REG_12";
+    public static final String REG_013 = "EMS_D_REG_13";
+    public static final String REG_016 = "EMS_D_REG_16";
+    public static final String REG_017 = "EMS_D_REG_17";
+    public static final String REG_018 = "EMS_D_REG_18";
+    public static final String REG_020 = "EMS_D_REG_20";
     public static final String REG_07_MSG = "CellPhone Number is empty";
     public static final String REG_08_MSG = "Invalid Religion";
     public static final String REG_09_MSG = "Invalid Gender";
@@ -1122,15 +1122,11 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String REG_18_MSG = "Invalid solar BirthDate";
     public static final String REG_20_MSG = "Invalid serialNumber";
 
-    //com.gam.nocr.ems.data.dao.impl.FeatureExtractNormalDAOImpl.java
-    public static final String FEN_001 = "EMS_D_FEN_01";
-    public static final String FEN_001_MSG = "findById operation could not be executed";
-
-    //com.gam.nocr.ems.data.dao.impl.FeatureExtractCCDAOImpl.java
-    public static final String FEC_001 = "EMS_D_FEC_01";
-    public static final String FEC_001_MSG = "findById operation could not be executed";
+    //com.gam.nocr.ems.data.dao.impl.FeatureExtractIdsDAOImpl.java
+    public static final String FEID_001 = "EMS_D_FEN_01";
+    public static final String FEID_001_MSG = "findById operation could not be executed";
 
     //com.gam.nocr.ems.data.dao.impl.OfficeSettingDAOImpl.java
-    public static final String OST_001 = "EMS_D_OST_001";
-    public static final String OST_001_MSG = "findById operation could not be executed";
+    public static final String OSTD_001 = "EMS_D_OST_001";
+    public static final String OSTD_001_MSG = "findById operation could not be executed";
 }

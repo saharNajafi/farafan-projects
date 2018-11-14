@@ -121,7 +121,25 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		        			return value;
 		        		}
 		        	}
-		        }
+		        },
+
+			{
+				xtype: 'checkbox',
+				readOnly: true,
+				boxLabel: 'فعال',
+				id: EmsObjectName.officeNewEdit.active
+			},
+			{
+				xtype: 'checkbox',
+				readOnly: true,
+				boxLabel: 'وضعیت ارسال بسته',
+				id: EmsObjectName.officeNewEdit.postNeeded
+			},
+			{
+				fieldLabel: 'کد پستی شهر مقصد',
+				id: EmsObjectName.officeNewEdit.postDestinationCode
+			}
+
 
 //		        {
 //		        xtype: 'checkboxfield',
@@ -431,6 +449,7 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 									fieldLabel: 'کد پستی شهر مقصد',
                                     enforceMaxLength: true,
 									maxLength: 10,
+									maskRe: /\d/i,
 									id: EmsObjectName.officeNewEdit.postDestinationCode,
 									name: EmsObjectName.officeNewEdit.postDestinationCode
 								},

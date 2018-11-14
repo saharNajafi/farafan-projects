@@ -264,31 +264,29 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     else
                         stateProviderTO.setValue("false");
 
-                }
-                else if (stateId.endsWith("featureExtractIDNormal")) {
+                } else if (stateId.endsWith("featureExtractIDNormal")) {
                     if (officeSettingTO.getFeatureExtractIdsTO() != null) {
                         Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
-                        for (FeatureExtractIdsTO fei : featureExtractIds){
-                            if(fei.getFeatureExtractType().equals(FeatureExtractType.NORMAL)){
-                                stateProviderTO.setValue(fei.getFeatureExtractName());
+                        for (FeatureExtractIdsTO fei : featureExtractIds) {
+                            if (fei.getFeatureExtractType().equals(FeatureExtractType.NORMAL)) {
+                                stateProviderTO.setValue(fei.getFeatureExtractId());
                             }
                         }
-                    }
-                    else
+                    } else {
                         stateProviderTO.setValue("");
+                    }
                 } else if (stateId.endsWith("featureExtractIDCC")) {
                     if (officeSettingTO.getFeatureExtractIdsTO() != null) {
                         Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
-                        for (FeatureExtractIdsTO fei : featureExtractIds){
-                            if(fei.getFeatureExtractType().equals(FeatureExtractType.CC)){
-                                stateProviderTO.setValue(fei.getFeatureExtractName());
+                        for (FeatureExtractIdsTO fei : featureExtractIds) {
+                            if (fei.getFeatureExtractType().equals(FeatureExtractType.CC)) {
+                                stateProviderTO.setValue(fei.getFeatureExtractId());
                             }
                         }
-                    }
-                    else
+                    } else {
                         stateProviderTO.setValue("");
-                }
-                else if (stateId.endsWith("tokenExpire")) {
+                    }
+                } else if (stateId.endsWith("tokenExpire")) {
                     try {
                         ProfileManager pm = ProfileHelper.getProfileManager();
                         String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);

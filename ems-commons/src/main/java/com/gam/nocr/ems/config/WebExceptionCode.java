@@ -498,7 +498,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_080_MSG = "Unable to save face items. Number of face items received from CCOS is less than 4 image";
     public static final String RSW_081_MSG = "Unable to convert CitizenWTO to CardRequestTO in preRegistration VIP";
     public static final String RSW_086_MSG = "the feature extractor id normal is empty";
-    public static final String RSW_087_MSG = "the feature extractor id is cc empty";
+    public static final String RSW_087_MSG = "the feature extractor id cc is empty";
 
 
 

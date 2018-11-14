@@ -59,15 +59,15 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
         String ccosExactVersion = null;
         try {
             if (workstationCode == null)
-                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.EMSWorkstationPMService0002);
+                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
             if(workstationCode.length() < 40)
-                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.EMSWorkstationPMService0003);
+                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
             if(workstationCode.length() > 40)
-                throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.EMSWorkstationPMService0004);
+                throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.WST_004_MSG);
             WorkstationTO workstationTO =
                     getWorkstationDAO().findByActivationCode(workstationCode);
             if (workstationTO == null)
-                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.EMSWorkstationPMService0001);
+                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
             for (WorkstationPluginsTO workstationPlugin : workstationPluginsList) {
                 WorkstationPluginsTO workstationPluginsTO = new WorkstationPluginsTO();
                 workstationPluginsTO.setWorkstationTO(workstationTO);

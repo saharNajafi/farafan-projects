@@ -23,6 +23,7 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
 
     private String featureExtractName;
     private FeatureExtractType featureExtractType;
+    private String featureExtractId;
 
     public FeatureExtractIdsTO(){}
 
@@ -33,7 +34,7 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         return super.getId();
     }
 
-    @Column(name = "FEI_FEATURE_EXTRACT_NAME", length = 15, columnDefinition = "varchar2(15)")
+    @Column(name = "FEI_FEATURE_EXTRACT_NAME", length = 20, columnDefinition = "varchar2(20)")
     public String getFeatureExtractName() {
         return featureExtractName;
     }
@@ -50,6 +51,15 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
 
     public void setFeatureExtractType(FeatureExtractType featureExtractType) {
         this.featureExtractType = featureExtractType;
+    }
+
+    @Column(name = "FEI_FEATURE_EXTRACT_ID", length = 4, columnDefinition = "varchar2(4)")
+    public String getFeatureExtractId() {
+        return featureExtractId;
+    }
+
+    public void setFeatureExtractId(String featureExtractId) {
+        this.featureExtractId = featureExtractId;
     }
 
     @Override
