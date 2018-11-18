@@ -298,7 +298,7 @@ Ext.define('Ems.view.office.Grid', {
                  	   }
                     },
             {
-                tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان برای سالمندان',
+                tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان(برای سالمندان)',
                 action: 'changeAllowAmputatedFinger',
                 getClass: function (value, metadata, record) {
                     if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
@@ -316,7 +316,7 @@ Ext.define('Ems.view.office.Grid', {
             }   ,
 
             {
-                tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان',
+                tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت(حتی پس از اخذ نخستین تصویر برای سالمندان)',
                 action: 'changeAllowChangeFinger',
                 getClass: function (value, metadata, record) {
                     if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
