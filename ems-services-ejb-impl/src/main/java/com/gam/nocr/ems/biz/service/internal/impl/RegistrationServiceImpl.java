@@ -976,6 +976,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         createFakePaymentForCCOSVIPAndReplica(newCardRequest);
 
+        if(newCardRequest.getPriority() == null){
+            newCardRequest.setPriority(1);
+        }
 
         if (newCardRequest.getId() == null) {
             if (newCardRequest.getTrackingID() == null || newCardRequest.getTrackingID().trim().length() == 0 ||
