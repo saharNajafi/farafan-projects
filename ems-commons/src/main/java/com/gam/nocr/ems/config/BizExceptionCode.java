@@ -1173,7 +1173,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_088 = "EMS_S_EOS_088";
     public static final String EOS_089 = "EMS_S_EOS_089";
     public static final String EOS_090 = "EMS_S_EOS_090";
-    public static final String EOS_091 = "EMS_s_EOS_091";
+    public static final String EOS_091 = "EMS_S_EOS_091";
     public static final String EOS_092 = "EMS_S_EOS_092";
     public static final String EOS_093 = "EMS_S_EOS_093";
     public static final String EOS_094 = "EMS_S_EOS_094";
