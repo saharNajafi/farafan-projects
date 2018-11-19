@@ -323,7 +323,6 @@ Ext.define('Ems.controller.OfficeController', {
         var record = grid.store.getAt(rowIndex);
         var extractN = win.down('#feiN');
         var extractCC = win.down('#feiCC');
-        win.show();
         win.officeSettingID = record.get('ostId');
         Ext.Ajax.request({
             method: 'POST',
@@ -333,14 +332,15 @@ Ext.define('Ems.controller.OfficeController', {
                 var data = Ext.JSON.decode(response.responseText).records;
                 win.show();
                 for(var i = 0; i < data.length; i++) {
-                    var rec = data[i];
-                    if(rec.featureExtractType == "2") {
-                         extractCC.onTriggerClick();
-                         setTimeout(function() {extractCC.select(extractCC.store.getNodeById(rec.feiId));}, 300);
+                    if(data[i].featureExtractType == "2") {
+                        var rec = data[i].feiId;
+                        setTimeout(function() {extractCC.onTriggerClick();}, 500);
+                         setTimeout(function() {extractCC.select(extractCC.store.getNodeById(rec)); extractCC.onTriggerClick();}, 1500);
                     }
-                    else {
-                        extractN.onTriggerClick();
-                        setTimeout(function() {extractN.select(extractN.store.getNodeById(rec.feiId));}, 300);
+                    else if(data[i].featureExtractType == "1") {
+                        var rec2 = data[i].feiId;
+                        setTimeout(function() { extractN.onTriggerClick();}, 500);
+                        setTimeout(function() {extractN.select(extractN.store.getNodeById(rec2)); extractN.onTriggerClick();}, 1500);
                     }
                 }
 

@@ -23,8 +23,6 @@ Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractCC', {
 
     displayField: 'acName',
 
-    forceSelection: false,
-
     listWidth: 290,
 
     emptyText: 'انتخاب کنید...'

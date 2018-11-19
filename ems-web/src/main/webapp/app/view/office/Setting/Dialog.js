@@ -27,7 +27,7 @@ Ext.define('Ems.view.office.Setting.Dialog', {
 
     extractCCID: null,
 
-    title: 'تنظیمات 4545lds',
+    title: 'تنظیمات lds',
 
     requires: [
         ,'Ems.store.OfficeSettingFeatureExtractNormalStore'

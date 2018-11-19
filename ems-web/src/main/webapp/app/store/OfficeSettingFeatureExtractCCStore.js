@@ -12,7 +12,7 @@ Ext.define('Ems.store.OfficeSettingFeatureExtractCCStore', {
     alias: 'store.officesettingfeatureextractccstore',
 
     require: ['Ems.model.AutocompleteSimpleModel'],
-    model: 'Ems.model.OfficeSettingFeatureExtractCCModel',
+    model: 'Ems.model.AutocompleteSimpleModel',
 
     autocompleteName: 'featureExtractIdsCC'
 });

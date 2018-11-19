@@ -12,7 +12,7 @@ Ext.define('Ems.store.OfficeSettingFeatureExtractNormalStore', {
     alias: 'store.officesettingfeatureextractnormalstore',
 
     require: ['Ems.model.AutocompleteSimpleModel'],
-    model: 'Ems.model.OfficeSettingFeatureExtractNormalModel',
+    model: 'Ems.model.AutocompleteSimpleModel',
 
     autocompleteName: 'featureExtractIdsNormal'
 });

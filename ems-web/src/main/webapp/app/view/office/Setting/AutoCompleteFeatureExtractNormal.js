@@ -27,7 +27,5 @@ Ext.define('Ems.view.office.Setting.AutoCompleteFeatureExtractNormal', {
 
     listWidth: 290,
 
-    hiddenName: EmsObjectName.officeNewEdit.oficRatingId,
-
     emptyText: 'انتخاب کنید...'
 });
