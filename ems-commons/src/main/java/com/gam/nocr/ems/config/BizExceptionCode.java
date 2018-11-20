@@ -231,21 +231,22 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_055_MSG = "Cannot instantiate CardRequestStateWS service";
 	public static final String CRE_056_MSG = "Can not Find Card request";
 	public static final String CRE_057_MSG = "There is a processed preRegistration";
+	public static final String CRE_058_MSG = "There is a processed Card Request: {0}";
 	public static final String CRE_070 = "EMS_CRE_070";
 	public static final String CRE_071 = "EMS_CRE_071";
 	public static final String CRE_072 = "EMS_CRE_072";
 	public static final String CRE_073 = "EMS_CRE_073";
-	public static final String CRE_069 = "EMS_CRE_069";
-	public static final String CRE_059 = "EMS_CRE_059";
-	public static final String CRE_060 = "EMS_CRE_060";
-	public static final String CRE_061 = "EMS_CRE_061";
-	public static final String CRE_062 = "EMS_CRE_062";
-	public static final String CRE_063 = "EMS_CRE_063";
-	public static final String CRE_064 = "EMS_CRE_064";
-	public static final String CRE_065 = "EMS_CRE_065";
-	public static final String CRE_066 = "EMS_CRE_066";
-	public static final String CRE_067 = "EMS_CRE_067";
-	public static final String CRE_068 = "EMS_CRE_068";
+	public static final String CRE_069 = "EMS_S_CRE_069";
+	public static final String CRE_059 = "EMS_S_CRE_059";
+	public static final String CRE_060 = "EMS_S_CRE_060";
+	public static final String CRE_061 = "EMS_S_CRE_061";
+	public static final String CRE_062 = "EMS_S_CRE_062";
+	public static final String CRE_063 = "EMS_S_CRE_063";
+	public static final String CRE_064 = "EMS_S_CRE_064";
+	public static final String CRE_065 = "EMS_S_CRE_065";
+	public static final String CRE_066 = "EMS_S_CRE_066";
+	public static final String CRE_067 = "EMS_S_CRE_067";
+	public static final String CRE_068 = "EMS_S_CRE_068";
 	public static final String CRE_074 = "EMS_CRE_074";
 
 
@@ -1162,7 +1163,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String EOS_088 = "EMS_S_EOS_088";
 	public static final String EOS_089 = "EMS_S_EOS_089";
 	public static final String EOS_090 = "EMS_S_EOS_090";
-	public static final String EOS_091 = "EMS_s_EOS_091";
+	public static final String EOS_091 = "EMS_S_EOS_091";
 	public static final String EOS_092 = "EMS_S_EOS_092";
 	public static final String EOS_093 = "EMS_S_EOS_093";
 	public static final String EOS_094 = "EMS_S_EOS_094";
@@ -2798,7 +2799,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_010 = "EMS_S_ISC_010";
 	public static final String ISC_001_MSG = "PreRequest ID is Null";
 	public static final String ISC_002_MSG = "Can not found card request with nationalId {0} ";
-	public static final String ISC_003_MSG = "Card request is null";
+	public static final String ISC_003_MSG = "an error occurred on inquiryHasCardRequest operation";
 	public static final String ISC_004_MSG = "Authenticity is in a state which does not allow to edit";
 	public static final String ISC_006_MSG = "Edit personal information is forbidden now for card request: {0}";
 	public static final String ISC_008_MSG = "card request with citizen national id {0} does not exists!";

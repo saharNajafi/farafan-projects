@@ -1763,7 +1763,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                     && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
-                throw new ServiceException(BizExceptionCode.CRE_070, BizExceptionCode.CRE_070_MSG, new Object[]{cardRequestTO.getId()});
+                throw new ServiceException(BizExceptionCode.CRE_058, BizExceptionCode.CRE_058_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
     }
