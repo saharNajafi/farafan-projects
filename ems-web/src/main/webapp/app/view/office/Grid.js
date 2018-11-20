@@ -145,7 +145,7 @@ Ext.define('Ems.view.office.Grid', {
          	   tooltip: 'آپلود عکس',
          	   action: 'changeUploadPhoto',
          	   getClass: function (value, metadata, record) {
-         		   debugger;
+         		   //debugger;
          		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
 	         		   if(record.raw != undefined){	                       
 	         			   var officeSettingType = record.raw.uploadPhoto;
