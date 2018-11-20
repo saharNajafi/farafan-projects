@@ -2846,12 +2846,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String FEIS_006_MSG = "Could not find officeSetting with id {0}";
     public static final String FEIS_007_MSG = "an error occurred on load operation";
 
-    //com.gam.nocr.ems.biz.service.internal.impl.FeatureExtractCCServiceImpl.java
-    public static final String FEV_001 = "EMS_S_FEV_001";
-    public static final String FEV_002 = "EMS_S_FEV_002";
-    public static final String FEV_003 = "EMS_S_FEV_003";
-    public static final String FEV_004 = "EMS_S_FEV_004";
-
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeSettingServiceImpl.java
     public static final String OSTS_001 = "EMS_S_OST_001";
     public static final String OSTS_002 = "EMS_S_OST_002";
@@ -2865,10 +2859,5 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OSTS_003_MSG = "Could not find featureExtractNormal with id {0}";
     public static final String OSTS_004_MSG = "Could not find featureExtractCC with id {0}";
     public static final String OSTS_005_MSG = "an error occurred on getFeatureExtractIdsList operation";
-
-    //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
-    public static final String CRH_S_001 = "EMS_CRH_S_001";
-    public static final String CRH_S_001_MSG = "an error occurred on findByCardRequestAndCrhAction operation";
-
 
 }
