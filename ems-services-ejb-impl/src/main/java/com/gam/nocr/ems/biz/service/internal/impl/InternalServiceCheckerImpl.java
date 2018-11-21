@@ -45,7 +45,7 @@ implements InternalServiceCheckerLocal, InternalServiceCheckerRemote{
         } catch (BaseException e) {
             throw e;
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.ISC_002, BizExceptionCode.ISC_002_MSG, new Object[]{nationalId});
+            throw new ServiceException(BizExceptionCode.ISC_003, BizExceptionCode.ISC_003_MSG, new Object[]{nationalId});
         }
         return cardRequestTO;
     }

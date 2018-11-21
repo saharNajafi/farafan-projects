@@ -154,5 +154,4 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPM_009_MSG = "Invalid Gender for NationalId: {0}";
     public static final String CPM_010_MSG = "Invalid Religion for NationalId: {0}";
 
-
 }
