@@ -121,8 +121,8 @@ public class HolidayServiceImpl extends EMSAbstractService implements
 
 		}
 
-		if (EmsUtil.checkListSize(holidayTOList)) 
-			getPortalBaseInfoService().updateHoliday(holidayTOList);
+//		if (EmsUtil.checkListSize(holidayTOList))
+//			getPortalBaseInfoService().updateHoliday(holidayTOList);
 		if (EmsUtil.checkListSize(holidayChangeList))
 			getHolidayDAO().notifyUpdateHolidays(holidayChangeList);
 		if (EmsUtil.checkListSize(holidayRemoveList))

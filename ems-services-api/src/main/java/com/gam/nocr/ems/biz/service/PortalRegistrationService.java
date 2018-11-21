@@ -2,9 +2,9 @@ package com.gam.nocr.ems.biz.service;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
-import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
 
@@ -23,7 +23,7 @@ public interface PortalRegistrationService extends Service {
      * @return an object of type {@Boolean} which represents whether the batch update is done correctly or not
      * @throws BaseException
      */
-    List<ItemWTO> updateCardRequestsState(List<SyncCardRequestWTO> syncCardRequestWTOList) throws BaseException;
+//    List<ItemWTO> updateCardRequestsState(List<SyncCardRequestWTO> syncCardRequestWTOList) throws BaseException;
 
     /**
      * The method transferCardRequests is used to get a number of card request from the sub system 'Portal'
@@ -31,11 +31,11 @@ public interface PortalRegistrationService extends Service {
      * @return a list of type {@link CardRequestTO}
      * @throws BaseException
      */
-    List<CardRequestTO> transferCardRequests(List<Long> portalCardRequestIds) throws BaseException;
+//    List<CardRequestTO> transferCardRequests(List<Long> portalCardRequestIds) throws BaseException;
 
-    List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException;
+//    List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException;
 
-    Long updateCcosCardRequests(CardRequestWTO cardRequestWTO) throws BaseException;
+//    Long updateCcosCardRequests(CardRequestWTO cardRequestWTO) throws BaseException;
 
     /**
      * The method updateNotVerifiedMESRequest is used to update the request, which has not been verified by
@@ -47,5 +47,5 @@ public interface PortalRegistrationService extends Service {
      * @throws com.gam.commons.core.BaseException
      *
      */
-    Long updateNotVerifiedMESRequest(CitizenWTO citizenWTO) throws BaseException;
+//    Long updateNotVerifiedMESRequest(CitizenWTO citizenWTO) throws BaseException;
 }

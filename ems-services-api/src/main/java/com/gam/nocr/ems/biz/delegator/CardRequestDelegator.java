@@ -80,8 +80,8 @@ public class CardRequestDelegator implements Delegator {
 	public void doCardRequestRepealActionBySystem(Integer from)
 			throws BaseException {
 		List<Long> requestIds = getService(null).repealCardRequest(from);
-		PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-		portalManagementDelegator.updateRequestStates(requestIds);
+//		PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+//		portalManagementDelegator.updateRequestStates(requestIds);
 
 	}
 
@@ -176,8 +176,8 @@ public class CardRequestDelegator implements Delegator {
 	public void doRepealCardAction(UserProfileTO userProfileTO,
 			List<Long> cardRequestIds) throws BaseException {
 		getService(userProfileTO).doRepealCardAction(cardRequestIds);
-		PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-		portalManagementDelegator.updateRequestStates(cardRequestIds);
+//		PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+//		portalManagementDelegator.updateRequestStates(cardRequestIds);
 
 	}
 

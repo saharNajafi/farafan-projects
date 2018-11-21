@@ -24,8 +24,8 @@ public interface PortalManagementService extends Service {
 	 * @return a list of type {@link com.gam.nocr.ems.data.domain.CardRequestTO}
 	 * @throws BaseException
 	 */
-	List<CardRequestTO> transferCardRequests(List<Long> portalCardRequestIds)
-			throws BaseException;
+//	List<CardRequestTO> transferCardRequests(List<Long> portalCardRequestIds)
+//			throws BaseException;
 
 	/**
 	 * The method doActivityForUpdateState is used to prepare a list of type
@@ -35,9 +35,9 @@ public interface PortalManagementService extends Service {
 	 * 
 	 * @throws BaseException
 	 */
-	Boolean doActivityForUpdateState(List<Long> batchIds) throws BaseException;
+//	Boolean doActivityForUpdateState(List<Long> batchIds) throws BaseException;
 
-	List<Long> fetchReservationIds() throws BaseException;
+//	List<Long> fetchReservationIds() throws BaseException;
 
 	/**
 	 * The method doActivityForReservations is used to get a number of
@@ -47,18 +47,18 @@ public interface PortalManagementService extends Service {
 	 *         logging
 	 * @throws BaseException
 	 */
-	Boolean doActivityForReservations(List<Long> reservationIds)
-			throws BaseException;
+//	Boolean doActivityForReservations(List<Long> reservationIds)
+//			throws BaseException;
 
 	/**
 	 * replacement of {@link #doActivityForReservations(List)}
 	 * 
-	 * @param reservationIdsList
-	 * @return
+//	 * @param reservationIdsList
+//	 * @return
 	 * @throws BaseException
 	 */
-	Boolean transferReservationsToEMSAndDoEstelam2(List<Long> longList)
-			throws BaseException;
+//	Boolean transferReservationsToEMSAndDoEstelam2(List<Long> longList)
+//			throws BaseException;
 
 	public Long getCcosAndVerifiedMESRequestsCount() throws BaseException;
 
@@ -75,11 +75,11 @@ public interface PortalManagementService extends Service {
 	 * 
 	 * @throws BaseException
 	 */
-	String notifyPortalAboutModifiedProvinces(LocationType locationType,
-			Integer from, Integer to) throws BaseException;
+//	String notifyPortalAboutModifiedProvinces(LocationType locationType,
+//			Integer from, Integer to) throws BaseException;
 
-	public List<Long> fetchPortalCardRequestIdsForTransfer()
-			throws BaseException;
+//	public List<Long> fetchPortalCardRequestIdsForTransfer()
+//			throws BaseException;
 
 	/**
 	 * The method transferNotVerifiedMESRequestsToPortal is used to transfer the
@@ -93,7 +93,7 @@ public interface PortalManagementService extends Service {
 	 */
 	Boolean transferNotVerifiedMESRequestsToPortal() throws BaseException;
 
-	List<Long> fetchRequestedSmsIds() throws BaseException;
+//	List<Long> fetchRequestedSmsIds() throws BaseException;
 
 	void addRequestedSms(Long portalCardRequestId) throws BaseException;
 
@@ -101,10 +101,10 @@ public interface PortalManagementService extends Service {
 
 	Boolean processSms(Integer from, Integer to) throws BaseException;
 
-	void updateState(
-			List<SyncCardRequestWTO> syncCardRequestWTOList,
-			List<com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO> itemWTOList)
-			throws BaseException;
+//	void updateState(
+//			List<SyncCardRequestWTO> syncCardRequestWTOList,
+//			List<com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO> itemWTOList)
+//			throws BaseException;
 
 	Integer fetchReferToCCOSProcessSms() throws BaseException;
 
@@ -112,24 +112,24 @@ public interface PortalManagementService extends Service {
 			throws BaseException;
 
 	// Anbari
-	void notifyPortalRezervationFreeTime(List<Long> eofIds, Long date)
-			throws BaseException;
+//	void notifyPortalRezervationFreeTime(List<Long> eofIds, Long date)
+//			throws BaseException;
 
 	// Anbari
-	int deleteReservationDateFromOfficeRSVFreeTime(Long dateForDelete)
-			throws BaseException;
+//	int deleteReservationDateFromOfficeRSVFreeTime(Long dateForDelete)
+//			throws BaseException;
 
 	// Anbari
-	Boolean transferReservationsToEMS(ReservationTO reservationTO)
-			throws BaseException;
+//	Boolean transferReservationsToEMS(ReservationTO reservationTO)
+//			throws BaseException;
 
 	// Anbari
 	// void doEstelam2ForReservations(List<Long> reservationIdsList)
 	// throws BaseException;
 
 	// Anbari
-	Future syncResevationFreeTimeByNewRating(Long eofId, RatingInfoTO ratingInfo,String newCalender)
-			throws BaseException;
+//	Future syncResevationFreeTimeByNewRating(Long eofId, RatingInfoTO ratingInfo,String newCalender)
+//			throws BaseException;
 
 	//Madanipour
 	Integer fetchSmsCount(int smsType) throws BaseException;

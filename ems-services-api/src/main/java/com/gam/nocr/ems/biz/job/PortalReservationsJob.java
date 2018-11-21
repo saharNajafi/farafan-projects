@@ -30,53 +30,53 @@ public class PortalReservationsJob extends BaseEmsJob implements InterruptableJo
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        startLogging(jobLogger);
-        jobKey = jobExecutionContext.getJobDetail().getKey();
-
-        try {
-            PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-
-            //  Fetch a list of portal reservations that are ready to be transferred to EMS
-            List<Long> portalReservationIds = portalManagementDelegator.fetchReservationIds();
-
-            if (EmsUtil.checkListSize(portalReservationIds)) {
-                Integer reservationCount = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_NUMBER_OF_PORTAL_RESERVATION_TO_LOAD,
-                        DEFAULT_NUMBER_OF_PORTAL_RESERVATION_TO_LOAD));
-
-                Integer loopCount = portalReservationIds.size() / reservationCount;
-                Integer modular = portalReservationIds.size() % reservationCount;
-
-                List<List<Long>> list = new ArrayList<List<Long>>();
-                for (int i = 0; i < loopCount; i++) {
-                    if (!isJobInterrupted) {
-                        list.add(portalReservationIds.subList(i * reservationCount, (i * reservationCount) + reservationCount));
-                    } else {
-                        break;
-                    }
-                }
-
-                if (modular > 0 && !isJobInterrupted)
-                    list.add(portalReservationIds.subList(reservationCount * loopCount, (reservationCount * loopCount) + modular));
-
-                for (List<Long> longList : list) {
-                    if (!isJobInterrupted) {
-                        try {
-                            portalManagementDelegator.transferReservationsToEMSAndDoEstelam2(longList);
-                        } catch (BaseException e) {
-                            logException(e);
-                        }
-                    } else {
-                        break;
-                    }
-                }
-
-            }
-        } catch (BaseException e) {
-            logException(e);
-        } catch (Exception e) {
-            logGeneralException(e);
-        }
-        endLogging();
+//        startLogging(jobLogger);
+//        jobKey = jobExecutionContext.getJobDetail().getKey();
+//
+//        try {
+//            PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+//
+//            //  Fetch a list of portal reservations that are ready to be transferred to EMS
+//            List<Long> portalReservationIds = portalManagementDelegator.fetchReservationIds();
+//
+//            if (EmsUtil.checkListSize(portalReservationIds)) {
+//                Integer reservationCount = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_NUMBER_OF_PORTAL_RESERVATION_TO_LOAD,
+//                        DEFAULT_NUMBER_OF_PORTAL_RESERVATION_TO_LOAD));
+//
+//                Integer loopCount = portalReservationIds.size() / reservationCount;
+//                Integer modular = portalReservationIds.size() % reservationCount;
+//
+//                List<List<Long>> list = new ArrayList<List<Long>>();
+//                for (int i = 0; i < loopCount; i++) {
+//                    if (!isJobInterrupted) {
+//                        list.add(portalReservationIds.subList(i * reservationCount, (i * reservationCount) + reservationCount));
+//                    } else {
+//                        break;
+//                    }
+//                }
+//
+//                if (modular > 0 && !isJobInterrupted)
+//                    list.add(portalReservationIds.subList(reservationCount * loopCount, (reservationCount * loopCount) + modular));
+//
+//                for (List<Long> longList : list) {
+//                    if (!isJobInterrupted) {
+//                        try {
+//                            portalManagementDelegator.transferReservationsToEMSAndDoEstelam2(longList);
+//                        } catch (BaseException e) {
+//                            logException(e);
+//                        }
+//                    } else {
+//                        break;
+//                    }
+//                }
+//
+//            }
+//        } catch (BaseException e) {
+//            logException(e);
+//        } catch (Exception e) {
+//            logGeneralException(e);
+//        }
+//        endLogging();
     }
 
     @Override

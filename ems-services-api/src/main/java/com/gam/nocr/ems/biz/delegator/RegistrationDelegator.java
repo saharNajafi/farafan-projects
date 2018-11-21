@@ -157,13 +157,13 @@ public class RegistrationDelegator implements Delegator {
      *
      * @throws BaseException
      */
-    public Boolean fetchPortalCardRequestsToSave(List<Long> portalCardRequestIds) throws BaseException {
-        return getService(null).fetchPortalCardRequestsToSave(portalCardRequestIds);
-    }
+//    public Boolean fetchPortalCardRequestsToSave(List<Long> portalCardRequestIds) throws BaseException {
+//        return getService(null).fetchPortalCardRequestsToSave(portalCardRequestIds);
+//    }
 
-    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException {
-        return getService(null).fetchPortalCardRequestIdsForTransfer();
-    }
+//    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException {
+//        return getService(null).fetchPortalCardRequestIdsForTransfer();
+//    }
 
     /**
      * @param ccosCer

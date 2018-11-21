@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
-import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.ChildVTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.SpouseVTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ChildVTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.SpouseVTO;
 import com.gam.nocr.ems.config.ConstValues;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.MapperExceptionCode;
@@ -202,9 +202,9 @@ public class CardRequestMapper {
             throw new BaseException(MapperExceptionCode.CRM_008, MapperExceptionCode.CRM_008_MSG);
         }
         CardRequestVTO vto = new CardRequestVTO();
-        CitizenVTO ctz = new CitizenVTO();
-        SpouseVTO sps;
-        ChildVTO chi;
+//        CitizenVTO ctz = new CitizenVTO();
+//        SpouseVTO sps;
+//        ChildVTO chi;
 
         vto.setId(to.getId());
         if (to.getEnrollmentOffice()!=null) {
@@ -387,276 +387,276 @@ public class CardRequestMapper {
         return wto;
     }
 
-    public static CardRequestWTO convert(CardRequestTO cardRequestTO) throws BaseException {
-        CardRequestWTO cardRequestWTO = new CardRequestWTO();
-
-        if (cardRequestTO.getCitizen() != null) {
-            cardRequestWTO.setFirstNamePersian(cardRequestTO.getCitizen().getFirstNamePersian());
-            cardRequestWTO.setSurnamePersian(cardRequestTO.getCitizen().getSurnamePersian());
-            cardRequestWTO.setNationalID(cardRequestTO.getCitizen().getNationalID());
-            cardRequestWTO.setBirthCertificateSerial(cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateSeries());
-            if (cardRequestTO.getCitizen().getCitizenInfo() != null) {
-                cardRequestWTO.setBirthDateSolar(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
-                cardRequestWTO.setBirthDateLunar(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateLunar());
-                cardRequestWTO.setGender(cardRequestTO.getCitizen().getCitizenInfo().getGender().toString());
-                cardRequestWTO.setReligion(cardRequestTO.getCitizen().getCitizenInfo().getReligion().getId());
-                cardRequestWTO.setMotherFirstNamePersian(cardRequestTO.getCitizen().getCitizenInfo().getMotherFirstNamePersian());       
-                cardRequestWTO.setCellNo(cardRequestTO.getCitizen().getCitizenInfo().getMobile());
-            }
-        }
-        if (cardRequestTO.getState() != null) {
-            cardRequestWTO.setCardRequestState(cardRequestTO.getState().name());
-        }
-        if (cardRequestTO.getEnrolledDate() != null) {
-            GregorianCalendar gregorianCalendar = new GregorianCalendar();
-            gregorianCalendar.setTime(cardRequestTO.getEnrolledDate());
-            XMLGregorianCalendar xmlGregorianCalendar = null;
-            try {
-                xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-            } catch (DatatypeConfigurationException e) {
-                logger.error(DataExceptionCode.GLB_ERR_MSG, e);
-            }
-            cardRequestWTO.setEnrolledDate(xmlGregorianCalendar);
-        }
-        if (cardRequestTO.getType() != null) {
-            cardRequestWTO.setCardRequestType(cardRequestTO.getType().name());
-        }
-        cardRequestWTO.setTrackingID(cardRequestTO.getTrackingID());
-        if (cardRequestTO.getEnrollmentOffice() != null) {
-            cardRequestWTO.setEnrollmentOfficeId(cardRequestTO.getEnrollmentOffice().getId());
-        }
-
-        return cardRequestWTO;
-    }
-
-    public static CardRequestTO convert(CitizenVTO citizenVTO) throws BaseException {
-        if (citizenVTO == null) {
-            throw new BaseException(MapperExceptionCode.CRM_001, MapperExceptionCode.CRM_001_MSG);
-        }
-
-        CardRequestTO crq = new CardRequestTO();
-        CitizenTO ctz = new CitizenTO();
-        CitizenInfoTO czi = new CitizenInfoTO();
-        SpouseTO sps;
-        ChildTO chi;
-
-//		ctz.setId(citizenVTO.getId());
-        ctz.setFirstNamePersian(citizenVTO.getFirstNameFA());
-        ctz.setSurnamePersian(citizenVTO.getSureNameFA());
-        ctz.setNationalID(citizenVTO.getNationalId());
-
-        crq.setPortalRequestId(citizenVTO.getRequestId());
-//        TODO: This part has been commented out to ignite setting type whenever new request or updated one has been transferred from Portal
-//        if (citizenVTO.getType() != null) {
-//            if (CardRequestType.toType(citizenVTO.getType()) == null) {
-//                throw new BaseException(MapperExceptionCode.CRM_002, MapperExceptionCode.CRM_002_MSG);
-//            }
-//            crq.setType(CardRequestType.toType(citizenVTO.getType()));
-//            if (citizenVTO.getType().equals(4L)) {
-//                crq.setReason("DESTROYED");
-//            } else if (citizenVTO.getType().equals(5L)) {
-//                crq.setReason("IDENTITY_CHANGED");
+//    public static CardRequestWTO convert(CardRequestTO cardRequestTO) throws BaseException {
+//        CardRequestWTO cardRequestWTO = new CardRequestWTO();
+//
+//        if (cardRequestTO.getCitizen() != null) {
+//            cardRequestWTO.setFirstNamePersian(cardRequestTO.getCitizen().getFirstNamePersian());
+//            cardRequestWTO.setSurnamePersian(cardRequestTO.getCitizen().getSurnamePersian());
+//            cardRequestWTO.setNationalID(cardRequestTO.getCitizen().getNationalID());
+//            cardRequestWTO.setBirthCertificateSerial(cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateSeries());
+//            if (cardRequestTO.getCitizen().getCitizenInfo() != null) {
+//                cardRequestWTO.setBirthDateSolar(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
+//                cardRequestWTO.setBirthDateLunar(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateLunar());
+//                cardRequestWTO.setGender(cardRequestTO.getCitizen().getCitizenInfo().getGender().toString());
+//                cardRequestWTO.setReligion(cardRequestTO.getCitizen().getCitizenInfo().getReligion().getId());
+//                cardRequestWTO.setMotherFirstNamePersian(cardRequestTO.getCitizen().getCitizenInfo().getMotherFirstNamePersian());
+//                cardRequestWTO.setCellNo(cardRequestTO.getCitizen().getCitizenInfo().getMobile());
 //            }
 //        }
-        if (citizenVTO.getEnrolledDate() != null) {
-            crq.setPortalEnrolledDate(citizenVTO.getEnrolledDate().toGregorianCalendar().getTime());
-        }
-        if (citizenVTO.getLastModifiedDate() != null)
-            crq.setPortalLastModifiedDate(citizenVTO.getLastModifiedDate().toGregorianCalendar().getTime());
+//        if (cardRequestTO.getState() != null) {
+//            cardRequestWTO.setCardRequestState(cardRequestTO.getState().name());
+//        }
+//        if (cardRequestTO.getEnrolledDate() != null) {
+//            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//            gregorianCalendar.setTime(cardRequestTO.getEnrolledDate());
+//            XMLGregorianCalendar xmlGregorianCalendar = null;
+//            try {
+//                xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+//            } catch (DatatypeConfigurationException e) {
+//                logger.error(DataExceptionCode.GLB_ERR_MSG, e);
+//            }
+//            cardRequestWTO.setEnrolledDate(xmlGregorianCalendar);
+//        }
+//        if (cardRequestTO.getType() != null) {
+//            cardRequestWTO.setCardRequestType(cardRequestTO.getType().name());
+//        }
+//        cardRequestWTO.setTrackingID(cardRequestTO.getTrackingID());
+//        if (cardRequestTO.getEnrollmentOffice() != null) {
+//            cardRequestWTO.setEnrollmentOfficeId(cardRequestTO.getEnrollmentOffice().getId());
+//        }
+//
+//        return cardRequestWTO;
+//    }
 
-        if (citizenVTO.getState() != null) {
-            if (CardRequestState.toState(citizenVTO.getState()) == null) {
-                throw new BaseException(MapperExceptionCode.CRM_003, MapperExceptionCode.CRM_003_MSG);
-            }
-            crq.setState(CardRequestState.toState(citizenVTO.getState()));
-        }
-        crq.setTrackingID(citizenVTO.getTrackingId());
+//    public static CardRequestTO convert(CitizenVTO citizenVTO) throws BaseException {
+//        if (citizenVTO == null) {
+//            throw new BaseException(MapperExceptionCode.CRM_001, MapperExceptionCode.CRM_001_MSG);
+//        }
+//
+//        CardRequestTO crq = new CardRequestTO();
+//        CitizenTO ctz = new CitizenTO();
+//        CitizenInfoTO czi = new CitizenInfoTO();
+//        SpouseTO sps;
+//        ChildTO chi;
+//
+////		ctz.setId(citizenVTO.getId());
+//        ctz.setFirstNamePersian(citizenVTO.getFirstNameFA());
+//        ctz.setSurnamePersian(citizenVTO.getSureNameFA());
+//        ctz.setNationalID(citizenVTO.getNationalId());
+//
+//        crq.setPortalRequestId(citizenVTO.getRequestId());
+////        TODO: This part has been commented out to ignite setting type whenever new request or updated one has been transferred from Portal
+////        if (citizenVTO.getType() != null) {
+////            if (CardRequestType.toType(citizenVTO.getType()) == null) {
+////                throw new BaseException(MapperExceptionCode.CRM_002, MapperExceptionCode.CRM_002_MSG);
+////            }
+////            crq.setType(CardRequestType.toType(citizenVTO.getType()));
+////            if (citizenVTO.getType().equals(4L)) {
+////                crq.setReason("DESTROYED");
+////            } else if (citizenVTO.getType().equals(5L)) {
+////                crq.setReason("IDENTITY_CHANGED");
+////            }
+////        }
+//        if (citizenVTO.getEnrolledDate() != null) {
+//            crq.setPortalEnrolledDate(citizenVTO.getEnrolledDate().toGregorianCalendar().getTime());
+//        }
+//        if (citizenVTO.getLastModifiedDate() != null)
+//            crq.setPortalLastModifiedDate(citizenVTO.getLastModifiedDate().toGregorianCalendar().getTime());
+//
+//        if (citizenVTO.getState() != null) {
+//            if (CardRequestState.toState(citizenVTO.getState()) == null) {
+//                throw new BaseException(MapperExceptionCode.CRM_003, MapperExceptionCode.CRM_003_MSG);
+//            }
+//            crq.setState(CardRequestState.toState(citizenVTO.getState()));
+//        }
+//        crq.setTrackingID(citizenVTO.getTrackingId());
+//
+//        czi.setFirstNameEnglish(citizenVTO.getFirstNameEN());
+//        czi.setSurnameEnglish(citizenVTO.getSureNameEN());
+//        czi.setBirthCertificateId(citizenVTO.getBirthCertId());
+//        try {
+//            czi.setBirthDateGregorian(DateUtil.convert(citizenVTO.getBirthDate(), DateUtil.JALALI));
+//        } catch (DateFormatException e) {
+//            throw new BaseException(MapperExceptionCode.CRM_004, MapperExceptionCode.GLB_001_MSG, e);
+//        }
+//        czi.setBirthDateSolar(citizenVTO.getBirthDate());
+//        czi.setBirthDateLunar(citizenVTO.getBirthDateHijri());
+//        if (citizenVTO.getGender() != null) {
+//            try {
+//                czi.setGender(Gender.valueOf(citizenVTO.getGender()));
+//            } catch (IllegalArgumentException e) {
+//                throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e, new String[]{citizenVTO.getGender()});
+//            }
+//        }
+//        if (citizenVTO.getReligionId() != null) {
+//            czi.setReligion(new ReligionTO(citizenVTO.getReligionId()));
+//        }
+//        czi.setMobile(citizenVTO.getCellNo());
+//
+//        czi.setBirthCertificateIssuancePlace(citizenVTO.getBirthCertPlace());
+//
+//        if (citizenVTO.getLivingPrvId() != null) {
+//            czi.setLiving(new LocationTO(citizenVTO.getLivingPrvId()));
+//        }
+//        if (citizenVTO.getLivingCityId() != null) {
+//            czi.setLivingCity(new LocationTO(citizenVTO.getLivingCityId()));
+//        }
+//
+//        czi.setBirthCertificateSeries(citizenVTO.getBirthCertSerial());
+//        //czi.setBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+//        czi.setFatherFirstNamePersian(citizenVTO.getFatherFirstNameFA());
+//        czi.setFatherFirstNameEnglish(citizenVTO.getFatherFirstNameEN());
+//        czi.setFatherFatherName(citizenVTO.getFatherFatherName());
+//        czi.setFatherSurname(citizenVTO.getFatherSureName());
+//        czi.setFatherNationalID(citizenVTO.getFatherNationalId());
+//        try {
+//            if (!"NA".equals(citizenVTO.getFatherBirthDate()))
+//                czi.setFatherBirthDateSolar(DateUtil.convert(citizenVTO.getFatherBirthDate(), DateUtil.JALALI));
+//            else
+//                czi.setFatherBirthDateSolar(DateUtil.convert("1080/01/01", DateUtil.JALALI));
+//        } catch (DateFormatException e) {
+//            throw new BaseException(MapperExceptionCode.CRM_006, MapperExceptionCode.GLB_001_MSG, e);
+//        }
+//        czi.setFatherBirthCertificateId(citizenVTO.getFatherBirthCertId());
+////        czi.setFatherBirthCertificateSeries(citizenVTO.getFatherBirthCertSerial());
+//        czi.setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+//        czi.setMotherFirstNamePersian(citizenVTO.getMotherFirstNameFA());
+//        czi.setMotherSurname(citizenVTO.getMotherSureName());
+//        czi.setMotherNationalID(citizenVTO.getMotherNationalId());
+//        if (citizenVTO.getMotherBirthDate() != null) {
+//            try {
+//                if (!"NA".equals(citizenVTO.getMotherBirthDate()))
+//                    czi.setMotherBirthDateSolar(DateUtil.convert(citizenVTO.getMotherBirthDate(), DateUtil.JALALI));
+//                else
+//                    czi.setMotherBirthDateSolar(DateUtil.convert("1080/01/01", DateUtil.JALALI));
+//            } catch (DateFormatException e) {
+//                throw new BaseException(MapperExceptionCode.CRM_007, MapperExceptionCode.GLB_001_MSG, e);
+//            }
+//        }
+//        czi.setMotherFatherName(citizenVTO.getMotherFatherName());
+//        czi.setMotherBirthCertificateId(citizenVTO.getMotherBirthCertId());
+////        czi.setMotherBirthCertificateSeries(citizenVTO.getMotherBirthCertSerial());
+//        czi.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+//        czi.setAddress(citizenVTO.getAddress());
+//
+//        List<SpouseVTO> spouseVTOList = citizenVTO.getSpouses();
+//        if (spouseVTOList != null && !spouseVTOList.isEmpty()) {
+//            for (SpouseVTO spouse : citizenVTO.getSpouses()) {
+//                sps = SpouseMapper.convert(spouse);
+//                sps.setCitizenInfo(czi);
+//                czi.getSpouses().add(sps);
+//            }
+//        }
+//
+//        List<ChildVTO> childVTOList = citizenVTO.getChildren();
+//        if (childVTOList != null && !childVTOList.isEmpty()) {
+//            for (ChildVTO child : citizenVTO.getChildren()) {
+//                chi = ChildMapper.convert(child);
+//                chi.setCitizenInfo(czi);
+//                czi.getChildren().add(chi);
+//            }
+//        }
+//
+//        ctz.setCitizenInfo(czi);
+//        czi.setCitizen(ctz);
+//        crq.setCitizen(ctz);
+//        return crq;
+//    }
 
-        czi.setFirstNameEnglish(citizenVTO.getFirstNameEN());
-        czi.setSurnameEnglish(citizenVTO.getSureNameEN());
-        czi.setBirthCertificateId(citizenVTO.getBirthCertId());
-        try {
-            czi.setBirthDateGregorian(DateUtil.convert(citizenVTO.getBirthDate(), DateUtil.JALALI));
-        } catch (DateFormatException e) {
-            throw new BaseException(MapperExceptionCode.CRM_004, MapperExceptionCode.GLB_001_MSG, e);
-        }
-        czi.setBirthDateSolar(citizenVTO.getBirthDate());
-        czi.setBirthDateLunar(citizenVTO.getBirthDateHijri());
-        if (citizenVTO.getGender() != null) {
-            try {
-                czi.setGender(Gender.valueOf(citizenVTO.getGender()));
-            } catch (IllegalArgumentException e) {
-                throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e, new String[]{citizenVTO.getGender()});
-            }
-        }
-        if (citizenVTO.getReligionId() != null) {
-            czi.setReligion(new ReligionTO(citizenVTO.getReligionId()));
-        }
-        czi.setMobile(citizenVTO.getCellNo());
-
-        czi.setBirthCertificateIssuancePlace(citizenVTO.getBirthCertPlace());
-
-        if (citizenVTO.getLivingPrvId() != null) {
-            czi.setLiving(new LocationTO(citizenVTO.getLivingPrvId()));
-        }
-        if (citizenVTO.getLivingCityId() != null) {
-            czi.setLivingCity(new LocationTO(citizenVTO.getLivingCityId()));
-        }
-
-        czi.setBirthCertificateSeries(citizenVTO.getBirthCertSerial());
-        //czi.setBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        czi.setFatherFirstNamePersian(citizenVTO.getFatherFirstNameFA());
-        czi.setFatherFirstNameEnglish(citizenVTO.getFatherFirstNameEN());
-        czi.setFatherFatherName(citizenVTO.getFatherFatherName());
-        czi.setFatherSurname(citizenVTO.getFatherSureName());
-        czi.setFatherNationalID(citizenVTO.getFatherNationalId());
-        try {
-            if (!"NA".equals(citizenVTO.getFatherBirthDate()))
-                czi.setFatherBirthDateSolar(DateUtil.convert(citizenVTO.getFatherBirthDate(), DateUtil.JALALI));
-            else
-                czi.setFatherBirthDateSolar(DateUtil.convert("1080/01/01", DateUtil.JALALI));
-        } catch (DateFormatException e) {
-            throw new BaseException(MapperExceptionCode.CRM_006, MapperExceptionCode.GLB_001_MSG, e);
-        }
-        czi.setFatherBirthCertificateId(citizenVTO.getFatherBirthCertId());
-//        czi.setFatherBirthCertificateSeries(citizenVTO.getFatherBirthCertSerial());
-        czi.setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        czi.setMotherFirstNamePersian(citizenVTO.getMotherFirstNameFA());
-        czi.setMotherSurname(citizenVTO.getMotherSureName());
-        czi.setMotherNationalID(citizenVTO.getMotherNationalId());
-        if (citizenVTO.getMotherBirthDate() != null) {
-            try {
-                if (!"NA".equals(citizenVTO.getMotherBirthDate()))
-                    czi.setMotherBirthDateSolar(DateUtil.convert(citizenVTO.getMotherBirthDate(), DateUtil.JALALI));
-                else
-                    czi.setMotherBirthDateSolar(DateUtil.convert("1080/01/01", DateUtil.JALALI));
-            } catch (DateFormatException e) {
-                throw new BaseException(MapperExceptionCode.CRM_007, MapperExceptionCode.GLB_001_MSG, e);
-            }
-        }
-        czi.setMotherFatherName(citizenVTO.getMotherFatherName());
-        czi.setMotherBirthCertificateId(citizenVTO.getMotherBirthCertId());
-//        czi.setMotherBirthCertificateSeries(citizenVTO.getMotherBirthCertSerial());
-        czi.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        czi.setAddress(citizenVTO.getAddress());
-
-        List<SpouseVTO> spouseVTOList = citizenVTO.getSpouses();
-        if (spouseVTOList != null && !spouseVTOList.isEmpty()) {
-            for (SpouseVTO spouse : citizenVTO.getSpouses()) {
-                sps = SpouseMapper.convert(spouse);
-                sps.setCitizenInfo(czi);
-                czi.getSpouses().add(sps);
-            }
-        }
-
-        List<ChildVTO> childVTOList = citizenVTO.getChildren();
-        if (childVTOList != null && !childVTOList.isEmpty()) {
-            for (ChildVTO child : citizenVTO.getChildren()) {
-                chi = ChildMapper.convert(child);
-                chi.setCitizenInfo(czi);
-                czi.getChildren().add(chi);
-            }
-        }
-
-        ctz.setCitizenInfo(czi);
-        czi.setCitizen(ctz);
-        crq.setCitizen(ctz);
-        return crq;
-    }
-
-    public static com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO convertToCitizenWTO(CardRequestTO cardRequestTO) throws BaseException {
-        com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO citizenWTO = new com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO();
-
-        if (cardRequestTO.getCitizen() != null) {
-            citizenWTO.setFirstNameFA(cardRequestTO.getCitizen().getFirstNamePersian());
-            citizenWTO.setSureNameFA(cardRequestTO.getCitizen().getSurnamePersian());
-            citizenWTO.setNationalId(cardRequestTO.getCitizen().getNationalID());
-            if (cardRequestTO.getCitizen().getCitizenInfo() != null) {
-                CitizenInfoTO citizenInfoTO = cardRequestTO.getCitizen().getCitizenInfo();
-                citizenWTO.setFirstNameEN(citizenInfoTO.getFirstNameEnglish());
-                citizenWTO.setSureNameEN(citizenInfoTO.getSurnameEnglish());
-                citizenWTO.setBirthCertId(citizenInfoTO.getBirthCertificateId());
-                citizenWTO.setBirthCertPlace(citizenInfoTO.getBirthCertificateIssuancePlace());
-                if (citizenInfoTO.getBirthCertificateIssuancePlaceProvince() != null) {
-                    citizenWTO.setBirthCertPrvId(citizenInfoTO.getBirthCertificateIssuancePlaceProvince().getId());
-                }
-//				TODO : Check it on future to appreciate Whether the matching bellow is correct or not!!!!!!!!!!
-                citizenWTO.setBirthCertPrvName(citizenInfoTO.getBirthCertificateIssuancePlace());
-                citizenWTO.setBirthDate(citizenInfoTO.getBirthDateSolar());
-                citizenWTO.setBirthDateHijri(citizenInfoTO.getBirthDateLunar());
-                citizenWTO.setBirthCertSerial(citizenInfoTO.getBirthCertificateSeries());
-
-                citizenWTO.setLivingPrvId(citizenInfoTO.getLiving().getId());
-                citizenWTO.setLivingPrvName(citizenInfoTO.getLiving().getName());
-                citizenWTO.setLivingCityId(citizenInfoTO.getLivingCity().getId());
-                citizenWTO.setLivingCityName(citizenInfoTO.getLivingCity().getName());
-                citizenWTO.setAddress(citizenInfoTO.getAddress());
-                citizenWTO.setEmail(citizenInfoTO.getEmail());
-
-                citizenWTO.setFatherBirthCertId(citizenInfoTO.getFatherBirthCertificateId());
-                citizenWTO.setFatherBirthCertSerial(citizenInfoTO.getFatherBirthCertificateSeries());
-                citizenWTO.setFatherBirthDate(DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI));
-                citizenWTO.setFatherFirstNameFA(citizenInfoTO.getFatherFirstNamePersian());
-                citizenWTO.setFatherFirstNameEN(citizenInfoTO.getFatherFirstNameEnglish());
-                citizenWTO.setFatherSureName(citizenInfoTO.getFatherSurname());
-                citizenWTO.setFatherNationalId(citizenInfoTO.getFatherNationalID());
-                citizenWTO.setFatherFatherName(citizenInfoTO.getFatherFatherName());
-
-                citizenWTO.setMotherBirthCertId(citizenInfoTO.getMotherBirthCertificateId());
-                citizenWTO.setMotherBirthCertSerial(citizenInfoTO.getMotherBirthCertificateSeries());
-                citizenWTO.setMotherBirthDate(DateUtil.convert(citizenInfoTO.getMotherBirthDateSolar(), DateUtil.JALALI));
-                citizenWTO.setMotherFirstNameFA(citizenInfoTO.getMotherFirstNamePersian());
-//					citizenWTO.setMotherFirstNameEN(citizenInfoTO.getMother`);
-                citizenWTO.setMotherSureName(citizenInfoTO.getMotherSurname());
-                citizenWTO.setMotherNationalId(citizenInfoTO.getMotherNationalID());
-                citizenWTO.setMotherFatherName(citizenInfoTO.getMotherFatherName());
-
-                citizenWTO.setGender(citizenInfoTO.getGender().name());
-                citizenWTO.setReligionId(citizenInfoTO.getReligion().getId());
-
-                if (EmsUtil.checkListSize(citizenInfoTO.getSpouses())) {
-                    for (SpouseTO spouseTO : citizenInfoTO.getSpouses()) {
-                        spouseTO.setId(null);
-                        citizenWTO.getSpouses().add(SpouseMapper.convertToSpouseVTO(spouseTO));
-                    }
-                }
-
-                if (EmsUtil.checkListSize(citizenInfoTO.getChildren())) {
-                    for (ChildTO childTO : citizenInfoTO.getChildren()) {
-                        childTO.setId(null);
-                        citizenWTO.getChildren().add(ChildMapper.convertToChildVTO(childTO));
-                    }
-                }
-            }
-        }
-//		if(cardRequestTO.getId() != null){
-//			citizenWTO.setRequestId(cardRequestTO.getId());
-//		}
-
-        if (cardRequestTO.getState() != null) {
-            citizenWTO.setState(CardRequestState.toLong(cardRequestTO.getState()));
-        }
-        if (cardRequestTO.getEnrolledDate() != null) {
-            GregorianCalendar gregorianCalendar = new GregorianCalendar();
-            gregorianCalendar.setTime(cardRequestTO.getEnrolledDate());
-            XMLGregorianCalendar xmlGregorianCalendar = null;
-            try {
-                xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-            } catch (DatatypeConfigurationException e) {
-                logger.error(DataExceptionCode.GLB_ERR_MSG, e);
-            }
-            citizenWTO.setEnrolledDate(xmlGregorianCalendar);
-        }
-        if (cardRequestTO.getType() != null) {
-            citizenWTO.setType(CardRequestType.toLong(cardRequestTO.getType()));
-        }
-
-        citizenWTO.getMetadata().add(cardRequestTO.getMetadata());
-
-        citizenWTO.setTrackingId(cardRequestTO.getTrackingID());
-
-        return citizenWTO;
-    }
+//    public static com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO convertToCitizenWTO(CardRequestTO cardRequestTO) throws BaseException {
+//        com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO citizenWTO = new com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO();
+//
+//        if (cardRequestTO.getCitizen() != null) {
+//            citizenWTO.setFirstNameFA(cardRequestTO.getCitizen().getFirstNamePersian());
+//            citizenWTO.setSureNameFA(cardRequestTO.getCitizen().getSurnamePersian());
+//            citizenWTO.setNationalId(cardRequestTO.getCitizen().getNationalID());
+//            if (cardRequestTO.getCitizen().getCitizenInfo() != null) {
+//                CitizenInfoTO citizenInfoTO = cardRequestTO.getCitizen().getCitizenInfo();
+//                citizenWTO.setFirstNameEN(citizenInfoTO.getFirstNameEnglish());
+//                citizenWTO.setSureNameEN(citizenInfoTO.getSurnameEnglish());
+//                citizenWTO.setBirthCertId(citizenInfoTO.getBirthCertificateId());
+//                citizenWTO.setBirthCertPlace(citizenInfoTO.getBirthCertificateIssuancePlace());
+//                if (citizenInfoTO.getBirthCertificateIssuancePlaceProvince() != null) {
+//                    citizenWTO.setBirthCertPrvId(citizenInfoTO.getBirthCertificateIssuancePlaceProvince().getId());
+//                }
+////				TODO : Check it on future to appreciate Whether the matching bellow is correct or not!!!!!!!!!!
+//                citizenWTO.setBirthCertPrvName(citizenInfoTO.getBirthCertificateIssuancePlace());
+//                citizenWTO.setBirthDate(citizenInfoTO.getBirthDateSolar());
+//                citizenWTO.setBirthDateHijri(citizenInfoTO.getBirthDateLunar());
+//                citizenWTO.setBirthCertSerial(citizenInfoTO.getBirthCertificateSeries());
+//
+//                citizenWTO.setLivingPrvId(citizenInfoTO.getLiving().getId());
+//                citizenWTO.setLivingPrvName(citizenInfoTO.getLiving().getName());
+//                citizenWTO.setLivingCityId(citizenInfoTO.getLivingCity().getId());
+//                citizenWTO.setLivingCityName(citizenInfoTO.getLivingCity().getName());
+//                citizenWTO.setAddress(citizenInfoTO.getAddress());
+//                citizenWTO.setEmail(citizenInfoTO.getEmail());
+//
+//                citizenWTO.setFatherBirthCertId(citizenInfoTO.getFatherBirthCertificateId());
+//                citizenWTO.setFatherBirthCertSerial(citizenInfoTO.getFatherBirthCertificateSeries());
+//                citizenWTO.setFatherBirthDate(DateUtil.convert(citizenInfoTO.getFatherBirthDateSolar(), DateUtil.JALALI));
+//                citizenWTO.setFatherFirstNameFA(citizenInfoTO.getFatherFirstNamePersian());
+//                citizenWTO.setFatherFirstNameEN(citizenInfoTO.getFatherFirstNameEnglish());
+//                citizenWTO.setFatherSureName(citizenInfoTO.getFatherSurname());
+//                citizenWTO.setFatherNationalId(citizenInfoTO.getFatherNationalID());
+//                citizenWTO.setFatherFatherName(citizenInfoTO.getFatherFatherName());
+//
+//                citizenWTO.setMotherBirthCertId(citizenInfoTO.getMotherBirthCertificateId());
+//                citizenWTO.setMotherBirthCertSerial(citizenInfoTO.getMotherBirthCertificateSeries());
+//                citizenWTO.setMotherBirthDate(DateUtil.convert(citizenInfoTO.getMotherBirthDateSolar(), DateUtil.JALALI));
+//                citizenWTO.setMotherFirstNameFA(citizenInfoTO.getMotherFirstNamePersian());
+////					citizenWTO.setMotherFirstNameEN(citizenInfoTO.getMother`);
+//                citizenWTO.setMotherSureName(citizenInfoTO.getMotherSurname());
+//                citizenWTO.setMotherNationalId(citizenInfoTO.getMotherNationalID());
+//                citizenWTO.setMotherFatherName(citizenInfoTO.getMotherFatherName());
+//
+//                citizenWTO.setGender(citizenInfoTO.getGender().name());
+//                citizenWTO.setReligionId(citizenInfoTO.getReligion().getId());
+//
+//                if (EmsUtil.checkListSize(citizenInfoTO.getSpouses())) {
+//                    for (SpouseTO spouseTO : citizenInfoTO.getSpouses()) {
+//                        spouseTO.setId(null);
+//                        citizenWTO.getSpouses().add(SpouseMapper.convertToSpouseVTO(spouseTO));
+//                    }
+//                }
+//
+//                if (EmsUtil.checkListSize(citizenInfoTO.getChildren())) {
+//                    for (ChildTO childTO : citizenInfoTO.getChildren()) {
+//                        childTO.setId(null);
+//                        citizenWTO.getChildren().add(ChildMapper.convertToChildVTO(childTO));
+//                    }
+//                }
+//            }
+//        }
+////		if(cardRequestTO.getId() != null){
+////			citizenWTO.setRequestId(cardRequestTO.getId());
+////		}
+//
+//        if (cardRequestTO.getState() != null) {
+//            citizenWTO.setState(CardRequestState.toLong(cardRequestTO.getState()));
+//        }
+//        if (cardRequestTO.getEnrolledDate() != null) {
+//            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//            gregorianCalendar.setTime(cardRequestTO.getEnrolledDate());
+//            XMLGregorianCalendar xmlGregorianCalendar = null;
+//            try {
+//                xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+//            } catch (DatatypeConfigurationException e) {
+//                logger.error(DataExceptionCode.GLB_ERR_MSG, e);
+//            }
+//            citizenWTO.setEnrolledDate(xmlGregorianCalendar);
+//        }
+//        if (cardRequestTO.getType() != null) {
+//            citizenWTO.setType(CardRequestType.toLong(cardRequestTO.getType()));
+//        }
+//
+//        citizenWTO.getMetadata().add(cardRequestTO.getMetadata());
+//
+//        citizenWTO.setTrackingId(cardRequestTO.getTrackingID());
+//
+//        return citizenWTO;
+//    }
 
     
     //Anbari convert citizenWRO to cardRequestTO (for preRegistration VIP in CCOS)

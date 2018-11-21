@@ -190,7 +190,7 @@ public class RatingServiceImpl extends EMSAbstractService implements RatingServi
     public void notifyPortalAboutModifiedRatingInfo() throws BaseException {
         List<RatingInfoTO> ratingInfoTOList = getRatingInfoDAO().findModifiedRatingInfo();
         if (ratingInfoTOList != null && !ratingInfoTOList.isEmpty()) {
-            getPortalBaseInfoService().updateRatingInfo(ratingInfoTOList);
+//            getPortalBaseInfoService().updateRatingInfo(ratingInfoTOList);
             List<Long> ratingInfoIdList = new ArrayList<Long>();
             for (RatingInfoTO ratingInfoTO : ratingInfoTOList) {
                 ratingInfoIdList.add(ratingInfoTO.getId());

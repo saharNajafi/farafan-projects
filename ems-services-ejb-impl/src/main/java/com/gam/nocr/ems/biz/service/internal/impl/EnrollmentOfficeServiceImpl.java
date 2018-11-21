@@ -1124,9 +1124,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                             BizExceptionCode.EOS_078_MSG);
                 }
 
-                getPortalBaseInfoService()
-                        .checkEnrollmentOfficeDeletePossibilityAndPerform(
-                                enrollmentOfficeId);
+//                getPortalBaseInfoService()
+//                        .checkEnrollmentOfficeDeletePossibilityAndPerform(
+//                                enrollmentOfficeId);
                 // Anbari :Call CMS immediately after deleting office : if CMS
                 // does not have the specified usersite catch the appropriate
                 // exception and continue as a normal situation
@@ -1344,7 +1344,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                     }
                 }
 
-                getPortalBaseInfoService().updateEnrollmentOffices(enrollmentOfficeTOListForSync);
+//                getPortalBaseInfoService().updateEnrollmentOffices(enrollmentOfficeTOListForSync);
 
                 logger.debug("successfully updated new enrollment office in CCOS with id : " + enrollmentOfficeTO.getId());
             } else if ("EDIT".equals(mode)) {
@@ -1360,7 +1360,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
                 enrollmentOfficeTOListForSync.add(enrollmentOfficeTO);
 
-                getPortalBaseInfoService().updateEnrollmentOffices(enrollmentOfficeTOListForSync);
+//                getPortalBaseInfoService().updateEnrollmentOffices(enrollmentOfficeTOListForSync);
 
                 logger.debug("successfully updated modified enrollment office in CCOS with id : " + enrollmentOfficeTO.getId());
             } else if ("DELETE".equals(mode)) {
@@ -1377,7 +1377,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 List<Long> inactiveEnrollmentOfficeIds = new ArrayList<Long>();
                 inactiveEnrollmentOfficeIds.add(enrollmentOfficeTO.getId());
 
-                getPortalBaseInfoService().removeEnrollmentOffices(inactiveEnrollmentOfficeIds);
+//                getPortalBaseInfoService().removeEnrollmentOffices(inactiveEnrollmentOfficeIds);
 
                 logger.debug("successfully updated deleted enrollment office in CCOS with id : " + enrollmentOfficeTO.getId());
             }

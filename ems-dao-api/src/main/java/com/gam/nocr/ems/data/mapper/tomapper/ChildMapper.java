@@ -4,7 +4,7 @@ import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 
 import com.gam.commons.core.BaseException;
-import com.gam.nocr.ems.biz.service.external.client.portal.ChildVTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ChildVTO;
 import com.gam.nocr.ems.config.ConstValues;
 import com.gam.nocr.ems.config.MapperExceptionCode;
 import com.gam.nocr.ems.data.domain.ChildTO;
@@ -69,64 +69,64 @@ public class ChildMapper {
 		return wto;
 	}
 
-	public static ChildVTO convertToChildVTO(ChildTO chi) throws BaseException {
-		if (chi == null) {
-			throw new BaseException(MapperExceptionCode.CHM_008, MapperExceptionCode.CHM_008_MSG);
-		}
-		ChildVTO childVTO = new ChildVTO();
-		childVTO.setId(chi.getId());
-		if (chi.getCitizenInfo() == null) {
-			childVTO.setCitizenId(null);
-		} else {
-			childVTO.setCitizenId(chi.getCitizenInfo().getId());
-		}
-		childVTO.setFirstNameFA(chi.getChildFirstNamePersian());
-		childVTO.setFatherName(chi.getChildFatherName());
-		childVTO.setBirthCertId(chi.getChildBirthCertificateId());
-		childVTO.setBirthDate(DateUtil.convert(chi.getChildBirthDateSolar(), DateUtil.JALALI));
-		if (chi.getChildDeathDateSolar() != null) {
-			childVTO.setDeathDate(DateUtil.convert(chi.getChildDeathDateSolar(), DateUtil.JALALI));
-		}
-		childVTO.setNationalId(chi.getChildNationalID());
-		if (chi.getChildGender() != null) {
-			childVTO.setGender(chi.getChildGender().name());
-		}
-		childVTO.setBirthCertSerial(chi.getChildBirthCertificateSeries());
-		return childVTO;
-	}
+//	public static ChildVTO convertToChildVTO(ChildTO chi) throws BaseException {
+//		if (chi == null) {
+//			throw new BaseException(MapperExceptionCode.CHM_008, MapperExceptionCode.CHM_008_MSG);
+//		}
+//		ChildVTO childVTO = new ChildVTO();
+//		childVTO.setId(chi.getId());
+//		if (chi.getCitizenInfo() == null) {
+//			childVTO.setCitizenId(null);
+//		} else {
+//			childVTO.setCitizenId(chi.getCitizenInfo().getId());
+//		}
+//		childVTO.setFirstNameFA(chi.getChildFirstNamePersian());
+//		childVTO.setFatherName(chi.getChildFatherName());
+//		childVTO.setBirthCertId(chi.getChildBirthCertificateId());
+//		childVTO.setBirthDate(DateUtil.convert(chi.getChildBirthDateSolar(), DateUtil.JALALI));
+//		if (chi.getChildDeathDateSolar() != null) {
+//			childVTO.setDeathDate(DateUtil.convert(chi.getChildDeathDateSolar(), DateUtil.JALALI));
+//		}
+//		childVTO.setNationalId(chi.getChildNationalID());
+//		if (chi.getChildGender() != null) {
+//			childVTO.setGender(chi.getChildGender().name());
+//		}
+//		childVTO.setBirthCertSerial(chi.getChildBirthCertificateSeries());
+//		return childVTO;
+//	}
 
-	public static ChildTO convert(ChildVTO childVTO) throws BaseException {//Does not set CitizenInfo
-		if (childVTO == null) {
-			throw new BaseException(MapperExceptionCode.CHM_001, MapperExceptionCode.CHM_001_MSG);
-		}
-		ChildTO chi = new ChildTO();
-		//		chi.setId(childVTO.getId());
-		chi.setChildFirstNamePersian(childVTO.getFirstNameFA());
-		chi.setChildFatherName(childVTO.getFatherName());
-		chi.setChildBirthCertificateId(childVTO.getBirthCertId());
-		try {
-			chi.setChildBirthDateSolar(DateUtil.convert(childVTO.getBirthDate(), DateUtil.JALALI));
-		} catch (DateFormatException e) {
-			throw new BaseException(MapperExceptionCode.CHM_002, MapperExceptionCode.GLB_001_MSG, e);
-		}
-		try {
-			if (EmsUtil.checkString(childVTO.getDeathDate()))
-				chi.setChildDeathDateSolar(DateUtil.convert(childVTO.getDeathDate(), DateUtil.JALALI));
-		} catch (DateFormatException e) {
-			throw new BaseException(MapperExceptionCode.CHM_003, MapperExceptionCode.GLB_001_MSG, e);
-		}
-		chi.setChildNationalID(childVTO.getNationalId());
-		if (childVTO.getGender() != null) {
-			try {
-				chi.setChildGender(Gender.valueOf(childVTO.getGender()));
-			} catch (IllegalArgumentException e) {
-				throw new BaseException(MapperExceptionCode.CHM_004, MapperExceptionCode.CHM_004_MSG, e, new String[]{childVTO.getGender()});
-			}
-		}
-		//        chi.setChildBirthCertificateSeries(childVTO.getBirthCertSerial());
-		chi.setChildBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-		return chi;
-	}
+//	public static ChildTO convert(ChildVTO childVTO) throws BaseException {//Does not set CitizenInfo
+//		if (childVTO == null) {
+//			throw new BaseException(MapperExceptionCode.CHM_001, MapperExceptionCode.CHM_001_MSG);
+//		}
+//		ChildTO chi = new ChildTO();
+//		//		chi.setId(childVTO.getId());
+//		chi.setChildFirstNamePersian(childVTO.getFirstNameFA());
+//		chi.setChildFatherName(childVTO.getFatherName());
+//		chi.setChildBirthCertificateId(childVTO.getBirthCertId());
+//		try {
+//			chi.setChildBirthDateSolar(DateUtil.convert(childVTO.getBirthDate(), DateUtil.JALALI));
+//		} catch (DateFormatException e) {
+//			throw new BaseException(MapperExceptionCode.CHM_002, MapperExceptionCode.GLB_001_MSG, e);
+//		}
+//		try {
+//			if (EmsUtil.checkString(childVTO.getDeathDate()))
+//				chi.setChildDeathDateSolar(DateUtil.convert(childVTO.getDeathDate(), DateUtil.JALALI));
+//		} catch (DateFormatException e) {
+//			throw new BaseException(MapperExceptionCode.CHM_003, MapperExceptionCode.GLB_001_MSG, e);
+//		}
+//		chi.setChildNationalID(childVTO.getNationalId());
+//		if (childVTO.getGender() != null) {
+//			try {
+//				chi.setChildGender(Gender.valueOf(childVTO.getGender()));
+//			} catch (IllegalArgumentException e) {
+//				throw new BaseException(MapperExceptionCode.CHM_004, MapperExceptionCode.CHM_004_MSG, e, new String[]{childVTO.getGender()});
+//			}
+//		}
+//		//        chi.setChildBirthCertificateSeries(childVTO.getBirthCertSerial());
+//		chi.setChildBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+//		return chi;
+//	}
 
 
 	//hossein 8 feature start

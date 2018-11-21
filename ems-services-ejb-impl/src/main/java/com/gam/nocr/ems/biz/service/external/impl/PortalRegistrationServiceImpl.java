@@ -23,15 +23,15 @@ import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
-import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS_Service;
-import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.ExternalInterfaceException_Exception;
-import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
-import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
-import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS_Service;
+//import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
+//import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS_Service;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ExternalInterfaceException_Exception;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
+//import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS_Service;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
@@ -107,7 +107,7 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
     private static final Logger jobLogger = BaseLog.getLogger("portalFetchCardRequest");
     private static final Logger threadLocalLogger = BaseLog.getLogger("threadLocal");
 
-    RegistrationWS service = null;
+//    RegistrationWS service = null;
 
     /**
      * The method getService is used to get WebServices from Portal sub system
@@ -116,35 +116,35 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      * @throws com.gam.commons.core.BaseException
      *          if cannot get the service
      */
-    private RegistrationWS getService() throws BaseException {
-        try {
-            ProfileManager pm = ProfileHelper.getProfileManager();
-
-            String wsdlUrl = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_REGISTRATION_ENDPOINT, true, null, null);
-            String namespace = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_NAMESPACE, true, null, null);
-            if (wsdlUrl == null)
-                wsdlUrl = DEFAULT_WSDL_URL;
-            if (namespace == null)
-                namespace = DEFAULT_NAMESPACE;
-            String serviceName = "RegistrationWS";
-            logger.debug("Portal Registration wsdl url: " + wsdlUrl);
-            portalLogger.debug("Portal Registration wsdl url: " + wsdlUrl);
-            //Commented for ThraedLocal
-           // RegistrationWS port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
-            RegistrationWS port = ServicePorts.getPortalRegistrationPort();
-			if (port == null) {
-				threadLocalLogger.debug("**************************** new PortalRegistartion in Portal getService()");
-				port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
-				ServicePorts.setPortalRegistrationPort(port);
-			} else {
-				threadLocalLogger.debug("***************************** using PortalRegistartion from ThradLocal");
-			}
-            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-            return port;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.PRS_001, e.getMessage(), e);
-        }
-    }
+//    private RegistrationWS getService() throws BaseException {
+//        try {
+//            ProfileManager pm = ProfileHelper.getProfileManager();
+//
+//            String wsdlUrl = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_REGISTRATION_ENDPOINT, true, null, null);
+//            String namespace = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_NAMESPACE, true, null, null);
+//            if (wsdlUrl == null)
+//                wsdlUrl = DEFAULT_WSDL_URL;
+//            if (namespace == null)
+//                namespace = DEFAULT_NAMESPACE;
+//            String serviceName = "RegistrationWS";
+//            logger.debug("Portal Registration wsdl url: " + wsdlUrl);
+//            portalLogger.debug("Portal Registration wsdl url: " + wsdlUrl);
+//            //Commented for ThraedLocal
+//           // RegistrationWS port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
+//            RegistrationWS port = ServicePorts.getPortalRegistrationPort();
+//			if (port == null) {
+//				threadLocalLogger.debug("**************************** new PortalRegistartion in Portal getService()");
+//				port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
+//				ServicePorts.setPortalRegistrationPort(port);
+//			} else {
+//				threadLocalLogger.debug("***************************** using PortalRegistartion from ThradLocal");
+//			}
+//            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+//            return port;
+//        } catch (Exception e) {
+//            throw new ServiceException(BizExceptionCode.PRS_001, e.getMessage(), e);
+//        }
+//    }
     
     
     /**
@@ -152,37 +152,37 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      */
     private static final String DEFAULT_SYNC_WEBSERVICE_TIMEOUT = "300000";
     
-    private RegistrationWS getServiceForSyncRequests() throws BaseException {
-        try {
-            ProfileManager pm = ProfileHelper.getProfileManager();
-
-            String wsdlUrl = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_REGISTRATION_ENDPOINT, true, null, null);
-            String namespace = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_NAMESPACE, true, null, null);
-            if (wsdlUrl == null)
-                wsdlUrl = DEFAULT_WSDL_URL;
-            if (namespace == null)
-                namespace = DEFAULT_NAMESPACE;
-            String serviceName = "RegistrationWS";
-            logger.debug("Portal Registration wsdl url: " + wsdlUrl);
-            portalLogger.debug("Portal Registration wsdl url: " + wsdlUrl);
-            RegistrationWS port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
-            try {
-                String endPoint = wsdlUrl.split("\\?")[0];
-                Integer webserviceTimeout = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_SYNC_WEBSERVICE_TIMEOUT, DEFAULT_SYNC_WEBSERVICE_TIMEOUT));
-                BindingProvider bindingProvider = (BindingProvider) port;
-                Map<String, Object> context = bindingProvider.getRequestContext();
-                context.put(BindingProviderProperties.CONNECT_TIMEOUT, webserviceTimeout);
-                context.put(BindingProviderProperties.REQUEST_TIMEOUT, webserviceTimeout);
-            } catch (WebServiceException e) {
-                throw new BaseException("EmsUtil Exception. An exception has happened in setting webservice timeout properties.", e);
-            } catch (Exception e) {
-                throw new BaseException("EmsUtil Exception. An exception has happened in setting webservice timeout properties.", e);
-            }
-            return port;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.PRS_001, e.getMessage(), e);
-        }
-    }
+//    private RegistrationWS getServiceForSyncRequests() throws BaseException {
+//        try {
+//            ProfileManager pm = ProfileHelper.getProfileManager();
+//
+//            String wsdlUrl = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_REGISTRATION_ENDPOINT, true, null, null);
+//            String namespace = (String) pm.getProfile(ProfileKeyName.KEY_PORTAL_NAMESPACE, true, null, null);
+//            if (wsdlUrl == null)
+//                wsdlUrl = DEFAULT_WSDL_URL;
+//            if (namespace == null)
+//                namespace = DEFAULT_NAMESPACE;
+//            String serviceName = "RegistrationWS";
+//            logger.debug("Portal Registration wsdl url: " + wsdlUrl);
+//            portalLogger.debug("Portal Registration wsdl url: " + wsdlUrl);
+//            RegistrationWS port = new RegistrationWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getRegistrationWSPort();
+//            try {
+//                String endPoint = wsdlUrl.split("\\?")[0];
+//                Integer webserviceTimeout = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_SYNC_WEBSERVICE_TIMEOUT, DEFAULT_SYNC_WEBSERVICE_TIMEOUT));
+//                BindingProvider bindingProvider = (BindingProvider) port;
+//                Map<String, Object> context = bindingProvider.getRequestContext();
+//                context.put(BindingProviderProperties.CONNECT_TIMEOUT, webserviceTimeout);
+//                context.put(BindingProviderProperties.REQUEST_TIMEOUT, webserviceTimeout);
+//            } catch (WebServiceException e) {
+//                throw new BaseException("EmsUtil Exception. An exception has happened in setting webservice timeout properties.", e);
+//            } catch (Exception e) {
+//                throw new BaseException("EmsUtil Exception. An exception has happened in setting webservice timeout properties.", e);
+//            }
+//            return port;
+//        } catch (Exception e) {
+//            throw new ServiceException(BizExceptionCode.PRS_001, e.getMessage(), e);
+//        }
+//    }
 
     /**
      * The method convertToPortalItemWTOList is used to convert a list of type {@link SyncCardRequestWTO} to a list of type {@link
@@ -191,24 +191,24 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      * @param syncCardRequestWTOList {@link SyncCardRequestWTO}
      * @return a list of type {@link com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO}
      */
-    private List<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO> convertToPortalSyncCardRequestWTOList(
-            List<SyncCardRequestWTO> syncCardRequestWTOList) {
-        List<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO> syncCardRequestWTOs =
-                new ArrayList<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO>();
-
-        for (SyncCardRequestWTO syncCardRequestWTO : syncCardRequestWTOList) {
-            com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO cardRequestWTO =
-                    new com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO();
-            cardRequestWTO.setId(syncCardRequestWTO.getId());
-            cardRequestWTO.setCardRequestState(syncCardRequestWTO.getCardRequestState());
-            cardRequestWTO.setCardEnrollmentOfficeId(syncCardRequestWTO.getCardEnrollmentOfficeId());
-            cardRequestWTO.setCardRequestMetadata(syncCardRequestWTO.getCardRequestMetadata());
-            cardRequestWTO.setOriginalCardRequestOfficeId(syncCardRequestWTO.getOriginalCardRequestOfficeId());
-            syncCardRequestWTOs.add(cardRequestWTO);
-        }
-
-        return syncCardRequestWTOs;
-    }
+//    private List<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO> convertToPortalSyncCardRequestWTOList(
+//            List<SyncCardRequestWTO> syncCardRequestWTOList) {
+//        List<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO> syncCardRequestWTOs =
+//                new ArrayList<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO>();
+//
+//        for (SyncCardRequestWTO syncCardRequestWTO : syncCardRequestWTOList) {
+//            com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO cardRequestWTO =
+//                    new com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO();
+//            cardRequestWTO.setId(syncCardRequestWTO.getId());
+//            cardRequestWTO.setCardRequestState(syncCardRequestWTO.getCardRequestState());
+//            cardRequestWTO.setCardEnrollmentOfficeId(syncCardRequestWTO.getCardEnrollmentOfficeId());
+//            cardRequestWTO.setCardRequestMetadata(syncCardRequestWTO.getCardRequestMetadata());
+//            cardRequestWTO.setOriginalCardRequestOfficeId(syncCardRequestWTO.getOriginalCardRequestOfficeId());
+//            syncCardRequestWTOs.add(cardRequestWTO);
+//        }
+//
+//        return syncCardRequestWTOs;
+//    }
 
     /**
      * The method convertToCardRequestToList is used to convert a list of type {@link CitizenVTO} to a list of {@link
@@ -217,16 +217,16 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      * @param portalCitizenVTOList a list of type {@link CitizenVTO}
      * @return a list of type {@link CardRequestTO}
      */
-    private List<CardRequestTO> convertToCardRequestToList(List<CitizenVTO> portalCitizenVTOList) throws BaseException {
-        List<CardRequestTO> cardRequestTOList = new ArrayList<CardRequestTO>();
-        for (CitizenVTO portalCitizenVTO : portalCitizenVTOList) {
-            CardRequestTO cardRequestTO = CardRequestMapper.convert(portalCitizenVTO);
-            if (cardRequestTO != null) {
-                cardRequestTOList.add(cardRequestTO);
-            }
-        }
-        return cardRequestTOList;
-    }
+//    private List<CardRequestTO> convertToCardRequestToList(List<CitizenVTO> portalCitizenVTOList) throws BaseException {
+//        List<CardRequestTO> cardRequestTOList = new ArrayList<CardRequestTO>();
+//        for (CitizenVTO portalCitizenVTO : portalCitizenVTOList) {
+//            CardRequestTO cardRequestTO = CardRequestMapper.convert(portalCitizenVTO);
+//            if (cardRequestTO != null) {
+//                cardRequestTOList.add(cardRequestTO);
+//            }
+//        }
+//        return cardRequestTOList;
+//    }
 
     /**
      * The method transferCardRequests is used to get a number of card request from the sub system 'Portal'
@@ -235,62 +235,62 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      * @throws com.gam.commons.core.BaseException
      *
      */
-    @Override
-    public List<CardRequestTO> transferCardRequests(List<Long> portalCardRequestIds) throws BaseException {
-        List<CardRequestTO> cardRequestTOList = new ArrayList<CardRequestTO>();
+//    @Override
+//    public List<CardRequestTO> transferCardRequests(List<Long> portalCardRequestIds) throws BaseException {
+//        List<CardRequestTO> cardRequestTOList = new ArrayList<CardRequestTO>();
+//
+//        try {
+//            jobLogger.info("Fetching detailed data for portal card requests : {}", portalCardRequestIds);
+//
+//            List<CitizenVTO> portalCardRequestTOList = getService().transferCardRequests(portalCardRequestIds);
+//            if (portalCardRequestTOList != null && !portalCardRequestTOList.isEmpty()) {
+//                jobLogger.info("List of portal card requests fetched successfully. trying to convert them to an appropriate format to be used in EMS");
+//                cardRequestTOList = convertToCardRequestToList(portalCardRequestTOList);
+//            } else {
+//                jobLogger.warn("List of portal card requests fetched from portal is null or empty");
+//            }
+//        } catch (ExternalInterfaceException_Exception e) {
+////			TODO : Exception handling
+//            String errorMessage = e.getFaultInfo().getMessage();
+//
+//            ServiceException serviceException = new ServiceException(
+//                    BizExceptionCode.PRS_005,
+//                    errorMessage,
+//                    e,
+//                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            jobLogger.error("Failed to load details of portal card requests : "  + portalCardRequestIds, serviceException);
+//            throw serviceException;
+//        }
+//        return cardRequestTOList;
+//    }
 
-        try {
-            jobLogger.info("Fetching detailed data for portal card requests : {}", portalCardRequestIds);
-
-            List<CitizenVTO> portalCardRequestTOList = getService().transferCardRequests(portalCardRequestIds);
-            if (portalCardRequestTOList != null && !portalCardRequestTOList.isEmpty()) {
-                jobLogger.info("List of portal card requests fetched successfully. trying to convert them to an appropriate format to be used in EMS");
-                cardRequestTOList = convertToCardRequestToList(portalCardRequestTOList);
-            } else {
-                jobLogger.warn("List of portal card requests fetched from portal is null or empty");
-            }
-        } catch (ExternalInterfaceException_Exception e) {
-//			TODO : Exception handling
-            String errorMessage = e.getFaultInfo().getMessage();
-
-            ServiceException serviceException = new ServiceException(
-                    BizExceptionCode.PRS_005,
-                    errorMessage,
-                    e,
-                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            jobLogger.error("Failed to load details of portal card requests : "  + portalCardRequestIds, serviceException);
-            throw serviceException;
-        }
-        return cardRequestTOList;
-    }
-
-    @Override
-    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException {
-        try {
-            jobLogger.info("Retrieving list of card requests identifiers from portal to fetch their data in next steps");
-            portalLogger.debug("Calling fetchPortalCardRequestIdsForTransfer from portal");
-            List<Long> result = getService().fetchPortalCardRequestIdsForTransfer();
-            jobLogger.info("List of portal request identifiers fetched from portal : {}", result);
-            portalLogger.debug("Results of calling fetchPortalCardRequestIdsForTransfer from portal is :" + result);
-            return result;
-        } catch (ExternalInterfaceException_Exception e) {
-//			TODO : Exception handling
-            String errorMessage = e.getFaultInfo().getMessage();
-
-            ServiceException serviceException = new ServiceException(
-                    BizExceptionCode.PRS_011,
-                    errorMessage,
-                    e,
-                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-
-            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            jobLogger.error("Unable to fetch the list of portal request identifiers in order to retrieve their data from portal", serviceException);
-            throw serviceException;
-        }
-    }
+//    @Override
+//    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException {
+//        try {
+//            jobLogger.info("Retrieving list of card requests identifiers from portal to fetch their data in next steps");
+//            portalLogger.debug("Calling fetchPortalCardRequestIdsForTransfer from portal");
+//            List<Long> result = getService().fetchPortalCardRequestIdsForTransfer();
+//            jobLogger.info("List of portal request identifiers fetched from portal : {}", result);
+//            portalLogger.debug("Results of calling fetchPortalCardRequestIdsForTransfer from portal is :" + result);
+//            return result;
+//        } catch (ExternalInterfaceException_Exception e) {
+////			TODO : Exception handling
+//            String errorMessage = e.getFaultInfo().getMessage();
+//
+//            ServiceException serviceException = new ServiceException(
+//                    BizExceptionCode.PRS_011,
+//                    errorMessage,
+//                    e,
+//                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//
+//            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            jobLogger.error("Unable to fetch the list of portal request identifiers in order to retrieve their data from portal", serviceException);
+//            throw serviceException;
+//        }
+//    }
 
     /**
      * The method updateCardRequestStates is used to alert the sub system 'Portal' about the current state of the
@@ -303,72 +303,72 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      * @throws com.gam.commons.core.BaseException
      *
      */
-    @Override
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<ItemWTO> updateCardRequestsState(List<SyncCardRequestWTO> syncCardRequestWTOList) throws BaseException {
-        List<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO> syncCardRequestWTOs =
-                convertToPortalSyncCardRequestWTOList(syncCardRequestWTOList);
+//    @Override
+//    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+//    public List<ItemWTO> updateCardRequestsState(List<SyncCardRequestWTO> syncCardRequestWTOList) throws BaseException {
+//        List<com.gam.nocr.ems.biz.service.external.client.portal.SyncCardRequestWTO> syncCardRequestWTOs =
+//                convertToPortalSyncCardRequestWTOList(syncCardRequestWTOList);
+//
+//        try {
+//            portalLogger.debug("Calling updateCardRequestState of Portal for : " + syncCardRequestWTOList);
+//            return getServiceForSyncRequests().updateCardRequestState(syncCardRequestWTOs);
+//        } catch (ExternalInterfaceException_Exception e) {
+//            String errorMessage = e.getFaultInfo().getMessage();
+//            String errorCode = e.getFaultInfo().getErrorCode();
+//
+//            if (PORTAL_ERROR_REW_003.equals(errorCode)) {
+//                ServiceException serviceException = new ServiceException(
+//                        BizExceptionCode.PRS_002,
+//                        errorMessage,
+//                        e,
+//                        EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//                logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//                portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//                throw serviceException;
+//
+//            } else if (PORTAL_ERROR_REW_004.equals(errorCode)) {
+//                ServiceException serviceException = new ServiceException(
+//                        BizExceptionCode.PRS_003,
+//                        errorMessage,
+//                        e,
+//                        EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//                logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//                portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//                throw serviceException;
+//            }
+//
+//            ServiceException serviceException = new ServiceException(
+//                    BizExceptionCode.PRS_004,
+//                    errorMessage,
+//                    e,
+//                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            throw serviceException;
+//        }
+//    }
 
-        try {
-            portalLogger.debug("Calling updateCardRequestState of Portal for : " + syncCardRequestWTOList);
-            return getServiceForSyncRequests().updateCardRequestState(syncCardRequestWTOs);
-        } catch (ExternalInterfaceException_Exception e) {
-            String errorMessage = e.getFaultInfo().getMessage();
-            String errorCode = e.getFaultInfo().getErrorCode();
-
-            if (PORTAL_ERROR_REW_003.equals(errorCode)) {
-                ServiceException serviceException = new ServiceException(
-                        BizExceptionCode.PRS_002,
-                        errorMessage,
-                        e,
-                        EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-                portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-                throw serviceException;
-
-            } else if (PORTAL_ERROR_REW_004.equals(errorCode)) {
-                ServiceException serviceException = new ServiceException(
-                        BizExceptionCode.PRS_003,
-                        errorMessage,
-                        e,
-                        EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-                portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-                throw serviceException;
-            }
-
-            ServiceException serviceException = new ServiceException(
-                    BizExceptionCode.PRS_004,
-                    errorMessage,
-                    e,
-                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            throw serviceException;
-        }
-    }
-
-    @Override
-    public Long updateCcosCardRequests(CardRequestWTO cardRequestWTO) throws BaseException {
-        if (cardRequestWTO == null)
-            throw new ServiceException(BizExceptionCode.PRS_006, BizExceptionCode.PRS_006_MSG);
-
-        try {
-            return getService().updateCcosCardRequest(cardRequestWTO);
-        } catch (ExternalInterfaceException_Exception e) {
-            //			TODO : Exception handling
-            String errorMessage = e.getFaultInfo().getMessage();
-
-            ServiceException serviceException = new ServiceException(
-                    BizExceptionCode.PRS_007,
-                    errorMessage,
-                    e,
-                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            throw serviceException;
-        }
-    }
+//    @Override
+//    public Long updateCcosCardRequests(CardRequestWTO cardRequestWTO) throws BaseException {
+//        if (cardRequestWTO == null)
+//            throw new ServiceException(BizExceptionCode.PRS_006, BizExceptionCode.PRS_006_MSG);
+//
+//        try {
+//            return getService().updateCcosCardRequest(cardRequestWTO);
+//        } catch (ExternalInterfaceException_Exception e) {
+//            //			TODO : Exception handling
+//            String errorMessage = e.getFaultInfo().getMessage();
+//
+//            ServiceException serviceException = new ServiceException(
+//                    BizExceptionCode.PRS_007,
+//                    errorMessage,
+//                    e,
+//                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            logger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            throw serviceException;
+//        }
+//    }
 
     /**
      * The method updateNotVerifiedMESRequest is used to update the request, which has not been verified by
@@ -380,28 +380,28 @@ public class PortalRegistrationServiceImpl extends AbstractService implements Po
      * @throws com.gam.commons.core.BaseException
      *
      */
-    @Override
-    public Long updateNotVerifiedMESRequest(CitizenWTO citizenWTO) throws BaseException {
-        if (citizenWTO == null) {
-            throw new ServiceException(BizExceptionCode.PRS_008, BizExceptionCode.PRS_008_MSG);
-        }
-
-        try {
-            return getService().updateNotVerifiedMESRequest(citizenWTO);
-        } catch (ExternalInterfaceException_Exception e) {
-            String errorMessage = e.getFaultInfo().getMessage();
-            String errorCode = e.getFaultInfo().getErrorCode();
-
-            if (PORTAL_ERROR_REW_005.equals(errorCode)) {
-                throw new ServiceException(BizExceptionCode.PRS_009, errorMessage, e, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
-            }
-
-            throw new ServiceException(
-                    BizExceptionCode.PRS_010,
-                    errorMessage,
-                    e,
-                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(",")
-            );
-        }
-    }
+//    @Override
+//    public Long updateNotVerifiedMESRequest(CitizenWTO citizenWTO) throws BaseException {
+//        if (citizenWTO == null) {
+//            throw new ServiceException(BizExceptionCode.PRS_008, BizExceptionCode.PRS_008_MSG);
+//        }
+//
+//        try {
+//            return getService().updateNotVerifiedMESRequest(citizenWTO);
+//        } catch (ExternalInterfaceException_Exception e) {
+//            String errorMessage = e.getFaultInfo().getMessage();
+//            String errorCode = e.getFaultInfo().getErrorCode();
+//
+//            if (PORTAL_ERROR_REW_005.equals(errorCode)) {
+//                throw new ServiceException(BizExceptionCode.PRS_009, errorMessage, e, EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(","));
+//            }
+//
+//            throw new ServiceException(
+//                    BizExceptionCode.PRS_010,
+//                    errorMessage,
+//                    e,
+//                    EMSLogicalNames.SRV_PORTAL_REGISTRATION.split(",")
+//            );
+//        }
+//    }
 }

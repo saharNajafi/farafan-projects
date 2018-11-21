@@ -10,7 +10,7 @@ import com.gam.commons.core.biz.service.Service;
  */
 public interface PortalSmsService extends Service {
 
-    public List<Long> retrieveRequestedSms() throws BaseException;
+//    public List<Long> retrieveRequestedSms() throws BaseException;
 
     public void addRequestedSms(Long portalCardRequestId) throws BaseException;
 

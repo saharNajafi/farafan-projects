@@ -17,7 +17,7 @@ import com.gam.commons.profile.ProfileException;
 import com.gam.commons.profile.ProfileManager;
 import com.gam.commons.security.signature.Signature;
 import com.gam.nocr.ems.biz.service.*;
-import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
 import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
@@ -2060,77 +2060,77 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
      *
      * @throws com.gam.commons.core.BaseException
      */
-    @Override
+//    @Override
 //    @BizLoggable(logAction = "LOAD_FROM_PORTAL", logEntityName = "PORTAL", logActor = "System")
-    @TransactionAttribute(TransactionAttributeType.NEVER)
-    public Boolean fetchPortalCardRequestsToSave(List<Long> portalCardRequestIds) throws BaseException {
-        Boolean loopFlag = true;
-
-        List<Long> successfulSavedCardRequestIds = new ArrayList<Long>();
-        List<Long> successfulSavedPortalCardRequestIds = new ArrayList<Long>();
-        List<Long> unsuccessfulSavedPortalCardRequestIds = new ArrayList<Long>();
-
-        List<CardRequestTO> cardRequestTOList = getPortalManagementService().transferCardRequests(portalCardRequestIds);
-
-        if (cardRequestTOList != null && !cardRequestTOList.isEmpty()) {
-            jobLOGGER.info("Starting to iterated over portal card requests {} to insert them in EMS", portalCardRequestIds);
-            for (CardRequestTO cardRequestTO : cardRequestTOList) {
-                try {
-                    successfulSavedCardRequestIds.add(savePortalRequest(cardRequestTO));
-                    successfulSavedPortalCardRequestIds.add(cardRequestTO.getPortalRequestId());
-
-                    SyncCardRequestWTO syncCardRequestWTO = new SyncCardRequestWTO();
-                    syncCardRequestWTO.setId(cardRequestTO.getPortalRequestId());
-                    syncCardRequestWTO.setCardRequestState(CardRequestState.RECEIVED_BY_EMS.name());
-
-                    List<SyncCardRequestWTO> syncCardRequestWTOList = new ArrayList<SyncCardRequestWTO>();
-                    syncCardRequestWTOList.add(syncCardRequestWTO);
-
-                    jobLOGGER.info("Updating status of portal card request {} in portal to RECEIVED_BY_EMS", syncCardRequestWTO.getId());
-                    List<ItemWTO> itemWTOList = getPortalRegistrationService().updateCardRequestsState(syncCardRequestWTOList);
-                    List<Long> updatedRequests = new ArrayList<Long>();
-
-                    if (EmsUtil.checkListSize(itemWTOList)) {
-                        for (ItemWTO itemWTO : itemWTOList) {
-                            if ("updated".equals(itemWTO.getValue())) {
-                                updatedRequests.add(Long.valueOf(itemWTO.getKey()));
-                            }
-                        }
-                    }
-                    if (!updatedRequests.isEmpty()) {
-                        jobLOGGER.info("Updating sync date of portal card request {} in EMS", syncCardRequestWTO.getId());
-                        getCardRequestDAO().updateSyncDatesByCurrentDate(updatedRequests);
-                    }
-                } catch (BaseException e) {
-                    logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-                    unsuccessfulSavedPortalCardRequestIds.add(cardRequestTO.getPortalRequestId());
-                    jobLOGGER.error("An error happened while trying to fetch portal card request " + cardRequestTO.getPortalRequestId() + ", persisting it in EMS and updating its status in portal", e);
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                    unsuccessfulSavedPortalCardRequestIds.add(cardRequestTO.getPortalRequestId());
-                    jobLOGGER.error("An error happened while trying to fetch portal card request " + cardRequestTO.getPortalRequestId() + ", persisting it in EMS and updating its status in portal", e);
-                }
-            }
-
-            if (EmsUtil.checkListSize(successfulSavedCardRequestIds)) {
-                jobLOGGER.info("List of portal card requests identifiers successfully inserted in EMS database is {} and their corresponding identifier in EMS is {}", successfulSavedPortalCardRequestIds, successfulSavedCardRequestIds);
-                createBusinessLog(BusinessLogAction.LOAD_FROM_PORTAL, BusinessLogEntity.PORTAL, "System",
-                        EmsUtil.toJSON("cardRequestIds:" + successfulSavedCardRequestIds + ", portalCardRequestIds:" +
-                                successfulSavedPortalCardRequestIds), BusinessLogActionAttitude.T
-                );
-            }
-
-            if (EmsUtil.checkListSize(unsuccessfulSavedPortalCardRequestIds))
-                jobLOGGER.info("List of portal card requests identifiers NOT inserted in EMS database is {}", unsuccessfulSavedPortalCardRequestIds);
-            createBusinessLog(BusinessLogAction.LOAD_FROM_PORTAL, BusinessLogEntity.PORTAL, "System",
-                    EmsUtil.toJSON("portalCardRequestIds:" + unsuccessfulSavedPortalCardRequestIds), BusinessLogActionAttitude.F);
-
-        } else {
-            loopFlag = false;
-        }
-
-        return loopFlag;
-    }
+//    @TransactionAttribute(TransactionAttributeType.NEVER)
+//    public Boolean fetchPortalCardRequestsToSave(List<Long> portalCardRequestIds) throws BaseException {
+//        Boolean loopFlag = true;
+//
+//        List<Long> successfulSavedCardRequestIds = new ArrayList<Long>();
+//        List<Long> successfulSavedPortalCardRequestIds = new ArrayList<Long>();
+//        List<Long> unsuccessfulSavedPortalCardRequestIds = new ArrayList<Long>();
+//
+//        List<CardRequestTO> cardRequestTOList = getPortalManagementService().transferCardRequests(portalCardRequestIds);
+//
+//        if (cardRequestTOList != null && !cardRequestTOList.isEmpty()) {
+//            jobLOGGER.info("Starting to iterated over portal card requests {} to insert them in EMS", portalCardRequestIds);
+//            for (CardRequestTO cardRequestTO : cardRequestTOList) {
+//                try {
+//                    successfulSavedCardRequestIds.add(savePortalRequest(cardRequestTO));
+//                    successfulSavedPortalCardRequestIds.add(cardRequestTO.getPortalRequestId());
+//
+//                    SyncCardRequestWTO syncCardRequestWTO = new SyncCardRequestWTO();
+//                    syncCardRequestWTO.setId(cardRequestTO.getPortalRequestId());
+//                    syncCardRequestWTO.setCardRequestState(CardRequestState.RECEIVED_BY_EMS.name());
+//
+//                    List<SyncCardRequestWTO> syncCardRequestWTOList = new ArrayList<SyncCardRequestWTO>();
+//                    syncCardRequestWTOList.add(syncCardRequestWTO);
+//
+//                    jobLOGGER.info("Updating status of portal card request {} in portal to RECEIVED_BY_EMS", syncCardRequestWTO.getId());
+//                    List<ItemWTO> itemWTOList = getPortalRegistrationService().updateCardRequestsState(syncCardRequestWTOList);
+//                    List<Long> updatedRequests = new ArrayList<Long>();
+//
+//                    if (EmsUtil.checkListSize(itemWTOList)) {
+//                        for (ItemWTO itemWTO : itemWTOList) {
+//                            if ("updated".equals(itemWTO.getValue())) {
+//                                updatedRequests.add(Long.valueOf(itemWTO.getKey()));
+//                            }
+//                        }
+//                    }
+//                    if (!updatedRequests.isEmpty()) {
+//                        jobLOGGER.info("Updating sync date of portal card request {} in EMS", syncCardRequestWTO.getId());
+//                        getCardRequestDAO().updateSyncDatesByCurrentDate(updatedRequests);
+//                    }
+//                } catch (BaseException e) {
+//                    logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+//                    unsuccessfulSavedPortalCardRequestIds.add(cardRequestTO.getPortalRequestId());
+//                    jobLOGGER.error("An error happened while trying to fetch portal card request " + cardRequestTO.getPortalRequestId() + ", persisting it in EMS and updating its status in portal", e);
+//                } catch (Exception e) {
+//                    logger.error(e.getMessage(), e);
+//                    unsuccessfulSavedPortalCardRequestIds.add(cardRequestTO.getPortalRequestId());
+//                    jobLOGGER.error("An error happened while trying to fetch portal card request " + cardRequestTO.getPortalRequestId() + ", persisting it in EMS and updating its status in portal", e);
+//                }
+//            }
+//
+//            if (EmsUtil.checkListSize(successfulSavedCardRequestIds)) {
+//                jobLOGGER.info("List of portal card requests identifiers successfully inserted in EMS database is {} and their corresponding identifier in EMS is {}", successfulSavedPortalCardRequestIds, successfulSavedCardRequestIds);
+//                createBusinessLog(BusinessLogAction.LOAD_FROM_PORTAL, BusinessLogEntity.PORTAL, "System",
+//                        EmsUtil.toJSON("cardRequestIds:" + successfulSavedCardRequestIds + ", portalCardRequestIds:" +
+//                                successfulSavedPortalCardRequestIds), BusinessLogActionAttitude.T
+//                );
+//            }
+//
+//            if (EmsUtil.checkListSize(unsuccessfulSavedPortalCardRequestIds))
+//                jobLOGGER.info("List of portal card requests identifiers NOT inserted in EMS database is {}", unsuccessfulSavedPortalCardRequestIds);
+//            createBusinessLog(BusinessLogAction.LOAD_FROM_PORTAL, BusinessLogEntity.PORTAL, "System",
+//                    EmsUtil.toJSON("portalCardRequestIds:" + unsuccessfulSavedPortalCardRequestIds), BusinessLogActionAttitude.F);
+//
+//        } else {
+//            loopFlag = false;
+//        }
+//
+//        return loopFlag;
+//    }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private Long savePortalRequest(CardRequestTO cardRequestTO) throws BaseException {
@@ -2219,10 +2219,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         }
     }
 
-    @Override
-    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException {
-        return getPortalManagementService().fetchPortalCardRequestIdsForTransfer();
-    }
+//    @Override
+//    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException {
+//        return getPortalManagementService().fetchPortalCardRequestIdsForTransfer();
+//    }
 
     /**
      * @throws BaseException

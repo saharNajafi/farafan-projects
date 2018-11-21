@@ -30,9 +30,9 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
-import com.gam.nocr.ems.biz.service.external.client.portal.ExternalInterfaceException_Exception;
-import com.gam.nocr.ems.biz.service.external.client.portal.SmsWS;
-import com.gam.nocr.ems.biz.service.external.client.portal.SmsWS_Service;
+//import com.gam.nocr.ems.biz.service.external.client.portal.ExternalInterfaceException_Exception;
+//import com.gam.nocr.ems.biz.service.external.client.portal.SmsWS;
+//import com.gam.nocr.ems.biz.service.external.client.portal.SmsWS_Service;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
@@ -67,19 +67,19 @@ public class PortalSmsServiceImpl extends EMSAbstractService implements PortalSm
     private static final String DEFAULT_SMS_RETRY_DURATION = "10";
     private static final String DEFAULT_SMS_MAX_RETRY_COUNT = "0";
 
-    private SmsWS getPortalSmsService() throws BaseException {
-        try {
-            String wsdlUrl = EmsUtil.getProfileValue(ProfileKeyName.KEY_PORTAL_SMS_ENDPOINT, DEFAULT_PORTAL_SMS_ENDPOINT);
-            String namespace = EmsUtil.getProfileValue(ProfileKeyName.KEY_PORTAL_NAMESPACE, DEFAULT_PORTAL_NAMESPACE);
-            String serviceName = "SmsWS";
-            SmsWS port = new SmsWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getSmsWSPort();
-//            SmsWS port = new SmsWS_Service().getSmsWSPort();
-            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-            return port;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.PSS_001, e.getMessage(), e);
-        }
-    }
+//    private SmsWS getPortalSmsService() throws BaseException {
+//        try {
+//            String wsdlUrl = EmsUtil.getProfileValue(ProfileKeyName.KEY_PORTAL_SMS_ENDPOINT, DEFAULT_PORTAL_SMS_ENDPOINT);
+//            String namespace = EmsUtil.getProfileValue(ProfileKeyName.KEY_PORTAL_NAMESPACE, DEFAULT_PORTAL_NAMESPACE);
+//            String serviceName = "SmsWS";
+//            SmsWS port = new SmsWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getSmsWSPort();
+////            SmsWS port = new SmsWS_Service().getSmsWSPort();
+//            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
+//            return port;
+//        } catch (Exception e) {
+//            throw new ServiceException(BizExceptionCode.PSS_001, e.getMessage(), e);
+//        }
+//    }
 
     private SmsDelegate getNocrSmsService() throws BaseException {
         try {
@@ -128,23 +128,23 @@ public class PortalSmsServiceImpl extends EMSAbstractService implements PortalSm
         }
     }
 
-    @Override
-    public List<Long> retrieveRequestedSms() throws BaseException {
-        try {
-            return getPortalSmsService().retrieveRequestedSms();
-        } catch (ExternalInterfaceException_Exception e) {
-            String errorMessage = e.getFaultInfo().getMessage();
-
-            ServiceException serviceException = new ServiceException(
-                    BizExceptionCode.PSS_002,
-                    errorMessage,
-                    e,
-                    EMSLogicalNames.SRV_PORTAL_SMS.split(","));
-            LOGGER.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_SMS.split(","));
-            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_SMS.split(","));
-            throw serviceException;
-        }
-    }
+//    @Override
+//    public List<Long> retrieveRequestedSms() throws BaseException {
+//        try {
+//            return getPortalSmsService().retrieveRequestedSms();
+//        } catch (ExternalInterfaceException_Exception e) {
+//            String errorMessage = e.getFaultInfo().getMessage();
+//
+//            ServiceException serviceException = new ServiceException(
+//                    BizExceptionCode.PSS_002,
+//                    errorMessage,
+//                    e,
+//                    EMSLogicalNames.SRV_PORTAL_SMS.split(","));
+//            LOGGER.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_SMS.split(","));
+//            portalLogger.error(BizExceptionCode.GLB_003_MSG, serviceException, EMSLogicalNames.SRV_PORTAL_SMS.split(","));
+//            throw serviceException;
+//        }
+//    }
 
     @Override
     public void addRequestedSms(Long portalCardRequestId) throws BaseException {

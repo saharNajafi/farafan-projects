@@ -11,7 +11,7 @@ import com.gam.nocr.ems.data.domain.ReservationTO;
  */
 public interface PortalReservationService extends Service {
 
-    List<Long> fetchReservationIds() throws BaseException;
+//    List<Long> fetchReservationIds() throws BaseException;
 
     /**
      * The method doActivityForReservations is used to transfer the reservations which were done on the sub system 'Profile'
@@ -19,7 +19,7 @@ public interface PortalReservationService extends Service {
      * @return a list of type {@link ReservationTO}
      * @throws BaseException
      */
-    List<ReservationTO> transferReservations(List<Long> reservationIds) throws BaseException;
+//    List<ReservationTO> transferReservations(List<Long> reservationIds) throws BaseException;
 
     /**
      * The method receivedByEMS is used to inform the sub system 'Portal' about the reservations which are saved by EMS.
@@ -28,5 +28,5 @@ public interface PortalReservationService extends Service {
      * @return true or false
      * @throws BaseException
      */
-    Boolean receivedByEMS(List<Long> portalReservationIds) throws BaseException;
+//    Boolean receivedByEMS(List<Long> portalReservationIds) throws BaseException;
 }
