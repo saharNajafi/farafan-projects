@@ -1732,7 +1732,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      */
     public void checkInsertSingleStageEnrollmentPossible(
             String nationalId, String birthDateSolar, String certSerialNo, GenderEnum gender) throws BaseException {
-        CardRequestTO cardRequestTO = fetchCardRequest(nationalId);
+        CardRequestTO cardRequestTO = findLastRequestByNationalId(nationalId);
         checkThereAnyProcessedPreRegistration(cardRequestTO);
         checkThereAnyProcessedSingleStageEnrollment(cardRequestTO);
         checkThereAnyReproductionRequest(cardRequestTO);
@@ -1742,13 +1742,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         checkCitizenPersonalInfoValid(nationalId, birthDateSolar, certSerialNo, gender);
     }
 
-    private CardRequestTO fetchCardRequest(String nationalId) throws BaseException {
-        try {
-            return findLastRequestByNationalId(nationalId);
-        } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.CRE_071, BizExceptionCode.CRE_071_MSG, e, new Object[]{nationalId});
-        }
-    }
 
     /**
      * استعلام وجود ثبت نام در حال پردازش
@@ -1756,13 +1749,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @param cardRequestTO
      */
     public void checkThereAnyProcessedPreRegistration(CardRequestTO cardRequestTO) throws BaseException {
-        String crhAction = "AFIS_SEND_ERROR";
+        CardRequestHistoryAction  afisSendError  = CardRequestHistoryAction.AFIS_SEND_ERROR;
         if (cardRequestTO != null) {
             if (!(cardRequestTO.getOrigin() == CardRequestOrigin.P
                     && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
-                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
+                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError))))) {
                 throw new ServiceException(BizExceptionCode.CRE_058, BizExceptionCode.CRE_058_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
@@ -1774,13 +1767,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @param cardRequestTO
      */
     public void checkThereAnyProcessedSingleStageEnrollment(CardRequestTO cardRequestTO) throws BaseException {
-        String crhAction = "AFIS_SEND_ERROR";
+        CardRequestHistoryAction  afisSendError  = CardRequestHistoryAction.AFIS_SEND_ERROR;
         if (cardRequestTO != null) {
             if (!(cardRequestTO.getOrigin() == CardRequestOrigin.C
                     && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
-                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
+                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError))))) {
                 throw new ServiceException(BizExceptionCode.CRE_069, BizExceptionCode.CRE_069_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
@@ -1792,13 +1785,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @param cardRequestTO
      */
     public void checkThereAnyReproductionRequest(CardRequestTO cardRequestTO) throws BaseException {
-        String crhAction = "AFIS_SEND_ERROR";
+        CardRequestHistoryAction  afisSendError  = CardRequestHistoryAction.AFIS_SEND_ERROR;
         if (cardRequestTO != null) {
             if (!(!cardRequestTO.getType().equals(CardRequestType.REPLICA)
                     && !(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                     || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
                     || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
-                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), crhAction))))) {
+                    && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError))))) {
                 throw new ServiceException(BizExceptionCode.CRE_059, BizExceptionCode.CRE_059_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
