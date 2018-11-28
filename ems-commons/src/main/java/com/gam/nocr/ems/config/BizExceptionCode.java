@@ -248,10 +248,12 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_067 = "EMS_S_CRE_067";
 	public static final String CRE_068 = "EMS_S_CRE_068";
 	public static final String CRE_074 = "EMS_S_CRE_074";
+	public static final String CRE_075 = "EMS_S_CRE_075";
+	public static final String CRE_076 = "EMS_S_CRE_076";
 
 
 	public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
-	public static final String CRE_059_MSG = "There is a reproduction request for Card Request: {0}";
+	public static final String CRE_059_MSG = "There is a replica request type for Card Request: {0}";
 	public static final String CRE_060_MSG = "Citizen has a shipped card for Card Request: {0}";
 	public static final String CRE_062_MSG = "Citizen has a delivered card for Card Request: {0}";
 	public static final String CRE_061_MSG = "Citizen last card expired for Card Request: {0}";
@@ -263,6 +265,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_072_MSG = "unable to update cardRequest";
 	public static final String CRE_073_MSG = "unable to find cardRequest";
 	public static final String CRE_074_MSG = "unable to count cardRequest replica types";
+	public static final String CRE_075_MSG = "There is a replace request type for Card Request: {0}";
+	public static final String CRE_076_MSG = "There is a extend request type for Card Request: {0}";
 
 
 
