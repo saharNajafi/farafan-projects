@@ -229,6 +229,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_072 = "EMS_S_CRE_072";
 	public static final String CRE_073 = "EMS_S_CRE_073";
 	public static final String CRE_074 = "EMS_S_CRE_074";
+	public static final String CRE_075 = "EMS_S_CRE_075";
+	public static final String CRE_076 = "EMS_S_CRE_076";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -256,27 +258,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_056_MSG = "Can not Find Card request";
 	public static final String CRE_057_MSG = "There is a processed preRegistration";
 	public static final String CRE_058_MSG = "There is a processed Card Request: {0}";
-	public static final String CRE_070 = "EMS_S_CRE_070";
-	public static final String CRE_071 = "EMS_S_CRE_071";
-	public static final String CRE_072 = "EMS_S_CRE_072";
-	public static final String CRE_073 = "EMS_S_CRE_073";
-	public static final String CRE_069 = "EMS_S_CRE_069";
-	public static final String CRE_059 = "EMS_S_CRE_059";
-	public static final String CRE_060 = "EMS_S_CRE_060";
-	public static final String CRE_061 = "EMS_S_CRE_061";
-	public static final String CRE_062 = "EMS_S_CRE_062";
-	public static final String CRE_063 = "EMS_S_CRE_063";
-	public static final String CRE_064 = "EMS_S_CRE_064";
-	public static final String CRE_065 = "EMS_S_CRE_065";
-	public static final String CRE_066 = "EMS_S_CRE_066";
-	public static final String CRE_067 = "EMS_S_CRE_067";
-	public static final String CRE_068 = "EMS_S_CRE_068";
-	public static final String CRE_074 = "EMS_S_CRE_074";
-	public static final String CRE_075 = "EMS_S_CRE_075";
-	public static final String CRE_076 = "EMS_S_CRE_076";
 
 
-	public static final String CRE_069_MSG = "There is a processed singleStage enrollment for Card Request: {0}";
+
+
+
 	public static final String CRE_059_MSG = "There is a replica request type for Card Request: {0}";
 	public static final String CRE_060_MSG = "Citizen has a shipped card for Card Request: {0}";
 	public static final String CRE_061_MSG = "Citizen last card expired for Card Request: {0}";
