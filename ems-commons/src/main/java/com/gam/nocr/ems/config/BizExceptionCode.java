@@ -258,12 +258,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_056_MSG = "Can not Find Card request";
 	public static final String CRE_057_MSG = "There is a processed preRegistration";
 	public static final String CRE_058_MSG = "There is a processed Card Request: {0}";
-
-
-
-
-
-	public static final String CRE_059_MSG = "There is a replica request type for Card Request: {0}";
+    public static final String CRE_059_MSG = "There is a replica request type for Card Request: {0}";
 	public static final String CRE_060_MSG = "Citizen has a shipped card for Card Request: {0}";
 	public static final String CRE_061_MSG = "Citizen last card expired for Card Request: {0}";
 	public static final String CRE_062_MSG = "Citizen has a delivered card for Card Request: {0}";
