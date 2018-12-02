@@ -56,7 +56,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NOCR_IMS_02_MSG = "IMS Eestelam3scMessage object is not Empty";
     public static final String NOCR_IMS_03_MSG = "IMS EestelamResult3 object is null or empty";
     public static final String NOCR_IMS_04_MSG = "IMS Eestelam3scMessage is not empty but EstelamResutl3Message Empty";
-    public static final String NOCR_IMS_05_MSG = "Peson is dead";
+    public static final String NOCR_IMS_05_MSG = "Person is dead";
     public static final String NOCR_IMS_06_MSG = "IMS FORBIDEN";
     public static final String NOCR_IMS_07_MSG = "IMS IMAGE is null";
 
