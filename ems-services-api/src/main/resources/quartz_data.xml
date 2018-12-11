@@ -8,10 +8,10 @@
 		&lt;!&ndash; clear all jobs in scheduler &ndash;&gt; <delete-triggers-in-group>*</delete-triggers-in-group>
 		&lt;!&ndash; clear all triggers in scheduler &ndash;&gt; </pre-processing-commands>-->
 	<processing-directives>
-		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this
 			file), overwrite them -->
 		<overwrite-existing-data>false</overwrite-existing-data>
-		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this
 			file), and over-write is false, ignore them rather than generating an error -->
 		<ignore-duplicates>true</ignore-duplicates>
 	</processing-directives>
@@ -35,7 +35,7 @@
 				<job-group>CreateActiveShiftJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-				<cron-expression>0 30 23 * * ? *</cron-expression>
+				<cron-expression>0 0 01 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -47,7 +47,7 @@
 			<job-class>com.gam.nocr.ems.biz.job.CardIssuanceRequestJob</job-class>
 			<durability>true</durability>
 			<recover>true</recover>
-			<!--<job-data-map> <entry> <key>someKey1</key> <value>someValue</value> 
+			<!--<job-data-map> <entry> <key>someKey1</key> <value>someValue</value>
 				</entry> </job-data-map> -->
 		</job>
 
@@ -59,7 +59,7 @@
 				<job-group>CardIssuanceRequestJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-				<cron-expression>0 30 03 ? * *</cron-expression>
+				<cron-expression>0 0/30 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -134,7 +134,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 2 * * ?</cron-expression>
+				<cron-expression>0 0/10 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -145,7 +145,7 @@
 			<!--<name>BatchMissedNotificationJob</name> -->
 			<name>اعلام گم شدن دسته ها</name>
 			<group>BatchMissedNotificationJobGroup</group>
-			<!--<description> The job 'BatchMissedNotificationJob' is used to calling 
+			<!--<description> The job 'BatchMissedNotificationJob' is used to calling
 				the service of notifyMissedBatches regularly </description> -->
 			<description>اعلام دسته های گم شده به CMS جهت صدور مجدد</description>
 			<job-class>com.gam.nocr.ems.biz.job.BatchMissedNotificationJob</job-class>
@@ -163,7 +163,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 4 * * ?</cron-expression>
+				<cron-expression>0 0 0/1 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -238,7 +238,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 * * ?</cron-expression>
+				<cron-expression>0 0 0/4 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -263,7 +263,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 01 * * ?</cron-expression>
+				<cron-expression>0 0/15 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -288,7 +288,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 2 * * ?</cron-expression>
+				<cron-expression>0 0/1 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -313,7 +313,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 03 * * ?</cron-expression>
+				<cron-expression>0 0/10 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -388,7 +388,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0/30 * * * ?</cron-expression>
+				<cron-expression>0 0/5 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -438,7 +438,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 3 * * ?</cron-expression>
+				<cron-expression>0 0/30 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -463,7 +463,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 3 * * ?</cron-expression>
+				<cron-expression>0 0 0/1 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -682,7 +682,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0 0/1 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -706,7 +706,7 @@
                 <start-time>2010-02-09T18:00:00</start-time>
                 <!--<end-time>2013-02-09T19:00:00</end-time>-->
                 <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0/30 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -731,13 +731,13 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0 1 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
 		<!-- ProcessRequestedReportsJob -->
-        
-        
+
+
                <!-- Estelam3 job -->
         <job>
             <name>دریافت اطلاعات شهروند از IMS</name>
@@ -758,7 +758,7 @@
                 <start-time>2010-02-09T18:00:00</start-time>
                 <!--<end-time>2013-02-09T19:00:00</end-time>-->
                 <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-                <cron-expression>0 0/30 * * * ?</cron-expression>
+				<cron-expression>0 0/5 * * * ?</cron-expression>
                 <time-zone>Asia/Tehran</time-zone>
             </cron>
         </trigger>
@@ -785,13 +785,13 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0 3 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
 		<!-- ProcessHolidayJob -->
-		
-		
+
+
 		<!-- ProcessPortalReservationFreeTimeJob -->
 		<job>
 			<name>به روزرسانی روزهای خالی دفاترثبت نام پورتال</name>
@@ -813,7 +813,7 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0 2 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
@@ -840,13 +840,13 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0/35 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
 		<!-- ProcessReservedSmsJob -->
-		
-		
+
+
 		<!-- ReservedSmsJob -->
 		<job>
 			<name> جمع آوری درخواست های نوبت گیری شده برای ارسال پیام اطلاع رسانی</name>
@@ -868,12 +868,12 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0/35 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
 		<!-- ReservedSmsJob -->
-		
+
 		<!-- ProcessMessageJob -->
 		<job>
 			<name>فرآیند تولید پیام جهت ارسال به کاربران</name>
@@ -895,12 +895,12 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0/10 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
 		<!-- ProcessMessageJob  -->
-		
+
 		<!-- ProcessCardDeliverySmsJob -->
 		<job>
 			<name>ارسال پیامک تحویل کارت</name>
@@ -922,13 +922,13 @@
 				<!--<end-time>2013-02-09T19:00:00</end-time> -->
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
-				<cron-expression>0 0 0 25 * ?</cron-expression>
+				<cron-expression>0 0 0/2 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
 		</trigger>
 		<!-- ProcessCardDeliverySmsJob -->
-		
-				
+
+
 		<!-- PurgeBiometricAndDocumentJob -->
 		<job>
 			<name>purge اطلاعات بیومتریک و مستندات</name>
@@ -954,7 +954,7 @@
 			</cron>
 		</trigger>
 		<!-- PurgeBiometricAndDocumentJob -->
-		
+
 		<!-- UpdatePermissionCacheJob -->
 <!-- 		<job> -->
 <!-- 			<name>به روزرسانی لیست دسترسی ها ی کاربران</name> -->
