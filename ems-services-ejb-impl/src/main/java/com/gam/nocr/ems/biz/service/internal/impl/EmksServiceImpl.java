@@ -193,21 +193,22 @@ public class EmksServiceImpl extends EMSAbstractService implements
                     throw new BaseException("101",
                             "MocAvailable is '0' but NMoC must be null");
             }
-            logger.info("id : " + nidCardPINs.getID().getValue().toString()
-                    + "\n");
-            emksLogger.info("id : " + nidCardPINs.getID().getValue().toString()
-                    + "\n");
-            logger.info("sign : " + nidCardPINs.getSign().getValue().toString()
-                    + "\n");
-            emksLogger.info("sign : "
-                    + nidCardPINs.getSign().getValue().toString() + "\n");
-            logger.info("N_MOC : "
-                    + (nidCardPINs.getNMoC() == null ? "" : nidCardPINs
-                    .getNMoC().getValue().toString()) + "\n");
-            emksLogger.info("N_MOC : "
-                    + (nidCardPINs.getNMoC() == null ? "" : nidCardPINs
-                    .getNMoC().getValue().toString()) + "\n");
-
+            if (emksDataWTO.getRetrievePins().equals(Boolean.TRUE)) {
+                logger.info("id : " + nidCardPINs.getID().getValue().toString()
+                        + "\n");
+                emksLogger.info("id : " + nidCardPINs.getID().getValue().toString()
+                        + "\n");
+                logger.info("sign : " + nidCardPINs.getSign().getValue().toString()
+                        + "\n");
+                emksLogger.info("sign : "
+                        + nidCardPINs.getSign().getValue().toString() + "\n");
+                logger.info("N_MOC : "
+                        + (nidCardPINs.getNMoC() == null ? "" : nidCardPINs
+                        .getNMoC().getValue().toString()) + "\n");
+                emksLogger.info("N_MOC : "
+                        + (nidCardPINs.getNMoC() == null ? "" : nidCardPINs
+                        .getNMoC().getValue().toString()) + "\n");
+            }
 
             insertBusinessActionLog(requestID, str, BusinessLogAction.GET_PINS);
             return emksDataResultWTO;
@@ -401,6 +402,22 @@ public class EmksServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.ESI_022,
                     BizExceptionCode.ESI_022_MSG);
         }
+
+        if (emksDataWTO.getRetrieveKeys() == null) {
+            throw new ServiceException(BizExceptionCode.ESI_038,
+                    BizExceptionCode.ESI_038_MSG);
+        }
+
+        if (emksDataWTO.getRetrievePins() == null) {
+            throw new ServiceException(BizExceptionCode.ESI_039,
+                    BizExceptionCode.ESI_039_MSG);
+        }
+
+        if (emksDataWTO.getRetrieveKeys().equals(Boolean.FALSE) && emksDataWTO.getRetrievePins().equals(Boolean.FALSE)) {
+            throw new ServiceException(BizExceptionCode.ESI_040,
+                    BizExceptionCode.ESI_040_MSG);
+        }
+
         if (emksDataWTO.getMocAvailable().equals("1")) {
             if (emksDataWTO.getRetrievePins().equals(Boolean.TRUE)) {
                 if (!EmsUtil.checkString(emksDataWTO.getAntiYesPublicKey()))
@@ -427,20 +444,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
                         BizExceptionCode.ESI_028_MSG);
         }
 
-        if (emksDataWTO.getRetrieveKeys() == null) {
-            throw new ServiceException(BizExceptionCode.ESI_038,
-                    BizExceptionCode.ESI_038_MSG);
-        }
 
-        if (emksDataWTO.getRetrievePins() == null) {
-            throw new ServiceException(BizExceptionCode.ESI_039,
-                    BizExceptionCode.ESI_039_MSG);
-        }
-
-        if (emksDataWTO.getRetrieveKeys().equals(Boolean.FALSE) && emksDataWTO.getRetrievePins().equals(Boolean.FALSE)) {
-            throw new ServiceException(BizExceptionCode.ESI_040,
-                    BizExceptionCode.ESI_040_MSG);
-        }
     }
 
     private void checkValidationOnemksDataNIDCardMoCKeys(EMKSDataWTO emksDataWTO) throws BaseException {
