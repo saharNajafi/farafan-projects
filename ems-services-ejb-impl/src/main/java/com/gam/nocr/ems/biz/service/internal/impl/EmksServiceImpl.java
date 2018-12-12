@@ -172,7 +172,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
             RequestForCardKeysOrPINs requestForCardKeysOrPINs = new RequestForCardKeysOrPINs();
             requestForCardKeysOrPINs.setKeys(emksDataWTO.getRetrieveKeys());
             requestForCardKeysOrPINs.setPINs(emksDataWTO.getRetrievePins());
-            CardKeysAndPINs nidCardPINs = emksService.getNIDCardKeysOrPINs(str,requestForCardKeysOrPINs);
+            CardKeysAndPINs nidCardPINs = emksService.getNIDCardKeysOrPINs(str, requestForCardKeysOrPINs);
             EMKSDataResultWTO emksDataResultWTO = new EMKSDataResultWTO();
             emksDataResultWTO.setId(nidCardPINs.getID() != null ? nidCardPINs.getID().getValue().toString() : "");
             emksDataResultWTO.setSign(nidCardPINs.getSign() != null ? nidCardPINs.getSign().getValue().toString() : "");
@@ -402,15 +402,17 @@ public class EmksServiceImpl extends EMSAbstractService implements
                     BizExceptionCode.ESI_022_MSG);
         }
         if (emksDataWTO.getMocAvailable().equals("1")) {
-            if (!EmsUtil.checkString(emksDataWTO.getAntiYesPublicKey()))
-                throw new ServiceException(BizExceptionCode.ESI_023,
-                        BizExceptionCode.ESI_023_MSG);
-            if (!EmsUtil.checkString(emksDataWTO.getMocHashData()))
-                throw new ServiceException(BizExceptionCode.ESI_024,
-                        BizExceptionCode.ESI_024_MSG);
-            if (!EmsUtil.checkString(emksDataWTO.getMocSignature()))
-                throw new ServiceException(BizExceptionCode.ESI_025,
-                        BizExceptionCode.ESI_025_MSG);
+            if (emksDataWTO.getRetrievePins().equals(Boolean.TRUE)) {
+                if (!EmsUtil.checkString(emksDataWTO.getAntiYesPublicKey()))
+                    throw new ServiceException(BizExceptionCode.ESI_023,
+                            BizExceptionCode.ESI_023_MSG);
+                if (!EmsUtil.checkString(emksDataWTO.getMocHashData()))
+                    throw new ServiceException(BizExceptionCode.ESI_024,
+                            BizExceptionCode.ESI_024_MSG);
+                if (!EmsUtil.checkString(emksDataWTO.getMocSignature()))
+                    throw new ServiceException(BizExceptionCode.ESI_025,
+                            BizExceptionCode.ESI_025_MSG);
+            }
 
         } else if (emksDataWTO.getMocAvailable().equals("0")) {
 
@@ -425,17 +427,17 @@ public class EmksServiceImpl extends EMSAbstractService implements
                         BizExceptionCode.ESI_028_MSG);
         }
 
-        if(emksDataWTO.getRetrieveKeys() == null){
+        if (emksDataWTO.getRetrieveKeys() == null) {
             throw new ServiceException(BizExceptionCode.ESI_038,
                     BizExceptionCode.ESI_038_MSG);
         }
 
-        if(emksDataWTO.getRetrievePins() == null) {
+        if (emksDataWTO.getRetrievePins() == null) {
             throw new ServiceException(BizExceptionCode.ESI_039,
                     BizExceptionCode.ESI_039_MSG);
         }
 
-        if(emksDataWTO.getRetrieveKeys().equals(Boolean.FALSE) && emksDataWTO.getRetrievePins().equals(Boolean.FALSE)){
+        if (emksDataWTO.getRetrieveKeys().equals(Boolean.FALSE) && emksDataWTO.getRetrievePins().equals(Boolean.FALSE)) {
             throw new ServiceException(BizExceptionCode.ESI_040,
                     BizExceptionCode.ESI_040_MSG);
         }
