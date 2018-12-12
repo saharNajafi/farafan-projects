@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "GetSignatureResponse")
 public class GetSignatureResponse {
 
-    @XmlElementRef(name = "GetSignatureResult", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "GetSignatureResult", namespace = "http://tempuri.org/", type = JAXBElement.class)
     protected JAXBElement<String> getSignatureResult;
 
     /**
@@ -59,7 +59,7 @@ public class GetSignatureResponse {
      *     
      */
     public void setGetSignatureResult(JAXBElement<String> value) {
-        this.getSignatureResult = value;
+        this.getSignatureResult = ((JAXBElement<String> ) value);
     }
 
 }

@@ -2638,6 +2638,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_035 = "EMS_S_ESI_035";
     public static final String ESI_036 = "EMS_S_ESI_036";
     public static final String ESI_037 = "EMS_S_ESI_037";
+    public static final String ESI_038 = "EMS_S_ESI_038";
+    public static final String ESI_039 = "EMS_S_ESI_039";
+    public static final String ESI_040 = "EMS_S_ESI_040";
     //    public static final String ESI_030 = "EMS_S_ESI_030";
     public static final String ESI_001_MSG = "CardInfo is invalid";
     public static final String ESI_002_MSG = "Card verification failed";
@@ -2672,6 +2675,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ESI_035_MSG = "mocKeyVersion must not be null";
     public static final String ESI_036_MSG = "smAlgorithmVersion must not be null";
     public static final String ESI_037_MSG = "smKeyVersion must not be null";
+    public static final String ESI_038_MSG = "retrieveKeys must not be null";
+    public static final String ESI_039_MSG = "retrievePins must not be null";
+    public static final String ESI_040_MSG = "retrieveKeys , retrievePins can not to be false together";
 
     //com.gam.nocr.ems.biz.job.PortalReservationJob
     public static final String RSV_01 = "EMS_S_RSV_01";

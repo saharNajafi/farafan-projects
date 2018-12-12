@@ -169,7 +169,10 @@ public class EmksServiceImpl extends EMSAbstractService implements
         emksLogger.info(str);
         IServiceEMKS emksService = getEMKSService();
         try {
-            CardKeysAndPINs nidCardPINs = emksService.getNIDCardKeysAndPINs(str);
+            RequestForCardKeysOrPINs requestForCardKeysOrPINs = new RequestForCardKeysOrPINs();
+            requestForCardKeysOrPINs.setKeys(emksDataWTO.getRetrieveKeys());
+            requestForCardKeysOrPINs.setPINs(emksDataWTO.getRetrievePins());
+            CardKeysAndPINs nidCardPINs = emksService.getNIDCardKeysOrPINs(str,requestForCardKeysOrPINs);
             EMKSDataResultWTO emksDataResultWTO = new EMKSDataResultWTO();
             emksDataResultWTO.setId(nidCardPINs.getID() != null ? nidCardPINs.getID().getValue().toString() : "");
             emksDataResultWTO.setSign(nidCardPINs.getSign() != null ? nidCardPINs.getSign().getValue().toString() : "");
@@ -208,7 +211,7 @@ public class EmksServiceImpl extends EMSAbstractService implements
 
             insertBusinessActionLog(requestID, str, BusinessLogAction.GET_PINS);
             return emksDataResultWTO;
-        } catch (IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage e) {
+        } catch (IServiceEMKSGetNIDCardKeysOrPINsEMKSExceptionFaultFaultMessage e) {
             handleEmksException(e);
             return null;
         } catch (Exception e) {
@@ -230,8 +233,8 @@ public class EmksServiceImpl extends EMSAbstractService implements
 
     private void handleEmksException(Exception e) throws ServiceException {
         EMKSException faultInfo;
-        if (e instanceof IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage) {
-            faultInfo = ((IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage) e).getFaultInfo();
+        if (e instanceof IServiceEMKSGetNIDCardKeysOrPINsEMKSExceptionFaultFaultMessage) {
+            faultInfo = ((IServiceEMKSGetNIDCardKeysOrPINsEMKSExceptionFaultFaultMessage) e).getFaultInfo();
         } else {
             faultInfo = ((IServiceEMKSGetNIDCardMoCKeysEMKSExceptionFaultFaultMessage) e).getFaultInfo();
         }
@@ -420,6 +423,21 @@ public class EmksServiceImpl extends EMSAbstractService implements
             if (EmsUtil.checkString(emksDataWTO.getMocSignature()))
                 throw new ServiceException(BizExceptionCode.ESI_028,
                         BizExceptionCode.ESI_028_MSG);
+        }
+
+        if(emksDataWTO.getRetrieveKeys() == null){
+            throw new ServiceException(BizExceptionCode.ESI_038,
+                    BizExceptionCode.ESI_038_MSG);
+        }
+
+        if(emksDataWTO.getRetrievePins() == null) {
+            throw new ServiceException(BizExceptionCode.ESI_039,
+                    BizExceptionCode.ESI_039_MSG);
+        }
+
+        if(emksDataWTO.getRetrieveKeys().equals(Boolean.FALSE) && emksDataWTO.getRetrievePins().equals(Boolean.FALSE)){
+            throw new ServiceException(BizExceptionCode.ESI_040,
+                    BizExceptionCode.ESI_040_MSG);
         }
     }
 

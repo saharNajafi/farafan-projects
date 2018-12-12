@@ -25,6 +25,8 @@ public class EMKSDataWTO implements Serializable {
     private String smAlgorithmVersion;
     private String mocAlgorithmVersion;
     private String mocKeyVersion;
+    private Boolean retrieveKeys;
+    private Boolean retrievePins;
 
     public EMKSDataWTO() {
     }
@@ -189,6 +191,21 @@ public class EMKSDataWTO implements Serializable {
         this.mocKeyVersion = mocKeyVersion;
     }
 
+    public Boolean getRetrieveKeys() {
+        return retrieveKeys;
+    }
+
+    public void setRetrieveKeys(Boolean retrieveKeys) {
+        this.retrieveKeys = retrieveKeys;
+    }
+
+    public Boolean getRetrievePins() {
+        return retrievePins;
+    }
+
+    public void setRetrievePins(Boolean retrievePins) {
+        this.retrievePins = retrievePins;
+    }
 
     @Override
     public String toString() {

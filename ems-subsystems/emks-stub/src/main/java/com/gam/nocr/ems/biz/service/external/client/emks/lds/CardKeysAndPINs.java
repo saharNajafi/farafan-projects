@@ -47,21 +47,21 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class CardKeysAndPINs {
 
-    @XmlElementRef(name = "ASd", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "ASd", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> aSd;
-    @XmlElementRef(name = "ENC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "ENC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> enc;
-    @XmlElementRef(name = "ID", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "ID", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> id;
-    @XmlElementRef(name = "MAC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "MAC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> mac;
-    @XmlElementRef(name = "NMoC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "NMoC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> nMoC;
-    @XmlElementRef(name = "PIN_SM", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "PIN_SM", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> pinsm;
-    @XmlElementRef(name = "SMd", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "SMd", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> sMd;
-    @XmlElementRef(name = "Sign", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class, required = false)
+    @XmlElementRef(name = "Sign", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> sign;
 
     /**
@@ -85,7 +85,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setASd(JAXBElement<String> value) {
-        this.aSd = value;
+        this.aSd = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -109,7 +109,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setENC(JAXBElement<String> value) {
-        this.enc = value;
+        this.enc = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -133,7 +133,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setID(JAXBElement<String> value) {
-        this.id = value;
+        this.id = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -157,7 +157,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setMAC(JAXBElement<String> value) {
-        this.mac = value;
+        this.mac = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -181,7 +181,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setNMoC(JAXBElement<String> value) {
-        this.nMoC = value;
+        this.nMoC = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -205,7 +205,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setPINSM(JAXBElement<String> value) {
-        this.pinsm = value;
+        this.pinsm = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -229,7 +229,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setSMd(JAXBElement<String> value) {
-        this.sMd = value;
+        this.sMd = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -253,7 +253,7 @@ public class CardKeysAndPINs {
      *     
      */
     public void setSign(JAXBElement<String> value) {
-        this.sign = value;
+        this.sign = ((JAXBElement<String> ) value);
     }
 
 }

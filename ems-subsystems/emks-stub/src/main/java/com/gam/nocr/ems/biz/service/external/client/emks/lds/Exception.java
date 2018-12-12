@@ -22,7 +22,7 @@ import org.w3c.dom.Element;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;any processContents='skip' namespace='' maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;any/>
  *       &lt;/sequence>
  *       &lt;attribute ref="{http://schemas.microsoft.com/2003/10/Serialization/}FactoryType"/>
  *     &lt;/restriction>
