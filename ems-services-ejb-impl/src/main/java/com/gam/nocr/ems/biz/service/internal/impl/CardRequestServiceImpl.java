@@ -1150,18 +1150,20 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             String trackingId) throws BaseException {
         labels = ResourceBundle.getBundle("ussd-request-state");
         String state = "";
-        if (StringUtils.isEmpty(trackingId)) {
+        if (!EmsUtil.checkString(trackingId)) {
             return labels.getString("state.trackingIdIsEmpty");
         }
         try {
 
             trackingId = LangUtil.getEnglishNumber(trackingId);
             CardRequestTO cardRequestTO = getCardRequestDAO().findCardRequestStateByTrackingId(trackingId);
-            if (cardRequestTO == null)
+            if (cardRequestTO == null) {
                 state = labels.getString("state.invalidTrackingId");
-            else
+            } else {
                 state = getState(cardRequestTO);
+            }
         } catch (BaseException e) {
+            ussdLogger.error(e.getExceptionCode(), e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_053,
                     BizExceptionCode.CRE_053_MSG, e);
         }
@@ -1182,17 +1184,20 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 if (cardRequestTO == null) {
                     state = "-1";
                 } else if (cardRequestTO != null) {
-                    if (cardRequestTO.getCitizen().getCitizenInfo().getMobile() != null) {
-                        if (cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
+                    String mobileNumber = cardRequestTO.getCitizen().getCitizenInfo().getMobile();
+                    if (EmsUtil.checkString(mobileNumber)) {
+                        if (mobileNumber.equalsIgnoreCase(mobile)) {
                             state = getState(cardRequestTO);
-                        else if (!cardRequestTO.getCitizen().getCitizenInfo().getMobile().equals(mobile))
+                        } else {
                             state = "-1";
+                        }
                     } else {
                         state = "-1";
                     }
                 }
             }
         } catch (BaseException e) {
+            ussdLogger.error(e.getExceptionCode(), e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_054,
                     BizExceptionCode.CRE_054_MSG, e);
         }
@@ -1203,62 +1208,36 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
             String nationalId, String birthCertificateSeries, String citizenBirthDate) throws BaseException {
         labels = ResourceBundle.getBundle("ussd-request-state");
-        boolean checkWhiteList;
         String state = "";
         try {
             nationalId = LangUtil.getEnglishNumber(nationalId);
             if (!Utils.isValidNin(nationalId)) {
                 state = labels.getString("state.invalidNationalId");
-            } else if (StringUtils.isEmpty(birthCertificateSeries)) {
+            } else if (!EmsUtil.checkString(birthCertificateSeries)) {
                 state = labels.getString("state.nullBirthCertificateSeries");
             } else {
                 CardRequestTO cardRequestTO =
                         getCardRequestDAO().findCardRequestStateByNationalId(nationalId);
                 if (cardRequestTO != null) {
-                    if (!cardRequestTO.getCitizen().getCitizenInfo()
-                            .getBirthCertificateSeries().equals(birthCertificateSeries))
+                    String series = cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateSeries();
+                    String birthDate = cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar();
+                    if (!series.equalsIgnoreCase(birthCertificateSeries)) {
                         state = labels.getString("state.invalidBirthCertificateSeries");
-
-                    else if (!cardRequestTO.getCitizen().getCitizenInfo()
-                            .getBirthDateSolar().equals(citizenBirthDate))
-                        state = labels.getString("state.invalidBirthCertificateSeries");
-                    else
+                    } else if (!birthDate.equalsIgnoreCase(citizenBirthDate))
+                        state = labels.getString("state.citizenBirthDate");
+                    else {
                         state = getState(cardRequestTO);
-                } else if (cardRequestTO == null) {
-                   /* String checkCrq = getService().checkCardRequestState(nationalId);
-                    if (checkCrq == null) {
-                        checkWhiteList =
-                                getService().checkWhiteList(citizenBirthDate, nationalId, birthCertificateSeries);
-                        if (checkWhiteList)*/
+                    }
+                } else {
                     state = labels.getString("state.inWhiteList");
-                      /*  else
-                            state = labels.getString("state.NotInWhiteList");
-                    } else if (checkCrq != null) {
-                        if (checkCrq.equals("notPaid"))
-                            state = labels.getString("state.notPaid");
-                        if (checkCrq.equals("notReserved"))
-                            state = labels.getString("state.notReserved");
-                    }*/
                 }
             }
 
         } catch (BaseException e) {
+            ussdLogger.error(e.getExceptionCode(), e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_056,
                     BizExceptionCode.CRE_056_MSG, e);
-        }/*catch (BaseException_Exception e) {
-            ussdLogger.error(BizExceptionCode.CRE_052 + BizExceptionCode.CRE_052_MSG + e.getMessage(), e);
-            throw new ServiceException(BizExceptionCode.CRE_052,
-                    BizExceptionCode.CRE_052_MSG, e);
-        } catch (ExternalInterfaceException_Exception e) {
-            ussdLogger.error(BizExceptionCode.CRE_050 + BizExceptionCode.CRE_050_MSG + e.getMessage(), e);
-            throw new ServiceException(BizExceptionCode.CRE_050,
-                    BizExceptionCode.CRE_050_MSG, e);
-        } catch (UnsupportedEncodingException_Exception e) {
-            ussdLogger.error(BizExceptionCode.CRE_052 + BizExceptionCode.CRE_052_MSG + e.getMessage(), e);
-            throw new ServiceException(BizExceptionCode.CRE_052,
-                    BizExceptionCode.CRE_052_MSG, e);
-        }*/
-
+        }
         return state;
 
     }
@@ -1275,7 +1254,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     cardRequestTO.getAuthenticity() == null)
                 notAttended = true;
         } catch (Exception e) {
-            ussdLogger.error(BizExceptionCode.CRE_043 + BizExceptionCode.CRE_043_MSG + e.getMessage(), e);
+            ussdLogger.error(e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_043,
                     BizExceptionCode.CRE_043_MSG, e);
         }
@@ -1370,8 +1349,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                             enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE)) &&
                     CardRequestAuthenticity.AUTHENTIC.equals(cardRequestTO.getAuthenticity()) &&
                     cardRequestTO.getOriginalCardRequestOfficeId() == null) {
-                if (crqFlag == 7)
+                if (crqFlag == 7) {
                     return labels.getString("state.crqFlag7");
+                }
                 if (crqFlag == 5) {
                     String outgoingSMSTO = MessageFormat.format(
                             labels.getString("state.sms.flag5"), enrollmentOfficeTO.getAddress());
@@ -1467,6 +1447,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }
 
         } catch (BaseException e) {
+            ussdLogger.error(e.getExceptionCode(),e.getMessage(),e);
             throw new ServiceException(BizExceptionCode.CRE_044,
                     BizExceptionCode.CRE_044_MSG, e);
         }
@@ -1500,11 +1481,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         Boolean state = false;
         try {
             if ((cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R ||
-                    cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V) &&
-                    cardRequestTO.isPaid() == true
+                    cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V)
                     && cardRequestTO.getReservationDate().compareTo(new Date()) >= 0
-                    && !cardRequestTO.getReservations().isEmpty())
+                    && !cardRequestTO.getReservations().isEmpty()) {
                 state = true;
+            }
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.CRE_042,
                     BizExceptionCode.CRE_042_MSG, e);
@@ -1517,9 +1498,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             if (findReserved(cardRequestTO)) {
                 enrollmentOfficeTO = cardRequestTO.getEnrollmentOffice();
-                if (cardRequestTO.getEnrollmentOffice().getRatingInfo().getClazz().equals("0"))
+                if (enrollmentOfficeTO.getActive().equals(Boolean.FALSE)) {
                     return labels.getString("state.disableEnrollmentOffice");
-                else {
+                } else {
                     String outgoingSMSTO = MessageFormat.format(
                             labels.getString("state.sms.reserved"), cardRequestTO.getCitizen().getFirstNamePersian(),
                             cardRequestTO.getCitizen().getSurnamePersian(),
@@ -1545,17 +1526,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     private String getState(CardRequestTO cardRequestTO) throws BaseException {
         String state = "";
         try {
-           /* if (cardRequestTO.getState() == CardRequestState.RESERVED &&
-                    cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V &&
-                    cardRequestTO.getReservationDate().before(new Date()) &&
-                    cardRequestTO.getCitizen().getCitizenInfo().getAddress() == null &&
-                    cardRequestTO.getCitizen().getCitizenInfo().getPhone() == null) {
-                *//*check for that citizen go to enrollmentOffice base on the ccos UI *//*
-                Long reservationHistoryCount = getService().countResrevationHistoryByCardRequestId(
-                        cardRequestTO.getPortalRequestId());
-                if (reservationHistoryCount >= 9)
-                    state = labels.getString("state.multiReservation");
-            }*/
             if (cardRequestTO.getState() == CardRequestState.RESERVED ||
                     cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED ||
                     cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS) {
