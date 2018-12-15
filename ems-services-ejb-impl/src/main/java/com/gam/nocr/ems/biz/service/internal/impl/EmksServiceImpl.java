@@ -182,17 +182,22 @@ public class EmksServiceImpl extends EMSAbstractService implements
             emksDataResultWTO.setMac(nidCardPINs.getMAC() != null ? nidCardPINs.getMAC().getValue().toString() : "");
             emksDataResultWTO.setEnc(nidCardPINs.getENC() != null ? nidCardPINs.getENC().getValue().toString() : "");
             if (emksDataWTO.getMocAvailable().equals("0")) {
-                if (nidCardPINs.getNMoC() == null)
-                    throw new BaseException("101",
-                            "MocAvailable is '0' but NMoC equals null");
-
-                emksDataResultWTO.setNmoc(nidCardPINs.getNMoC().getValue()
-                        .toString());
+                if (emksDataWTO.getRetrievePins().equals(Boolean.TRUE)) {
+                    if (nidCardPINs.getNMoC() == null) {
+                        throw new BaseException("101",
+                                "MocAvailable is '0' but NMoC equals null");
+                    } else {
+                        emksDataResultWTO.setNmoc(nidCardPINs.getNMoC().getValue()
+                                .toString());
+                    }
+                }
             } else if (emksDataWTO.getMocAvailable().equals("1")) {
                 if (nidCardPINs.getNMoC() != null)
                     throw new BaseException("101",
                             "MocAvailable is '0' but NMoC must be null");
             }
+
+
             if (emksDataWTO.getRetrievePins().equals(Boolean.TRUE)) {
                 logger.info("id : " + nidCardPINs.getID().getValue().toString()
                         + "\n");
