@@ -2557,8 +2557,7 @@ CardRequestDAOLocal, CardRequestDAORemote {
 	public Integer fetchBiometricFlag(Long id) throws BaseException {
 		BigDecimal biometricFlag = new BigDecimal(0);
 		try {
-			List<BigDecimal> result = em
-					.createNativeQuery(
+			List<BigDecimal> result = em.createNativeQuery(
 							"select crq.crq_flag from emst_card_request crq where crq.crq_id = :ID")
 					.setParameter("ID", id).getResultList();
 			if (EmsUtil.checkListSize(result)) {

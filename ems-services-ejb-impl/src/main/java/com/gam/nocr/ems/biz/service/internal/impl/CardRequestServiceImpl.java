@@ -1173,7 +1173,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     @Override
     public String findCardRequestStateByNationalIdAndMobile(
             String nationalId, String mobile) throws BaseException {
-        labels = ResourceBundle.getBundle("ussd-request-state");
+        labels = ResourceBundle.getBundle("ussd-request-state",new Locale("fa"));
         String state = "";
         try {
             nationalId = LangUtil.getEnglishNumber(nationalId);
