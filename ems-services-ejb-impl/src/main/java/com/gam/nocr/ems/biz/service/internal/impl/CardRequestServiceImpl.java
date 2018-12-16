@@ -1148,7 +1148,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     @Override
     public String findCardRequestStateByTrackingId(
             String trackingId) throws BaseException {
-        labels = ResourceBundle.getBundle("ussd-request-state");
+        labels = ResourceBundle.getBundle("ussd-request-state",new Locale("fa"));
         String state = "";
         if (!EmsUtil.checkString(trackingId)) {
             return labels.getString("state.trackingIdIsEmpty");
@@ -1207,7 +1207,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     @Override
     public String findCardRequestStateByNationalIdAndBirthCertificateSeries(
             String nationalId, String birthCertificateSeries, String citizenBirthDate) throws BaseException {
-        labels = ResourceBundle.getBundle("ussd-request-state");
+        labels = ResourceBundle.getBundle("ussd-request-state",new Locale("fa"));
         String state = "";
         try {
             nationalId = LangUtil.getEnglishNumber(nationalId);
