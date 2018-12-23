@@ -4,10 +4,10 @@ import com.gam.nocr.ems.biz.service.external.client.cms.DocumentRequestWSLocal;
 import com.gam.nocr.ems.biz.service.external.client.emks.IServiceEMKS;
 import com.gam.nocr.ems.biz.service.external.client.gaas.GAASWebServiceInterface;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
-//import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
-//import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
-//import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS;
-//import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS;
+import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
 import est.EstelamPort;
 import est.ImsService;
 
@@ -143,16 +143,16 @@ public class ServicePorts {
 
 
     // CardRequestState
-//    public static CardRequestStateWS getCardRequestStatePort() {
-//        if (threadLocal.get() != null)
-//            return threadLocal.get().getCardRequestStateWS();
-//        return null;
-//    }
+    public static CardRequestStateWS getCardRequestStatePort() {
+        if (threadLocal.get() != null)
+            return threadLocal.get().getCardRequestStateWS();
+        return null;
+    }
 
-//    public static void setCardRequestStatePort(CardRequestStateWS crq) {
-//        if (threadLocal.get() == null) {
-//            threadLocal.set(new ServicePortsModel());
-//        }
-//        threadLocal.get().setCardRequestStateWS(crq);
-//    }
+    public static void setCardRequestStatePort(CardRequestStateWS crq) {
+        if (threadLocal.get() == null) {
+            threadLocal.set(new ServicePortsModel());
+        }
+        threadLocal.get().setCardRequestStateWS(crq);
+    }
 }

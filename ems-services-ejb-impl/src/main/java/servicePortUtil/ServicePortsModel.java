@@ -4,10 +4,10 @@ import com.gam.nocr.ems.biz.service.external.client.cms.DocumentRequestWSLocal;
 import com.gam.nocr.ems.biz.service.external.client.emks.IServiceEMKS;
 import com.gam.nocr.ems.biz.service.external.client.gaas.GAASWebServiceInterface;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
-//import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
-//import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
-//import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS;
-//import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
+import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS;
+import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
 import est.EstelamPort;
 import est.ImsService;
 
@@ -22,7 +22,7 @@ public class ServicePortsModel {
 //    private ReservationWS portalReservation;
     private IServiceEMKS emksService;
     private SmsDelegate smsDelegate;
-//    private CardRequestStateWS cardRequestStateWS;
+    private CardRequestStateWS cardRequestStateWS;
 
     public DocumentRequestWSLocal getDocumentRequestWSLocal() {
         return documentRequestWSLocal;
@@ -98,11 +98,11 @@ public class ServicePortsModel {
         this.smsDelegate = smsDelegate;
     }
 
-//    public CardRequestStateWS getCardRequestStateWS() {
-//        return cardRequestStateWS;
-//    }
+    public CardRequestStateWS getCardRequestStateWS() {
+        return cardRequestStateWS;
+    }
 
-//    public void setCardRequestStateWS(CardRequestStateWS cardRequestStateWS) {
-//        this.cardRequestStateWS = cardRequestStateWS;
-//    }
+    public void setCardRequestStateWS(CardRequestStateWS cardRequestStateWS) {
+        this.cardRequestStateWS = cardRequestStateWS;
+    }
 }
