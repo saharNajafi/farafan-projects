@@ -1,21 +1,5 @@
 package com.gam.nocr.ems.biz.service.external.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Future;
-
-import javax.ejb.AsyncResult;
-import javax.ejb.Asynchronous;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttributeType;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
@@ -32,33 +16,24 @@ import com.gam.nocr.ems.biz.service.BusinessLogService;
 import com.gam.nocr.ems.biz.service.CMSService;
 import com.gam.nocr.ems.biz.service.IMSManagementService;
 import com.gam.nocr.ems.biz.service.IMSService;
-import com.gam.nocr.ems.biz.service.internal.impl.IMSManagementServiceImpl;
-import com.gam.nocr.ems.config.BizExceptionCode;
-import com.gam.nocr.ems.config.ConstValues;
-import com.gam.nocr.ems.config.DataExceptionCode;
-import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
-import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
 import com.gam.nocr.ems.data.dao.CertificateDAO;
 import com.gam.nocr.ems.data.dao.CitizenDAO;
-import com.gam.nocr.ems.data.domain.BusinessLogTO;
-import com.gam.nocr.ems.data.domain.CardRequestHistoryTO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CertificateTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.CardInfoVTO;
-import com.gam.nocr.ems.data.enums.BusinessLogAction;
-import com.gam.nocr.ems.data.enums.BusinessLogActionAttitude;
-import com.gam.nocr.ems.data.enums.BusinessLogEntity;
-import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.CardRequestType;
-import com.gam.nocr.ems.data.enums.CertificateUsage;
-import com.gam.nocr.ems.data.enums.SequenceName;
-import com.gam.nocr.ems.data.enums.SystemId;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+
+import javax.ejb.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * The class CardIssuanceRequestServiceImpl is used to prepare all the requirements which are needed in calling the CMS
@@ -436,21 +411,20 @@ public class CardIssuanceRequestServiceImpl extends AbstractService implements C
         /*
          Generating requestId for the xml message, which belongs to an appropriate request of card issuance
          */
-        
+
         String requestIdForMessage = cardRequestTO.getCmsRequestId();
-        if(requestIdForMessage == null){
+        if (requestIdForMessage == null) {
             Long requestId = cardRequestHistoryDAO.getRequestIdFromSequence(SequenceName.SEQ_EMS_REQUEST_ID_CMS);
             Integer requestIdDigitCount = getMessageRequestIdCount();
             requestIdForMessage = EmsUtil.createRequestIdForMessage(requestId.toString(), requestIdDigitCount, "0", "0");
             cardRequestTO.setCmsRequestId(requestIdForMessage);
-        }
-        else {
-        	if (getCardRequestHistoryDAO().existInHistoryByCmsReqId(requestIdForMessage , cardRequestTO.getId())){
-        		Long requestId = cardRequestHistoryDAO.getRequestIdFromSequence(SequenceName.SEQ_EMS_REQUEST_ID_CMS);
+        } else {
+            if (getCardRequestHistoryDAO().existInHistoryByCmsReqId(requestIdForMessage, cardRequestTO.getId())) {
+                Long requestId = cardRequestHistoryDAO.getRequestIdFromSequence(SequenceName.SEQ_EMS_REQUEST_ID_CMS);
                 Integer requestIdDigitCount = getMessageRequestIdCount();
                 requestIdForMessage = EmsUtil.createRequestIdForMessage(requestId.toString(), requestIdDigitCount, "0", "0");
                 cardRequestTO.setCmsRequestId(requestIdForMessage);
-        	}
+            }
         }
 
         /*
@@ -547,7 +521,13 @@ public class CardIssuanceRequestServiceImpl extends AbstractService implements C
              */
 
 //          XML Mapper Exceptions
-            if (DataExceptionCode.CRC_002.equals(e.getExceptionCode())
+            if (BizExceptionCode.CSI_151.equals(e.getExceptionCode())
+                    || BizExceptionCode.CSI_152.equals(e.getExceptionCode())) {
+                logger.error(e.getMessage(), e);
+                cmsLogger.error(e.getMessage(), e);
+                String result = (SystemId.CMS.name() + ":" + ConstValues.GAM_ERROR_WITH_UNLIMITED_RETRY + e.getMessage());
+                updateCardRequestHistory(cardRequestTO, requestIdForMessage, result, CardRequestHistoryAction.CMS_XSD_ERROR);
+            } else if (DataExceptionCode.CRC_002.equals(e.getExceptionCode())
                     || DataExceptionCode.CRC_003.equals(e.getExceptionCode())
                     || DataExceptionCode.CRC_004.equals(e.getExceptionCode())
                     || DataExceptionCode.CRC_005.equals(e.getExceptionCode())
@@ -763,7 +743,7 @@ public class CardIssuanceRequestServiceImpl extends AbstractService implements C
     public Long getRequestsCountForIssue() throws BaseException {
         return getCardRequestDAO().getRequestsCountForIssue();
     }
-    
+
     @Override
     public List<Long> getRequestIdsForIssue(Integer fetchLimit) throws BaseException {
         return getCardRequestDAO().getRequestIdsForIssue(fetchLimit);
@@ -799,9 +779,9 @@ public class CardIssuanceRequestServiceImpl extends AbstractService implements C
             }
         }
     }
-    
+
     @Override
-    public void prepareDataAndSendIssuanceRequestById(Long requestId,CertificateTO certificateTO) throws BaseException {
+    public void prepareDataAndSendIssuanceRequestById(Long requestId, CertificateTO certificateTO) throws BaseException {
         String additionalData = "";
         boolean exceptionFlag = false;
         try {
@@ -829,11 +809,11 @@ public class CardIssuanceRequestServiceImpl extends AbstractService implements C
             }
         }
     }
-    
-    
+
+
     @Override
     @Asynchronous
-    public Future<String> prepareDataAndSendIssuanceRequestByIdAsync(Long requestId,CertificateTO certificateTO) throws BaseException {
+    public Future<String> prepareDataAndSendIssuanceRequestByIdAsync(Long requestId, CertificateTO certificateTO) throws BaseException {
         String additionalData = "";
         boolean exceptionFlag = false;
         try {

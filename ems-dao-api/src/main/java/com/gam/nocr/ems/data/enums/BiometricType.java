@@ -14,8 +14,10 @@ public enum BiometricType {
     FING_MIN_1,
     FING_MIN_2,
     //vip
-    VIP_IMAGE;
- 
+    VIP_IMAGE,
+    FING_NORMAL_1,
+    FING_NORMAL_2;
+
 
     public static String toWTOString(BiometricType type) {
         if (type == null) {
@@ -41,7 +43,11 @@ public enum BiometricType {
                 return "8";
             case VIP_IMAGE:
                 return "9";
-            
+            case FING_NORMAL_1:
+                return "10";
+            case FING_NORMAL_2:
+                return "11";
+
         }
 
         return null;
@@ -51,28 +57,30 @@ public enum BiometricType {
         if (type == null || type.trim().equals("")) {
             return null;
         }
-        switch (type.trim().charAt(0)) {
-            case '1':
+        switch (type.trim()) {
+            case "1":
                 return FACE_IMS;
-            case '2':
+            case "2":
                 return FACE_CHIP;
-            case '3':
+            case "3":
                 return FACE_MLI;
-            case '4':
+            case "4":
                 return FACE_LASER;
-            case '5':
+            case "5":
                 return FING_ALL;
-            case '6':
+            case "6":
                 return FING_CANDIDATE;
-            case '7':
+            case "7":
                 return FING_MIN_1;
-            case '8':
+            case "8":
                 return FING_MIN_2;
-            case '9':
-                return VIP_IMAGE;    
-          
+            case "9":
+                return VIP_IMAGE;
+            case "10":
+                return FING_NORMAL_1;
+            case "11":
+                return FING_NORMAL_2;
         }
-
         return null;
     }
 }

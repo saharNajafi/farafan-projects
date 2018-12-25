@@ -25,19 +25,22 @@ public interface IServiceEMKS {
 
     /**
      * 
+     * @param requestForCardKeysOrPins
      * @param cardInfo
      * @return
      *     returns com.gam.nocr.ems.biz.service.external.client.emks.lds.CardKeysAndPINs
-     * @throws IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage
+     * @throws IServiceEMKSGetNIDCardKeysOrPINsEMKSExceptionFaultFaultMessage
      */
-    @WebMethod(operationName = "GetNIDCardKeysAndPINs", action = "http://tempuri.org/IService_EMKS/GetNIDCardKeysAndPINs")
-    @WebResult(name = "GetNIDCardKeysAndPINsResult", targetNamespace = "http://tempuri.org/")
-    @RequestWrapper(localName = "GetNIDCardKeysAndPINs", targetNamespace = "http://tempuri.org/", className = "com.gam.nocr.ems.biz.service.external.client.emks.lds.GetNIDCardKeysAndPINs")
-    @ResponseWrapper(localName = "GetNIDCardKeysAndPINsResponse", targetNamespace = "http://tempuri.org/", className = "com.gam.nocr.ems.biz.service.external.client.emks.lds.GetNIDCardKeysAndPINsResponse")
-    public CardKeysAndPINs getNIDCardKeysAndPINs(
+    @WebMethod(operationName = "GetNIDCardKeysOrPINs", action = "http://tempuri.org/IService_EMKS/GetNIDCardKeysOrPINs")
+    @WebResult(name = "GetNIDCardKeysOrPINsResult", targetNamespace = "http://tempuri.org/")
+    @RequestWrapper(localName = "GetNIDCardKeysOrPINs", targetNamespace = "http://tempuri.org/", className = "com.gam.nocr.ems.biz.service.external.client.emks.lds.GetNIDCardKeysOrPINs")
+    @ResponseWrapper(localName = "GetNIDCardKeysOrPINsResponse", targetNamespace = "http://tempuri.org/", className = "com.gam.nocr.ems.biz.service.external.client.emks.lds.GetNIDCardKeysOrPINsResponse")
+    public CardKeysAndPINs getNIDCardKeysOrPINs(
         @WebParam(name = "CardInfo", targetNamespace = "http://tempuri.org/")
-        String cardInfo)
-        throws IServiceEMKSGetNIDCardKeysAndPINsEMKSExceptionFaultFaultMessage
+        String cardInfo,
+        @WebParam(name = "requestForCardKeysOrPins", targetNamespace = "http://tempuri.org/")
+        RequestForCardKeysOrPINs requestForCardKeysOrPins)
+        throws IServiceEMKSGetNIDCardKeysOrPINsEMKSExceptionFaultFaultMessage
     ;
 
     /**

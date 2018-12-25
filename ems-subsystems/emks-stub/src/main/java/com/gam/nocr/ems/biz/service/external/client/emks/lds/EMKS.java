@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "EMKS", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl")
+@WebServiceClient(name = "EMKS", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://emks.ssd.net:9060/EMKS_WCFService.EMKS.svc?wsdl")
 public class EMKS
     extends Service
 {
@@ -30,9 +30,9 @@ public class EMKS
         try {
             URL baseUrl;
             baseUrl = com.gam.nocr.ems.biz.service.external.client.emks.lds.EMKS.class.getResource(".");
-            url = new URL(baseUrl, "http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl");
+            url = new URL(baseUrl, "http://emks.ssd.net:9060/EMKS_WCFService.EMKS.svc?wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'http://emks.ssd.net:9060/EMKS_WCFService.EMKS.svc?wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         EMKS_WSDL_LOCATION = url;

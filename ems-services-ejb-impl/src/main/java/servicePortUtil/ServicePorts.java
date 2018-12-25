@@ -1,7 +1,7 @@
 package servicePortUtil;
 
 import com.gam.nocr.ems.biz.service.external.client.cms.DocumentRequestWSLocal;
-import com.gam.nocr.ems.biz.service.external.client.emks.IServiceEMKS;
+import com.gam.nocr.ems.biz.service.external.client.emks.lds.IServiceEMKS;
 import com.gam.nocr.ems.biz.service.external.client.gaas.GAASWebServiceInterface;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 //import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;

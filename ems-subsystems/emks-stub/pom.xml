@@ -30,7 +30,7 @@
                         <configuration>
                             <wsdlUrls>
                                 <wsdlUrl>
-                                    http://emksapp.ssd.net/emks/EMKS_WCFService.EMKS.svc?singleWsdl
+                                    http://emks.ssd.net:9060/EMKS_WCFService.EMKS.svc?wsdl
                                 </wsdlUrl>
                             </wsdlUrls>
                             <keep>true</keep>

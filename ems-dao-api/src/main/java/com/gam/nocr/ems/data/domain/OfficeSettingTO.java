@@ -1,24 +1,26 @@
 package com.gam.nocr.ems.data.domain;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.JSONable;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "EMST_OFFICE_SETTING")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_OFFICE_SETTING", allocationSize = 1)
+@NamedQueries({
+        @NamedQuery(name = "OfficeSettingTO.findById"
+        , query = "select ost" +
+                " from OfficeSettingTO ost" +
+                " where ost.id=:id")
+})
 public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         JSONable {
 
@@ -40,8 +42,8 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
     private Boolean allowEditBackground = Boolean.FALSE;
     private Boolean allowAmputatedFingerStatusForElderly = Boolean.FALSE;
     private Boolean allowChangeFingerStatusDuringCaptureForElderly = Boolean.TRUE;
-   /* private String featureExtractorID = "0001";
-    private String featureExtractorVersion = "0.0";*/
+    private Set<FeatureExtractIdsTO> featureExtractIdsTO;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -168,23 +170,21 @@ public class OfficeSettingTO extends ExtEntityTO implements Serializable,
         this.allowChangeFingerStatusDuringCaptureForElderly = allowChangeFingerStatusDuringCaptureForElderly;
     }
 
-/*    @Column(name = "OST_FEATURE_EXTRACTOR_ID", nullable = false, length = 4, columnDefinition = "varchar2(4) default '1'")
-    public String getFeatureExtractorID() {
-        return featureExtractorID;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "OFFICE_SETTING_FEATURE_EXTRACT"
+            ,joinColumns = @JoinColumn(name = "OST_ID"
+            , referencedColumnName = "OST_ID")
+            , inverseJoinColumns = @JoinColumn(name = "FEI_ID"
+            , referencedColumnName = "FEI_ID"))
+    public Set<FeatureExtractIdsTO> getFeatureExtractIdsTO() {
+        return featureExtractIdsTO;
     }
 
-    public void setFeatureExtractorID(String featureExtractorID) {
-        this.featureExtractorID = featureExtractorID;
+    public void setFeatureExtractIdsTO(Set<FeatureExtractIdsTO> featureExtractIdsTO) {
+        this.featureExtractIdsTO = featureExtractIdsTO;
     }
 
-    @Column(name = "OST_FEATURE_EXTRACTOR_VERSION", nullable = false, length = 5, columnDefinition = "varchar2(5) default '1'")
-    public String getFeatureExtractorVersion() {
-        return featureExtractorVersion;
-    }
 
-    public void setFeatureExtractorVersion(String featureExtractorVersion) {
-        this.featureExtractorVersion = featureExtractorVersion;
-    }*/
 
     @Override
     public String toJSON() {

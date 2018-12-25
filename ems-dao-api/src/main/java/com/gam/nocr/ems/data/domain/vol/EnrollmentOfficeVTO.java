@@ -73,9 +73,9 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private String postDestinationCode;
     private String allowAmputatedFinger;
     private String allowChangeFinger;
-
-    
     private String officeSettingType;
+    private Long ostId;
+
 
     public String getName() {
         return name;
@@ -557,5 +557,13 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
 
     public void setAllowChangeFinger(String allowChangeFinger) {
         this.allowChangeFinger = allowChangeFinger;
+    }
+
+    public Long getOstId() {
+        return ostId;
+    }
+
+    public void setOstId(Long ostId) {
+        this.ostId = ostId;
     }
 }

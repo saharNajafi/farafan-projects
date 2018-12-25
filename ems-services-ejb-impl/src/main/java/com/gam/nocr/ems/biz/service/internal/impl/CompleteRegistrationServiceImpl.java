@@ -50,12 +50,12 @@ public class CompleteRegistrationServiceImpl extends EMSAbstractService implemen
     @BizLoggable(logAction = "INSERT", logEntityName = "REQUEST")
     public void register(CardRequestTO requestTO, ArrayList<BiometricTO> fingers
             , ArrayList<BiometricTO> faces
-            , ArrayList<DocumentTO> documents, byte[] signature/*, String featureExtractorID*/) throws BaseException {
+            , ArrayList<DocumentTO> documents, byte[] signature, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException {
         RegistrationService registrationService = getRegistrationService();
         registrationService.setUserProfileTO(getUserProfileTO());
         long requestId = registrationService.saveFromMES(requestTO);
-        registrationService.addFingerDataFromMES(requestId, fingers);
-//        registrationService.addFingerDataFromMES(requestId, fingers, featureExtractorID);
+//        registrationService.addFingerDataFromMES(requestId, fingers);
+        registrationService.addFingerDataFromMES(requestId, fingers, featureExtractorIdNormal,featureExtractorIdCC);
         registrationService.addFaceDataFromMES(requestId, faces);
         registrationService.addDocumentFromMES(requestId, documents);
 //		registrationService.authenticateDocumentFromMES(requestId);

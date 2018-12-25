@@ -1609,10 +1609,14 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                 }
             }
             return personEnquiryVTOResult;
+
+        } catch (BaseException e) {
+            ImsLogger.error(e.getMessage(), e);
+            throw e;
+
         } catch (Exception e) {
-           /* if (e instanceof BaseException)
-                throw (BaseException) e;*/
-            throw new ServiceException(BizExceptionCode.NIO_010, BizExceptionCode.NIO_001_MSG, e, new Object[]{nationalId});
+            ImsLogger.error(e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.NIO_033, BizExceptionCode.NIO_001_MSG, e, new Object[]{nationalId});
         }
     }
 

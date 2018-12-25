@@ -18,5 +18,5 @@ public interface CardRequestHistoryService extends Service {
                                 CardRequestHistoryAction cardRequestHistoryAction,
                                 String actor) throws BaseException;
 
-    boolean findByCardRequestAndCrhAction(Long id, String crhAction) throws BaseException;
+    boolean findByCardRequestAndCrhAction(Long id, CardRequestHistoryAction cardRequestHistoryAction) throws BaseException;
 }

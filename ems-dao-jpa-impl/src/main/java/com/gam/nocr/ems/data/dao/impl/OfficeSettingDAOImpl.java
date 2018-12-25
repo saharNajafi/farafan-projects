@@ -1,20 +1,14 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
-import com.gam.nocr.ems.data.enums.OfficeSettingType;
+
+import javax.ejb.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless(name = "OfficeSettingDAO")
 @Local(OfficeSettingDAOLocal.class)
@@ -57,6 +51,19 @@ public class OfficeSettingDAOImpl extends EmsBaseDAOImpl<OfficeSettingTO> implem
             throw new DAOException(DataExceptionCode.ENI_014, DataExceptionCode.GLB_005_MSG, e);
         }
 
+	}
+
+	@Override
+	public OfficeSettingTO findById(Long id) throws BaseException{
+		List<OfficeSettingTO> officeSettingTOList;
+		try {
+			officeSettingTOList = em.createNamedQuery("OfficeSettingTO.findById")
+					.setParameter("id", id)
+					.getResultList();
+		} catch (Exception e) {
+			throw new DAOException(DataExceptionCode.OSTD_001, DataExceptionCode.OSTD_001_MSG, e);
+		}
+	   return officeSettingTOList.size() != 0 ? officeSettingTOList.get(0) : null;
 	}
 
 }

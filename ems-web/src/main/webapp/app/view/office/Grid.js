@@ -2,6 +2,7 @@ Ext.define('Ems.view.office.Grid', {
         extend: 'Gam.grid.Crud',
         requires: [
             'Ems.view.office.Dialog' ,
+            'Ems.view.office.Setting.Dialog' ,
             'Ems.view.office.OfficeStatusCombobox' ,
             'Ems.store.OfficeStore'
         ],
@@ -31,6 +32,16 @@ Ext.define('Ems.view.office.Grid', {
                 stateId: this.stateId + 'Capacity',
                 getClass: function (value, metadata, record) {
                     return 'girdAction-OfficeCapacity-icon';
+                }
+            },
+            {
+                // icon: 'resources/themes/images/user/UserList.png',
+                tooltip: 'تنظیمات',
+                action: 'settingOffice',
+                stateful: true,
+                stateId: this.stateId + 'Setting',
+                getClass: function (value, metadata, record) {
+                    return 'girdAction-OfficeSetting-icon';
                 }
             },
             {
@@ -134,7 +145,7 @@ Ext.define('Ems.view.office.Grid', {
          	   tooltip: 'آپلود عکس',
          	   action: 'changeUploadPhoto',
          	   getClass: function (value, metadata, record) {
-         		   debugger;
+         		   //debugger;
          		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
 	         		   if(record.raw != undefined){	                       
 	         			   var officeSettingType = record.raw.uploadPhoto;
@@ -287,7 +298,7 @@ Ext.define('Ems.view.office.Grid', {
                  	   }
                     },
             {
-                tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان برای سالمندان',
+                tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان(برای سالمندان)',
                 action: 'changeAllowAmputatedFinger',
                 getClass: function (value, metadata, record) {
                     if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
@@ -305,7 +316,7 @@ Ext.define('Ems.view.office.Grid', {
             }   ,
 
             {
-                tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت حتی پس از اخذ نخستین تصویر برای سالمندان',
+                tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت(حتی پس از اخذ نخستین تصویر برای سالمندان)',
                 action: 'changeAllowChangeFinger',
                 getClass: function (value, metadata, record) {
                     if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){

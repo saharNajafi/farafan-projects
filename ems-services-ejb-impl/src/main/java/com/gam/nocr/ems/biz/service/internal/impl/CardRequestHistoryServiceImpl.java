@@ -42,11 +42,11 @@ public class CardRequestHistoryServiceImpl extends EMSAbstractService
     }
 
 
-    public boolean findByCardRequestAndCrhAction(Long cardRequestId, String crhAction) throws BaseException {
+    public boolean findByCardRequestAndCrhAction(Long cardRequestId, CardRequestHistoryAction cardRequestHistoryAction) throws BaseException {
         try {
-            return getCardRequestHistoryDAO().findByCardRequestAndCrhAction(cardRequestId, crhAction);
+            return getCardRequestHistoryDAO().findByCardRequestAndCrhAction(cardRequestId, cardRequestHistoryAction);
         } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.CRH_S_001, BizExceptionCode.CRH_S_001_MSG, e);
+            throw new ServiceException(BizExceptionCode.CRHS_001, BizExceptionCode.CRHS_001_MSG, e);
         }
     }
 

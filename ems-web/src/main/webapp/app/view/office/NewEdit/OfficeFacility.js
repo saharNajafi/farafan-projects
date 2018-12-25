@@ -80,6 +80,7 @@ Ext.define('Ems.view.office.NewEdit.OfficeFacility', {
                 maskRe: /\d/i,
                 allowBlank: false,
                 maxLength: 8,
+                minLength: 8,
                 enforceMaxLength: 8
             },
             {

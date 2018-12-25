@@ -90,7 +90,8 @@ public class RegistrationVipWS extends EMSWS {
 			@WebParam(name = "citizenWTO") CitizenWTO citizenWTO,
 			@WebParam(name = "fingers") BiometricWTO[] fingersWTO,
 			@WebParam(name = "faces") BiometricWTO[] facesWTO,
-			/*@WebParam(name = "featureExtractorID") String featureExtractorID,*/
+			@WebParam(name = "featureExtractorIdNormal") String featureExtractorIdNormal,
+			@WebParam(name = "featureExtractorIdCC") String featureExtractorIdCC,
 			@WebParam(name = "documents") DocumentWTO[] documentsWTO)
 			throws InternalException {
 
@@ -111,10 +112,10 @@ public class RegistrationVipWS extends EMSWS {
 			ArrayList<BiometricTO> faces = convertToFacesTO(facesWTO);
 			ArrayList<DocumentTO> documents = convertToDocumentsTO(documentsWTO);
 			RegistrationDelegator delegator = new RegistrationDelegator();
-			delegator.registerVip(up, cardRequestTO, fingers, faces,
-					documents);
 			/*delegator.registerVip(up, cardRequestTO, fingers, faces,
-					documents, featureExtractorID);*/
+					documents);*/
+			delegator.registerVip(up, cardRequestTO, fingers, faces,
+					documents, featureExtractorIdNormal,featureExtractorIdCC);
 			return true;
 		} catch (BaseException e) {
 

@@ -40,6 +40,9 @@ Ext.define('Ems.controller.OfficeController', {
         'Ems.view.office.OfficeName.NOCRAutoComplete',
         'Ems.view.office.NewEdit.OfficeDeliverRadioGroup',
         'Ems.controller.util.ExcelExporter'
+        // 'Ems.view.office.Setting.AutoCompleteFeatureExtractID',
+        // 'Ems.view.office.Setting.AutoCompleteFeatureExtractVersion',
+        // 'Ems.view.office.Setting.Dialog'
     ],
 
     views: [
@@ -139,6 +142,12 @@ Ext.define('Ems.controller.OfficeController', {
                 }
             },
 
+            'officesettingdialog cancelbtn': {
+                click: function (sender) {
+                    sender.up('dialog').close();
+                }
+            },
+
             'officecapacitydialog cancelbtn': {
         	       click: function (sender) {
                        sender.up('dialog').close();
@@ -204,6 +213,50 @@ Ext.define('Ems.controller.OfficeController', {
                    }
             },
 
+            'officesettingdialog savebtn': {
+                click: function(sender) {
+                    var form = sender.up('dialog');
+                    var me = this;
+                    var obj = {};
+                    if(form.sendID != null) {
+                        obj = { id : form.sendID };
+                    }
+                    Ext.Ajax.request({
+                        url: 'extJsController/officeSetting' + '/save',
+                        jsonData: {
+                            records: [
+                                {
+                                    feiN: form.down('#feiN').getValue(),
+                                    feiCC: form.down('#feiCC').getValue(),
+                                    id: form.officeSettingID
+                                }
+                             ]
+                        },
+                        success: function (response) {
+                            if (Ext.JSON.decode(response.responseText).success) {
+                                Ext.Msg.alert('ثبت موفق', 'عملیات با موفقیت انجام شد');
+                                Ext.StoreManager.get('officeList').load();
+                                form.close();
+                            }
+                            else {
+                                // var msg = Ext.JSON.decode(response.responseText).messageInfo.message;
+                                // var showMsg = "";
+                                // if (msg[msg.length - 1] == "6") {
+                                //     showMsg = "تاریخ شروع باید از تاریخ امروز بزرگتر باشد";
+                                // }
+                                // else if (msg[msg.length - 1] == "7") {
+                                //     showMsg = "این سطر در سیستم وجود دارد. لطفا آن را ویرایش کنید";
+                                // }
+                                Ext.Msg.alert('خطا', showMsg);
+                            }
+                        },
+                        failure: function () {
+                            Ext.Msg.alert('خطا', 'خطایی رخ داده است');
+                        }
+                    });
+                }
+            },
+
                "[action=exportExcel]": {
                    click: function (btn) {
                        var grid = btn.up('toolbar').up('grid');
@@ -259,6 +312,43 @@ Ext.define('Ems.controller.OfficeController', {
         if (capacityGrid != null) {
             win.show();
         }
+    },
+
+    /*
+     Author: Navid
+     Description: write doSettingOffice method for first test
+     */
+    doSettingOffice: function(grid, rowIndex) {
+        var win = Ext.create('Ems.view.office.Setting.Dialog', { height: 130});
+        var record = grid.store.getAt(rowIndex);
+        var extractN = win.down('#feiN');
+        var extractCC = win.down('#feiCC');
+        win.officeSettingID = record.get('ostId');
+        Ext.Ajax.request({
+            method: 'POST',
+            url: 'extJsController/featureExtract/load',
+            jsonData: { enrollmentOfficeId: record.get('id') },
+            success: function (response) {
+                var data = Ext.JSON.decode(response.responseText).records;
+                win.show();
+                for(var i = 0; i < data.length; i++) {
+                    if(data[i].featureExtractType == "2") {
+                        var rec = data[i].feiId;
+                        setTimeout(function() {extractCC.onTriggerClick();}, 500);
+                         setTimeout(function() {extractCC.select(extractCC.store.getNodeById(rec)); extractCC.onTriggerClick();}, 1500);
+                    }
+                    else if(data[i].featureExtractType == "1") {
+                        var rec2 = data[i].feiId;
+                        setTimeout(function() { extractN.onTriggerClick();}, 500);
+                        setTimeout(function() {extractN.select(extractN.store.getNodeById(rec2)); extractN.onTriggerClick();}, 1500);
+                    }
+                }
+
+            },
+            failure: function () {
+                alert('fail');
+            }
+        });
     },
 
     doUserListOffice: function (grid, rowIndex) {

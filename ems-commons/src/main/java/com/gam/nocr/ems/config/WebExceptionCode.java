@@ -418,6 +418,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_084 = "EMS_W_RSW_084";
     public static final String RSW_085 = "EMS_W_RSW_085";
     public static final String RSW_086 = "EMS_W_RSW_086";
+    public static final String RSW_087 = "EMS_W_RSW_087";
     public static final String RSW_001_MSG = "Unable to convert CitizenWTO to CardRequestTO";
     public static final String RSW_002_MSG = "CitizenWTO should not be null";
     public static final String RSW_003_MSG = "Cannot save CitizenWTO which has request Id value, try update instead";
@@ -496,7 +497,8 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_077_MSG = "unexpected exception happened while trying to fetch archive id";
     public static final String RSW_080_MSG = "Unable to save face items. Number of face items received from CCOS is less than 4 image";
     public static final String RSW_081_MSG = "Unable to convert CitizenWTO to CardRequestTO in preRegistration VIP";
-    public static final String RSW_086_MSG = "the feature extractor id is empty";
+    public static final String RSW_086_MSG = "the feature extractor id normal is empty";
+    public static final String RSW_087_MSG = "the feature extractor id cc is empty";
 
 
 
@@ -664,7 +666,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OFC_001 = "EMS_A_OFC_001";
     public static final String OFC_002 = "EMS_A_OFC_002";
     public static final String OFC_003 = "EMS_A_OFC_003";
-    public static final String OFC_001_MSG = "invalid input entry, officeCapacity id is empty\";";
+    public static final String OFC_001_MSG = "invalid input entry, officeCapacity id is empty";
 
     //com.gam.nocr.ems.web.ws.CCOSPaymentWS.java
     public  static final String CPW_001 = "EMS_W_CPW_001";
@@ -706,4 +708,15 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
     public static final String CPW_019_MSG = "PersonalInfoWTO is null";
     public static final String CPW_020_MSG = "PersonEnquiryWTO is null";
+
+    //com.gam.nocr.ems.web.action.OfficeSettingAction.java
+    public static final String OSA_001 = "EMS_A_OSA_001";
+    public static final String OSA_002 = "EMS_A_OSA_002";
+    public static final String OSA_003 = "EMS_A_OSA_003";
+    public static final String OSA_002_MSG = "invalid input entry, enrollment office id is empty";
+
+    //com.gam.nocr.ems.web.action.FeatureExtractIdsAction.java
+    public static final String FEI_001 = "EMS_A_FEI_001";
+    public static final String FEI_002 = "EMS_A_FEI_002";
+    public static final String FEI_001_MSG = "invalid input entry, enrollment office id is empty";
 }

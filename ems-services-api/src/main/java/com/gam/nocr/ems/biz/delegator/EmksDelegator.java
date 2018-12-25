@@ -9,6 +9,7 @@ import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.EmksService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.data.domain.ws.EMKSCardMoCKeysWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataResultWTO;
 import com.gam.nocr.ems.data.domain.ws.EMKSDataWTO;
 import com.gam.nocr.ems.util.EmsUtil;
@@ -43,10 +44,10 @@ public class EmksDelegator implements Delegator {
 
     }
 
-	/*public EMKSCardMoCKeysWTO getNIDCardMoCKeys(UserProfileTO up,
+	public EMKSCardMoCKeysWTO getNIDCardMoCKeys(UserProfileTO up,
                                                 EMKSDataWTO emksDataWTO, Long requestID) throws BaseException {
 		return getService(up).getNIDCardMoCKeys(emksDataWTO,requestID);
-	}*/
+	}
 
 
     public String getSigniture(UserProfileTO up,

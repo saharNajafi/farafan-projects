@@ -177,22 +177,24 @@
 					ost.ost_allow_edit_background allow_edit_background,
 					ost.ost_use_scanner_ui use_scanner_ui,
 					ost.OST_ALW_AMPT_FING_STA_ELD,
-					ost.OST_ALW_CHG_FING_DUR_CAP_ELD
+					ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
+					ost.OST_ID
+
 				</part>
 				    from
                 emst_location l,
                 emst_location lp,
                 emst_department d,
                 emst_enrollment_office e,
-                emst_office_setting ost,
-                emst_person p
-                where
+                emst_person p,
+				emst_office_setting ost
+				where
                 l.loc_id = d.dep_location_id and
                 l.loc_province_id=lp.loc_id and
                 d.dep_id=e.eof_id and
                 ost.OST_ENROLL_OFFICE_ID = e.eof_id and
-                e.eof_manager_id=p.per_id(+) and
-				e.eof_id in (
+                e.eof_manager_id=p.per_id(+)
+				and e.eof_id in (
 				<dependency name="personAllDepartmentWithSubDepartment" />
 				)
 				<part name="name">
@@ -319,6 +321,7 @@
                 <field name="postDestinationCode" column="EOF_POST_DESTINATION_CODE"/>
                 <field name="allowAmputatedFinger" column="OST_ALW_AMPT_FING_STA_ELD"/>
                 <field name="allowChangeFinger" column="OST_ALW_CHG_FING_DUR_CAP_ELD"/>
+				<field name="ostId" column="OST_ID"/>
 			</dto-fields>
 		</dto>
 	</list>
@@ -1009,7 +1012,7 @@
 				</order-by>
 			</main-query>
 		</query>
-		<dto>
+		 <dto>
 			<dto-class>com.gam.nocr.ems.data.domain.vol.CardRequestVTO</dto-class>
 			<dto-fields>
 				<field name="id" column="crq_id" />
@@ -1631,5 +1634,4 @@
 		</dto>
 	</list>
 	<!-- officeCapacity List -->
-
 </lists>

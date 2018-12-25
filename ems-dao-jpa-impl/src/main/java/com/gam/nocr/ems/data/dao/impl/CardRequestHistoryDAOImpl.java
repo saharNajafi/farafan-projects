@@ -606,13 +606,13 @@ public class CardRequestHistoryDAOImpl extends EmsBaseDAOImpl<CardRequestHistory
     }
 
     @Override
-    public boolean findByCardRequestAndCrhAction(Long cardRequestId, String crhAction) throws BaseException {
+    public boolean findByCardRequestAndCrhAction(Long cardRequestId, CardRequestHistoryAction cardRequestHistoryAction) throws BaseException {
         List<CardRequestHistoryTO> cardRequestHistoryTOList;
         try {
             cardRequestHistoryTOList =
                     em.createNamedQuery("CardRequestHistoryTO.findByCardRequestAndCrhAction")
                             .setParameter("cardRequestId", cardRequestId)
-                            .setParameter("crhAction", crhAction)
+                            .setParameter("crhAction", cardRequestHistoryAction)
                             .getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.CRH_006,

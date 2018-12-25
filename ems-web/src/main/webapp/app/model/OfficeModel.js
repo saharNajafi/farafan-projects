@@ -72,6 +72,10 @@ Ext.define('Ems.model.OfficeModel', {
         , EmsObjectName.officeNewEdit.active
         , EmsObjectName.officeNewEdit.postDestinationCode
         , EmsObjectName.officeNewEdit.postNeeded
+        ,'featureExtractName'
+        ,'featureExtractType'
+        ,'ostId'
+        ,'feiId'
 
         
     ]

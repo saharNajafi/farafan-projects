@@ -18,12 +18,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="ASD" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="ASD_ENC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="ASD_MAC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="ASd" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="ENC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="ID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="MAC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="NMoC" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="SM" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="PIN_SM" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="SMd" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="Sign" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -35,101 +36,80 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CardKeysAndPINs", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", propOrder = {
-    "asd",
-    "asdenc",
-    "asdmac",
+    "aSd",
+    "enc",
     "id",
+    "mac",
     "nMoC",
-    "sm",
+    "pinsm",
+    "sMd",
     "sign"
 })
 public class CardKeysAndPINs {
 
-    @XmlElementRef(name = "ASD", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
-    protected JAXBElement<String> asd;
-    @XmlElementRef(name = "ASD_ENC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
-    protected JAXBElement<String> asdenc;
-    @XmlElementRef(name = "ASD_MAC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
-    protected JAXBElement<String> asdmac;
+    @XmlElementRef(name = "ASd", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    protected JAXBElement<String> aSd;
+    @XmlElementRef(name = "ENC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    protected JAXBElement<String> enc;
     @XmlElementRef(name = "ID", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> id;
+    @XmlElementRef(name = "MAC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    protected JAXBElement<String> mac;
     @XmlElementRef(name = "NMoC", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> nMoC;
-    @XmlElementRef(name = "SM", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
-    protected JAXBElement<String> sm;
+    @XmlElementRef(name = "PIN_SM", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    protected JAXBElement<String> pinsm;
+    @XmlElementRef(name = "SMd", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
+    protected JAXBElement<String> sMd;
     @XmlElementRef(name = "Sign", namespace = "http://schemas.datacontract.org/2004/07/EMKS_WCFService", type = JAXBElement.class)
     protected JAXBElement<String> sign;
 
     /**
-     * Gets the value of the asd property.
+     * Gets the value of the aSd property.
      * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public JAXBElement<String> getASD() {
-        return asd;
+    public JAXBElement<String> getASd() {
+        return aSd;
     }
 
     /**
-     * Sets the value of the asd property.
+     * Sets the value of the aSd property.
      * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setASD(JAXBElement<String> value) {
-        this.asd = ((JAXBElement<String> ) value);
+    public void setASd(JAXBElement<String> value) {
+        this.aSd = ((JAXBElement<String> ) value);
     }
 
     /**
-     * Gets the value of the asdenc property.
+     * Gets the value of the enc property.
      * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public JAXBElement<String> getASDENC() {
-        return asdenc;
+    public JAXBElement<String> getENC() {
+        return enc;
     }
 
     /**
-     * Sets the value of the asdenc property.
+     * Sets the value of the enc property.
      * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setASDENC(JAXBElement<String> value) {
-        this.asdenc = ((JAXBElement<String> ) value);
-    }
-
-    /**
-     * Gets the value of the asdmac property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *     
-     */
-    public JAXBElement<String> getASDMAC() {
-        return asdmac;
-    }
-
-    /**
-     * Sets the value of the asdmac property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *     
-     */
-    public void setASDMAC(JAXBElement<String> value) {
-        this.asdmac = ((JAXBElement<String> ) value);
+    public void setENC(JAXBElement<String> value) {
+        this.enc = ((JAXBElement<String> ) value);
     }
 
     /**
@@ -157,6 +137,30 @@ public class CardKeysAndPINs {
     }
 
     /**
+     * Gets the value of the mac property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     
+     */
+    public JAXBElement<String> getMAC() {
+        return mac;
+    }
+
+    /**
+     * Sets the value of the mac property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     
+     */
+    public void setMAC(JAXBElement<String> value) {
+        this.mac = ((JAXBElement<String> ) value);
+    }
+
+    /**
      * Gets the value of the nMoC property.
      * 
      * @return
@@ -181,27 +185,51 @@ public class CardKeysAndPINs {
     }
 
     /**
-     * Gets the value of the sm property.
+     * Gets the value of the pinsm property.
      * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public JAXBElement<String> getSM() {
-        return sm;
+    public JAXBElement<String> getPINSM() {
+        return pinsm;
     }
 
     /**
-     * Sets the value of the sm property.
+     * Sets the value of the pinsm property.
      * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setSM(JAXBElement<String> value) {
-        this.sm = ((JAXBElement<String> ) value);
+    public void setPINSM(JAXBElement<String> value) {
+        this.pinsm = ((JAXBElement<String> ) value);
+    }
+
+    /**
+     * Gets the value of the sMd property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     
+     */
+    public JAXBElement<String> getSMd() {
+        return sMd;
+    }
+
+    /**
+     * Sets the value of the sMd property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     
+     */
+    public void setSMd(JAXBElement<String> value) {
+        this.sMd = ((JAXBElement<String> ) value);
     }
 
     /**

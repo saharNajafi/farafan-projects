@@ -72,6 +72,24 @@
         </action>
     </package>
 
+    <package name="office-setting" extends="gam-json-default" namespace="/extJsController/officeSetting">
+        <action name="*" class="com.gam.nocr.ems.web.action.OfficeSettingAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
+    <package name="feature-extract" extends="gam-json-default" namespace="/extJsController/featureExtract">
+        <action name="*" class="com.gam.nocr.ems.web.action.FeatureExtractIdsAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
     <package name="manage-report" extends="gam-json-default" namespace="/extJsController/managereports">
         <action name="*" class="com.gam.nocr.ems.web.action.ReportManagementAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>

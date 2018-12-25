@@ -318,10 +318,10 @@ Ext.define('Ems.controller.NavigationHeaderController', {
             jsonData: {},
             success: function (response) {
 
-            	debugger;
+            	//debugger;
             	var accessViewAndChangeOfficeSetting = (Ext.decode(response.responseText)).accessViewAndChangeOfficeSetting;
-            	EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting; 
-            	
+            	EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
+
             },
             failure: function (response) {
                 Tools.errorFailure();
