@@ -527,21 +527,21 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
         jsonObject = jsonObject.substring(0, jsonObject.length() - 1);
 
         if (enrollmentOffice == null) {
-            jsonObject += "," + "\"enrollmentOfficeId:\"" + enrollmentOffice;
+            jsonObject += "," + "\"enrollmentOfficeId\":" + enrollmentOffice;
         } else {
-            jsonObject += "," + "\"enrollmentOfficeId:\"" + enrollmentOffice.getId();
+            jsonObject += "," + "\"enrollmentOfficeId\":" + enrollmentOffice.getId();
         }
 
         if (citizen == null) {
-            jsonObject += "," + "\"citizenId:\"" + citizen;
+            jsonObject += "," + "\"citizenId\":" + citizen;
         } else {
-            jsonObject += "," + "\"citizenId:\"" + citizen.getId();
+            jsonObject += "," + "\"citizenId\":" + citizen.getId();
         }
 
         if (card == null) {
-            jsonObject += "," + "\"cardId:\"" + card;
+            jsonObject += "," + "\"cardId\":" + card;
         } else {
-            jsonObject += "," + "\"cardId:\"" + card.getId();
+            jsonObject += "," + "\"cardId\":" + card.getId();
         }
 
         jsonObject += "}";
