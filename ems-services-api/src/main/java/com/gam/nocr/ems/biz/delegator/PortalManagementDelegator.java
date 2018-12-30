@@ -1,6 +1,5 @@
 package com.gam.nocr.ems.biz.delegator;
 
-import java.util.List;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.delegator.Delegator;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -14,6 +13,8 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.RatingInfoTO;
 import com.gam.nocr.ems.data.enums.LocationType;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.List;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -38,13 +39,13 @@ public class PortalManagementDelegator implements Delegator {
      *
      * @throws BaseException
      */
-//    public Boolean updateRequestStates(List<Long> batchIds) throws BaseException {
-//        return getService(null).doActivityForUpdateState(batchIds);
-//    }
+    public Boolean updateRequestStates(List<Long> batchIds) throws BaseException {
+        return getService(null).doActivityForUpdateState(batchIds);
+    }
 
-//    public List<Long> fetchReservationIds() throws BaseException {
-//        return getService(null).fetchReservationIds();
-//    }
+    public List<Long> fetchReservationIds() throws BaseException {
+        return getService(null).fetchReservationIds();
+    }
 
     /**
      * The method doActivityForReservations is used to fetch and save the reservations which were done on the sub
@@ -52,18 +53,18 @@ public class PortalManagementDelegator implements Delegator {
      *
      * @throws BaseException
      */
-//    public Boolean doActivityForReservations(List<Long> reservationIds) throws BaseException {
-//        return getService(null).doActivityForReservations(reservationIds);
-//    }
+    public Boolean doActivityForReservations(List<Long> reservationIds) throws BaseException {
+        return getService(null).doActivityForReservations(reservationIds);
+    }
     
     /**
      * new method for transfer reservations. this method is used to fetch and save the reservations which were done on
      * 'Portal'. called by <code>PortalReservationsJob</code>
-//     * @param longList
+     * @param longList
      */
-//    public Boolean transferReservationsToEMSAndDoEstelam2(List<Long> longList) throws BaseException {
-//		return getService(null).transferReservationsToEMSAndDoEstelam2(longList);
-//	}
+    public Boolean transferReservationsToEMSAndDoEstelam2(List<Long> longList) throws BaseException {
+		return getService(null).transferReservationsToEMSAndDoEstelam2(longList);
+	}
 
     public void updateCardRequestFromCCOSAndMES(int from, int to) throws BaseException {
         getService(null).doActivityForUpdateCcosAndMESCardRequest(from, to);
@@ -79,9 +80,9 @@ public class PortalManagementDelegator implements Delegator {
      * @param to
      * @throws BaseException
      */
-//    public void notifyPortalAboutModifiedProvinces(LocationType locationType, Integer from, Integer to) throws BaseException {
-//        getService(null).notifyPortalAboutModifiedProvinces(locationType, from, to);
-//    }
+    public void notifyPortalAboutModifiedProvinces(LocationType locationType, Integer from, Integer to) throws BaseException {
+        getService(null).notifyPortalAboutModifiedProvinces(locationType, from, to);
+    }
 
     /**
      * The method transferNotVerifiedMESRequestsToPortal is used to transfer the requests that have not been verified by
@@ -95,9 +96,9 @@ public class PortalManagementDelegator implements Delegator {
         return getService(null).transferNotVerifiedMESRequestsToPortal();
     }
 
-//    public List<Long> fetchRequestedSmsIds() throws BaseException {
-//        return getService(null).fetchRequestedSmsIds();
-//    }
+    public List<Long> fetchRequestedSmsIds() throws BaseException {
+        return getService(null).fetchRequestedSmsIds();
+    }
 
     public void addRequestedSms(Long portalCardRequestId) throws BaseException {
         getService(null).addRequestedSms(portalCardRequestId);
@@ -128,20 +129,20 @@ public class PortalManagementDelegator implements Delegator {
     }
 
     //Anbari
-//  	public int deleteReservationDateFromOfficeRSVFreeTime(Long dateForDelete) throws BaseException{
-//  		 return getService(null).deleteReservationDateFromOfficeRSVFreeTime(dateForDelete);
-//  	}
+  	public int deleteReservationDateFromOfficeRSVFreeTime(Long dateForDelete) throws BaseException{
+  		 return getService(null).deleteReservationDateFromOfficeRSVFreeTime(dateForDelete);
+  	}
     
     //Anbari
-//	public void notifyPortalRezervationFreeTime(List<Long> eofIds,Long date) throws BaseException{
-//		 getService(null).notifyPortalRezervationFreeTime(eofIds,date);
-//	}
+	public void notifyPortalRezervationFreeTime(List<Long> eofIds,Long date) throws BaseException{
+		 getService(null).notifyPortalRezervationFreeTime(eofIds,date);
+	}
 
     //Anbari
-//	public void syncResevationFreeTimeByNewRating(Long eofId, RatingInfoTO ratingInfo,String newCalender) throws BaseException{
-//		 getService(null).syncResevationFreeTimeByNewRating(eofId, ratingInfo,newCalender);
-//
-//	}
+	public void syncResevationFreeTimeByNewRating(Long eofId, RatingInfoTO ratingInfo,String newCalender) throws BaseException{
+		 getService(null).syncResevationFreeTimeByNewRating(eofId, ratingInfo,newCalender);
+
+	}
 
 	//Madanipour
 	public Integer fetchSmsCount(int smsType) throws BaseException {

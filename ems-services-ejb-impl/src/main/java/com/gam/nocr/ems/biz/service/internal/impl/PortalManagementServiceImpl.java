@@ -41,9 +41,9 @@ import com.gam.nocr.ems.biz.service.PortalRegistrationService;
 import com.gam.nocr.ems.biz.service.PortalReservationService;
 import com.gam.nocr.ems.biz.service.PortalSmsService;
 import com.gam.nocr.ems.biz.service.RegistrationService;
-//import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
-//import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
-//import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
+import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
+import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
+import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
@@ -337,12 +337,12 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 * @throws com.gam.commons.core.BaseException
 	 * 
 	 */
-//	private List<ItemWTO> updateCardRequestStates(
-//			List<SyncCardRequestWTO> syncCardRequestWTOList)
-//			throws BaseException {
-//		return getPortalRegistrationService().updateCardRequestsState(
-//				syncCardRequestWTOList);
-//	}
+	private List<ItemWTO> updateCardRequestStates(
+			List<SyncCardRequestWTO> syncCardRequestWTOList)
+			throws BaseException {
+		return getPortalRegistrationService().updateCardRequestsState(
+				syncCardRequestWTOList);
+	}
 
 	/**
 	 * @param logAction
@@ -375,12 +375,12 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 * @throws com.gam.commons.core.BaseException
 	 * 
 	 */
-//	@Override
-//	public List<CardRequestTO> transferCardRequests(
-//			List<Long> portalCardRequestIds) throws BaseException {
-//		return getPortalRegistrationService().transferCardRequests(
-//				portalCardRequestIds);
-//	}
+	@Override
+	public List<CardRequestTO> transferCardRequests(
+			List<Long> portalCardRequestIds) throws BaseException {
+		return getPortalRegistrationService().transferCardRequests(
+				portalCardRequestIds);
+	}
 
 	/**
 	 * The method doActivityForUpdateState is used to prepare a list of type
@@ -391,165 +391,165 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 * @throws com.gam.commons.core.BaseException
 	 * 
 	 */
-//	@Override
-//	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-//	public Boolean doActivityForUpdateState(List<Long> batchIds)
-//			throws BaseException {
-//		Boolean loopFlag = true;
-//
-//		try {
-//
-//			List<SyncCardRequestWTO> syncCardRequestWTOList = getCardRequestDAO()
-//					.getRequestListForUpdateState(batchIds);
-//			List<ItemWTO> itemWTOList = getPortalRegistrationService()
-//					.updateCardRequestsState(syncCardRequestWTOList);
-//			sessionContext
-//					.getBusinessObject(PortalManagementServiceLocal.class)
-//					.updateState(syncCardRequestWTOList, itemWTOList);
-//
-//			return loopFlag;
-//		} catch (ServiceException e) {
-//			throw e;
-//		} catch (Exception e) {
-//			throw new ServiceException(BizExceptionCode.PTL_008,
-//					BizExceptionCode.GLB_008_MSG, e);
-//		}
-//	}
+	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Boolean doActivityForUpdateState(List<Long> batchIds)
+			throws BaseException {
+		Boolean loopFlag = true;
 
-//	@Override
-//	@javax.ejb.TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-//	public void updateState(List<SyncCardRequestWTO> syncCardRequestWTOList,
-//			List<ItemWTO> itemWTOList) throws BaseException {
-//		try {
-//
-//			List<Long> successfulIds = new ArrayList<Long>();
-//			Map<Long, String> failedDetails = new HashMap<Long, String>();
-//
-//			List<Long> portalCardRequestIdListToUpdate = new ArrayList<Long>();
-//			List<Long> portalCardRequestIdListToWait = new ArrayList<Long>();
-//
-//			if (EmsUtil.checkListSize(itemWTOList)) {
-//				for (ItemWTO itemWTO : itemWTOList) {
-//					if ("updated".equals(itemWTO.getValue())) {
-//						successfulIds.add(Long.valueOf(itemWTO.getKey()));
-//					} else {
-//						failedDetails.put(Long.valueOf(itemWTO.getKey()),
-//								itemWTO.getValue());
-//					}
-//				}
-//			}
-//
-//			for (SyncCardRequestWTO syncCardRequestWTO : syncCardRequestWTOList) {
-//				if (successfulIds.contains(syncCardRequestWTO.getId())) {
-//					portalCardRequestIdListToUpdate.add(syncCardRequestWTO
-//							.getId());
-//				} else {
-//					portalCardRequestIdListToWait.add(syncCardRequestWTO
-//							.getId());
-//				}
-//			}
-//
-//			if (EmsUtil.checkListSize(portalCardRequestIdListToUpdate)) {
-//				getCardRequestDAO().updateSyncDatesAndFlag(
-//						portalCardRequestIdListToUpdate);
-//				createBusinessLog(
-//						BusinessLogAction.UPDATE_REQUEST_STATES,
-//						BusinessLogEntity.PORTAL,
-//						"System",
-//						EmsUtil.toJSON("portalCardRequestIds:"
-//								+ portalCardRequestIdListToUpdate),
-//						BusinessLogActionAttitude.T);
-//				jobLOGGER.info("Successfully updated card requests: "
-//						+ portalCardRequestIdListToUpdate);
-//				for (Long portalRequestId : portalCardRequestIdListToUpdate) {
-//					CardRequestTO cardRequestTO = getCardRequestDAO()
-//							.findByPortalRequestId(portalRequestId);
-//					getCardRequestHistoryDAO().create(
-//							cardRequestTO,
-//							"current state is "
-//									+ cardRequestTO.getState().name(),
-//							SystemId.PORTAL, null,
-//							CardRequestHistoryAction.SYNC_SUCCESS, null);
-//				}
-//			}
-//			if (EmsUtil.checkListSize(portalCardRequestIdListToWait)) {
-//				getCardRequestDAO().updateLockDatesAndFlag(
-//						portalCardRequestIdListToWait);
-//				createBusinessLog(
-//						BusinessLogAction.UPDATE_REQUEST_STATES,
-//						BusinessLogEntity.PORTAL,
-//						"System",
-//						EmsUtil.toJSON("portalCardRequestIds:"
-//								+ portalCardRequestIdListToWait),
-//						BusinessLogActionAttitude.F);
-//				jobLOGGER.error("Update card request failed for : "
-//						+ portalCardRequestIdListToWait);
-//				for (Long portalRequestId : portalCardRequestIdListToWait) {
-//					String result = "";
-//					String separator = System.getProperty("line.separator");
-//					String err = failedDetails.get(portalRequestId);
-//					if (err != null) {
-//						if (err.contains("PRT_D_CRI_016")) {
-//							try {
-//								int beginIndex = err
-//										.indexOf("State Transition");
-//								int endIndex = err.indexOf("Is Not Defined");
-//								result = err.substring(beginIndex,
-//										endIndex + 15);
-//							} catch (Exception e) {
-//								result = "PRT_D_CRI_016 - Undefined"
-//										+ separator + err.substring(0, Math.min(err.length(),100));
-//							}
-//						} else if (err.contains("PRT_D_CRI_008")) {
-//							try {
-//								int beginIndex = err.lastIndexOf("Caused by");
-//								int endIndex = err.indexOf(separator,
-//										beginIndex);
-//								result = "PRT_D_CRI_008" + separator
-//										+ err.substring(beginIndex, endIndex);
-//							} catch (Exception e) {
-//								result = "PRT_D_CRI_008 - Undefined"
-//										+ separator + err.substring(0, Math.min(err.length(),100));
-//							}
-//						} else {
-//							try {
-//								int beginIndex = err.lastIndexOf("Caused by");
-//								int endIndex = err.indexOf(separator,
-//										beginIndex);
-//								result = err.substring(beginIndex, endIndex);
-//							} catch (Exception e) {
-//								result = "Undefined-" + separator
-//										+ err.substring(0, Math.min(err.length(),100));
-//							}
-//						}
-//						if (result.length() > 255) {
-//							result = result.substring(0, 255);
-//						}
-//					}
-//					jobLOGGER.error("The error for portal_request_id =  "
-//							+ portalRequestId + " is : " + separator + err);
-//					CardRequestTO cardRequestTO = getCardRequestDAO()
-//							.findByPortalRequestId(portalRequestId);
-//					getCardRequestHistoryDAO().create(cardRequestTO, result,
-//							SystemId.PORTAL, null,
-//							CardRequestHistoryAction.SYNC_FAILED, null);
-//				}
-//			}
-//
-//		} catch (BaseException e) {
-//			sessionContext.setRollbackOnly();
-//			throw e;
-//		} catch (Exception e) {
-//			sessionContext.setRollbackOnly();
-//			throw new ServiceException(BizExceptionCode.PTL_014,
-//					BizExceptionCode.GLB_008_MSG, e);
-//		}
-//	}
+		try {
 
-//	@Override
-//	public List<Long> fetchReservationIds() throws BaseException {
-//		return getPortalReservationService().fetchReservationIds();
-//	}
+			List<SyncCardRequestWTO> syncCardRequestWTOList = getCardRequestDAO()
+					.getRequestListForUpdateState(batchIds);
+			List<ItemWTO> itemWTOList = getPortalRegistrationService()
+					.updateCardRequestsState(syncCardRequestWTOList);
+			sessionContext
+					.getBusinessObject(PortalManagementServiceLocal.class)
+					.updateState(syncCardRequestWTOList, itemWTOList);
+
+			return loopFlag;
+		} catch (ServiceException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.PTL_008,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+	}
+
+	@Override
+	@javax.ejb.TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public void updateState(List<SyncCardRequestWTO> syncCardRequestWTOList,
+			List<ItemWTO> itemWTOList) throws BaseException {
+		try {
+
+			List<Long> successfulIds = new ArrayList<Long>();
+			Map<Long, String> failedDetails = new HashMap<Long, String>();
+
+			List<Long> portalCardRequestIdListToUpdate = new ArrayList<Long>();
+			List<Long> portalCardRequestIdListToWait = new ArrayList<Long>();
+
+			if (EmsUtil.checkListSize(itemWTOList)) {
+				for (ItemWTO itemWTO : itemWTOList) {
+					if ("updated".equals(itemWTO.getValue())) {
+						successfulIds.add(Long.valueOf(itemWTO.getKey()));
+					} else {
+						failedDetails.put(Long.valueOf(itemWTO.getKey()),
+								itemWTO.getValue());
+					}
+				}
+			}
+
+			for (SyncCardRequestWTO syncCardRequestWTO : syncCardRequestWTOList) {
+				if (successfulIds.contains(syncCardRequestWTO.getId())) {
+					portalCardRequestIdListToUpdate.add(syncCardRequestWTO
+							.getId());
+				} else {
+					portalCardRequestIdListToWait.add(syncCardRequestWTO
+							.getId());
+				}
+			}
+
+			if (EmsUtil.checkListSize(portalCardRequestIdListToUpdate)) {
+				getCardRequestDAO().updateSyncDatesAndFlag(
+						portalCardRequestIdListToUpdate);
+				createBusinessLog(
+						BusinessLogAction.UPDATE_REQUEST_STATES,
+						BusinessLogEntity.PORTAL,
+						"System",
+						EmsUtil.toJSON("portalCardRequestIds:"
+								+ portalCardRequestIdListToUpdate),
+						BusinessLogActionAttitude.T);
+				jobLOGGER.info("Successfully updated card requests: "
+						+ portalCardRequestIdListToUpdate);
+				for (Long portalRequestId : portalCardRequestIdListToUpdate) {
+					CardRequestTO cardRequestTO = getCardRequestDAO()
+							.findByPortalRequestId(portalRequestId);
+					getCardRequestHistoryDAO().create(
+							cardRequestTO,
+							"current state is "
+									+ cardRequestTO.getState().name(),
+							SystemId.PORTAL, null,
+							CardRequestHistoryAction.SYNC_SUCCESS, null);
+				}
+			}
+			if (EmsUtil.checkListSize(portalCardRequestIdListToWait)) {
+				getCardRequestDAO().updateLockDatesAndFlag(
+						portalCardRequestIdListToWait);
+				createBusinessLog(
+						BusinessLogAction.UPDATE_REQUEST_STATES,
+						BusinessLogEntity.PORTAL,
+						"System",
+						EmsUtil.toJSON("portalCardRequestIds:"
+								+ portalCardRequestIdListToWait),
+						BusinessLogActionAttitude.F);
+				jobLOGGER.error("Update card request failed for : "
+						+ portalCardRequestIdListToWait);
+				for (Long portalRequestId : portalCardRequestIdListToWait) {
+					String result = "";
+					String separator = System.getProperty("line.separator");
+					String err = failedDetails.get(portalRequestId);
+					if (err != null) {
+						if (err.contains("PRT_D_CRI_016")) {
+							try {
+								int beginIndex = err
+										.indexOf("State Transition");
+								int endIndex = err.indexOf("Is Not Defined");
+								result = err.substring(beginIndex,
+										endIndex + 15);
+							} catch (Exception e) {
+								result = "PRT_D_CRI_016 - Undefined"
+										+ separator + err.substring(0, Math.min(err.length(),100));
+							}
+						} else if (err.contains("PRT_D_CRI_008")) {
+							try {
+								int beginIndex = err.lastIndexOf("Caused by");
+								int endIndex = err.indexOf(separator,
+										beginIndex);
+								result = "PRT_D_CRI_008" + separator
+										+ err.substring(beginIndex, endIndex);
+							} catch (Exception e) {
+								result = "PRT_D_CRI_008 - Undefined"
+										+ separator + err.substring(0, Math.min(err.length(),100));
+							}
+						} else {
+							try {
+								int beginIndex = err.lastIndexOf("Caused by");
+								int endIndex = err.indexOf(separator,
+										beginIndex);
+								result = err.substring(beginIndex, endIndex);
+							} catch (Exception e) {
+								result = "Undefined-" + separator
+										+ err.substring(0, Math.min(err.length(),100));
+							}
+						}
+						if (result.length() > 255) {
+							result = result.substring(0, 255);
+						}
+					}
+					jobLOGGER.error("The error for portal_request_id =  "
+							+ portalRequestId + " is : " + separator + err);
+					CardRequestTO cardRequestTO = getCardRequestDAO()
+							.findByPortalRequestId(portalRequestId);
+					getCardRequestHistoryDAO().create(cardRequestTO, result,
+							SystemId.PORTAL, null,
+							CardRequestHistoryAction.SYNC_FAILED, null);
+				}
+			}
+
+		} catch (BaseException e) {
+			sessionContext.setRollbackOnly();
+			throw e;
+		} catch (Exception e) {
+			sessionContext.setRollbackOnly();
+			throw new ServiceException(BizExceptionCode.PTL_014,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+	}
+
+	@Override
+	public List<Long> fetchReservationIds() throws BaseException {
+		return getPortalReservationService().fetchReservationIds();
+	}
 
 	/**
 	 * The method doActivityForReservations is used to get a number of
@@ -560,167 +560,167 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 * @throws com.gam.commons.core.BaseException
 	 * @deprecated {@link PortalManagementServiceImpl#transferReservationsToEMSAndDoEstelam2(List)}
 	 */
-//	@Override
+	@Override
 	// @BizLoggable(logAction = "FETCH_RESERVATION_INFO", logEntityName =
 	// "PORTAL", logActor = "System")
-//	@TransactionAttribute(TransactionAttributeType.NEVER)
-//	public Boolean doActivityForReservations(List<Long> reservationIds)
-//			throws BaseException {
-//		boolean loopFlag = true;
-//
-//		List<ReservationTO> reservationTOList = getPortalReservationService()
-//				.transferReservations(reservationIds);
-//
-//		HashMap<Long, Long> cardRequestTOIdsForUpdateOffice = new HashMap<Long, Long>();
-//		List<Long> cardRequestTOIdsForUpdateState = new ArrayList<Long>();
-//		HashMap<Long, Date> cardRequestTOIdsForUpdateReEnrolledDate = new HashMap<Long, Date>();
-//		List<Long> portalReserveTOIds = new ArrayList<Long>();
-//
-//		if (reservationTOList != null && !reservationTOList.isEmpty()) {
-//
-//			for (ReservationTO reservationTO : reservationTOList) {
-//				try {
-//					ReservationVTO reservationVTO = reserve(reservationTO);
-//
-//					getCardRequestHistoryDAO().create(
-//							reservationTO.getCardRequest(),
-//							"Reservation Date: "
-//									+ DateUtil.convert(reservationTO.getDate(),
-//											DateUtil.JALALI), SystemId.PORTAL,
-//							null, CardRequestHistoryAction.TRANSFER_RESERVE,
-//							null);
-//
-//					if (reservationVTO.getCardRequestTOIdForUpdateState() != null) {
-//						cardRequestTOIdsForUpdateOffice.put(reservationVTO
-//								.getCardRequestTOIdForUpdateState(),
-//								reservationTO.getEnrollmentOffice().getId());
-//						cardRequestTOIdsForUpdateState.add(reservationVTO
-//								.getCardRequestTOIdForUpdateState());
-//					}
-//					if (reservationVTO
-//							.getCardRequestTOIdForUpdateReEnrolledDate() != null)
-//						// cardRequestTOIdsForUpdateReEnrolledDate.add(reservationVTO.getCardRequestTOIdForUpdateReEnrolledDate());
-//						cardRequestTOIdsForUpdateReEnrolledDate
-//								.put(reservationVTO
-//										.getCardRequestTOIdForUpdateReEnrolledDate(),
-//										reservationVTO.getReservationDate());
-//					if (reservationVTO.getPortalReserveTOId() != null)
-//						portalReserveTOIds.add(reservationVTO
-//								.getPortalReserveTOId());
-//				} catch (BaseException e) {
-//					logger.error(e.getExceptionCode() + " : " + e.getMessage(),
-//							e);
-//				} catch (Exception e) {
-//					logger.error(BizExceptionCode.PTL_009 + " : "
-//							+ BizExceptionCode.GLB_008_MSG, e);
-//				}
-//			}
-//
-//			if (EmsUtil.checkListSize(cardRequestTOIdsForUpdateState)
-//					&& !cardRequestTOIdsForUpdateState.isEmpty()) {
-//				getCardRequestDAO().updateCardRequestsState(
-//						cardRequestTOIdsForUpdateState,
-//						CardRequestState.RESERVED);
-//				for (Long cardRequestId : cardRequestTOIdsForUpdateState)
-//					getCardRequestDAO().updateCardRequestOfficeId(
-//							cardRequestId,
-//							cardRequestTOIdsForUpdateOffice.get(cardRequestId));
-//			}
-//			if (EmsUtil.checkMapSize(cardRequestTOIdsForUpdateReEnrolledDate)) {
-//				for (Long cardRequestTOIdForUpdateReEnrolledDate : cardRequestTOIdsForUpdateReEnrolledDate
-//						.keySet()) {
-//					getCardRequestDAO()
-//							.updateReEnrolledDateByCardRequestId(
-//									cardRequestTOIdForUpdateReEnrolledDate,
-//									cardRequestTOIdsForUpdateReEnrolledDate
-//											.get(cardRequestTOIdForUpdateReEnrolledDate));
-//				}
-//			}
-//
-//			if (EmsUtil.checkListSize(portalReserveTOIds))
-//				getPortalReservationService().receivedByEMS(portalReserveTOIds);
-//		} else {
-//			loopFlag = false;
-//		}
-//
-//		createBusinessLog(BusinessLogAction.FETCH_RESERVATION_INFO,
-//				BusinessLogEntity.PORTAL, "System",
-//				EmsUtil.toJSON("cardRequestTOIds:" + portalReserveTOIds),
-//				BusinessLogActionAttitude.T);
-//
-//		return loopFlag;
-//
-//	}
+	@TransactionAttribute(TransactionAttributeType.NEVER)
+	public Boolean doActivityForReservations(List<Long> reservationIds)
+			throws BaseException {
+		boolean loopFlag = true;
 
-//	@Override
-//	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-//	List<Long> reservationIdsList) throws BaseException {
-//
-//		List<ReservationTO> reservationTOList = getPortalReservationService()
-//				.transferReservations(reservationIdsList);
-//
-//		List<Long> emsCardRequestIds = new ArrayList<Long>();
-//		List<Long> portalReservationIds = new ArrayList<Long>();
-//
-//		for (ReservationTO reservationTo : reservationTOList) {
-//			try {
-//				logger.info("******************  Going for transer card request id : "
-//						+ reservationTo.getId() + "******************");
-//				// List<Long> reservationList = new ArrayList<Long>();
-//				// reservationList.add(reservationId);
-//				Boolean transferReservationsToEMSResult = sessionContext
-//						.getBusinessObject(PortalManagementServiceLocal.class)
-//						.transferReservationsToEMS(reservationTo);
-//				if (transferReservationsToEMSResult) {
-//					emsCardRequestIds.add(reservationTo.getCardRequest()
-//							.getId());
-//					portalReservationIds.add(reservationTo
-//							.getPortalReservationId());
-//					logger.info("******************  Going for estelam2 card request id : "
-//							+ reservationTo.getId() + "******************");
-//				}
-//			} catch (Exception e) {
-//				logger.error(BizExceptionCode.PTL_023 + " : "
-//						+ BizExceptionCode.PTL_012_MSG + " = "
-//						+ reservationTo.getCardRequest().getId(), e);
-//			}
-//		}
-//
-//		if (EmsUtil.checkListSize(portalReservationIds)) {
-//			getPortalReservationService().receivedByEMS(portalReservationIds);
-//		}
-//
-//		// if (!emsCardRequestIds.isEmpty()) {
-//		// for (Long cardRequestId : emsCardRequestIds) {
-//		// try {
-//		// getCardRequestService().doEstelam2(cardRequestId);
-//		// } catch (Exception e) {
-//		// logger.error(BizExceptionCode.PTL_020 + " : " +
-//		// BizExceptionCode.GLB_027_MSG + cardRequestId, e);
-//		// }
-//		// }
-//		// }
-//		return !emsCardRequestIds.isEmpty();
-//	}public Boolean transferReservationsToEMSAndDoEstelam2(
+		List<ReservationTO> reservationTOList = getPortalReservationService()
+				.transferReservations(reservationIds);
 
-//
-//	 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-//	 @Override
-//	 public void doEstelam2ForReservations(List<Long> reservationIdsList)
-//	 throws BaseException {
-//	 for (Long portalReservationId : reservationIdsList) {
-//	 Long cardRequestId = null;
-//	 try {
-//	 ReservationTO reservationTO =
-//	 getReservationDAO().fetchReservationByPortalReservationId(portalReservationId);
-//	 cardRequestId = reservationTO.getCardRequest().getId();
-//	 getCardRequestService().doEstelam2(cardRequestId);
-//	 } catch (Exception e) {
-//	 logger.error(BizExceptionCode.PTL_020 + " : " +
-//	 BizExceptionCode.GLB_027_MSG + cardRequestId, e);
-//	 }
-//	 }
-//	 }
+		HashMap<Long, Long> cardRequestTOIdsForUpdateOffice = new HashMap<Long, Long>();
+		List<Long> cardRequestTOIdsForUpdateState = new ArrayList<Long>();
+		HashMap<Long, Date> cardRequestTOIdsForUpdateReEnrolledDate = new HashMap<Long, Date>();
+		List<Long> portalReserveTOIds = new ArrayList<Long>();
+
+		if (reservationTOList != null && !reservationTOList.isEmpty()) {
+
+			for (ReservationTO reservationTO : reservationTOList) {
+				try {
+					ReservationVTO reservationVTO = reserve(reservationTO);
+
+					getCardRequestHistoryDAO().create(
+							reservationTO.getCardRequest(),
+							"Reservation Date: "
+									+ DateUtil.convert(reservationTO.getDate(),
+											DateUtil.JALALI), SystemId.PORTAL,
+							null, CardRequestHistoryAction.TRANSFER_RESERVE,
+							null);
+
+					if (reservationVTO.getCardRequestTOIdForUpdateState() != null) {
+						cardRequestTOIdsForUpdateOffice.put(reservationVTO
+								.getCardRequestTOIdForUpdateState(),
+								reservationTO.getEnrollmentOffice().getId());
+						cardRequestTOIdsForUpdateState.add(reservationVTO
+								.getCardRequestTOIdForUpdateState());
+					}
+					if (reservationVTO
+							.getCardRequestTOIdForUpdateReEnrolledDate() != null)
+						// cardRequestTOIdsForUpdateReEnrolledDate.add(reservationVTO.getCardRequestTOIdForUpdateReEnrolledDate());
+						cardRequestTOIdsForUpdateReEnrolledDate
+								.put(reservationVTO
+										.getCardRequestTOIdForUpdateReEnrolledDate(),
+										reservationVTO.getReservationDate());
+					if (reservationVTO.getPortalReserveTOId() != null)
+						portalReserveTOIds.add(reservationVTO
+								.getPortalReserveTOId());
+				} catch (BaseException e) {
+					logger.error(e.getExceptionCode() + " : " + e.getMessage(),
+							e);
+				} catch (Exception e) {
+					logger.error(BizExceptionCode.PTL_009 + " : "
+							+ BizExceptionCode.GLB_008_MSG, e);
+				}
+			}
+
+			if (EmsUtil.checkListSize(cardRequestTOIdsForUpdateState)
+					&& !cardRequestTOIdsForUpdateState.isEmpty()) {
+				getCardRequestDAO().updateCardRequestsState(
+						cardRequestTOIdsForUpdateState,
+						CardRequestState.RESERVED);
+				for (Long cardRequestId : cardRequestTOIdsForUpdateState)
+					getCardRequestDAO().updateCardRequestOfficeId(
+							cardRequestId,
+							cardRequestTOIdsForUpdateOffice.get(cardRequestId));
+			}
+			if (EmsUtil.checkMapSize(cardRequestTOIdsForUpdateReEnrolledDate)) {
+				for (Long cardRequestTOIdForUpdateReEnrolledDate : cardRequestTOIdsForUpdateReEnrolledDate
+						.keySet()) {
+					getCardRequestDAO()
+							.updateReEnrolledDateByCardRequestId(
+									cardRequestTOIdForUpdateReEnrolledDate,
+									cardRequestTOIdsForUpdateReEnrolledDate
+											.get(cardRequestTOIdForUpdateReEnrolledDate));
+				}
+			}
+
+			if (EmsUtil.checkListSize(portalReserveTOIds))
+				getPortalReservationService().receivedByEMS(portalReserveTOIds);
+		} else {
+			loopFlag = false;
+		}
+
+		createBusinessLog(BusinessLogAction.FETCH_RESERVATION_INFO,
+				BusinessLogEntity.PORTAL, "System",
+				EmsUtil.toJSON("cardRequestTOIds:" + portalReserveTOIds),
+				BusinessLogActionAttitude.T);
+
+		return loopFlag;
+
+	}
+
+	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Boolean transferReservationsToEMSAndDoEstelam2(
+			List<Long> reservationIdsList) throws BaseException {
+
+		List<ReservationTO> reservationTOList = getPortalReservationService()
+				.transferReservations(reservationIdsList);
+
+		List<Long> emsCardRequestIds = new ArrayList<Long>();
+		List<Long> portalReservationIds = new ArrayList<Long>();
+
+		for (ReservationTO reservationTo : reservationTOList) {
+			try {
+				logger.info("******************  Going for transer card request id : "
+						+ reservationTo.getId() + "******************");
+				// List<Long> reservationList = new ArrayList<Long>();
+				// reservationList.add(reservationId);
+				Boolean transferReservationsToEMSResult = sessionContext
+						.getBusinessObject(PortalManagementServiceLocal.class)
+						.transferReservationsToEMS(reservationTo);
+				if (transferReservationsToEMSResult) {
+					emsCardRequestIds.add(reservationTo.getCardRequest()
+							.getId());
+					portalReservationIds.add(reservationTo
+							.getPortalReservationId());
+					logger.info("******************  Going for estelam2 card request id : "
+							+ reservationTo.getId() + "******************");
+				}
+			} catch (Exception e) {
+				logger.error(BizExceptionCode.PTL_023 + " : "
+						+ BizExceptionCode.PTL_012_MSG + " = "
+						+ reservationTo.getCardRequest().getId(), e);
+			}
+		}
+
+		if (EmsUtil.checkListSize(portalReservationIds)) {
+			getPortalReservationService().receivedByEMS(portalReservationIds);
+		}
+
+		// if (!emsCardRequestIds.isEmpty()) {
+		// for (Long cardRequestId : emsCardRequestIds) {
+		// try {
+		// getCardRequestService().doEstelam2(cardRequestId);
+		// } catch (Exception e) {
+		// logger.error(BizExceptionCode.PTL_020 + " : " +
+		// BizExceptionCode.GLB_027_MSG + cardRequestId, e);
+		// }
+		// }
+		// }
+		return !emsCardRequestIds.isEmpty();
+	}
+
+	// @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	// @Override
+	// public void doEstelam2ForReservations(List<Long> reservationIdsList)
+	// throws BaseException {
+	// for (Long portalReservationId : reservationIdsList) {
+	// Long cardRequestId = null;
+	// try {
+	// ReservationTO reservationTO =
+	// getReservationDAO().fetchReservationByPortalReservationId(portalReservationId);
+	// cardRequestId = reservationTO.getCardRequest().getId();
+	// getCardRequestService().doEstelam2(cardRequestId);
+	// } catch (Exception e) {
+	// logger.error(BizExceptionCode.PTL_020 + " : " +
+	// BizExceptionCode.GLB_027_MSG + cardRequestId, e);
+	// }
+	// }
+	// }
 
 	/**
 	 * T1 Method
@@ -729,134 +729,134 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 * @return
 	 * @throws BaseException
 	 */
-//	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-//	@Override
-//	public Boolean transferReservationsToEMS(ReservationTO reservationTO)
-//			throws BaseException {
-//		boolean loopFlag = true;
-//
-//		HashMap<Long, Long> cardRequestTOIdsForUpdateOffice = new HashMap<Long, Long>();
-//		List<Long> cardRequestTOIdsForUpdateState = new ArrayList<Long>();
-//		HashMap<Long, Date> cardRequestTOIdsForUpdateReEnrolledDate = new HashMap<Long, Date>();
-//		List<Long> portalReserveTOIds = new ArrayList<Long>();
-//
-//		// if (reservationTOList != null && !reservationTOList.isEmpty()) {
-//		// ReservationTO reservationTO = reservationTOList.get(0);
-//
-//		// for (ReservationTO reservationTO : reservationTOList) {
-//		try {
-//
-//			CardRequestState toState = reservationTO.getCardRequest()
-//					.getState();
-//			CardRequestTO emsCardRequest = getCardRequestDAO()
-//					.findByPortalRequestId(
-//							reservationTO.getCardRequest().getPortalRequestId());
-//			if (emsCardRequest != null) {
-//				CardRequestState fromState = emsCardRequest.getState();
-//				if (!CardRequestState.checkStateChangeValidation(fromState,
-//						toState)) {
-//					// getCardRequestService().increamentPriorityForSyncJob(emsCardRequest.getId());
-//					throw new BaseException(BizExceptionCode.PTL_022,
-//							BizExceptionCode.PTL_011_MSG + " from state "
-//									+ fromState + " to state " + toState);
-//				}
-//			}
-//
-//			ReservationVTO reservationVTO = null;
-//
-//			if (CardRequestState.REFERRED_TO_CCOS.equals(reservationTO
-//					.getCardRequest().getState())
-//					|| CardRequestState.DOCUMENT_AUTHENTICATED
-//							.equals(reservationTO.getCardRequest().getState())) {
-//				reservationVTO = reserve(reservationTO);
-//			} else {
-//				reservationVTO = newReserve(reservationTO);
-//			}
-//
-//			// transfer reserve old
-//
-//			if (reservationVTO.getCardRequestTOIdForUpdateState() != null) {
-//				cardRequestTOIdsForUpdateOffice.put(
-//						reservationVTO.getCardRequestTOIdForUpdateState(),
-//						reservationTO.getEnrollmentOffice().getId());
-//				cardRequestTOIdsForUpdateState.add(reservationVTO
-//						.getCardRequestTOIdForUpdateState());
-//			}
-//			if (reservationVTO.getCardRequestTOIdForUpdateReEnrolledDate() != null)
-//				// cardRequestTOIdsForUpdateReEnrolledDate.add(reservationVTO.getCardRequestTOIdForUpdateReEnrolledDate());
-//				cardRequestTOIdsForUpdateReEnrolledDate.put(reservationVTO
-//						.getCardRequestTOIdForUpdateReEnrolledDate(),
-//						reservationVTO.getReservationDate());
-//			if (reservationVTO.getPortalReserveTOId() != null)
-//				portalReserveTOIds.add(reservationVTO.getPortalReserveTOId());
-//
-//			if (EmsUtil.checkListSize(cardRequestTOIdsForUpdateState)
-//					&& !cardRequestTOIdsForUpdateState.isEmpty()) {
-//				// for old requests which have been transfered to EMS and now
-//				// their reservation has arrived!
-//				getCardRequestDAO().updateCardRequestsState(
-//						cardRequestTOIdsForUpdateState,
-//						CardRequestState.RESERVED);
-//				getCardRequestDAO().readyEstelam2Flag(
-//						cardRequestTOIdsForUpdateState);
-//				for (Long cardRequestId : cardRequestTOIdsForUpdateState)
-//					getCardRequestDAO().updateCardRequestOfficeId(
-//							cardRequestId,
-//							cardRequestTOIdsForUpdateOffice.get(cardRequestId));
-//			}
-//			if (EmsUtil.checkMapSize(cardRequestTOIdsForUpdateReEnrolledDate)) {
-//				getCardRequestDAO().readyEstelam2Flag(
-//						new ArrayList<Long>(
-//								cardRequestTOIdsForUpdateReEnrolledDate
-//										.keySet()));
-//				for (Long cardRequestTOIdForUpdateReEnrolledDate : cardRequestTOIdsForUpdateReEnrolledDate
-//						.keySet()) {
-//					getCardRequestDAO()
-//							.updateReEnrolledDateByCardRequestId(
-//									cardRequestTOIdForUpdateReEnrolledDate,
-//									cardRequestTOIdsForUpdateReEnrolledDate
-//											.get(cardRequestTOIdForUpdateReEnrolledDate));
-//				}
-//			}
-//
-//			getCardRequestHistoryDAO().create(
-//					reservationTO.getCardRequest(),
-//					"Reservation Date: "
-//							+ DateUtil.convert(reservationTO.getDate(),
-//									DateUtil.JALALI), SystemId.PORTAL, null,
-//					CardRequestHistoryAction.TRANSFER_RESERVE, null);
-//
-//			// } else {
-//			// loopFlag = false;
-//			// }
-//
-//			createBusinessLog(BusinessLogAction.FETCH_RESERVATION_INFO,
-//					BusinessLogEntity.PORTAL, "System",
-//					EmsUtil.toJSON("cardRequestTOIds:" + portalReserveTOIds),
-//					BusinessLogActionAttitude.T);
-//
-//		} catch (BaseException e) {
-//			loopFlag = false;
-//			logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
-//			if (!BizExceptionCode.PTL_022.equals(e.getExceptionCode())) {
-//				sessionContext.setRollbackOnly();
-//			}
-//		} catch (Exception e) {
-//			loopFlag = false;
-//			logger.error(BizExceptionCode.PTL_009 + " : "
-//					+ BizExceptionCode.GLB_008_MSG, e);
-//			sessionContext.setRollbackOnly();
-//		}
-//		// }
-//
-//		// if (loopFlag){
-//		// if (EmsUtil.checkListSize(portalReserveTOIds)){
-//		// getPortalReservationService().receivedByEMS(portalReserveTOIds);
-//		// }
-//		// }
-//
-//		return loopFlag;
-//	}
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@Override
+	public Boolean transferReservationsToEMS(ReservationTO reservationTO)
+			throws BaseException {
+		boolean loopFlag = true;
+
+		HashMap<Long, Long> cardRequestTOIdsForUpdateOffice = new HashMap<Long, Long>();
+		List<Long> cardRequestTOIdsForUpdateState = new ArrayList<Long>();
+		HashMap<Long, Date> cardRequestTOIdsForUpdateReEnrolledDate = new HashMap<Long, Date>();
+		List<Long> portalReserveTOIds = new ArrayList<Long>();
+
+		// if (reservationTOList != null && !reservationTOList.isEmpty()) {
+		// ReservationTO reservationTO = reservationTOList.get(0);
+
+		// for (ReservationTO reservationTO : reservationTOList) {
+		try {
+
+			CardRequestState toState = reservationTO.getCardRequest()
+					.getState();
+			CardRequestTO emsCardRequest = getCardRequestDAO()
+					.findByPortalRequestId(
+							reservationTO.getCardRequest().getPortalRequestId());
+			if (emsCardRequest != null) {
+				CardRequestState fromState = emsCardRequest.getState();
+				if (!CardRequestState.checkStateChangeValidation(fromState,
+						toState)) {
+					// getCardRequestService().increamentPriorityForSyncJob(emsCardRequest.getId());
+					throw new BaseException(BizExceptionCode.PTL_022,
+							BizExceptionCode.PTL_011_MSG + " from state "
+									+ fromState + " to state " + toState);
+				}
+			}
+
+			ReservationVTO reservationVTO = null;
+
+			if (CardRequestState.REFERRED_TO_CCOS.equals(reservationTO
+					.getCardRequest().getState())
+					|| CardRequestState.DOCUMENT_AUTHENTICATED
+							.equals(reservationTO.getCardRequest().getState())) {
+				reservationVTO = reserve(reservationTO);
+			} else {
+				reservationVTO = newReserve(reservationTO);
+			}
+
+			// transfer reserve old
+
+			if (reservationVTO.getCardRequestTOIdForUpdateState() != null) {
+				cardRequestTOIdsForUpdateOffice.put(
+						reservationVTO.getCardRequestTOIdForUpdateState(),
+						reservationTO.getEnrollmentOffice().getId());
+				cardRequestTOIdsForUpdateState.add(reservationVTO
+						.getCardRequestTOIdForUpdateState());
+			}
+			if (reservationVTO.getCardRequestTOIdForUpdateReEnrolledDate() != null)
+				// cardRequestTOIdsForUpdateReEnrolledDate.add(reservationVTO.getCardRequestTOIdForUpdateReEnrolledDate());
+				cardRequestTOIdsForUpdateReEnrolledDate.put(reservationVTO
+						.getCardRequestTOIdForUpdateReEnrolledDate(),
+						reservationVTO.getReservationDate());
+			if (reservationVTO.getPortalReserveTOId() != null)
+				portalReserveTOIds.add(reservationVTO.getPortalReserveTOId());
+
+			if (EmsUtil.checkListSize(cardRequestTOIdsForUpdateState)
+					&& !cardRequestTOIdsForUpdateState.isEmpty()) {
+				// for old requests which have been transfered to EMS and now
+				// their reservation has arrived!
+				getCardRequestDAO().updateCardRequestsState(
+						cardRequestTOIdsForUpdateState,
+						CardRequestState.RESERVED);
+				getCardRequestDAO().readyEstelam2Flag(
+						cardRequestTOIdsForUpdateState);
+				for (Long cardRequestId : cardRequestTOIdsForUpdateState)
+					getCardRequestDAO().updateCardRequestOfficeId(
+							cardRequestId,
+							cardRequestTOIdsForUpdateOffice.get(cardRequestId));
+			}
+			if (EmsUtil.checkMapSize(cardRequestTOIdsForUpdateReEnrolledDate)) {
+				getCardRequestDAO().readyEstelam2Flag(
+						new ArrayList<Long>(
+								cardRequestTOIdsForUpdateReEnrolledDate
+										.keySet()));
+				for (Long cardRequestTOIdForUpdateReEnrolledDate : cardRequestTOIdsForUpdateReEnrolledDate
+						.keySet()) {
+					getCardRequestDAO()
+							.updateReEnrolledDateByCardRequestId(
+									cardRequestTOIdForUpdateReEnrolledDate,
+									cardRequestTOIdsForUpdateReEnrolledDate
+											.get(cardRequestTOIdForUpdateReEnrolledDate));
+				}
+			}
+
+			getCardRequestHistoryDAO().create(
+					reservationTO.getCardRequest(),
+					"Reservation Date: "
+							+ DateUtil.convert(reservationTO.getDate(),
+									DateUtil.JALALI), SystemId.PORTAL, null,
+					CardRequestHistoryAction.TRANSFER_RESERVE, null);
+
+			// } else {
+			// loopFlag = false;
+			// }
+
+			createBusinessLog(BusinessLogAction.FETCH_RESERVATION_INFO,
+					BusinessLogEntity.PORTAL, "System",
+					EmsUtil.toJSON("cardRequestTOIds:" + portalReserveTOIds),
+					BusinessLogActionAttitude.T);
+
+		} catch (BaseException e) {
+			loopFlag = false;
+			logger.error(e.getExceptionCode() + " : " + e.getMessage(), e);
+			if (!BizExceptionCode.PTL_022.equals(e.getExceptionCode())) {
+				sessionContext.setRollbackOnly();
+			}
+		} catch (Exception e) {
+			loopFlag = false;
+			logger.error(BizExceptionCode.PTL_009 + " : "
+					+ BizExceptionCode.GLB_008_MSG, e);
+			sessionContext.setRollbackOnly();
+		}
+		// }
+
+		// if (loopFlag){
+		// if (EmsUtil.checkListSize(portalReserveTOIds)){
+		// getPortalReservationService().receivedByEMS(portalReserveTOIds);
+		// }
+		// }
+
+		return loopFlag;
+	}
 
 	@javax.ejb.TransactionAttribute(TransactionAttributeType.REQUIRED)
 	private ReservationVTO newReserve(ReservationTO reservationTO)
@@ -1073,11 +1073,11 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 			for (CardRequestTO crq : cardRequestTOList) {
 				CitizenInfoTO citizenInfoTO = citizenInfoDAO.getCitizenInfoById(crq.getCitizen().getId());
 				crq.getCitizen().setCitizenInfo(citizenInfoTO);
-//				CardRequestWTO cardRequestWTO = CardRequestMapper.convert(crq);
-//				Long portalRequestId = getPortalRegistrationService()
-//						.updateCcosCardRequests(cardRequestWTO);
-//				cardRequestDAO.updatePortalCardRequestId(crq.getId(),
-//						portalRequestId);
+				CardRequestWTO cardRequestWTO = CardRequestMapper.convert(crq);
+				Long portalRequestId = getPortalRegistrationService()
+						.updateCcosCardRequests(cardRequestWTO);
+				cardRequestDAO.updatePortalCardRequestId(crq.getId(),
+						portalRequestId);
 				cardRequestTOIdsForLog.add(crq.getId());
 			}
 		} catch (BaseException e) {
@@ -1103,34 +1103,34 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	 * @throws com.gam.commons.core.BaseException
 	 * 
 	 */
-//	@Override
-//	@BizLoggable(logAction = "UPDATE_PROVINCE_LIST", logEntityName = "PORTAL", logActor = "System")
-//	public String notifyPortalAboutModifiedProvinces(LocationType locationType,
-//			Integer from, Integer to) throws BaseException {
-//		LocationDAO locationDAO = getLocationDAO();
-//
-//		List<LocationTO> locationTOList = locationDAO
-//				.findModifiedLocationsByType(locationType, from, to - from);
-//
-//		List<Long> updatedLocationIdList = new ArrayList<Long>();
-//
-//		if (locationTOList != null && !locationTOList.isEmpty()) {
-//			updatedLocationIdList = getPortalBaseInfoService().updateLocations(
-//					locationTOList);
-//
-//			locationDAO.updateModifiedFields(updatedLocationIdList,
-//					Boolean.FALSE);
-//		}
-//
-//		return EmsUtil.toJSON("updatedLocationIdList:" + updatedLocationIdList);
-//	}
+	@Override
+	@BizLoggable(logAction = "UPDATE_PROVINCE_LIST", logEntityName = "PORTAL", logActor = "System")
+	public String notifyPortalAboutModifiedProvinces(LocationType locationType,
+			Integer from, Integer to) throws BaseException {
+		LocationDAO locationDAO = getLocationDAO();
 
-//	@Override
-//	public List<Long> fetchPortalCardRequestIdsForTransfer()
-//			throws BaseException {
-//		return getPortalRegistrationService()
-//				.fetchPortalCardRequestIdsForTransfer();
-//	}
+		List<LocationTO> locationTOList = locationDAO
+				.findModifiedLocationsByType(locationType, from, to - from);
+
+		List<Long> updatedLocationIdList = new ArrayList<Long>();
+
+		if (locationTOList != null && !locationTOList.isEmpty()) {
+			updatedLocationIdList = getPortalBaseInfoService().updateLocations(
+					locationTOList);
+
+			locationDAO.updateModifiedFields(updatedLocationIdList,
+					Boolean.FALSE);
+		}
+
+		return EmsUtil.toJSON("updatedLocationIdList:" + updatedLocationIdList);
+	}
+
+	@Override
+	public List<Long> fetchPortalCardRequestIdsForTransfer()
+			throws BaseException {
+		return getPortalRegistrationService()
+				.fetchPortalCardRequestIdsForTransfer();
+	}
 
 	/**
 	 * The method transferNotVerifiedMESRequestsToPortal is used to transfer the
@@ -1161,14 +1161,14 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 				returnFlag = false;
 
 			} else {
-//				for (CardRequestTO cardRequestTO : cardRequestTOList) {
-//					CitizenWTO citizenWTO = CardRequestMapper
-//							.convertToCitizenWTO(cardRequestTO);
-//					Long portalRequestId = getPortalRegistrationService()
-//							.updateNotVerifiedMESRequest(citizenWTO);
-//					cardRequestTO.setPortalRequestId(portalRequestId);
-//					cardRequestTOIdsForLog.add(cardRequestTO.getId());
-//				}
+				for (CardRequestTO cardRequestTO : cardRequestTOList) {
+					CitizenWTO citizenWTO = CardRequestMapper
+							.convertToCitizenWTO(cardRequestTO);
+					Long portalRequestId = getPortalRegistrationService()
+							.updateNotVerifiedMESRequest(citizenWTO);
+					cardRequestTO.setPortalRequestId(portalRequestId);
+					cardRequestTOIdsForLog.add(cardRequestTO.getId());
+				}
 			}
 
 		} catch (BaseException e) {
@@ -1184,10 +1184,10 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 		return returnFlag;
 	}
 
-//	@Override
-//	public List<Long> fetchRequestedSmsIds() throws BaseException {
-//		return getPortalSmsService().retrieveRequestedSms();
-//	}
+	@Override
+	public List<Long> fetchRequestedSmsIds() throws BaseException {
+		return getPortalSmsService().retrieveRequestedSms();
+	}
 
 	@Override
 	public void addRequestedSms(Long portalCardRequestId) throws BaseException {
@@ -1222,29 +1222,29 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	}
 
 	// Anbari
-//	@Override
-//	public void notifyPortalRezervationFreeTime(List<Long> eofIds, Long date)
-//			throws BaseException {
-//		getPortalBaseInfoService()
-//				.notifyPortalRezervationFreeTime(eofIds, date);
-//
-//	}
+	@Override
+	public void notifyPortalRezervationFreeTime(List<Long> eofIds, Long date)
+			throws BaseException {
+		getPortalBaseInfoService()
+				.notifyPortalRezervationFreeTime(eofIds, date);
+
+	}
 
 	// Anbari
-//	public int deleteReservationDateFromOfficeRSVFreeTime(Long dateForDelete)
-//			throws BaseException {
-//		return getPortalBaseInfoService()
-//				.deleteReservationDateFromOfficeRSVFreeTime(dateForDelete);
-//	}
+	public int deleteReservationDateFromOfficeRSVFreeTime(Long dateForDelete)
+			throws BaseException {
+		return getPortalBaseInfoService()
+				.deleteReservationDateFromOfficeRSVFreeTime(dateForDelete);
+	}
 
-//	@Override
-//	@Asynchronous
-//	public Future syncResevationFreeTimeByNewRating(Long eofId,
-//			RatingInfoTO ratingInfo,String newCalender) throws BaseException {
-//		getPortalBaseInfoService().syncResevationFreeTimeByNewRating(eofId,
-//				ratingInfo,newCalender);
-//		return new AsyncResult("");
-//	}
+	@Override
+	@Asynchronous
+	public Future syncResevationFreeTimeByNewRating(Long eofId,
+			RatingInfoTO ratingInfo,String newCalender) throws BaseException {
+		getPortalBaseInfoService().syncResevationFreeTimeByNewRating(eofId,
+				ratingInfo,newCalender);
+		return new AsyncResult("");
+	}
 
 	//Madanipour
 	@Override

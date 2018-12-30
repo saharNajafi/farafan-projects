@@ -92,9 +92,9 @@ public interface RegistrationService extends Service {
      *
      * @throws BaseException
      */
-//    public Boolean fetchPortalCardRequestsToSave(List<Long> portalCardRequestIds) throws BaseException;
+    public Boolean fetchPortalCardRequestsToSave(List<Long> portalCardRequestIds) throws BaseException;
 
-//    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException;
+    public List<Long> fetchPortalCardRequestIdsForTransfer() throws BaseException;
 
     public CertificateTO getCertificateByUsage(CertificateUsage ccosCer) throws BaseException;
 

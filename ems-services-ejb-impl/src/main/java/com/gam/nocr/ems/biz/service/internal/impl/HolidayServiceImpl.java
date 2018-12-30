@@ -1,12 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Permissions;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -21,6 +14,12 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.HolidayDAO;
 import com.gam.nocr.ems.data.domain.HolidayTO;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: Soheil Toodeh Fallah (fallah@gamelectronics.com)
@@ -121,8 +120,8 @@ public class HolidayServiceImpl extends EMSAbstractService implements
 
 		}
 
-//		if (EmsUtil.checkListSize(holidayTOList))
-//			getPortalBaseInfoService().updateHoliday(holidayTOList);
+		if (EmsUtil.checkListSize(holidayTOList))
+			getPortalBaseInfoService().updateHoliday(holidayTOList);
 		if (EmsUtil.checkListSize(holidayChangeList))
 			getHolidayDAO().notifyUpdateHolidays(holidayChangeList);
 		if (EmsUtil.checkListSize(holidayRemoveList))

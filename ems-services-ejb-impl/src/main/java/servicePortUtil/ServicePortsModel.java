@@ -7,7 +7,6 @@ import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.portal.BasicInfoWS;
 import com.gam.nocr.ems.biz.service.external.client.portal.RegistrationWS;
 import com.gam.nocr.ems.biz.service.external.client.portal.ReservationWS;
-import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
 import est.EstelamPort;
 import est.ImsService;
 
@@ -17,12 +16,12 @@ public class ServicePortsModel {
     private GAASWebServiceInterface gaasWebServiceInterface;
     private ImsService imsService;
     private EstelamPort estelamService;
-//    private BasicInfoWS portalBasicInfo;
-//    private RegistrationWS portalRegistration;
-//    private ReservationWS portalReservation;
+    private BasicInfoWS portalBasicInfo;
+    private RegistrationWS portalRegistration;
+    private ReservationWS portalReservation;
     private IServiceEMKS emksService;
     private SmsDelegate smsDelegate;
-    private CardRequestStateWS cardRequestStateWS;
+
 
     public DocumentRequestWSLocal getDocumentRequestWSLocal() {
         return documentRequestWSLocal;
@@ -58,29 +57,29 @@ public class ServicePortsModel {
         this.estelamService = estelamService;
     }
 
-//    public BasicInfoWS getPortalBasicInfo() {
-//        return portalBasicInfo;
-//    }
+    public BasicInfoWS getPortalBasicInfo() {
+        return portalBasicInfo;
+    }
 
-//    public void setPortalBasicInfo(BasicInfoWS portalBasicInfo) {
-//        this.portalBasicInfo = portalBasicInfo;
-//    }
+    public void setPortalBasicInfo(BasicInfoWS portalBasicInfo) {
+        this.portalBasicInfo = portalBasicInfo;
+    }
 
-//    public RegistrationWS getPortalRegistration() {
-//        return portalRegistration;
-//    }
+    public RegistrationWS getPortalRegistration() {
+        return portalRegistration;
+    }
 
-//    public void setPortalRegistration(RegistrationWS portalRegistration) {
-//        this.portalRegistration = portalRegistration;
-//    }
+    public void setPortalRegistration(RegistrationWS portalRegistration) {
+        this.portalRegistration = portalRegistration;
+    }
 
-//    public ReservationWS getPortalReservation() {
-//        return portalReservation;
-//    }
-//
-//    public void setPortalReservation(ReservationWS portalReservation) {
-//        this.portalReservation = portalReservation;
-//    }
+    public ReservationWS getPortalReservation() {
+        return portalReservation;
+    }
+
+    public void setPortalReservation(ReservationWS portalReservation) {
+        this.portalReservation = portalReservation;
+    }
 
     public IServiceEMKS getEmksService() {
         return emksService;
@@ -98,11 +97,11 @@ public class ServicePortsModel {
         this.smsDelegate = smsDelegate;
     }
 
-    public CardRequestStateWS getCardRequestStateWS() {
+   /* public CardRequestStateWS getCardRequestStateWS() {
         return cardRequestStateWS;
     }
 
     public void setCardRequestStateWS(CardRequestStateWS cardRequestStateWS) {
         this.cardRequestStateWS = cardRequestStateWS;
-    }
+    }*/
 }

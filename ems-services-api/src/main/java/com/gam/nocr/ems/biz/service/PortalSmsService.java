@@ -1,16 +1,16 @@
 package com.gam.nocr.ems.biz.service;
 
-import java.util.List;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com">Alireza Saadat</a>
  */
 public interface PortalSmsService extends Service {
 
-//    public List<Long> retrieveRequestedSms() throws BaseException;
+    public List<Long> retrieveRequestedSms() throws BaseException;
 
     public void addRequestedSms(Long portalCardRequestId) throws BaseException;
 

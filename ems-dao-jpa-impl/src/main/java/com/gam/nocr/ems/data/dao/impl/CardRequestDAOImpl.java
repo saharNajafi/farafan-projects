@@ -528,7 +528,6 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		acceptableStatesForMESRequests
 				.add(CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC);
 		acceptableStatesForMESRequests.add(CardRequestState.NOT_DELIVERED);
-		acceptableStatesForMESRequests.add(CardRequestState.NOT_DELIVERED);
 		acceptableStatesForMESRequests.add(CardRequestState.STOPPED);
 		acceptableStatesForMESRequests.add(CardRequestState.REPEALED);
 		acceptableStatesForMESRequests.add(CardRequestState.CMS_ERROR);

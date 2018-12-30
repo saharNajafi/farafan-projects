@@ -27,39 +27,39 @@ public class PortalLocationsNotificationJob extends BaseEmsJob implements Interr
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//        startLogging(jobLogger);
-//        jobKey = jobExecutionContext.getJobDetail().getKey();
-//
-//        PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-//
-//        Integer count = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_NUMBER_OF_LOCATION_TO_UPDATE,
-//                DEFAULT_NUMBER_OF_LOCATION_TO_UPDATE));
-//
-//        try {
-//            for (LocationType locationType : LocationType.values()) {
-//                Integer modifiedLocationCount = Integer.parseInt(portalManagementDelegator.fetchModifiedLocationCount(locationType).toString());
-//
-//                if (modifiedLocationCount > 0) {
-//                    Integer loopCount = modifiedLocationCount / count;
-//                    Integer modular = modifiedLocationCount % count;
-//
-//                    for (int i = 0; i < loopCount; i++) {
-//                        if (!isJobInterrupted) {
-//                            portalManagementDelegator.notifyPortalAboutModifiedProvinces(locationType, i * count, (i * count) + count);
-//                        } else {
-//                            break;
-//                        }
-//                    }
-//
-//                    if (modular > 0 && !isJobInterrupted)
-//                        portalManagementDelegator.notifyPortalAboutModifiedProvinces(locationType,
-//                                count * loopCount, (count * loopCount) + modular);
-//                }
-//            }
-//        } catch (BaseException e) {
-//            logException(e);
-//        }
-//        endLogging();
+        startLogging(jobLogger);
+        jobKey = jobExecutionContext.getJobDetail().getKey();
+
+        PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+
+        Integer count = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_NUMBER_OF_LOCATION_TO_UPDATE,
+                DEFAULT_NUMBER_OF_LOCATION_TO_UPDATE));
+
+        try {
+            for (LocationType locationType : LocationType.values()) {
+                Integer modifiedLocationCount = Integer.parseInt(portalManagementDelegator.fetchModifiedLocationCount(locationType).toString());
+
+                if (modifiedLocationCount > 0) {
+                    Integer loopCount = modifiedLocationCount / count;
+                    Integer modular = modifiedLocationCount % count;
+
+                    for (int i = 0; i < loopCount; i++) {
+                        if (!isJobInterrupted) {
+                            portalManagementDelegator.notifyPortalAboutModifiedProvinces(locationType, i * count, (i * count) + count);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (modular > 0 && !isJobInterrupted)
+                        portalManagementDelegator.notifyPortalAboutModifiedProvinces(locationType,
+                                count * loopCount, (count * loopCount) + modular);
+                }
+            }
+        } catch (BaseException e) {
+            logException(e);
+        }
+        endLogging();
     }
 
     @Override

@@ -4,7 +4,7 @@ import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 
 import com.gam.commons.core.BaseException;
-//import com.gam.nocr.ems.biz.service.external.client.portal.SpouseVTO;
+import com.gam.nocr.ems.biz.service.external.client.portal.SpouseVTO;
 import com.gam.nocr.ems.config.ConstValues;
 import com.gam.nocr.ems.config.MapperExceptionCode;
 import com.gam.nocr.ems.data.domain.MaritalStatusTO;
@@ -90,64 +90,64 @@ public class SpouseMapper {
         return wto;
     }
 
-//    public static SpouseTO convert(SpouseVTO spouseVTO) throws BaseException {
-//        if (spouseVTO == null) {
-//            throw new BaseException(MapperExceptionCode.SPM_001, MapperExceptionCode.SPM_001_MSG);
-//        }
-//        SpouseTO sps = new SpouseTO();
-////		if ((spouseVTO.getId() != null) && (spouseVTO.getId() > 0))
-////			sps.setId(spouseVTO.getId());
-//
-//        sps.setSpouseFirstNamePersian(spouseVTO.getFirstNameFA());
-//        sps.setSpouseSurnamePersian(spouseVTO.getSureNameFA());
-//        sps.setSpouseFatherName(spouseVTO.getFatherName());
-//        sps.setSpouseBirthCertificateId(spouseVTO.getBirthCertId());
-//        sps.setSpouseNationalID(spouseVTO.getNationalId());
-////        sps.setSpouseBirthCertificateSeries(spouseVTO.getBirthCertSerial());
-//        sps.setSpouseBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-//
-//        try {
-//            sps.setSpouseBirthDate(DateUtil.convert(spouseVTO.getBirthDate(), DateUtil.JALALI));
-//            sps.setSpouseMarriageDate(DateUtil.convert(spouseVTO.getMarriageDate(), DateUtil.JALALI));
-//            if (EmsUtil.checkString(spouseVTO.getDeathOrDivorceDate()))
-//                sps.setSpouseDeathOrDivorceDate(DateUtil.convert(spouseVTO.getDeathOrDivorceDate(), DateUtil.JALALI));
-//        } catch (DateFormatException e) {
-//            throw new BaseException(MapperExceptionCode.SPM_002, MapperExceptionCode.GLB_001_MSG, e);
-//        }
-//
-//        if (spouseVTO.getMaritalStatusId() != null) {
-//            sps.setMaritalStatus(new MaritalStatusTO(spouseVTO.getMaritalStatusId()));
-//        }
-//        return sps;
-//    }
+    public static SpouseTO convert(SpouseVTO spouseVTO) throws BaseException {
+        if (spouseVTO == null) {
+            throw new BaseException(MapperExceptionCode.SPM_001, MapperExceptionCode.SPM_001_MSG);
+        }
+        SpouseTO sps = new SpouseTO();
+//		if ((spouseVTO.getId() != null) && (spouseVTO.getId() > 0))
+//			sps.setId(spouseVTO.getId());
 
-//    public static SpouseVTO convertToSpouseVTO(SpouseTO sps) throws BaseException {
-//        if (sps == null) {
-//            throw new BaseException(MapperExceptionCode.SPM_005, MapperExceptionCode.SPM_005_MSG);
-//        }
-//        SpouseVTO spouseVTO = new SpouseVTO();
-//        spouseVTO.setId(sps.getId());
-//
-//        if (sps.getCitizenInfo() == null) {
-//            spouseVTO.setCitizenId(null);
-//        } else {
-//            spouseVTO.setCitizenId(sps.getCitizenInfo().getId());
-//        }
-//        spouseVTO.setFirstNameFA(sps.getSpouseFirstNamePersian());
-//        spouseVTO.setSureNameFA(sps.getSpouseSurnamePersian());
-//        spouseVTO.setFatherName(sps.getSpouseFatherName());
-//        spouseVTO.setBirthCertId(sps.getSpouseBirthCertificateId());
-//        spouseVTO.setNationalId(sps.getSpouseNationalID());
-////        spouseVTO.setBirthCertSerial(sps.getSpouseBirthCertificateSeries());
-//        spouseVTO.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
-//        spouseVTO.setBirthDate(DateUtil.convert(sps.getSpouseBirthDate(), DateUtil.JALALI));
-//        if (sps.getMaritalStatus() == null) {
-//            spouseVTO.setMaritalStatusId(null);
-//        } else {
-//            spouseVTO.setMaritalStatusId(sps.getMaritalStatus().getId());
-//        }
-//        return spouseVTO;
-//    }
+        sps.setSpouseFirstNamePersian(spouseVTO.getFirstNameFA());
+        sps.setSpouseSurnamePersian(spouseVTO.getSureNameFA());
+        sps.setSpouseFatherName(spouseVTO.getFatherName());
+        sps.setSpouseBirthCertificateId(spouseVTO.getBirthCertId());
+        sps.setSpouseNationalID(spouseVTO.getNationalId());
+//        sps.setSpouseBirthCertificateSeries(spouseVTO.getBirthCertSerial());
+        sps.setSpouseBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
+
+        try {
+            sps.setSpouseBirthDate(DateUtil.convert(spouseVTO.getBirthDate(), DateUtil.JALALI));
+            sps.setSpouseMarriageDate(DateUtil.convert(spouseVTO.getMarriageDate(), DateUtil.JALALI));
+            if (EmsUtil.checkString(spouseVTO.getDeathOrDivorceDate()))
+                sps.setSpouseDeathOrDivorceDate(DateUtil.convert(spouseVTO.getDeathOrDivorceDate(), DateUtil.JALALI));
+        } catch (DateFormatException e) {
+            throw new BaseException(MapperExceptionCode.SPM_002, MapperExceptionCode.GLB_001_MSG, e);
+        }
+
+        if (spouseVTO.getMaritalStatusId() != null) {
+            sps.setMaritalStatus(new MaritalStatusTO(spouseVTO.getMaritalStatusId()));
+        }
+        return sps;
+    }
+
+    public static SpouseVTO convertToSpouseVTO(SpouseTO sps) throws BaseException {
+        if (sps == null) {
+            throw new BaseException(MapperExceptionCode.SPM_005, MapperExceptionCode.SPM_005_MSG);
+        }
+        SpouseVTO spouseVTO = new SpouseVTO();
+        spouseVTO.setId(sps.getId());
+
+        if (sps.getCitizenInfo() == null) {
+            spouseVTO.setCitizenId(null);
+        } else {
+            spouseVTO.setCitizenId(sps.getCitizenInfo().getId());
+        }
+        spouseVTO.setFirstNameFA(sps.getSpouseFirstNamePersian());
+        spouseVTO.setSureNameFA(sps.getSpouseSurnamePersian());
+        spouseVTO.setFatherName(sps.getSpouseFatherName());
+        spouseVTO.setBirthCertId(sps.getSpouseBirthCertificateId());
+        spouseVTO.setNationalId(sps.getSpouseNationalID());
+//        spouseVTO.setBirthCertSerial(sps.getSpouseBirthCertificateSeries());
+        spouseVTO.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
+        spouseVTO.setBirthDate(DateUtil.convert(sps.getSpouseBirthDate(), DateUtil.JALALI));
+        if (sps.getMaritalStatus() == null) {
+            spouseVTO.setMaritalStatusId(null);
+        } else {
+            spouseVTO.setMaritalStatusId(sps.getMaritalStatus().getId());
+        }
+        return spouseVTO;
+    }
     
     //hossein 8 feature start
     public static com.gam.nocr.ems.data.domain.vol.SpouseVTO convertToEmsSpouseVTO(SpouseTO to) throws BaseException {

@@ -176,8 +176,8 @@ public class CardRequestDelegator implements Delegator {
 	public void doRepealCardAction(UserProfileTO userProfileTO,
 			List<Long> cardRequestIds) throws BaseException {
 		getService(userProfileTO).doRepealCardAction(cardRequestIds);
-//		PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-//		portalManagementDelegator.updateRequestStates(cardRequestIds);
+		PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+		portalManagementDelegator.updateRequestStates(cardRequestIds);
 
 	}
 

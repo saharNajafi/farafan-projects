@@ -25,35 +25,35 @@ public class PortalRequestedSmsJob extends BaseEmsJob implements InterruptableJo
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//        startLogging(jobLogger);
-//        jobKey = jobExecutionContext.getJobDetail().getKey();
-//
-//        try {
-//            PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-//
-//            List<Long> portalCardRequestIds = portalManagementDelegator.fetchRequestedSmsIds();
-//
-//            //  While portal returns a value, save them in database and call the portal for more items again
-//            while (EmsUtil.checkListSize(portalCardRequestIds)) {
-//                for (Long portalCardRequestId : portalCardRequestIds) {
-//                    if (!isJobInterrupted) {
-//                        try {
-//                            portalManagementDelegator.addRequestedSms(portalCardRequestId);
-//                        } catch (BaseException e) {
-//                            logException(e);
-//                        }
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                portalCardRequestIds = portalManagementDelegator.fetchRequestedSmsIds();
-//            }
-//        } catch (BaseException e) {
-//            logException(e);
-//        } catch (Exception e) {
-//            logGeneralException(e);
-//        }
-//        endLogging();
+        startLogging(jobLogger);
+        jobKey = jobExecutionContext.getJobDetail().getKey();
+
+        try {
+            PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
+
+            List<Long> portalCardRequestIds = portalManagementDelegator.fetchRequestedSmsIds();
+
+            //  While portal returns a value, save them in database and call the portal for more items again
+            while (EmsUtil.checkListSize(portalCardRequestIds)) {
+                for (Long portalCardRequestId : portalCardRequestIds) {
+                    if (!isJobInterrupted) {
+                        try {
+                            portalManagementDelegator.addRequestedSms(portalCardRequestId);
+                        } catch (BaseException e) {
+                            logException(e);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                portalCardRequestIds = portalManagementDelegator.fetchRequestedSmsIds();
+            }
+        } catch (BaseException e) {
+            logException(e);
+        } catch (Exception e) {
+            logGeneralException(e);
+        }
+        endLogging();
     }
 
     @Override

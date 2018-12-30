@@ -345,7 +345,7 @@
 		<!-- PortalFetchingCardRequestsJob -->
 
 		<!-- PortalUpdateCardRequestsStateJob -->
-		<job>
+		<!--<job>
 			<name>به روز رسانی وضعیت درخواست ها</name>
 			<group>PortalUpdateCardRequestsStateJobGroup</group>
 			<description>به روز رسانی وضعیت کلیه درخواست ها از سامانه ی EMS به سامانه ی پورتال</description>
@@ -360,17 +360,17 @@
 				<job-name>به روز رسانی وضعیت درخواست ها</job-name>
 				<job-group>PortalUpdateCardRequestsStateJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0/5 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- PortalUpdateCardRequestsStateJob -->
 
 		<!-- PortalReservationsJob -->
-		<job>
+		<!--<job>
 			<name>انتقال نوبت ها</name>
 			<group>PortalReservationsJobGroup</group>
 			<description>انتقال نوبتهای گرفته شده از پورتال به خدمات شهروندی</description>
@@ -385,20 +385,20 @@
 				<job-name>انتقال نوبت ها</job-name>
 				<job-group>PortalReservationsJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0/5 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- PortalReservationsJob -->
 
 		<!-- EnrollmentOfficesUpdatingNotificationJob -->
 		<job>
 			<name>اعمال تغییرات دفاتر ثبت نام</name>
 			<group>EnrollmentOfficesUpdatingNotificationJobGroup</group>
-			<description>اعمال تغییرات انجام شده و انتقال آن به سامانه ی پورتال و CMS</description>
+			<description>اعمال تغییرات انجام شده و انتقال آن به سامانه ی CMS</description>
 			<job-class>com.gam.nocr.ems.biz.job.EnrollmentOfficesUpdatingNotificationJob</job-class>
 			<durability>true</durability>
 			<recover>true</recover>
@@ -420,7 +420,7 @@
 		<!-- EnrollmentOfficesUpdatingNotificationJob -->
 
 		<!-- PortalUpdateCcosAndVerifiedMESCardRequestsJob -->
-		<job>
+		<!--<job>
 			<name>انتقال درخواست های تائید شده توسط برنامهCCOS و MES به سامانه ی پورتال</name>
 			<group>PortalUpdateCcosAndVerifiedMESCardRequestsJobGroup</group>
 			<description>انتقال کلیه درخواستهای ثبت نام شده ازطریق برنامه CCOS وMES که موردتایید IMS قرار گرفتند به سامانه پورتال</description>
@@ -435,38 +435,38 @@
 				<job-name>انتقال درخواست های تائید شده توسط برنامهCCOS و MES به سامانه ی پورتال</job-name>
 				<job-group>PortalUpdateCcosAndVerifiedMESCardRequestsJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0/30 * * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- PortalUpdateCcosAndVerifiedMESCardRequestsJob -->
 
 		<!-- PortalUpdateForNotVerifiedMESRequestsJob -->
-		<job>
-			<name>انتقال درخواستهای تائید نشدهMES (عدم تاییدIMS) به پورتال</name>
-			<group>PortalUpdateForNotVerifiedMESRequestsJobGroup</group>
-			<description>انتقال درخواستهای تائید نشده MESبه سامانه پورتال</description>
-			<job-class>com.gam.nocr.ems.biz.job.PortalUpdateForNotVerifiedMESRequestsJob</job-class>
-			<durability>true</durability>
-			<recover>true</recover>
-		</job>
-		<trigger>
-			<cron>
-				<name>PortalUpdateForNotVerifiedMESRequestsJobTrigger</name>
-				<group>PortalUpdateForNotVerifiedMESRequestsJobGroup</group>
-				<job-name>انتقال درخواستهای تائید نشدهMES (عدم تاییدIMS) به پورتال</job-name>
-				<job-group>PortalUpdateForNotVerifiedMESRequestsJobGroup</job-group>
-				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
-				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+		<!--<job>-->
+			<!--<name>انتقال درخواستهای تائید نشدهMES (عدم تاییدIMS) به پورتال</name>-->
+			<!--<group>PortalUpdateForNotVerifiedMESRequestsJobGroup</group>-->
+			<!--<description>انتقال درخواستهای تائید نشده MESبه سامانه پورتال</description>-->
+			<!--<job-class>com.gam.nocr.ems.biz.job.PortalUpdateForNotVerifiedMESRequestsJob</job-class>-->
+			<!--<durability>true</durability>-->
+			<!--<recover>true</recover>-->
+		<!--</job>-->
+		<!--<trigger>-->
+			<!--<cron>-->
+				<!--<name>PortalUpdateForNotVerifiedMESRequestsJobTrigger</name>-->
+				<!--<group>PortalUpdateForNotVerifiedMESRequestsJobGroup</group>-->
+				<!--<job-name>انتقال درخواستهای تائید نشدهMES (عدم تاییدIMS) به پورتال</job-name>-->
+				<!--<job-group>PortalUpdateForNotVerifiedMESRequestsJobGroup</job-group>-->
+				<!--<start-time>2010-02-09T18:00:00</start-time>-->
+				<!--&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;-->
+				<!--<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>-->
 
-				<cron-expression>0 0 0/1 * * ?</cron-expression>
-				<time-zone>Asia/Tehran</time-zone>
-			</cron>
-		</trigger>
+				<!--<cron-expression>0 0 0/1 * * ?</cron-expression>-->
+				<!--<time-zone>Asia/Tehran</time-zone>-->
+			<!--</cron>-->
+		<!--</trigger>-->
 		<!-- PortalUpdateForNotVerifiedMESRequestsJob -->
 
 		<!-- IMSBatchEnquiryRequestJob -->
@@ -553,7 +553,7 @@
 		<!-- IMSBatchEnquiryResultJob -->
 
 		<!-- PortalRatingInfoNotificationJob -->
-		<job>
+		<!--<job>
 			<name>اعمال به روز رسانی رتبه های دفاتر در کارتابل رتبه</name>
 			<group>PortalRatingInfoNotificationJobGroup</group>
 			<description>
@@ -570,17 +570,17 @@
 				<job-name>اعمال به روز رسانی رتبه های دفاتر در کارتابل رتبه</job-name>
 				<job-group>PortalRatingInfoNotificationJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0 0 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- PortalRatingInfoNotificationJob -->
 
 		<!-- PortalLocationsNotificationJob -->
-		<job>
+		<!--<job>
 			<name>اعلام درج و به روز رسانی استان ها</name>
 			<group>PortalLocationsNotificationJobGroup</group>
 			<description>
@@ -597,13 +597,13 @@
 				<job-name>اعلام درج و به روز رسانی استان ها</job-name>
 				<job-group>PortalLocationsNotificationJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0 0 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- PortalLocationsNotificationJob -->
 
 		<!-- PortalRequestedSmsJob -->
@@ -765,7 +765,7 @@
         <!-- Estelam2 job -->
 
 		<!-- ProcessHolidayJob -->
-		<job>
+		<!--<job>
 			<name>پردازش تعطیلات</name>
 			<group>ProcessHolidayJobGroup</group>
 			<description>
@@ -782,18 +782,18 @@
 				<job-name>پردازش تعطیلات</job-name>
 				<job-group>ProcessHolidayJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0 3 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- ProcessHolidayJob -->
 
 
 		<!-- ProcessPortalReservationFreeTimeJob -->
-		<job>
+		<!--<job>
 			<name>به روزرسانی روزهای خالی دفاترثبت نام پورتال</name>
 			<group>ProcessPortalReservationFreeTimeJobGroup</group>
 			<description>
@@ -810,13 +810,13 @@
 				<job-name>به روزرسانی روزهای خالی دفاترثبت نام پورتال</job-name>
 				<job-group>ProcessPortalReservationFreeTimeJobGroup</job-group>
 				<start-time>2010-02-09T18:00:00</start-time>
-				<!--<end-time>2013-02-09T19:00:00</end-time> -->
+				&lt;!&ndash;<end-time>2013-02-09T19:00:00</end-time> &ndash;&gt;
 				<misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 
 				<cron-expression>0 0 2 * * ?</cron-expression>
 				<time-zone>Asia/Tehran</time-zone>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<!-- ProcessPortalReservationFreeTimeJob -->
 
 		<!-- ProcessReservedSmsJob -->

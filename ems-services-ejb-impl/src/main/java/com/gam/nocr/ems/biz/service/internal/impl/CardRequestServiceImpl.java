@@ -13,17 +13,12 @@ import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
-import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
-import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS;
-import com.gam.nocr.ems.biz.service.external.client.ussd.CardRequestStateWS_Service;
-import com.gam.nocr.ems.biz.service.external.client.ussd.ExternalInterfaceException_Exception;
 import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
@@ -45,7 +40,6 @@ import gampooya.tools.date.DateUtil;
 import gampooya.tools.security.SecurityContextService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import servicePortUtil.ServicePorts;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
@@ -72,10 +66,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             .getLogger(CardRequestServiceImpl.class);
     private static final Logger ussdLogger = BaseLog.getLogger("UssdService");
 
-    private static final String DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL
-            = "http://10.7.17.28:7001/ems-web/services/cardRequestState?wsdl";
-    private static final String DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE
-            = "http://portalws.ws.web.portal.nocr.gam.com/";
     private static final String DEFAULT_NOCR_SMS_ENDPOINT = "http://sms.sabteahval.ir:8001/SmsProject/SmsPort?wsdl";
     private static final String DEFAULT_NOCR_SMS_NAMESPACE = "http://ws.sms.com/";
     private static final String DEFAULT_NOCR_SMS_SERVICE_USERNAME = "SMARTCARD";
@@ -101,7 +91,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         cardRequestStateList.add(CardRequestState.REGISTERED);
         cardRequestStateList.add(CardRequestState.RECEIVED_BY_EMS);
         cardRequestStateList.add(CardRequestState.PENDING_IMS);
-        cardRequestStateList.add(VERIFIED_IMS);
+        cardRequestStateList.add(CardRequestState.VERIFIED_IMS);
         cardRequestStateList.add(CardRequestState.NOT_VERIFIED_BY_IMS);
         cardRequestStateList.add(CardRequestState.RESERVED);
         cardRequestStateList.add(CardRequestState.REFERRED_TO_CCOS);
@@ -1268,128 +1258,44 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return cal.getTime();
     }
 
-//    private String findReadyToDeliverState(CardRequestTO cardRequestTO) throws BaseException {
-//        try {
-//            String deliveryOffice = null;
-//            try {
-//                deliveryOffice = getService().findDeliveryOfficeByNationalId(
-//                        cardRequestTO.getCitizen().getNationalID());
-//            } catch (ExternalInterfaceException_Exception e) {
-//                ussdLogger.error(BizExceptionCode.CRE_045 + BizExceptionCode.CRE_045_MSG + e.getMessage(), e);
-//                throw new ServiceException(BizExceptionCode.CRE_045,
-//                        BizExceptionCode.CRE_045_MSG, e);
-//            }
-//            if (deliveryOffice.equals("PRT_W_CRSW_004")) {
-//                EnrollmentOfficeTO eofByCardRequest = cardRequestTO.getEnrollmentOffice();
-//                if (EnrollmentOfficeType.NOCR.equals(eofByCardRequest.getType())) {
-//                    String outgoingSMSTO = MessageFormat.format(
-//                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-//                            cardRequestTO.getCitizen().getSurnamePersian()
-//                            , cardRequestTO.getCard().getBatch().getCmsID(),
-//                            eofByCardRequest.getName()
-//                            , eofByCardRequest.getAddress());
-//                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-//                    return labels.getString("state.readyToDeliverState");
-//                }
-//                if (EnrollmentOfficeType.OFFICE.equals(eofByCardRequest.getType()) &&
-//                        EnrollmentOfficeDeliverStatus.DISABLED.equals(eofByCardRequest.getDeliver()) &&
-//                        eofByCardRequest.getSuperiorOffice().getId() != null) {
-//                    String outgoingSMSTO = MessageFormat.format(
-//                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-//                            cardRequestTO.getCitizen().getSurnamePersian()
-//                            , cardRequestTO.getCard().getBatch().getCmsID(),
-//                            eofByCardRequest.getSuperiorOffice().getName()
-//                            , eofByCardRequest.getSuperiorOffice().getAddress());
-//                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-//
-//                    return labels.getString("state.readyToDeliverState");
-//
-//                }
-//                if (EnrollmentOfficeType.OFFICE.equals(eofByCardRequest.getType()) &&
-//                        EnrollmentOfficeDeliverStatus.ENABLED.equals(eofByCardRequest.getDeliver())) {
-//                    String outgoingSMSTO = MessageFormat.format(
-//                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-//                            cardRequestTO.getCitizen().getSurnamePersian()
-//                            , cardRequestTO.getCard().getBatch().getCmsID(),
-//                            eofByCardRequest.getName()
-//                            , eofByCardRequest.getAddress());
-//                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-//                    return labels.getString("state.readyToDeliverState");
-//                }
-//            } else {
-//                EnrollmentOfficeTO eofDeliveredOfficeId =
-//                        getEnrollmentOfficeDAO().findEnrollmentOfficeById(Long.parseLong(deliveryOffice));
-//                if (EnrollmentOfficeType.OFFICE.equals(eofDeliveredOfficeId.getType())) {
-//                    String outgoingSMSTO = MessageFormat.format(
-//                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-//                            cardRequestTO.getCitizen().getSurnamePersian()
-//                            , cardRequestTO.getCard().getBatch().getCmsID(),
-//                            eofDeliveredOfficeId.getName()
-//                            , eofDeliveredOfficeId.getAddress());
-//                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-//                    return labels.getString("state.readyToDeliverState");
-//                }
-//            }
-//        } catch (Exception e) {
-//            ussdLogger.error(e.getMessage(), e);
-//            throw new ServiceException(BizExceptionCode.CRE_046,
-//                    BizExceptionCode.CRE_046_MSG, e);
-//        }
-//        return "";
-//    }
-
-    /**
-     * note: در ورژن جدید این متد ، دیگر پرس و جویی با سامانه پرتال نداریم
-     * @param cardRequestTO
-     * @return
-     * @throws BaseException
-     * @author Namjoofar
-     */
     private String findReadyToDeliverState(CardRequestTO cardRequestTO) throws BaseException {
         try {
-            EnrollmentOfficeTO eofByCardRequest = cardRequestTO.getEnrollmentOffice();
+                EnrollmentOfficeTO eofByCardRequest = cardRequestTO.getEnrollmentOffice();
+                if (EnrollmentOfficeType.NOCR.equals(eofByCardRequest.getType())) {
+                    String outgoingSMSTO = MessageFormat.format(
+                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
+                            cardRequestTO.getCitizen().getSurnamePersian()
+                            , cardRequestTO.getCard().getBatch().getCmsID(),
+                            eofByCardRequest.getName()
+                            , eofByCardRequest.getAddress());
+                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
+                    return labels.getString("state.readyToDeliverState");
+                }
+                if (EnrollmentOfficeType.OFFICE.equals(eofByCardRequest.getType()) &&
+                        EnrollmentOfficeDeliverStatus.DISABLED.equals(eofByCardRequest.getDeliver()) &&
+                        eofByCardRequest.getSuperiorOffice().getId() != null) {
+                    String outgoingSMSTO = MessageFormat.format(
+                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
+                            cardRequestTO.getCitizen().getSurnamePersian()
+                            , cardRequestTO.getCard().getBatch().getCmsID(),
+                            eofByCardRequest.getSuperiorOffice().getName()
+                            , eofByCardRequest.getSuperiorOffice().getAddress());
+                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
 
-            //note:اگر نوع آن اداره بود
-            if (EnrollmentOfficeType.NOCR.equals(eofByCardRequest.getType())) {
-                String outgoingSMSTO = MessageFormat.format(
-                        labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-                        cardRequestTO.getCitizen().getSurnamePersian()
-                        , cardRequestTO.getCard().getBatch().getCmsID(),
-                        eofByCardRequest.getName()
-                        , eofByCardRequest.getAddress());
-                sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-                return labels.getString("state.readyToDeliverState");
-            }
+                    return labels.getString("state.readyToDeliverState");
 
-            //note:اگر نوع آن دفتر بود و قابلیت تحویل نداشت
-            if (EnrollmentOfficeType.OFFICE.equals(eofByCardRequest.getType()) &&
-                    EnrollmentOfficeDeliverStatus.DISABLED.equals(eofByCardRequest.getDeliver()) &&
-                    eofByCardRequest.getSuperiorOffice().getId() != null) {
-                String outgoingSMSTO = MessageFormat.format(
-                        labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-                        cardRequestTO.getCitizen().getSurnamePersian()
-                        , cardRequestTO.getCard().getBatch().getCmsID(),
-                        eofByCardRequest.getSuperiorOffice().getName()//<----note: از اداره ی این دفتر استفاده میشود
-                        , eofByCardRequest.getSuperiorOffice().getAddress());
-                sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-
-                return labels.getString("state.readyToDeliverState");
-
-            }
-
-            //note:اگر نوع آن دفتر بود و قابلیت تحویل داشت
-            if (EnrollmentOfficeType.OFFICE.equals(eofByCardRequest.getType()) &&
-                    EnrollmentOfficeDeliverStatus.ENABLED.equals(eofByCardRequest.getDeliver())) {
-                String outgoingSMSTO = MessageFormat.format(
-                        labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
-                        cardRequestTO.getCitizen().getSurnamePersian()
-                        , cardRequestTO.getCard().getBatch().getCmsID(),
-                        eofByCardRequest.getName()
-                        , eofByCardRequest.getAddress());
-                sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
-                return labels.getString("state.readyToDeliverState");
-            }
-
+                }
+                if (EnrollmentOfficeType.OFFICE.equals(eofByCardRequest.getType()) &&
+                        EnrollmentOfficeDeliverStatus.ENABLED.equals(eofByCardRequest.getDeliver())) {
+                    String outgoingSMSTO = MessageFormat.format(
+                            labels.getString("state.sms.readyToDeliverState"), cardRequestTO.getCitizen().getFirstNamePersian(),
+                            cardRequestTO.getCitizen().getSurnamePersian()
+                            , cardRequestTO.getCard().getBatch().getCmsID(),
+                            eofByCardRequest.getName()
+                            , eofByCardRequest.getAddress());
+                    sendSmsToCitizen(cardRequestTO.getCitizen().getCitizenInfo().getMobile(), outgoingSMSTO);
+                    return labels.getString("state.readyToDeliverState");
+                }
         } catch (Exception e) {
             ussdLogger.error(e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_046,
@@ -1397,6 +1303,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
         return "";
     }
+
 
     private String findCrqFlagByCardRequest(CardRequestTO cardRequestTO) throws BaseException {
         try {
@@ -1672,30 +1579,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return state;
     }
 
-    public CardRequestStateWS getService() throws BaseException {
-        try {
-            ProfileManager pm = ProfileHelper.getProfileManager();
-
-            String wsdlUrl = (String) pm.getProfile(
-                    ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_ENDPOINT, true, null, null);
-            String namespace = (String) pm.getProfile(
-                    ProfileKeyName.KEY_CARD_REQUEST_STATE_WS_NAMESPACE, true, null, null);
-            if (wsdlUrl == null)
-                wsdlUrl = DEFAULT_CARD_REQUEST_STATE_WS_WSDL_URL;
-            if (namespace == null)
-                namespace = DEFAULT_CARD_REQUEST_STATE_WS_NAMESPACE;
-            String serviceName = "CardRequestStateWS";
-            CardRequestStateWS port = ServicePorts.getCardRequestStatePort();
-            if (port == null) {
-                port = new CardRequestStateWS_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getCardRequestStatePort();
-                ServicePorts.setCardRequestStatePort(port);
-            }
-            EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
-            return port;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CRE_055, BizExceptionCode.CRE_055_MSG, e);
-        }
-    }
 
     private SmsDelegate getNocrSmsService() throws BaseException {
         try {
