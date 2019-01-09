@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -59,6 +60,9 @@ import javax.xml.bind.annotation.XmlType;
     "shenasnameNo",
     "shenasnameSeri",
     "shenasnameSerial"
+})
+@XmlSeeAlso({
+    EstelamResult3 .class
 })
 public class EstelamResult {
 
@@ -162,7 +166,7 @@ public class EstelamResult {
      *     byte[]
      */
     public void setFamily(byte[] value) {
-        this.family = ((byte[]) value);
+        this.family = value;
     }
 
     /**
@@ -184,7 +188,7 @@ public class EstelamResult {
      *     byte[]
      */
     public void setFatherName(byte[] value) {
-        this.fatherName = ((byte[]) value);
+        this.fatherName = value;
     }
 
     /**
@@ -251,7 +255,7 @@ public class EstelamResult {
      *     byte[]
      */
     public void setName(byte[] value) {
-        this.name = ((byte[]) value);
+        this.name = value;
     }
 
     /**
@@ -305,7 +309,7 @@ public class EstelamResult {
      *     byte[]
      */
     public void setOfficeName(byte[] value) {
-        this.officeName = ((byte[]) value);
+        this.officeName = value;
     }
 
     /**
@@ -343,7 +347,7 @@ public class EstelamResult {
      *     byte[]
      */
     public void setShenasnameSeri(byte[] value) {
-        this.shenasnameSeri = ((byte[]) value);
+        this.shenasnameSeri = value;
     }
 
     /**

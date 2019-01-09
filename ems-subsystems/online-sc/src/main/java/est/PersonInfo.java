@@ -167,7 +167,7 @@ public class PersonInfo {
      *     byte[]
      */
     public void setFamily(byte[] value) {
-        this.family = ((byte[]) value);
+        this.family = value;
     }
 
     /**
@@ -221,7 +221,7 @@ public class PersonInfo {
      *     byte[]
      */
     public void setFatherName(byte[] value) {
-        this.fatherName = ((byte[]) value);
+        this.fatherName = value;
     }
 
     /**
@@ -259,7 +259,7 @@ public class PersonInfo {
      *     byte[]
      */
     public void setName(byte[] value) {
-        this.name = ((byte[]) value);
+        this.name = value;
     }
 
     /**
@@ -345,7 +345,7 @@ public class PersonInfo {
      *     byte[]
      */
     public void setOfficeName(byte[] value) {
-        this.officeName = ((byte[]) value);
+        this.officeName = value;
     }
 
     /**
@@ -383,7 +383,7 @@ public class PersonInfo {
      *     byte[]
      */
     public void setShenasnameSeri(byte[] value) {
-        this.shenasnameSeri = ((byte[]) value);
+        this.shenasnameSeri = value;
     }
 
     /**

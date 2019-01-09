@@ -59,7 +59,7 @@ public class ImageResult {
      *     byte[]
      */
     public void setImage(byte[] value) {
-        this.image = ((byte[]) value);
+        this.image = value;
     }
 
     /**
