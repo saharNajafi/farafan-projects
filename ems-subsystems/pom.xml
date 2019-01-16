@@ -20,11 +20,11 @@
         <module>ems-mes-web</module>
         <module>ems-mes-ear</module>
         <module>ems-software</module>
-       <!-- <module>cms-stub</module>-->
+        <!-- <module>cms-stub</module>-->
         <!--<module>emks-stub</module>-->
         <!--<module>ems-gam-ims-web</module>-->
         <!--<module>ems-gam-ims-ear</module>-->
-        <module>online-sc</module>
+        <!--<module>online-sc</module>-->
         <!--<module>gaas-stub</module>-->
         <!--<module>ussd-stub</module>-->
         <!--<module>ims-stub</module>-->
