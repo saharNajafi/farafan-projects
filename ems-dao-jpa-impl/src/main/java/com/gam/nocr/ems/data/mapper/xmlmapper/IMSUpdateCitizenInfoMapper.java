@@ -683,7 +683,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                             break;
                         case FING_ALL:
                             fingerData = biometricTO.getData();
-                            BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
+//                            BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
 //                            featureExtractorIDValue = biometricInfoTO.getFeatureExtractorID();
                             break;
 
