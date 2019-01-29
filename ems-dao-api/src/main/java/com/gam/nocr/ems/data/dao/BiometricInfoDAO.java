@@ -16,7 +16,7 @@ public interface BiometricInfoDAO extends EmsBaseDAO<BiometricInfoTO> {
 	
 //	public int removeBiometricInfoByCitizenId(String nid) throws BaseException;
 	
-	public BiometricInfoTO findByNid(String nid) throws BaseException;
+	public BiometricInfoTO findByCitizenId(Long citizenId) throws BaseException;
 
 	
 }

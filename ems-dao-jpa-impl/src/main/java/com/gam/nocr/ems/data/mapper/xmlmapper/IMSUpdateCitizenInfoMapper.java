@@ -683,7 +683,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                             break;
                         case FING_ALL:
                             fingerData = biometricTO.getData();
-                            BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
+//                            BiometricInfoTO biometricInfoTO = getBiometricInfoDAO().findByNid(cardRequestTO.getCitizen().getNationalID());
 //                            featureExtractorIDValue = biometricInfoTO.getFeatureExtractorID();
                             break;
 
@@ -804,12 +804,15 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 requestInfo.appendChild(enrollmentOfficeElement);
 
-               /* Element priority = doc.createElement("Priority");
+                Element priority = doc.createElement("Priority");
                 if (cardRequestTO.getPriority() != null) {
                     priority.appendChild(doc.createTextNode(cardRequestTO.getPriority().toString()));
                 }
+                else{
+                    priority.appendChild(doc.createTextNode("1"));
+                }
                 requestInfo.appendChild(priority);
-*/
+
                 Element originElement = doc.createElement("Origin");
                 if (cardRequestTO.getOrigin() == null) {
                     throw new DataException(

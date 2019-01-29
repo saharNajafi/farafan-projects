@@ -1569,7 +1569,8 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                         cardDeliverInfo.setOfficeCode(Integer.parseInt(enrollmentOfficeTO.getCode()));
                         cardDeliverInfo.setPersonNin(Long.parseLong(cardRequestTO.getCitizen().getNationalID()));
                         cardDeliverInfo.setCrn(card.getCrn());
-                        cardDeliverInfo.setCardIssuanceDate(card.getIssuanceDate());                        
+                        cardDeliverInfo.setCardIssuanceDate(card.getIssuanceDate());
+                        cardDeliverInfo.setCardRequestId(cardRequestId);
                         boolean imsDeliverFlag = getIMSService().setCitizenCardDelivered(cardDeliverInfo);
 
                         handoutJobLogger.info("The return value of the IMS webservice of setCitizenCardDelivered is: " + imsDeliverFlag);

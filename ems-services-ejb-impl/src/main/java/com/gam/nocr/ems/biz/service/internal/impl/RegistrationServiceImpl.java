@@ -1619,9 +1619,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
                 CardRequestTO cardRequestTO = getCardRequestDAO().find(
                         CardRequestTO.class, requestId);
-                String nationalID = cardRequestTO.getCitizen().getNationalID();
+                Long citizenId = cardRequestTO.getCitizen().getId();
                 BiometricInfoTO biometricInfoTO = getBiometricInfoDAO()
-                        .findByNid(nationalID);
+                        .findByCitizenId(citizenId);
 
                 if (countBios == 1 || countBios == 0) {
                     biometricInfoTO.setType(BiometricInfoType.PIN);

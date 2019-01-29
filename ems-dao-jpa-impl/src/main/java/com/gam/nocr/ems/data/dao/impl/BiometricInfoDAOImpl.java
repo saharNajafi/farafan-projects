@@ -90,13 +90,13 @@ public class BiometricInfoDAOImpl extends EmsBaseDAOImpl<BiometricInfoTO>
 //	}
 
     @Override
-    public BiometricInfoTO findByNid(String nid) throws BaseException {
+    public BiometricInfoTO findByCitizenId(Long citizenId) throws BaseException {
         try {
             List<BiometricInfoTO> result = em
                     .createQuery(
                             "select bii from BiometricInfoTO bii "
-                                    + "where bii.nationalID = :nid", BiometricInfoTO.class)
-                    .setParameter("nid", nid).getResultList();
+                                    + "where bii.citizen.id = :citizenId", BiometricInfoTO.class)
+                    .setParameter("citizenId", citizenId).getResultList();
             if (EmsUtil.checkListSize(result)) {
                 return result.get(0);
             }

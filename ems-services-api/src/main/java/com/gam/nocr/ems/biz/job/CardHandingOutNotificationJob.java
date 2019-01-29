@@ -49,7 +49,7 @@ public class CardHandingOutNotificationJob extends BaseEmsJob implements Interru
 
         try {
             CardManagementDelegator cardManagementDelegator = new CardManagementDelegator();
-            List<Long> cardRequestIdList = cardManagementDelegator.findRequestsIdByState(CardRequestState.PENDING_TO_DELIVER_BY_CMS, fetchLimit);
+/**/            List<Long> cardRequestIdList = cardManagementDelegator.findRequestsIdByState(CardRequestState.PENDING_TO_DELIVER_BY_CMS, fetchLimit);
 
             int asyncCallCount = 0;
             int finishedThreads = 0;
