@@ -24,7 +24,6 @@
         <xsd:sequence>
             <xsd:element type="MandatoryDateCompleteType" name="EnrolledDate"/>
             <xsd:element type="MandatoryCodeType" name="EnrollmentOffice"/>
-            <xsd:element type="PriorityType" name="Priority"/>
             <xsd:element type="OriginType" name="Origin"/>
             <xsd:element type="OptionalDateCompleteType" name="PortalEnrolledDate"/>
             <xsd:element type="OptionalCodeType" name="OriginalCardRequestOffice"/>
@@ -207,12 +206,6 @@
         <xsd:restriction base="xsd:string">
             <xsd:maxLength value="9"/>
             <xsd:pattern value="[1-9][0-9]*"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    <xsd:simpleType name="PriorityType">
-        <xsd:restriction base="xsd:integer">
-            <xsd:minInclusive value="1"/>
-            <xsd:maxInclusive value="99"/>
         </xsd:restriction>
     </xsd:simpleType>
     <xsd:simpleType name="OptionalCodeType">

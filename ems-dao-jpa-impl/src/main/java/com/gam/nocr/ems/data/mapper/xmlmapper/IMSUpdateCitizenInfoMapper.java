@@ -804,12 +804,15 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 requestInfo.appendChild(enrollmentOfficeElement);
 
-               /* Element priority = doc.createElement("Priority");
+                Element priority = doc.createElement("Priority");
                 if (cardRequestTO.getPriority() != null) {
                     priority.appendChild(doc.createTextNode(cardRequestTO.getPriority().toString()));
                 }
+                else{
+                    priority.appendChild(doc.createTextNode("1"));
+                }
                 requestInfo.appendChild(priority);
-*/
+
                 Element originElement = doc.createElement("Origin");
                 if (cardRequestTO.getOrigin() == null) {
                     throw new DataException(
