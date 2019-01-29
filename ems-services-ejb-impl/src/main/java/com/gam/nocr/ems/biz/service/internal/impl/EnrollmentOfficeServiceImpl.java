@@ -1866,6 +1866,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 , healthStatusWTO.getClimbingStairsAbility().getCode(), enrollmentOfficeId)) {
             throw new ServiceException(BizExceptionCode.EOS_089, BizExceptionCode.EOS_089_MSG);
         }
+        if (!officeIsActive(enrollmentOfficeId)) {
+            throw new ServiceException(BizExceptionCode.EOS_099, BizExceptionCode.EOS_099_MSG);
+        }
     }
 
     /**
@@ -1931,6 +1934,18 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.EOS_095, BizExceptionCode.EOS_095_MSG, e);
         }
     }
+
+    /**
+     * اگر دفتر فعال باشد میتواند ثبت نام تک مرحله ای داشته باشد و در غیر اینصورت نمیتواند
+     */
+    public Boolean officeIsActive(Long enrollmentOfficeId) throws ServiceException {
+        try {
+            return getEnrollmentOfficeDAO().officeIsActive(enrollmentOfficeId);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.EOS_098, BizExceptionCode.EOS_098_MSG, e);
+        }
+    }
+
 
     private CitizenService getCitizenService() throws BaseException {
         ServiceFactory serviceFactory = ServiceFactoryProvider

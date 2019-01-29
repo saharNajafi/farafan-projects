@@ -88,5 +88,7 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
     Boolean hasOfficeQueryByInstruments(
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws BaseException;
 
+    Boolean officeIsActive(Long enrollmentOfficeId) throws BaseException;
+
     List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException;
 }

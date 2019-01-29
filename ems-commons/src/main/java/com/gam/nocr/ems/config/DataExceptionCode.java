@@ -426,7 +426,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     //Adldoost : messages for essential exceptions in triggers
     public static final String DSI_054_MSG = "Received cards count should not be larger than total count";
     public static final String DSI_056_MSG = "Received cards count should be larger than zero";
-    public static final String DSI_063_MSG =  "Min date should not be null";
+    public static final String DSI_063_MSG = "Min date should not be null";
     public static final String DSI_070_MSG = "Can not find card request with specified cmsId";
     public static final String DSI_072_MSG = "Lost cards count should be larger than zero";
     public static final String DSI_073_MSG = "This situation should not be happened!";
@@ -661,9 +661,11 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ENI_014 = "EMS_D_ENI_014";
     public static final String ENI_015 = "EMS_D_ENI_015";
     public static final String ENI_016 = "EMS_D_ENI_016";
+    public static final String ENI_017 = "EMS_D_ENI_017";
     public static final String ENI_002_MSG = "the searchOfficeQueryByAccessibility operation could not be executed";
     public static final String ENI_005_MSG = "the searchOfficeQueryByInstruments operation could not be executed";
     public static final String ENI_015_MSG = "an error occur in findEnrollmentOfficeById method";
+    public static final String ENI_017_MSG = "an error occur in officeIsActive method in dao";
 
     // com.gam.nocr.ems.data.dao.impl.Estelam2FailureLogDAOImpl
     public static final String EFI_001 = "EMS_D_EFI_001";

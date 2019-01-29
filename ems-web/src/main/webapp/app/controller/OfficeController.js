@@ -63,6 +63,58 @@ Ext.define('Ems.controller.OfficeController', {
         this.excelExporter = new Ems.controller.util.ExcelExporter();
     },
 
+    /**
+     * if data is valid , it will be sent to server and if not , one alert will be shown to user.
+     * this method has overwritten the ict-all-debug.js
+     * @author namjoofar
+     * @param button
+     */
+    doSave: function(button){
+        var me = this,
+            dialog = button.up('entitydialog'),
+            formPanel = dialog.down('form');
+
+        /*if(me.beforeSave(button) === false) {
+            Ext.Msg.alert({
+                title: 'توجه!',
+                msg: 'لطفا تمامی اطلاعات را بدرستی وارد کنید.',
+                icon: 'windows-Cancel-icon'
+                //icon: '../../resources/themes/images/default/shared/notVerified.png'
+            });
+            return;
+        }*/
+
+
+        if(!Gam.util.Form.isValid(formPanel.form)) {
+            Ext.Msg.alert({
+                title: 'توجه!',
+                msg: 'لطفا تمامی اطلاعات را بدرستی وارد کنید.',
+                icon: 'windows-Cancel-icon'
+                //icon: '../../resources/themes/images/default/shared/notVerified.png'
+            });
+            return false;
+        }
+
+
+        //form don't have any change!
+        if(!formPanel.isDirty()) {
+            Ext.Msg.alert({
+                title: 'توجه!',
+                //msg:Gam.Msg.showInfoMsg(Gam.Resource.message.failure.notEditedForm),
+                msg:'هیچ تغییری در اطلاعات فرم مشاهده نشده است!',
+                icon: 'windows-Cancel-icon'
+                //icon: '../../resources/themes/images/default/shared/notVerified.png'
+            });
+            return false;
+        }
+
+
+        me.syncStore(
+            formPanel ,
+            Gam.GlobalConfiguration.dialogBasedGrid.continuousDataEntry,
+            Gam.GlobalConfiguration.dialogBasedGrid.clearDataEntry);
+    },
+
     init: function () {
         this.control({
 //            // office.Form

@@ -1182,8 +1182,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_092 = "EMS_S_EOS_092";
     public static final String EOS_093 = "EMS_S_EOS_093";
     public static final String EOS_094 = "EMS_S_EOS_094";
-    public static final String EOS_096 = "EMS_S_EOS_095";
+    public static final String EOS_096 = "EMS_S_EOS_096";
     public static final String EOS_095 = "EMS_S_EOS_095";
+    public static final String EOS_098 = "EMS_S_EOS_098";
+    public static final String EOS_099 = "EMS_S_EOS_099";
     public static final String EOS_100 = "EMS_S_EOS_100";
     public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
     public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
@@ -1245,6 +1247,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
     public static final String EOS_096_MSG = "Invalid CardRequest State for changing Reservation";
     public static final String EOS_097_MSG = "LOG: Active shift not found for increase remain capacity ( {} , {} , {} )";
+    public static final String EOS_098_MSG = "Office is active and active-office can not do single stage registration";
+    public static final String EOS_099_MSG = "Office is active and active-office can not do single stage registration";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.DepartmentServiceImpl
