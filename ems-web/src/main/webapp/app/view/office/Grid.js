@@ -36,16 +36,6 @@ Ext.define('Ems.view.office.Grid', {
             },
             {
                 // icon: 'resources/themes/images/user/UserList.png',
-                tooltip: 'تنظیمات',
-                action: 'settingOffice',
-                stateful: true,
-                stateId: this.stateId + 'Setting',
-                getClass: function (value, metadata, record) {
-                    return 'girdAction-OfficeSetting-icon';
-                }
-            },
-            {
-                // icon: 'resources/themes/images/user/UserList.png',
                 tooltip: 'فهرست کاربران',
                 action: 'userListOffice',
                 stateful: true,
@@ -330,6 +320,16 @@ Ext.define('Ems.view.office.Grid', {
                             return 'girdAction-AllowChangeFingerInactive-icon';
                         }
                     }
+                }
+            },
+            {
+                // icon: 'resources/themes/images/user/UserList.png',
+                tooltip: 'تنظیمات',
+                action: 'settingOffice',
+                stateful: true,
+                stateId: this.stateId + 'Setting',
+                getClass: function (value, metadata, record) {
+                    return 'girdAction-OfficeSetting-icon';
                 }
             }
 

@@ -602,7 +602,9 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             return em.createQuery("select eo.active " +
                             "from EnrollmentOfficeTO eo " +
                             "where eo.id=:enrollmentOfficeId"
-                    , Boolean.class).getSingleResult();
+                    , Boolean.class)
+                    .setParameter("enrollmentOfficeId",enrollmentOfficeId)
+                    .getSingleResult();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.ENI_017, DataExceptionCode.ENI_017_MSG, e);
         }
