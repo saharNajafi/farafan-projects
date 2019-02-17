@@ -62,10 +62,27 @@ Ext.define('Ems.view.office.NewEdit.OfficeAddressInfo', {
                 maxLength: 200,
                 enforceMaxLength: 200,
                 regexText: 'طول رشته بیشتر از حد مجاز می باشد',
-                
+                enableKeyEvents:true,
+                htmlSelected: false,
+                listeners:{
+                    keyup: function(field, e) {
+                        if((field.maxLength || field.enforceMaxLength)
+                           && e.keyCode == 8) {
+                            var oldValue = field.getValue();
+                            field.setValue(oldValue.slice(0,oldValue.length-1));
+                            field.htmlSelected = false;
+                        }
+                        else if(e.keyCode == 65 && e.ctrlKey) {
+                            field.inputEl.dom.select();
+                            field.htmlSelected = true;
+                        }
+                        if(field.htmlSelected == true && e.keyCode == 46) {
+                            field.setValue("");
+                            field.htmlSelected = false;
+                        }
+                    }
                 }
+            }
         ];
     }
-
-
 });

@@ -87,6 +87,18 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 form.show();
             }
         },
+        {
+            tooltip: 'ویرایش',
+            action: 'removeCapacity',
+            stateful: true,
+            stateId: this.stateId + 'EditCapacity',
+            getClass: function (value, metadata, record) {
+                return 'grid-delete-icon';
+            },
+            handler: function () {
+                alert('!');
+            }
+        }
     ],
 
     initComponent: function () {
