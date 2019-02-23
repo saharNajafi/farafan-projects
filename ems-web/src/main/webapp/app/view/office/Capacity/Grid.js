@@ -87,6 +87,39 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 form.show();
             }
         },
+        {
+            // icon: 'resources/themes/images/default/shared/edit.png',
+            tooltip: 'حذف',
+            action: 'deleteCapacity',
+            stateful: true,
+            stateId: this.stateId + 'EditCapacity',
+            getClass: function (value, metadata, record) {
+                return 'grid-delete-icon';
+            },
+            handler: function (sender,r) {
+                var grid = sender.up('grid');
+                var store = grid.store;
+                var record = store.getAt(r);
+                Ext.Ajax.request({
+                    url: 'extJsController/officeCapacity/delete',
+                    method: 'POST',
+                    jsonData: { ids : record.get('id') },
+                    success: function (response, request) {
+                        var data = Ext.JSON.decode(response.responseText);
+                        var success = data.success;
+                        if(success) {
+                            store.load();
+                        }
+                        else {
+                            Ext.Msg.alert('', data.messageInfo.message);
+                        }
+                    },
+                    failure: function () {
+                        Ext.Msg.alert('fail');
+                    }
+                });
+            }
+        }
     ],
 
     initComponent: function () {

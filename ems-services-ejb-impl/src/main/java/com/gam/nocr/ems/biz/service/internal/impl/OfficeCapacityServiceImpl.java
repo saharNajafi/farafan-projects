@@ -1,6 +1,8 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.biz.service.BizLoggable;
+import com.gam.commons.core.biz.service.Permissions;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
@@ -116,6 +118,28 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.OC_010, BizExceptionCode.OC_010_MSG, e);
         }
         return officeCapacityTO != null ? officeCapacityTO.getId() : null;
+    }
+
+    @Override
+    @Permissions(value = "ems_removeDepartment")
+    @BizLoggable(logAction = "DELETE", logEntityName = "OFFICECAPACITY")
+    public boolean remove(String officeCapacityIds) throws BaseException {
+        try {
+            if (officeCapacityIds == null || officeCapacityIds.trim().length() == 0) {
+                throw new ServiceException(BizExceptionCode.DSI_005, BizExceptionCode.DSI_005_MSG);
+            } else {
+                for (String OfficeCapacityId : officeCapacityIds.split(",")) {
+                    if ("1".equals(OfficeCapacityId))
+                        throw new ServiceException(BizExceptionCode.DSI_035, BizExceptionCode.DSI_035_MSG);
+                }
+            }
+
+            return getOfficeCapacityDAO().removeOfficeCapacities(officeCapacityIds);
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.DSI_032, BizExceptionCode.GLB_008_MSG, e);
+        }
     }
 
     @Override

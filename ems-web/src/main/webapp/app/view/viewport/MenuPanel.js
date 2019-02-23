@@ -19,7 +19,6 @@ Ext.define('Ems.view.viewport.MenuPanel', {
                     var bizLog = reportPanel.down('button[action=BizLog] menu');
                     var btns = reportPanel.query('button');
                     if(!globalAccessAllow) {
-
                             me.down('basicInfo').show();
                             me.down('operation').show();
                             Ext.each(btns, function(panel) {
@@ -32,7 +31,7 @@ Ext.define('Ems.view.viewport.MenuPanel', {
                             });
                             Ext.ComponentQuery.query('viewport')[0].fireResize();
                         }
-                        else {
+                    else {
                         Ext.each(bizLog.query('component'), function(item) {
                             if(item.id == "ReportMenuBizLogManagerJobList") {
                                 item.show();

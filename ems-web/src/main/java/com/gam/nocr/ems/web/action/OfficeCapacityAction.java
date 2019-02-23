@@ -5,12 +5,11 @@ import com.gam.commons.core.web.struts2.extJsController.ActionException;
 import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.OfficeCapacityDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
-import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.vol.OfficeCapacityVTO;
 import gampooya.tools.security.BusinessSecurityException;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 5/28/18.
@@ -51,6 +50,18 @@ public class OfficeCapacityAction extends ListControllerImpl<OfficeCapacityVTO> 
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.OFC_003, WebExceptionCode.GLB_001_MSG, e);
+        }
+    }
+
+    public String delete() throws BaseException {
+        try {
+            OfficeCapacityDelegator OfficeCapacityDelegator = new OfficeCapacityDelegator();
+
+            OfficeCapacityDelegator.remove(getUserProfile(), ids);
+
+            return SUCCESS_RESULT;
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.DEA_002, WebExceptionCode.GLB_001_MSG, e);
         }
     }
 }

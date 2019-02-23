@@ -19,7 +19,18 @@ import java.util.List;
 @Stateless(name = "OfficeCapacityDAO")
 @Local(OfficeCapacityDAOLocal.class)
 @Remote(OfficeCapacityRemote.class)
-public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> implements OfficeCapacityDAOLocal, OfficeCapacityRemote{
+public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> implements OfficeCapacityDAOLocal, OfficeCapacityRemote {
+
+    private static final String FOREIGN_KEY_BOX_NXT_REC_DEP_ID = "FK_BOX_NXT_REC_DEP_ID";
+    private static final String FOREIGN_KEY_BATCH_NXT_REC_DEP_ID = "FK_BATCH_NXT_REC_DEP_ID";
+    private static final String FOREIGN_KEY_DEP_PROFILE_DEP_ID = "FK_DEP_PROFILE_DEP_ID";
+    private static final String FOREIGN_KEY_PER_DEP_ID = "FK_PER_DEP_ID";
+    private static final String FOREIGN_KEY_WORKST_ENROLL_OFC_ID = "FK_WORKST_ENROLL_OFC_ID";
+    private static final String FOREIGN_KEY_NET_TKN_ENR_OFC_ID = "FK_NET_TKN_ENR_OFC_ID";
+    private static final String FOREIGN_KEY_RESERV_ENR_OFC_ID = "FK_RESERV_ENR_OFC_ID";
+    private static final String FOREIGN_KEY_CARD_REQ_ENROLL_OFC_ID = "FK_CARD_REQ_ENROLL_OFC_ID";
+    private static final String FOREIGN_KEY_EOF_SUPERIOR_OFFICE = "FK_EOF_SUPERIOR_OFFICE";
+    private static final String FOREIGN_KEY_CRQ_ORG_ENROLL_OFFICE_ID = "FK_CRQ_ORG_ENROLL_OFFICE_ID";
 
     @Override
     @PersistenceContext(unitName = "EmsOraclePU")
@@ -86,6 +97,49 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
     }
 
     @Override
+    public boolean removeOfficeCapacities(String officeCapacityId) throws BaseException {
+        boolean result = false;
+        try {
+            OfficeCapacityTO officeCapacityTO = em.find(OfficeCapacityTO.class, officeCapacityId);
+            em.remove(officeCapacityId);
+            result = true;
+        } catch (Exception e) {
+            String err = e.getMessage();
+            if (e.getCause() != null) {
+                if (e.getCause().getCause() != null)
+                    err = e.getCause().getCause().getMessage();
+                else
+                    err = e.getCause().getMessage();
+            }
+            if (err.contains(FOREIGN_KEY_BOX_NXT_REC_DEP_ID))
+                throw new DAOException(DataExceptionCode.DDI_036, DataExceptionCode.DDI_036_MSG, e);
+            if (err.contains(FOREIGN_KEY_BATCH_NXT_REC_DEP_ID))
+                throw new DAOException(DataExceptionCode.DDI_037, DataExceptionCode.DDI_037_MSG, e);
+            if (err.contains(FOREIGN_KEY_DEP_PROFILE_DEP_ID))
+                throw new DAOException(DataExceptionCode.DDI_038, DataExceptionCode.DDI_038_MSG, e);
+            if (err.contains(FOREIGN_KEY_PER_DEP_ID))
+                throw new DAOException(DataExceptionCode.DDI_039, DataExceptionCode.DDI_039_MSG, e);
+            if (err.contains(FOREIGN_KEY_WORKST_ENROLL_OFC_ID))
+                throw new DAOException(DataExceptionCode.DDI_041, DataExceptionCode.DDI_041_MSG, e);
+            if (err.contains(FOREIGN_KEY_NET_TKN_ENR_OFC_ID))
+                throw new DAOException(DataExceptionCode.DDI_042, DataExceptionCode.DDI_042_MSG, e);
+            if (err.contains(FOREIGN_KEY_RESERV_ENR_OFC_ID))
+                throw new DAOException(DataExceptionCode.DDI_043, DataExceptionCode.DDI_043_MSG, e);
+            if (err.contains(FOREIGN_KEY_CARD_REQ_ENROLL_OFC_ID))
+                throw new DAOException(DataExceptionCode.DDI_044, DataExceptionCode.DDI_044_MSG, e);
+            if (err.contains(FOREIGN_KEY_EOF_SUPERIOR_OFFICE))
+                throw new DAOException(DataExceptionCode.DDI_052, DataExceptionCode.DDI_052_MSG, e);
+            if (err.contains(FOREIGN_KEY_CRQ_ORG_ENROLL_OFFICE_ID))
+                throw new DAOException(DataExceptionCode.DDI_053, DataExceptionCode.DDI_053_MSG, e);
+            if (err.contains("integrity constraint"))
+                throw new DAOException(DataExceptionCode.DDI_045, DataExceptionCode.DDI_045_MSG, e);
+            throw new DAOException(DataExceptionCode.DDI_046, DataExceptionCode.DDI_046_MSG, e);
+        }
+
+        return result;
+    }
+
+    @Override
     public OfficeCapacityTO findByEnrollmentOfficeId(Long eofId)
             throws BaseException {
         List<OfficeCapacityTO> officeCapacityTOList;
@@ -106,7 +160,7 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
         try {
             officeCapacityTOList = em.createNamedQuery("OfficeCapacityTO.listOfficeCapacityByDate")
                     .setParameter("endDate", endDate)
-                    .setParameter("startDate",startDate)
+                    .setParameter("startDate", startDate)
                     .getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.OFC_003,

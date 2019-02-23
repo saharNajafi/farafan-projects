@@ -7,16 +7,10 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.OfficeCapacityService;
-import com.gam.nocr.ems.biz.service.RatingService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
-import com.gam.nocr.ems.data.domain.RatingInfoTO;
-import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.vol.OfficeCapacityVTO;
 import com.gam.nocr.ems.util.EmsUtil;
-
-import java.util.List;
 
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 5/28/18.
@@ -43,6 +37,10 @@ public class OfficeCapacityDelegator implements Delegator {
 
     public long update(UserProfileTO userProfileTO, OfficeCapacityVTO to) throws BaseException {
         return getService(userProfileTO).update(to);
+    }
+
+    public boolean remove(UserProfileTO userProfileTO, String officeCapacityIds) throws BaseException {
+        return getService(userProfileTO).remove(officeCapacityIds);
     }
 
     public OfficeCapacityVTO load(UserProfileTO userProfileTO, Long officeCapacityId) throws BaseException{
