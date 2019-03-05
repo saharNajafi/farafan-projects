@@ -1,28 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import gampooya.tools.date.DateUtil;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
-
-import javax.annotation.Resource;
-import javax.ejb.AsyncResult;
-import javax.ejb.Asynchronous;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.transaction.UserTransaction;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.BizLoggable;
@@ -33,43 +10,29 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
-import com.gam.nocr.ems.biz.service.BusinessLogService;
-import com.gam.nocr.ems.biz.service.CardRequestService;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.PortalBaseInfoService;
-import com.gam.nocr.ems.biz.service.PortalRegistrationService;
-import com.gam.nocr.ems.biz.service.PortalReservationService;
-import com.gam.nocr.ems.biz.service.PortalSmsService;
-import com.gam.nocr.ems.biz.service.RegistrationService;
+import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.CitizenWTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.ItemWTO;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.CitizenInfoDAO;
-import com.gam.nocr.ems.data.dao.LocationDAO;
-import com.gam.nocr.ems.data.dao.ReservationDAO;
-import com.gam.nocr.ems.data.domain.BusinessLogTO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CitizenInfoTO;
-import com.gam.nocr.ems.data.domain.LocationTO;
-import com.gam.nocr.ems.data.domain.RatingInfoTO;
-import com.gam.nocr.ems.data.domain.ReservationTO;
+import com.gam.nocr.ems.data.dao.*;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.ReservationVTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
-import com.gam.nocr.ems.data.enums.BusinessLogAction;
-import com.gam.nocr.ems.data.enums.BusinessLogActionAttitude;
-import com.gam.nocr.ems.data.enums.BusinessLogEntity;
-import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
-import com.gam.nocr.ems.data.enums.CardRequestOrigin;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.LocationType;
-import com.gam.nocr.ems.data.enums.SystemId;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.CardRequestMapper;
 import com.gam.nocr.ems.util.EmsUtil;
+import gampooya.tools.date.DateUtil;
+import org.slf4j.Logger;
+
+import javax.annotation.Resource;
+import javax.ejb.*;
+import javax.transaction.UserTransaction;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.concurrent.Future;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -401,11 +364,11 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 
 			List<SyncCardRequestWTO> syncCardRequestWTOList = getCardRequestDAO()
 					.getRequestListForUpdateState(batchIds);
-			List<ItemWTO> itemWTOList = getPortalRegistrationService()
+			/*List<ItemWTO> itemWTOList = getPortalRegistrationService()
 					.updateCardRequestsState(syncCardRequestWTOList);
 			sessionContext
 					.getBusinessObject(PortalManagementServiceLocal.class)
-					.updateState(syncCardRequestWTOList, itemWTOList);
+					.updateState(syncCardRequestWTOList, itemWTOList);*/
 
 			return loopFlag;
 		} catch (ServiceException e) {
@@ -725,7 +688,7 @@ public class PortalManagementServiceImpl extends EMSAbstractService implements
 	/**
 	 * T1 Method
 	 * 
-	 * @param reservationIdsList
+	 * @param reservationTO
 	 * @return
 	 * @throws BaseException
 	 */
