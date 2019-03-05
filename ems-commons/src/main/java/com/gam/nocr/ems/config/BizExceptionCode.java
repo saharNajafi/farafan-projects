@@ -1247,8 +1247,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_095_MSG = "an error occurred on hasEnoughInstrumentsForSingleStageEnrollment operation";
     public static final String EOS_096_MSG = "Invalid CardRequest State for changing Reservation";
     public static final String EOS_097_MSG = "LOG: Active shift not found for increase remain capacity ( {} , {} , {} )";
-    public static final String EOS_098_MSG = "Office is active and active-office can not do single stage registration";
-    public static final String EOS_099_MSG = "Office is active and active-office can not do single stage registration";
+    public static final String EOS_098_MSG = "Office is not active - only active-office can do single stage registration";
+    public static final String EOS_099_MSG = "Office is not active - only active-office can do single stage registration";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.DepartmentServiceImpl

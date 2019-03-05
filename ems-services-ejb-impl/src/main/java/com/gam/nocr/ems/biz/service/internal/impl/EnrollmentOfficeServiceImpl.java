@@ -464,7 +464,13 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
             office.setKhosusiType(OfficeType.valueOf(enrollmentOfficeVTO.getKhosusiType()));
-//            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+            int calenderType = getCalenderType(
+                    enrollmentOfficeVTO.getThursdayMorningActive()
+                    , enrollmentOfficeVTO.getThursdayEveningActive()
+                    , enrollmentOfficeVTO.getFridayMorningActive()
+                    , enrollmentOfficeVTO.getFridayEveningActive());
+            office.setCalenderType(OfficeCalenderType.toCalenderType((long) calenderType));
+            office.setHasStair(enrollmentOfficeVTO.getHasStair());
             office.setHasStair(enrollmentOfficeVTO.getHasStair());
             office.setHasElevator(enrollmentOfficeVTO.getHasElevator());
             office.setHasPortabilityEquipment(enrollmentOfficeVTO.getHasPortabilityEquipment());
@@ -554,6 +560,31 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         }
     }
 
+    private int getCalenderType(Boolean thursdayMorning, Boolean thursdayEvening
+            , Boolean fridayMorning, Boolean fridayEvening) {
+
+        int calenderType = 0;
+
+        if (!thursdayMorning && !thursdayEvening && !fridayMorning && !fridayEvening)
+            calenderType = 0;
+
+        if ((thursdayMorning || thursdayEvening) && !fridayMorning && !fridayEvening)
+            calenderType = 1;
+
+        if (!thursdayMorning && !thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 3;
+
+        if (!thursdayMorning && thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 2;
+
+        if (thursdayMorning && !thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 2;
+
+        if (thursdayMorning && thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 2;
+
+        return calenderType;
+    }
 
     @Override
     @Permissions(value = "ems_editEnrollmentOffice")
@@ -579,7 +610,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setLocation(new LocationTO(enrollmentOfficeVTO.getLocId()));
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
-//            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+            int calenderType = getCalenderType(
+                    enrollmentOfficeVTO.getThursdayMorningActive()
+                    , enrollmentOfficeVTO.getThursdayEveningActive()
+                    , enrollmentOfficeVTO.getFridayMorningActive()
+                    , enrollmentOfficeVTO.getFridayEveningActive());
+            office.setCalenderType(OfficeCalenderType.toCalenderType((long) calenderType));
             office.setHasStair(enrollmentOfficeVTO.getHasStair());
             office.setHasElevator(enrollmentOfficeVTO.getHasElevator());
             office.setHasPortabilityEquipment(enrollmentOfficeVTO.getHasPortabilityEquipment());
@@ -1847,7 +1883,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      * @param healthStatusWTO
      * @param enrollmentOfficeId
      */
-    public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
+    /*public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
             String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException {
         if (nationalId == null) {
             throw new ServiceException(BizExceptionCode.EOS_100, BizExceptionCode.PRR_006_MSG);
@@ -1869,7 +1905,38 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         if (!officeIsActive(enrollmentOfficeId)) {
             throw new ServiceException(BizExceptionCode.EOS_099, BizExceptionCode.EOS_099_MSG);
         }
+    }*/
+    public void checkEnrollmentOfficeEligibleForSingleStageEnrollment(
+            String nationalId, HealthStatusWTO healthStatusWTO, Long enrollmentOfficeId) throws BaseException {
+        if (nationalId == null) {
+            throw new ServiceException(BizExceptionCode.EOS_100, BizExceptionCode.PRR_006_MSG);
+        }
+
+        EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO = findEnrollmentOfficeSingleStageById(enrollmentOfficeId);
+
+        if (!hasEnoughCapacityToday(nationalId, enrollmentOfficeId)) {
+            throw new ServiceException(BizExceptionCode.EOS_087, BizExceptionCode.EOS_087_MSG);
+        }
+
+        if (!hasEnoughAccessibilityForSingleStageEnrollment(
+                healthStatusWTO.getHasTwoFingerScanable().getCode(),
+                healthStatusWTO.getPupilIsVisible().getCode(),
+                enrollmentOfficeSingleStageTO)) {
+            throw new ServiceException(BizExceptionCode.EOS_088, BizExceptionCode.EOS_088_MSG);
+        }
+
+        if (!hasEnoughInstrumentsForSingleStageEnrollment(
+                healthStatusWTO.getAbilityToGo().getCode(),
+                healthStatusWTO.getClimbingStairsAbility().getCode(),
+                enrollmentOfficeSingleStageTO)) {
+            throw new ServiceException(BizExceptionCode.EOS_089, BizExceptionCode.EOS_089_MSG);
+        }
+
+        if (!enrollmentOfficeSingleStageTO.getEOF_IS_ACTIVE()) {
+            throw new ServiceException(BizExceptionCode.EOS_099, BizExceptionCode.EOS_099_MSG);
+        }
     }
+
 
     /**
      * استعلام کفایت ظرفیت
@@ -1919,6 +1986,29 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         }
     }
 
+
+    /**
+     * new version:
+     * استعلام تناسب شرایط محیطی با وضعیت تندرستی(اختیارات)
+     *
+     * @param climbingStairsAbility
+     * @param pupilIsVisible
+     * @param enrollmentOfficeSingleStageTO
+     * @return
+     * @throws ServiceException
+     */
+    public Boolean hasEnoughAccessibilityForSingleStageEnrollment(
+            String climbingStairsAbility,
+            String pupilIsVisible,
+            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws ServiceException {
+        try {
+            return getEnrollmentOfficeDAO().hasOfficeQueryByAccessibility(
+                    climbingStairsAbility, pupilIsVisible, enrollmentOfficeSingleStageTO);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.EOS_094, BizExceptionCode.EOS_094_MSG, e);
+        }
+    }
+
     /**
      * استعلام تناسب شرایط محیطی با وضعیت تندرستی(امکانات)
      *
@@ -1930,6 +2020,28 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws ServiceException {
         try {
             return getEnrollmentOfficeDAO().hasOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeId);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.EOS_095, BizExceptionCode.EOS_095_MSG, e);
+        }
+    }
+
+
+    /**
+     * new version :
+     * استعلام تناسب شرایط محیطی با وضعیت تندرستی(امکانات)
+     *
+     * @param abilityToGo
+     * @param hasTwoFingersScanable
+     * @param enrollmentOfficeSingleStageTO
+     * @return
+     * @throws ServiceException
+     */
+    public Boolean hasEnoughInstrumentsForSingleStageEnrollment(
+            String abilityToGo,
+            String hasTwoFingersScanable,
+            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws ServiceException {
+        try {
+            return getEnrollmentOfficeDAO().hasOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeSingleStageTO);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.EOS_095, BizExceptionCode.EOS_095_MSG, e);
         }
@@ -2230,5 +2342,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         return cardRequestHistoryService;
     }
 
-
+    @Override
+    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
+        return getEnrollmentOfficeDAO().findEnrollmentOfficeSingleStageById(enrollmentOfficeId);
+    }
 }

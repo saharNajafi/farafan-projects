@@ -7,9 +7,11 @@ import java.util.concurrent.Future;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
+import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
+import com.gam.nocr.ems.data.domain.EnrollmentOfficeSingleStageTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
@@ -125,4 +127,6 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
     List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException;
 
     void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException;
+
+    EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException;
 }

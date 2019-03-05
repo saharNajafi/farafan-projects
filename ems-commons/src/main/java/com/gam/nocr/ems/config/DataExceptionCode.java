@@ -662,10 +662,12 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ENI_015 = "EMS_D_ENI_015";
     public static final String ENI_016 = "EMS_D_ENI_016";
     public static final String ENI_017 = "EMS_D_ENI_017";
+    public static final String ENI_018 = "EMS_D_ENI_018";
     public static final String ENI_002_MSG = "the searchOfficeQueryByAccessibility operation could not be executed";
     public static final String ENI_005_MSG = "the searchOfficeQueryByInstruments operation could not be executed";
     public static final String ENI_015_MSG = "an error occur in findEnrollmentOfficeById method";
     public static final String ENI_017_MSG = "an error occur in officeIsActive method in dao";
+    public static final String ENI_018_MSG = "an error occur in findEnrollmentOfficeSingleStageById";
 
     // com.gam.nocr.ems.data.dao.impl.Estelam2FailureLogDAOImpl
     public static final String EFI_001 = "EMS_D_EFI_001";
