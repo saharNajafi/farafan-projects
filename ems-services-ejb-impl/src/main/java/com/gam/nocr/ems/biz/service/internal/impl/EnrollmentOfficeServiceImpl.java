@@ -9,7 +9,6 @@ import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
-import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.SearchResult;
@@ -465,7 +464,13 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
             office.setKhosusiType(OfficeType.valueOf(enrollmentOfficeVTO.getKhosusiType()));
-//            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+            int calenderType = getCalenderType(
+                    enrollmentOfficeVTO.getThursdayMorningActive()
+                    , enrollmentOfficeVTO.getThursdayEveningActive()
+                    , enrollmentOfficeVTO.getFridayMorningActive()
+                    , enrollmentOfficeVTO.getFridayEveningActive());
+            office.setCalenderType(OfficeCalenderType.toCalenderType((long) calenderType));
+            office.setHasStair(enrollmentOfficeVTO.getHasStair());
             office.setHasStair(enrollmentOfficeVTO.getHasStair());
             office.setHasElevator(enrollmentOfficeVTO.getHasElevator());
             office.setHasPortabilityEquipment(enrollmentOfficeVTO.getHasPortabilityEquipment());
@@ -555,6 +560,31 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         }
     }
 
+    private int getCalenderType(Boolean thursdayMorning, Boolean thursdayEvening
+            , Boolean fridayMorning, Boolean fridayEvening) {
+
+        int calenderType = 0;
+
+        if (!thursdayMorning && !thursdayEvening && !fridayMorning && !fridayEvening)
+            calenderType = 0;
+
+        if ((thursdayMorning || thursdayEvening) && !fridayMorning && !fridayEvening)
+            calenderType = 1;
+
+        if (!thursdayMorning && !thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 3;
+
+        if (!thursdayMorning && thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 2;
+
+        if (thursdayMorning && !thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 2;
+
+        if (thursdayMorning && thursdayEvening && (fridayMorning || fridayEvening))
+            calenderType = 2;
+
+        return calenderType;
+    }
 
     @Override
     @Permissions(value = "ems_editEnrollmentOffice")
@@ -580,7 +610,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setLocation(new LocationTO(enrollmentOfficeVTO.getLocId()));
             office.setWorkingHoursFrom(enrollmentOfficeVTO.getWorkingHoursStart());
             office.setWorkingHoursTo(enrollmentOfficeVTO.getWorkingHoursFinish());
-//            office.setCalenderType(OfficeCalenderType.toCalenderType(Long.parseLong(enrollmentOfficeVTO.getCalenderType())));
+            int calenderType = getCalenderType(
+                    enrollmentOfficeVTO.getThursdayMorningActive()
+                    , enrollmentOfficeVTO.getThursdayEveningActive()
+                    , enrollmentOfficeVTO.getFridayMorningActive()
+                    , enrollmentOfficeVTO.getFridayEveningActive());
+            office.setCalenderType(OfficeCalenderType.toCalenderType((long) calenderType));
             office.setHasStair(enrollmentOfficeVTO.getHasStair());
             office.setHasElevator(enrollmentOfficeVTO.getHasElevator());
             office.setHasPortabilityEquipment(enrollmentOfficeVTO.getHasPortabilityEquipment());
