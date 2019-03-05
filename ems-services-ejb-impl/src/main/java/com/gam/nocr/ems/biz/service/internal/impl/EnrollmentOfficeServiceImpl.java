@@ -1124,9 +1124,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                             BizExceptionCode.EOS_078_MSG);
                 }
 
-                getPortalBaseInfoService()
+                /*getPortalBaseInfoService()
                         .checkEnrollmentOfficeDeletePossibilityAndPerform(
-                                enrollmentOfficeId);
+                                enrollmentOfficeId);*/
                 // Anbari :Call CMS immediately after deleting office : if CMS
                 // does not have the specified usersite catch the appropriate
                 // exception and continue as a normal situation
