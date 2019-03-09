@@ -18,6 +18,12 @@ import javax.persistence.*;
                 query = " select rat " +
                         " from RatingInfoTO rat" +
                         " where rat.id =:id"
+        ),
+        @NamedQuery(
+                name = "RatingInfoTO.findBySize",
+                query = " select rat " +
+                        " from RatingInfoTO rat" +
+                        " where rat.size =:ratSize"
         )
 })
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_RATING_INFO", allocationSize = 1)

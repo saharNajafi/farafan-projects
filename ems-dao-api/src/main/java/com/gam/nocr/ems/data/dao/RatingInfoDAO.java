@@ -36,4 +36,7 @@ public interface RatingInfoDAO extends EmsBaseDAO<RatingInfoTO> {
                                      Boolean flag) throws BaseException;
 
     public RatingInfoTO findByRatingInfoId(Long id) throws BaseException;
+
+    public Long findBySize(long size) throws BaseException;
+
 }

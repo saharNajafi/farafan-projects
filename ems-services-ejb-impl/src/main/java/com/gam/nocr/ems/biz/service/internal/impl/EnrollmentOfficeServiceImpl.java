@@ -118,9 +118,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         if (enrollmentOfficeVTO.getParentId() == null)
             throw new ServiceException(BizExceptionCode.EOS_015,
                     BizExceptionCode.EOS_015_MSG);
-        if (enrollmentOfficeVTO.getRateId() == null)
-            throw new ServiceException(BizExceptionCode.EOS_016,
-                    BizExceptionCode.EOS_016_MSG);
+//        if (enrollmentOfficeVTO.getRateId() == null)
+//            throw new ServiceException(BizExceptionCode.EOS_016,
+//                    BizExceptionCode.EOS_016_MSG);
         if (enrollmentOfficeVTO.getManagerId() == null)
             throw new ServiceException(BizExceptionCode.EOS_073,
                     BizExceptionCode.EOS_073_MSG);
@@ -512,8 +512,18 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setParentDepartment(new DepartmentTO(parentTO.getId()));
             if (enrollmentOfficeVTO.getArea() != null)
                 office.setArea(enrollmentOfficeVTO.getArea().intValue());
-            office.setRatingInfo(new RatingInfoTO(enrollmentOfficeVTO
-                    .getRateId())); // if this returns null, then an exception
+            Long rateId;
+            if (!enrollmentOfficeVTO.getActive()) {
+                rateId = getRatingInfoDAO().findBySize((long) 0);
+                /** rating info has been deleted form UI.just set default value when creating a new office*/
+                if (rateId != null)
+                    office.setRatingInfo(new RatingInfoTO(rateId));
+            } else {
+                rateId = getRatingInfoDAO().findBySize((long) 1);
+                if (rateId != null)
+                    office.setRatingInfo(new RatingInfoTO(rateId));
+            }
+            // if this returns null, then an exception
             // will be thrown when trying to update
 
             PersonTO manager = getPersonDAO().find(PersonTO.class,
@@ -676,7 +686,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setParentDepartment(parentTO);
             if (enrollmentOfficeVTO.getArea() != null)
                 office.setArea(enrollmentOfficeVTO.getArea().intValue());
-            office.setRatingInfo(new RatingInfoTO(enrollmentOfficeVTO.getRateId()));
+//            office.setRatingInfo(new RatingInfoTO(enrollmentOfficeVTO.getRateId()));
             office.setParentDN(parentTO.getDn() + "." + parentTO.getParentDN());
 
             PersonTO prevManager = null;
@@ -775,8 +785,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             vto.setParentName(office.getParentDepartment().getName());
             if (office.getArea() != null)
                 vto.setArea(office.getArea().longValue());
-            vto.setRateId(office.getRatingInfo().getId());
-            vto.setRate(office.getRatingInfo().getClazz());
+//            vto.setRateId(office.getRatingInfo().getId());
+//            vto.setRate(office.getRatingInfo().getClazz());
             vto.setManagerId(office.getManager().getId());
             vto.setManagerName(office.getManager().getFirstName() + " "
                     + office.getManager().getLastName());
@@ -2345,5 +2355,16 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     @Override
     public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
         return getEnrollmentOfficeDAO().findEnrollmentOfficeSingleStageById(enrollmentOfficeId);
+    }
+
+    private RatingInfoDAO getRatingInfoDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(
+                    EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_RATING_INFO));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.RMS_006, BizExceptionCode.GLB_001_MSG, e, EMSLogicalNames.DAO_RATING_INFO.split(",")
+            );
+        }
     }
 }

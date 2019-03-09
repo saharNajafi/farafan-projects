@@ -523,14 +523,14 @@ Ext.define('Ems.view.office.Grid', {
                         }
                     }
                 },
-                {
-                    xtype: 'gridcolumn',
-                    text: 'رتبه ',
-                    filterable: true,
-                    filter: true,
-                    dataIndex: EmsObjectName.officeNewEdit.oficRating,
-                    id: EmsObjectName.officeNewEdit.g_oficRating
-                },
+                // {
+                //     xtype: 'gridcolumn',
+                //     text: 'رتبه ',
+                //     filterable: true,
+                //     filter: true,
+                //     dataIndex: EmsObjectName.officeNewEdit.oficRating,
+                //     id: EmsObjectName.officeNewEdit.g_oficRating
+                // },
                 {
                     xtype: 'gridcolumn',
                     text: 'ساعت شروع کار',

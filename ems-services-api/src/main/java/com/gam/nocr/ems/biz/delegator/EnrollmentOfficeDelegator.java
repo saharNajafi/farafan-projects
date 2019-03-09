@@ -108,7 +108,7 @@ public class EnrollmentOfficeDelegator implements Delegator {
     public long update(UserProfileTO userProfileTO, EnrollmentOfficeVTO vto) throws BaseException {
         EnrollmentOfficeTO eofOld = getEnrollmentOfficeDAO().find(
                 EnrollmentOfficeTO.class, vto.getId());
-        Long ratingIdOld = eofOld.getRatingInfo().getId();
+//        Long ratingIdOld = eofOld.getRatingInfo().getId();
         EnrollmentOfficeDeliverStatus eofOldDelivery = eofOld.getDeliver();
         String eofNewDelivery = vto.getOfficeDeliver();
         Long eofId = getService(userProfileTO).update(vto);
@@ -118,20 +118,11 @@ public class EnrollmentOfficeDelegator implements Delegator {
         if (eofId != null) {
             checkOfficeDelivery(vto, "EDIT", eofOldDelivery, eofNewDelivery);
 //			PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
-            RatingInfoTO ratingInfoTO = getRatingInfoDAO().find(
-                    RatingInfoTO.class, vto.getRateId());
+//            RatingInfoTO ratingInfoTO = getRatingInfoDAO().find(
+//                    RatingInfoTO.class, vto.getRateId());
 //			if (ratingInfoTO != null || !equalsCalender) {
-            if (ratingInfoTO != null) {
-                RatingInfoTO newRating = null;
-                String newCalender = null;
-                if (!ratingIdOld.equals(ratingInfoTO.getId()))
-                    newRating = ratingInfoTO;
-//				if (!equalsCalender)
-//					newCalender = vto.getCalenderType();
+//
 
-//				portalManagementDelegator.syncResevationFreeTimeByNewRating(
-//						eofId, newRating,newCalender);
-            }
         }
         return eofId;
     }

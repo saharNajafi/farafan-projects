@@ -54,11 +54,11 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		        	fieldLabel: 'متراژ',
 		        	id: EmsObjectName.officeNewEdit.oficMeter
 		        },
-		        {
-		        	//xtype:'officeneweditcmbrating',
-		        	fieldLabel: 'رتبه',
-		        	id: EmsObjectName.officeNewEdit.oficRating
-		        },
+		        // {
+		        // 	//xtype:'officeneweditcmbrating',
+		        // 	fieldLabel: 'رتبه',
+		        // 	id: EmsObjectName.officeNewEdit.oficRating
+		        // },
 		        {
 		        	fieldLabel: 'شروع ساعت کاری',
 		        	id: EmsObjectName.officeNewEdit.workingHoursStartId,
@@ -251,13 +251,13 @@ Ext.define('Ems.view.office.NewEdit.OfficeInfo', {
 		                    	  enforceMaxLength: 4,
 		                    	  allowBlank: false
 		                      },
-		                      {
-		                    	  xtype: 'cmbrating',
-		                    	  fieldLabel: 'رتبه',
-		                    	  id: EmsObjectName.officeNewEdit.oficRating,
-		                    	  name: EmsObjectName.officeNewEdit.oficRating,
-		                    	  allowBlank: false
-		                      },
+		                      // {
+		                    	//   xtype: 'cmbrating',
+		                    	//   fieldLabel: 'رتبه',
+		                    	//   id: EmsObjectName.officeNewEdit.oficRating,
+		                    	//   name: EmsObjectName.officeNewEdit.oficRating,
+		                    	//   allowBlank: false
+		                      // },
 		                      {
 		                    	  xtype: 'workinghours',
 		                    	  fieldLabel: 'شروع ساعت کاری',

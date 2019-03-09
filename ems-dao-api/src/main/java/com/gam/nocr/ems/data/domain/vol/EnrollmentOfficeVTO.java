@@ -24,8 +24,8 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private Long locId;
     private String locName;
     private Long area;
-    private Long rateId;
-    private String rate;
+//    private Long rateId;
+//    private String rate;
     private boolean ssl;
 
     private String managerMobile;
@@ -178,22 +178,22 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
         this.area = area;
     }
 
-    @JSON(include = false)
-    public Long getRateId() {
-        return rateId;
-    }
+//    @JSON(include = false)
+//    public Long getRateId() {
+//        return rateId;
+//    }
+//
+//    public void setRateId(Long rateId) {
+//        this.rateId = rateId;
+//    }
 
-    public void setRateId(Long rateId) {
-        this.rateId = rateId;
-    }
-
-    public String getRate() {
-        return rate;
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
-    }
+//    public String getRate() {
+//        return rate;
+//    }
+//
+//    public void setRate(String rate) {
+//        this.rate = rate;
+//    }
 
     public boolean getSsl() {
         return ssl;

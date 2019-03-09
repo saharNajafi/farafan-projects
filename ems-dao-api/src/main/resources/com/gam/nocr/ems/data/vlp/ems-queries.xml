@@ -147,14 +147,10 @@
 					e.eof_working_hours_from,
 					e.eof_working_hours_to,
 					e.eof_phone,
-					e.eof_rat_id,
 					e.eof_type,
 					 e.eof_calender_type,
 					e.eof_khosusi_type,
 					e.eof_deliver_type,
-					(select r.rat_class from emst_rating_info r where
-					r.rat_id=e.eof_rat_id)
-					rate,
 					e.eof_manager_id,
 					p.per_first_name || ' '
 					|| p.per_last_name manager_name,
@@ -221,11 +217,6 @@
 				<part name="phone">
 					and e.eof_phone like {phone}
 				</part>
-				<part name="rate">
-					and e.eof_rat_id in (select ri.rat_id from
-					emst_rating_info ri where
-					ri.rat_class like {rate})
-				</part>
 				<part name="officeType">
 					and e.eof_type = {officeType}
 				</part>
@@ -275,8 +266,6 @@
 				<field name="parentId" column="DEP_PARENT_DEP_ID" />
 				<field name="parentName" column="PARENT_NAME" />
 				<field name="area" column="EOF_AREA" />
-				<field name="rateId" column="EOF_RAT_ID" />
-				<field name="rate" column="RATE" />
 				<field name="managerMobile" column="PER_MOBILE_PHONE" />
 				<field name="managerPhone" column="PER_PHONE" />
 				<field name="managerId" column="EOF_MANAGER_ID" />

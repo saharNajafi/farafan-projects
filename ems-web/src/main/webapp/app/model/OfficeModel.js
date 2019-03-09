@@ -19,8 +19,8 @@ Ext.define('Ems.model.OfficeModel', {
         , EmsObjectName.officeNewEdit.oficSuperRegisterOfficeId
         , EmsObjectName.officeNewEdit.oficPostCode
         , EmsObjectName.officeNewEdit.oficAddress
-        , EmsObjectName.officeNewEdit.oficRating
-        , EmsObjectName.officeNewEdit.oficRatingId
+        // , EmsObjectName.officeNewEdit.oficRating
+        // , EmsObjectName.officeNewEdit.oficRatingId
         
         ,EmsObjectName.officeNewEdit.uploadPhoto
         ,EmsObjectName.officeNewEdit.fingerScanSingleMode

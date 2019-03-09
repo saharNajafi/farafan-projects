@@ -147,7 +147,6 @@ public class RatingInfoDAOImpl extends EmsBaseDAOImpl<RatingInfoTO> implements R
      *
      * @return a list fo type {@link com.gam.nocr.ems.data.domain.RatingInfoTO}
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public List<RatingInfoTO> findModifiedRatingInfo() throws BaseException {
@@ -169,7 +168,6 @@ public class RatingInfoDAOImpl extends EmsBaseDAOImpl<RatingInfoTO> implements R
      * @param idList is a list of type {@link Long}
      * @param flag   is an instance of type {@link Boolean}
      * @throws com.gam.commons.core.BaseException
-     *
      */
     @Override
     public void updateModifiedFields(List<Long> idList,
@@ -187,13 +185,26 @@ public class RatingInfoDAOImpl extends EmsBaseDAOImpl<RatingInfoTO> implements R
     }
 
     @Override
-    public RatingInfoTO findByRatingInfoId(Long id)  {
+    public RatingInfoTO findByRatingInfoId(Long id) {
         List<RatingInfoTO> ratingInfoTOList;
-         ratingInfoTOList = em.createNamedQuery(
+        ratingInfoTOList = em.createNamedQuery(
                 "RatingInfoTO.findByRatingInfoId")
                 .setParameter("id", id)
                 .getResultList();
 
         return ratingInfoTOList != null ? ratingInfoTOList.get(0) : null;
+    }
+
+    @Override
+    public Long findBySize(long ratSize) throws BaseException {
+        try {
+            List<RatingInfoTO> ratingInfoTOList;
+            ratingInfoTOList = em.createNamedQuery("RatingInfoTO.findBySize")
+                    .setParameter("ratSize", ratSize)
+                    .getResultList();
+            return ratingInfoTOList != null ? ratingInfoTOList.get(0).getId() : null;
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.RTI_015, DataExceptionCode.GLB_006_MSG, e);
+        }
     }
 }

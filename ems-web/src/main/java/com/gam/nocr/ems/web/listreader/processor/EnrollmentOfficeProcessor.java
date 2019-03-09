@@ -46,7 +46,7 @@ public class EnrollmentOfficeProcessor extends EMSVLPListProcessor {
         String code = paramProvider.getFilter("code");
         String address = paramProvider.getFilter("address");
         String phone = paramProvider.getFilter("phone");
-        String rate = paramProvider.getFilter("rate");
+//        String rate = paramProvider.getFilter("rate");
         String officeType = paramProvider.getFilter("officeType");
         String khosusiType = paramProvider.getFilter("khosusiType");
         //Anbari
@@ -114,10 +114,10 @@ public class EnrollmentOfficeProcessor extends EMSVLPListProcessor {
             parameters.put("phone", "%" + phone + "%");
             parts.append(",phone");
         }
-        if (rate != null && rate.trim().length() != 0) {
-            parameters.put("rate", "%" + rate + "%");
-            parts.append(",rate");
-        }
+//        if (rate != null && rate.trim().length() != 0) {
+//            parameters.put("rate", "%" + rate + "%");
+//            parts.append(",rate");
+//        }
         if (EmsUtil.checkString(officeType)) {
             parameters.put("officeType", officeType);
             parts.append(",officeType");
