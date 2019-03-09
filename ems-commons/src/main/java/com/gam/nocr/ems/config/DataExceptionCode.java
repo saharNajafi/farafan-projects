@@ -704,6 +704,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RTI_013 = "EMS_D_RTI_013";
     public static final String RTI_014 = "EMS_D_RTI_014";
     public static final String RTI_015 = "EMS_D_RTI_015";
+    public static final String RTI_016 = "EMS_D_RTI_016";
     public static final String RTI_001_MSG = "The operation to find all Rating Info TOs failed";
     public static final String RTI_002_MSG = "Could not delete all rating infos";
     public static final String RTI_003_MSG = "Rating info or rating info id is null";
@@ -715,6 +716,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RTI_010_MSG = "Unique constraint violated, rating info size has already been used";
     public static final String RTI_012_MSG = "Unique constraint violated, rating info class has already been used";
     public static final String RTI_013_MSG = "Unique constraint violated, rating info size has already been used";
+    public static final String RTI_015_MSG = "Unable to execute findBySize operation";
 
     // com.gam.nocr.ems.data.dao.impl.CitizenDAOImpl
     public static final String CTI_001 = "EMS_D_CTI_001";
