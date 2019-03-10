@@ -265,6 +265,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DDI_051 = "EMS_D_DDI_051";
     public static final String DDI_052 = "EMS_D_DDI_052";
     public static final String DDI_053 = "EMS_D_DDI_053";
+    public static final String DDI_054 = "EMS_D_DDI_054";
     public static final String DDI_002_MSG = "foreign key constraint violation, it already has sub department";
     public static final String DDI_003_MSG = "unable to perform action";
     public static final String DDI_004_MSG = "violate unique constraint, department code already exists";
@@ -313,6 +314,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DDI_049_MSG = "Unique constraint violated, a department already assigned to selected manager";
     public static final String DDI_052_MSG = "Foreign key constraint violated, this office is assigned as superior office";
     public static final String DDI_053_MSG = "Foreign key constraint violated, a card request originated from this office";
+    public static final String DDI_054_MSG = "Foreign key constraint violated, a prepared message from this office";
 
     // com.gam.nocr.ems.data.dao.impl.WorkstationDAOImpl
     public static final String WDI_001 = "EMS_D_WDI_001";

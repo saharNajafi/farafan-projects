@@ -1161,6 +1161,13 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         enrollmentOfficeId, superiorEnrollmentOffice.getId());
             }
 
+            //todo:@Namjoofar @Shirin_Abbasi this record not should delete physically. We need have it because of historeis.
+            //<editor-fold desc="set is not active">
+            EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, enrollmentOfficeId);
+            enrollmentOfficeTO.setActive(false);
+            getEnrollmentOfficeDAO().update(enrollmentOfficeTO);
+            //</editor-fold>
+
             if (getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class,
                     enrollmentOfficeId).getType() == EnrollmentOfficeType.NOCR) {
                 // Adldoost -- check oef doesn't have card request
@@ -1170,9 +1177,14 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                             BizExceptionCode.EOS_078_MSG);
                 }
 
+
+                //<editor-fold desc="EMS don't need to portals verification to delete anymore!">
                 /*getPortalBaseInfoService()
                         .checkEnrollmentOfficeDeletePossibilityAndPerform(
                                 enrollmentOfficeId);*/
+                //</editor-fold>
+
+
                 // Anbari :Call CMS immediately after deleting office : if CMS
                 // does not have the specified usersite catch the appropriate
                 // exception and continue as a normal situation
@@ -1197,7 +1209,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                     } else
                         throw exception;
                 }
-
             }
             if (!hasCardRequest)
                 return getDepartmentDAO().removeDepartments(
@@ -1744,7 +1755,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 //	//@Asynchronous
 //	public Long enableOfficeDeliveryFeature(Long eofId, Long superiorOfficeId,String mode)	throws BaseException {
 //			List<Long> eofNotifiedIds = new ArrayList<Long>();
-//			EnrollmentOfficeTO eof = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, eofId);			
+//			EnrollmentOfficeTO eof = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, eofId);
 //			Long eofNotifiedId = null;
 //			try {
 //				eofNotifiedId = notifySubSystemsAboutEnrollmentOffices(eof,mode);
@@ -1753,7 +1764,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 //				eof.setDeliver(EnrollmentOfficeDeliverStatus.DISABLED);
 //				getEnrollmentOfficeDAO().update(eof);
 //				throw new ServiceException(BizExceptionCode.EOS_080, BizExceptionCode.EOS_079_MSG, e);
-// 				
+//
 //			}
 //			if(eofNotifiedId != null)
 //			{
@@ -1872,7 +1883,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 			throw new ServiceException(BizExceptionCode.EOS_083,
 					BizExceptionCode.GLB_008_MSG, e);
 		}
-		
+
 	}*/
 
     //Anbari

@@ -46,6 +46,7 @@ public class DepartmentDAOImpl extends EmsBaseDAOImpl<DepartmentTO> implements D
     private static final String FOREIGN_KEY_CARD_REQ_ENROLL_OFC_ID = "FK_CARD_REQ_ENROLL_OFC_ID";
     private static final String FOREIGN_KEY_EOF_SUPERIOR_OFFICE = "FK_EOF_SUPERIOR_OFFICE";
     private static final String FOREIGN_KEY_CRQ_ORG_ENROLL_OFFICE_ID = "FK_CRQ_ORG_ENROLL_OFFICE_ID";
+    private static final String FOREIGN_KEY_MESS_OFFICE_FK = "EMST_MESS_OFFICE_FK";
 
     @Override
     @PersistenceContext(unitName = "EmsOraclePU")
@@ -187,6 +188,14 @@ public class DepartmentDAOImpl extends EmsBaseDAOImpl<DepartmentTO> implements D
             DepartmentTO dep;
             int cache = 0;
             for (Long id : depIds) {
+                em.createQuery("delete OfficeActiveShiftTO activeShift " +
+                        "where activeShift.enrollmentOffice.id=:enrollmentOfficeId")
+                        .setParameter("enrollmentOfficeId", id)
+                        .executeUpdate();
+                em.createQuery("delete OfficeCapacityTO capacity " +
+                        "where capacity.enrollmentOffice.id=:enrollmentOfficeId")
+                        .setParameter("enrollmentOfficeId", id)
+                        .executeUpdate();
                 dep = em.find(DepartmentTO.class, id);
                 em.remove(dep);
                 depsDeleted++;
@@ -225,6 +234,8 @@ public class DepartmentDAOImpl extends EmsBaseDAOImpl<DepartmentTO> implements D
                 throw new DAOException(DataExceptionCode.DDI_052, DataExceptionCode.DDI_052_MSG, e);
             if (err.contains(FOREIGN_KEY_CRQ_ORG_ENROLL_OFFICE_ID))
                 throw new DAOException(DataExceptionCode.DDI_053, DataExceptionCode.DDI_053_MSG, e);
+            if (err.contains(FOREIGN_KEY_MESS_OFFICE_FK))
+                throw new DAOException(DataExceptionCode.DDI_054, DataExceptionCode.DDI_054_MSG, e);
             if (err.contains("integrity constraint"))
                 throw new DAOException(DataExceptionCode.DDI_045, DataExceptionCode.DDI_045_MSG, e);
             throw new DAOException(DataExceptionCode.DDI_046, DataExceptionCode.DDI_046_MSG, e);
@@ -316,48 +327,48 @@ public class DepartmentDAOImpl extends EmsBaseDAOImpl<DepartmentTO> implements D
      */
     @Override
     public void updateSyncDateByCurrentDate(List<Long> departmentIds) throws BaseException {
-    	
-    	//edited by Madanipour
-		StringBuffer queryBuffer = new StringBuffer();
-		queryBuffer.append("UPDATE EMST_DEPARTMENT DEP " +
-                    "SET DEP.DEP_LAST_SYNC_DATE = sysdate " +
-                    "WHERE DEP.DEP_ID IN (");
-		
-		
-		if (departmentIds.size() < 1000) {
-			String ids = "";
-			for (Long id : departmentIds) {
-	            ids = ids.concat("," + (String.valueOf(id)));
-			}
 
-			queryBuffer.append(ids.substring(1)+") ");
-		}else  {
-			
-			Integer loopVar = (departmentIds.size()/1000);
-			for (Integer i = 0; i <=loopVar ; i++) {
-				Integer subListToIndex = i.equals(loopVar)? departmentIds.size() : (i+1)*1000-1;
-				Integer subListFromIndex = i*1000;
-				String ids = "";
-				for (Long id : departmentIds.subList(subListFromIndex, subListToIndex)){
-		            ids = ids.concat("," + (String.valueOf(id)));
-				}
-				
-				if( i.equals(0)){
-					queryBuffer.append(ids.substring(1)+")");
-				}else {
-					queryBuffer.append("OR DEP.DEP_ID IN ("+ids.substring(1)+") ");
-				}	
-			}			
-		}
-		
-		try {
+        //edited by Madanipour
+        StringBuffer queryBuffer = new StringBuffer();
+        queryBuffer.append("UPDATE EMST_DEPARTMENT DEP " +
+                "SET DEP.DEP_LAST_SYNC_DATE = sysdate " +
+                "WHERE DEP.DEP_ID IN (");
+
+
+        if (departmentIds.size() < 1000) {
+            String ids = "";
+            for (Long id : departmentIds) {
+                ids = ids.concat("," + (String.valueOf(id)));
+            }
+
+            queryBuffer.append(ids.substring(1) + ") ");
+        } else {
+
+            Integer loopVar = (departmentIds.size() / 1000);
+            for (Integer i = 0; i <= loopVar; i++) {
+                Integer subListToIndex = i.equals(loopVar) ? departmentIds.size() : (i + 1) * 1000 - 1;
+                Integer subListFromIndex = i * 1000;
+                String ids = "";
+                for (Long id : departmentIds.subList(subListFromIndex, subListToIndex)) {
+                    ids = ids.concat("," + (String.valueOf(id)));
+                }
+
+                if (i.equals(0)) {
+                    queryBuffer.append(ids.substring(1) + ")");
+                } else {
+                    queryBuffer.append("OR DEP.DEP_ID IN (" + ids.substring(1) + ") ");
+                }
+            }
+        }
+
+        try {
             em.createNativeQuery(queryBuffer.toString())
                     .executeUpdate();
             em.flush();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.DDI_051, DataExceptionCode.GLB_006_MSG, e);
-        } 
-    	//commented by Madanipour
+        }
+        //commented by Madanipour
 //        String ids = "";
 //        for (Long id : departmentIds) {
 //            ids = ids.concat("," + (String.valueOf(id)));
