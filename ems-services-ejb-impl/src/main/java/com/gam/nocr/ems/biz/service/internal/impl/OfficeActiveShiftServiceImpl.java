@@ -107,7 +107,7 @@ public class OfficeActiveShiftServiceImpl extends EMSAbstractService
                 officeActiveShiftNew.setEnrollmentOffice(enrollmentOfficeTO);
                 officeActiveShiftNew.setShiftNo(officeCapacityTO.getShiftNo());
                 officeActiveShiftNew.setOfficeCapacity(officeCapacityTO);
-                officeActiveShiftNew.setActiveDate(Integer.valueOf(CalendarUtil.getDateWithoutSlash(fromDate, new Locale("fa"), "YYYYMMDD")));
+                officeActiveShiftNew.setActiveDate(Integer.valueOf(CalendarUtil.getDate(fromDate, new Locale("fa")).replace("/","")));
                 Integer newCapacity = Integer.valueOf(officeCapacityTO.getCapacity());
                 officeActiveShiftNew.setRemainCapacity(newCapacity);
                 getActiveShiftDAO().create(officeActiveShiftNew);

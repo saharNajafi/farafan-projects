@@ -174,7 +174,7 @@ public class ReservationServiceImpl extends EMSAbstractService
 
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
-            Integer activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
+            Integer activeDate =Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, false);
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
@@ -237,7 +237,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
-            Integer activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
+            Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, true);
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
@@ -283,7 +283,7 @@ public class ReservationServiceImpl extends EMSAbstractService
     }
 
     private void estelamCardRequestForTodayReservation(CardRequestTO cardRequestTO, Integer activeDate, boolean isNewCardRequest) throws BaseException {
-        Integer today = Integer.valueOf(CalendarUtil.getDateWithoutSlash(new Date(), new Locale("fa"), "YYYYMMDD"));
+        Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/",""));
         if (today.equals(activeDate)) {
             getCardRequestService().updateCitizenByEstelam(cardRequestTO, false, isNewCardRequest);
         }
@@ -444,7 +444,7 @@ public class ReservationServiceImpl extends EMSAbstractService
         OfficeAppointmentWTO officeAppointment = new OfficeAppointmentWTO();
         officeAppointment.setId(reservationTO.getPortalReservationId());
         ActiveShiftWTO activeShift = new ActiveShiftWTO();
-        Integer appointmentDate = Integer.valueOf(CalendarUtil.getDateWithoutSlash(reservationTO.getDate(), new Locale("fa"), "YYYYMMDD"));
+        Integer appointmentDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), new Locale("fa")).replace("/",""));
         activeShift.setActiveDate(appointmentDate);
         activeShift.setShiftNo(reservationTO.getShiftNo());
         officeAppointment.setAppointmentDate(appointmentDate);
