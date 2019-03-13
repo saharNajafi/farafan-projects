@@ -174,7 +174,7 @@ public class ReservationServiceImpl extends EMSAbstractService
 
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
-            Integer activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
+            Integer activeDate =Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, false);
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
@@ -237,7 +237,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
-            Integer activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
+            Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, true);
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);

@@ -2030,7 +2030,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 }
             });
             officeId = reservationTO.getEnrollmentOffice().getId();
-            activeDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
+            activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
             shiftNo = reservationTO.getShiftNo();
             activeShiftTO = findActiveShiftByOfficeAndDateAndShift(officeId, activeDate, shiftNo);
             if (activeShiftTO != null) {
@@ -2079,7 +2079,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 }
             });
             reservationTO = Collections.max(cardRequest.getReservations(), null);
-            Integer reserveDate = CalendarUtil.getPersianDateWithoutSlash(reservationTO.getDate(), LangUtil.LOCALE_FARSI);
+            Integer reserveDate =Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
             if (!reservationTO.getShiftNo().equals(shiftNo)
                     || !officeId.equals(reservationTO.getEnrollmentOffice().getId())
                     || !activeDate.equals(reserveDate)) {

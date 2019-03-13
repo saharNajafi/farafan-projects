@@ -79,16 +79,6 @@ public class CalendarUtil {
         }
     }
 
-    public static Integer getPersianDateWithoutSlash(Date date, Locale locale) {
-        String todayDate = getDate(date, locale).replaceFirst("/", "#");
-        String year = todayDate.substring(0, todayDate.indexOf("#"));
-        String month = todayDate.substring(todayDate.indexOf("#") + 1, todayDate.indexOf("/"));
-        String day = todayDate.substring(todayDate.indexOf("/") + 1).split(" ")[0];
-        if (month.length() < 2) month = "0" + month;
-        if (day.length() < 2) day = "0" + day;
-        return Integer.valueOf(year + month + day);
-    }
-
     public static String getDateForModify(Date date, Locale locale) {
         if (date == null)
             return null;
@@ -187,71 +177,6 @@ public class CalendarUtil {
             e.printStackTrace();
         }
         return value;
-    }
-
-    public static String getPersianDateWithSlash(Locale locale) {
-        String todayDate = getDate(locale).replaceFirst("/", "#");
-
-        String year = todayDate.substring(0, todayDate.indexOf("#"));
-        String month = todayDate.substring(todayDate.indexOf("#") + 1, todayDate.indexOf("/"));
-        String day = todayDate.substring(todayDate.indexOf("/") + 1).split(" ")[0];
-
-        if (month.length() < 2) month = "0" + month;
-        if (day.length() < 2) day = "0" + day;
-
-        return LangUtil.getEnglishNumber(year + "/" + month + "/" + day);
-    }
-
-    public static String getPersianDateWithoutSlash(Locale locale) {
-        String todayDate = getDate(locale).replaceFirst("/", "#");
-
-        String year = todayDate.substring(0, todayDate.indexOf("#"));
-        String month = todayDate.substring(todayDate.indexOf("#") + 1, todayDate.indexOf("/"));
-        String day = todayDate.substring(todayDate.indexOf("/") + 1).split(" ")[0];
-
-        if (month.length() < 2) month = "0" + month;
-        if (day.length() < 2) day = "0" + day;
-
-        return LangUtil.getEnglishNumber(year + month + day);
-    }
-
-    public static Integer getPersianDateIndexInYearWithoutSlash(String date) {
-
-        String year = date.substring(0, 4);
-        String month = date.substring(4, 6);
-        String day = date.substring(6, 8);
-        if (Integer.valueOf(month) > 6) {
-            return Integer.valueOf(((Integer.valueOf(month) - 7) * 30) + 186 + (Integer.valueOf(day)));
-        } else {
-            return Integer.valueOf(((Integer.valueOf(month) - 1) * 31) + (Integer.valueOf(day)));
-        }
-    }
-
-    public static Integer getPersianDateIndexInYear(String date) {
-        String indexDate = date.replaceFirst("/", "#");
-
-        String year = indexDate.substring(0, indexDate.indexOf("#"));
-        String month = indexDate.substring(indexDate.indexOf("#") + 1, indexDate.indexOf("/"));
-        String day = indexDate.substring(indexDate.indexOf("/") + 1);
-        if (Integer.valueOf(month) > 6) {
-            return Integer.valueOf(((Integer.valueOf(month) - 7) * 30) + 186 + (Integer.valueOf(day)));
-        } else {
-            return Integer.valueOf(((Integer.valueOf(month) - 1) * 31) + (Integer.valueOf(day)));
-        }
-    }
-
-    public static String getPersianDateIndexInYear(Locale locale) {
-        String todayDate = getDate(locale).replaceFirst("/", "#");
-
-        String year = todayDate.substring(0, todayDate.indexOf("#"));
-        String month = todayDate.substring(todayDate.indexOf("#") + 1, todayDate.indexOf("/"));
-        String day = todayDate.substring(todayDate.indexOf("/") + 1, todayDate.indexOf(" "));
-
-        if (Integer.valueOf(month) > 6) {
-            return String.valueOf(((Integer.valueOf(month) - 7) * 30) + 186 + (Integer.valueOf(day)));
-        } else {
-            return String.valueOf(((Integer.valueOf(month) - 1) * 31) + (Integer.valueOf(day)));
-        }
     }
 
     public static String addMonth(String date, int month) {
