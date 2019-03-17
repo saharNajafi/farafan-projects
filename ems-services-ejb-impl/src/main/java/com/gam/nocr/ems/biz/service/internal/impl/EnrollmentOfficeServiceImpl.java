@@ -66,6 +66,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     private static final String DEFAULT_IS_DISABLE_USER_IN_CHANGE_MANAGER_ACTION = "true";
 
+
     /**
      * =============== Private methods ===============
      */
@@ -194,6 +195,34 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.EOS_003,
                     BizExceptionCode.GLB_001_MSG, e,
                     EMSLogicalNames.DAO_DEPARTMENT.split(","));
+        }
+    }
+
+    private OfficeActiveShiftDAO getActiveShiftDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.
+                    getDAOFactory().
+                    getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_ACTIVE_SHIFT));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.EOS_101,
+                    BizExceptionCode.GLB_029_MSG,
+                    e,
+                    EMSLogicalNames.DAO_OFFICE_ACTIVE_SHIFT.split(","));
+        }
+    }
+
+    private OfficeCapacityDAO getOfficeCapacityDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.
+                    getDAOFactory().
+                    getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_OFFICE_CAPACITY));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.EOS_102,
+                    BizExceptionCode.GLB_030_MSG,
+                    e,
+                    EMSLogicalNames.DAO_OFFICE_CAPACITY.split(","));
         }
     }
 
@@ -1192,11 +1221,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 enrollmentOfficeTOListForSync.add(getEnrollmentOfficeDAO()
                         .find(EnrollmentOfficeTO.class, enrollmentOfficeId));
                 try {
-                    getCMSService()
+                    /*getCMSService()
                             .updateEnrollmentOffices(
                                     enrollmentOfficeTOListForSync,
                                     EnrollmentOfficeStatus
-                                            .toInteger(EnrollmentOfficeStatus.DISABLED));
+                                            .toInteger(EnrollmentOfficeStatus.DISABLED));*/
                 } catch (Exception exception) {
                     if (exception instanceof ServiceException) {
                         ServiceException serviceException = (ServiceException) exception;
@@ -1210,11 +1239,20 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         throw exception;
                 }
             }
-            if (!hasCardRequest)
-                return getDepartmentDAO().removeDepartments(
-                        enrollmentOfficeId.toString());
-            else
+            if (!hasCardRequest) {
+                try {
+                    getActiveShiftDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
+                    getOfficeCapacityDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
+                    return getDepartmentDAO().removeDepartments(enrollmentOfficeId.toString());
+                } catch (Exception e) {
+                    throw new ServiceException(
+                            BizExceptionCode.EOS_103,
+                            BizExceptionCode.GLB_008_MSG,
+                            e);
+                }
+            } else {
                 return true;
+            }
         } catch (BaseException e) {
             throw e;
         } catch (Exception e) {

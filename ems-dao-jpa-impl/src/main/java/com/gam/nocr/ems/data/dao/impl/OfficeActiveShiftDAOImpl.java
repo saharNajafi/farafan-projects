@@ -84,4 +84,22 @@ public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO
         }
         return activeShiftTOList.size() != 0 ? activeShiftTOList.get(0) : null;
     }
+
+    @Override
+    public void removeByEnrollmentOfficeId(Long officeId) throws BaseException {
+        try {
+            em.createQuery("delete OfficeActiveShiftTO activeShift " +
+                    "where activeShift.enrollmentOffice.id=:enrollmentOfficeId")
+                    .setParameter("enrollmentOfficeId", officeId)
+                    .executeUpdate();
+        } catch (Exception e) {
+            logger.error("Error occured in remove active shift by office id : (" + officeId + ")"
+                    , e);
+            throw new DAOException(
+                    DataExceptionCode.ASH_007,
+                    DataExceptionCode.GLB_011_MSG,
+                    e);
+        }
+
+    }
 }

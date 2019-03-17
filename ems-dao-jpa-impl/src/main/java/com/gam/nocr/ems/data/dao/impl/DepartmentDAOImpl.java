@@ -188,14 +188,6 @@ public class DepartmentDAOImpl extends EmsBaseDAOImpl<DepartmentTO> implements D
             DepartmentTO dep;
             int cache = 0;
             for (Long id : depIds) {
-                em.createQuery("delete OfficeActiveShiftTO activeShift " +
-                        "where activeShift.enrollmentOffice.id=:enrollmentOfficeId")
-                        .setParameter("enrollmentOfficeId", id)
-                        .executeUpdate();
-                em.createQuery("delete OfficeCapacityTO capacity " +
-                        "where capacity.enrollmentOffice.id=:enrollmentOfficeId")
-                        .setParameter("enrollmentOfficeId", id)
-                        .executeUpdate();
                 dep = em.find(DepartmentTO.class, id);
                 em.remove(dep);
                 depsDeleted++;
