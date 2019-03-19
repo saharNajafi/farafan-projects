@@ -78,8 +78,8 @@ public class CreateActiveShiftsJob extends BaseEmsJob implements InterruptableJo
                     }
 
                     final Map<Long, List<OfficeCapacityTO>> officeCapacityMap = new HashMap<Long, List<OfficeCapacityTO>>();
-                    int endDate = Integer.valueOf(CalendarUtil.getDateWithoutSlash(toDate, new Locale("fa"), "YYYYMMDD"));
-                    int startDate = Integer.valueOf(CalendarUtil.getDateWithoutSlash(new Date(), new Locale("fa"), "YYYYMMDD"));
+                    int endDate = Integer.valueOf(CalendarUtil.getDate(toDate, new Locale("fa")).replace("/",""));
+                    int startDate = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/",""));
                     List<OfficeCapacityTO> officeCapacityTOs = getEnrollmentOfficeDelegator().listOfficeCapacityByDate(startDate, endDate);
                     for (OfficeCapacityTO officeCapacityTO : officeCapacityTOs) {
                         if (officeCapacityMap.containsKey(officeCapacityTO.getEnrollmentOffice().getId())) {

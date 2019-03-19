@@ -2102,7 +2102,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             }
             reservationTO.setPortalReservationId(officeAppointmentWTO.getId());
             cardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
-            Integer today = Integer.valueOf(CalendarUtil.getDateWithoutSlash(new Date(), new Locale("fa"), "YYYYMMDD"));
+            Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/",""));
             if (today.equals(officeAppointmentWTO.getAppointmentDate())) {
                 fillCardRequestRsvDate(cardRequest, reservationDate, false);
                 getCardRequestService().updateCitizenByEstelam(cardRequest, true, false);
@@ -2135,7 +2135,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     @Override
     public void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException {
         fromDate = EmsUtil.getDateAtMidnight(fromDate);
-        int persianDate = Integer.valueOf(CalendarUtil.getDateWithoutSlash(fromDate, new Locale("fa"), "YYYYMMDD"));
+        int persianDate = Integer.valueOf(CalendarUtil.getDate(fromDate, new Locale("fa")).replace("/",""));
         List<OfficeCapacityTO> todateOfficeCapacity = new ArrayList<OfficeCapacityTO>();
 
         /*OfficeCapacityTO officeCapacityMorning = officeCapacityService.findbyEnrollmentOfficeIdAndDateAndShift(enrollmentOfficeTO.getId(), ShiftEnum.MORNING, persianDate);
