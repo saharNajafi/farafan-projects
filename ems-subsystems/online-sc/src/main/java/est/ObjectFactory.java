@@ -27,27 +27,29 @@ public class ObjectFactory {
     private final static QName _GetEstelam2SCResponse_QNAME = new QName("http://est", "getEstelam2SCResponse");
     private final static QName _GetEstelamRI_QNAME = new QName("http://est", "getEstelamRI");
     private final static QName _EstelamRequest_QNAME = new QName("http://est", "estelamRequest");
-    private final static QName _GetEstelam2_QNAME = new QName("http://est", "getEstelam2");
     private final static QName _GetEstelam9CResponse_QNAME = new QName("http://est", "getEstelam9CResponse");
+    private final static QName _GetEstelam2_QNAME = new QName("http://est", "getEstelam2");
     private final static QName _GetEstelam3C_QNAME = new QName("http://est", "getEstelam3C");
     private final static QName _GetEstelam3Response_QNAME = new QName("http://est", "getEstelam3Response");
     private final static QName _GetEstelam3CResponse_QNAME = new QName("http://est", "getEstelam3CResponse");
     private final static QName _GetEstelam_QNAME = new QName("http://est", "getEstelam");
     private final static QName _GetEstelam7CResponse_QNAME = new QName("http://est", "getEstelam7CResponse");
     private final static QName _GetImage4Response_QNAME = new QName("http://est", "getImage4Response");
-    private final static QName _GetEstelam7_QNAME = new QName("http://est", "getEstelam7");
     private final static QName _GetEstelam2SC_QNAME = new QName("http://est", "getEstelam2SC");
+    private final static QName _GetEstelam7_QNAME = new QName("http://est", "getEstelam7");
     private final static QName _GetEstelamRIResponse_QNAME = new QName("http://est", "getEstelamRIResponse");
     private final static QName _GetEstelam5_QNAME = new QName("http://est", "getEstelam5");
     private final static QName _GetEstelam3_QNAME = new QName("http://est", "getEstelam3");
     private final static QName _GetEstelam4_QNAME = new QName("http://est", "getEstelam4");
     private final static QName _GetEstelam10Response_QNAME = new QName("http://est", "getEstelam10Response");
-    private final static QName _GetEstelam7C_QNAME = new QName("http://est", "getEstelam7C");
     private final static QName _GetEstelamResponse_QNAME = new QName("http://est", "getEstelamResponse");
+    private final static QName _GetEstelam7C_QNAME = new QName("http://est", "getEstelam7C");
     private final static QName _GetImage2Response_QNAME = new QName("http://est", "getImage2Response");
+    private final static QName _GetEstelam11Response_QNAME = new QName("http://est", "getEstelam11Response");
     private final static QName _GetImageSmart_QNAME = new QName("http://est", "getImageSmart");
     private final static QName _GetImage3Response_QNAME = new QName("http://est", "getImage3Response");
     private final static QName _Estelam9CRequest_QNAME = new QName("http://est", "estelam9CRequest");
+    private final static QName _Estelam11Request_QNAME = new QName("http://est", "estelam11Request");
     private final static QName _GetImageSmartResponse_QNAME = new QName("http://est", "getImageSmartResponse");
     private final static QName _GetEstelam8C_QNAME = new QName("http://est", "getEstelam8C");
     private final static QName _GetVersionResponse_QNAME = new QName("http://est", "getVersionResponse");
@@ -55,10 +57,11 @@ public class ObjectFactory {
     private final static QName _GetEstelam3SCResponse_QNAME = new QName("http://est", "getEstelam3SCResponse");
     private final static QName _GetImage5_QNAME = new QName("http://est", "getImage5");
     private final static QName _GetEstelam10_QNAME = new QName("http://est", "getEstelam10");
+    private final static QName _GetEstelam11_QNAME = new QName("http://est", "getEstelam11");
     private final static QName _GetEstelam8RI_QNAME = new QName("http://est", "getEstelam8RI");
     private final static QName _UnsupportedEncodingException_QNAME = new QName("http://est", "UnsupportedEncodingException");
-    private final static QName _GetEstelam2Response_QNAME = new QName("http://est", "getEstelam2Response");
     private final static QName _GetImage_QNAME = new QName("http://est", "getImage");
+    private final static QName _GetEstelam2Response_QNAME = new QName("http://est", "getEstelam2Response");
     private final static QName _GetEstelam4Response_QNAME = new QName("http://est", "getEstelam4Response");
     private final static QName _GetEstelam7Response_QNAME = new QName("http://est", "getEstelam7Response");
     private final static QName _GetImage2_QNAME = new QName("http://est", "getImage2");
@@ -68,10 +71,10 @@ public class ObjectFactory {
     private final static QName _GetImageResponse_QNAME = new QName("http://est", "getImageResponse");
     private final static QName _GetVersion_QNAME = new QName("http://est", "getVersion");
     private final static QName _GetEstelam8CResponse_QNAME = new QName("http://est", "getEstelam8CResponse");
-    private final static QName _GetEstelam6CResponse_QNAME = new QName("http://est", "getEstelam6CResponse");
     private final static QName _GetEstelam3SC_QNAME = new QName("http://est", "getEstelam3SC");
-    private final static QName _GetEstelam8RIResponse_QNAME = new QName("http://est", "getEstelam8RIResponse");
+    private final static QName _GetEstelam6CResponse_QNAME = new QName("http://est", "getEstelam6CResponse");
     private final static QName _GetEstelam6C_QNAME = new QName("http://est", "getEstelam6C");
+    private final static QName _GetEstelam8RIResponse_QNAME = new QName("http://est", "getEstelam8RIResponse");
     private final static QName _Exception3F_QNAME = new QName("http://est", "Exception3F");
     private final static QName _GetImage5Response_QNAME = new QName("http://est", "getImage5Response");
 
@@ -107,6 +110,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Estelam11Request }
+     * 
+     */
+    public Estelam11Request createEstelam11Request() {
+        return new Estelam11Request();
+    }
+
+    /**
      * Create an instance of {@link GetVersionResponse }
      * 
      */
@@ -139,6 +150,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetEstelam11Response }
+     * 
+     */
+    public GetEstelam11Response createGetEstelam11Response() {
+        return new GetEstelam11Response();
+    }
+
+    /**
      * Create an instance of {@link Estelam9CRequest }
      * 
      */
@@ -147,19 +166,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetEstelam7 }
-     * 
-     */
-    public GetEstelam7 createGetEstelam7() {
-        return new GetEstelam7();
-    }
-
-    /**
      * Create an instance of {@link GetEstelam2SC }
      * 
      */
     public GetEstelam2SC createGetEstelam2SC() {
         return new GetEstelam2SC();
+    }
+
+    /**
+     * Create an instance of {@link GetEstelam7 }
+     * 
+     */
+    public GetEstelam7 createGetEstelam7() {
+        return new GetEstelam7();
     }
 
     /**
@@ -219,19 +238,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetEstelamResponse }
-     * 
-     */
-    public GetEstelamResponse createGetEstelamResponse() {
-        return new GetEstelamResponse();
-    }
-
-    /**
      * Create an instance of {@link GetEstelam7C }
      * 
      */
     public GetEstelam7C createGetEstelam7C() {
         return new GetEstelam7C();
+    }
+
+    /**
+     * Create an instance of {@link GetEstelamResponse }
+     * 
+     */
+    public GetEstelamResponse createGetEstelamResponse() {
+        return new GetEstelamResponse();
     }
 
     /**
@@ -275,14 +294,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetEstelam2 }
-     * 
-     */
-    public GetEstelam2 createGetEstelam2() {
-        return new GetEstelam2();
-    }
-
-    /**
      * Create an instance of {@link EstelamRequest }
      * 
      */
@@ -296,6 +307,14 @@ public class ObjectFactory {
      */
     public GetEstelam9CResponse createGetEstelam9CResponse() {
         return new GetEstelam9CResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetEstelam2 }
+     * 
+     */
+    public GetEstelam2 createGetEstelam2() {
+        return new GetEstelam2();
     }
 
     /**
@@ -347,14 +366,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetEstelam6CResponse }
-     * 
-     */
-    public GetEstelam6CResponse createGetEstelam6CResponse() {
-        return new GetEstelam6CResponse();
-    }
-
-    /**
      * Create an instance of {@link GetEstelam3SC }
      * 
      */
@@ -363,11 +374,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetEstelam8RIResponse }
+     * Create an instance of {@link GetEstelam6CResponse }
      * 
      */
-    public GetEstelam8RIResponse createGetEstelam8RIResponse() {
-        return new GetEstelam8RIResponse();
+    public GetEstelam6CResponse createGetEstelam6CResponse() {
+        return new GetEstelam6CResponse();
     }
 
     /**
@@ -376,6 +387,14 @@ public class ObjectFactory {
      */
     public GetEstelam6C createGetEstelam6C() {
         return new GetEstelam6C();
+    }
+
+    /**
+     * Create an instance of {@link GetEstelam8RIResponse }
+     * 
+     */
+    public GetEstelam8RIResponse createGetEstelam8RIResponse() {
+        return new GetEstelam8RIResponse();
     }
 
     /**
@@ -451,6 +470,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetEstelam11 }
+     * 
+     */
+    public GetEstelam11 createGetEstelam11() {
+        return new GetEstelam11();
+    }
+
+    /**
      * Create an instance of {@link GetEstelam10 }
      * 
      */
@@ -475,19 +502,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetImage }
-     * 
-     */
-    public GetImage createGetImage() {
-        return new GetImage();
-    }
-
-    /**
      * Create an instance of {@link GetEstelam2Response }
      * 
      */
     public GetEstelam2Response createGetEstelam2Response() {
         return new GetEstelam2Response();
+    }
+
+    /**
+     * Create an instance of {@link GetImage }
+     * 
+     */
+    public GetImage createGetImage() {
+        return new GetImage();
     }
 
     /**
@@ -547,11 +574,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link EstelamResult11 }
+     * 
+     */
+    public EstelamResult11 createEstelamResult11() {
+        return new EstelamResult11();
+    }
+
+    /**
      * Create an instance of {@link SenderResponseInfo }
      * 
      */
     public SenderResponseInfo createSenderResponseInfo() {
         return new SenderResponseInfo();
+    }
+
+    /**
+     * Create an instance of {@link EstelamResult10 }
+     * 
+     */
+    public EstelamResult10 createEstelamResult10() {
+        return new EstelamResult10();
     }
 
     /**
@@ -643,14 +686,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EstelamResult10 }
-     * 
-     */
-    public EstelamResult10 createEstelamResult10() {
-        return new EstelamResult10();
-    }
-
-    /**
      * Create an instance of {@link PersonInfo3F }
      * 
      */
@@ -718,21 +753,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam2 }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://est", name = "getEstelam2")
-    public JAXBElement<GetEstelam2> createGetEstelam2(GetEstelam2 value) {
-        return new JAXBElement<GetEstelam2>(_GetEstelam2_QNAME, GetEstelam2 .class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam9CResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://est", name = "getEstelam9CResponse")
     public JAXBElement<GetEstelam9CResponse> createGetEstelam9CResponse(GetEstelam9CResponse value) {
         return new JAXBElement<GetEstelam9CResponse>(_GetEstelam9CResponse_QNAME, GetEstelam9CResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam2 }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam2")
+    public JAXBElement<GetEstelam2> createGetEstelam2(GetEstelam2 value) {
+        return new JAXBElement<GetEstelam2>(_GetEstelam2_QNAME, GetEstelam2 .class, null, value);
     }
 
     /**
@@ -790,21 +825,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam7 }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://est", name = "getEstelam7")
-    public JAXBElement<GetEstelam7> createGetEstelam7(GetEstelam7 value) {
-        return new JAXBElement<GetEstelam7>(_GetEstelam7_QNAME, GetEstelam7 .class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam2SC }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://est", name = "getEstelam2SC")
     public JAXBElement<GetEstelam2SC> createGetEstelam2SC(GetEstelam2SC value) {
         return new JAXBElement<GetEstelam2SC>(_GetEstelam2SC_QNAME, GetEstelam2SC.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam7 }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam7")
+    public JAXBElement<GetEstelam7> createGetEstelam7(GetEstelam7 value) {
+        return new JAXBElement<GetEstelam7>(_GetEstelam7_QNAME, GetEstelam7 .class, null, value);
     }
 
     /**
@@ -853,15 +888,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam7C }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://est", name = "getEstelam7C")
-    public JAXBElement<GetEstelam7C> createGetEstelam7C(GetEstelam7C value) {
-        return new JAXBElement<GetEstelam7C>(_GetEstelam7C_QNAME, GetEstelam7C.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelamResponse }{@code >}}
      * 
      */
@@ -871,12 +897,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam7C }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam7C")
+    public JAXBElement<GetEstelam7C> createGetEstelam7C(GetEstelam7C value) {
+        return new JAXBElement<GetEstelam7C>(_GetEstelam7C_QNAME, GetEstelam7C.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetImage2Response }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://est", name = "getImage2Response")
     public JAXBElement<GetImage2Response> createGetImage2Response(GetImage2Response value) {
         return new JAXBElement<GetImage2Response>(_GetImage2Response_QNAME, GetImage2Response.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam11Response }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam11Response")
+    public JAXBElement<GetEstelam11Response> createGetEstelam11Response(GetEstelam11Response value) {
+        return new JAXBElement<GetEstelam11Response>(_GetEstelam11Response_QNAME, GetEstelam11Response.class, null, value);
     }
 
     /**
@@ -904,6 +948,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://est", name = "estelam9CRequest")
     public JAXBElement<Estelam9CRequest> createEstelam9CRequest(Estelam9CRequest value) {
         return new JAXBElement<Estelam9CRequest>(_Estelam9CRequest_QNAME, Estelam9CRequest.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Estelam11Request }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "estelam11Request")
+    public JAXBElement<Estelam11Request> createEstelam11Request(Estelam11Request value) {
+        return new JAXBElement<Estelam11Request>(_Estelam11Request_QNAME, Estelam11Request.class, null, value);
     }
 
     /**
@@ -970,6 +1023,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam11 }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam11")
+    public JAXBElement<GetEstelam11> createGetEstelam11(GetEstelam11 value) {
+        return new JAXBElement<GetEstelam11>(_GetEstelam11_QNAME, GetEstelam11 .class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam8RI }{@code >}}
      * 
      */
@@ -988,21 +1050,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam2Response }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://est", name = "getEstelam2Response")
-    public JAXBElement<GetEstelam2Response> createGetEstelam2Response(GetEstelam2Response value) {
-        return new JAXBElement<GetEstelam2Response>(_GetEstelam2Response_QNAME, GetEstelam2Response.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetImage }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://est", name = "getImage")
     public JAXBElement<GetImage> createGetImage(GetImage value) {
         return new JAXBElement<GetImage>(_GetImage_QNAME, GetImage.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam2Response }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam2Response")
+    public JAXBElement<GetEstelam2Response> createGetEstelam2Response(GetEstelam2Response value) {
+        return new JAXBElement<GetEstelam2Response>(_GetEstelam2Response_QNAME, GetEstelam2Response.class, null, value);
     }
 
     /**
@@ -1087,15 +1149,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam6CResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://est", name = "getEstelam6CResponse")
-    public JAXBElement<GetEstelam6CResponse> createGetEstelam6CResponse(GetEstelam6CResponse value) {
-        return new JAXBElement<GetEstelam6CResponse>(_GetEstelam6CResponse_QNAME, GetEstelam6CResponse.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam3SC }{@code >}}
      * 
      */
@@ -1105,12 +1158,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam8RIResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam6CResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://est", name = "getEstelam8RIResponse")
-    public JAXBElement<GetEstelam8RIResponse> createGetEstelam8RIResponse(GetEstelam8RIResponse value) {
-        return new JAXBElement<GetEstelam8RIResponse>(_GetEstelam8RIResponse_QNAME, GetEstelam8RIResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam6CResponse")
+    public JAXBElement<GetEstelam6CResponse> createGetEstelam6CResponse(GetEstelam6CResponse value) {
+        return new JAXBElement<GetEstelam6CResponse>(_GetEstelam6CResponse_QNAME, GetEstelam6CResponse.class, null, value);
     }
 
     /**
@@ -1120,6 +1173,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://est", name = "getEstelam6C")
     public JAXBElement<GetEstelam6C> createGetEstelam6C(GetEstelam6C value) {
         return new JAXBElement<GetEstelam6C>(_GetEstelam6C_QNAME, GetEstelam6C.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetEstelam8RIResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://est", name = "getEstelam8RIResponse")
+    public JAXBElement<GetEstelam8RIResponse> createGetEstelam8RIResponse(GetEstelam8RIResponse value) {
+        return new JAXBElement<GetEstelam8RIResponse>(_GetEstelam8RIResponse_QNAME, GetEstelam8RIResponse.class, null, value);
     }
 
     /**

@@ -32,6 +32,27 @@ public interface EstelamPort {
      * @param arg1
      * @param arg0
      * @return
+     *     returns est.ImageResult
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getImage", targetNamespace = "http://est", className = "est.GetImage")
+    @ResponseWrapper(localName = "getImageResponse", targetNamespace = "http://est", className = "est.GetImageResponse")
+    @Action(input = "http://est/EstelamPort/getImageRequest", output = "http://est/EstelamPort/getImageResponse")
+    public ImageResult getImage(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        long arg2);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
      *     returns java.util.List<est.EstelamResult>
      */
     @WebMethod
@@ -76,6 +97,258 @@ public interface EstelamPort {
 
     /**
      * 
+     * @param arg5
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.util.List<est.EstelamResult6C>
+     * @throws UnsupportedEncodingException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam8C", targetNamespace = "http://est", className = "est.GetEstelam8C")
+    @ResponseWrapper(localName = "getEstelam8CResponse", targetNamespace = "http://est", className = "est.GetEstelam8CResponse")
+    @Action(input = "http://est/EstelamPort/getEstelam8CRequest", output = "http://est/EstelamPort/getEstelam8CResponse", fault = {
+        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam8C/Fault/UnsupportedEncodingException")
+    })
+    public List<EstelamResult6C> getEstelam8C(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        PersonInfo3F arg4,
+        @WebParam(name = "arg5", targetNamespace = "")
+        SenderInfo3F arg5)
+        throws UnsupportedEncodingException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns est.SenderResponseInfo
+     * @throws Exception3F_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam8RI", targetNamespace = "http://est", className = "est.GetEstelam8RI")
+    @ResponseWrapper(localName = "getEstelam8RIResponse", targetNamespace = "http://est", className = "est.GetEstelam8RIResponse")
+    @Action(input = "http://est/EstelamPort/getEstelam8RIRequest", output = "http://est/EstelamPort/getEstelam8RIResponse", fault = {
+        @FaultAction(className = Exception3F_Exception.class, value = "http://est/EstelamPort/getEstelam8RI/Fault/Exception3F")
+    })
+    public SenderResponseInfo getEstelam8RI(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        String arg4)
+        throws Exception3F_Exception
+    ;
+
+    /**
+     * 
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns est.EstelamResult7
+     * @throws UnsupportedEncodingException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam7", targetNamespace = "http://est", className = "est.GetEstelam7")
+    @ResponseWrapper(localName = "getEstelam7Response", targetNamespace = "http://est", className = "est.GetEstelam7Response")
+    @Action(input = "http://est/EstelamPort/getEstelam7Request", output = "http://est/EstelamPort/getEstelam7Response", fault = {
+        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam7/Fault/UnsupportedEncodingException")
+    })
+    public EstelamResult7 getEstelam7(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        PersonInfo3F arg4)
+        throws UnsupportedEncodingException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.util.List<est.EstelamResult7C>
+     * @throws UnsupportedEncodingException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam7C", targetNamespace = "http://est", className = "est.GetEstelam7C")
+    @ResponseWrapper(localName = "getEstelam7CResponse", targetNamespace = "http://est", className = "est.GetEstelam7CResponse")
+    @Action(input = "http://est/EstelamPort/getEstelam7CRequest", output = "http://est/EstelamPort/getEstelam7CResponse", fault = {
+        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam7C/Fault/UnsupportedEncodingException")
+    })
+    public List<EstelamResult7C> getEstelam7C(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        EstelamRequest arg4)
+        throws UnsupportedEncodingException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns est.EstelamResult9C
+     * @throws UnsupportedEncodingException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam9C", targetNamespace = "http://est", className = "est.GetEstelam9C")
+    @ResponseWrapper(localName = "getEstelam9CResponse", targetNamespace = "http://est", className = "est.GetEstelam9CResponse")
+    @Action(input = "http://est/EstelamPort/getEstelam9CRequest", output = "http://est/EstelamPort/getEstelam9CResponse", fault = {
+        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam9C/Fault/UnsupportedEncodingException")
+    })
+    public EstelamResult9C getEstelam9C(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        Estelam9CRequest arg4)
+        throws UnsupportedEncodingException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg5
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns est.EstelamResult10
+     * @throws UnsupportedEncodingException_Exception
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam10", targetNamespace = "http://est", className = "est.GetEstelam10")
+    @ResponseWrapper(localName = "getEstelam10Response", targetNamespace = "http://est", className = "est.GetEstelam10Response")
+    @Action(input = "http://est/EstelamPort/getEstelam10Request", output = "http://est/EstelamPort/getEstelam10Response", fault = {
+        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam10/Fault/UnsupportedEncodingException")
+    })
+    public EstelamResult10 getEstelam10(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        String arg4,
+        @WebParam(name = "arg5", targetNamespace = "")
+        Estelam10PersonInfo arg5)
+        throws UnsupportedEncodingException_Exception
+    ;
+
+    /**
+     * 
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns est.EstelamResult11
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelam11", targetNamespace = "http://est", className = "est.GetEstelam11")
+    @ResponseWrapper(localName = "getEstelam11Response", targetNamespace = "http://est", className = "est.GetEstelam11Response")
+    @Action(input = "http://est/EstelamPort/getEstelam11Request", output = "http://est/EstelamPort/getEstelam11Response")
+    public EstelamResult11 getEstelam11(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        Estelam11Request arg4);
+
+    /**
+     * 
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns est.EstelamRIResponse
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getEstelamRI", targetNamespace = "http://est", className = "est.GetEstelamRI")
+    @ResponseWrapper(localName = "getEstelamRIResponse", targetNamespace = "http://est", className = "est.GetEstelamRIResponse")
+    @Action(input = "http://est/EstelamPort/getEstelamRIRequest", output = "http://est/EstelamPort/getEstelamRIResponse")
+    public EstelamRIResponse getEstelamRI(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        String arg4);
+
+    /**
+     * 
      * @param arg4
      * @param arg3
      * @param arg2
@@ -100,27 +373,6 @@ public interface EstelamPort {
         String arg3,
         @WebParam(name = "arg4", targetNamespace = "")
         PersonInfo arg4);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns est.ImageResult
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getImage", targetNamespace = "http://est", className = "est.GetImage")
-    @ResponseWrapper(localName = "getImageResponse", targetNamespace = "http://est", className = "est.GetImageResponse")
-    @Action(input = "http://est/EstelamPort/getImageRequest", output = "http://est/EstelamPort/getImageResponse")
-    public ImageResult getImage(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        long arg2);
 
     /**
      * 
@@ -449,231 +701,6 @@ public interface EstelamPort {
         PersonInfo3F arg4)
         throws UnsupportedEncodingException_Exception
     ;
-
-    /**
-     * 
-     * @param arg5
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns java.util.List<est.EstelamResult6C>
-     * @throws UnsupportedEncodingException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelam8C", targetNamespace = "http://est", className = "est.GetEstelam8C")
-    @ResponseWrapper(localName = "getEstelam8CResponse", targetNamespace = "http://est", className = "est.GetEstelam8CResponse")
-    @Action(input = "http://est/EstelamPort/getEstelam8CRequest", output = "http://est/EstelamPort/getEstelam8CResponse", fault = {
-        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam8C/Fault/UnsupportedEncodingException")
-    })
-    public List<EstelamResult6C> getEstelam8C(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        PersonInfo3F arg4,
-        @WebParam(name = "arg5", targetNamespace = "")
-        SenderInfo3F arg5)
-        throws UnsupportedEncodingException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns est.SenderResponseInfo
-     * @throws Exception3F_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelam8RI", targetNamespace = "http://est", className = "est.GetEstelam8RI")
-    @ResponseWrapper(localName = "getEstelam8RIResponse", targetNamespace = "http://est", className = "est.GetEstelam8RIResponse")
-    @Action(input = "http://est/EstelamPort/getEstelam8RIRequest", output = "http://est/EstelamPort/getEstelam8RIResponse", fault = {
-        @FaultAction(className = Exception3F_Exception.class, value = "http://est/EstelamPort/getEstelam8RI/Fault/Exception3F")
-    })
-    public SenderResponseInfo getEstelam8RI(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4)
-        throws Exception3F_Exception
-    ;
-
-    /**
-     * 
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns est.EstelamResult7
-     * @throws UnsupportedEncodingException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelam7", targetNamespace = "http://est", className = "est.GetEstelam7")
-    @ResponseWrapper(localName = "getEstelam7Response", targetNamespace = "http://est", className = "est.GetEstelam7Response")
-    @Action(input = "http://est/EstelamPort/getEstelam7Request", output = "http://est/EstelamPort/getEstelam7Response", fault = {
-        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam7/Fault/UnsupportedEncodingException")
-    })
-    public EstelamResult7 getEstelam7(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        PersonInfo3F arg4)
-        throws UnsupportedEncodingException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns java.util.List<est.EstelamResult7C>
-     * @throws UnsupportedEncodingException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelam7C", targetNamespace = "http://est", className = "est.GetEstelam7C")
-    @ResponseWrapper(localName = "getEstelam7CResponse", targetNamespace = "http://est", className = "est.GetEstelam7CResponse")
-    @Action(input = "http://est/EstelamPort/getEstelam7CRequest", output = "http://est/EstelamPort/getEstelam7CResponse", fault = {
-        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam7C/Fault/UnsupportedEncodingException")
-    })
-    public List<EstelamResult7C> getEstelam7C(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        EstelamRequest arg4)
-        throws UnsupportedEncodingException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns est.EstelamResult9C
-     * @throws UnsupportedEncodingException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelam9C", targetNamespace = "http://est", className = "est.GetEstelam9C")
-    @ResponseWrapper(localName = "getEstelam9CResponse", targetNamespace = "http://est", className = "est.GetEstelam9CResponse")
-    @Action(input = "http://est/EstelamPort/getEstelam9CRequest", output = "http://est/EstelamPort/getEstelam9CResponse", fault = {
-        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam9C/Fault/UnsupportedEncodingException")
-    })
-    public EstelamResult9C getEstelam9C(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        Estelam9CRequest arg4)
-        throws UnsupportedEncodingException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg5
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns est.EstelamResult10
-     * @throws UnsupportedEncodingException_Exception
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelam10", targetNamespace = "http://est", className = "est.GetEstelam10")
-    @ResponseWrapper(localName = "getEstelam10Response", targetNamespace = "http://est", className = "est.GetEstelam10Response")
-    @Action(input = "http://est/EstelamPort/getEstelam10Request", output = "http://est/EstelamPort/getEstelam10Response", fault = {
-        @FaultAction(className = UnsupportedEncodingException_Exception.class, value = "http://est/EstelamPort/getEstelam10/Fault/UnsupportedEncodingException")
-    })
-    public EstelamResult10 getEstelam10(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4,
-        @WebParam(name = "arg5", targetNamespace = "")
-        Estelam10PersonInfo arg5)
-        throws UnsupportedEncodingException_Exception
-    ;
-
-    /**
-     * 
-     * @param arg4
-     * @param arg3
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns est.EstelamRIResponse
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getEstelamRI", targetNamespace = "http://est", className = "est.GetEstelamRI")
-    @ResponseWrapper(localName = "getEstelamRIResponse", targetNamespace = "http://est", className = "est.GetEstelamRIResponse")
-    @Action(input = "http://est/EstelamPort/getEstelamRIRequest", output = "http://est/EstelamPort/getEstelamRIResponse")
-    public EstelamRIResponse getEstelamRI(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4);
 
     /**
      * 
