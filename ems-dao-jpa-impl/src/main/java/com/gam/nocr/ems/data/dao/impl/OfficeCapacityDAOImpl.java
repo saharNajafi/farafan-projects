@@ -169,4 +169,18 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
         return officeCapacityTOList.size() != 0 ? officeCapacityTOList : null;
     }
 
+    @Override
+    public void removeByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException {
+        try {
+            em.createQuery("delete OfficeCapacityTO capacity " +
+                    "where capacity.enrollmentOffice.id=:enrollmentOfficeId")
+                    .setParameter("enrollmentOfficeId", enrollmentOfficeId)
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new DAOException(
+                    DataExceptionCode.OFC_004,
+                    DataExceptionCode.GLB_012_MSG,
+                    e);
+        }
+    }
 }

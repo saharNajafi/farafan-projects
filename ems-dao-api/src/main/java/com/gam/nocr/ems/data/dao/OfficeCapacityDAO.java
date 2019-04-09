@@ -19,4 +19,6 @@ public interface OfficeCapacityDAO extends EmsBaseDAO<OfficeCapacityTO> {
     OfficeCapacityTO findByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException;
 
     List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws DAOException;
+
+    void removeByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException;
 }

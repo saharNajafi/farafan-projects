@@ -15,4 +15,6 @@ public interface OfficeActiveShiftDAO extends EmsBaseDAO<OfficeActiveShiftTO> {
      void editActiveShiftRemainCapacity(Long activeShiftId, int remainCapacity) throws BaseException;
 
     OfficeActiveShiftTO OfficeActiveShiftByOfficeIdAndRsvDate(Long officeId, ShiftEnum shiftEnum, int myDate) throws BaseException;
+
+    void removeByEnrollmentOfficeId(Long officeId) throws BaseException;
 }

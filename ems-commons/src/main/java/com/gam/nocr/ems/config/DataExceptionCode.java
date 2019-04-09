@@ -21,6 +21,8 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_008_MSG = "The parsing operation could not be done successfully.";
     public static final String GLB_009_MSG = "Cannot create dao with name {}";
     public static final String GLB_010_MSG = "The {} was not provided in the IMS sent XML";
+    public static final String GLB_011_MSG = "The {} was not provided in the IMS sent XML";
+    public static final String GLB_012_MSG = "delete office capacity has exception";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     // com.gam.nocr.ems.data.mapper.xmlmapper.CardRequestCMSMapper
@@ -1091,6 +1093,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OCD_008_MSG = "Unique constraint violated, Office Capacity size has already been used";
 
     public static final String OFC_003 = "EMS_D_OFC_003";
+    public static final String OFC_004 = "EMS_D_OFC_004";
 
     // com.farafan.crsProvider.dao.ActiveShiftDAOImpl
     public static final String ASH_001 = "EMS_D_ASH_001";
@@ -1099,6 +1102,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ASH_004 = "EMS_D_ASH_004";
     public static final String ASH_005 = "EMS_D_ASH_005";
     public static final String ASH_006 = "EMS_D_ASH_006";
+    public static final String ASH_007 = "EMS_D_ASH_007";
 
     //com.gam.nocr.ems.data.dao.impl.RegistrationPaymentDAOImpl.java
     public static final String RGP_001 = "EMS_D_RGP_001";

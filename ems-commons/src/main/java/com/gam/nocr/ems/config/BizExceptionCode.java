@@ -39,6 +39,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_026_MSG = "Invalid request id. The given request id cannot be null.";
     public static final String GLB_027_MSG = "Estelam2 call incures an exception for cardrequestId : ";
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
+    public static final String GLB_029_MSG = "Cannot instantiate active shift dao";
+    public static final String GLB_030_MSG = "Cannot instantiate office capacity dao";
+    public static final String GLB_031_MSG = "error occured in remove office enrollment";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
@@ -1187,6 +1190,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_098 = "EMS_S_EOS_098";
     public static final String EOS_099 = "EMS_S_EOS_099";
     public static final String EOS_100 = "EMS_S_EOS_100";
+    public static final String EOS_101 = "EMS_S_EOS_101";
+    public static final String EOS_102 = "EMS_S_EOS_102";
+    public static final String EOS_103 = "EMS_S_EOS_103";
     public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
     public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
     public static final String EOS_006_MSG = "Enrollment office name is too long";
