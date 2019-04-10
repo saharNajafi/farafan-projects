@@ -267,6 +267,20 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
         }
     }
 
+    @Override
+    public OfficeCapacityTO findByEnrollmentOfficeIdAndDateAndWorkingHour(Long enrollmentOfficeId) throws BaseException {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat hours = new SimpleDateFormat("HH");
+            int date = Integer.parseInt(CalendarUtil.convertGregorianToPersian(dateFormat.format(
+                    new Date())).replaceAll("/", ""));
+           float hour = Float.parseFloat(hours.format(new Date()));
+            return getOfficeCapacityDAO().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId, date, hour);
+        } catch (BaseException e) {
+            throw e;
+        }
+    }
+
     private OfficeCapacityDAO getOfficeCapacityDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames

@@ -22,4 +22,6 @@ public interface OfficeActiveShiftService extends Service{
     void editActiveShiftRemainCapacity(Long activeShiftId, int remainCapacity) throws BaseException;
 
     void activeShiftSaveOrUpdate(OfficeCapacityTO officeCapacityTO, OfficeActiveShiftTO officeActiveShiftTO, EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate) throws BaseException;
+
+    OfficeActiveShiftTO findActiveShiftByOfficeCapacity(Long id) throws BaseException;
 }

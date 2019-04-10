@@ -170,6 +170,24 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
     }
 
     @Override
+    public OfficeCapacityTO findByEnrollmentOfficeIdAndDateAndWorkingHour(Long eofId, int date, float hour) throws DAOException {
+        List<OfficeCapacityTO> officeCapacityTOList;
+        try {
+            officeCapacityTOList = em.createNamedQuery("OfficeCapacityTO.findByEnrollmentOfficeIdAndDateAndWorkingHour")
+                    .setParameter("eofId", eofId)
+                    .setParameter("date", date)
+                    .setParameter("hour", hour)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.OFC_003,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+        return officeCapacityTOList.size() != 0 ? officeCapacityTOList.get(0) : null;
+    }
+
+
+
+    @Override
     public void removeByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException {
         try {
             em.createQuery("delete OfficeCapacityTO capacity " +

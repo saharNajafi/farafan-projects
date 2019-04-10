@@ -116,6 +116,13 @@ public class OfficeActiveShiftServiceImpl extends EMSAbstractService
 
     }
 
+    public OfficeActiveShiftTO findActiveShiftByOfficeCapacity(Long officeCapacity) throws BaseException{
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+        int activeDate = Integer.parseInt(CalendarUtil.convertGregorianToPersian(date.format(
+                new Date())).replaceAll("/", ""));
+       return getActiveShiftDAO().findActiveShiftByOfficeCapacityAndActiveDate(officeCapacity, activeDate);
+    }
+
     public Boolean checkValidActiveDate(ShiftEnum shiftEnum, EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate) {
 
         Boolean activeFlag = Boolean.TRUE;

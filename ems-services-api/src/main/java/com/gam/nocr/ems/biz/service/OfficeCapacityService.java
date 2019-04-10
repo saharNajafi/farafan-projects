@@ -23,4 +23,6 @@ public interface OfficeCapacityService extends Service {
     OfficeCapacityTO findByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException;
 
     List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException;
+
+    OfficeCapacityTO findByEnrollmentOfficeIdAndDateAndWorkingHour(Long enrollmentOfficeId) throws BaseException;
 }

@@ -40,7 +40,12 @@ import javax.validation.constraints.NotNull;
                 name = "OfficeActiveShiftTO.listByDate",
                 query = "select oac from OfficeActiveShiftTO oac where oac.activeDate =:activeShiftDate" +
                         " and oac.enrollmentOffice.singleStageOnly=false "
-        )
+        ),
+        @NamedQuery(
+                name = "OfficeActiveShiftTO.findActiveShiftByOfficeCapacityAndActiveDate",
+                query = "select oac from OfficeActiveShiftTO oac" +
+                        " where oac.officeCapacity.id=:officeCapacity" +
+                        " and oac.activeDate=:activeDate")
 })
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OfficeActiveShiftTO extends ExtEntityTO {

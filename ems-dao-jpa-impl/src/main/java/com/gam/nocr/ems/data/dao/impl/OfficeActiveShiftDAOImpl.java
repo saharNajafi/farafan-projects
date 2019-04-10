@@ -48,6 +48,20 @@ public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO
         }
         return activeShiftTOList.size() != 0 ? activeShiftTOList.get(0) : null;
     }
+    public OfficeActiveShiftTO findActiveShiftByOfficeCapacityAndActiveDate(Long officeCapacity, int activeDate) throws DAOException{
+
+        List<OfficeActiveShiftTO> activeShiftTOList;
+        try {
+            activeShiftTOList = em.createNamedQuery("OfficeActiveShiftTO.findActiveShiftByOfficeCapacityAndActiveDate")
+                    .setParameter("officeCapacity", officeCapacity)
+                    .setParameter("activeDate", activeDate)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.ENI_016,
+                    DataExceptionCode.GLB_005_MSG, e);
+        }
+        return activeShiftTOList.size() != 0 ? activeShiftTOList.get(0) : null;
+    }
 
     public void editActiveShiftRemainCapacity(Long activeShiftId, int remainCapacity) throws BaseException {
         try {

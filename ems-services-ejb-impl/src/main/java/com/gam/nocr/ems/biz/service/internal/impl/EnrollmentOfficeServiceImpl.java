@@ -2014,7 +2014,10 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                     }
                 }
             } else {
-                OfficeActiveShiftTO activeShiftTO = getOfficeActiveShiftService().findActiveShiftByEofId(enrollmentOfficeId);
+                OfficeCapacityTO officeCapacity =
+                        getOfficeCapacityService().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId);
+                OfficeActiveShiftTO activeShiftTO =
+                        getOfficeActiveShiftService().findActiveShiftByOfficeCapacity(officeCapacity.getId());
                 OfficeCapacityTO officeCapacityTO = activeShiftTO.getOfficeCapacity();
                 if (activeShiftTO != null && officeCapacityTO != null) {
                     if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0) {

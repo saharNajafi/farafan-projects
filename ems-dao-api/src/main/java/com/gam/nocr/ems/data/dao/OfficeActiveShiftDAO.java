@@ -1,6 +1,7 @@
 package com.gam.nocr.ems.data.dao;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.data.domain.OfficeActiveShiftTO;
 import com.gam.nocr.ems.data.enums.ShiftEnum;
 
@@ -17,4 +18,6 @@ public interface OfficeActiveShiftDAO extends EmsBaseDAO<OfficeActiveShiftTO> {
     OfficeActiveShiftTO OfficeActiveShiftByOfficeIdAndRsvDate(Long officeId, ShiftEnum shiftEnum, int myDate) throws BaseException;
 
     void removeByEnrollmentOfficeId(Long officeId) throws BaseException;
+
+    OfficeActiveShiftTO findActiveShiftByOfficeCapacityAndActiveDate(Long officeCapacity, int activeDate) throws DAOException;
 }

@@ -31,6 +31,15 @@ import java.io.Serializable;
         @NamedQuery(
                 name = "OfficeCapacityTO.listOfficeCapacityByDate",
                 query = "select oc from OfficeCapacityTO oc where oc.endDate >= :startDate and oc.startDate <= :endDate"
+        ),
+        @NamedQuery(
+                name = "OfficeCapacityTO.findByEnrollmentOfficeIdAndDateAndWorkingHour",
+                query = "select oc from OfficeCapacityTO oc " +
+                        "where oc.enrollmentOffice >= :eofId " +
+                        "and oc.startDate <= :date " +
+                        "and oc.endDate >= :date " +
+                        "and oc.workingHoursFrom <= :hour " +
+                        "and oc.workingHoursTo >= :hour"
         )
   })
 public class OfficeCapacityTO extends ExtEntityTO {
