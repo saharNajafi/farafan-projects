@@ -79,7 +79,8 @@ public class CCOSPaymentWS extends EMSWS {
             @WebParam(name = "personalHealthStatusWTO", targetNamespace = "")
             @XmlElement(required = true, nillable = false) PersonalHealthStatusWTO personalHealthStatusWTO
     ) throws InternalException, BaseException {
-        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+//        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+        UserProfileTO userProfileTO = null;
         try {
             enrollmentOfficeDelegator.checkEnrollmentOfficeEligibleForSingleStageEnrollment(
                     userProfileTO, personalHealthStatusWTO.getNationalId()

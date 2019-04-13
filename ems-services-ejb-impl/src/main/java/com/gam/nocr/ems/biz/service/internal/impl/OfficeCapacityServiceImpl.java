@@ -272,9 +272,12 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
         try {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat hours = new SimpleDateFormat("HH");
+            SimpleDateFormat minutes = new SimpleDateFormat("mm");
+            int min;
             int date = Integer.parseInt(CalendarUtil.convertGregorianToPersian(dateFormat.format(
                     new Date())).replaceAll("/", ""));
-           float hour = Float.parseFloat(hours.format(new Date()));
+           min = Integer.parseInt(minutes.format(new Date())) >= 30 ? 5 : 0;
+                float hour = Float.parseFloat(hours.format(new Date()) + '.' + min);
             return getOfficeCapacityDAO().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId, date, hour);
         } catch (BaseException e) {
             throw e;

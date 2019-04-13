@@ -2020,8 +2020,10 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         getOfficeActiveShiftService().findActiveShiftByOfficeCapacity(officeCapacity.getId());
                 OfficeCapacityTO officeCapacityTO = activeShiftTO.getOfficeCapacity();
                 if (activeShiftTO != null && officeCapacityTO != null) {
-                    if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0) {
-                        result = Boolean.TRUE;
+                    if(activeShiftTO.getRemainCapacity() > 0 && officeCapacityTO.getCapacity() > 0) {
+                        if (Math.round(activeShiftTO.getRemainCapacity() * 10 / officeCapacityTO.getCapacity()) != 0) {
+                            result = Boolean.TRUE;
+                        }
                     }
                 }
             }
