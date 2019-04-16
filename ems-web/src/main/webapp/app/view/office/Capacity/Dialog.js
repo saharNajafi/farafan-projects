@@ -40,7 +40,7 @@ Ext.define('Ems.view.office.Capacity.Dialog', {
                     ],
                     data: [
                         {id: 0, title: 'صبح'},
-                        {id: 1, title: 'شب'}
+                        {id: 1, title: 'عصر'}
                     ]
                 }),
                 valueField: 'id',

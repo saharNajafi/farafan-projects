@@ -232,6 +232,11 @@ Ext.define('Ems.controller.OfficeController', {
                        }
                        else {
                            obj['capacity'] = form.down('#capacity').getValue();
+                           obj['workingHoursFrom'] = form.down('#workingHoursFrom').getValue();
+                           obj['workingHoursTo'] = form.down('#workingHoursTo').getValue();
+                           obj['startDate'] = form.down('#startDate').getValue();
+                           obj['shiftNo'] = form.down('#shiftNo').getValue();
+                           obj['enrollmentOfficeId'] = form.enrollmentOfficeID;
                            obj['editable'] = form.editableField;
                        }
                         list.push(obj);

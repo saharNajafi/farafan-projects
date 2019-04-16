@@ -11,7 +11,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
     alias: 'widget.officecapacitygrid',
 
     multiSelect: false,
-    requires: ['Ems.store.OfficeCapacityStore', 'Ems.view.office.Dialog' ],
+    requires: ['Ems.store.OfficeCapacityStore', 'Ems.view.office.Dialog'],
     autoHeight: true,
     id: 'grdOfficesCapacityGrid',
 
@@ -24,17 +24,19 @@ Ext.define('Ems.view.office.Capacity.Grid', {
             iconCls: 'add-btn',
             text: 'جدید',
             //action: 'exportExcel',
-            handler: function(sender) {
-                Ext.create('Ems.view.office.Capacity.Dialog', { title: 'چدید', height: 210, enrollmentOfficeID: sender.up('grid').enrollmentOfficeID}).show();
+            handler: function (sender) {
+                Ext.create('Ems.view.office.Capacity.Dialog', {
+                    title: 'جدید',
+                    height: 210,
+                    enrollmentOfficeID: sender.up('grid').enrollmentOfficeID
+                }).show();
             }
         }
     ],
 
-    doAdd: function(grid, button)
-    {
+    doAdd: function (grid, button) {
 
-        if(this.isOnValidState() === false)
-        {
+        if (this.isOnValidState() === false) {
             /*this.showParentIdError();*/
             return;
         }
@@ -46,8 +48,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 opener: grid
             });
 
-        if(dialog)
-        {
+        if (dialog) {
             dialog.setTitle(Gam.Resource.title.add);
             /*dialog.on('savesuccess', this.reloadStore, this);*/
             dialog.setBaseParams();
@@ -58,68 +59,73 @@ Ext.define('Ems.view.office.Capacity.Grid', {
 
     actionColumnItems: [
         {
-           // icon: 'resources/themes/images/default/shared/edit.png',
+            // icon: 'resources/themes/images/default/shared/edit.png',
             tooltip: 'ویرایش',
             action: 'editCapacity',
             stateful: true,
             stateId: this.stateId + 'EditCapacity',
             getClass: function (value, metadata, record) {
-                if(record.get('editable')) {
+                if (record.get('editable')) {
                     return 'girdAction-OfficeCapacity-edit-icon';
-                }
-                else {
+                } else {
                     return 'x-hide-display';
                 }
-           },
-            handler: function (sender,r,c,d,e,f) {
+            },
+            handler: function (sender, r, c, d, e, f) {
                 var grid = sender.up('grid');
                 var store = grid.store;
-                var form = Ext.create('Ems.view.office.Capacity.Dialog', {title: 'ویرایش', height: 100, enrollmentOfficeID: grid.enrollmentOfficeID});
+                var form = Ext.create('Ems.view.office.Capacity.Dialog', {
+                    title: 'ویرایش',
+                    height: 200,
+                    enrollmentOfficeID: grid.enrollmentOfficeID
+                });
                 var record = store.getAt(r);
+                var date =  record.get('startDate');
+               var  fromDate = convertMiladiToJalali(date);
                 form.editableField = record.get('editable');
                 form.action = "edit";
                 form.sendID = record.get('id');
                 form.down('#capacity').setValue(record.get('capacity'));
-                form.down('#workingHoursFrom').hide();
-                form.down('#workingHoursTo').hide();
-                form.down('#shiftNo').hide();
-                form.down('#startDate').hide();
+                form.down('#workingHoursFrom').setValue(record.get('workingHoursFrom'));
+                form.down('#workingHoursTo').setValue(record.get('workingHoursTo'));
+                form.down('#shiftNo').setValue(record.get('shiftNo'));
+                form.down('#startDate').setValue(fromDate);
                 form.show();
             }
-        },
-        {
-            // icon: 'resources/themes/images/default/shared/edit.png',
-            tooltip: 'حذف',
-            action: 'deleteCapacity',
-            stateful: true,
-            stateId: this.stateId + 'EditCapacity',
-            getClass: function (value, metadata, record) {
-                return 'grid-delete-icon';
-            },
-            handler: function (sender,r) {
-                var grid = sender.up('grid');
-                var store = grid.store;
-                var record = store.getAt(r);
-                Ext.Ajax.request({
-                    url: 'extJsController/officeCapacity/delete',
-                    method: 'POST',
-                    jsonData: { ids : record.get('id') },
-                    success: function (response, request) {
-                        var data = Ext.JSON.decode(response.responseText);
-                        var success = data.success;
-                        if(success) {
-                            store.load();
-                        }
-                        else {
-                            Ext.Msg.alert('', data.messageInfo.message);
-                        }
-                    },
-                    failure: function () {
-                        Ext.Msg.alert('fail');
-                    }
-                });
-            }
         }
+        // ,{
+        //     // icon: 'resources/themes/images/default/shared/edit.png',
+        //     tooltip: 'حذف',
+        //     action: 'deleteCapacity',
+        //     stateful: true,
+        //     stateId: this.stateId + 'EditCapacity',
+        //     getClass: function (value, metadata, record) {
+        //         return 'grid-delete-icon';
+        //     },
+        //     handler: function (sender,r) {
+        //         var grid = sender.up('grid');
+        //         var store = grid.store;
+        //         var record = store.getAt(r);
+        //         Ext.Ajax.request({
+        //             url: 'extJsController/officeCapacity/delete',
+        //             method: 'POST',
+        //             jsonData: { ids : record.get('id') },
+        //             success: function (response, request) {
+        //                 var data = Ext.JSON.decode(response.responseText);
+        //                 var success = data.success;
+        //                 if(success) {
+        //                     store.load();
+        //                 }
+        //                 else {
+        //                     Ext.Msg.alert('', data.messageInfo.message);
+        //                 }
+        //             },
+        //             failure: function () {
+        //                 Ext.Msg.alert('fail');
+        //             }
+        //         });
+        //     }
+        // }
     ],
 
     initComponent: function () {
@@ -132,16 +138,16 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 dataIndex: 'startDate',
                 renderer: function (val) {
                     var dd = val.split('T')[0];
-                   var newVal =  new Date(dd);
-                   var month = (Ext.JalaliDate.getMonth(newVal)+1).toString();
-                   var day = Ext.JalaliDate.getDate(newVal).toString();
-                   if(month.length == 1) {
-                       month = 0 + month;
-                   }
-                   if(day.length == 1) {
-                       day = 0 + day;
-                   }
-                   return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + month + '/' + day;
+                    var newVal = new Date(dd);
+                    var month = (Ext.JalaliDate.getMonth(newVal) + 1).toString();
+                    var day = Ext.JalaliDate.getDate(newVal).toString();
+                    if (month.length == 1) {
+                        month = 0 + month;
+                    }
+                    if (day.length == 1) {
+                        day = 0 + day;
+                    }
+                    return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + month + '/' + day;
                 }
                 //xtype: 'gam.datecolumn',
                 //format: Ext.Date.defaultDateTimeFormat
@@ -153,13 +159,13 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 dataIndex: 'endDate',
                 renderer: function (val) {
                     var dd = val.split('T')[0];
-                    var newVal =  new Date(dd);
-                    var month = (Ext.JalaliDate.getMonth(newVal)+1).toString();
+                    var newVal = new Date(dd);
+                    var month = (Ext.JalaliDate.getMonth(newVal) + 1).toString();
                     var day = Ext.JalaliDate.getDate(newVal).toString();
-                    if(month.length == 1) {
+                    if (month.length == 1) {
                         month = 0 + month;
                     }
-                    if(day.length == 1) {
+                    if (day.length == 1) {
                         day = 0 + day;
                     }
                     return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + month + '/' + day;
@@ -181,7 +187,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 sortable: false,
                 dataIndex: EmsObjectName.capacity.workingHoursFrom,
                 id: EmsObjectName.capacity.workingHoursFrom,
-                renderer: function(workingHour) {
+                renderer: function (workingHour) {
                     if (workingHour) {
                         workingHour = new String(workingHour);
                         if (workingHour.indexOf(".5") > 0) {
@@ -201,7 +207,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                 sortable: false,
                 dataIndex: EmsObjectName.capacity.workingHoursTo,
                 id: EmsObjectName.capacity.workingHoursTo,
-                renderer: function(workingHour) {
+                renderer: function (workingHour) {
                     if (workingHour) {
                         workingHour = new String(workingHour);
                         if (workingHour.indexOf(".5") > 0) {
@@ -234,4 +240,17 @@ Ext.define('Ems.view.office.Capacity.Grid', {
 
 
 });
+function convertMiladiToJalali(val) {
+    var dd = val.split('T')[0];
+    var newVal = new Date(dd);
+    var month = (Ext.JalaliDate.getMonth(newVal) + 1).toString();
+    var day = Ext.JalaliDate.getDate(newVal).toString();
+    if (month.length == 1) {
+        month = 0 + month;
+    }
+    if (day.length == 1) {
+        day = 0 + day;
+    }
+    return Ext.JalaliDate.getFullYear(newVal).toString() + '/' + month + '/' + day;
+}
 

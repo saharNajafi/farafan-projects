@@ -44,7 +44,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     private static final String DEFAULT_OFFICE_CAPACITY_END_DATE = "15000101";
 
     @Override
-    public Long save(OfficeCapacityVTO officeCapacityVTO) throws BaseException {
+    public Long saveOrUpdate(OfficeCapacityVTO officeCapacityVTO) throws BaseException {
 
         OfficeCapacityTO officeCapacityTO = null;
         int endDate;
@@ -70,23 +70,29 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
 
             if (officeCapacityTOList != null) {
                 for (OfficeCapacityTO officeCapacity : officeCapacityTOList) {
-                    if (officeCapacity.getStartDate() == toDateWithoutSlash)
-                        throw new ServiceException(BizExceptionCode.OC_007, BizExceptionCode.OC_007_MSG);
+//                    if (officeCapacity.getStartDate() == toDateWithoutSlash)
+//                        throw new ServiceException(BizExceptionCode.OC_007, BizExceptionCode.OC_007_MSG);
                     int currentIndex = officeCapacityTOList.indexOf(officeCapacity);
                     if (currentIndex == 0 && toDateWithoutSlash < officeCapacity.getStartDate()) {
                         endDate = Integer.valueOf(convertGregorianToPersian(getPreviousDay(
                                 convertPersianToGregorian(String.valueOf(
                                         officeCapacity.getStartDate())
                                 ))).replace("/", ""));
-                        officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                        if (officeCapacityVTO.getId() == null)
+                            officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                        else
+                            officeCapacityTO = updateOfficeCapacity(officeCapacityVTO, endDate);
                         previuosAdded = true;
                     }
                     if (currentIndex == officeCapacityTOList.size() - 1
                             && toDateWithoutSlash > officeCapacity.getStartDate()) {
                         officeCapacity.setEndDate(previousDay);
                         getOfficeCapacityDAO().update(officeCapacity);
-                        officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                        if (officeCapacityVTO.getId() == null)
+                            officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
 
+                        else
+                            officeCapacityTO = updateOfficeCapacity(officeCapacityVTO, endDate);
                     } else {
                         if (!previuosAdded) {
                             if (currentIndex > 0) {
@@ -96,12 +102,16 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                                 if (toDateWithoutSlash > previousOfficeCapacity.getStartDate()
                                         && toDateWithoutSlash < officeCapacity.getStartDate()) {
                                     previousOfficeCapacity.setEndDate(previousDay);
+
                                     getOfficeCapacityDAO().update(previousOfficeCapacity);
                                     endDate = Integer.valueOf(convertGregorianToPersian(getPreviousDay(
                                             convertPersianToGregorian(String.valueOf(
                                                     officeCapacity.getStartDate())
                                             ))).replace("/", ""));
-                                    officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                                    if (officeCapacityVTO.getId() == null)
+                                        officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                                    else
+                                        officeCapacityTO = updateOfficeCapacity(officeCapacityVTO, officeCapacity.getEndDate());
                                     previuosAdded = true;
                                 }
                             }
@@ -109,7 +119,10 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
                     }
                 }
             } else {
-                officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                if (officeCapacityVTO.getId() == null)
+                    officeCapacityTO = createOfficeCapacity(officeCapacityVTO, endDate);
+                else
+                    officeCapacityTO = updateOfficeCapacity(officeCapacityVTO, endDate);
             }
 
         } catch (BaseException e) {
@@ -118,6 +131,34 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.OC_010, BizExceptionCode.OC_010_MSG, e);
         }
         return officeCapacityTO != null ? officeCapacityTO.getId() : null;
+    }
+
+    private OfficeCapacityTO updateOfficeCapacity(OfficeCapacityVTO officeCapacityVTO, int endDate) throws BaseException{
+        OfficeCapacityTO officeCapacityTO = null;
+        String startDate;
+        Date date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            officeCapacityTO = getOfficeCapacityDAO().find(OfficeCapacityTO.class, officeCapacityVTO.getId());
+            if (officeCapacityTO == null)
+                throw new ServiceException(BizExceptionCode.OC_002, BizExceptionCode.OC_002_MSG, new Long[]{officeCapacityVTO.getId()});
+            startDate = convertPersianToGregorian(String.valueOf(officeCapacityTO.getStartDate()));
+            date = sdf.parse(startDate.substring(0, 9));
+            if (date.before(new Date()))
+                throw new ServiceException(BizExceptionCode.OC_013, BizExceptionCode.OC_013_MSG);
+            officeCapacityTO.setCapacity(Short.parseShort(officeCapacityVTO.getCapacity()));
+            String startDateWithSlash = convertGregorianToPersian(officeCapacityVTO.getStartDate());
+            officeCapacityTO.setStartDate(Integer.valueOf(startDateWithSlash.replace("/", "")));
+            officeCapacityTO.setEndDate(endDate);
+            officeCapacityTO.setWorkingHoursFrom(officeCapacityVTO.getWorkingHoursFrom());
+            officeCapacityTO.setWorkingHoursTo(officeCapacityVTO.getWorkingHoursTo());
+            officeCapacityTO = getOfficeCapacityDAO().update(officeCapacityTO);
+        } catch (BaseException e) {
+            throw e;
+        } catch (ParseException e) {
+            throw new ServiceException(BizExceptionCode.OC_015, BizExceptionCode.OC_015_MSG, e);
+        }
+        return officeCapacityTO;
     }
 
     @Override
@@ -140,30 +181,6 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.DSI_032, BizExceptionCode.GLB_008_MSG, e);
         }
-    }
-
-    @Override
-    public Long update(OfficeCapacityVTO officeCapacityVTO) throws BaseException {
-        OfficeCapacityTO officeCapacityTO = null;
-        String startDate;
-        Date date;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            officeCapacityTO = getOfficeCapacityDAO().find(OfficeCapacityTO.class, officeCapacityVTO.getId());
-            if (officeCapacityTO == null)
-                throw new ServiceException(BizExceptionCode.OC_002, BizExceptionCode.OC_002_MSG, new Long[]{officeCapacityVTO.getId()});
-            startDate = convertPersianToGregorian(String.valueOf(officeCapacityTO.getStartDate()));
-            date = sdf.parse(startDate.substring(0, 9));
-            if (date.before(new Date()))
-                throw new ServiceException(BizExceptionCode.OC_013, BizExceptionCode.OC_013_MSG);
-            officeCapacityTO.setCapacity(Short.parseShort(officeCapacityVTO.getCapacity()));
-            officeCapacityTO = getOfficeCapacityDAO().update(officeCapacityTO);
-        } catch (BaseException e) {
-            throw e;
-        } catch (ParseException e) {
-            throw new ServiceException(BizExceptionCode.OC_015, BizExceptionCode.OC_015_MSG, e);
-        }
-        return officeCapacityTO != null ? officeCapacityTO.getId() : null;
     }
 
     @Override
@@ -276,8 +293,8 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             int min;
             int date = Integer.parseInt(CalendarUtil.convertGregorianToPersian(dateFormat.format(
                     new Date())).replaceAll("/", ""));
-           min = Integer.parseInt(minutes.format(new Date())) >= 30 ? 5 : 0;
-                float hour = Float.parseFloat(hours.format(new Date()) + '.' + min);
+            min = Integer.parseInt(minutes.format(new Date())) >= 30 ? 5 : 0;
+            float hour = Float.parseFloat(hours.format(new Date()) + '.' + min);
             return getOfficeCapacityDAO().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId, date, hour);
         } catch (BaseException e) {
             throw e;
