@@ -730,7 +730,7 @@
 		<iaikxsect.version>1.0</iaikxsect.version>
 		<xmlapis.version>1.3.04</xmlapis.version>
 		<xalanserializer.version>2.7.1</xalanserializer.version>
-		<aspectj.version>1.8.4</aspectj.version>
+		<aspectj.version>1.6.11</aspectj.version>
 		<zk.version>6.0.1</zk.version>
 		<joda.version>2.1</joda.version>
 		<flexJSON.version>2.0</flexJSON.version>

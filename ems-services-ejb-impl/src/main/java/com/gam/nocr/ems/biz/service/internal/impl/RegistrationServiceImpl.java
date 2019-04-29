@@ -2843,9 +2843,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 getCardManagementService().checkRequestValidation(cardRequestTO.getCitizen().getNationalID(), cardRequestTO.getType());
             CitizenTO newCitizen = getCitizenDAO().create(cardRequestTO.getCitizen());
             cardRequestTO.setCitizen(newCitizen);
-            /*Create Fake Success Payment*/
+
             createFakePaymentForCCOSVIPAndReplica(cardRequestTO);
-            /*Create Fake Success Payment*/
+
             CardRequestTO newCardRequest = getCardRequestDAO().create(cardRequestTO);
             getCardRequestHistoryDAO().create(new CardRequestTO(newCardRequest.getId()), "Pish SabteName VIP : " + cardRequestTO.getType(), SystemId.CCOS, null,
                     CardRequestHistoryAction.COMPLETE_REGISTRATION, userProfile.getUserName());
