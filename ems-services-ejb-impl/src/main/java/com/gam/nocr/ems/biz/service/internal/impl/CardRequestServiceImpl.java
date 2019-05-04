@@ -51,7 +51,6 @@ import java.text.MessageFormat;
 import java.util.*;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.*;
-import static com.gam.nocr.ems.data.enums.CardRequestState.VERIFIED_IMS;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com.com">Alireza Saadat</a>
@@ -2247,6 +2246,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.CRE_074, BizExceptionCode.CRE_074_MSG);
         }
         return replicaTypeCount;
+    }
+
+    public RegistrationPaymentTO findRegistrationPaymentId(String requestId) throws BaseException{
+         RegistrationPaymentTO registrationPaymentTO;
+        try {
+            registrationPaymentTO = getCardRequestDAO().findRegistrationPaymentId(requestId);
+
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.CRE_077, BizExceptionCode.CRE_077_MSG);
+        }
+        return registrationPaymentTO;
     }
 
 }

@@ -51,4 +51,8 @@ public class RegistrationPaymentDelegator implements Delegator {
         getService(userProfileTO).assignPaymentToEnrollment(registrationPaymentTO, nationalId);
 
     }
+
+    public Boolean bpiInquiry(UserProfileTO userProfileTO, String requestId) throws BaseException {
+       return getService(userProfileTO).bpiInquiry(requestId);
+    }
 }

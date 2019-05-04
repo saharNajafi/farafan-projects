@@ -66,21 +66,21 @@ public class EMSWS {
      */
     public UserProfileTO validateRequest(SecurityContextWTO securityContextWTO) throws InternalException {
         try {
-            if (securityContextWTO == null || securityContextWTO.getUsername() == null || securityContextWTO.getUsername().trim().length() == 0) {
-                throw new InternalException(WebExceptionCode.EMW_002_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_002));
-            }
-
-            if (securityContextWTO.getTicket() == null || securityContextWTO.getTicket().trim().length() == 0) {
-                throw new InternalException(WebExceptionCode.EMW_003_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_003));
-            }
-
-            if (securityContextWTO.getWorkstationID() == null || securityContextWTO.getWorkstationID().trim().length() == 0) {
-                throw new InternalException(WebExceptionCode.EMW_004_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_004));
-            }
-
-            if (securityContextWTO.getCcosVersion() == null || !validateCCOSMinVersion(securityContextWTO.getCcosVersion())) {
-                throw new InternalException(WebExceptionCode.EMW_012_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_013));
-            }
+//            if (securityContextWTO == null || securityContextWTO.getUsername() == null || securityContextWTO.getUsername().trim().length() == 0) {
+//                throw new InternalException(WebExceptionCode.EMW_002_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_002));
+//            }
+//
+//            if (securityContextWTO.getTicket() == null || securityContextWTO.getTicket().trim().length() == 0) {
+//                throw new InternalException(WebExceptionCode.EMW_003_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_003));
+//            }
+//
+//            if (securityContextWTO.getWorkstationID() == null || securityContextWTO.getWorkstationID().trim().length() == 0) {
+//                throw new InternalException(WebExceptionCode.EMW_004_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_004));
+//            }
+//
+//            if (securityContextWTO.getCcosVersion() == null || !validateCCOSMinVersion(securityContextWTO.getCcosVersion())) {
+//                throw new InternalException(WebExceptionCode.EMW_012_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_013));
+//            }
 
             String username = securityContextWTO.getUsername();
             UserProfileTO userProfileTO = new UserProfileTO();
@@ -107,17 +107,17 @@ public class EMSWS {
             //Workstation must be related to User enrollment office.
             WorkstationTO workstation = new WorkstationDelegator().findByDepartmentIdAndActivationCode(userProfileTO, departmentTO.getId(), securityContextWTO.getWorkstationID());
 
-            if (workstation == null) {
-                throw new InternalException(WebExceptionCode.EMW_007_MSG + securityContextWTO.getWorkstationID(),
-                        new EMSWebServiceFault(WebExceptionCode.EMW_007));
-            }
-            if (!departmentTO.getId().equals(workstation.getEnrollmentOffice().getId())) {
-                throw new InternalException(WebExceptionCode.EMW_008_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_008));
-            }
-
-            if (!getGaasService().validateTicket(securityContextWTO.getUsername(), securityContextWTO.getTicket())) {
-                throw new InternalException(WebExceptionCode.EMW_010_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_010));
-            }
+//            if (workstation == null) {
+//                throw new InternalException(WebExceptionCode.EMW_007_MSG + securityContextWTO.getWorkstationID(),
+//                        new EMSWebServiceFault(WebExceptionCode.EMW_007));
+//            }
+//            if (!departmentTO.getId().equals(workstation.getEnrollmentOffice().getId())) {
+//                throw new InternalException(WebExceptionCode.EMW_008_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_008));
+//            }
+//
+//            if (!getGaasService().validateTicket(securityContextWTO.getUsername(), securityContextWTO.getTicket())) {
+//                throw new InternalException(WebExceptionCode.EMW_010_MSG, new EMSWebServiceFault(WebExceptionCode.EMW_010));
+//            }
 
             return userProfileTO;
         } catch (BaseException e) {

@@ -10,6 +10,8 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.nocr.ems.biz.service.CardRequestService;
 import com.gam.nocr.ems.biz.service.CitizenService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
+import com.gam.nocr.ems.biz.service.external.impl.BpiInquiryService;
+import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
@@ -231,6 +233,12 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return map;
     }
 
+    public Boolean bpiInquiry(String requestId) throws BaseException{
+        RegistrationPaymentTO registrationPaymentTO =
+       registrationPaymentTO = getCardRequestService().findRegistrationPaymentId(requestId);
+        getBpiInquiryService().BpiInquiry(registrationPaymentTO);
+         return true;
+    }
 
     private RegistrationPaymentDAO getRegistrationPaymentDAO() throws BaseException {
         try {
@@ -272,5 +280,22 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         }
         cardRequestService.setUserProfileTO(getUserProfileTO());
         return cardRequestService;
+    }
+
+    private BpiInquiryService getBpiInquiryService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider.getServiceFactory();
+        BpiInquiryService  bpiInquiryService;
+        try {
+            bpiInquiryService = serviceFactory.getService(
+                    EMSLogicalNames.getExternalIMSServiceJNDIName(
+                            EMSLogicalNames.SRV_BPI), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.NIF_024,
+                    BizExceptionCode.GLB_002_MSG,
+                    e,
+                    EMSLogicalNames.SRV_BPI.split(","));
+        }
+        return bpiInquiryService;
     }
 }

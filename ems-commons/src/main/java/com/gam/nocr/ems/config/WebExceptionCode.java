@@ -689,6 +689,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public  static final String CPW_018 = "EMS_W_CPW_018";
     public  static final String CPW_019 = "EMS_W_CPW_019";
     public  static final String CPW_020 = "EMS_W_CPW_020";
+    public  static final String CPW_021 = "EMS_W_CPW_021";
     public  static final String CPW_001_MSG = "Unable to check the possibility of inserting single stag";
     public  static final String CPW_002_MSG = "Unable to check enrollment office eligibility for single stage enrollment";
     public static final String CPW_003_MSG = "Invalid Parameter -> nationalId :";
@@ -708,6 +709,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
     public static final String CPW_019_MSG = "PersonalInfoWTO is null";
     public static final String CPW_020_MSG = "PersonEnquiryWTO is null";
+    public static final String CPW_021_MSG = "requestId is null";
 
     //com.gam.nocr.ems.web.action.OfficeSettingAction.java
     public static final String OSA_001 = "EMS_A_OSA_001";
