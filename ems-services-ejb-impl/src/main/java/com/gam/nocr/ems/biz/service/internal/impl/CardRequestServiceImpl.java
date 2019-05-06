@@ -1681,6 +1681,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getOrigin() == CardRequestOrigin.P) {
                 if (!(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                         || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                        || cardRequestTO.getState().equals(CardRequestState.REPEALED)
                         || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                         && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError)))) {
                     throw new ServiceException(BizExceptionCode.CRE_058, BizExceptionCode.CRE_058_MSG, new Object[]{cardRequestTO.getId()});
@@ -1700,6 +1701,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getOrigin() == CardRequestOrigin.C) {
                 if (!(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                         || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                        || cardRequestTO.getState().equals(CardRequestState.REPEALED)
                         || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                         && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError)))) {
                     throw new ServiceException(BizExceptionCode.CRE_069, BizExceptionCode.CRE_069_MSG, new Object[]{cardRequestTO.getId()});
