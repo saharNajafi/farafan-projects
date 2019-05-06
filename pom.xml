@@ -454,12 +454,6 @@
 				<version>${ims.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.gam.ems-externals</groupId>
-				<artifactId>bpi-stub</artifactId>
-				<version>${external-bpi.version}</version>
-			</dependency>
-
 			<!--<dependency> -->
 			<!--<groupId>ims-stub</groupId> -->
 			<!--<artifactId>online</artifactId> -->
