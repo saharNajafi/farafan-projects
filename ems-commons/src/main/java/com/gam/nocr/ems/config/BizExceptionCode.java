@@ -234,7 +234,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_074 = "EMS_S_CRE_074";
 	public static final String CRE_075 = "EMS_S_CRE_075";
 	public static final String CRE_076 = "EMS_S_CRE_076";
-	public static final String CRE_077 = "EMS_S_CRE_077";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -277,7 +276,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_074_MSG = "unable to count cardRequest replica types";
 	public static final String CRE_075_MSG = "There is a replace request type for Card Request: {0}";
 	public static final String CRE_076_MSG = "There is a extend request type for Card Request: {0}";
-    public static final String CRE_077_MSG = "unable to find cardRequest";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
@@ -2474,7 +2472,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIF_021 = "EMS_S_NIF_021";
     public static final String NIF_022 = "EMS_S_NIF_022";
     public static final String NIF_023 = "EMS_S_NIF_023";
-    public static final String NIF_024 = "EMS_S_NIF_024";
     public static final String NIF_002_MSG = "Exception in converting an instance of type '{}' to an instance of type '{}'";
     public static final String NIF_007_MSG = "The instance of type '{}' is null.";
     public static final String NIF_010_MSG = "The return value of type '{}' from the service '{}' of sub system 'IMS' is null.";
