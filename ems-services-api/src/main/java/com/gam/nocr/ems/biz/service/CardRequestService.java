@@ -6,7 +6,6 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
@@ -126,6 +125,4 @@ public interface CardRequestService extends Service {
 	CardRequestTO findByCitizenId(CitizenTO citizenTO) throws BaseException;
 
 	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
-
-	RegistrationPaymentTO findRegistrationPaymentId(String requestId) throws BaseException;
 }

@@ -28,7 +28,6 @@
         <!--<module>gaas-stub</module>-->
         <!--<module>ussd-stub</module>-->
         <!--<module>ims-stub</module>-->
-        <!--<module>bpi-stub</module>-->
     </modules>
 
     <properties>

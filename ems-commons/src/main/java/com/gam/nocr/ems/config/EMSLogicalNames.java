@@ -73,7 +73,6 @@ public class EMSLogicalNames {
     public static String SRV_IMS = "IMSService";
     public static String SRV_NIB = "NOCRIMSBatchService";
     public static String SRV_NIO = "NOCRIMSOnlineService";
-    public static String SRV_BPI = "BpiInquiryService";
     public static String SRV_NIF = "NOCRIMSFarafanService";
     public static String SRV_IMS_BATCH = "NOCRIMSBatchService";
     public static String SRV_IMS_FARAFAN = "NOCRIMSFarafanService";

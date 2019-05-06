@@ -250,8 +250,4 @@ public class ProfileKeyName {
     public static final String KEY_PAYMENT_AMOUNT_EXTEND = EMS_PROFILE_ROOT + ".extendCardPaymentAmount";
     public static final String KEY_OFFICE_CAPACITY_END_DATE = EMS_PROFILE_ROOT + ".officeCapacityEndDate";
 
-    //Bpi
-    public static final String KEY_BPI_ENDPOINT = EMS_PROFILE_ROOT + ".bpiEndpoint";
-    public static final String KEY_BPI_NAMESPACE = EMS_PROFILE_ROOT + ".bpiNamespace";
-
 }
