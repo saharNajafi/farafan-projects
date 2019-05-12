@@ -29,7 +29,7 @@
                         <configuration>
                             <wsdlUrls>
                                 <wsdlUrl>
-                                    http://10.7.17.109:7006/bpi-1.0/BpiService?WSDL
+                                    http://10.7.17.68:7008/bpi-1.0/BpiService?WSDL
                                 </wsdlUrl>
                             </wsdlUrls>
                             <staleFile>${project.build.sourceDirectory}/stale/wsdl.bpiWsdl.done</staleFile>

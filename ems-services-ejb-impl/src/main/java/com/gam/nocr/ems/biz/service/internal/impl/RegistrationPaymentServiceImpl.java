@@ -234,9 +234,13 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     }
 
     public Boolean bpiInquiry(String requestId) throws BaseException{
-        RegistrationPaymentTO registrationPaymentTO =
-       registrationPaymentTO = getCardRequestService().findRegistrationPaymentId(requestId);
-        getBpiInquiryService().BpiInquiry(registrationPaymentTO);
+        RegistrationPaymentTO registrationPaymentTO;
+        try {
+            registrationPaymentTO = getCardRequestService().findRegistrationPaymentId(requestId);
+            getBpiInquiryService().BpiInquiry(registrationPaymentTO);
+        }catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.RGP_003, BizExceptionCode.RGP_003_MSG, e);
+        }
          return true;
     }
 
