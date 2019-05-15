@@ -1776,9 +1776,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      */
     public void checkHasCitizenAnyShippedCard(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
-            if (!(cardRequestTO.getState().equals(CardRequestState.ISSUED)
+            if (cardRequestTO.getState().equals(CardRequestState.ISSUED)
                     || cardRequestTO.getState().equals(CardRequestState.READY_TO_DELIVER)
-                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
+                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED)) {
                 throw new ServiceException(BizExceptionCode.CRE_060, BizExceptionCode.CRE_060_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
@@ -1791,7 +1791,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      */
     public void checkHasCitizenAnyDeliveredCard(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
-            if (!(cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
+            if (cardRequestTO.getState().equals(CardRequestState.DELIVERED)) {
                 throw new ServiceException(BizExceptionCode.CRE_062, BizExceptionCode.CRE_062_MSG, new Object[]{cardRequestTO.getId()});
             }
         }

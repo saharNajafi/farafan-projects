@@ -664,6 +664,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setFridayEveningActive(enrollmentOfficeVTO.getFridayEveningActive());
             office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
             office.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
+            office.setActive(enrollmentOfficeVTO.getActive());
             Long rateId;
             if (!enrollmentOfficeVTO.getActive()) {
                 rateId = getRatingInfoDAO().findBySize((long) 0);
