@@ -1,0 +1,37 @@
+1.30M (204.80K loaded)
+<UpdateRequest requestId="00000000000000000000000000000142">
+<Citizen updateType="1">
+<IdentityData>
+<NID>2580043489</NID>
+<Religion>1</Religion>
+<BirthDateLunar>1409/12/01</BirthDateLunar>
+</IdentityData>
+<Address>
+<ZipCode>1651988145</ZipCode>
+<AddressDescription>تهران-میدان حسن آباد- رو به روی فروشگاه اتکا-تست</AddressDescription>
+<MobilePhone>09122222222</MobilePhone>
+<Phone>021-22222022</Phone>
+<geo_serial>1</geo_serial>
+</Address>
+<Family>
+<Parents>
+<Father>
+<NID></NID>
+<ShenasnamehNo></ShenasnamehNo>
+<FirstName>ریکارداگونانتی</FirstName>
+<BirthDate>1200/01/01</BirthDate>
+</Father>
+<Mother>
+<NID></NID>
+<ShenasnamehNo></ShenasnamehNo>
+<FirstName></FirstName>
+<BirthDate>1200/01/01</BirthDate>
+</Mother>
+</Parents>
+<Spouses></Spouses>
+<Children></Children>
+</Family>
+<BiometricInfo>
+<FaceImages>
+<FACE_IMS>
+<Data
