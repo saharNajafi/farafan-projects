@@ -667,7 +667,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             Long rateId;
             if (!enrollmentOfficeVTO.getActive()) {
                 rateId = getRatingInfoDAO().findBySize((long) 0);
-                /** rating info has been deleted form UI.just set default value when editing a office*/
+                /** rating info has been deleted form UI.just set default value when editing an office*/
                 if (rateId != null)
                     office.setRatingInfo(new RatingInfoTO(rateId));
             } else {
