@@ -10,6 +10,7 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.nocr.ems.biz.service.CardRequestService;
 import com.gam.nocr.ems.biz.service.CitizenService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
+import com.gam.nocr.ems.biz.service.external.client.bpi.BpiInquiryWTO;
 import com.gam.nocr.ems.biz.service.external.impl.BpiInquiryService;
 import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
 import com.gam.nocr.ems.config.BizExceptionCode;
@@ -26,6 +27,8 @@ import com.gam.nocr.ems.util.EmsUtil;
 
 import javax.ejb.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -167,7 +170,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
             }
             RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
-           // Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
+            // Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
             //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
            /* Map<String, String> registrationPaymentResult =
@@ -233,15 +236,37 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return map;
     }
 
-    public Boolean bpiInquiry(String requestId) throws BaseException{
+    public Boolean bpiInquiry(String requestId) throws BaseException {
+        CardRequestTO cardRequestTO;
+        BpiInquiryWTO bpiInquiryWTO;
         RegistrationPaymentTO registrationPaymentTO;
+        Boolean result = false;
         try {
-            registrationPaymentTO = getCardRequestService().findRegistrationPaymentId(requestId);
-            getBpiInquiryService().BpiInquiry(registrationPaymentTO);
-        }catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.RGP_003, BizExceptionCode.RGP_003_MSG, e);
+            cardRequestTO = getCardRequestService().findRegistrationPaymentId(requestId);
+            registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
+            bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
+            if (bpiInquiryWTO != null) {
+                registrationPaymentTO.setConfirmed(true);
+                registrationPaymentTO.setSucceed(true);
+                registrationPaymentTO.setResCode("0");
+                registrationPaymentTO.setResCode("0");
+                cardRequestTO.setPaid(true);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
+                Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0,9) + " " + "00:00:00.000000");
+                cardRequestTO.setPaidDate(paidDate);
+                registrationPaymentTO.setPaymentDate(paidDate);
+                getCardRequestService().update(cardRequestTO);
+                getRegistrationPaymentDAO().update(registrationPaymentTO);
+                result = true;
+            }
+        } catch (Exception e) {
+            if (e instanceof ServiceException) {
+                throw (ServiceException) e;
+            }
+            throw new ServiceException(BizExceptionCode.RGP_003,
+                    BizExceptionCode.RGP_003_MSG, e);
         }
-         return true;
+        return result;
     }
 
     private RegistrationPaymentDAO getRegistrationPaymentDAO() throws BaseException {
@@ -288,7 +313,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
 
     private BpiInquiryService getBpiInquiryService() throws BaseException {
         ServiceFactory serviceFactory = ServiceFactoryProvider.getServiceFactory();
-        BpiInquiryService  bpiInquiryService;
+        BpiInquiryService bpiInquiryService;
         try {
             bpiInquiryService = serviceFactory.getService(
                     EMSLogicalNames.getExternalIMSServiceJNDIName(

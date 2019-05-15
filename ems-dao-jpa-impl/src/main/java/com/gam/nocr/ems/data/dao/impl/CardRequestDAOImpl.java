@@ -4818,7 +4818,7 @@ CardRequestDAOLocal, CardRequestDAORemote {
     }
 
     @Override
-	public RegistrationPaymentTO findRegistrationPaymentId(String requestId) throws BaseException{
+	public CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException{
 		List<CardRequestTO> cardRequestTOList;
 		try{
 		cardRequestTOList = em.createNamedQuery("CardRequestTO.findRegistrationPaymentId")
@@ -4829,6 +4829,6 @@ CardRequestDAOLocal, CardRequestDAORemote {
 		throw new DataException(DataExceptionCode.CDI_109,
 				DataExceptionCode.CDI_109_MSG, e);
 	}
-		return cardRequestTOList.size() != 0 ? cardRequestTOList.get(0).getRegistrationPaymentTO() : null;
+		return cardRequestTOList.size() != 0 ? cardRequestTOList.get(0) : null;
 	}
 }

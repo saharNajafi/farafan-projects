@@ -2248,15 +2248,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return replicaTypeCount;
     }
 
-    public RegistrationPaymentTO findRegistrationPaymentId(String requestId) throws BaseException{
-         RegistrationPaymentTO registrationPaymentTO;
+    public CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException{
+        CardRequestTO cardRequestTO;
         try {
-            registrationPaymentTO = getCardRequestDAO().findRegistrationPaymentId(requestId);
-
+            cardRequestTO = getCardRequestDAO().findRegistrationPaymentId(requestId);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.CRE_077, BizExceptionCode.CRE_077_MSG);
         }
-        return registrationPaymentTO;
+        return cardRequestTO;
     }
 
 }

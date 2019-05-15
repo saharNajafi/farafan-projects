@@ -5,7 +5,10 @@ import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.biz.service.external.client.pki.BatchService;
+import com.gam.nocr.ems.biz.service.external.client.bpi.BpiException_Exception;
+import com.gam.nocr.ems.biz.service.external.client.bpi.BpiInquiryWTO;
+import com.gam.nocr.ems.biz.service.external.client.bpi.BpiService;
+import com.gam.nocr.ems.biz.service.external.client.bpi.BpiService_Service;
 import com.gam.nocr.ems.biz.service.external.client.pki.RAWS;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.ProfileHelper;
@@ -34,8 +37,16 @@ public class BpiInquiryServiceImpl extends AbstractService
 
 
     @Override
-    public void BpiInquiry(RegistrationPaymentTO registrationPaymentTO) throws BaseException {
+    public BpiInquiryWTO bpiInquiry(RegistrationPaymentTO registrationPaymentTO) throws BaseException {
 
+      BpiInquiryWTO bpiInquiryWTO = null;
+        try {
+            bpiInquiryWTO =  getService().bpiInquiry(
+                    registrationPaymentTO.getPaymentCode(), String.valueOf(registrationPaymentTO.getOrderId()));
+        } catch (BpiException_Exception e) {
+            e.printStackTrace();
+        }
+        return bpiInquiryWTO;
     }
 
 
@@ -45,7 +56,7 @@ public class BpiInquiryServiceImpl extends AbstractService
      * @return an instance of type {@link RAWS}
      * @throws BaseException if cannot get the service
      */
-    private RAWS getService() throws BaseException {
+    private BpiService getService() throws BaseException {
         try {
             ProfileManager pm = ProfileHelper.getProfileManager();
             String wsdlUrl = (String) pm.getProfile(ProfileKeyName.KEY_BPI_ENDPOINT, true, null, null);
@@ -57,7 +68,7 @@ public class BpiInquiryServiceImpl extends AbstractService
             String serviceName = "BatchService";
             logger.debug("Bpi wsdl url: " + wsdlUrl);
             bpiLogger.debug("Bpi wsdl url: " + wsdlUrl);
-            RAWS port = new BatchService(new URL(wsdlUrl), new QName(namespace, serviceName)).getRAWSPort();
+            BpiService port = new BpiService_Service(new URL(wsdlUrl), new QName(namespace, serviceName)).getBpiServicePort();
             EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
             return port;
         } catch (Exception e) {

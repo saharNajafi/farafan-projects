@@ -595,7 +595,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_106_MSG = "an error occur in findCardRequestStateByTrackingId method";
     public static final String CDI_107_MSG = "the findLastRequestByNationalId operation could not be executed";
     public static final String CDI_108_MSG = "the countCardRequestByNationalIdAndType operation could not be executed";
-    public static final String CDI_109_MSG = "the countCardRequestByNationalIdAndType operation could not be executed";
+    public static final String CDI_109_MSG = "the findRegistrationPaymentId operation could not be executed";
 
 
     // com.gam.nocr.ems.data.dao.impl.DocTypeDAOImpl

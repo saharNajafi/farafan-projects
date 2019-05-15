@@ -324,17 +324,19 @@ public class CCOSPaymentWS extends EMSWS {
             @WebParam(name = "requestId", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String requestId
     ) throws InternalException, BaseException {
-        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+//        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+        UserProfileTO userProfileTO = null;
+        Boolean result = false;
         if (requestId == null) {
             throwInternalException(WebExceptionCode.CPW_021, WebExceptionCode.CPW_021_MSG, ccosLogger);
         }
         try {
-         return registrationPaymentDelegator.bpiInquiry(userProfileTO, requestId);
+         result =  registrationPaymentDelegator.bpiInquiry(userProfileTO, requestId);
         } catch (BaseException e) {
             throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
         } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_015, WebExceptionCode.CPW_015_MSG, ex, ccosLogger);
+            throwInternalException(WebExceptionCode.CPW_022, WebExceptionCode.CPW_022_MSG, ex, ccosLogger);
         }
-        return true;
+        return result;
     }
 }

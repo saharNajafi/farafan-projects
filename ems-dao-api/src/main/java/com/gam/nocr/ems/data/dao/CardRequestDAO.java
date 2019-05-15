@@ -493,5 +493,5 @@ public interface CardRequestDAO extends EmsBaseDAO<CardRequestTO> {
 
 	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
 
-    RegistrationPaymentTO findRegistrationPaymentId(String requestId) throws BaseException;
+	CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException;
 }
