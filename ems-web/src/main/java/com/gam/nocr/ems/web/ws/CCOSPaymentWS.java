@@ -324,8 +324,7 @@ public class CCOSPaymentWS extends EMSWS {
             @WebParam(name = "requestId", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String requestId
     ) throws InternalException, BaseException {
-//        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
-        UserProfileTO userProfileTO = null;
+        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
         Boolean result = false;
         if (requestId == null) {
             throwInternalException(WebExceptionCode.CPW_021, WebExceptionCode.CPW_021_MSG, ccosLogger);
