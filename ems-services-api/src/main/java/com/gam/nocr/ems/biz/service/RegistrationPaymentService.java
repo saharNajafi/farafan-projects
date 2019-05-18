@@ -4,6 +4,7 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
+import com.gam.nocr.ems.data.domain.ws.TargetBankWTO;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 
 import java.util.Map;
@@ -26,5 +27,7 @@ public interface RegistrationPaymentService extends Service {
 
     Map getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId)throws BaseException;
 
-    Boolean bpiInquiry(String requestId) throws BaseException;
+    Boolean bpiInquiry(String nationalId) throws BaseException;
+
+    Boolean registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException;
 }

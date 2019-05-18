@@ -21,7 +21,9 @@ import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
+import com.gam.nocr.ems.data.domain.ws.TargetBankWTO;
 import com.gam.nocr.ems.data.enums.CardRequestType;
+import com.gam.nocr.ems.data.enums.IPGProviderEnum;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 
@@ -200,32 +202,30 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             } catch (BaseException e) {
                 e.printStackTrace();
             }
-            if(replicaTypeCount == 0){
+            if (replicaTypeCount == 0) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA);
                 paymentCode = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
             }
-            if(replicaTypeCount == 1){
+            if (replicaTypeCount == 1) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_SECOND_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA);
                 paymentCode = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
             }
-            if(replicaTypeCount >= 2){
+            if (replicaTypeCount >= 2) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_THIRD_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA);
                 paymentCode = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
             }
-        }
-        else if(cardRequestType.equals(CardRequestType.FIRST_CARD)) {
+        } else if (cardRequestType.equals(CardRequestType.FIRST_CARD)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_CARD,
                     DEFAULT_PAYMENT_AMOUNT_FIRST_CARD);
             paymentCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
-        }
-        else if(cardRequestType.equals(CardRequestType.REPLACE)) {
+        } else if (cardRequestType.equals(CardRequestType.REPLACE)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_REPLACE,
                     DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE);
             paymentCode = Configuration.getProperty("PAYMENT.REPLACE.CODE");
-        } else if(cardRequestType.equals(CardRequestType.EXTEND)) {
+        } else if (cardRequestType.equals(CardRequestType.EXTEND)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_EXTEND,
                     DEFAULT_KEY_PAYMENT_AMOUNT_EXTEND);
             //todo:should change to extend payment code (Namjoofar).
@@ -236,25 +236,27 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return map;
     }
 
-    public Boolean bpiInquiry(String requestId) throws BaseException {
+    public Boolean bpiInquiry(String nationalId) throws BaseException {
         CardRequestTO cardRequestTO;
         BpiInquiryWTO bpiInquiryWTO;
         RegistrationPaymentTO registrationPaymentTO;
         Boolean result = false;
         try {
-            cardRequestTO = getCardRequestService().findRegistrationPaymentId(requestId);
+             cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
+            if (cardRequestTO.getRegistrationPaymentTO() == null) {
+                throw new ServiceException(BizExceptionCode.ISC_012, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
+            }
             registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
             bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
             if (bpiInquiryWTO != null) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
+                Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0, 9) + " " + "00:00:00.000000");
                 registrationPaymentTO.setConfirmed(true);
                 registrationPaymentTO.setSucceed(true);
                 registrationPaymentTO.setResCode("0");
-                registrationPaymentTO.setResCode("0");
-                cardRequestTO.setPaid(true);
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
-                Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0,9) + " " + "00:00:00.000000");
-                cardRequestTO.setPaidDate(paidDate);
                 registrationPaymentTO.setPaymentDate(paidDate);
+                cardRequestTO.setPaid(true);
+                cardRequestTO.setPaidDate(paidDate);
                 getCardRequestService().update(cardRequestTO);
                 getRegistrationPaymentDAO().update(registrationPaymentTO);
                 result = true;
@@ -265,6 +267,35 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             }
             throw new ServiceException(BizExceptionCode.RGP_003,
                     BizExceptionCode.RGP_003_MSG, e);
+        }
+            return result;
+    }
+
+    /**
+     * انتساب بانک به پرداخت
+     *
+     * @param targetBankWTO
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Boolean registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
+        Boolean result = false;
+        CardRequestTO cardRequestTO;
+        try {
+             cardRequestTO =
+                    getCardRequestService().findLastRequestByNationalId(targetBankWTO.getNationalId());
+            if (cardRequestTO.getRegistrationPaymentTO() == null) {
+                throw new ServiceException(BizExceptionCode.ISC_013, BizExceptionCode.ISC_011_MSG
+                        , new Object[]{targetBankWTO.getNationalId()}
+                );
+            }
+            RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
+            if(!targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFIGNED)) {
+                registrationPaymentTO.setPaidBank(targetBankWTO.getPaidBank());
+                getRegistrationPaymentDAO().update(registrationPaymentTO);
+                result = true;
+            }
+        } catch (ServiceException e) {
+            throw new ServiceException(BizExceptionCode.RGP_004, BizExceptionCode.RGP_004_MSG, e);
         }
         return result;
     }
@@ -315,9 +346,8 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         ServiceFactory serviceFactory = ServiceFactoryProvider.getServiceFactory();
         BpiInquiryService bpiInquiryService;
         try {
-            bpiInquiryService = serviceFactory.getService(
-                    EMSLogicalNames.getExternalIMSServiceJNDIName(
-                            EMSLogicalNames.SRV_BPI), EmsUtil.getUserInfo(userProfileTO));
+            bpiInquiryService = serviceFactory.getService(EMSLogicalNames
+                    .getExternalServiceJNDIName(EMSLogicalNames.SRV_BPI), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new ServiceException(
                     BizExceptionCode.NIF_024,

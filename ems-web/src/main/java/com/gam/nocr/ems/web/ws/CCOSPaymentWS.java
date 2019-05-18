@@ -187,6 +187,31 @@ public class CCOSPaymentWS extends EMSWS {
     }
 
     /**
+     *انتساب بانک به پرداخت
+     *
+     * @param targetBankWTO
+     * @return
+     * @throws BaseException
+     */
+    @WebMethod
+    public Boolean registerTargetBank(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "targetBankWTO", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) TargetBankWTO targetBankWTO
+    ) throws InternalException, BaseException {
+        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+        Boolean result = false;
+        try {
+            result = registrationPaymentDelegator.registerTargetBank(userProfileTO, targetBankWTO);
+        } catch (BaseException e) {
+            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
+        } catch (Exception ex) {
+            throwInternalException(WebExceptionCode.CPW_023, WebExceptionCode.CPW_023_MSG, ex, ccosLogger);
+        }
+        return result;
+    }
+
+    /**
      * ثبت پرداخت
      *
      * @param paymentWTO
@@ -314,23 +339,23 @@ public class CCOSPaymentWS extends EMSWS {
     /**
      *استعلام Bpi
      *
-     * @param requestId
+     * @param nationalId
      * @return
      * @throws BaseException
      */
     @WebMethod
     public Boolean bpiInquiry(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-            @WebParam(name = "requestId", targetNamespace = "")
-            @XmlElement(required = true, nillable = false) String requestId
+            @WebParam(name = "nationalId", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) String nationalId
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
         Boolean result = false;
-        if (requestId == null) {
+        if (nationalId == null) {
             throwInternalException(WebExceptionCode.CPW_021, WebExceptionCode.CPW_021_MSG, ccosLogger);
         }
         try {
-         result =  registrationPaymentDelegator.bpiInquiry(userProfileTO, requestId);
+         result =  registrationPaymentDelegator.bpiInquiry(userProfileTO, nationalId);
         } catch (BaseException e) {
             throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
         } catch (Exception ex) {
