@@ -2850,10 +2850,12 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_020 = "EMS_S_REG_020";
     public static final String RGP_003 = "EMS_S_REG_003";
     public static final String RGP_004 = "EMS_S_REG_004";
+    public static final String RGP_005 = "EMS_S_REG_005";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
     public static final String RGP_003_MSG = "an error occurred on bpiInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
+    public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";

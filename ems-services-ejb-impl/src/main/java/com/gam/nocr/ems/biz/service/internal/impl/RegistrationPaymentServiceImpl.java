@@ -153,8 +153,12 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
                 getCardRequestService().update(cardRequestTO);
             }
-        } catch (BaseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (e instanceof ServiceException) {
+                throw (ServiceException) e;
+            }
+            throw new ServiceException(BizExceptionCode.RGP_005,
+                    BizExceptionCode.RGP_005_MSG, e);
         }
     }
 
@@ -268,7 +272,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             throw new ServiceException(BizExceptionCode.RGP_003,
                     BizExceptionCode.RGP_003_MSG, e);
         }
-            return result;
+        return result;
     }
 
     /**
@@ -294,8 +298,12 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 getRegistrationPaymentDAO().update(registrationPaymentTO);
                 result = true;
             }
-        } catch (ServiceException e) {
-            throw new ServiceException(BizExceptionCode.RGP_004, BizExceptionCode.RGP_004_MSG, e);
+        } catch (Exception e) {
+            if (e instanceof ServiceException) {
+                throw (ServiceException) e;
+            }
+            throw new ServiceException(BizExceptionCode.RGP_004,
+                    BizExceptionCode.RGP_004_MSG, e);
         }
         return result;
     }
