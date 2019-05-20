@@ -147,6 +147,8 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
 
             if (officeCapacityTOList != null) {
                 for (OfficeCapacityTO officeCapacity : officeCapacityTOList) {
+                    if (officeCapacity.getStartDate() == toDateWithoutSlash)
+                        throw new ServiceException(BizExceptionCode.OC_007, BizExceptionCode.OC_007_MSG);
                     int currentIndex = officeCapacityTOList.indexOf(officeCapacity);
                     if (currentIndex == 0 && toDateWithoutSlash < officeCapacity.getStartDate()) {
                         endDate = Integer.valueOf(convertGregorianToPersian(getPreviousDay(
