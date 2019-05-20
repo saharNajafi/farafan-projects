@@ -152,6 +152,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             officeCapacityTO.setEndDate(endDate);
             officeCapacityTO.setWorkingHoursFrom(officeCapacityVTO.getWorkingHoursFrom());
             officeCapacityTO.setWorkingHoursTo(officeCapacityVTO.getWorkingHoursTo());
+            officeCapacityTO.setShiftNo(ShiftEnum.getShift(officeCapacityVTO.getShiftNo()));
             officeCapacityTO = getOfficeCapacityDAO().update(officeCapacityTO);
         } catch (BaseException e) {
             throw e;
