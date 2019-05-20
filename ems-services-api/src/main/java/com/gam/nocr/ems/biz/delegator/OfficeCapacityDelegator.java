@@ -31,8 +31,12 @@ public class OfficeCapacityDelegator implements Delegator {
         officeCapacityService.setUserProfileTO(userProfileTO);
         return officeCapacityService;
     }
-    public long saveOrUpdate(UserProfileTO userProfileTO, OfficeCapacityVTO to) throws BaseException {
-        return getService(userProfileTO).saveOrUpdate(to);
+    public long save(UserProfileTO userProfileTO, OfficeCapacityVTO to) throws BaseException {
+        return getService(userProfileTO).save(to);
+    }
+
+    public long update(UserProfileTO userProfileTO, OfficeCapacityVTO to) throws BaseException {
+        return getService(userProfileTO).update(to);
     }
 
     public boolean remove(UserProfileTO userProfileTO, String officeCapacityIds) throws BaseException {

@@ -2788,6 +2788,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OC_013 = "EMS_S_OC_013";
     public static final String OC_014 = "EMS_S_OC_014";
     public static final String OC_015 = "EMS_S_OC_015";
+    public static final String OC_016 = "EMS_S_OC_016";
+    public static final String OC_017 = "EMS_S_OC_017";
     public static final String OC_001_MSG = "OfficeCapacityId id is null";
     public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
     public static final String OC_003_MSG = "EnrollmentOffice id is null";
@@ -2801,7 +2803,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OC_011_MSG = "update operation could not be executed";
     public static final String OC_012_MSG = "load operation could not be executed";
     public static final String OC_013_MSG = "officeCapacity is not editable";
-    public static final String OC_015_MSG = "An error has occured during converting date";
+    public static final String OC_015_MSG = "An error has occurred during converting date";
+    public static final String OC_017_MSG = "update operation could not be executed";
 
     //com.gam.nocr.ems.biz.service.internal.impl.ActiveShiftServiceImpl
     public static final String OASH_001 = "EMS_OASH_001";
