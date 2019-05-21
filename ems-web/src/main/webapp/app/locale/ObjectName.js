@@ -482,6 +482,21 @@ Ext.define('Ems.locale.objectName', {
 		r_status : 'cardState',
 		r_priority : 'priority',
 	},
+	trackingCodePrintList:{
+        citizenFirstName: 'citizenFirstName',
+        citizenSurname: 'citizenSurname',
+        fatherName: 'fatherName',
+        citizenNId: 'citizenNId',
+        birthCertId: 'birthCertId',
+        citizenBirthDate: 'citizenBirthDate',
+        rsvDate: 'rsvDate',
+        trackingId: 'trackingId',
+        datePrinted: 'datePrinted',
+        userFirstName: 'userFirstName',
+        userLastName: 'userLastName',
+        userSign: 'userSign'
+
+	},
 	helpFileList : {
 
 		_title : '_title',
