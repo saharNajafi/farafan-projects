@@ -35,10 +35,12 @@ public class BpiInquiryServiceImpl extends AbstractService
     private static final String DEFAULT_NAMESPACE = "http://bpi.farafan.ir/";
     private static final Logger logger = BaseLog.getLogger(BpiInquiryServiceImpl.class);
     private static final Logger bpiLogger = BaseLog.getLogger("BpiLogger");
+    private static final String BPI_ERROR_SADAD_001 = "SADAD_001";
     private static final String BPI_ERROR_SADAD_002 = "SADAD_002";
     private static final String BPI_ERROR_SADAD_003 = "SADAD_003";
     private static final String BPI_ERROR_SADAD_004 = "SADAD_004";
     private static final String BPI_ERROR_SADAD_005 = "SADAD_005";
+    private static final String BPI_ERROR_SADAD_006 = "SADAD_006";
 
 
     @Override
@@ -51,7 +53,7 @@ public class BpiInquiryServiceImpl extends AbstractService
         } catch (BpiException_Exception e) {
             String errorMessage = e.getFaultInfo().getMessage();
             String errorCode = e.getFaultInfo().getExceptionCode();
-            if (BPI_ERROR_SADAD_002.equals(errorCode)) {
+            if (BPI_ERROR_SADAD_001.equals(errorCode)) {
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_001, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
@@ -63,7 +65,7 @@ public class BpiInquiryServiceImpl extends AbstractService
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
             }
-            if (BPI_ERROR_SADAD_003.equals(errorCode)) {
+            if (BPI_ERROR_SADAD_002.equals(errorCode)) {
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_002, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
@@ -75,7 +77,7 @@ public class BpiInquiryServiceImpl extends AbstractService
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
             }
-            if (BPI_ERROR_SADAD_004.equals(errorCode)) {
+            if (BPI_ERROR_SADAD_003.equals(errorCode)) {
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_003, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
@@ -87,7 +89,7 @@ public class BpiInquiryServiceImpl extends AbstractService
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
             }
-            if (BPI_ERROR_SADAD_005.equals(errorCode)) {
+            if (BPI_ERROR_SADAD_004.equals(errorCode)) {
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_004, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
@@ -99,9 +101,33 @@ public class BpiInquiryServiceImpl extends AbstractService
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
             }
+            if (BPI_ERROR_SADAD_005.equals(errorCode)) {
+                ServiceException serviceException = new ServiceException(
+                        BizExceptionCode.BPI_005, errorMessage, e,
+                        EMSLogicalNames.SRV_BPI.split(","));
+                logger.error(BizExceptionCode.GLB_003_MSG,
+                        serviceException,
+                        EMSLogicalNames.SRV_BPI.split(","));
+                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                        serviceException,
+                        EMSLogicalNames.SRV_BPI.split(","));
+                throw serviceException;
+            }
+            if (BPI_ERROR_SADAD_006.equals(errorCode)) {
+                ServiceException serviceException = new ServiceException(
+                        BizExceptionCode.BPI_006, errorMessage, e,
+                        EMSLogicalNames.SRV_BPI.split(","));
+                logger.error(BizExceptionCode.GLB_003_MSG,
+                        serviceException,
+                        EMSLogicalNames.SRV_BPI.split(","));
+                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                        serviceException,
+                        EMSLogicalNames.SRV_BPI.split(","));
+                throw serviceException;
+            }
 
             ServiceException serviceException = new ServiceException(
-                    BizExceptionCode.BPI_005, errorMessage, e,
+                    BizExceptionCode.BPI_007, errorMessage, e,
                     EMSLogicalNames.SRV_BPI.split(","));
             logger.error(BizExceptionCode.GLB_003_MSG, serviceException,
                     EMSLogicalNames.SRV_BPI.split(","));
@@ -136,7 +162,7 @@ public class BpiInquiryServiceImpl extends AbstractService
             EmsUtil.setJAXWSWebserviceProperties(port, wsdlUrl);
             return port;
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.BPI_006, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.BPI_008, e.getMessage(), e);
         }
     }
 

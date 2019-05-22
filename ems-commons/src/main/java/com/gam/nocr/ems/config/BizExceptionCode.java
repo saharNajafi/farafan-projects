@@ -2897,4 +2897,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String BPI_004 = "EMS_S_BPI_004";
     public static final String BPI_005 = "EMS_S_BPI_005";
     public static final String BPI_006 = "EMS_S_BPI_006";
+    public static final String BPI_007 = "EMS_S_BPI_007";
+    public static final String BPI_008 = "EMS_S_BPI_008";
 }
