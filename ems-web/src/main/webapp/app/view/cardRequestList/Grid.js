@@ -143,17 +143,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             tooltip: 'چاپ رسید',
             action: 'repealCardRequest',
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                //  Display repeal request action only if request has not reached AFIS system
-                var state = record.get("cardRequestState");
-                var requestedAction = record.get("requestedAction");
 
-                if (((state == "REGISTERED") || (state == "RECEIVED_BY_EMS") || (state == "PENDING_IMS") ||
-                    (state == "VERIFIED_IMS") || (state == "NOT_VERIFIED_BY_IMS") || (state == "RESERVED") ||
-                    (state == "REFERRED_TO_CCOS") || (state == "DOCUMENT_AUTHENTICATED") || (state == "APPROVED")) &&
-                    ((requestedAction != EmsObjectName.cardRequestedActionMap.REPEALING) &&
-                        (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
-                    return 'grid-repeal-request-action-icon';
-                }
 
                 return 'grid-action-hidden';
             }

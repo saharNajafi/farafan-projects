@@ -3,10 +3,10 @@
  *
  * The fieldset object containing personal information of the citizen (like name, family, religion, etc.)
  */
-Ext.define('Ems.view.cardRequestList.fieldset.CitizenInfo', {
+Ext.define('Ems.view.cardRequestList.trackingCodePrint.Dialog', {
     extend: 'Gam.form.FieldSet',
-    alias: 'widget.cardrequestlistfieldsetcitizeninfo',
-    name: "citizenInfo",
+    alias: 'widget.trackingCodePrintDialog',
+    name: "trackingCodePrint",
 
     id: 'citizenInfoFieldSetID',
 
