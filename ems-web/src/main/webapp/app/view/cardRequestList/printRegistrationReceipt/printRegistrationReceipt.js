@@ -1,16 +1,11 @@
-/**
- * Created by moghaddam on 6/17/14.
- *
- * The fieldset object containing personal information of the citizen (like name, family, religion, etc.)
- */
-Ext.define('Ems.view.cardRequestList.trackingCodePrint.Dialog', {
-    extend: 'Gam.form.FieldSet',
-    alias: 'widget.trackingCodePrintDialog',
-    name: "trackingCodePrint",
 
-    id: 'citizenInfoFieldSetID',
+Ext.define('Ems.view.cardRequestList.printRegistrationReceipt', {
+    extend: 'Gam.form.FieldSet',
+    alias: 'widget.printRegistrationReceipt',
+    id: 'idprintRegistrationReceipt',
 
     title: 'رسید متقاضی',
+
 
     layout: 'column',
 
@@ -27,61 +22,57 @@ Ext.define('Ems.view.cardRequestList.trackingCodePrint.Dialog', {
         return this.getItems();
     },
 
-    getEditableFields: function () {
-        return this.getItems();
-    },
-
     getItems: function () {
         return[
             {
                 fieldLabel: 'نام',
-                name: EmsObjectName.trackingCodePrintList.citizenFirstName
+                name: EmsObjectName.cardRequestList.citizenFirstName
             },
             {
                 fieldLabel: 'نام خانوادگی',
-                name: EmsObjectName.trackingCodePrintList.citizenSurname
+                name: EmsObjectName.cardRequestList.citizenSurname
             },
             {
                 fieldLabel: 'نام پدر',
-                name: EmsObjectName.trackingCodePrintList.fatherName
+                name: EmsObjectName.cardRequestList.fatherName
             },
             {
                 fieldLabel: 'شماره ملی',
-                name: EmsObjectName.trackingCodePrintList.citizenNId
+                name: EmsObjectName.cardRequestList.citizenNId
             },
             {
                 fieldLabel: 'شماره شناسنامه',
-                name: EmsObjectName.trackingCodePrintList.birthCertId
+                name: EmsObjectName.cardRequestList.birthCertId
             },
             {
                 fieldLabel: 'تاریخ تولد',
-                name: EmsObjectName.trackingCodePrintList.citizenBirthDate
+                name: EmsObjectName.cardRequestList.citizenBirthDate
             },
 
             {
                 fieldLabel: 'تاریخ مراجعه',
-                name: EmsObjectName.trackingCodePrintList.rsvDate,
+                name: EmsObjectName.cardRequestList.reservationDate,
                 renderer: Gam.util.Format.dateRenderer('Y/m/d')
             },
             {
                 fieldLabel: 'کد رهگیری',
-                name: EmsObjectName.trackingCodePrintList.trackingId
+                name: EmsObjectName.cardRequestList.trackingId
             },
             {
                 fieldLabel: 'تاریخ چاپ رسید',
-                name: EmsObjectName.trackingCodePrintList.datePrinted
+                name: EmsObjectName.cardRequestList.receiptDate
             } ,
             {
                 fieldLabel: 'نام کاربر',
-                name: EmsObjectName.trackingCodePrintList.userFirstName
+                name: EmsObjectName.cardRequestList.userFirstName
             },
             {
                 fieldLabel: 'نام خانوادگی کاربر',
-                name: EmsObjectName.trackingCodePrintList.userLastName
+                name: EmsObjectName.cardRequestList.userLastName
             },
             {
                 fieldLabel: 'امضای متصدی',
-                name: EmsObjectName.trackingCodePrintList.userSign
+                name: EmsObjectName.cardRequestList.userSign
             }
         ]
     }

@@ -140,13 +140,16 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             }
         },
         {
-            tooltip: 'چاپ رسید',
-            action: 'repealCardRequest',
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+                if (EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt) {
+                    return 'grid-print-registration-receipt';
+                } else
+                    return 'grid-action-hidden';
+            },
+            tooltip: 'چاپ رسید',
+            action: 'view',
+            viewType: 'trackingcodeprintdialog'
 
-
-                return 'grid-action-hidden';
-            }
         }
     ],
 

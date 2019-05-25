@@ -234,6 +234,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_074 = "EMS_S_CRE_074";
 	public static final String CRE_075 = "EMS_S_CRE_075";
 	public static final String CRE_076 = "EMS_S_CRE_076";
+	public static final String CRE_077 = "EMS_S_CRE_077";
+	public static final String CRE_078 = "EMS_S_CRE_078";
+	public static final String CRE_079 = "EMS_S_CRE_079";
+	public static final String CRE_080 = "EMS_S_CRE_080";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -276,7 +280,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_074_MSG = "unable to count cardRequest replica types";
 	public static final String CRE_075_MSG = "There is a replace request type for Card Request: {0}";
 	public static final String CRE_076_MSG = "There is a extend request type for Card Request: {0}";
-
+	public static final String CRE_079_MSG = "an error occurred on printRegistrationReceipt operation";
 
     // com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
     public static final String CRS_001 = "EMS_S_CRS_001";
@@ -714,6 +718,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PSI_080 = "EMS_S_PSI_080";
     public static final String PSI_081 = "EMS_S_PSI_081";
     public static final String PSI_082 = "EMS_S_PSI_082";
+    public static final String PSI_083 = "EMS_S_PSI_08";
     public static final String PSI_002_MSG = "There should be a person to persist, it couldn't be null";
     public static final String PSI_003_MSG = "personId couldn't be null, please insert an ID";
     public static final String PSI_006_MSG = "invalid input entry, birth certificate number is empty";

@@ -597,6 +597,10 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRA_012 = "EMS_A_CRA_012";
     public static final String CRA_013 = "EMS_A_CRA_013";
     public static final String CRA_014 = "EMS_A_CRA_014";
+    public static final String CRA_015 = "EMS_A_CRA_015";
+    public static final String CRA_016 = "EMS_A_CRA_016";
+    public static final String CRA_017 = "EMS_A_CRA_017";
+    public static final String CRA_018 = "EMS_A_CRA_018";
     public static final String CRP_001 = "EMS_P_CRP_001";
 //    public static final String CRA_009 = "EMS_A_CRA_009";
 //    public static final String CRA_010 = "EMS_A_CRA_010";

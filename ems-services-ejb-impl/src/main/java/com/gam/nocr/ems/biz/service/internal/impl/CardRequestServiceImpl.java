@@ -25,6 +25,7 @@ import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
+import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
@@ -51,7 +52,6 @@ import java.text.MessageFormat;
 import java.util.*;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.*;
-import static com.gam.nocr.ems.data.enums.CardRequestState.VERIFIED_IMS;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com.com">Alireza Saadat</a>
@@ -917,6 +917,22 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         } catch (Exception e) {
             logger.error(BizExceptionCode.CRE_025, e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_025,
+                    BizExceptionCode.GLB_008_MSG, e);
+        }
+    }
+    @Override
+    public boolean hasPrintRegistrationReceipt() throws BaseException {
+        try {
+            SecurityContextService securityContextService = new SecurityContextService();
+            if (securityContextService.hasAccess(userProfileTO.getUserName(),
+                    "ems_printRegistrationReceipt")) {
+                return true;
+            }
+
+            return false;
+        } catch (Exception e) {
+            logger.error(BizExceptionCode.CRE_077, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.CRE_077,
                     BizExceptionCode.GLB_008_MSG, e);
         }
     }
@@ -2249,6 +2265,41 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.CRE_074, BizExceptionCode.CRE_074_MSG);
         }
         return replicaTypeCount;
+    }
+
+    public PrintRegistrationReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException{
+        PrintRegistrationReceiptVTO printRegistrationReceiptVTO = new PrintRegistrationReceiptVTO();
+        try {
+            CardRequestTO cardRequestTO = loadById(cardRequestId);
+            Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            PersonTO personTO = getPersonService().find(personID);
+            printRegistrationReceiptVTO.setCitizenFirstName(cardRequestTO.getCitizen().getFirstNamePersian());
+            printRegistrationReceiptVTO.setCitizenNId(cardRequestTO.getCitizen().getNationalID());
+            printRegistrationReceiptVTO.setReservationDate(cardRequestTO.getReservationDate());
+            printRegistrationReceiptVTO.setCitizenSurname(cardRequestTO.getCitizen().getSurnamePersian());
+            printRegistrationReceiptVTO.setBirthCertId(cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateId());
+            printRegistrationReceiptVTO.setTrackingId(cardRequestTO.getTrackingID());
+            printRegistrationReceiptVTO.setFatherName(cardRequestTO.getCitizen().getCitizenInfo().getFatherFirstNamePersian());
+            printRegistrationReceiptVTO.setCitizenBirthDate(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
+            printRegistrationReceiptVTO.setUserFirstName(personTO.getFirstName());
+            printRegistrationReceiptVTO.setUserLastName(personTO.getLastName());
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CRE_079,
+                    BizExceptionCode.CRE_074_MSG, e);
+        }
+        return printRegistrationReceiptVTO;
+    }
+
+    private PersonManagementService getPersonService() throws BaseException {
+        PersonManagementService personManagementService;
+        try {
+            personManagementService = (PersonManagementService) ServiceFactoryProvider.getServiceFactory().getService(EMSLogicalNames.getServiceJNDIName(EMSLogicalNames.SRV_PERSON),null);
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.CRE_080, BizExceptionCode.GLB_002_MSG, e, EMSLogicalNames.SRV_PERSON.split(","));
+        }
+        return personManagementService;
     }
 
 }

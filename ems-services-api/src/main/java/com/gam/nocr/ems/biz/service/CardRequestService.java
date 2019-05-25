@@ -9,6 +9,7 @@ import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
+import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
@@ -82,6 +83,8 @@ public interface CardRequestService extends Service {
 
 	public boolean hasChangePriorityAccess() throws BaseException;
 
+	public boolean hasPrintRegistrationReceipt() throws BaseException;
+
 
 	// Hossein 8 feature start
 	public CardRequestVTO viewCardRequestInfo(Long cardRequestId) throws BaseException;
@@ -125,4 +128,6 @@ public interface CardRequestService extends Service {
 	CardRequestTO findByCitizenId(CitizenTO citizenTO) throws BaseException;
 
 	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
+
+	PrintRegistrationReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
 }

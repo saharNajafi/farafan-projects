@@ -345,6 +345,22 @@ Ext.define('Ems.controller.NavigationHeaderController', {
 
         });
     },
+    getAccessForCardRequestList: function (view) {
+
+        Ext.Ajax.request({
+            url: 'extJsController/cardrequestlist/hasPrintRegistrationReceipt',
+            jsonData: {},
+            success: function (response) {
+
+            	var hasPrintRegistrationReceipt = JSON.parse(response.responseText).hasPrintRegistrationReceipt;
+            	EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt = hasPrintRegistrationReceipt;
+            },
+            failure: function (response) {
+                Tools.errorFailure();
+            }
+
+        });
+    },
     getUserInfo: function (view) {
         Ext.Ajax.request({
             url: 'extJsController/currentUser/fetchUserInfo',

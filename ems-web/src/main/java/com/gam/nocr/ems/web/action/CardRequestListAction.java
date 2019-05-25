@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.web.action;
 
+import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import gampooya.tools.security.BusinessSecurityException;
 
 import java.util.ArrayList;
@@ -35,8 +36,10 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 	 */
 	private String cardRequestId;
 	private boolean hasAccessToChangePriority;
+	private boolean hasPrintRegistrationReceipt;
 
 	private CardRequestVTO data;
+	private PrintRegistrationReceiptVTO PrintRegistrationReceipt;
 
 	public boolean isHasAccessToChangePriority() {
 		return hasAccessToChangePriority;
@@ -183,6 +186,22 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
 	}
 
+	public String hasPrintRegistrationReceipt() throws BaseException {
+		try {
+			hasPrintRegistrationReceipt = new CardRequestDelegator()
+			.hasPrintRegistrationReceipt(getUserProfile());
+
+			return SUCCESS_RESULT;
+		} catch (BusinessSecurityException e) {
+			throw new ActionException(WebExceptionCode.CRA_015,
+					WebExceptionCode.GLB_001_MSG, e);
+		} catch (Exception e) {
+			throw new ActionException(WebExceptionCode.CRA_016,
+					WebExceptionCode.GLB_003_MSG, e);
+		}
+
+	}
+
 	//hossein 8feature start
 	public String loadById() throws BaseException {
 		try {
@@ -203,6 +222,25 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
 	}
 
+	public String printRegistrationReceipt() throws BaseException {
+		try {
+			logger.info("Card request id : " + getCardRequestId() + "\n"
+					+ "Requested action : " + getCardRequestAction());
+			if (cardRequestId != null) {
+				PrintRegistrationReceipt = new CardRequestDelegator().printRegistrationReceipt(
+						getUserProfile(), Long.parseLong(getCardRequestId()));
+				return SUCCESS_RESULT;
+			} else {
+				throw new ActionException(WebExceptionCode.CRA_017,
+						WebExceptionCode.CRA_013_MSG);
+			}
+		} catch (BusinessSecurityException e) {
+			throw new ActionException(WebExceptionCode.CRA_018,
+					WebExceptionCode.GLB_001_MSG, e);
+		}
+
+	}
+
 	public CardRequestVTO getData() {
 		return data;
 	}
@@ -212,4 +250,12 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 	}
 	//hossein 8feature end
 
+
+	public PrintRegistrationReceiptVTO getPrintRegistrationReceipt() {
+		return PrintRegistrationReceipt;
+	}
+
+	public void setPrintRegistrationReceipt(PrintRegistrationReceiptVTO printRegistrationReceipt) {
+		PrintRegistrationReceipt = printRegistrationReceipt;
+	}
 }
