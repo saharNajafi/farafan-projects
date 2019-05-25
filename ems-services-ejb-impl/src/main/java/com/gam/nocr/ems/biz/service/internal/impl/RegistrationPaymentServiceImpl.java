@@ -12,7 +12,6 @@ import com.gam.nocr.ems.biz.service.CitizenService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.external.client.bpi.BpiInquiryWTO;
 import com.gam.nocr.ems.biz.service.external.impl.BpiInquiryService;
-import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
@@ -240,30 +239,37 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return map;
     }
 
-    public Boolean bpiInquiry(String nationalId) throws BaseException {
+    public Boolean bankInquiry(String nationalId) throws BaseException {
         CardRequestTO cardRequestTO;
         BpiInquiryWTO bpiInquiryWTO;
         RegistrationPaymentTO registrationPaymentTO;
         Boolean result = false;
         try {
-             cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
+            cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
             if (cardRequestTO.getRegistrationPaymentTO() == null) {
-                throw new ServiceException(BizExceptionCode.ISC_012, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
+                throw new ServiceException(BizExceptionCode.RGP_008, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
             }
             registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
-            bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
-            if (bpiInquiryWTO != null) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
-                Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0, 9) + " " + "00:00:00.000000");
-                registrationPaymentTO.setConfirmed(true);
-                registrationPaymentTO.setSucceed(true);
-                registrationPaymentTO.setResCode("0");
-                registrationPaymentTO.setPaymentDate(paidDate);
-                cardRequestTO.setPaid(true);
-                cardRequestTO.setPaidDate(paidDate);
-                getCardRequestService().update(cardRequestTO);
-                getRegistrationPaymentDAO().update(registrationPaymentTO);
-                result = true;
+            if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED)) {
+                throw new ServiceException(BizExceptionCode.RGP_009, BizExceptionCode.RGP_006_MSG
+                        , new Object[]{nationalId}
+                );
+            }
+            if(registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
+                bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
+                if (bpiInquiryWTO != null) {
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
+                    Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0, 9) + " " + "00:00:00.000000");
+                    registrationPaymentTO.setConfirmed(true);
+                    registrationPaymentTO.setSucceed(true);
+                    registrationPaymentTO.setResCode("0");
+                    registrationPaymentTO.setPaymentDate(paidDate);
+                    cardRequestTO.setPaid(true);
+                    cardRequestTO.setPaidDate(paidDate);
+                    getCardRequestService().update(cardRequestTO);
+                    getRegistrationPaymentDAO().update(registrationPaymentTO);
+                    result = true;
+                }
             }
         } catch (Exception e) {
             if (e instanceof ServiceException) {
@@ -281,23 +287,24 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
      * @param targetBankWTO
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Boolean registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
-        Boolean result = false;
+    public void registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
         CardRequestTO cardRequestTO;
         try {
-             cardRequestTO =
+            if (!targetBankWTO.getPaidBank().getCode().equals(IPGProviderEnum.UNDEFINED.getCode())) {
+                throw new ServiceException(BizExceptionCode.RGP_006, BizExceptionCode.RGP_006_MSG
+                        , new Object[]{targetBankWTO.getNationalId()}
+                );
+            }
+            cardRequestTO =
                     getCardRequestService().findLastRequestByNationalId(targetBankWTO.getNationalId());
             if (cardRequestTO.getRegistrationPaymentTO() == null) {
-                throw new ServiceException(BizExceptionCode.ISC_013, BizExceptionCode.ISC_011_MSG
+                throw new ServiceException(BizExceptionCode.RGP_007, BizExceptionCode.ISC_011_MSG
                         , new Object[]{targetBankWTO.getNationalId()}
                 );
             }
             RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
-            if(!targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFIGNED)) {
-                registrationPaymentTO.setPaidBank(targetBankWTO.getPaidBank());
-                getRegistrationPaymentDAO().update(registrationPaymentTO);
-                result = true;
-            }
+            registrationPaymentTO.setPaidBank(targetBankWTO.getPaidBank());
+            getRegistrationPaymentDAO().update(registrationPaymentTO);
         } catch (Exception e) {
             if (e instanceof ServiceException) {
                 throw (ServiceException) e;
@@ -305,7 +312,6 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             throw new ServiceException(BizExceptionCode.RGP_004,
                     BizExceptionCode.RGP_004_MSG, e);
         }
-        return result;
     }
 
     private RegistrationPaymentDAO getRegistrationPaymentDAO() throws BaseException {

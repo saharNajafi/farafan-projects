@@ -53,11 +53,11 @@ public class RegistrationPaymentDelegator implements Delegator {
 
     }
 
-    public Boolean bpiInquiry(UserProfileTO userProfileTO, String nationalId) throws BaseException {
-       return getService(userProfileTO).bpiInquiry(nationalId);
+    public Boolean bankInquiry(UserProfileTO userProfileTO, String nationalId) throws BaseException {
+        return getService(userProfileTO).bankInquiry(nationalId);
     }
 
-    public Boolean registerTargetBank(UserProfileTO userProfileTO, TargetBankWTO targetBankWTO) throws BaseException {
-        return getService(userProfileTO).registerTargetBank(targetBankWTO);
+    public void registerTargetBank(UserProfileTO userProfileTO, TargetBankWTO targetBankWTO) throws BaseException {
+        getService(userProfileTO).registerTargetBank(targetBankWTO);
     }
 }

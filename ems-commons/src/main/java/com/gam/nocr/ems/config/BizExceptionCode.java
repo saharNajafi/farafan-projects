@@ -2834,7 +2834,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_009 = "EMS_S_ISC_009";
 	public static final String ISC_010 = "EMS_S_ISC_010";
 	public static final String ISC_012 = "EMS_S_ISC_012";
-	public static final String ISC_013 = "EMS_S_ISC_013";
+	public static final String ISC_014 = "EMS_S_ISC_014";
 	public static final String ISC_001_MSG = "PreRequest ID is Null";
 	public static final String ISC_002_MSG = "Can not found card request with nationalId {0} ";
 	public static final String ISC_003_MSG = "an error occurred on inquiryHasCardRequest operation";
@@ -2851,11 +2851,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_003 = "EMS_S_REG_003";
     public static final String RGP_004 = "EMS_S_REG_004";
     public static final String RGP_005 = "EMS_S_REG_005";
+    public static final String RGP_006 = "EMS_S_REG_006";
+    public static final String RGP_007 = "EMS_S_REG_007";
+    public static final String RGP_008 = "EMS_S_REG_008";
+    public static final String RGP_009 = "EMS_S_REG_009";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
     public static final String RGP_003_MSG = "an error occurred on bpiInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
     public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
+    public static final String RGP_006_MSG = "paidBank is undefined";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";

@@ -4,7 +4,7 @@ package com.gam.nocr.ems.data.enums;
  * Created by Saeid Rastak (saeid.rastak@gmail.com) on 10/4/2017.
  */
 public enum IPGProviderEnum {
-    SADAD("SADAD","بانک ملی - سداد"),PARSIAN("PARSIAN","بانک پارسیان"),UNDEFIGNED("UNDEFIGNED","نامشخص");
+    SADAD("SADAD","بانک ملی - سداد"),PARSIAN("PARSIAN","بانک پارسیان"),UNDEFINED("UNDEFINED","نامشخص");
 
     private final String code;
     private final String name;
