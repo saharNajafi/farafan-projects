@@ -7,5 +7,5 @@ import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 
 public interface BpiInquiryService extends Service {
 
-    BpiInquiryWTO bpiInquiry(RegistrationPaymentTO registrationPaymentTO) throws BaseException;
+    BpiInquiryWTO sadadInquiry(RegistrationPaymentTO registrationPaymentTO) throws BaseException;
 }

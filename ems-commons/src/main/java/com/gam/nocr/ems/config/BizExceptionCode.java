@@ -2473,7 +2473,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIF_021 = "EMS_S_NIF_021";
     public static final String NIF_022 = "EMS_S_NIF_022";
     public static final String NIF_023 = "EMS_S_NIF_023";
-    public static final String NIF_024 = "EMS_S_NIF_024";
     public static final String NIF_002_MSG = "Exception in converting an instance of type '{}' to an instance of type '{}'";
     public static final String NIF_007_MSG = "The instance of type '{}' is null.";
     public static final String NIF_010_MSG = "The return value of type '{}' from the service '{}' of sub system 'IMS' is null.";
@@ -2855,6 +2854,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_007 = "EMS_S_REG_007";
     public static final String RGP_008 = "EMS_S_REG_008";
     public static final String RGP_009 = "EMS_S_REG_009";
+    public static final String RGP_010 = "EMS_S_REG_010";
+    public static final String RGP_011 = "EMS_S_REG_011";
+    public static final String RGP_012 = "EMS_S_REG_012";
+    public static final String RGP_013 = "EMS_S_REG_013";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
     public static final String RGP_003_MSG = "an error occurred on bpiInquiry operation";

@@ -239,6 +239,33 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return map;
     }
 
+    /**
+     * انتساب بانک به پرداخت
+     *
+     * @param targetBankWTO
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public void registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
+        CardRequestTO cardRequestTO;
+        try {
+            if (targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFIGNED))
+                throw new ServiceException(BizExceptionCode.RGP_006, BizExceptionCode.RGP_006_MSG
+                        , new Object[]{targetBankWTO.getNationalId()});
+            cardRequestTO =
+                    getCardRequestService().findLastRequestByNationalId(targetBankWTO.getNationalId());
+            if (cardRequestTO.getRegistrationPaymentTO() == null)
+                throw new ServiceException(BizExceptionCode.RGP_007, BizExceptionCode.ISC_011_MSG
+                        , new Object[]{targetBankWTO.getNationalId()});
+
+            RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
+            registrationPaymentTO.setPaidBank(targetBankWTO.getPaidBank());
+            getRegistrationPaymentDAO().update(registrationPaymentTO);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.RGP_004,
+                    BizExceptionCode.RGP_004_MSG, e);
+        }
+    }
+
     public Boolean bankInquiry(String nationalId) throws BaseException {
         CardRequestTO cardRequestTO;
         BpiInquiryWTO bpiInquiryWTO;
@@ -246,17 +273,16 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         Boolean result = false;
         try {
             cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
-            if (cardRequestTO.getRegistrationPaymentTO() == null) {
-                throw new ServiceException(BizExceptionCode.RGP_008, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
-            }
+            if (cardRequestTO.getRegistrationPaymentTO() == null)
+                throw new ServiceException(
+                        BizExceptionCode.RGP_008, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
+
             registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
-            if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED)) {
-                throw new ServiceException(BizExceptionCode.RGP_009, BizExceptionCode.RGP_006_MSG
-                        , new Object[]{nationalId}
-                );
-            }
+            if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFIGNED))
+                throw new ServiceException(
+                        BizExceptionCode.RGP_009, BizExceptionCode.RGP_006_MSG, new Object[]{nationalId});
             if(registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
-                bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
+                bpiInquiryWTO = getBpiInquiryService().sadadInquiry(registrationPaymentTO);
                 if (bpiInquiryWTO != null) {
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
                     Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0, 9) + " " + "00:00:00.000000");
@@ -281,45 +307,12 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return result;
     }
 
-    /**
-     * انتساب بانک به پرداخت
-     *
-     * @param targetBankWTO
-     */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public void registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
-        CardRequestTO cardRequestTO;
-        try {
-            if (!targetBankWTO.getPaidBank().getCode().equals(IPGProviderEnum.UNDEFINED.getCode())) {
-                throw new ServiceException(BizExceptionCode.RGP_006, BizExceptionCode.RGP_006_MSG
-                        , new Object[]{targetBankWTO.getNationalId()}
-                );
-            }
-            cardRequestTO =
-                    getCardRequestService().findLastRequestByNationalId(targetBankWTO.getNationalId());
-            if (cardRequestTO.getRegistrationPaymentTO() == null) {
-                throw new ServiceException(BizExceptionCode.RGP_007, BizExceptionCode.ISC_011_MSG
-                        , new Object[]{targetBankWTO.getNationalId()}
-                );
-            }
-            RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
-            registrationPaymentTO.setPaidBank(targetBankWTO.getPaidBank());
-            getRegistrationPaymentDAO().update(registrationPaymentTO);
-        } catch (Exception e) {
-            if (e instanceof ServiceException) {
-                throw (ServiceException) e;
-            }
-            throw new ServiceException(BizExceptionCode.RGP_004,
-                    BizExceptionCode.RGP_004_MSG, e);
-        }
-    }
-
     private RegistrationPaymentDAO getRegistrationPaymentDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(
                     getDaoJNDIName(DAO_REGISTRATION_PAYMENT));
         } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.RS_001,
+            throw new ServiceException(BizExceptionCode.RGP_013,
                     BizExceptionCode.GLB_001_MSG, e);
         }
     }
@@ -332,7 +325,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             citizenService = serviceFactory.getService(EMSLogicalNames
                     .getServiceJNDIName(EMSLogicalNames.SRV_CITIZEN), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
-            throw new ServiceException(BizExceptionCode.PTL_005,
+            throw new ServiceException(BizExceptionCode.RGP_010,
                     BizExceptionCode.GLB_002_MSG, e,
                     EMSLogicalNames.SRV_CITIZEN.split(","));
         }
@@ -348,7 +341,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             cardRequestService = serviceFactory.getService(EMSLogicalNames
                     .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
-            throw new ServiceException(BizExceptionCode.PTL_005,
+            throw new ServiceException(BizExceptionCode.RGP_011,
                     BizExceptionCode.GLB_002_MSG, e,
                     EMSLogicalNames.SRV_CARD_REQUEST.split(","));
         }
@@ -364,7 +357,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                     .getExternalServiceJNDIName(EMSLogicalNames.SRV_BPI), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new ServiceException(
-                    BizExceptionCode.NIF_024,
+                    BizExceptionCode.RGP_012,
                     BizExceptionCode.GLB_002_MSG,
                     e,
                     EMSLogicalNames.SRV_BPI.split(","));

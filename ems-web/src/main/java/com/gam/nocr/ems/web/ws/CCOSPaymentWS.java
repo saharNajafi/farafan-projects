@@ -201,6 +201,8 @@ public class CCOSPaymentWS extends EMSWS {
     ) throws InternalException, BaseException {
         UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
         try {
+            if (targetBankWTO == null || targetBankWTO.getPaidBank() == null || targetBankWTO.getNationalId() == null)
+                throwInternalException(WebExceptionCode.CPW_024, WebExceptionCode.CPW_024_MSG, ccosLogger);
             registrationPaymentDelegator.registerTargetBank(userProfileTO, targetBankWTO);
         } catch (BaseException e) {
             throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
