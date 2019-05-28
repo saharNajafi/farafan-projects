@@ -248,7 +248,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     public void registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
         CardRequestTO cardRequestTO;
         try {
-            if (targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFIGNED))
+            if (targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED))
                 throw new ServiceException(BizExceptionCode.RGP_006, BizExceptionCode.RGP_006_MSG
                         , new Object[]{targetBankWTO.getNationalId()});
             cardRequestTO =
@@ -278,14 +278,14 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                         BizExceptionCode.RGP_008, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
 
             registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
-            if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFIGNED))
+            if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED))
                 throw new ServiceException(
                         BizExceptionCode.RGP_009, BizExceptionCode.RGP_006_MSG, new Object[]{nationalId});
             if(registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
-                bpiInquiryWTO = getBpiInquiryService().sadadInquiry(registrationPaymentTO);
+                bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
                 if (bpiInquiryWTO != null) {
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");
-                    Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0, 9) + " " + "00:00:00.000000");
+                    Date paidDate = df.parse(bpiInquiryWTO.getPaidDate().substring(0, 10) + " " + "00:00:00.000000");
                     registrationPaymentTO.setConfirmed(true);
                     registrationPaymentTO.setSucceed(true);
                     registrationPaymentTO.setResCode("0");

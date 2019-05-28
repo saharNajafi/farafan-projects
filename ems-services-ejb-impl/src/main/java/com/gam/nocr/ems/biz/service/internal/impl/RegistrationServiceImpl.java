@@ -1028,7 +1028,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             registrationPaymentTO.setConfirmed(false);
             registrationPaymentTO.setPaymentDate(new Date());
             registrationPaymentTO.setMatchFlag((short) 1);
-            registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFIGNED);
+            registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFINED);
             String nationalId = newCardRequest.getCitizen().getNationalID();
             Map<String, String> registrationPaymentResult =
                     getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);

@@ -44,7 +44,7 @@ public class BpiInquiryServiceImpl extends AbstractService
 
 
     @Override
-    public BpiInquiryWTO sadadInquiry(RegistrationPaymentTO registrationPaymentTO) throws BaseException {
+    public BpiInquiryWTO bpiInquiry(RegistrationPaymentTO registrationPaymentTO) throws BaseException {
 
         BpiInquiryWTO bpiInquiryWTO = null;
         try {

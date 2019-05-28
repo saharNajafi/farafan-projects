@@ -2860,7 +2860,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_013 = "EMS_S_REG_013";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
-    public static final String RGP_003_MSG = "an error occurred on bpiInquiry operation";
+    public static final String RGP_003_MSG = "an error occurred on bankInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
     public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
     public static final String RGP_006_MSG = "paidBank is undefined";
