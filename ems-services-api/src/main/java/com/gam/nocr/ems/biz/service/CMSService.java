@@ -74,7 +74,7 @@ public interface CMSService extends Service {
 
     /**
      * The expireCard method is used to send the request to the sub system 'CMS' to expire the card
-     *
+     *prepareDataAndSendIssuanceRequestById
      * @param crn    represents the serial number of the card
      * @param reason is a description about the card expiration time
      */

@@ -29,7 +29,13 @@ Ext.define('Ems.model.CardRequestListModel', {
         , EmsObjectName.cardRequestList.documentFlag
         , EmsObjectName.cardRequestList.fingerFlag
         , EmsObjectName.cardRequestList.faceFlag
-        , {name: EmsObjectName.cardRequestList.reservationDate, type: 'date'}
+        , {name: EmsObjectName.cardRequestList.reservationDate, type: 'date'},
+        , EmsObjectName.cardRequestList.fatherName
+        , EmsObjectName.cardRequestList.birthCertId
+        , EmsObjectName.cardRequestList.citizenBirthDate
+        , EmsObjectName.cardRequestList.userFirstName
+        , EmsObjectName.cardRequestList.userLastName
+        , EmsObjectName.cardRequestList.receiptDate
         //hossein 8 feature start
     ]
 });

@@ -1,12 +1,8 @@
 
-Ext.define('Ems.view.cardRequestList.printRegistrationReceipt', {
-    extend: 'Gam.form.FieldSet',
-    alias: 'widget.printRegistrationReceipt',
-    id: 'idprintRegistrationReceipt',
-
-    title: 'رسید متقاضی',
-
-
+Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.printRegistrationReceiptFieldSet', {
+    id: 'PrintRegistrationReceiptFieldSet',
+    extend: 'ICT.form.FieldSet',
+    alias: 'widget.printRegistrationReceiptFieldSet',
     layout: 'column',
 
     initComponent: function () {

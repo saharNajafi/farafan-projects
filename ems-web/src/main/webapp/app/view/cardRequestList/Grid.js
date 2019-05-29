@@ -147,8 +147,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                     return 'grid-action-hidden';
             },
             tooltip: 'چاپ رسید',
-            action: 'view',
-            viewType: 'trackingcodeprintdialog'
+            action: 'printRegistrationReceipt',
 
         }
     ],

@@ -48,6 +48,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.MessageContext;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -929,7 +930,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 return true;
             }
 
-            return false;
+            return true;
         } catch (Exception e) {
             logger.error(BizExceptionCode.CRE_077, e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_077,
@@ -2267,29 +2268,29 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return replicaTypeCount;
     }
 
-    public PrintRegistrationReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException{
-        PrintRegistrationReceiptVTO printRegistrationReceiptVTO = new PrintRegistrationReceiptVTO();
+    public CardRequestVTO printRegistrationReceipt(long cardRequestId) throws BaseException{
+        CardRequestVTO cardRequestVTO = new CardRequestVTO();
         try {
             CardRequestTO cardRequestTO = loadById(cardRequestId);
             Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
             PersonTO personTO = getPersonService().find(personID);
-            printRegistrationReceiptVTO.setCitizenFirstName(cardRequestTO.getCitizen().getFirstNamePersian());
-            printRegistrationReceiptVTO.setCitizenNId(cardRequestTO.getCitizen().getNationalID());
-            printRegistrationReceiptVTO.setReservationDate(cardRequestTO.getReservationDate());
-            printRegistrationReceiptVTO.setCitizenSurname(cardRequestTO.getCitizen().getSurnamePersian());
-            printRegistrationReceiptVTO.setBirthCertId(cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateId());
-            printRegistrationReceiptVTO.setTrackingId(cardRequestTO.getTrackingID());
-            printRegistrationReceiptVTO.setFatherName(cardRequestTO.getCitizen().getCitizenInfo().getFatherFirstNamePersian());
-            printRegistrationReceiptVTO.setCitizenBirthDate(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
-            printRegistrationReceiptVTO.setUserFirstName(personTO.getFirstName());
-            printRegistrationReceiptVTO.setUserLastName(personTO.getLastName());
+            cardRequestVTO.setCitizenFirstName(cardRequestTO.getCitizen().getFirstNamePersian());
+            cardRequestVTO.setCitizenNId(cardRequestTO.getCitizen().getNationalID());
+            cardRequestVTO.setReservationDate((Timestamp) cardRequestTO.getReservationDate());
+            cardRequestVTO.setCitizenSurname(cardRequestTO.getCitizen().getSurnamePersian());
+            cardRequestVTO.setBirthCertId(cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateId());
+            cardRequestVTO.setTrackingId(cardRequestTO.getTrackingID());
+            cardRequestVTO.setFatherName(cardRequestTO.getCitizen().getCitizenInfo().getFatherFirstNamePersian());
+            cardRequestVTO.setCitizenBirthDate(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
+            cardRequestVTO.setUserFirstName(personTO.getFirstName());
+            cardRequestVTO.setUserLastName(personTO.getLastName());
         } catch (BaseException e) {
             throw e;
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.CRE_079,
                     BizExceptionCode.CRE_074_MSG, e);
         }
-        return printRegistrationReceiptVTO;
+        return cardRequestVTO;
     }
 
     private PersonManagementService getPersonService() throws BaseException {

@@ -9,7 +9,6 @@ import com.gam.nocr.ems.data.domain.CitizenTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
-import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
@@ -129,5 +128,5 @@ public interface CardRequestService extends Service {
 
 	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
 
-	PrintRegistrationReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
+	CardRequestVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
 }
