@@ -49,7 +49,10 @@ public class BpiInquiryServiceImpl extends AbstractService
         BpiInquiryWTO bpiInquiryWTO = null;
         try {
             bpiInquiryWTO = getService().bpiInquiry(
-                    registrationPaymentTO.getPaymentCode(), String.valueOf(registrationPaymentTO.getOrderId()));
+                    registrationPaymentTO.getPaidBank().getCode()
+                    , registrationPaymentTO.getPaymentCode()
+                    , String.valueOf(registrationPaymentTO.getOrderId())
+                   );
         } catch (BpiException_Exception e) {
             String errorMessage = e.getFaultInfo().getMessage();
             String errorCode = e.getFaultInfo().getExceptionCode();
