@@ -1822,11 +1822,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     public void checkCitizenLastCardExpired(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(cardRequestTO.getCard().getIssuanceDate());
-            cal.add(Calendar.YEAR, 7);
-            if (!(cal.getTime().equals(new Date())
-                    || cal.getTime().after(new Date()))) {
-                throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG, new Object[]{cardRequestTO.getId()});
+            if (cardRequestTO.getCard() != null) {
+                cal.setTime(cardRequestTO.getCard().getIssuanceDate());
+                cal.add(Calendar.YEAR, 7);
+                if (!(cal.getTime().equals(new Date())
+                        || cal.getTime().after(new Date()))) {
+                    throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG, new Object[]{cardRequestTO.getId()});
+                }
             }
         }
     }

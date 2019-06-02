@@ -2024,7 +2024,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         result = Boolean.TRUE;
                     }
                 }
-            } else {
+            }
+            if(result == Boolean.FALSE) {
                 OfficeCapacityTO officeCapacity =
                         getOfficeCapacityService().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId);
                 OfficeActiveShiftTO activeShiftTO =

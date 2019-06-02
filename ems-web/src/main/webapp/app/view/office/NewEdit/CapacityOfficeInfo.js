@@ -79,11 +79,11 @@ Ext.define('Ems.view.office.NewEdit.CapacityOfficeInfo', {
                 fieldLabel: 'متراژ',
                 itemId: 'area'
             },
-            {
-                xtype: 'displayfield',
-                fieldLabel: 'رتبه',
-                itemId: 'rate'
-            },
+            // {
+            //     xtype: 'displayfield',
+            //     fieldLabel: 'رتبه',
+            //     itemId: 'rate'
+            // },
             {
                 xtype: 'displayfield',
                 fieldLabel: 'شروع ساعت کاری',
