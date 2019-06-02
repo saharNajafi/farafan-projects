@@ -186,7 +186,6 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
     }
 
 
-
     @Override
     public void removeByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException {
         try {
@@ -200,5 +199,22 @@ public class OfficeCapacityDAOImpl extends EmsBaseDAOImpl<OfficeCapacityTO> impl
                     DataExceptionCode.GLB_012_MSG,
                     e);
         }
+    }
+
+    @Override
+    public List<OfficeCapacityTO> findByEnrollmentOfficeIdAndShiftNoAndOcId(
+            Long enrollmentOfficeId, ShiftEnum shiftNo, Long id) throws DAOException {
+        List<OfficeCapacityTO> officeCapacityList;
+        try {
+            officeCapacityList =
+                    em.createNamedQuery("officeCapacityTO.findByEnrollmentOfficeIdAndShiftNoAndOcId")
+                            .setParameter("enrollmentOfficeId", enrollmentOfficeId)
+                            .setParameter("shiftNo", shiftNo)
+                            .setParameter("id", id)
+                            .getResultList();
+        } catch (Exception e) {
+            throw new DAOException(DataExceptionCode.OCD_009, DataExceptionCode.OCD_009_MSG, e);
+        }
+        return officeCapacityList.size() != 0 ? officeCapacityList : null;
     }
 }

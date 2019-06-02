@@ -51,7 +51,6 @@ import java.text.MessageFormat;
 import java.util.*;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.*;
-
 /**
  * @author <a href="mailto:saadat@gamelectronics.com.com">Alireza Saadat</a>
  */
@@ -1681,6 +1680,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getOrigin() == CardRequestOrigin.P) {
                 if (!(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                         || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                        || cardRequestTO.getState().equals(CardRequestState.REPEALED)
                         || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                         && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError)))) {
                     throw new ServiceException(BizExceptionCode.CRE_058, BizExceptionCode.CRE_058_MSG, new Object[]{cardRequestTO.getId()});
@@ -1700,6 +1700,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getOrigin() == CardRequestOrigin.C) {
                 if (!(cardRequestTO.getState().equals(CardRequestState.STOPPED)
                         || cardRequestTO.getState().equals(CardRequestState.IMS_ERROR)
+                        || cardRequestTO.getState().equals(CardRequestState.REPEALED)
                         || (cardRequestTO.getState().equals(CardRequestState.APPROVED)
                         && getCardRequestHistoryService().findByCardRequestAndCrhAction(cardRequestTO.getId(), afisSendError)))) {
                     throw new ServiceException(BizExceptionCode.CRE_069, BizExceptionCode.CRE_069_MSG, new Object[]{cardRequestTO.getId()});
@@ -1773,9 +1774,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      */
     public void checkHasCitizenAnyShippedCard(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
-            if (!(cardRequestTO.getState().equals(CardRequestState.ISSUED)
+            if (cardRequestTO.getState().equals(CardRequestState.ISSUED)
                     || cardRequestTO.getState().equals(CardRequestState.READY_TO_DELIVER)
-                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
+                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED)) {
                 throw new ServiceException(BizExceptionCode.CRE_060, BizExceptionCode.CRE_060_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
@@ -1788,7 +1789,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      */
     public void checkHasCitizenAnyDeliveredCard(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
-            if (!(cardRequestTO.getState().equals(CardRequestState.DELIVERED))) {
+            if (cardRequestTO.getState().equals(CardRequestState.DELIVERED)) {
                 throw new ServiceException(BizExceptionCode.CRE_062, BizExceptionCode.CRE_062_MSG, new Object[]{cardRequestTO.getId()});
             }
         }
@@ -1802,11 +1803,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     public void checkCitizenLastCardExpired(CardRequestTO cardRequestTO) throws ServiceException {
         if (cardRequestTO != null) {
             Calendar cal = Calendar.getInstance();
-            cal.setTime(cardRequestTO.getCard().getIssuanceDate());
-            cal.add(Calendar.YEAR, 7);
-            if (!(cal.getTime().equals(new Date())
-                    || cal.getTime().after(new Date()))) {
-                throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG, new Object[]{cardRequestTO.getId()});
+            if (cardRequestTO.getCard() != null) {
+                cal.setTime(cardRequestTO.getCard().getIssuanceDate());
+                cal.add(Calendar.YEAR, 7);
+                if (!(cal.getTime().equals(new Date())
+                        || cal.getTime().after(new Date()))) {
+                    throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG, new Object[]{cardRequestTO.getId()});
+                }
             }
         }
     }

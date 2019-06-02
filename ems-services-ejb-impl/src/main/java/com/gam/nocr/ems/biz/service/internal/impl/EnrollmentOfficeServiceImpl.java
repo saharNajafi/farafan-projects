@@ -665,6 +665,17 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             office.setSingleStageOnly(enrollmentOfficeVTO.getSingleStageOnly());
             office.setDepPhoneNumber(enrollmentOfficeVTO.getDepPhoneNumber());
             office.setActive(enrollmentOfficeVTO.getActive());
+            Long rateId;
+            if (!enrollmentOfficeVTO.getActive()) {
+                rateId = getRatingInfoDAO().findBySize((long) 0);
+                /** rating info has been deleted form UI.just set default value when editing an office*/
+                if (rateId != null)
+                    office.setRatingInfo(new RatingInfoTO(rateId));
+            } else {
+                rateId = getRatingInfoDAO().findBySize((long) 1);
+                if (rateId != null)
+                    office.setRatingInfo(new RatingInfoTO(rateId));
+            }
             office.setPostNeeded(enrollmentOfficeVTO.getPostNeeded());
             office.setPostDestinationCode(enrollmentOfficeVTO.getPostDestinationCode());
             if (EnrollmentOfficeType.NOCR.equals(office.getType()) &&
@@ -2013,7 +2024,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         result = Boolean.TRUE;
                     }
                 }
-            } else {
+            }
+            if(result == Boolean.FALSE) {
                 OfficeCapacityTO officeCapacity =
                         getOfficeCapacityService().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId);
                 OfficeActiveShiftTO activeShiftTO =

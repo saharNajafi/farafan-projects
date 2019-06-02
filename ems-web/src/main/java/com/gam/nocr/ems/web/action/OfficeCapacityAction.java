@@ -25,7 +25,10 @@ public class OfficeCapacityAction extends ListControllerImpl<OfficeCapacityVTO> 
         try {
             OfficeCapacityDelegator officeCapacityDelegator = new OfficeCapacityDelegator();
             for (OfficeCapacityVTO to : records) {
-                    officeCapacityDelegator.saveOrUpdate(getUserProfile(), to);
+                if (to.getId() == null)
+                    officeCapacityDelegator.save(getUserProfile(), to);
+                else
+                    officeCapacityDelegator.update(getUserProfile(), to);
             }
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {

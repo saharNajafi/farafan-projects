@@ -12,7 +12,9 @@ import java.util.List;
  */
 public interface OfficeCapacityService extends Service {
 
-    public Long saveOrUpdate(OfficeCapacityVTO to) throws BaseException;
+    public Long save(OfficeCapacityVTO to) throws BaseException;
+
+    public Long update(OfficeCapacityVTO to) throws BaseException;
 
     public boolean remove(String officeCapacityIds) throws BaseException;
 

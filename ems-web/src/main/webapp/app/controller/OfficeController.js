@@ -257,7 +257,7 @@ Ext.define('Ems.controller.OfficeController', {
                                            showMsg = "تاریخ شروع باید از تاریخ امروز بزرگتر باشد";
                                        }
                                        else if (msg[msg.length - 1] == "7") {
-                                           showMsg = "این سطر در سیستم وجود دارد. لطفا آن را ویرایش کنید";
+                                           showMsg = "این سطر در سیستم وجود دارد.";
                                        }
                                        Ext.Msg.alert('خطا', showMsg);
                                    }
