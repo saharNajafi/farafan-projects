@@ -266,13 +266,15 @@ public class ReservationServiceImpl extends EMSAbstractService
     private void fillRegistrationPayment(ReservationTO reservationTO, CardRequestTO emsCardRequest, CitizenTO citizenTO) throws BaseException {
         CardRequestTO cardRequestTO =
                 getCardRequestService().findLastRequestByNationalId(citizenTO.getNationalID());
-        if (cardRequestTO.getState().equals(CardRequestState.REPEALED)
-                && cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)
-                && cardRequestTO.getRegistrationPaymentTO() != null) {
-            emsCardRequest.setRegistrationPaymentTO(cardRequestTO.getRegistrationPaymentTO());
-            emsCardRequest.setPaid(true);
-            emsCardRequest.setPaidDate(cardRequestTO.getRegistrationPaymentTO().getPaymentDate());
-        } else {
+        if(cardRequestTO !=null) {
+            if (cardRequestTO.getState().equals(CardRequestState.REPEALED)
+                    && cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)
+                    && cardRequestTO.getRegistrationPaymentTO() != null) {
+                emsCardRequest.setRegistrationPaymentTO(cardRequestTO.getRegistrationPaymentTO());
+                emsCardRequest.setPaid(true);
+                emsCardRequest.setPaidDate(cardRequestTO.getRegistrationPaymentTO().getPaymentDate());
+            }
+        }else {
             if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
                 RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
                 registrationPaymentTO.setCitizenTO(citizenTO);
