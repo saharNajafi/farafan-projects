@@ -187,6 +187,31 @@ public class CCOSPaymentWS extends EMSWS {
     }
 
     /**
+     * انتساب بانک به پرداخت
+     *
+     * @param targetBankWTO
+     * @return
+     * @throws BaseException
+     */
+    @WebMethod
+    public void registerTargetBank(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "targetBankWTO", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) TargetBankWTO targetBankWTO
+    ) throws InternalException, BaseException {
+        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+        try {
+            if (targetBankWTO == null || targetBankWTO.getPaidBank() == null || targetBankWTO.getNationalId() == null)
+                throwInternalException(WebExceptionCode.CPW_024, WebExceptionCode.CPW_024_MSG, ccosLogger);
+            registrationPaymentDelegator.registerTargetBank(userProfileTO, targetBankWTO);
+        } catch (BaseException e) {
+            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
+        } catch (Exception ex) {
+            throwInternalException(WebExceptionCode.CPW_023, WebExceptionCode.CPW_023_MSG, ex, ccosLogger);
+        }
+    }
+
+    /**
      * ثبت پرداخت
      *
      * @param paymentWTO
@@ -309,5 +334,33 @@ public class CCOSPaymentWS extends EMSWS {
         } catch (Exception ex) {
             throwInternalException(WebExceptionCode.CPW_015, WebExceptionCode.CPW_015_MSG, ex, ccosLogger);
         }
+    }
+
+    /**
+     * استعلام Bpi
+     *
+     * @param nationalId
+     * @return
+     * @throws BaseException
+     */
+    @WebMethod
+    public Boolean bankInquiry(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "nationalId", targetNamespace = "")
+            @XmlElement(required = true, nillable = false) String nationalId
+    ) throws InternalException, BaseException {
+        UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
+        Boolean result = false;
+        if (nationalId == null) {
+            throwInternalException(WebExceptionCode.CPW_021, WebExceptionCode.CPW_021_MSG, ccosLogger);
+        }
+        try {
+            result = registrationPaymentDelegator.bankInquiry(userProfileTO, nationalId);
+        } catch (BaseException e) {
+            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
+        } catch (Exception ex) {
+            throwInternalException(WebExceptionCode.CPW_022, WebExceptionCode.CPW_022_MSG, ex, ccosLogger);
+        }
+        return result;
     }
 }

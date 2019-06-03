@@ -2270,6 +2270,15 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return replicaTypeCount;
     }
 
+    public CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException{
+        CardRequestTO cardRequestTO;
+        try {
+            cardRequestTO = getCardRequestDAO().findRegistrationPaymentId(requestId);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.CRE_077, BizExceptionCode.CRE_077_MSG);
+        }
+        return cardRequestTO;
+    }
     public CardRequestVTO printRegistrationReceipt(long cardRequestId) throws BaseException{
         CardRequestVTO cardRequestVTO = new CardRequestVTO();
         try {
@@ -2304,5 +2313,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
         return personManagementService;
     }
+
 
 }

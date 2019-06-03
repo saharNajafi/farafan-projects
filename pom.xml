@@ -454,6 +454,12 @@
 				<version>${ims.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.gam.ems-externals</groupId>
+				<artifactId>bpi-stub</artifactId>
+				<version>${external-bpi.version}</version>
+			</dependency>
+
 			<!--<dependency> -->
 			<!--<groupId>ims-stub</groupId> -->
 			<!--<artifactId>online</artifactId> -->
@@ -692,6 +698,7 @@
         <external-matiran-ims.version>1.0.0</external-matiran-ims.version>
         <external-nocr-sms.version>1.0.0-SNAPSHOT</external-nocr-sms.version>
         <ims.version>1.0</ims.version>
+        <external-bpi.version>1.0.0</external-bpi.version>
 		<ims.online.version>3.2</ims.online.version>
         <ims.new.services.version>1_0.4.6</ims.new.services.version>
         <ims-stub.version>1.0.0-SNAPSHOT</ims-stub.version>
