@@ -4817,18 +4817,4 @@ CardRequestDAOLocal, CardRequestDAORemote {
         return replicaTypeCount;
     }
 
-    @Override
-	public CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException{
-		List<CardRequestTO> cardRequestTOList;
-		try{
-		cardRequestTOList = em.createNamedQuery("CardRequestTO.findRegistrationPaymentId")
-				.setParameter("requestId", requestId)
-				.getResultList();
-	} catch (Exception e) {
-		logger.error(DataExceptionCode.CDI_109_MSG, new Object[]{"requestId", String.valueOf(requestId)});
-		throw new DataException(DataExceptionCode.CDI_109,
-				DataExceptionCode.CDI_109_MSG, e);
-	}
-		return cardRequestTOList.size() != 0 ? cardRequestTOList.get(0) : null;
-	}
 }

@@ -98,16 +98,7 @@ import java.util.List;
                 query = "UPDATE CardRequestTO crq " +
                         "SET crq.reEnrolledDate =:reEnrolledDate " +
                         "WHERE crq.id IN (:cardRequestId)"
-        ),
-        @NamedQuery(
-                name = "CardRequestTO.findRegistrationPaymentId",
-                query = "select crq " +
-                        "from CardRequestTO crq " +
-                        "where crq.id =:requestId " +
-                        "order by crq.id desc "
         )
-
-
 })
 
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD_REQUEST", allocationSize = 1)
