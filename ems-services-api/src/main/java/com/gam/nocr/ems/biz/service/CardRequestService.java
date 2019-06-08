@@ -129,8 +129,6 @@ public interface CardRequestService extends Service {
 
 	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
 
-	CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException;
-
     CardRequestVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
 
 }

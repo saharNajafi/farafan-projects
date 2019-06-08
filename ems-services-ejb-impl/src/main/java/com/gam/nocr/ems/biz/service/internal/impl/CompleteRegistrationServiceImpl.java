@@ -5,19 +5,24 @@ import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.BizLoggable;
 import com.gam.commons.core.biz.service.Permissions;
 import com.gam.commons.core.biz.service.ServiceException;
+import com.gam.commons.core.biz.service.factory.ServiceFactory;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
+import com.gam.nocr.ems.biz.service.CardRequestHistoryService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.RegistrationService;
 import com.gam.nocr.ems.config.BizExceptionCode;
+import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.CardRequestDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.domain.BiometricTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.DocumentTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
+import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.date.DateUtil;
 import org.slf4j.Logger;
@@ -91,6 +96,14 @@ public class CompleteRegistrationServiceImpl extends EMSAbstractService implemen
 
         archiveId = generateArchiveId(archiveIdCounter, enrollmentOfficeTO.getCode());
         getCardRequestDAO().updateArchiveId(cardRequestId, archiveId);
+        getCardRequestHistoryService().create(
+                new CardRequestTO(cardRequestId),
+                "Registration receipt is printed"
+                , SystemId.CCOS
+                , cardRequestId.toString()
+                , null
+                , getUserProfileTO().getUserName());
+
         return archiveId;
     }
 
@@ -152,5 +165,21 @@ public class CompleteRegistrationServiceImpl extends EMSAbstractService implemen
             throw new ServiceException(BizExceptionCode.CRS_003, BizExceptionCode.GLB_001_MSG, e,
                     DAO_ENROLLMENT_OFFICE.split(","));
         }
+    }
+
+    private CardRequestHistoryService getCardRequestHistoryService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        CardRequestHistoryService cardRequestHistoryService;
+        try {
+            cardRequestHistoryService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST_HISTORY), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.CRS_007,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_CARD_REQUEST_HISTORY.split(","));
+        }
+        cardRequestHistoryService.setUserProfileTO(getUserProfileTO());
+        return cardRequestHistoryService;
     }
 }

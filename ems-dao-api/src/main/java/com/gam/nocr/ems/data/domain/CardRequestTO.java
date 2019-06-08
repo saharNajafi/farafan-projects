@@ -99,8 +99,6 @@ import java.util.List;
                         "SET crq.reEnrolledDate =:reEnrolledDate " +
                         "WHERE crq.id IN (:cardRequestId)"
         )
-
-
 })
 
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD_REQUEST", allocationSize = 1)

@@ -1,74 +1,89 @@
 
 Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.printRegistrationReceiptFieldSet', {
-    id: 'PrintRegistrationReceiptFieldSet',
-    extend: 'ICT.form.FieldSet',
+    id: 'idprintregistrationreceipt',
+    extend : 'ICT.form.FieldSet',
     alias: 'widget.printRegistrationReceiptFieldSet',
+
+    contentStyle : function() {
+        return (Tools.user.StyleObject);
+    },
     layout: 'column',
+    border:false,
+    initComponent : function() {
 
-    initComponent: function () {
-        this.defaults = {
-            columnWidth: 1 / 3,
-            labelWidth: 150
+        var me = this;
+        me.defaults = {
+            columnWidth : 1 / 3
         };
-
-        this.callParent(arguments);
+        me.callParent(arguments);
     },
-
+    isReadOnly : function(){
+        return true;
+    },
     getReadOnlyFields: function () {
-        return this.getItems();
-    },
-
-    getItems: function () {
         return[
             {
                 fieldLabel: 'نام',
-                name: EmsObjectName.cardRequestList.citizenFirstName
+                itemId: EmsObjectName.cardRequestList.citizenFirstName
             },
             {
                 fieldLabel: 'نام خانوادگی',
-                name: EmsObjectName.cardRequestList.citizenSurname
+                itemId: EmsObjectName.cardRequestList.citizenSurname
             },
             {
                 fieldLabel: 'نام پدر',
-                name: EmsObjectName.cardRequestList.fatherName
+                itemId: EmsObjectName.cardRequestList.fatherName
             },
             {
                 fieldLabel: 'شماره ملی',
-                name: EmsObjectName.cardRequestList.citizenNId
+                itemId: EmsObjectName.cardRequestList.citizenNId
             },
             {
                 fieldLabel: 'شماره شناسنامه',
-                name: EmsObjectName.cardRequestList.birthCertId
+                itemId: EmsObjectName.cardRequestList.birthCertId
             },
             {
                 fieldLabel: 'تاریخ تولد',
-                name: EmsObjectName.cardRequestList.citizenBirthDate
+                itemId: EmsObjectName.cardRequestList.citizenBirthDate
             },
 
             {
                 fieldLabel: 'تاریخ مراجعه',
-                name: EmsObjectName.cardRequestList.reservationDate,
+                itemId: EmsObjectName.cardRequestList.reservationDate,
                 renderer: Gam.util.Format.dateRenderer('Y/m/d')
             },
             {
                 fieldLabel: 'کد رهگیری',
-                name: EmsObjectName.cardRequestList.trackingId
+                itemId: EmsObjectName.cardRequestList.trackingId
             },
             {
                 fieldLabel: 'تاریخ چاپ رسید',
-                name: EmsObjectName.cardRequestList.receiptDate
+                itemId: EmsObjectName.cardRequestList.receiptDate,
+                renderer: Gam.util.Format.dateRenderer('Y/m/d')
             } ,
             {
                 fieldLabel: 'نام کاربر',
-                name: EmsObjectName.cardRequestList.userFirstName
+                itemId: EmsObjectName.cardRequestList.userFirstName
             },
             {
                 fieldLabel: 'نام خانوادگی کاربر',
-                name: EmsObjectName.cardRequestList.userLastName
+                itemId: EmsObjectName.cardRequestList.userLastName
             },
             {
                 fieldLabel: 'امضای متصدی',
-                name: EmsObjectName.cardRequestList.userSign
+                itemId: EmsObjectName.cardRequestList.userSign
+            },
+            {
+                action: 'btnNewEditUserRequest',
+                id: 'idBtnNewEditUserRequest',
+                text: 'پرینت',
+                xtype: 'button',
+                width: 70,
+                iconCls: 'windows-Save-icon'/* ,
+                     margins: '5 0 0 0'*/
+
+
+                //style:'margin-right:10px; '
             }
         ]
     }

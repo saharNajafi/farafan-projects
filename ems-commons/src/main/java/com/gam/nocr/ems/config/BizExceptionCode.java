@@ -238,6 +238,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_078 = "EMS_S_CRE_078";
 	public static final String CRE_079 = "EMS_S_CRE_079";
 	public static final String CRE_080 = "EMS_S_CRE_080";
+	public static final String CRE_081 = "EMS_S_CRE_081";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -289,6 +290,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRS_004 = "EMS_S_CRS_004";
     public static final String CRS_005 = "EMS_S_CRS_005";
     public static final String CRS_006 = "EMS_S_CRS_006";
+    public static final String CRS_007 = "EMS_S_CRS_006";
     public static final String CRS_004_MSG = "Card request id cannot not be null";
     public static final String CRS_005_MSG = "Enrollment office id cannot not be null";
     public static final String CRS_006_MSG = "cannot find any office with specified id";

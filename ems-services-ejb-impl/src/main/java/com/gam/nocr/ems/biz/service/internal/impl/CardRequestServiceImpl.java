@@ -32,10 +32,7 @@ import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
 import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.CardRequestMapper;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
-import com.gam.nocr.ems.util.EmsUtil;
-import com.gam.nocr.ems.util.LangUtil;
-import com.gam.nocr.ems.util.NationalIDUtil;
-import com.gam.nocr.ems.util.Utils;
+import com.gam.nocr.ems.util.*;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.security.SecurityContextService;
@@ -921,6 +918,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     BizExceptionCode.GLB_008_MSG, e);
         }
     }
+
     @Override
     public boolean hasPrintRegistrationReceipt() throws BaseException {
         try {
@@ -2220,7 +2218,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             cardRequestHistoryService = serviceFactory.getService(EMSLogicalNames
                     .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST_HISTORY), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
-            throw new ServiceException(BizExceptionCode.PTL_005,
+            throw new ServiceException(BizExceptionCode.CRE_081,
                     BizExceptionCode.GLB_002_MSG, e,
                     EMSLogicalNames.SRV_CARD_REQUEST_HISTORY.split(","));
         }
@@ -2270,20 +2268,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return replicaTypeCount;
     }
 
-    public CardRequestTO findRegistrationPaymentId(String requestId) throws BaseException{
-        CardRequestTO cardRequestTO;
-        try {
-            cardRequestTO = getCardRequestDAO().findRegistrationPaymentId(requestId);
-        } catch (BaseException e) {
-            throw new ServiceException(BizExceptionCode.CRE_077, BizExceptionCode.CRE_077_MSG);
-        }
-        return cardRequestTO;
-    }
+
     public CardRequestVTO printRegistrationReceipt(long cardRequestId) throws BaseException{
         CardRequestVTO cardRequestVTO = new CardRequestVTO();
         try {
             CardRequestTO cardRequestTO = loadById(cardRequestId);
-            Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            Long personID = getPersonService().findPersonIdByUsername(getUserProfileTO().getUserName());
             PersonTO personTO = getPersonService().find(personID);
             cardRequestVTO.setCitizenFirstName(cardRequestTO.getCitizen().getFirstNamePersian());
             cardRequestVTO.setCitizenNId(cardRequestTO.getCitizen().getNationalID());
@@ -2293,6 +2283,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             cardRequestVTO.setTrackingId(cardRequestTO.getTrackingID());
             cardRequestVTO.setFatherName(cardRequestTO.getCitizen().getCitizenInfo().getFatherFirstNamePersian());
             cardRequestVTO.setCitizenBirthDate(cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
+            cardRequestVTO.setReceiptDate( new Date());
             cardRequestVTO.setUserFirstName(personTO.getFirstName());
             cardRequestVTO.setUserLastName(personTO.getLastName());
         } catch (BaseException e) {
