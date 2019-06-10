@@ -36,8 +36,8 @@ import java.io.Serializable;
                 name = "OfficeCapacityTO.findByEnrollmentOfficeIdAndDateAndWorkingHour",
                 query = "select oc from OfficeCapacityTO oc " +
                         "where oc.enrollmentOffice.id = :eofId " +
-                        "and oc.startDate < :date " +
-                        "and oc.endDate > :date " +
+                        "and oc.startDate <= :date " +
+                        "and oc.endDate >= :date " +
                         "and oc.workingHoursFrom <=:hour " +
                         "and oc.workingHoursTo >= :hour "
         ),
