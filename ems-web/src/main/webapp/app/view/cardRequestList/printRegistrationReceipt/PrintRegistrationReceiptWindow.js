@@ -38,37 +38,18 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
                             myWindow.document.write('</body></html>');
                             myWindow.document.close();
                             myWindow.print();
-                            myWindow.onafterprint = function (event) {
-                                console.log("Printing completed...");
+                            var mediaQueryList = myWindow.matchMedia('print');
+                            myWindow.onafterprint = function (ev) {
+                                alert('priiint')
                             };
-                            myWindow.addEventListener("afterprint", function (event) {
-                                console.log("Printing completed...");
-                            });
-                            (function() {
-
-                                var beforePrint = function() {
-                                    console.log('Functionality to run before printing.');
-                                };
-
-                                var afterPrint = function() {
-                                    console.log('Functionality to run after printing');
-                                };
-
-                                if (window.matchMedia) {
-                                    var mediaQueryList = window.matchMedia('print');
-                                    mediaQueryList.addListener(function(mql) {
-                                        if (mql.matches) {
-                                            beforePrint();
-                                        } else {
-                                            afterPrint();
-                                        }
-                                    });
+                            mediaQueryList.addListener(function(mql) {
+                                alert(mql);
+                                if (mql.matches) {
+                                    alert('mql matches');
+                                } else {
+                                    alert('mql did NOT match');
                                 }
-
-                                window.onbeforeprint = beforePrint;
-                                window.onafterprint = afterPrint;
-
-                            }());
+                            });
                                 // Ext.Ajax.request({
                                 //     url: 'extJsController/cardrequestlist/print',
                                 //     jsonData: {
