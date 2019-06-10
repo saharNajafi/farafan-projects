@@ -397,4 +397,8 @@ public class CardRequestDelegator implements Delegator {
 	public CardRequestVTO printRegistrationReceipt(UserProfileTO userProfileTO, long cardRequestId) throws BaseException{
 		return getService(userProfileTO).printRegistrationReceipt(cardRequestId);
 	}
+
+	public void print(UserProfileTO userProfileTO, Long cardRequestId) throws BaseException{
+		 getService(userProfileTO).print(cardRequestId);
+	}
 }

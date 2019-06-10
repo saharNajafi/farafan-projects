@@ -245,6 +245,24 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     }
 
+    public String print() throws BaseException {
+//        try {
+//            if (cardRequestId != null) {
+//                new CardRequestDelegator().print(
+//                        getUserProfile()
+//                        , Long.parseLong(getCardRequestId()));
+//                return SUCCESS_RESULT;
+//            } else {
+//                throw new ActionException(WebExceptionCode.CRA_019,
+//                        WebExceptionCode.CRA_013_MSG);
+//            }
+//        } catch (BusinessSecurityException e) {
+//            throw new ActionException(WebExceptionCode.CRA_018,
+//                    WebExceptionCode.GLB_001_MSG, e);
+//        }
+        return SUCCESS_RESULT;
+    }
+
     public CardRequestVTO getData() {
         return data;
     }

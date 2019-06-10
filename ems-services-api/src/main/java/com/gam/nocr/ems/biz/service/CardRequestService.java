@@ -131,4 +131,6 @@ public interface CardRequestService extends Service {
 
     CardRequestVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
 
+     void print(Long cardRequestId) throws BaseException;
+
 }

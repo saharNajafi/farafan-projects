@@ -2295,6 +2295,22 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return cardRequestVTO;
     }
 
+    public void print(Long cardRequestId) throws BaseException{
+        try {
+            getCardRequestHistoryService().create(
+                    new CardRequestTO(cardRequestId),
+                    "Registration receipt is printed"
+                    , SystemId.EMS
+                    , cardRequestId.toString()
+                    , null
+                    , getUserProfileTO().getUserName());
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CRE_082,
+                    BizExceptionCode.CRE_082_MSG, e);
+        }
+    }
     private PersonManagementService getPersonService() throws BaseException {
         PersonManagementService personManagementService;
         try {
