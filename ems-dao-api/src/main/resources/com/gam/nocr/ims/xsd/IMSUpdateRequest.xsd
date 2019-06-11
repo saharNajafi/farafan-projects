@@ -33,6 +33,7 @@
             <xsd:element type="xsd:int" name="ImsId"/>
             <xsd:element type="StringType" name="ManagerUsername"/>
             <xsd:element type="StringType" name="AuthenticatedBy"/>
+            <xsd:element type="MandatoryTrackingIdType" name="TrackingId"/>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="IdentityDataType">
@@ -207,6 +208,12 @@
         <xsd:restriction base="xsd:string">
             <xsd:maxLength value="9"/>
             <xsd:pattern value="[1-9][0-9]*"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="MandatoryTrackingIdType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+            <xsd:pattern value="[0-9][0-9]*"/>
         </xsd:restriction>
     </xsd:simpleType>
     <xsd:simpleType name="PriorityType">

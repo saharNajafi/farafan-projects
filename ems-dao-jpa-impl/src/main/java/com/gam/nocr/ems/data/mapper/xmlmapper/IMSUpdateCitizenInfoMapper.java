@@ -917,6 +917,11 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                     }
                 }
                 requestInfo.appendChild(authenticatedByElement);
+
+                Element trackingIdElement = doc.createElement("TrackingId");
+                trackingIdElement.appendChild(doc.createTextNode(cardRequestTO.getTrackingID()));
+                requestInfo.appendChild(trackingIdElement);
+
             }
 
 
