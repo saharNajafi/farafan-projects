@@ -32,24 +32,12 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
                             var myWindow = window.open('', '', 'width=600,height=500');
                             myWindow.document.write('<html><head>');
                             myWindow.document.write('<title>' + 'Title' + '</title>');
-                            // myWindow.document.write('<script type="text/javascript" src="/wr/ext/4.1-beta-1/rtl/ext-all-debug.js"></script>');
-                            myWindow.document.write('</head><body style="direction: ltr; border: 0px; width: 690px; right: 4px; top: 150px;">');
+                            // myWindow.document.write('<script type="text/javascript" src="http://extjs.cachefly.net/ext-4.1.1-gpl/ext-all-debug.js"></script>');
+                            myWindow.document.write('</head><body>');
                             myWindow.document.write(targetElement.body.dom.innerHTML);
                             myWindow.document.write('</body></html>');
                             myWindow.document.close();
                             myWindow.print();
-                            var mediaQueryList = myWindow.matchMedia('print');
-                            myWindow.onafterprint = function (ev) {
-                                alert('priiint')
-                            };
-                            mediaQueryList.addListener(function(mql) {
-                                alert(mql);
-                                if (mql.matches) {
-                                    alert('mql matches');
-                                } else {
-                                    alert('mql did NOT match');
-                                }
-                            });
                                 // Ext.Ajax.request({
                                 //     url: 'extJsController/cardrequestlist/print',
                                 //     jsonData: {
@@ -74,7 +62,7 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
                 ]
 
             }
-        ],
+        ];
             this.callParent(arguments);
     }
 });

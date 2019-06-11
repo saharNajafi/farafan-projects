@@ -182,7 +182,7 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                 }
             },'[action=CardRequestList]': {
                 click: function (btn) {
-                    this.getAccessForPrintRegistrationReceipt();
+                    this.getAccessForCardRequestList();
                     this.onBtnClicked(btn);
                 }
             }, '[action=CmsErrorEvaluateList]': {
@@ -350,7 +350,7 @@ Ext.define('Ems.controller.NavigationHeaderController', {
 
         });
     },
-    getAccessForPrintRegistrationReceipt: function (view) {
+    getAccessForCardRequestList: function (view) {
 
         Ext.Ajax.request({
             url: 'extJsController/cardrequestlist/hasPrintRegistrationReceipt',
