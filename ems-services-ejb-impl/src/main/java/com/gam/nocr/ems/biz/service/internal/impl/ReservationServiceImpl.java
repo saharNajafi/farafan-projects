@@ -14,10 +14,7 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.ReservationDAO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
-import com.gam.nocr.ems.data.domain.ReservationTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.ActiveShiftWTO;
 import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
 import com.gam.nocr.ems.data.domain.ws.RegistrationOfficeWTO;
@@ -69,6 +66,11 @@ public class ReservationServiceImpl extends EMSAbstractService
     public CardRequestTO transferReservationsToEMS(ReservationTO reservationTO) throws BaseException {
         String nationalId = null;
         try {
+            if(reservationTO.getEnrollmentOffice() != null) {
+                OfficeCapacityTO officeCapacityTO =
+                        getOfficeCapacityService().findByEnrollmentOfficeIdAndDateAndWorkingHour(reservationTO.getEnrollmentOffice().getId());
+                reservationTO.setShiftNo(officeCapacityTO.getShiftNo());
+            }
             CardRequestTO emsCardRequest = null;
             CardRequestState toState = CardRequestState.RESERVED;
             if (reservationTO.getCardRequest().getCitizen().getNationalID() != null) {
@@ -479,5 +481,20 @@ public class ReservationServiceImpl extends EMSAbstractService
         }
     }
 
+    private OfficeCapacityService getOfficeCapacityService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        OfficeCapacityService officeCapacityService;
+        try {
+            officeCapacityService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_OFFICE_CAPACITY), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.RS_007,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_OFFICE_CAPACITY.split(","));
+        }
+        officeCapacityService.setUserProfileTO(getUserProfileTO());
+        return officeCapacityService;
+    }
 
 }

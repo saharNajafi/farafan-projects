@@ -1,9 +1,7 @@
 package com.gam.nocr.ems.data.util;
 
 import com.gam.commons.core.BaseException;
-import com.gam.nocr.ems.config.ConstValues;
-import com.gam.nocr.ems.config.MapperExceptionCode;
-import com.gam.nocr.ems.config.WebExceptionCode;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.PaymentWTO;
 import com.gam.nocr.ems.data.domain.ws.RegistrationPaymentWTO;
@@ -11,7 +9,6 @@ import com.gam.nocr.ems.data.domain.ws.SinglePreRegistrationWTO;
 import com.gam.nocr.ems.data.enums.CardRequestOrigin;
 import com.gam.nocr.ems.data.enums.GenderEnum;
 import com.gam.nocr.ems.data.enums.IPGProviderEnum;
-import com.gam.nocr.ems.data.enums.ShiftEnum;
 import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
@@ -116,10 +113,6 @@ public class PaymentUtil {
             czi.setCitizen(ctz);
             cardRequestTO.setCitizen(ctz);
             reservationTO.setCardRequest(cardRequestTO);
-            SimpleDateFormat hours = new SimpleDateFormat("HH");
-            ShiftEnum shiftNo = ShiftEnum.getShift(String.valueOf(hours.parse(hours.format(
-                    new Date())).before(hours.parse("12:00")) ? 0 : 1));
-            reservationTO.setShiftNo(shiftNo);
             reservationTO.setEnrollmentOffice(new EnrollmentOfficeTO(singlePreRegistrationWTO.getEnrollmentOfficeId()));
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date reservationDate = df.parse(df.format(new Date()) + "T00:00:00.000000");

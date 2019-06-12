@@ -2814,6 +2814,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RS_004 = "EMS_S_RS_004";
     public static final String RS_005 = "EMS_S_RS_005";
     public static final String RS_006 = "EMS_S_RS_006";
+    public static final String RS_007 = "EMS_S_RS_007";
     public static final String RS_002_MSG = "the newReserve operation could not be executed";
     public static final String RS_003_MSG = "there is a request with this portal request id {0}";
     public static final String RS_004_MSG = "the reserve operation could not be executed";
