@@ -1,13 +1,5 @@
 package com.gam.nocr.ems.web.action;
 
-import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
-import gampooya.tools.security.BusinessSecurityException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
@@ -15,14 +7,33 @@ import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
+import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
+import gampooya.tools.security.BusinessSecurityException;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import org.apache.struts2.ServletActionContext;
+import org.slf4j.Logger;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Main action class to handle all requests from card requests list
  *
  * @author <a href="mailto:moghaddam@gamelectronics.com">Ehsan Zaery
- * Moghaddam</a>
+ *         Moghaddam</a>
  */
 public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
@@ -223,15 +234,15 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     }
 
     public String printRegistrationReceipt() throws BaseException {
-        CardRequestVTO cardRequestVTO;
+
         try {
             if (cardRequestId != null) {
-                cardRequestVTO =
+                data =
                         new CardRequestDelegator().printRegistrationReceipt(
                                 getUserProfile()
                                 , Long.parseLong(getCardRequestId()));
                 ArrayList<CardRequestVTO> cardRequestList = new ArrayList<CardRequestVTO>();
-                cardRequestList.add(cardRequestVTO);
+                cardRequestList.add(data);
                 setRecords(cardRequestList);
                 return SUCCESS_RESULT;
             } else {
@@ -247,19 +258,53 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     public String print() throws BaseException {
         try {
-            if (cardRequestId != null) {
-                new CardRequestDelegator().print(
-                        getUserProfile()
-                        , Long.parseLong(getCardRequestId()));
+            if (data != null) {
+                HttpServletResponse response = ServletActionContext.getResponse();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                response.setContentType("application/pdf");
+                response.addHeader("Content-Disposition", "attachment;filename*='UTF-8'" + URLEncoder.encode(data.getCitizenFirstName() + "" + data.getCitizenSurname(), "utf-8") + ".pdf");
+                response.addHeader("Cache-Control", "no-cache");
+                String sourceFileName = "jasper/reciept.jasper";
+                ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+                InputStream reportStream = classloader.getResourceAsStream(sourceFileName);
+                Map parameters = new HashMap();
+                parameters.put("firstName", data.getCitizenFirstName());
+                parameters.put("lastName", data.getCitizenSurname());
+                parameters.put("fatherName", data.getFatherName());
+                parameters.put("nationalId", data.getCitizenNId());
+                parameters.put("certificateId", data.getBirthCertId());
+                parameters.put("birthDate", data.getCitizenBirthDate());
+                parameters.put("enrollDate", data.getEnrolledDate());
+                parameters.put("trackingId", data.getTrackingId());
+                parameters.put("printDate", data.getReceiptDate());
+                parameters.put("userName", data.getUserFirstName() + " " + data.getUserLastName());
+                JasperExportManager.exportReportToPdfStream(JasperFillManager.fillReport(JasperCompileManager.compileReport(reportStream), parameters), byteArrayOutputStream);
+                response.setContentLength(byteArrayOutputStream.size());
+                ServletOutputStream servletOutputStream = response.getOutputStream();
+                byteArrayOutputStream.writeTo(servletOutputStream);
+                byteArrayOutputStream.flush();
+                servletOutputStream.flush();
+                servletOutputStream.close();
+                byteArrayOutputStream.close();
+                reportStream.close();
+                JasperFillManager.fillReportToFile(
+                        sourceFileName, parameters);
                 return SUCCESS_RESULT;
             } else {
                 throw new ActionException(WebExceptionCode.CRA_019,
                         WebExceptionCode.CRA_013_MSG);
             }
-        } catch (BusinessSecurityException e) {
+        } /*catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, e);
+        }*/ catch (JRException e) {
+            throw new ActionException(WebExceptionCode.CRA_018,
+                    WebExceptionCode.GLB_001_MSG, e);
+        } catch (IOException ex) {
+            throw new ActionException(WebExceptionCode.CRA_018,
+                    WebExceptionCode.GLB_001_MSG, ex);
         }
+
     }
 
     public CardRequestVTO getData() {
