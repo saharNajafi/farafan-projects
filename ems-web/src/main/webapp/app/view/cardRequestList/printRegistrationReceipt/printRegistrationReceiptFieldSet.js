@@ -49,7 +49,7 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.printRegistrationR
 
             {
                 fieldLabel: 'تاریخ مراجعه',
-                itemId: EmsObjectName.cardRequestList.reservationDate,
+                itemId: EmsObjectName.cardRequestList.enrolledDate,
                 renderer: Gam.util.Format.dateRenderer('Y/m/d')
             },
             {

@@ -205,7 +205,7 @@ Ext.define('Ems.controller.CardRequestListController', {
             citizenNId: rec.get(EmsObjectName.cardRequestList.citizenNId),
             birthCertId: rec.get(EmsObjectName.cardRequestList.birthCertId),
             citizenBirthDate: rec.get(EmsObjectName.cardRequestList.citizenBirthDate),
-            reservationDate: rec.get(EmsObjectName.cardRequestList.reservationDate),
+            enrolledDate: rec.get(EmsObjectName.cardRequestList.enrolledDate),
             trackingId: rec.get(EmsObjectName.cardRequestList.trackingId),
             userFirstName: rec.get(EmsObjectName.cardRequestList.userFirstName),
             userLastName: rec.get(EmsObjectName.cardRequestList.userLastName),

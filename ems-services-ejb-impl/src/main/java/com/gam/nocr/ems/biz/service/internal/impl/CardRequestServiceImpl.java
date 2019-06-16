@@ -2277,7 +2277,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             PersonTO personTO = getPersonService().find(personID);
             cardRequestVTO.setCitizenFirstName(cardRequestTO.getCitizen().getFirstNamePersian());
             cardRequestVTO.setCitizenNId(cardRequestTO.getCitizen().getNationalID());
-            cardRequestVTO.setReservationDate((Timestamp) cardRequestTO.getReservationDate());
+            cardRequestVTO.setEnrolledDate((Timestamp) cardRequestTO.getEnrolledDate());
             cardRequestVTO.setCitizenSurname(cardRequestTO.getCitizen().getSurnamePersian());
             cardRequestVTO.setBirthCertId(cardRequestTO.getCitizen().getCitizenInfo().getBirthCertificateId());
             cardRequestVTO.setTrackingId(cardRequestTO.getTrackingID());
