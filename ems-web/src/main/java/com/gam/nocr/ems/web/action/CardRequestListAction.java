@@ -1,6 +1,5 @@
 package com.gam.nocr.ems.web.action;
 
-import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import gampooya.tools.security.BusinessSecurityException;
 
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     private boolean hasPrintRegistrationReceipt;
 
     private CardRequestVTO data;
-    private PrintRegistrationReceiptVTO PrintRegistrationReceipt;
 
     public boolean isHasAccessToChangePriority() {
         return hasAccessToChangePriority;
