@@ -28,9 +28,9 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
                         width: 70,
                         iconCls: 'windows-Save-icon',
 
-                        handler: function () {
+                        handler: function (res) {
                             // var grid = Ext.window("printRegistrationReceiptWindow");
-                            // var targetElement = Ext.getCmp('idPrintRegistrationReceiptDialog');
+                            var targetElement = Ext.getCmp('idPrintRegistrationReceiptDialog');
                             // var myWindow = window.open('', '', 'width=600,height=500');
                             // myWindow.document.write('<html><head>');
                             // myWindow.document.write('<title>' + 'Title' + '</title>');
@@ -41,13 +41,19 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
                             // myWindow.document.close();
                             // myWindow.close();
                             // myWindow.print();
+                            // console.log(targetElement.body.dom.innerHTML.getElementById("cardRequestId").valueOf());
+                           console.log( document.getElementById("crqId").valueOf());
+                           console.log(Ext.getDom('crqId').getValue());
                             Ext.Ajax.request({
-                                url: 'extJsController/cardrequestlist/print',
-                                method: 'POST',
+
+                                standardSubmit : true,
+                                url: 'DisplayImage',
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/pdf'
+                                },
                                 success: function (response) {
-                                    alert('yse');
-                                    console.log(response);
-                                    Gam.Msg.hideWaitMsg();
+                                    window.open("DisplayImage", "_blank")
                                 },
                                 failure: function (resp) {
                                     Tools.errorFailure();

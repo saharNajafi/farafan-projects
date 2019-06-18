@@ -11,18 +11,13 @@ import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import gampooya.tools.security.BusinessSecurityException;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +55,33 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
         this.hasAccessToChangePriority = hasAccessToChangePriority;
     }
 
+    private InputStream inputStream;
+    private String downloadFileName;
+    private String contentType;
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    public String getDownloadFileName() {
+        return downloadFileName;
+    }
+
+    public void setDownloadFileName(String downloadFileName) {
+        this.downloadFileName = downloadFileName;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
     /**
      * In repealing a card request (or undoing it), the type of action requested
@@ -234,16 +256,17 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     }
 
     public String printRegistrationReceipt() throws BaseException {
-
+        CardRequestVTO cardRequestVTO;
         try {
             if (cardRequestId != null) {
-                data =
+                cardRequestVTO =
                         new CardRequestDelegator().printRegistrationReceipt(
                                 getUserProfile()
                                 , Long.parseLong(getCardRequestId()));
                 ArrayList<CardRequestVTO> cardRequestList = new ArrayList<CardRequestVTO>();
-                cardRequestList.add(data);
+                cardRequestList.add(cardRequestVTO);
                 setRecords(cardRequestList);
+
                 return SUCCESS_RESULT;
             } else {
                 throw new ActionException(WebExceptionCode.CRA_017,
@@ -257,39 +280,70 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     }
 
     public String print() throws BaseException {
+
+        CardRequestVTO cardRequestVTO;
+        cardRequestId="467";
         try {
-            if (data != null) {
+            if (cardRequestId != null) {
+                cardRequestVTO =
+                        new CardRequestDelegator().printRegistrationReceipt(
+                                getUserProfile()
+                                , Long.parseLong("467"));
+                ArrayList<CardRequestVTO> cardRequestList = new ArrayList<CardRequestVTO>();
+                cardRequestList.add(cardRequestVTO);
+                setRecords(cardRequestList);
+            } else {
+                throw new ActionException(WebExceptionCode.CRA_017,
+                        WebExceptionCode.CRA_013_MSG);
+            }
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.CRA_018,
+                    WebExceptionCode.GLB_001_MSG, e);
+        }
+        try {
+
+
+            if (cardRequestVTO != null) {
+
                 HttpServletResponse response = ServletActionContext.getResponse();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 response.setContentType("application/pdf");
-                response.addHeader("Content-Disposition", "attachment;filename*='UTF-8'" + URLEncoder.encode(data.getCitizenFirstName() + "" + data.getCitizenSurname(), "utf-8") + ".pdf");
+                response.addHeader("Content-Disposition", "attachment;filename*='UTF-8'" + URLEncoder.encode(cardRequestVTO.getCitizenFirstName() + "" + cardRequestVTO.getCitizenSurname(), "utf-8") + ".pdf");
                 response.addHeader("Cache-Control", "no-cache");
                 String sourceFileName = "jasper/reciept.jasper";
                 ClassLoader classloader = Thread.currentThread().getContextClassLoader();
                 InputStream reportStream = classloader.getResourceAsStream(sourceFileName);
                 Map parameters = new HashMap();
-                parameters.put("firstName", data.getCitizenFirstName());
-                parameters.put("lastName", data.getCitizenSurname());
-                parameters.put("fatherName", data.getFatherName());
-                parameters.put("nationalId", data.getCitizenNId());
-                parameters.put("certificateId", data.getBirthCertId());
-                parameters.put("birthDate", data.getCitizenBirthDate());
-                parameters.put("enrollDate", data.getEnrolledDate());
-                parameters.put("trackingId", data.getTrackingId());
-                parameters.put("printDate", data.getReceiptDate());
-                parameters.put("userName", data.getUserFirstName() + " " + data.getUserLastName());
-                JasperExportManager.exportReportToPdfStream(JasperFillManager.fillReport(JasperCompileManager.compileReport(reportStream), parameters), byteArrayOutputStream);
-                response.setContentLength(byteArrayOutputStream.size());
-                ServletOutputStream servletOutputStream = response.getOutputStream();
-                byteArrayOutputStream.writeTo(servletOutputStream);
-                byteArrayOutputStream.flush();
-                servletOutputStream.flush();
-                servletOutputStream.close();
+                parameters.put("firstName", cardRequestVTO.getCitizenFirstName());
+                parameters.put("lastName", cardRequestVTO.getCitizenSurname());
+                parameters.put("fatherName", cardRequestVTO.getFatherName());
+                parameters.put("nationalId", cardRequestVTO.getCitizenNId());
+                parameters.put("certificateId", cardRequestVTO.getBirthCertId());
+                parameters.put("birthDate", cardRequestVTO.getCitizenBirthDate());
+                parameters.put("enrollDate",cardRequestVTO.getCitizenBirthDate());
+                parameters.put("trackingId", cardRequestVTO.getTrackingId());
+                parameters.put("printDate", cardRequestVTO.getCitizenBirthDate());
+                parameters.put("userName", cardRequestVTO.getUserFirstName() + " " + cardRequestVTO.getUserLastName());
+                JasperReport jasReport = (JasperReport) JRLoader.loadObject(reportStream);
+                JasperExportManager.exportReportToPdfStream(JasperFillManager.fillReport(jasReport, parameters,new JREmptyDataSource()), byteArrayOutputStream);
+                byte[] bytes =JasperExportManager.exportReportToPdf(JasperFillManager.fillReport(jasReport, parameters,new JREmptyDataSource()));
+                setInputStream( new ByteArrayInputStream(bytes));
+                File file = new File("/home/safiary/test.pdf");
+                OutputStream outStream = new FileOutputStream(file);
+                outStream.write(bytes);
+                setContentType("application/pdf");
+                setDownloadFileName("hasan");
+
+                //response.setContentLength(byteArrayOutputStream.size());
+               // ServletOutputStream servletOutputStream = response.getOutputStream();
+               // byteArrayOutputStream.writeTo(servletOutputStream);
+                //byteArrayOutputStream.flush();
+                //servletOutputStream.flush();
+                //servletOutputStream.close();
                 byteArrayOutputStream.close();
                 reportStream.close();
-                JasperFillManager.fillReportToFile(
-                        sourceFileName, parameters);
                 return SUCCESS_RESULT;
+
             } else {
                 throw new ActionException(WebExceptionCode.CRA_019,
                         WebExceptionCode.CRA_013_MSG);
@@ -304,7 +358,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, ex);
         }
-
     }
 
     public CardRequestVTO getData() {

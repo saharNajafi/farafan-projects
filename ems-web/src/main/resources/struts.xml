@@ -129,16 +129,18 @@
         </action>
     </package>
 
-    <package name="card-requests" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
-        <action name="*" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="print">
+    <package name="downloadReceiptlist" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
+        <action name="downloadRecriptFile" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="print">
             <result name="success" type="stream">
                 <param name="contentType">application/pdf</param>
-               <!-- <param name="inputName">fileInputStream</param>
+               <!-- <param name="inputName">inputStream</param>
                 <param name="contentDisposition">attachment;</param>-->
                 <param name="bufferSize">1024</param>
+                <param name="allowCaching">false</param>
             </result>
         </action>
     </package>
+
     
     <package name="estelam2False" extends="gam-json-default" namespace="/extJsController/estelam2falselist">
         <action name="*" class="com.gam.nocr.ems.web.action.Estelam2FalseListAction" method="{1}">
