@@ -56,9 +56,7 @@ public class OfficeCapacityAction extends ListControllerImpl<OfficeCapacityVTO> 
     public String delete() throws BaseException {
         try {
             OfficeCapacityDelegator OfficeCapacityDelegator = new OfficeCapacityDelegator();
-
             OfficeCapacityDelegator.remove(getUserProfile(), ids);
-
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.DEA_002, WebExceptionCode.GLB_001_MSG, e);

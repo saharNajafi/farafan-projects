@@ -10,7 +10,6 @@ import com.gam.nocr.ems.biz.service.external.client.bpi.BpiInquiryWTO;
 import com.gam.nocr.ems.biz.service.external.client.bpi.BpiService;
 import com.gam.nocr.ems.biz.service.external.client.bpi.BpiService_Service;
 import com.gam.nocr.ems.biz.service.external.client.pki.RAWS;
-import com.gam.nocr.ems.biz.service.external.client.portal.ExternalInterfaceException_Exception;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
@@ -144,7 +143,7 @@ public class BpiInquiryServiceImpl extends AbstractService
 
 
     /**
-     * The method getService is used to get WebServices from PKI sub system
+     * The method getService is used to get WebServices from BPI sub system
      *
      * @return an instance of type {@link RAWS}
      * @throws BaseException if cannot get the service

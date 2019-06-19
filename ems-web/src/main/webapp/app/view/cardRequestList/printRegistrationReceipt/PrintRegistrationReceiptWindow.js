@@ -30,7 +30,7 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
 
                         handler: function (res) {
                             // var grid = Ext.window("printRegistrationReceiptWindow");
-                            var targetElement = Ext.getCmp('idPrintRegistrationReceiptDialog');
+                           // var targetElement = Ext.getCmp('idPrintRegistrationReceiptDialog');
                             // var myWindow = window.open('', '', 'width=600,height=500');
                             // myWindow.document.write('<html><head>');
                             // myWindow.document.write('<title>' + 'Title' + '</title>');
@@ -42,18 +42,18 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationR
                             // myWindow.close();
                             // myWindow.print();
                             // console.log(targetElement.body.dom.innerHTML.getElementById("cardRequestId").valueOf());
-                           console.log( document.getElementById("crqId").valueOf());
-                           console.log(Ext.getDom('crqId').getValue());
+                           //console.log( document.getElementById("crqId").valueOf());
+                           //console.log(Ext.getDom('crqId').getValue());
                             Ext.Ajax.request({
 
                                 standardSubmit : true,
-                                url: 'DisplayImage',
-                                method: 'GET',
+                                url: 'extJsController/cardrequestlist/print',
+                                method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/pdf'
                                 },
                                 success: function (response) {
-                                    window.open("DisplayImage", "_blank")
+                                    window.open("extJsController/cardrequestlist/print", "_blank")
                                 },
                                 failure: function (resp) {
                                     Tools.errorFailure();

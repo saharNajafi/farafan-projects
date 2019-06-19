@@ -133,6 +133,17 @@
         </layout>
     </appender>
 
+    <appender name="bpiDailyRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/> -->
+        <param name="File" value="${log_dir}/bpiLog.log"/>
+        <param name="MaxFileSize" value="50MB"/>
+        <param name="MaxBackupIndex" value="5"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="pki: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
+
     <!-- Jobs loggers appenders -->
     <appender name="BatchMissedNotificationJobRollingAppender"
               class="org.apache.log4j.RollingFileAppender">
@@ -755,6 +766,11 @@
     <logger name="PkiLogger" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="pkiDailyRollingAppender"/>
+    </logger>
+
+    <logger name="BpiLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="bpiDailyRollingAppender"/>
     </logger>
 
     <logger name="EmksLogger" additivity="false">

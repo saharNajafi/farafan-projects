@@ -1,7 +1,6 @@
 package com.gam.nocr.ems.data.dao;
 
 import com.gam.commons.core.BaseException;
-import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.enums.ShiftEnum;
 
@@ -18,11 +17,11 @@ public interface OfficeCapacityDAO extends EmsBaseDAO<OfficeCapacityTO> {
 
     OfficeCapacityTO findByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException;
 
-    List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws DAOException;
+    List<OfficeCapacityTO> listOfficeCapacityByDate(int startDate, int endDate) throws BaseException;
 
     void removeByEnrollmentOfficeId(Long enrollmentOfficeId) throws BaseException;
 
-    OfficeCapacityTO findByEnrollmentOfficeIdAndDateAndWorkingHour(Long enrollmentOfficeId, int date, float hour) throws DAOException;
+    OfficeCapacityTO findByEnrollmentOfficeIdAndDateAndWorkingHour(Long enrollmentOfficeId, int date, float hour) throws BaseException;
 
-    List<OfficeCapacityTO> findByEnrollmentOfficeIdAndShiftNoAndOcId(Long enrollmentOfficeId, ShiftEnum shift, Long id) throws DAOException;
+    List<OfficeCapacityTO> findByEnrollmentOfficeIdAndShiftNoAndOcId(Long enrollmentOfficeId, ShiftEnum shift, Long id) throws BaseException;
 }

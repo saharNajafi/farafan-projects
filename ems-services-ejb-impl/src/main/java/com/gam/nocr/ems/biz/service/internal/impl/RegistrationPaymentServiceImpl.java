@@ -281,7 +281,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED))
                 throw new ServiceException(
                         BizExceptionCode.RGP_009, BizExceptionCode.RGP_006_MSG, new Object[]{nationalId});
-            if(registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
+            if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
                 bpiInquiryWTO = getBpiInquiryService().bpiInquiry(registrationPaymentTO);
                 if (bpiInquiryWTO != null) {
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd 00:00:00.000000");

@@ -1281,6 +1281,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return cal.getTime();
     }
 
+
     private String findReadyToDeliverState(CardRequestTO cardRequestTO) throws BaseException {
         try {
                 EnrollmentOfficeTO eofByCardRequest = cardRequestTO.getEnrollmentOffice();

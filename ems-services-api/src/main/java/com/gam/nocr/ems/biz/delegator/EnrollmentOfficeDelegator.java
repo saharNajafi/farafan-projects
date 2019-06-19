@@ -17,7 +17,6 @@ import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.RatingInfoDAO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
-import com.gam.nocr.ems.data.domain.RatingInfoTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
@@ -120,9 +119,21 @@ public class EnrollmentOfficeDelegator implements Delegator {
 //			PortalManagementDelegator portalManagementDelegator = new PortalManagementDelegator();
 //            RatingInfoTO ratingInfoTO = getRatingInfoDAO().find(
 //                    RatingInfoTO.class, vto.getRateId());
-//			if (ratingInfoTO != null || !equalsCalender) {
-//
+			/*if (ratingInfoTO != null || !equalsCalender) {
 
+                if (ratingInfoTO != null) {
+                    RatingInfoTO newRating = null;
+                    String newCalender = null;
+                    if (!ratingIdOld.equals(ratingInfoTO.getId()))
+                        newRating = ratingInfoTO;
+//				if (!equalsCalender)
+//					newCalender = vto.getCalenderType();
+
+//				portalManagementDelegator.syncResevationFreeTimeByNewRating(
+//						eofId, newRating,newCalender);
+                }
+            }*/
+//
         }
         return eofId;
     }

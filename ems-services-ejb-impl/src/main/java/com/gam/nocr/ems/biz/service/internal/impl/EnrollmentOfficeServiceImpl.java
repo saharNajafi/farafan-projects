@@ -206,7 +206,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         } catch (DAOFactoryException e) {
             throw new ServiceException(
                     BizExceptionCode.EOS_101,
-                    BizExceptionCode.GLB_029_MSG,
+                    BizExceptionCode.GLB_001_MSG,
                     e,
                     EMSLogicalNames.DAO_OFFICE_ACTIVE_SHIFT.split(","));
         }
@@ -220,7 +220,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         } catch (DAOFactoryException e) {
             throw new ServiceException(
                     BizExceptionCode.EOS_102,
-                    BizExceptionCode.GLB_030_MSG,
+                    BizExceptionCode.GLB_001_MSG,
                     e,
                     EMSLogicalNames.DAO_OFFICE_CAPACITY.split(","));
         }
@@ -2128,7 +2128,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     }
 
     /**
-     * اگر دفتر فعال باشد میتواند ثبت نام تک مرحله ای داشته باشد و در غیر اینصورت نمیتواند
+     * if office is not active,it will can not register in single stage way
      */
     public Boolean officeIsActive(Long enrollmentOfficeId) throws ServiceException {
         try {

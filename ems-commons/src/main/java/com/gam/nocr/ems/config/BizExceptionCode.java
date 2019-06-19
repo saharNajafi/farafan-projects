@@ -39,9 +39,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_026_MSG = "Invalid request id. The given request id cannot be null.";
     public static final String GLB_027_MSG = "Estelam2 call incures an exception for cardrequestId : ";
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
-    public static final String GLB_029_MSG = "Cannot instantiate active shift dao";
-    public static final String GLB_030_MSG = "Cannot instantiate office capacity dao";
-    public static final String GLB_031_MSG = "error occured in remove office enrollment";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
@@ -2798,6 +2795,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OC_015 = "EMS_S_OC_015";
     public static final String OC_016 = "EMS_S_OC_016";
     public static final String OC_017 = "EMS_S_OC_017";
+    public static final String OC_018 = "EMS_S_OC_018";
+    public static final String OC_019 = "EMS_S_OC_019";
     public static final String OC_001_MSG = "OfficeCapacityId id is null";
     public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
     public static final String OC_003_MSG = "EnrollmentOffice id is null";
@@ -2813,6 +2812,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OC_013_MSG = "officeCapacity is not editable";
     public static final String OC_015_MSG = "An error has occurred during converting date";
     public static final String OC_017_MSG = "update operation could not be executed";
+    public static final String OC_018_MSG = "deletion is not applicable, no officeCapacity to delete";
 
     //com.gam.nocr.ems.biz.service.internal.impl.ActiveShiftServiceImpl
     public static final String OASH_001 = "EMS_OASH_001";

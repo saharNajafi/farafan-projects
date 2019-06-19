@@ -204,7 +204,7 @@ public class RatingInfoDAOImpl extends EmsBaseDAOImpl<RatingInfoTO> implements R
                     .getResultList();
             return ratingInfoTOList != null ? ratingInfoTOList.get(0).getId() : null;
         } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.RTI_015, DataExceptionCode.RTI_015_MSG, e);
+            throw new DAOException(DataExceptionCode.RTI_016, DataExceptionCode.RTI_016_MSG, e);
         }
     }
 }

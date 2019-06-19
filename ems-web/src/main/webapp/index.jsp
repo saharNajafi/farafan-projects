@@ -623,7 +623,7 @@
 }
 
 .grid-print-registration-receipt {
-    background: url('resources/themes/images/default/toolbar/setting.png') no-repeat right;
+    background: url('resources/themes/images/default/toolbar/print.png') no-repeat right;
     width: 16px;
     height: 16px;
     cursor: pointer;

@@ -1,12 +1,5 @@
 package com.gam.nocr.ems.web.action;
 
-import gampooya.tools.security.BusinessSecurityException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
@@ -14,7 +7,6 @@ import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
-import com.gam.nocr.ems.data.domain.vol.PrintRegistrationReceiptVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import gampooya.tools.security.BusinessSecurityException;
@@ -23,8 +15,12 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +31,7 @@ import java.util.Map;
  * Main action class to handle all requests from card requests list
  *
  * @author <a href="mailto:moghaddam@gamelectronics.com">Ehsan Zaery
- * Moghaddam</a>
+ *         Moghaddam</a>
  */
 public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
@@ -52,7 +48,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     private boolean hasPrintRegistrationReceipt;
 
     private CardRequestVTO data;
-    private PrintRegistrationReceiptVTO PrintRegistrationReceipt;
 
     public boolean isHasAccessToChangePriority() {
         return hasAccessToChangePriority;
@@ -285,8 +280,8 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     }
 
-    public Sting print() throws BaseException {
-        try {
+    public String print() throws BaseException {
+        /*try {
             if (cardRequestId != null) {
                 new CardRequestDelegator().print(
                         getUserProfile()
@@ -299,10 +294,10 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, e);
-        }
-        /*
-        * CardRequestVTO cardRequestVTO;
-        cardRequestId="467";
+        }*/
+
+        CardRequestVTO cardRequestVTO;
+        cardRequestId = "467";
         try {
             if (cardRequestId != null) {
                 cardRequestVTO =
@@ -340,26 +335,22 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
                 parameters.put("nationalId", cardRequestVTO.getCitizenNId());
                 parameters.put("certificateId", cardRequestVTO.getBirthCertId());
                 parameters.put("birthDate", cardRequestVTO.getCitizenBirthDate());
-                parameters.put("enrollDate",cardRequestVTO.getCitizenBirthDate());
+                parameters.put("enrollDate", cardRequestVTO.getCitizenBirthDate());
                 parameters.put("trackingId", cardRequestVTO.getTrackingId());
                 parameters.put("printDate", cardRequestVTO.getCitizenBirthDate());
                 parameters.put("userName", cardRequestVTO.getUserFirstName() + " " + cardRequestVTO.getUserLastName());
                 JasperReport jasReport = (JasperReport) JRLoader.loadObject(reportStream);
-                JasperExportManager.exportReportToPdfStream(JasperFillManager.fillReport(jasReport, parameters,new JREmptyDataSource()), byteArrayOutputStream);
-                byte[] bytes =JasperExportManager.exportReportToPdf(JasperFillManager.fillReport(jasReport, parameters,new JREmptyDataSource()));
-                setInputStream( new ByteArrayInputStream(bytes));
-                File file = new File("/home/safiary/test.pdf");
-                OutputStream outStream = new FileOutputStream(file);
-                outStream.write(bytes);
+                JasperExportManager.exportReportToPdfStream(JasperFillManager.fillReport(jasReport, parameters, new JREmptyDataSource()), byteArrayOutputStream);
+                byte[] bytes = JasperExportManager.exportReportToPdf(JasperFillManager.fillReport(jasReport, parameters, new JREmptyDataSource()));
+                setInputStream(new ByteArrayInputStream(bytes));
                 setContentType("application/pdf");
                 setDownloadFileName("hasan");
-
-                //response.setContentLength(byteArrayOutputStream.size());
-               // ServletOutputStream servletOutputStream = response.getOutputStream();
-               // byteArrayOutputStream.writeTo(servletOutputStream);
-                //byteArrayOutputStream.flush();
-                //servletOutputStream.flush();
-                //servletOutputStream.close();
+                response.setContentLength(byteArrayOutputStream.size());
+                ServletOutputStream servletOutputStream = response.getOutputStream();
+                byteArrayOutputStream.writeTo(servletOutputStream);
+                byteArrayOutputStream.flush();
+                servletOutputStream.flush();
+                servletOutputStream.close();
                 byteArrayOutputStream.close();
                 reportStream.close();
                 return SUCCESS_RESULT;
@@ -368,19 +359,17 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
                 throw new ActionException(WebExceptionCode.CRA_019,
                         WebExceptionCode.CRA_013_MSG);
             }
-        } catch (BusinessSecurityException e) {
+        } /*catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, e);
-        } catch (JRException e) {
+        }*/ catch (JRException e) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, e);
         } catch (IOException ex) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, ex);
         }
-        *
-        *
-        * */
+
 
     }
 
