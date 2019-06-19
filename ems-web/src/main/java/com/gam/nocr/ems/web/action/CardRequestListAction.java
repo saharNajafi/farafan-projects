@@ -1,5 +1,12 @@
 package com.gam.nocr.ems.web.action;
 
+import gampooya.tools.security.BusinessSecurityException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
@@ -28,7 +35,7 @@ import java.util.Map;
  * Main action class to handle all requests from card requests list
  *
  * @author <a href="mailto:moghaddam@gamelectronics.com">Ehsan Zaery
- *         Moghaddam</a>
+ * Moghaddam</a>
  */
 public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
@@ -266,7 +273,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
                 ArrayList<CardRequestVTO> cardRequestList = new ArrayList<CardRequestVTO>();
                 cardRequestList.add(cardRequestVTO);
                 setRecords(cardRequestList);
-
                 return SUCCESS_RESULT;
             } else {
                 throw new ActionException(WebExceptionCode.CRA_017,
@@ -279,9 +285,23 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     }
 
-    public String print() throws BaseException {
-
-        CardRequestVTO cardRequestVTO;
+    public Sting print() throws BaseException {
+        try {
+            if (cardRequestId != null) {
+                new CardRequestDelegator().print(
+                        getUserProfile()
+                        , Long.parseLong(getCardRequestId()));
+                return SUCCESS_RESULT;
+            } else {
+                throw new ActionException(WebExceptionCode.CRA_019,
+                        WebExceptionCode.CRA_013_MSG);
+            }
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.CRA_018,
+                    WebExceptionCode.GLB_001_MSG, e);
+        }
+        /*
+        * CardRequestVTO cardRequestVTO;
         cardRequestId="467";
         try {
             if (cardRequestId != null) {
@@ -348,16 +368,20 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
                 throw new ActionException(WebExceptionCode.CRA_019,
                         WebExceptionCode.CRA_013_MSG);
             }
-        } /*catch (BusinessSecurityException e) {
+        } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, e);
-        }*/ catch (JRException e) {
+        } catch (JRException e) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, e);
         } catch (IOException ex) {
             throw new ActionException(WebExceptionCode.CRA_018,
                     WebExceptionCode.GLB_001_MSG, ex);
         }
+        *
+        *
+        * */
+
     }
 
     public CardRequestVTO getData() {
