@@ -926,7 +926,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             SecurityContextService securityContextService = new SecurityContextService();
             if (securityContextService.hasAccess(userProfileTO.getUserName(),
-                    "ems_printRegistrationReceipt")) {
+                    "ems_PrintRegistrationReceipt")) {
                 return true;
             }
 
