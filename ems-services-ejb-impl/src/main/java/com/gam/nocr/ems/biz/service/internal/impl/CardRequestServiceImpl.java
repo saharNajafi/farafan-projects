@@ -930,7 +930,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 return true;
             }
 
-            return false;
+            return true;
         } catch (Exception e) {
             logger.error(BizExceptionCode.CRE_077, e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CRE_077,
