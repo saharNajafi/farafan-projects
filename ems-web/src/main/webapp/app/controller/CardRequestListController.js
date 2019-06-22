@@ -121,33 +121,45 @@ Ext.define('Ems.controller.CardRequestListController', {
 
     },
     doPrintRegistrationReceipt: function (grid, rowIndex) {
-        sessionStorage.setItem('cardRequestId', null);
-        var store = grid.getStore(),
-            me = this;
-        record = store.getAt(rowIndex),
-            id = record.get('id');
-        sessionStorage.setItem('cardRequestId', id);
-        Ext.Ajax.request({
-            url: me.ns + '/printRegistrationReceipt',
-            jsonData: {
-                cardRequestId: id
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.success) {
-                    var rec = data.records;
-                    if (rec != null) {
-                        me.loadPrintView(rec[0], 'Print');
-                    } else {
-                        Tools.errorMessageClient(Ems.ErrorCode.client.EMS_C_004);
-                    }
-                } else {
-                    Tools.errorMessageServer(obj.messageInfo);
-                }
-            }, failure: function (resp) {
-                Tools.errorFailure();
-            }
-        });
+        var store = grid.getStore() ,
+            record = store.getAt(rowIndex);
+        sessionStorage.setItem('cardRequestId', record.get('id'));
+        var win = Ext.create('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationReceiptWindow');
+        printReceipt = win.down('.printRegistrationReceiptDialog');
+        printReceiptInfo = printReceipt.down('printRegistrationReceiptFieldSet');
+        Tools.MaskUnMask(win);
+        win.show();
+
+
+
+
+
+        // sessionStorage.setItem('cardRequestId', null);
+        // var store = grid.getStore(),
+        //     me = this;
+        // record = store.getAt(rowIndex),
+        //     id = record.get('id');
+        // Ext.Ajax.request({
+        //     url: me.ns + '/printRegistrationReceipt',
+        //     jsonData: {
+        //         cardRequestId: id
+        //     },
+        //     success: function (resp) {
+        //         var data = Ext.decode(resp.responseText);
+        //         if (data.success) {
+        //             var rec = data.records;
+        //             if (rec != null) {
+        //                 me.loadPrintView(rec[0], 'Print');
+        //             } else {
+        //                 Tools.errorMessageClient(Ems.ErrorCode.client.EMS_C_004);
+        //             }
+        //         } else {
+        //             Tools.errorMessageServer(obj.messageInfo);
+        //         }
+        //     }, failure: function (resp) {
+        //         Tools.errorFailure();
+        //     }
+        // });
 
 
     }, loadFormEditView: function (record, mode) {
@@ -198,19 +210,19 @@ Ext.define('Ems.controller.CardRequestListController', {
         var store = Ext.create('Ems.store.CardRequestListStore', {baseUrl: this.ns});
         store.add(record);
         var rec = store.getAt(0);
-        printReceiptInfo.setData(Ext.create('Ems.model.CardRequestListModel', {
-            citizenFirstName: rec.get(EmsObjectName.cardRequestList.citizenFirstName),
-            citizenSurname: rec.get(EmsObjectName.cardRequestList.citizenSurname),
-            fatherName: rec.get(EmsObjectName.cardRequestList.fatherName),
-            citizenNId: rec.get(EmsObjectName.cardRequestList.citizenNId),
-            birthCertId: rec.get(EmsObjectName.cardRequestList.birthCertId),
-            citizenBirthDate: rec.get(EmsObjectName.cardRequestList.citizenBirthDate),
-            enrolledDate: rec.get(EmsObjectName.cardRequestList.enrolledDate),
-            trackingId: rec.get(EmsObjectName.cardRequestList.trackingId),
-            userFirstName: rec.get(EmsObjectName.cardRequestList.userFirstName),
-            userLastName: rec.get(EmsObjectName.cardRequestList.userLastName),
-            receiptDate: rec.get(EmsObjectName.cardRequestList.receiptDate)
-        }), printReceiptInfo);
+        // printReceiptInfo.setData(Ext.create('Ems.model.CardRequestListModel', {
+        //     citizenFirstName: rec.get(EmsObjectName.cardRequestList.citizenFirstName),
+        //     citizenSurname: rec.get(EmsObjectName.cardRequestList.citizenSurname),
+        //     fatherName: rec.get(EmsObjectName.cardRequestList.fatherName),
+        //     citizenNId: rec.get(EmsObjectName.cardRequestList.citizenNId),
+        //     birthCertId: rec.get(EmsObjectName.cardRequestList.birthCertId),
+        //     citizenBirthDate: rec.get(EmsObjectName.cardRequestList.citizenBirthDate),
+        //     enrolledDate: rec.get(EmsObjectName.cardRequestList.enrolledDate),
+        //     trackingId: rec.get(EmsObjectName.cardRequestList.trackingId),
+        //     userFirstName: rec.get(EmsObjectName.cardRequestList.userFirstName),
+        //     userLastName: rec.get(EmsObjectName.cardRequestList.userLastName),
+        //     receiptDate: rec.get(EmsObjectName.cardRequestList.receiptDate)
+        // }), printReceiptInfo);
         win.show();
     },
     getUpdatePriorityFrom: function (btn) {

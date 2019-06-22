@@ -297,13 +297,13 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
         }*/
 
         CardRequestVTO cardRequestVTO;
-        cardRequestId = "467";
+        //cardRequestId = "467";
         try {
             if (cardRequestId != null) {
                 cardRequestVTO =
                         new CardRequestDelegator().printRegistrationReceipt(
                                 getUserProfile()
-                                , Long.parseLong("467"));
+                                , Long.parseLong(getCardRequestId()));
                 ArrayList<CardRequestVTO> cardRequestList = new ArrayList<CardRequestVTO>();
                 cardRequestList.add(cardRequestVTO);
                 setRecords(cardRequestList);
