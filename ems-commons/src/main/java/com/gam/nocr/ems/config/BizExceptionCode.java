@@ -237,6 +237,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_080 = "EMS_S_CRE_080";
 	public static final String CRE_081 = "EMS_S_CRE_081";
 	public static final String CRE_082 = "EMS_S_CRE_082";
+	public static final String CRE_083 = "EMS_S_CRE_083";
+	public static final String CRE_084 = "EMS_S_CRE_084";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -281,6 +283,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_076_MSG = "There is a extend request type for Card Request: {0}";
 	public static final String CRE_079_MSG = "an error occurred on printRegistrationReceipt operation";
 	public static final String CRE_082_MSG = "an error occurred on print operation";
+	public static final String CRE_083_MSG = "can not print receipt for this request by state :{0}";
 
     // com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
     public static final String CRS_001 = "EMS_S_CRS_001";

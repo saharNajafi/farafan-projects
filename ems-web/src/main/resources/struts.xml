@@ -131,13 +131,10 @@
 
     <package name="downloadReceiptlist" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
         <action name="downloadRecriptFile" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="print">
-            <result name="success" type="stream">
-                <param name="contentType">application/pdf</param>
-               <!-- <param name="inputName">inputStream</param>
-                <param name="contentDisposition">attachment;</param>-->
-                <param name="bufferSize">1024</param>
-                <param name="allowCaching">false</param>
-            </result>
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
         </action>
     </package>
 

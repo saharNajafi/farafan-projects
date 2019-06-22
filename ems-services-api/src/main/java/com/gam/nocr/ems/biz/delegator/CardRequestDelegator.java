@@ -394,7 +394,7 @@ public class CardRequestDelegator implements Delegator {
 		return  getService(userProfileTO).updateCitizenByEstelam(cardRequest, b, b1);
 	}
 
-	public CardRequestVTO printRegistrationReceipt(UserProfileTO userProfileTO, long cardRequestId) throws BaseException{
+	public CardRequestReceiptVTO printRegistrationReceipt(UserProfileTO userProfileTO, long cardRequestId) throws BaseException{
 		return getService(userProfileTO).printRegistrationReceipt(cardRequestId);
 	}
 

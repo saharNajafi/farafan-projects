@@ -15,7 +15,7 @@ Ext.define('Ems.view.cardRequestList.printRegistrationReceipt.Dialog', {
         return [
             {
                 //xtype: 'printRegistrationReceiptFieldSet'
-                html: '<iframe src="http://emsapp.ssd.net:7001/ems-web/app/pdfjs/web/pdfViewer.jsp?cardRequestId='+ cardRequestId+ '" frameborder="0" style="overflow:hidden;height:450px;width:100%" ></iframe>'
+                html: '<iframe src="/ems-web/app/pdfjs/web/pdfViewer.jsp?cardRequestId='+ cardRequestId+ '" frameborder="0" style="overflow:hidden;height:450px;width:100%" ></iframe>'
             }
         ];
     }
