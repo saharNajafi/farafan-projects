@@ -202,7 +202,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
 
                 } else if (stateId.endsWith("ReIssueRequest")) {
 
-                    if (officeSettingTO.getReissueRequest()) {
+                    if (officeSettingTO.getReissueRequest() && officeSettingTO.getEnrollmentOffice().getActive()) {
                         stateProviderTO.setValue("1");
                     } else {
                         stateProviderTO.setValue("0");
