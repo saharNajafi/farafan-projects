@@ -251,7 +251,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     }
 
-    public String print() throws BaseException {
+    public void print() throws BaseException {
 
         CardRequestReceiptVTO cardRequestReceiptVTO = new CardRequestReceiptVTO();
         String sourceFileName;
@@ -266,7 +266,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
                 parameters.put("warningMessage", CcosBundle.getMessage(e.getExceptionCode()));
                 sourceFileName = "warninmessage.jasper";
                 JasperUtil.generatePDFWithOutDataSource(sourceFileName, "ERROR", parameters);
-                return SUCCESS_RESULT;
+                return;
 
             } catch (BusinessSecurityException e) {
                 throw new ActionException(WebExceptionCode.CRA_018,
@@ -281,6 +281,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             new CardRequestDelegator().print(
                     getUserProfile()
                     , Long.parseLong(getCardRequestId()));
+
             sourceFileName = "reciept.jasper";
             Map parameters = new HashMap();
             parameters.put("firstName", cardRequestReceiptVTO.getCitizenFirstName());
@@ -294,7 +295,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             parameters.put("printDate", cardRequestReceiptVTO.getReceiptDate());
             parameters.put("userName", cardRequestReceiptVTO.getUserFirstName() + " " + cardRequestReceiptVTO.getUserLastName());
             JasperUtil.generatePDFWithOutDataSource(sourceFileName, cardRequestReceiptVTO.getNationalID(), parameters);
-            return SUCCESS_RESULT;
+            return;
 
         } catch (BaseException e) {
             throw new ActionException(WebExceptionCode.CRA_020,
