@@ -10,18 +10,12 @@ import com.gam.nocr.ems.data.domain.vol.CardRequestReceiptVTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
+import com.gam.nocr.ems.util.CcosBundle;
+import com.gam.nocr.ems.util.JasperUtil;
 import gampooya.tools.security.BusinessSecurityException;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.util.JRLoader;
-import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -258,92 +252,57 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     }
 
     public String print() throws BaseException {
-        /*try {
-            if (cardRequestId != null) {
-                new CardRequestDelegator().print(
-                        getUserProfile()
-                        , Long.parseLong(getCardRequestId()));
-                return SUCCESS_RESULT;
-            } else {
-                throw new ActionException(WebExceptionCode.CRA_019,
-                        WebExceptionCode.CRA_013_MSG);
-            }
-        } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_018,
-                    WebExceptionCode.GLB_001_MSG, e);
-        }*/
 
-        CardRequestReceiptVTO cardRequestReceiptVTO;
-        try {
-            if (cardRequestId != null) {
+        CardRequestReceiptVTO cardRequestReceiptVTO = new CardRequestReceiptVTO();
+        String sourceFileName;
+        if (cardRequestId != null) {
+            try {
                 cardRequestReceiptVTO =
                         new CardRequestDelegator().printRegistrationReceipt(
                                 getUserProfile()
                                 , Long.parseLong(getCardRequestId()));
-
-            } else {
-                throw new ActionException(WebExceptionCode.CRA_017,
-                        WebExceptionCode.CRA_013_MSG);
-            }
-        } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_018,
-                    WebExceptionCode.GLB_001_MSG, e);
-        }
-        try {
-
-            if (cardRequestReceiptVTO != null) {
-
-                HttpServletResponse response = ServletActionContext.getResponse();
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                response.setContentType("application/pdf");
-                response.addHeader("Content-Disposition", "attachment;filename*='UTF-8'" + URLEncoder.encode(cardRequestReceiptVTO.getCitizenFirstName() + "" + cardRequestReceiptVTO.getCitizenSurname(), "utf-8") + ".pdf");
-                response.addHeader("Cache-Control", "no-cache");
-                String sourceFileName = "jasper/reciept.jasper";
-                ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-                InputStream reportStream = classloader.getResourceAsStream(sourceFileName);
+            } catch (BaseException e) {
                 Map parameters = new HashMap();
-                parameters.put("firstName", cardRequestReceiptVTO.getCitizenFirstName());
-                parameters.put("lastName", cardRequestReceiptVTO.getCitizenSurname());
-                parameters.put("fatherName", cardRequestReceiptVTO.getFatherName());
-                parameters.put("nationalId", cardRequestReceiptVTO.getNationalID());
-                parameters.put("certificateId", cardRequestReceiptVTO.getBirthCertificateId());
-                parameters.put("birthDate", cardRequestReceiptVTO.getBirthDateSolar());
-                parameters.put("enrollDate", cardRequestReceiptVTO.getEnrolledDate());
-                parameters.put("trackingId", cardRequestReceiptVTO.getTrackingID());
-                parameters.put("printDate", cardRequestReceiptVTO.getReceiptDate());
-                parameters.put("userName", cardRequestReceiptVTO.getUserFirstName() + " " + cardRequestReceiptVTO.getUserLastName());
-                JasperReport jasReport = (JasperReport) JRLoader.loadObject(reportStream);
-                JasperExportManager.exportReportToPdfStream(JasperFillManager.fillReport(jasReport, parameters, new JREmptyDataSource()), byteArrayOutputStream);
-                //byte[] bytes = JasperExportManager.exportReportToPdf(JasperFillManager.fillReport(jasReport, parameters, new JREmptyDataSource()));
-                //setInputStream(new ByteArrayInputStream(bytes));
-                //setContentType("application/pdf");
-                //setDownloadFileName("hasan");
-                response.setContentLength(byteArrayOutputStream.size());
-                ServletOutputStream servletOutputStream = response.getOutputStream();
-                byteArrayOutputStream.writeTo(servletOutputStream);
-                byteArrayOutputStream.flush();
-                servletOutputStream.flush();
-                servletOutputStream.close();
-                byteArrayOutputStream.close();
-                reportStream.close();
+                parameters.put("warningMessage", CcosBundle.getMessage(e.getExceptionCode()));
+                sourceFileName = "warninmessage.jasper";
+                JasperUtil.generatePDFWithOutDataSource(sourceFileName, "ERROR", parameters);
                 return SUCCESS_RESULT;
 
-            } else {
-                throw new ActionException(WebExceptionCode.CRA_019,
-                        WebExceptionCode.CRA_013_MSG);
+            } catch (BusinessSecurityException e) {
+                throw new ActionException(WebExceptionCode.CRA_018,
+                        WebExceptionCode.GLB_001_MSG, e);
             }
-        } /*catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_018,
-                    WebExceptionCode.GLB_001_MSG, e);
-        }*/ catch (JRException e) {
-            throw new ActionException(WebExceptionCode.CRA_018,
-                    WebExceptionCode.GLB_001_MSG, e);
-        } catch (IOException ex) {
-            throw new ActionException(WebExceptionCode.CRA_018,
-                    WebExceptionCode.GLB_001_MSG, ex);
+        } else {
+            throw new ActionException(WebExceptionCode.CRA_017,
+                    WebExceptionCode.CRA_013_MSG);
         }
 
+        try {
+            new CardRequestDelegator().print(
+                    getUserProfile()
+                    , Long.parseLong(getCardRequestId()));
+            sourceFileName = "reciept.jasper";
+            Map parameters = new HashMap();
+            parameters.put("firstName", cardRequestReceiptVTO.getCitizenFirstName());
+            parameters.put("lastName", cardRequestReceiptVTO.getCitizenSurname());
+            parameters.put("fatherName", cardRequestReceiptVTO.getFatherName());
+            parameters.put("nationalId", cardRequestReceiptVTO.getNationalID());
+            parameters.put("certificateId", cardRequestReceiptVTO.getBirthCertificateId());
+            parameters.put("birthDate", cardRequestReceiptVTO.getBirthDateSolar());
+            parameters.put("enrollDate", cardRequestReceiptVTO.getEnrolledDate());
+            parameters.put("trackingId", cardRequestReceiptVTO.getTrackingID());
+            parameters.put("printDate", cardRequestReceiptVTO.getReceiptDate());
+            parameters.put("userName", cardRequestReceiptVTO.getUserFirstName() + " " + cardRequestReceiptVTO.getUserLastName());
+            JasperUtil.generatePDFWithOutDataSource(sourceFileName, cardRequestReceiptVTO.getNationalID(), parameters);
+            return SUCCESS_RESULT;
 
+        } catch (BaseException e) {
+            throw new ActionException(WebExceptionCode.CRA_020,
+                    WebExceptionCode.GLB_003_MSG, e);
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.CRA_019,
+                    WebExceptionCode.GLB_001_MSG, e);
+        }
     }
 
     public CardRequestVTO getData() {

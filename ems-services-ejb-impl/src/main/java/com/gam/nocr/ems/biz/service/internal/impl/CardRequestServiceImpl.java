@@ -2279,9 +2279,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (CardRequestState.IMS_ERROR.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_083,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            } else if (CardRequestState.READY_TO_DELIVER.equals(cardRequestTO.getState()) ||
-                    CardRequestState.DELIVERED.equals(cardRequestTO.getState())) {
+            } else if (CardRequestState.READY_TO_DELIVER.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_084,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            } else if (CardRequestState.DELIVERED.equals(cardRequestTO.getState())) {
+                throw new ServiceException(BizExceptionCode.CRE_085,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            } else if (CardRequestState.RESERVED.equals(cardRequestTO.getState())) {
+                throw new ServiceException(BizExceptionCode.CRE_086,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
             } else {
                 Long personID = getPersonService().findPersonIdByUsername(getUserProfileTO().getUserName());
