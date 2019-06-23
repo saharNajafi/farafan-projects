@@ -19,6 +19,7 @@ import com.gam.nocr.ems.data.dao.OfficeSettingDAO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.FeatureExtractIdsTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
+import com.gam.nocr.ems.data.domain.PersonTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
 import com.gam.nocr.ems.data.enums.FeatureExtractType;
@@ -93,7 +94,8 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
         try {
             SecurityContextService securityContextService = new SecurityContextService();
             ProfileManager profileManager = ProfileHelper.getProfileManager();
-            Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            Long personID =  getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            PersonTO personTO = getPersonService().find(personID);
             Integer perId = null;
             try {
                 perId = Integer.parseInt("" + personID);
@@ -299,7 +301,20 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
 
                     }
 
-                } else {
+                }else if (stateId.endsWith("userFirstName")) {
+                            if(personTO!=null){
+                                stateProviderTO.setValue(personTO.getFirstName());
+                            } else {
+                        stateProviderTO.setValue("");
+                    }
+                }else if (stateId.endsWith("userLastName")) {
+                    if(personTO!=null){
+                        stateProviderTO.setValue(personTO.getLastName());
+                    } else {
+                        stateProviderTO.setValue("");
+                    }
+                }
+                else {
                     value = (String) profileManager.getProfile(ProfileKeyName.STATE_ROOT + "." + stateId, true, null, null);
                     if (value != null && value.trim().length() > 0)
                         stateProviderTO.setValue(value);
