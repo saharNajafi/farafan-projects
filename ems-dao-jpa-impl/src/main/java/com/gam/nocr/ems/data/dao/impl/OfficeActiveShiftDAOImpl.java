@@ -57,7 +57,7 @@ public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO
                     .setParameter("activeDate", activeDate)
                     .getResultList();
         } catch (Exception e) {
-            throw new DAOException(DataExceptionCode.ENI_016,
+            throw new DAOException(DataExceptionCode.ASH_008,
                     DataExceptionCode.GLB_005_MSG, e);
         }
         return activeShiftTOList.size() != 0 ? activeShiftTOList.get(0) : null;
@@ -111,7 +111,7 @@ public class OfficeActiveShiftDAOImpl extends EmsBaseDAOImpl<OfficeActiveShiftTO
                     , e);
             throw new DAOException(
                     DataExceptionCode.ASH_007,
-                    DataExceptionCode.GLB_011_MSG,
+                    DataExceptionCode.GLB_007_MSG,
                     e);
         }
 

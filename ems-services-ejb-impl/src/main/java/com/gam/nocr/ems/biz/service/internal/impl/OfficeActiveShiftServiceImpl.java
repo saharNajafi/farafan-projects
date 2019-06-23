@@ -39,26 +39,6 @@ public class OfficeActiveShiftServiceImpl extends EMSAbstractService
     private static final Logger logger = BaseLog
             .getLogger(OfficeActiveShiftServiceImpl.class);
 
-    public OfficeActiveShiftTO findActiveShiftByEofId(Long enrollmentOfficeId) throws BaseException {
-        int activeDate;
-        ShiftEnum shiftNo;
-        OfficeActiveShiftTO activeShiftTO = null;
-        try {
-            DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-            activeDate = Integer.parseInt(CalendarUtil.convertGregorianToPersian(date.format(
-                    new Date())).replaceAll("/", ""));
-            SimpleDateFormat hours = new SimpleDateFormat("HH");
-            shiftNo = ShiftEnum.getShift(String.valueOf(hours.parse(hours.format(
-                    new Date())).before(hours.parse("12:00")) ? 0 : 1));
-            activeShiftTO = findByEnrollmentOfficeId(enrollmentOfficeId, activeDate, shiftNo);
-        } catch (ParseException e) {
-
-        } catch (BaseException e) {
-            throw e;
-        }
-        return activeShiftTO;
-    }
-
     @Override
     public OfficeActiveShiftTO OfficeActiveShiftByOfficeIdAndRsvDate(Long officeId, ShiftEnum shiftEnum, int myDate) throws BaseException {
         return getActiveShiftDAO().OfficeActiveShiftByOfficeIdAndRsvDate(officeId, shiftEnum, myDate);

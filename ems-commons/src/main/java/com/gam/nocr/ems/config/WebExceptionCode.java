@@ -597,6 +597,12 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRA_012 = "EMS_A_CRA_012";
     public static final String CRA_013 = "EMS_A_CRA_013";
     public static final String CRA_014 = "EMS_A_CRA_014";
+    public static final String CRA_015 = "EMS_A_CRA_015";
+    public static final String CRA_016 = "EMS_A_CRA_016";
+    public static final String CRA_017 = "EMS_A_CRA_017";
+    public static final String CRA_018 = "EMS_A_CRA_018";
+    public static final String CRA_019 = "EMS_A_CRA_019";
+    public static final String CRA_020 = "EMS_A_CRA_020";
     public static final String CRP_001 = "EMS_P_CRP_001";
 //    public static final String CRA_009 = "EMS_A_CRA_009";
 //    public static final String CRA_010 = "EMS_A_CRA_010";
@@ -689,6 +695,10 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public  static final String CPW_018 = "EMS_W_CPW_018";
     public  static final String CPW_019 = "EMS_W_CPW_019";
     public  static final String CPW_020 = "EMS_W_CPW_020";
+    public  static final String CPW_021 = "EMS_W_CPW_021";
+    public  static final String CPW_022 = "EMS_W_CPW_022";
+    public  static final String CPW_023 = "EMS_W_CPW_023";
+    public  static final String CPW_024 = "EMS_W_CPW_024";
     public  static final String CPW_001_MSG = "Unable to check the possibility of inserting single stag";
     public  static final String CPW_002_MSG = "Unable to check enrollment office eligibility for single stage enrollment";
     public static final String CPW_003_MSG = "Invalid Parameter -> nationalId :";
@@ -708,6 +718,10 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CPW_018_MSG = "an error occurred in imsInquiry WebService";
     public static final String CPW_019_MSG = "PersonalInfoWTO is null";
     public static final String CPW_020_MSG = "PersonEnquiryWTO is null";
+    public static final String CPW_021_MSG = "nationalId is null";
+    public static final String CPW_022_MSG = "an error occurred on bankInquiry operation";
+    public static final String CPW_023_MSG = "an error occurred on registerTargetBank operation";
+    public static final String CPW_024_MSG = "targetBankWTO argument is null";
 
     //com.gam.nocr.ems.web.action.OfficeSettingAction.java
     public static final String OSA_001 = "EMS_A_OSA_001";

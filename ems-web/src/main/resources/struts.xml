@@ -128,6 +128,16 @@
             <result name="failure" type="gam-json"/>
         </action>
     </package>
+
+    <package name="downloadReceiptlist" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
+        <action name="downloadRecriptFile" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="print">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
     
     <package name="estelam2False" extends="gam-json-default" namespace="/extJsController/estelam2falselist">
         <action name="*" class="com.gam.nocr.ems.web.action.Estelam2FalseListAction" method="{1}">

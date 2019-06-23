@@ -13,11 +13,7 @@ import com.gam.nocr.ems.biz.service.CardRequestService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
-import com.gam.nocr.ems.data.domain.vol.BatchDispatchInfoVTO;
-import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
-import com.gam.nocr.ems.data.domain.vol.CardDispatchInfoVTO;
-import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
+import com.gam.nocr.ems.data.domain.vol.*;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
@@ -220,6 +216,12 @@ public class CardRequestDelegator implements Delegator {
 
 	}
 
+	public boolean hasPrintRegistrationReceipt(UserProfileTO userProfile)
+			throws BaseException {
+		return getService(userProfile).hasPrintRegistrationReceipt();
+
+	}
+
 
 	// hossein 8feature start
 	public CardRequestVTO viewCardRequestInfo(UserProfileTO userProfileTO,
@@ -390,5 +392,13 @@ public class CardRequestDelegator implements Delegator {
 
 	public PersonEnquiryWTO updateCitizenByEstelam(UserProfileTO userProfileTO, CardRequestTO cardRequest, boolean b, boolean b1) throws BaseException {
 		return  getService(userProfileTO).updateCitizenByEstelam(cardRequest, b, b1);
+	}
+
+	public CardRequestReceiptVTO printRegistrationReceipt(UserProfileTO userProfileTO, long cardRequestId) throws BaseException{
+		return getService(userProfileTO).printRegistrationReceipt(cardRequestId);
+	}
+
+	public void print(UserProfileTO userProfileTO, Long cardRequestId) throws BaseException{
+		 getService(userProfileTO).print(cardRequestId);
 	}
 }

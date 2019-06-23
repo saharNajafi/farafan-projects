@@ -14,7 +14,7 @@ Ext.define('Ems.store.WorkingHoursStore', {
         //  Generating an array of values representing working hours (e.g. 7:00, 7:30, 8:00, . . .)
         var resultArray = [];
         var recordID = 0;
-        for (var i = 7; i <= 22; i++) {
+        for (var i = 6; i <= 22; i++) {
             resultArray.push({
                 id: recordID++,
                 code: i,

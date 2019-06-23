@@ -14,8 +14,6 @@ import java.util.Date;
  */
 public interface OfficeActiveShiftService extends Service{
 
-    OfficeActiveShiftTO findActiveShiftByEofId(Long enrollmentOfficeId) throws BaseException;
-
     OfficeActiveShiftTO OfficeActiveShiftByOfficeIdAndRsvDate(
             Long officeId, ShiftEnum shiftEnum, int myDate) throws BaseException;
 

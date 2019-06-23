@@ -6,6 +6,7 @@ import java.util.Map;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.nocr.ems.data.domain.DepartmentTO;
+import com.gam.nocr.ems.data.domain.PersonTO;
 import com.gam.nocr.ems.data.domain.vol.PersonVTO;
 
 /**
@@ -52,7 +53,9 @@ public interface PersonManagementService extends TokenService {
 	//Anbari
 	public List<Long> getAllPersonIds() throws BaseException;
 
-	// Anbari
+    PersonTO find(Long personID) throws BaseException;
+
+    // Anbari
 	//public void populateUserPermisionCache() throws BaseException;
 
 	// Anbari

@@ -39,9 +39,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_026_MSG = "Invalid request id. The given request id cannot be null.";
     public static final String GLB_027_MSG = "Estelam2 call incures an exception for cardrequestId : ";
     public static final String GLB_028_MSG = "Cannot instantiate service {}";
-    public static final String GLB_029_MSG = "Cannot instantiate active shift dao";
-    public static final String GLB_030_MSG = "Cannot instantiate office capacity dao";
-    public static final String GLB_031_MSG = "error occured in remove office enrollment";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     // com.gam.nocr.ems.biz.job.CreateActiveShiftsJob
@@ -234,6 +231,16 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_074 = "EMS_S_CRE_074";
 	public static final String CRE_075 = "EMS_S_CRE_075";
 	public static final String CRE_076 = "EMS_S_CRE_076";
+	public static final String CRE_077 = "EMS_S_CRE_077";
+	public static final String CRE_078 = "EMS_S_CRE_078";
+	public static final String CRE_079 = "EMS_S_CRE_079";
+	public static final String CRE_080 = "EMS_S_CRE_080";
+	public static final String CRE_081 = "EMS_S_CRE_081";
+	public static final String CRE_082 = "EMS_S_CRE_082";
+	public static final String CRE_083 = "EMS_S_CRE_083";
+	public static final String CRE_084 = "EMS_S_CRE_084";
+	public static final String CRE_085 = "EMS_S_CRE_085";
+	public static final String CRE_086 = "EMS_S_CRE_086";
 	public static final String CRE_001_MSG = "Card request id cannot not be null";
 	public static final String CRE_002_MSG = "Card request action cannot not be null";
 	public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -276,7 +283,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String CRE_074_MSG = "unable to count cardRequest replica types";
 	public static final String CRE_075_MSG = "There is a replace request type for Card Request: {0}";
 	public static final String CRE_076_MSG = "There is a extend request type for Card Request: {0}";
-
+	public static final String CRE_079_MSG = "an error occurred on printRegistrationReceipt operation";
+	public static final String CRE_082_MSG = "an error occurred on print operation";
+	public static final String CRE_083_MSG = "can not print receipt for this request by state :{0}";
 
     // com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
     public static final String CRS_001 = "EMS_S_CRS_001";
@@ -285,6 +294,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRS_004 = "EMS_S_CRS_004";
     public static final String CRS_005 = "EMS_S_CRS_005";
     public static final String CRS_006 = "EMS_S_CRS_006";
+    public static final String CRS_007 = "EMS_S_CRS_006";
     public static final String CRS_004_MSG = "Card request id cannot not be null";
     public static final String CRS_005_MSG = "Enrollment office id cannot not be null";
     public static final String CRS_006_MSG = "cannot find any office with specified id";
@@ -714,6 +724,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PSI_080 = "EMS_S_PSI_080";
     public static final String PSI_081 = "EMS_S_PSI_081";
     public static final String PSI_082 = "EMS_S_PSI_082";
+    public static final String PSI_083 = "EMS_S_PSI_08";
     public static final String PSI_002_MSG = "There should be a person to persist, it couldn't be null";
     public static final String PSI_003_MSG = "personId couldn't be null, please insert an ID";
     public static final String PSI_006_MSG = "invalid input entry, birth certificate number is empty";
@@ -2250,7 +2261,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PBS_010 = "EMS_S_PBS_010";
     public static final String PBS_012 = "EMS_S_PBS_012";
 
-
     // com.gam.nocr.ems.biz.service.external.impl.PortalSmsServiceImpl
     public static final String PSS_001 = "EMS_S_PSS_001";
     public static final String PSS_002 = "EMS_S_PSS_002";
@@ -2790,6 +2800,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OC_015 = "EMS_S_OC_015";
     public static final String OC_016 = "EMS_S_OC_016";
     public static final String OC_017 = "EMS_S_OC_017";
+    public static final String OC_018 = "EMS_S_OC_018";
+    public static final String OC_019 = "EMS_S_OC_019";
     public static final String OC_001_MSG = "OfficeCapacityId id is null";
     public static final String OC_002_MSG = "OfficeCapacity id {} does not exist for editing";
     public static final String OC_003_MSG = "EnrollmentOffice id is null";
@@ -2805,6 +2817,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OC_013_MSG = "officeCapacity is not editable";
     public static final String OC_015_MSG = "An error has occurred during converting date";
     public static final String OC_017_MSG = "update operation could not be executed";
+    public static final String OC_018_MSG = "deletion is not applicable, no officeCapacity to delete";
 
     //com.gam.nocr.ems.biz.service.internal.impl.ActiveShiftServiceImpl
     public static final String OASH_001 = "EMS_OASH_001";
@@ -2816,6 +2829,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RS_004 = "EMS_S_RS_004";
     public static final String RS_005 = "EMS_S_RS_005";
     public static final String RS_006 = "EMS_S_RS_006";
+    public static final String RS_007 = "EMS_S_RS_007";
     public static final String RS_002_MSG = "the newReserve operation could not be executed";
     public static final String RS_003_MSG = "there is a request with this portal request id {0}";
     public static final String RS_004_MSG = "the reserve operation could not be executed";
@@ -2834,6 +2848,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 	public static final String ISC_008 = "EMS_S_ISC_008";
 	public static final String ISC_009 = "EMS_S_ISC_009";
 	public static final String ISC_010 = "EMS_S_ISC_010";
+	public static final String ISC_012 = "EMS_S_ISC_012";
+	public static final String ISC_014 = "EMS_S_ISC_014";
 	public static final String ISC_001_MSG = "PreRequest ID is Null";
 	public static final String ISC_002_MSG = "Can not found card request with nationalId {0} ";
 	public static final String ISC_003_MSG = "an error occurred on inquiryHasCardRequest operation";
@@ -2847,8 +2863,23 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
     public static final String RGP_002 = "EMS_S_REG_002";
     public static final String RGP_020 = "EMS_S_REG_020";
+    public static final String RGP_003 = "EMS_S_REG_003";
+    public static final String RGP_004 = "EMS_S_REG_004";
+    public static final String RGP_005 = "EMS_S_REG_005";
+    public static final String RGP_006 = "EMS_S_REG_006";
+    public static final String RGP_007 = "EMS_S_REG_007";
+    public static final String RGP_008 = "EMS_S_REG_008";
+    public static final String RGP_009 = "EMS_S_REG_009";
+    public static final String RGP_010 = "EMS_S_REG_010";
+    public static final String RGP_011 = "EMS_S_REG_011";
+    public static final String RGP_012 = "EMS_S_REG_012";
+    public static final String RGP_013 = "EMS_S_REG_013";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
+    public static final String RGP_003_MSG = "an error occurred on bankInquiry operation";
+    public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
+    public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
+    public static final String RGP_006_MSG = "paidBank is undefined";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";
@@ -2883,4 +2914,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OSTS_004_MSG = "Could not find featureExtractCC with id {0}";
     public static final String OSTS_005_MSG = "an error occurred on getFeatureExtractIdsList operation";
 
+    //com.gam.nocr.ems.biz.service.external.impl.BpiInquiryServiceImpl
+    public static final String BPI_001 = "EMS_S_BPI_001";
+    public static final String BPI_002 = "EMS_S_BPI_002";
+    public static final String BPI_003 = "EMS_S_BPI_003";
+    public static final String BPI_004 = "EMS_S_BPI_004";
+    public static final String BPI_005 = "EMS_S_BPI_005";
+    public static final String BPI_006 = "EMS_S_BPI_006";
+    public static final String BPI_007 = "EMS_S_BPI_007";
+    public static final String BPI_008 = "EMS_S_BPI_008";
 }

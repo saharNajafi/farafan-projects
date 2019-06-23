@@ -6,8 +6,10 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
+import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
+import com.gam.nocr.ems.data.domain.vol.CardRequestReceiptVTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.PersonEnquiryWTO;
@@ -82,6 +84,8 @@ public interface CardRequestService extends Service {
 
 	public boolean hasChangePriorityAccess() throws BaseException;
 
+	public boolean hasPrintRegistrationReceipt() throws BaseException;
+
 
 	// Hossein 8 feature start
 	public CardRequestVTO viewCardRequestInfo(Long cardRequestId) throws BaseException;
@@ -125,4 +129,9 @@ public interface CardRequestService extends Service {
 	CardRequestTO findByCitizenId(CitizenTO citizenTO) throws BaseException;
 
 	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
+
+	CardRequestReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
+
+     void print(Long cardRequestId) throws BaseException;
+
 }

@@ -6,6 +6,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_PERSON_TOKEN;
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
+
 import gampooya.tools.vlp.ListException;
 import gampooya.tools.vlp.ValueListHandler;
 
@@ -251,25 +252,25 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
             throw new ServiceException(BizExceptionCode.PSI_004, BizExceptionCode.GLB_008_MSG, e);
         }
     }
-    
-    
- // Anbari
- 	private PersonManagementService getPersonService() throws BaseException {
- 		PersonManagementService personManagementService;
- 		try {
- 			personManagementService = (PersonManagementService) ServiceFactoryProvider
- 					.getServiceFactory()
- 					.getService(
- 							EMSLogicalNames
- 									.getServiceJNDIName(EMSLogicalNames.SRV_PERSON),
- 							null);
- 		} catch (ServiceFactoryException e) {
- 			throw new DelegatorException(BizExceptionCode.PDL_001,
- 					BizExceptionCode.GLB_002_MSG, e,
- 					EMSLogicalNames.SRV_PERSON.split(","));
- 		}
- 		return personManagementService;
- 	}
+
+
+    // Anbari
+    private PersonManagementService getPersonService() throws BaseException {
+        PersonManagementService personManagementService;
+        try {
+            personManagementService = (PersonManagementService) ServiceFactoryProvider
+                    .getServiceFactory()
+                    .getService(
+                            EMSLogicalNames
+                                    .getServiceJNDIName(EMSLogicalNames.SRV_PERSON),
+                            null);
+        } catch (ServiceFactoryException e) {
+            throw new DelegatorException(BizExceptionCode.PDL_001,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_PERSON.split(","));
+        }
+        return personManagementService;
+    }
 
     @Override
     @Permissions(value = "ems_viewPerson")
@@ -539,7 +540,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
             throw new ServiceException(BizExceptionCode.PSI_030, BizExceptionCode.GLB_008_MSG, e);
         }
     }
-    
+
     //Adldoost
     @Override
 //    @Permissions(value = "ems_renewPersonToken")
@@ -604,9 +605,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
     // =================== Token Service methods ==================
 
-    
-    
-    
+
 //    @Override
 //    @Permissions(value = "ems_viewPerson")
 //    public SearchResult fetchRoles(String searchString, int from, int to, String orderBy) throws BaseException {
@@ -630,18 +629,18 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 //            throw new ServiceException(BizExceptionCode.PSI_068, BizExceptionCode.GLB_008_MSG, e);
 //        }
 //    }
-    
+
     @Override
     @Permissions(value = "ems_viewPerson")
     public SearchResult fetchRoles(String searchString, int from, int to, String orderBy) throws BaseException {
         try {
-        	Long personID = getPersonDAO().findPersonIdByUsername(getUserProfileTO().getUserName());
+            Long personID = getPersonDAO().findPersonIdByUsername(getUserProfileTO().getUserName());
             PersonTO personTO = getPersonDAO().find(PersonTO.class, personID);
             RoleVTOWrapper roleWrapper = getGaasService().getRolesWithCount(personTO.getUserId(), "%" + searchString + "%", from, to);
-            
+
             List<RoleVTO> roleVTOs = roleWrapper.getRoles();
             Integer count = roleWrapper.getCount();
-            
+
             List<EMSAutocompleteTO> autocompleteTOs = new ArrayList<EMSAutocompleteTO>();
 
             for (RoleVTO roleVTO : roleVTOs) {
@@ -660,7 +659,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
         }
     }
 
-    
+
 //    @Override
 //    @Permissions(value = "ems_viewPerson")
 //    public SearchResult fetchPermissions(String searchString, int from, int to, String orderBy) throws BaseException {
@@ -686,18 +685,18 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 //            throw new ServiceException(BizExceptionCode.PSI_069, BizExceptionCode.GLB_008_MSG, e);
 //        }
 //    }
-    
+
     @Override
     @Permissions(value = "ems_viewPerson")
     public SearchResult fetchPermissions(String searchString, int from, int to, String orderBy) throws BaseException {
         try {
-        	Long personID = getPersonDAO().findPersonIdByUsername(getUserProfileTO().getUserName());
-            PersonTO personTO = getPersonDAO().find(PersonTO.class,personID);
+            Long personID = getPersonDAO().findPersonIdByUsername(getUserProfileTO().getUserName());
+            PersonTO personTO = getPersonDAO().find(PersonTO.class, personID);
             PermissionVTOWrapper permissionVTOWrapper = getGaasService().getAllUserPermissionWithCount(personTO.getUserId(), "%" + searchString + "%", from, to);
-            
+
             List<PermissionVTO> permissionVTOs = permissionVTOWrapper.getPermissions();
             Integer permissionCount = permissionVTOWrapper.getCount();
-            
+
             List<EMSAutocompleteTO> autocompleteTOs = new ArrayList<EMSAutocompleteTO>();
 
             for (PermissionVTO permissionVTO : permissionVTOs) {
@@ -707,9 +706,9 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
                 autocompleteTO.setAcName(permissionVTO.getName());
                 autocompleteTOs.add(autocompleteTO);
             }
-            
+
 //            List<PermissionVTO> allPermission = getGaasService().getAllUserPermission(personTO.getUserId(), "%" + searchString + "%", 0, Integer.MAX_VALUE);
-            
+
             return new SearchResult(permissionCount, autocompleteTOs);
         } catch (BaseException e) {
             throw e;
@@ -862,9 +861,9 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
                                 fetchOfficeByIdAndManagerId(oldPersonTO.getDepartment().getId(), oldPersonTO.getId());
 
                         if (enrollmentOfficeTO != null) {
-                        	
-                        	throw new ServiceException(BizExceptionCode.PSI_075, BizExceptionCode.PSI_075_MSG);
-                        	
+
+                            throw new ServiceException(BizExceptionCode.PSI_075, BizExceptionCode.PSI_075_MSG);
+
 //                            if (EnrollmentOfficeType.NOCR.equals(enrollmentOfficeTO.getType())) {
 //                                throw new ServiceException(BizExceptionCode.PSI_080, BizExceptionCode.PSI_080_MSG);
 //                            } else {
@@ -937,52 +936,52 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     public void deleteToken(Long tokenId) throws BaseException {
         getTokenManagementService().deleteToken(tokenId, TokenOrigin.PERSON);
     }
-    
+
     @Override
     @Permissions(value = "ems_deleteRenewalTokenRequest")
     public void deleteRenewalTokenRequest(Long tokenId) throws BaseException {
         getTokenManagementService().deleteToken(tokenId, TokenOrigin.PERSON);
     }
 
-	
-	@Override
-	public SearchResult fetchPersonsByDepartmentId(String searchString, int from, int to,
-			String orderBy, Map additionalParams) throws BaseException {
-		HashMap param = new HashMap();
-		param.put("perName", "%" + searchString + "%");
-		param.put("departmentId", additionalParams.get("departmentId"));
-		
-		try {
-			ValueListHandler vlh = EMSValueListProvider.getProvider().loadList(
-					"personByDepartmentIdAC", "main".split(","), "count".split(","), param,
-					orderBy, null);
-			List list = vlh.getList(from, to, true);
-			return new SearchResult(vlh.size(), list);
-		} catch (ListException e) {
-			throw new ServiceException(BizExceptionCode.PSI_061,
-					BizExceptionCode.GLB_006_MSG, e);
-		} catch (ListHandlerException e) {
-			throw new ServiceException(BizExceptionCode.PSI_062,
-					BizExceptionCode.GLB_007_MSG, e);
-		} catch (Exception e) {
-			throw new ServiceException(BizExceptionCode.PSI_070,
-					BizExceptionCode.GLB_008_MSG, e);
-		}
-	}
 
-	@Override
-	public List<Long> findListDepartmentsByPersonId(Long personId) throws BaseException {
-		List<Long> ids = getPersonDAO().findListDepartmentsByPersonId(personId);
-		return ids;
-	}
-	
-	// Anbari
-	@Override
-	public Long findPersonIdByUsername(String username) throws BaseException {
-		return getPersonDAO().findPersonIdByUsername(username);
-	}
-	
-	
+    @Override
+    public SearchResult fetchPersonsByDepartmentId(String searchString, int from, int to,
+                                                   String orderBy, Map additionalParams) throws BaseException {
+        HashMap param = new HashMap();
+        param.put("perName", "%" + searchString + "%");
+        param.put("departmentId", additionalParams.get("departmentId"));
+
+        try {
+            ValueListHandler vlh = EMSValueListProvider.getProvider().loadList(
+                    "personByDepartmentIdAC", "main".split(","), "count".split(","), param,
+                    orderBy, null);
+            List list = vlh.getList(from, to, true);
+            return new SearchResult(vlh.size(), list);
+        } catch (ListException e) {
+            throw new ServiceException(BizExceptionCode.PSI_061,
+                    BizExceptionCode.GLB_006_MSG, e);
+        } catch (ListHandlerException e) {
+            throw new ServiceException(BizExceptionCode.PSI_062,
+                    BizExceptionCode.GLB_007_MSG, e);
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.PSI_070,
+                    BizExceptionCode.GLB_008_MSG, e);
+        }
+    }
+
+    @Override
+    public List<Long> findListDepartmentsByPersonId(Long personId) throws BaseException {
+        List<Long> ids = getPersonDAO().findListDepartmentsByPersonId(personId);
+        return ids;
+    }
+
+    // Anbari
+    @Override
+    public Long findPersonIdByUsername(String username) throws BaseException {
+        return getPersonDAO().findPersonIdByUsername(username);
+    }
+
+
     //Anbari
     private UserManagementService getUserManagementService() throws BaseException {
         UserManagementService userManagementService;
@@ -994,12 +993,25 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
         return userManagementService;
     }
 
-	@Override
-	public List<Long> getAllPersonIds() throws BaseException {
-		return getPersonDAO().getAllPersonIds();
-	}
-	
-	//*********************Anbari : caching the all user permissions	
+    @Override
+    public List<Long> getAllPersonIds() throws BaseException {
+        return getPersonDAO().getAllPersonIds();
+    }
+
+    @Override
+    public PersonTO find( Long personId) throws BaseException {
+        PersonTO personTO = null;
+        try {
+        if (personId == 0)
+            throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.PSI_003_MSG);
+            personTO = getPersonDAO().find(PersonTO.class, personId);
+        } catch (BaseException e) {
+            throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.GLB_008_MSG, e);
+        }
+        return personTO;
+    }
+
+    //*********************Anbari : caching the all user permissions
 //		private static String PERMISSION_CACHE_NAME = "cachePermissions";
 //	    private NamedCache cachePermissions = CacheFactory.getCache(PERMISSION_CACHE_NAME);	
 //	    @Override

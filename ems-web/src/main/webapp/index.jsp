@@ -621,6 +621,13 @@
     height: 16px;
     cursor: pointer;
 }
+
+.grid-print-registration-receipt {
+    background: url('resources/themes/images/default/toolbar/print.png') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 .report-exportExcel-icon {
     background: url('/wr/ext/add-ons/images/excel.png') no-repeat left;
     width: 16px;

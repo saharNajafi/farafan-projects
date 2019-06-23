@@ -1,6 +1,5 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import gampooya.tools.date.DateUtil;
 
@@ -4817,4 +4816,5 @@ CardRequestDAOLocal, CardRequestDAORemote {
         }
         return replicaTypeCount;
     }
+
 }

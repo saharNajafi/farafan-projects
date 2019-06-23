@@ -481,6 +481,14 @@ Ext.define('Ems.locale.objectName', {
 		r_lastName : 'citizenSurname',
 		r_status : 'cardState',
 		r_priority : 'priority',
+
+        /* trackingCodePrint Dialog */
+        rsvDate: 'rsvDate',
+        birthCertId: 'birthCertId',
+        receiptDate: 'receiptDate',
+        userFirstName: 'userFirstName',
+        userLastName: 'userLastName',
+        userSign: 'userSign'
 	},
 	helpFileList : {
 
@@ -573,7 +581,8 @@ Ext.define('Ems.locale.objectName', {
 		REPEAL_UNDO : 'REPEAL_UNDO',
 		REPEAL_ACCEPTED : 'REPEAL_ACCEPTED',
 		REPEAL_COMPLETE : 'REPEAL_COMPLETE',
-		hasAccessToChangePriority:'hasAccessToChangePriority'
+		hasAccessToChangePriority:'hasAccessToChangePriority',
+        hasPrintRegistrationReceipt: 'hasPrintRegistrationReceipt'
 	},
 	tokenRequest : {
 		id:'id',

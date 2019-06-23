@@ -11,6 +11,7 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
+import com.gam.nocr.ems.data.domain.ws.TargetBankWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 /**
@@ -50,5 +51,13 @@ public class RegistrationPaymentDelegator implements Delegator {
                                           RegistrationPaymentTO registrationPaymentTO, String nationalId) throws BaseException {
         getService(userProfileTO).assignPaymentToEnrollment(registrationPaymentTO, nationalId);
 
+    }
+
+    public Boolean bankInquiry(UserProfileTO userProfileTO, String nationalId) throws BaseException {
+        return getService(userProfileTO).bankInquiry(nationalId);
+    }
+
+    public void registerTargetBank(UserProfileTO userProfileTO, TargetBankWTO targetBankWTO) throws BaseException {
+        getService(userProfileTO).registerTargetBank(targetBankWTO);
     }
 }

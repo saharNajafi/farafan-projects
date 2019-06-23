@@ -21,8 +21,6 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_008_MSG = "The parsing operation could not be done successfully.";
     public static final String GLB_009_MSG = "Cannot create dao with name {}";
     public static final String GLB_010_MSG = "The {} was not provided in the IMS sent XML";
-    public static final String GLB_011_MSG = "The {} was not provided in the IMS sent XML";
-    public static final String GLB_012_MSG = "delete office capacity has exception";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     // com.gam.nocr.ems.data.mapper.xmlmapper.CardRequestCMSMapper
@@ -562,7 +560,6 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_106 = "EMS_D_CDI_106";
     public static final String CDI_107 = "EMS_D_CDI_107";
     public static final String CDI_108 = "EMS_D_CDI_108";
-    public static final String CDI_109 = "EMS_D_CDI_109";
 
     public static final String CDI_001_MSG = "Unable to create Card Request";
     public static final String CDI_002_MSG = "Integrity constraint violated, card with id {} not found";
@@ -595,7 +592,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_106_MSG = "an error occur in findCardRequestStateByTrackingId method";
     public static final String CDI_107_MSG = "the findLastRequestByNationalId operation could not be executed";
     public static final String CDI_108_MSG = "the countCardRequestByNationalIdAndType operation could not be executed";
-    public static final String CDI_109_MSG = "the countCardRequestByNationalIdAndType operation could not be executed";
+
 
 
     // com.gam.nocr.ems.data.dao.impl.DocTypeDAOImpl
@@ -722,7 +719,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RTI_010_MSG = "Unique constraint violated, rating info size has already been used";
     public static final String RTI_012_MSG = "Unique constraint violated, rating info class has already been used";
     public static final String RTI_013_MSG = "Unique constraint violated, rating info size has already been used";
-    public static final String RTI_015_MSG = "Unable to execute findBySize operation";
+    public static final String RTI_016_MSG = "Unable to execute findBySize operation";
 
     // com.gam.nocr.ems.data.dao.impl.CitizenDAOImpl
     public static final String CTI_001 = "EMS_D_CTI_001";
@@ -1090,14 +1087,17 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String OCD_007 = "EMS_D_OCD_007";
     public static final String OCD_008 = "EMS_D_OCD_008";
     public static final String OCD_009 = "EMS_D_OCD_009";
+    public static final String OCD_010 = "EMS_D_OCD_010";
     public static final String OCD_001_MSG = "Unique constraint violated, Office Capacity class has already been used";
     public static final String OCD_002_MSG = "findByEnrollmentOfficeId operation could not be executed";
     public static final String OCD_003_MSG = "Unique constraint violated, Office Capacity size has already been used";
     public static final String OCD_008_MSG = "Unique constraint violated, Office Capacity size has already been used";
     public static final String OCD_009_MSG = "findByEnrollmentOfficeIdAndShiftNoAndOcId operation could not be executed";
+    public static final String OCD_010_MSG = "Unable to delete office capacity ";
 
     public static final String OFC_003 = "EMS_D_OFC_003";
     public static final String OFC_004 = "EMS_D_OFC_004";
+    public static final String OFC_005 = "EMS_D_OFC_005";
 
     // com.farafan.crsProvider.dao.ActiveShiftDAOImpl
     public static final String ASH_001 = "EMS_D_ASH_001";
@@ -1107,6 +1107,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String ASH_005 = "EMS_D_ASH_005";
     public static final String ASH_006 = "EMS_D_ASH_006";
     public static final String ASH_007 = "EMS_D_ASH_007";
+    public static final String ASH_008 = "EMS_D_ASH_008";
 
     //com.gam.nocr.ems.data.dao.impl.RegistrationPaymentDAOImpl.java
     public static final String RGP_001 = "EMS_D_RGP_001";

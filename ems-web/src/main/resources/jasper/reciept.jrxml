@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reciept" columnDirection="RTL" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="27f73b3e-4d41-4068-81ac-a15b8615f490">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="132"/>
+	<property name="ireport.y" value="530"/>
+	<parameter name="firstName" class="java.lang.String"/>
+	<parameter name="lastName" class="java.lang.String"/>
+	<parameter name="fatherName" class="java.lang.String"/>
+	<parameter name="nationalId" class="java.lang.String"/>
+	<parameter name="certificateId" class="java.lang.String"/>
+	<parameter name="birthDate" class="java.lang.String"/>
+	<parameter name="enrollDate" class="java.lang.String"/>
+	<parameter name="trackingId" class="java.lang.String"/>
+	<parameter name="printDate" class="java.lang.String"/>
+	<parameter name="userName" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="802" height="51" forecolor="#808080" backcolor="#C0C0C0" uuid="fb6bb529-561f-4fdb-9804-27409a905164"/>
+			</rectangle>
+			<frame>
+				<reportElement x="0" y="0" width="802" height="51" uuid="c5a05116-549d-4036-9966-788ee23e816c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="0" width="802" height="51" uuid="af8b085c-9143-41fb-bfb0-3dce40193359"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="18" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[رسید متقاضی (حضور متقاضی با در دست داشتن اصل شناسنامه ی عکس دار و کارت شناسایی ملی ،در هنگام تحویل و فعالسازی الزامی می باشد) ]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="127" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="802" height="127" uuid="c5a05116-549d-4036-9966-788ee23e816c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<staticText>
+					<reportElement x="754" y="0" width="44" height="20" backcolor="#010101" uuid="e94bc36b-e19f-42d0-b6b9-110f0535f660"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[نام :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="566" y="0" width="188" height="20" uuid="cd06affa-9420-4082-903b-9bf37835572f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{firstName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="274" y="0" width="204" height="20" uuid="c8fb2775-4770-4bd5-ac40-2a0f18d29fd4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{lastName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="478" y="0" width="88" height="20" backcolor="#010101" uuid="d6a69af1-4ea2-4432-9407-cc4a8e3c6c4c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[نام خانوادگی :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="216" height="20" uuid="8df59a50-0ab5-4dc6-a349-a00ac6243d57"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{fatherName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="216" y="0" width="58" height="20" backcolor="#010101" uuid="2e32fba4-3122-44f7-bd38-c246c831c8af"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[نام پدر :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="566" y="29" width="155" height="20" uuid="ef8d69ae-90ea-4efd-81a8-15c2448abde1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{nationalId}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="721" y="29" width="77" height="20" backcolor="#010101" uuid="13ff6b8d-74a4-4c44-80eb-b29806b3d616"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[شماره ملی:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="274" y="29" width="179" height="20" uuid="76dc9a69-453e-4c21-9317-1813dbfc80f7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{certificateId}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="29" width="200" height="20" uuid="db2e5fec-7a6f-4c28-b1aa-ab4d0514c9c1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{birthDate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="453" y="29" width="113" height="20" backcolor="#010101" uuid="725865d5-89c0-4484-acac-ff8131f612a5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[شماره شناسنامه :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="200" y="29" width="74" height="20" backcolor="#010101" uuid="b0f95ee8-8e57-40f5-aaba-bd707d014a01"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[تاریخ تولد:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="566" y="58" width="139" height="20" uuid="5703a1fd-4e6b-4de3-aff2-02ed107a19f9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{enrollDate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="705" y="58" width="93" height="20" backcolor="#010101" uuid="73024853-c673-45f0-97eb-b54f0cb9e636"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[تاریخ مراجعه :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="274" y="58" width="214" height="20" uuid="15e97b57-498d-4bdf-8d32-57009e99c1a2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{trackingId}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="488" y="58" width="78" height="20" backcolor="#010101" uuid="25038e43-d324-49af-b6e7-8a5381496a14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[کد رهگیری :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="566" y="87" width="155" height="20" uuid="1f094757-5278-44bf-9067-aa7b561162e5"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{printDate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="721" y="87" width="77" height="20" backcolor="#010101" uuid="96fba2da-8f7d-4fa4-8614-acab42e63d88"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[تاریخ چاپ :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="299" y="87" width="200" height="20" uuid="52b8ead3-e4aa-44fc-bb0b-ccd54c116bdc"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{userName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="499" y="87" width="67" height="20" backcolor="#010101" uuid="fe3a2f49-67d6-4a90-a8a0-e68b65eeb11a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[نام کاربر :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="83" y="78" width="92" height="20" backcolor="#010101" uuid="6fc37d4a-ffe7-4d9f-80bd-67f98364a5a7"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="true" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[امضای متصدی:]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="802" height="41" uuid="c5a05116-549d-4036-9966-788ee23e816c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<staticText>
+					<reportElement x="333" y="0" width="469" height="20" uuid="b6f33338-7b6e-4947-a67f-85befb420a3d"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[شهروند گرامی شما می توانید وضعیت درخواست کارت هوشمند ملی خود را از طریق سایت ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="20" width="802" height="19" uuid="f4e851d0-578d-4354-8cbb-ea03a5e62e8b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[این رسید بدون مهر و امضاء فاقد اعتبار است.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="250" y="0" width="83" height="20" uuid="7e2bb66d-5413-4e98-8afb-06a6501b00c8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="18" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[www.ncr.ir]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="250" height="20" uuid="4c85798c-1e37-436d-a699-df21fe5775d3"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="14" isBold="false" pdfFontName="Tahoma" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[گزینه «مشاهده وضعیت» پیگیری فرمایید.]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

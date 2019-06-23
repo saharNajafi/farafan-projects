@@ -232,19 +232,13 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     public boolean remove(String officeCapacityIds) throws BaseException {
         try {
             if (officeCapacityIds == null || officeCapacityIds.trim().length() == 0) {
-                throw new ServiceException(BizExceptionCode.DSI_005, BizExceptionCode.DSI_005_MSG);
-            } else {
-                for (String OfficeCapacityId : officeCapacityIds.split(",")) {
-                    if ("1".equals(OfficeCapacityId))
-                        throw new ServiceException(BizExceptionCode.DSI_035, BizExceptionCode.DSI_035_MSG);
-                }
+                throw new ServiceException(BizExceptionCode.OC_018, BizExceptionCode.OC_018_MSG);
             }
-
             return getOfficeCapacityDAO().removeOfficeCapacities(officeCapacityIds);
         } catch (BaseException e) {
             throw e;
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.DSI_032, BizExceptionCode.GLB_008_MSG, e);
+            throw new ServiceException(BizExceptionCode.OC_019, BizExceptionCode.GLB_008_MSG, e);
         }
     }
 

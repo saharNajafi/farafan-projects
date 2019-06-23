@@ -180,6 +180,11 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                 	this.getAccessForCardRequestList();
                     this.onBtnClicked(btn);
                 }
+            },'[action=CardRequestList]': {
+                click: function (btn) {
+                    this.getAccessForCardRequestList();
+                    this.onBtnClicked(btn);
+                }
             }, '[action=CmsErrorEvaluateList]': {
                 click: function (btn) {
                 	this.getAccessProduction();
@@ -338,6 +343,22 @@ Ext.define('Ems.controller.NavigationHeaderController', {
             
             	var hasAccessToChangePriority = JSON.parse(response.responseText).hasAccessToChangePriority;
             	EmsObjectName.cardRequestedActionMap.hasAccessToChangePriority = hasAccessToChangePriority;
+            },
+            failure: function (response) {
+                Tools.errorFailure();
+            }
+
+        });
+    },
+    getAccessForCardRequestList: function (view) {
+
+        Ext.Ajax.request({
+            url: 'extJsController/cardrequestlist/hasPrintRegistrationReceipt',
+            jsonData: {},
+            success: function (response) {
+
+            	var hasPrintRegistrationReceipt = JSON.parse(response.responseText).hasPrintRegistrationReceipt;
+            	EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt = hasPrintRegistrationReceipt;
             },
             failure: function (response) {
                 Tools.errorFailure();

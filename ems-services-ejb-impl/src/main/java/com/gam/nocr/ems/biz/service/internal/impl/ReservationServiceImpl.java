@@ -14,10 +14,7 @@ import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.ReservationDAO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
-import com.gam.nocr.ems.data.domain.ReservationTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.ActiveShiftWTO;
 import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
 import com.gam.nocr.ems.data.domain.ws.RegistrationOfficeWTO;
@@ -69,6 +66,11 @@ public class ReservationServiceImpl extends EMSAbstractService
     public CardRequestTO transferReservationsToEMS(ReservationTO reservationTO) throws BaseException {
         String nationalId = null;
         try {
+            if(reservationTO.getEnrollmentOffice() != null) {
+                OfficeCapacityTO officeCapacityTO =
+                        getOfficeCapacityService().findByEnrollmentOfficeIdAndDateAndWorkingHour(reservationTO.getEnrollmentOffice().getId());
+                reservationTO.setShiftNo(officeCapacityTO.getShiftNo());
+            }
             CardRequestTO emsCardRequest = null;
             CardRequestState toState = CardRequestState.RESERVED;
             if (reservationTO.getCardRequest().getCitizen().getNationalID() != null) {
@@ -161,9 +163,8 @@ public class ReservationServiceImpl extends EMSAbstractService
     private CardRequestTO reserve(ReservationTO reservationTO, CardRequestTO cardRequestTO)
             throws BaseException {
         String nationalId = cardRequestTO != null && cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getNationalID() : null;
-        CardRequestTO emsCardRequest = new CardRequestTO();
+        CardRequestTO emsCardRequest = reservationTO.getCardRequest();
         try {
-            emsCardRequest = reservationTO.getCardRequest();
             if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
                 emsCardRequest.setPaid(reservationTO.isPaid());
                 emsCardRequest.setPaidDate(reservationTO.getPaidDate());
@@ -171,10 +172,9 @@ public class ReservationServiceImpl extends EMSAbstractService
             CitizenTO citizenTO = cardRequestTO.getCitizen();
             emsCardRequest.setCitizen(citizenTO);
             fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
-
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
-            Integer activeDate =Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
+            Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, false);
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
@@ -237,7 +237,7 @@ public class ReservationServiceImpl extends EMSAbstractService
             fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
-            Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
+            Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, true);
             /*if (emsCardRequest.getPortalRequestId() == null) {
                 emsCardRequest.setPortalRequestId(emsCardRequest.getId() + INIT_BIAS_ID);
@@ -266,24 +266,35 @@ public class ReservationServiceImpl extends EMSAbstractService
     }
 
     private void fillRegistrationPayment(ReservationTO reservationTO, CardRequestTO emsCardRequest, CitizenTO citizenTO) throws BaseException {
-        if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
-            RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
-            registrationPaymentTO.setCitizenTO(citizenTO);
-            Map<String, String> registrationPaymentResult =
-                    getRegistrationPaymentService().getPaymentAmountAndPaymentCode(emsCardRequest.getType(), citizenTO.getNationalID());
-            registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
-            registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
-            registrationPaymentTO = getRegistrationPaymentService().addRegistrationPayment(registrationPaymentTO);
-            emsCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
-        }
-        else{
-            throw new ServiceException(BizExceptionCode.RS_006,
-                    BizExceptionCode.RS_007_MSG);
+        CardRequestTO cardRequestTO =
+                getCardRequestService().findLastRequestByNationalId(citizenTO.getNationalID());
+        if(cardRequestTO !=null) {
+            if (cardRequestTO.getState().equals(CardRequestState.REPEALED)
+                    && cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)
+                    && cardRequestTO.getRegistrationPaymentTO() != null) {
+                emsCardRequest.setRegistrationPaymentTO(cardRequestTO.getRegistrationPaymentTO());
+                emsCardRequest.setPaid(true);
+                emsCardRequest.setPaidDate(cardRequestTO.getRegistrationPaymentTO().getPaymentDate());
+            }
+        }else {
+            if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
+                RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
+                registrationPaymentTO.setCitizenTO(citizenTO);
+                Map<String, String> registrationPaymentResult =
+                        getRegistrationPaymentService().getPaymentAmountAndPaymentCode(emsCardRequest.getType(), citizenTO.getNationalID());
+                registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
+                registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
+                registrationPaymentTO = getRegistrationPaymentService().addRegistrationPayment(registrationPaymentTO);
+                emsCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
+            } else {
+                throw new ServiceException(BizExceptionCode.RS_006,
+                        BizExceptionCode.RS_007_MSG);
+            }
         }
     }
 
     private void estelamCardRequestForTodayReservation(CardRequestTO cardRequestTO, Integer activeDate, boolean isNewCardRequest) throws BaseException {
-        Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/",""));
+        Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/", ""));
         if (today.equals(activeDate)) {
             getCardRequestService().updateCitizenByEstelam(cardRequestTO, false, isNewCardRequest);
         }
@@ -444,7 +455,7 @@ public class ReservationServiceImpl extends EMSAbstractService
         OfficeAppointmentWTO officeAppointment = new OfficeAppointmentWTO();
         officeAppointment.setId(reservationTO.getPortalReservationId());
         ActiveShiftWTO activeShift = new ActiveShiftWTO();
-        Integer appointmentDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), new Locale("fa")).replace("/",""));
+        Integer appointmentDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), new Locale("fa")).replace("/", ""));
         activeShift.setActiveDate(appointmentDate);
         activeShift.setShiftNo(reservationTO.getShiftNo());
         officeAppointment.setAppointmentDate(appointmentDate);
@@ -470,5 +481,20 @@ public class ReservationServiceImpl extends EMSAbstractService
         }
     }
 
+    private OfficeCapacityService getOfficeCapacityService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        OfficeCapacityService officeCapacityService;
+        try {
+            officeCapacityService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_OFFICE_CAPACITY), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.RS_007,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_OFFICE_CAPACITY.split(","));
+        }
+        officeCapacityService.setUserProfileTO(getUserProfileTO());
+        return officeCapacityService;
+    }
 
 }
