@@ -148,6 +148,7 @@
                     </xsd:element>
 
                   </xsd:sequence>
+                  <xsd:attribute name='DisabilityOnFace' type='xsd:int' />
                 </xsd:complexType>
               </xsd:element>
 
@@ -401,26 +402,7 @@
 
   <xsd:simpleType name="featureExtractorType">
     <xsd:restriction base="xsd:hexBinary">
-      <xsd:enumeration value="FFFF">
-        <xsd:annotation>
-          <xsd:documentation>Default Value</xsd:documentation>
-        </xsd:annotation>
-      </xsd:enumeration>
-      <xsd:enumeration value="0001">
-        <xsd:annotation>
-          <xsd:documentation>Behin</xsd:documentation>
-        </xsd:annotation>
-      </xsd:enumeration>
-      <xsd:enumeration value="0101">
-        <xsd:annotation>
-          <xsd:documentation>Innov</xsd:documentation>
-        </xsd:annotation>
-      </xsd:enumeration>
-      <xsd:enumeration value="0201">
-        <xsd:annotation>
-          <xsd:documentation>Matiran</xsd:documentation>
-        </xsd:annotation>
-      </xsd:enumeration>
+      <xsd:maxLength value='4' />
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:simpleType name="sensorModelType">
