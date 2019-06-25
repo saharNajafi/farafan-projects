@@ -288,7 +288,20 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     } else {
                         stateProviderTO.setValue("");
                     }
-                } else if (stateId.endsWith("tokenExpire")) {
+                }
+                else if (stateId.endsWith("featureExtractorId")) {
+                    if (officeSettingTO.getFeatureExtractIdsTO() != null) {
+                        Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
+                        for (FeatureExtractIdsTO fei : featureExtractIds) {
+                            if (fei.getFeatureExtractType().equals(FeatureExtractType.ISOCC)) {
+                                stateProviderTO.setValue(fei.getFeatureExtractId());
+                            }
+                        }
+                    } else {
+                        stateProviderTO.setValue("");
+                    }
+                }
+                else if (stateId.endsWith("tokenExpire")) {
                     try {
                         ProfileManager pm = ProfileHelper.getProfileManager();
                         String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);

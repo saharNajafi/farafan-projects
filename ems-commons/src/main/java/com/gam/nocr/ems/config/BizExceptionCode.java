@@ -2896,6 +2896,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String FEIS_008 = "EMS_S_FEI_008";
     public static final String FEIS_009 = "EMS_S_FEI_009";
     public static final String FEIS_010 = "EMS_S_FEI_010";
+    public static final String FEIS_011 = "EMS_S_FEI_011";
+    public static final String FEIS_012 = "EMS_S_FEI_012";
+    public static final String FEIS_013 = "EMS_S_FEI_013";
     public static final String FEIS_005_MSG = "EnrollmentOfficeId is null";
     public static final String FEIS_006_MSG = "Could not find officeSetting with id {0}";
     public static final String FEIS_007_MSG = "an error occurred on load operation";

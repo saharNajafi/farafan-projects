@@ -47,9 +47,14 @@ public class FeatureExtractIdsDelegator implements Delegator {
         return getService(userProfile).fetchFeatureExtractIdsCCList(searchString, from, to, orderBy);
     }
 
+    public SearchResult fetchFeatureExtractorIdList(UserProfileTO userProfile, String searchString
+            , int from, int to, String orderBy) throws BaseException {
+        return getService(userProfile).fetchFeatureExtractorIdList(searchString, from, to, orderBy);
+    }
 
     public List<FeatureExtractIdsVTO> load(UserProfileTO userProfile, Long officeId) throws BaseException {
         return getService(userProfile).load(officeId);
     }
+
 
 }

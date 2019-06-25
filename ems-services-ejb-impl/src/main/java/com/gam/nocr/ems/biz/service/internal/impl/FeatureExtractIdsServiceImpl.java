@@ -93,6 +93,34 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
     }
 
     @Override
+    public SearchResult fetchFeatureExtractorIdList(String searchString, int from, int to, String orderBy) throws BaseException {
+        try {
+            HashMap param = new HashMap();
+            StringBuilder parts = new StringBuilder();
+
+            if (searchString.indexOf(" (") > 0) {
+                param.put("name", "%" + searchString.substring(0, searchString.indexOf(" (")) + "%");
+            } else {
+                param.put("name", "%" + searchString + "%");
+            }
+            try {
+                ValueListHandler vlh = EMSValueListProvider.getProvider().loadList(
+                        "featureExtractorId", ("main" + parts).split(","), ("count" + parts).split(","), param, orderBy, null);
+                List list = vlh.getList(from, to, true);
+                return new SearchResult(vlh.size(), list);
+            } catch (ListException e) {
+                throw new ServiceException(BizExceptionCode.FEIS_010, BizExceptionCode.GLB_006_MSG, e);
+            } catch (ListHandlerException e) {
+                throw new ServiceException(BizExceptionCode.FEIS_011, BizExceptionCode.GLB_007_MSG, e);
+            }
+        } catch (ServiceException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.FEIS_012, BizExceptionCode.GLB_008_MSG, e);
+        }
+    }
+
+    @Override
     public List<FeatureExtractIdsVTO> load(Long enrollmentOfficeId) throws BaseException {
         OfficeSettingTO officeSettingTO;
 

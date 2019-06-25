@@ -30,10 +30,13 @@ Ext.define('Ems.view.office.Setting.Dialog', {
     title: 'تنظیمات lds',
 
     requires: [
-        ,'Ems.store.OfficeSettingFeatureExtractNormalStore'
+        'Ems.store.OfficeSettingFeatureExtractNormalStore'
         ,'Ems.store.OfficeSettingFeatureExtractCCStore'
+        ,'Ems.store.OfficeSettingFeatureExtractorIdStore'
         ,'Ems.view.office.Setting.AutoCompleteFeatureExtractNormal'
         ,'Ems.view.office.Setting.AutoCompleteFeatureExtractCC'
+        ,'Ems.view.office.Setting.AutoCompleteFeatureExtractorId'
+
     ],
 
     initComponent: function () {
@@ -58,7 +61,16 @@ Ext.define('Ems.view.office.Setting.Dialog', {
                 id: 'feiCC',
                 name: 'feiCC'
                 //allowBlank: false
+            },
+            {
+                xtype: 'autoCompleteFeatureExtractorId',
+                fieldLabel: 'featureExtractorId',
+                labelWidth: 135,
+                id: 'feiISOCC',
+                name: 'feiISOCC'
+                //allowBlank: false
             }
+
         ]
     }
 });

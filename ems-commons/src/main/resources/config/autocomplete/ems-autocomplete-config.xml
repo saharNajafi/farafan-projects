@@ -39,5 +39,7 @@
 				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractNormalAutoComplete" />
 		<handler name="featureExtractIdsCC"
 				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractCCAutoComplete" />
+		<handler name="featureExtractorId"
+				 type="com.gam.nocr.ems.web.autocomplete.FeatureExtractorIdAutoComplete" />
 	</handlers>
 </autocomplete-config>

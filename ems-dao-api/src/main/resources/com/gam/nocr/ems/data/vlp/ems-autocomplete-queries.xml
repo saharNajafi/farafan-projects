@@ -591,4 +591,32 @@
 		</dto>
 	</list>
 	<!-- featureExtractIdCC autoComplete -->
+
+	<!-- featureExtractorId autoComplete -->
+	<list>
+		<list-name>featureExtractorId</list-name>
+		<query>
+			<main-query>
+				<part name="count">
+					select count(*)
+				</part>
+				<part name="main">
+					SELECT distinct
+					fec.FEI_ID,
+					fec.FEI_FEATURE_EXTRACT_NAME
+				</part>
+				FROM EMST_FEATURE_EXTRACT_IDS fec
+				WHERE fec.FEI_FEATURE_EXTRACT_TYPE = 'ISOCC'
+			</main-query>
+		</query>
+		<dto>
+			<dto-class>com.gam.nocr.ems.data.domain.EMSAutocompleteTO</dto-class>
+			<dto-fields>
+				<field name="id" column="FEI_ID" />
+				<field name="acId" column="FEI_ID" />
+				<field name="acName" column="FEI_FEATURE_EXTRACT_NAME" />
+			</dto-fields>
+		</dto>
+	</list>
+	<!-- featureExtractIdCC autoComplete -->
 </lists>
