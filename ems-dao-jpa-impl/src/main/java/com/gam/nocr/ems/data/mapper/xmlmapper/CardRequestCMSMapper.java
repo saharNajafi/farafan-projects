@@ -740,7 +740,7 @@ public class CardRequestCMSMapper implements XMLMapper {
                     attributesMap.get("disabilityOnFace") != null) {
                 disabilityOnFace.setValue(attributesMap.get("disabilityOnFace"));
             } else {
-                disabilityOnFace.setValue("0X00");
+                disabilityOnFace.setValue("1");
             }
             faceImages.setAttributeNode(disabilityOnFace);
 

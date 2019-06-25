@@ -976,7 +976,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         createFakePaymentForCCOSVIPAndReplica(newCardRequest);
 
-        if(newCardRequest.getPriority() == null){
+        if (newCardRequest.getPriority() == null) {
             newCardRequest.setPriority(1);
         }
 
@@ -1276,7 +1276,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             RegistrationPaymentTO registrationPaymentTO = getCardRequestDAO().find(CardRequestTO.class, newCardRequest.getId())
                     .getRegistrationPaymentTO();
             newCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
-        }catch (Exception e){
+        } catch (Exception e) {
             newCardRequest.setRegistrationPaymentTO(null);
         }
 
@@ -1385,7 +1385,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                         fingCandidateSize = Float.valueOf(DEFAULT_KEY_FING_NORMAL_1_SIZE_KB);
                     }
 
-                    if (bio.getData().length > ((int)(fingCandidateSize * 1024)))
+                    if (bio.getData().length > ((int) (fingCandidateSize * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_165, BizExceptionCode.RSI_165_MSG);
                 } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
 
@@ -1399,7 +1399,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                         fingCandidateSize = Float.valueOf(DEFAULT_KEY_FING_NORMAL_2_SIZE_KB);
                     }
 
-                    if (bio.getData().length > ((int)(fingCandidateSize * 1024)))
+                    if (bio.getData().length > ((int) (fingCandidateSize * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_166, BizExceptionCode.RSI_166_MSG);
                 }
                 addBiometric(biometricDAO, citizenInfoInDb, bio);
@@ -1412,7 +1412,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
 
     // haghshenas
-    private void addBiometricInfoData(long requestId, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException {
+    private void addBiometricInfoData(long requestId, String featureExtractorIdNormal, String featureExtractorIdCC) throws BaseException {
         BiometricInfoDAO biometricInfoDAO = getBiometricInfoDAO();
 
         try {
@@ -1477,27 +1477,27 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @Override
     @Permissions(value = "ems_addFingerInfo")
     @BizLoggable(logAction = "INSERT", logEntityName = "BIOMETRIC")
-    public void addFingerData(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorIdNormal,String featureExtractorIdCC ) throws BaseException {
+    public void addFingerData(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorIdNormal, String featureExtractorIdCC) throws BaseException {
         addBiometricData(requestId, biometricDatas);
 
         // addBiometricInfoData(requestId);
-        addBiometricInfoData(requestId, featureExtractorIdNormal,featureExtractorIdCC);
+        addBiometricInfoData(requestId, featureExtractorIdNormal, featureExtractorIdCC);
 
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), null, SystemId.CCOS, null,
                 CardRequestHistoryAction.FINGER_SCAN, getUserProfileTO().getUserName());
     }
 
     @Override
-    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException {
+    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorIdNormal, String featureExtractorIdCC) throws BaseException {
         addBiometricData(requestId, biometricDatas);
 //        addBiometricInfoData(requestId);
-        addBiometricInfoData(requestId, featureExtractorIdNormal,featureExtractorIdCC);
+        addBiometricInfoData(requestId, featureExtractorIdNormal, featureExtractorIdCC);
     }
 
     private void addFingerDataFromVip(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorIdNormal, String featureExtractorIdCC) throws BaseException {
         addBiometricData(requestId, biometricDatas);
 //        addBiometricInfoData(requestId);
-        addBiometricInfoData(requestId, featureExtractorIdNormal,featureExtractorIdCC);
+        addBiometricInfoData(requestId, featureExtractorIdNormal, featureExtractorIdCC);
 
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), VIP_STR, SystemId.CCOS, null,
                 CardRequestHistoryAction.FINGER_SCAN, getUserProfileTO().getUserName());
@@ -1871,6 +1871,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         if (cardRequest == null) {
             throw new ServiceException(BizExceptionCode.RSI_059,
                     BizExceptionCode.RSI_059_MSG, new Long[]{requestId});
+        } else if (CardRequestAuthenticity.AUTHENTIC.equals(cardRequest.getAuthenticity()) &&
+                CardRequestState.DOCUMENT_AUTHENTICATED.equals(cardRequest.getState())) {
+            throw new ServiceException(BizExceptionCode.RSI_168,
+                    BizExceptionCode.RSI_169_MSG, new Long[]{requestId});
         }
         cardRequest.setAuthenticity(CardRequestAuthenticity.AUTHENTIC);
         cardRequest.setState(CardRequestState.DOCUMENT_AUTHENTICATED);
@@ -2351,7 +2355,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @BizLoggable(logAction = "INSERT_VIP", logEntityName = "REQUEST")
     public Boolean saveFromVip(CardRequestTO requestTO,
                                ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
-                               ArrayList<DocumentTO> documents, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException {
+                               ArrayList<DocumentTO> documents, String featureExtractorIdNormal, String featureExtractorIdCC) throws BaseException {
         try {
 
             // do validation
@@ -2429,7 +2433,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             //
             cardRequestAfterInsert.setPriority(99);
 //            addFingerDataFromVip(requestId, fingers);
-            addFingerDataFromVip(requestId, fingers, featureExtractorIdNormal,featureExtractorIdCC);
+            addFingerDataFromVip(requestId, fingers, featureExtractorIdNormal, featureExtractorIdCC);
             if (EmsUtil.checkListSize(faces)) {
                 ArrayList<BiometricTO> faceList = new ArrayList<BiometricTO>();
                 for (BiometricTO faceBiometric : faces) {
