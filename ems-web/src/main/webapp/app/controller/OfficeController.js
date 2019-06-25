@@ -402,9 +402,9 @@ Ext.define('Ems.controller.OfficeController', {
                         setTimeout(function() {extractN.select(extractN.store.getNodeById(rec2)); extractN.onTriggerClick();}, 1500);
                     }
                     else if(data[i].featureExtractType == "3") {
-                        var rec2 = data[i].feiId;
+                        var rec3 = data[i].feiId;
                         setTimeout(function() { extractISOCC.onTriggerClick();}, 500);
-                        setTimeout(function() {extractISOCC.select(extractISOCC.store.getNodeById(rec2)); extractISOCC.onTriggerClick();}, 1500);
+                        setTimeout(function() {extractISOCC.select(extractISOCC.store.getNodeById(rec3)); extractISOCC.onTriggerClick();}, 1500);
                     }
                 }
 
