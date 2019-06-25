@@ -130,7 +130,13 @@ Ext.define('Ems.store.BizLogEntityStore', {
             id: 24,
             code: 'PKI',
             name: 'سامانه مدیریت گواهی'
+        },
+        {
+            id: 25,
+            code: 'OFFICE_CAPACITY',
+            name: 'ظرفیت'
         }
+
     ]
 
 });

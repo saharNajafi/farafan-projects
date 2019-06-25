@@ -31,5 +31,6 @@ public enum BusinessLogEntity {
     PKI,
 
     REPORT_MANAGEMENT,
-    REPORT_REQUEST
+    REPORT_REQUEST,
+    OFFICE_CAPACITY
 }
