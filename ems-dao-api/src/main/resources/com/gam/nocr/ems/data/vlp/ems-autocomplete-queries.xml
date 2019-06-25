@@ -592,9 +592,9 @@
 	</list>
 	<!-- featureExtractIdCC autoComplete -->
 
-	<!-- featureExtractorId autoComplete -->
+	<!-- MOCEngineEnhancement autoComplete -->
 	<list>
-		<list-name>featureExtractorId</list-name>
+		<list-name>MOCEngineEnhancementList</list-name>
 		<query>
 			<main-query>
 				<part name="count">
@@ -618,5 +618,5 @@
 			</dto-fields>
 		</dto>
 	</list>
-	<!-- featureExtractIdCC autoComplete -->
+	<!-- mOCEngineEnhancementParameter autoComplete -->
 </lists>

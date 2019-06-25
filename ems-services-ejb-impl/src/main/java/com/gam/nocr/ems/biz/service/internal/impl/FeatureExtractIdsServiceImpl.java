@@ -93,7 +93,7 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public SearchResult fetchFeatureExtractorIdList(String searchString, int from, int to, String orderBy) throws BaseException {
+    public SearchResult fetchMOCEngineEnhancementAutoCompleteIdList(String searchString, int from, int to, String orderBy) throws BaseException {
         try {
             HashMap param = new HashMap();
             StringBuilder parts = new StringBuilder();
@@ -105,7 +105,7 @@ public class FeatureExtractIdsServiceImpl extends EMSAbstractService
             }
             try {
                 ValueListHandler vlh = EMSValueListProvider.getProvider().loadList(
-                        "featureExtractorId", ("main" + parts).split(","), ("count" + parts).split(","), param, orderBy, null);
+                        "MOCEngineEnhancementList", ("main" + parts).split(","), ("count" + parts).split(","), param, orderBy, null);
                 List list = vlh.getList(from, to, true);
                 return new SearchResult(vlh.size(), list);
             } catch (ListException e) {

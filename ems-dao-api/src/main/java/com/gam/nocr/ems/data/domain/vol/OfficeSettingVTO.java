@@ -9,6 +9,7 @@ public class OfficeSettingVTO extends ExtEntityTO{
 
     private Long feiN;
     private Long feiCC;
+    private Long feiISOCC;
 
     public Long getFeiN() {
         return feiN;
@@ -24,5 +25,13 @@ public class OfficeSettingVTO extends ExtEntityTO{
 
     public void setFeiCC(Long feiCC) {
         this.feiCC = feiCC;
+    }
+
+    public Long getFeiISOCC() {
+        return feiISOCC;
+    }
+
+    public void setFeiISOCC(Long feiISOCC) {
+        this.feiISOCC = feiISOCC;
     }
 }

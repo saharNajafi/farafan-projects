@@ -285,6 +285,7 @@ Ext.define('Ems.controller.OfficeController', {
                                 {
                                     feiN: form.down('#feiN').getValue(),
                                     feiCC: form.down('#feiCC').getValue(),
+                                    feiISOCC: form.down('#feiISOCC').getValue(),
                                     id: form.officeSettingID
                                 }
                              ]

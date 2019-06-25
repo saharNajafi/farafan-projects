@@ -289,7 +289,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         stateProviderTO.setValue("");
                     }
                 }
-                else if (stateId.endsWith("featureExtractorId")) {
+                else if (stateId.endsWith("MOCEngineEnhancementParameter")) {
                     if (officeSettingTO.getFeatureExtractIdsTO() != null) {
                         Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
                         for (FeatureExtractIdsTO fei : featureExtractIds) {

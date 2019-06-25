@@ -32,16 +32,16 @@ Ext.define('Ems.view.office.Setting.Dialog', {
     requires: [
         'Ems.store.OfficeSettingFeatureExtractNormalStore'
         ,'Ems.store.OfficeSettingFeatureExtractCCStore'
-        ,'Ems.store.OfficeSettingFeatureExtractorIdStore'
+        ,'Ems.store.OfficeSettingMOCEngineEnhancementStore'
         ,'Ems.view.office.Setting.AutoCompleteFeatureExtractNormal'
         ,'Ems.view.office.Setting.AutoCompleteFeatureExtractCC'
-        ,'Ems.view.office.Setting.AutoCompleteFeatureExtractorId'
+        ,'Ems.view.office.Setting.AutoCompleteMOCEngineEnhancement'
 
     ],
 
     initComponent: function () {
         this.callParent(arguments);
-       // this.minHeight = 100;
+       this.height = 200;
     },
 
     buildFormItems: function () {
@@ -63,8 +63,8 @@ Ext.define('Ems.view.office.Setting.Dialog', {
                 //allowBlank: false
             },
             {
-                xtype: 'autoCompleteFeatureExtractorId',
-                fieldLabel: 'featureExtractorId',
+                xtype: 'autoCompleteMOCEngineEnhancement',
+                fieldLabel: 'MOCEngineEnhancement',
                 labelWidth: 135,
                 id: 'feiISOCC',
                 name: 'feiISOCC'

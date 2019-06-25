@@ -11,12 +11,12 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 
-public class FeatureExtractorIdAutoComplete extends BaseAutocompleteHandler {
-    private static final Logger logger = BaseLog.getLogger(FeatureExtractorIdAutoComplete.class);
+public class MOCEngineEnhancementAutoComplete extends BaseAutocompleteHandler {
+    private static final Logger logger = BaseLog.getLogger(MOCEngineEnhancementAutoComplete.class);
 
     @Override
     protected String getAutocompleteProfileKeyName() {
-        return "featureExtractorId";
+        return "MOCEngineEnhancementAuto";
     }
 
     @Override
@@ -34,7 +34,7 @@ public class FeatureExtractorIdAutoComplete extends BaseAutocompleteHandler {
             if (depId != null)
                 userProfile.setDepID(depId);
             FeatureExtractIdsDelegator featureExtractorIdDelegator = new FeatureExtractIdsDelegator();
-            return featureExtractorIdDelegator.fetchFeatureExtractorIdList(
+            return featureExtractorIdDelegator.fetchMOCEngineEnhancementAutoCompleteIdList(
                     userProfile, searchString, from, to, orderBy);
         } catch (Throwable t) {
             logger.error(WebExceptionCode.GLB_ERR_MSG, t);
