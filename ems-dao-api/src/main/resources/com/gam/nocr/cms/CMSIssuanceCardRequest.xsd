@@ -148,7 +148,7 @@
                     </xsd:element>
 
                   </xsd:sequence>
-                  <xsd:attribute name='FaceDisabilityStatus' type='xsd:int' />
+                  <xsd:attribute name='DisabilityOnFace' type='xsd:int' />
                 </xsd:complexType>
               </xsd:element>
 

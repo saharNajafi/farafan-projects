@@ -735,14 +735,12 @@ public class CardRequestCMSMapper implements XMLMapper {
             Element faceImages = doc.createElement("FaceImages");
             biometricIndfoElement.appendChild(faceImages);
 
-            Attr disabilityOnFace  = doc.createAttribute("DisabilityOnFace");
             if (attributesMap != null &&
-                    attributesMap.get("disabilityOnFace") != null) {
-                disabilityOnFace.setValue(attributesMap.get("disabilityOnFace"));
-            } else {
-                disabilityOnFace.setValue("1");
+                    attributesMap.get("faceDisabilityStatus") != null) {
+                Attr disabilityOnFace = doc.createAttribute("DisabilityOnFace");
+                disabilityOnFace.setValue(attributesMap.get("faceDisabilityStatus"));
+                faceImages.setAttributeNode(disabilityOnFace);
             }
-            faceImages.setAttributeNode(disabilityOnFace);
 
             Element chipElement = doc.createElement("Chip");
             faceImages.appendChild(chipElement);
