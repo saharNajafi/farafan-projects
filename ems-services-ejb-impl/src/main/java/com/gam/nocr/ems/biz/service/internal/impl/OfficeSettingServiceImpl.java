@@ -38,7 +38,7 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
                 throw new ServiceException(BizExceptionCode.OSTS_001,
                         BizExceptionCode.OSTS_001_MSG, new Long[]{officeSettingVTO.getId()});
             featureExtractIdsTOList =
-                    getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC());
+                    getFeatureExtractIdsList(officeSettingVTO.getFeiN(), officeSettingVTO.getFeiCC(), officeSettingVTO.getFeiISOCC());
             officeSettingTO.setFeatureExtractIdsTO(featureExtractIdsTOList);
             getOfficeSettingDAO().update(officeSettingTO);
         } catch (BaseException e) {
@@ -47,21 +47,27 @@ public class OfficeSettingServiceImpl extends EMSAbstractService
         return officeSettingTO != null ? officeSettingTO.getId() : null;
     }
 
-    private Set<FeatureExtractIdsTO> getFeatureExtractIdsList(Long fenId, Long fecId) throws BaseException{
+    private Set<FeatureExtractIdsTO> getFeatureExtractIdsList(Long fenId, Long fecId, Long feiISOCC) throws BaseException{
         FeatureExtractIdsTO featureExtractNormal;
         FeatureExtractIdsTO featureExtractCC;
+        FeatureExtractIdsTO MOCEngineEnhancement;
         Set<FeatureExtractIdsTO> featureExtractIdsTOList = new HashSet<FeatureExtractIdsTO>();
         try {
             featureExtractNormal = getFeatureExtractIdsDAO().findById(fenId);
             featureExtractCC = getFeatureExtractIdsDAO().findById(fecId);
+            MOCEngineEnhancement = getFeatureExtractIdsDAO().findById(feiISOCC);
             if (featureExtractNormal == null)
                 throw new ServiceException(BizExceptionCode.OSTS_003
                         , BizExceptionCode.OSTS_003_MSG, new Long[]{fenId});
             if (featureExtractCC == null)
                 throw new ServiceException(BizExceptionCode.OSTS_004
                          , BizExceptionCode.OSTS_004_MSG, new Long[]{fecId});
+            if (MOCEngineEnhancement == null)
+                throw new ServiceException(BizExceptionCode.OSTS_008
+                         , BizExceptionCode.OSTS_008_MSG, new Long[]{fecId});
             featureExtractIdsTOList.add(featureExtractNormal);
             featureExtractIdsTOList.add(featureExtractCC);
+            featureExtractIdsTOList.add(MOCEngineEnhancement);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.OSTS_005, BizExceptionCode.OSTS_005_MSG, e);
         }

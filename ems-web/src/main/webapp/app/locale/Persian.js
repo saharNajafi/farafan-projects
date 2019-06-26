@@ -192,7 +192,8 @@ Ext.define('Ems.locale.Resource', {
 
         IMS: 'سامانه ثبت احوال',
         PORTAL: 'سامانه پورتال',
-        PKI: 'سامانه مدیریت گواهی'
+        PKI: 'سامانه مدیریت گواهی',
+        OFFICE_CAPACITY: 'ظرفیت'
 
 
 

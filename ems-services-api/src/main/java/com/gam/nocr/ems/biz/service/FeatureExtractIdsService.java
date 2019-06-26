@@ -18,4 +18,5 @@ public interface FeatureExtractIdsService extends Service {
 
     List<FeatureExtractIdsVTO> load(Long id) throws BaseException;
 
+    SearchResult fetchMOCEngineEnhancementAutoCompleteIdList(String searchString, int from, int to, String orderBy) throws BaseException;
 }
