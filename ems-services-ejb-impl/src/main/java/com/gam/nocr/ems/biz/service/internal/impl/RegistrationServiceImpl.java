@@ -645,7 +645,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-                ) {
+        ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -983,7 +983,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         if (newCardRequest.getId() == null) {
             if (newCardRequest.getTrackingID() == null || newCardRequest.getTrackingID().trim().length() == 0 ||
                     newCardRequest.getTrackingID().equals("0000000000")) {
-                newCardRequest.setTrackingID(EmsUtil.generateTrackingId(newCardRequest.getCitizen().getNationalID() + new Date()));
+                //newCardRequest.setTrackingID(EmsUtil.generateTrackingId(newCardRequest.getCitizen().getNationalID() + new Date()));
+                newCardRequest.setTrackingID(getCardRequestService().generateNewTrackingId());
             }
             cr = cardRequestDAO.create(newCardRequest);
         } else {
@@ -2438,9 +2439,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 ArrayList<BiometricTO> faceList = new ArrayList<BiometricTO>();
                 for (BiometricTO faceBiometric : faces) {
 
-                    if (faceBiometric.getType() == BiometricType.VIP_IMAGE)
-
-                    {
+                    if (faceBiometric.getType() == BiometricType.VIP_IMAGE) {
 
                         PhotoVipTO photoVipTO = new PhotoVipTO();
                         photoVipTO.setData(faceBiometric.getData());
@@ -2831,7 +2830,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             else
                 throw new ServiceException(BizExceptionCode.RSI_150, BizExceptionCode.RSI_107_MSG + cardRequestTO.getCitizen().getNationalID());
             cardRequestTO.setType(CardRequestType.FIRST_CARD);
-            String generateTrackingId = EmsUtil.generateTrackingId(cardRequestTO.getCitizen().getNationalID() + new Date());
+            //String generateTrackingId = EmsUtil.generateTrackingId(cardRequestTO.getCitizen().getNationalID() + new Date());
+            String generateTrackingId = getCardRequestService().generateNewTrackingId();
             cardRequestTO.setTrackingID(generateTrackingId);
             cardRequestTO.setOrigin(CardRequestOrigin.C);
             cardRequestTO.setReservationDate(new Date());

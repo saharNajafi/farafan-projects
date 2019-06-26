@@ -18,6 +18,8 @@ public class DocumentTO extends ExtEntityTO implements JSONable {
     private CitizenInfoTO citizenInfo;
     private byte[] data;
     private DocumentTypeTO type;
+    private byte[] DocumentCertificateDetectedFaceImage;
+    private byte[] DocumentCertificateDetectedSerialNumberImage;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -56,6 +58,26 @@ public class DocumentTO extends ExtEntityTO implements JSONable {
 
     public void setType(DocumentTypeTO type) {
         this.type = type;
+    }
+
+    @Lob
+    @Column(name = "DOC_CERTIFICATE_DETECTED_FACE_IMAGE", nullable = false)
+    public byte[] getDocumentCertificateDetectedFaceImage() {
+        return DocumentCertificateDetectedFaceImage;
+    }
+
+    public void setDocumentCertificateDetectedFaceImage(byte[] documentCertificateDetectedFaceImage) {
+        DocumentCertificateDetectedFaceImage = documentCertificateDetectedFaceImage;
+    }
+
+    @Lob
+    @Column(name = "DOC_CERTIFICATE_DETECTED_SERIAL_NUMBER_IMAGE", nullable = false)
+    public byte[] getDocumentCertificateDetectedSerialNumberImage() {
+        return DocumentCertificateDetectedSerialNumberImage;
+    }
+
+    public void setDocumentCertificateDetectedSerialNumberImage(byte[] documentCertificateDetectedSerialNumberImage) {
+        DocumentCertificateDetectedSerialNumberImage = documentCertificateDetectedSerialNumberImage;
     }
 
     @Override

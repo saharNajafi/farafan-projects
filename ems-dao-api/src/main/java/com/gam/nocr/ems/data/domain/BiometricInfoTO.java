@@ -32,7 +32,7 @@ public class BiometricInfoTO extends ExtEntityTO {
     private FingerQualityType fingerQualityType = FingerQualityType.UNDEFINED;
     private String featureExtractorIdNormal = "0201";
     private String featureExtractorIdCC = "0201";
-    private String DisabilityOnFace;
+    private String FaceDisabilityStatus;
 
 
     @Id
@@ -110,13 +110,14 @@ public class BiometricInfoTO extends ExtEntityTO {
         this.featureExtractorIdCC = featureExtractorIdCC;
     }
 
-    @Column(name = "BMI_DISABILITY_ON_FACE", nullable = false, length = 4, columnDefinition = "varchar2(4)")
-    public String getDisabilityOnFace() {
-        return DisabilityOnFace;
+    @Column(name = "BMI_FACE_DISABILITY_STATUS", nullable = false, length = 4, columnDefinition = "varchar2(4)")
+
+    public String getFaceDisabilityStatus() {
+        return FaceDisabilityStatus;
     }
 
-    public void setDisabilityOnFace(String disabilityOnFace) {
-        DisabilityOnFace = disabilityOnFace;
+    public void setFaceDisabilityStatus(String faceDisabilityStatus) {
+        FaceDisabilityStatus = faceDisabilityStatus;
     }
 
     @Override

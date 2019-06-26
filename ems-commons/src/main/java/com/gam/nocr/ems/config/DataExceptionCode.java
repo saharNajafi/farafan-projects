@@ -560,6 +560,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_106 = "EMS_D_CDI_106";
     public static final String CDI_107 = "EMS_D_CDI_107";
     public static final String CDI_108 = "EMS_D_CDI_108";
+    public static final String CDI_109 = "EMS_D_CDI_109";
 
     public static final String CDI_001_MSG = "Unable to create Card Request";
     public static final String CDI_002_MSG = "Integrity constraint violated, card with id {} not found";
@@ -592,6 +593,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_106_MSG = "an error occur in findCardRequestStateByTrackingId method";
     public static final String CDI_107_MSG = "the findLastRequestByNationalId operation could not be executed";
     public static final String CDI_108_MSG = "the countCardRequestByNationalIdAndType operation could not be executed";
+    public static final String CDI_109_MSG = "an error occur in get next value for generating tracking id from database sequence";
 
 
 
