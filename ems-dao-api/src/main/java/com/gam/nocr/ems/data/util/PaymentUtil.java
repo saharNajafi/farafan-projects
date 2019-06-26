@@ -60,7 +60,7 @@ public class PaymentUtil {
             ctz.setNationalID(StringUtils.leftPad(singlePreRegistrationWTO.getNationalId(), 10, "0"));
             CardRequestTO cardRequestTO = new CardRequestTO();
             cardRequestTO.setPortalEnrolledDate(new Date());
-            cardRequestTO.setTrackingID(NationalIDUtil.generateTrackingId(ctz.getNationalID()));
+            //cardRequestTO.setTrackingID(NationalIDUtil.generateTrackingId(ctz.getNationalID()));
             cardRequestTO.setOrigin(CardRequestOrigin.valueOf(singlePreRegistrationWTO.getOrigin()));
             cardRequestTO.setPaid(Boolean.FALSE);
             String notValue = Configuration.getProperty("not.value");
