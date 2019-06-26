@@ -134,4 +134,6 @@ public interface CardRequestService extends Service {
 
      void print(Long cardRequestId) throws BaseException;
 
+	String generateNewTrackingId() throws BaseException ;
+
 }

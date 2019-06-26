@@ -1413,7 +1413,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE) &&
                     cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
                     cardRequestTO.getOriginalCardRequestOfficeId() != null
-                    ) {
+            ) {
                 if (crqFlag == 5) {
                     String outgoingSMSTO = MessageFormat.format(
                             labels.getString("state.sms.crqFlagOffice5"), enrollmentOfficeTO.getSuperiorOffice().getAddress());
@@ -2177,8 +2177,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (entity.getId() == null) {
                 if (entity.getTrackingID() == null || entity.getTrackingID().trim().length() == 0 ||
                         entity.getTrackingID().equals("0000000000")) {
-                    entity.setTrackingID(
-                            EmsUtil.generateTrackingId(entity.getCitizen().getNationalID()));
+                    //entity.setTrackingID(EmsUtil.generateTrackingId(entity.getCitizen().getNationalID()));
+                    entity.setTrackingID(generateNewTrackingId());
                 }
                 newCardRequest = getCardRequestDAO().create(entity);
             }
@@ -2339,5 +2339,44 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return personManagementService;
     }
 
+    public String generateNewTrackingId() throws BaseException {
+        Number nextValue = null;
+        try {
+            nextValue = getCardRequestDAO().nextValueOfRequestTrackingId();
+        } catch (BaseException e) {
+            throw e;
+        }
+
+        if (nextValue == null) {
+            logger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
+
+            throw new ServiceException(
+                    BizExceptionCode.CRE_087,
+                    BizExceptionCode.CRE_087_MSG,
+                    new Exception("sequence number for create TrackingId is null"));
+        }
+
+        try {
+            Long nextValueAsLong = nextValue.longValue();
+            String str = String.valueOf(nextValueAsLong);
+            char[] charArray = str.toCharArray();
+            int sumOfNumber = 0;
+            for (int i = 0; i < charArray.length; i++) {
+                sumOfNumber += Character.getNumericValue(charArray[i]);
+            }
+            long mod = sumOfNumber % 10;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
+            return stringBuilder.toString();
+        } catch (Exception e) {
+            logger.error("Error Occurred in generating TrackingId====>" + e.getMessage());
+
+            throw new ServiceException(
+                    BizExceptionCode.CRE_088,
+                    BizExceptionCode.CRE_088_MSG,
+                    e);
+        }
+    }
 
 }

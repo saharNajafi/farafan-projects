@@ -108,6 +108,7 @@ public class CCOSPaymentWS extends EMSWS {
         try {
             ReservationTO reservationTo;
             reservationTo = PaymentUtil.convertSingle(singlePreRegistrationWTO);
+            reservationTo.getCardRequest().setTrackingID(cardRequestDelegator.generateNewTrackingId(userProfileTO));
             CardRequestTO cardRequestTO = null;
             try {
                 cardRequestTO = reservationDelegator.transferReservationsToEMS(userProfileTO, reservationTo);
