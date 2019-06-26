@@ -110,6 +110,7 @@ public class BiometricInfoTO extends ExtEntityTO {
         this.featureExtractorIdCC = featureExtractorIdCC;
     }
 
+    @Column(name = "BMI_FACE_DISABILITY_STATUS", nullable = false, length = 4, columnDefinition = "varchar2(4)")
     public String getFaceDisabilityStatus() {
         return faceDisabilityStatus;
     }
@@ -117,10 +118,6 @@ public class BiometricInfoTO extends ExtEntityTO {
     public void setFaceDisabilityStatus(String faceDisabilityStatus) {
         this.faceDisabilityStatus = faceDisabilityStatus;
     }
-
-    @Column(name = "BMI_FACE_DISABILITY_STATUS", nullable = false, length = 4, columnDefinition = "varchar2(4)")
-
-
 
     @Override
     public String toString() {
