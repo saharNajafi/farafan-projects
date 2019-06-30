@@ -230,7 +230,7 @@ Ext.define('Ems.view.office.Capacity.Grid', {
                     if (value == "0") {
                         return "صبح";
                     } else if (value == "1") {
-                        return "شب";
+                        return "عصر";
                     }
                 }
             }

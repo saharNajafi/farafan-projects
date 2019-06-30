@@ -1605,6 +1605,7 @@
 				</part>
 				from EMST_OFFICE_CAPACITY oc
 				WHERE oc.EOC_OFFICE_ID = ({enrollmentOfficeID})
+				order by oc.EOC_START_DATE ASC
 			</main-query>
 		</query>
 		<dto>

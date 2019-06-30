@@ -87,14 +87,37 @@ Ext.define('Ems.view.office.NewEdit.CapacityOfficeInfo', {
             {
                 xtype: 'displayfield',
                 fieldLabel: 'شروع ساعت کاری',
-                itemId: 'workingHoursStart'
-              //  renderer: Ext.bind(this.formatTimeValue, this)
+                itemId: 'workingHoursStart',
+                renderer: function (workingHour) {
+                    if (workingHour) {
+                        workingHour = new String(workingHour);
+                        if (workingHour.indexOf(".5") > 0) {
+                            //  Change 12.5 to 12:30
+                            return workingHour.split(".")[0] + ":30";
+                        } else {
+                            //  Change 12 to 12:00
+                            return workingHour.split(".")[0] + ":00";
+                        }
+                    }
+                }
+
             },
             {
                 xtype: 'displayfield',
                 fieldLabel: 'پایان ساعت کاری',
-                itemId: 'workingHoursFinish'
-                //renderer: Ext.bind(this.formatTimeValue, this)
+                itemId: 'workingHoursFinish',
+                renderer: function (workingHour) {
+                    if (workingHour) {
+                        workingHour = new String(workingHour);
+                        if (workingHour.indexOf(".5") > 0) {
+                            //  Change 12.5 to 12:30
+                            return workingHour.split(".")[0] + ":30";
+                        } else {
+                            //  Change 12 to 12:00
+                            return workingHour.split(".")[0] + ":00";
+                        }
+                    }
+                }
             },
             {
                 xtype: 'displayfield',
