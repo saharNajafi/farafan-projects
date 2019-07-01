@@ -118,6 +118,7 @@
             <xsd:element type="FaceImagesType" name="FACE_LASER"/>
             <xsd:element type="SourceImageType" name="SourceImage"/>
         </xsd:sequence>
+        <xsd:attribute name='FaceDisabilityStatus' type='xsd:int'/>
     </xsd:complexType>
     <xsd:complexType name="FingersBiometricInfoType">
         <xsd:sequence>
