@@ -49,6 +49,7 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.MessageContext;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.*;
@@ -1413,7 +1414,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE) &&
                     cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
                     cardRequestTO.getOriginalCardRequestOfficeId() != null
-            ) {
+                    ) {
                 if (crqFlag == 5) {
                     String outgoingSMSTO = MessageFormat.format(
                             labels.getString("state.sms.crqFlagOffice5"), enrollmentOfficeTO.getSuperiorOffice().getAddress());
@@ -1860,6 +1861,25 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 && birthDateSolar.equals(String.valueOf(personEnquiryVTOResult.getSolarBirthDate().replace("/", "")))
                 && gender.getEmsCOde().equals(personEnquiryVTOResult.getGender().toString()))) {
             throw new ServiceException(BizExceptionCode.CRE_063, BizExceptionCode.CRE_063_MSG, new Object[]{nationalId});
+        }
+        if (calculateAge(personEnquiryVTOResult.getSolarBirthDate()) < 15) {
+            throw new ServiceException(BizExceptionCode.CRE_090, BizExceptionCode.CRE_090_MSG, new Object[]{nationalId});
+        }
+
+
+    }
+
+    public int calculateAge(String solarBirthDate) throws BaseException {
+        try {
+            Date currentDate = new Date();
+            Date birthDate = DateUtil.convert(solarBirthDate, DateUtil.JALALI);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            int d1 = Integer.parseInt(formatter.format(birthDate));
+            int d2 = Integer.parseInt(formatter.format(currentDate));
+            int age = (d2 - d1) / 10000;
+            return age;
+        } catch (DateFormatException e) {
+            throw new ServiceException(BizExceptionCode.CRE_089, BizExceptionCode.CRE_089_MSG);
         }
     }
 
@@ -2349,11 +2369,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
         if (nextValue == null) {
             logger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
-
             throw new ServiceException(
                     BizExceptionCode.CRE_087,
-                    BizExceptionCode.CRE_087_MSG,
-                    new Exception("sequence number for create TrackingId is null"));
+                    BizExceptionCode.CRE_087_MSG);
         }
 
         try {
@@ -2366,11 +2384,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             }
             long mod = sumOfNumber % 10;
 
+
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
             return stringBuilder.toString();
         } catch (Exception e) {
-            logger.error("Error Occurred in generating TrackingId====>" + e.getMessage());
+            logger.error("Error Occurred in generating TrackingId:" + e.getMessage());
 
             throw new ServiceException(
                     BizExceptionCode.CRE_088,
