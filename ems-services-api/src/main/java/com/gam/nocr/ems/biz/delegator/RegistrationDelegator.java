@@ -75,8 +75,8 @@ public class RegistrationDelegator implements Delegator {
     }
 
     public void addFaceData(UserProfileTO userProfileTO, long requestId,
-                            ArrayList<BiometricTO> biometricDatas) throws BaseException {
-        getService(userProfileTO).addFaceData(requestId, biometricDatas);
+                            ArrayList<BiometricTO> biometricDatas , Integer faceDisabilityStatus) throws BaseException {
+        getService(userProfileTO).addFaceData(requestId, biometricDatas, faceDisabilityStatus) ;
     }
 
     public void addDocument(UserProfileTO userProfileTO, long requestId,
@@ -204,14 +204,16 @@ public class RegistrationDelegator implements Delegator {
 		getService(up).checkPreviousCardRequestNotStopped(citizenTo);
 	}
 	
-	public Boolean registerVip(UserProfileTO userProfileTO,
-			CardRequestTO requestTO, ArrayList<BiometricTO> fingers,
-			ArrayList<BiometricTO> faces, ArrayList<DocumentTO> documents, String featureExtractorIdNormal,String featureExtractorIdCC)
+	public Boolean registerVip(UserProfileTO userProfileTO, CardRequestTO requestTO,
+                               ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
+                               ArrayList<DocumentTO> documents, String featureExtractorIdNormal,
+                               String featureExtractorIdCC, Integer faceDisabilityStatus)
 			throws BaseException {
 		/*return getService(userProfileTO).saveFromVip(requestTO, fingers, faces,
 				documents);*/
         return getService(userProfileTO).saveFromVip(requestTO, fingers, faces,
-                documents, featureExtractorIdNormal,featureExtractorIdCC);
+                                                     documents, featureExtractorIdNormal,
+                                                     featureExtractorIdCC, faceDisabilityStatus);
     }
 
 	public PhotoVipWTO getPhotoVip(UserProfileTO up, Long cardRquestId) throws BaseException{

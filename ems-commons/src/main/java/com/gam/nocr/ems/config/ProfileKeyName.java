@@ -105,7 +105,7 @@ public class ProfileKeyName {
     public static final String KEY_CARD_REQUEST_FIND_BY_STATE_AND_ORIGIN_MAX_RESULT = EMS_PROFILE_ROOT + ".cardRequestFindByStateAndOriginMaxResult";
 
     public static final String KEY_FING_CANDIDATE_SIZE_KB = EMS_PROFILE_ROOT + ".fingCandidateSizeKB";
-    public static final String KEY_FING_CANDIDATE_NORMAL_1_SIZE_KB = EMS_PROFILE_ROOT + ".fingNormal1SizeKB";
+    public static final String KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = STATE_ROOT + ".ccos.finger.ISO19794NormalFormatMaxSizeBytes";
     public static final String KEY_FING_CANDIDATE_NORMAL_2_SIZE_KB = EMS_PROFILE_ROOT + ".fingNormal2SizeKB";
     public static final String KEY_SCANNED_DOCUMENT_SIZE_KB = EMS_PROFILE_ROOT + ".scannedDocumentSizeKB";
     public static final String KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = EMS_PROFILE_ROOT + ".scannedDocumentMinSizeKB";

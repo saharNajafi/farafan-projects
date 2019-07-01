@@ -471,6 +471,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_166 = "EMS_S_RSI_166";
     public static final String RSI_167 = "EMS_S_RSI_167";
     public static final String RSI_168 = "EMS_S_RSI_168";
+    public static final String RSI_169 = "EMS_S_RSI_169";
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";

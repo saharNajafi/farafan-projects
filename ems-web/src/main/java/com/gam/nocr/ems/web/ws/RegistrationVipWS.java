@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.web.ws;
 
+import com.gam.nocr.ems.data.domain.ws.*;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.util.Base64;
@@ -37,13 +38,6 @@ import com.gam.nocr.ems.data.domain.DocumentTO;
 import com.gam.nocr.ems.data.domain.DocumentTypeTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.PhotoVipTO;
-import com.gam.nocr.ems.data.domain.ws.BiometricWTO;
-import com.gam.nocr.ems.data.domain.ws.ChildrenWTO;
-import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
-import com.gam.nocr.ems.data.domain.ws.DocumentTypeWTO;
-import com.gam.nocr.ems.data.domain.ws.DocumentWTO;
-import com.gam.nocr.ems.data.domain.ws.SecurityContextWTO;
-import com.gam.nocr.ems.data.domain.ws.SpouseWTO;
 import com.gam.nocr.ems.data.enums.BiometricType;
 import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CertificateUsage;
@@ -87,12 +81,7 @@ public class RegistrationVipWS extends EMSWS {
 	@WebMethod
 	public Boolean saveVipRegistrationRequest(
 			@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-			@WebParam(name = "citizenWTO") CitizenWTO citizenWTO,
-			@WebParam(name = "fingers") BiometricWTO[] fingersWTO,
-			@WebParam(name = "faces") BiometricWTO[] facesWTO,
-			@WebParam(name = "featureExtractorIdNormal") String featureExtractorIdNormal,
-			@WebParam(name = "featureExtractorIdCC") String featureExtractorIdCC,
-			@WebParam(name = "documents") DocumentWTO[] documentsWTO)
+			@WebParam(name = "vipRegistrationRequestWTO") VipRegistrationRequestWTO vipRegistrationRequestWTO)
 			throws InternalException {
 
 		try {
@@ -103,19 +92,21 @@ public class RegistrationVipWS extends EMSWS {
 			logger.info("========================== transfer data from vip client to ems started ==========================");
 			logger.info("==================================================================================================");
 			UserProfileTO up = super.validateRequest(securityContextWTO);
-			if (!EmsUtil.checkArraySize(fingersWTO))
+			if (!EmsUtil.checkArraySize(vipRegistrationRequestWTO.getFingersWTO()))
 				throw new InternalException(WebExceptionCode.RVW_018_MSG,
 						new EMSWebServiceFault(WebExceptionCode.RVW_018));
 
-			CardRequestTO cardRequestTO = convertToCardRequestTO(up, citizenWTO);
-			ArrayList<BiometricTO> fingers = convertToFingersTO(fingersWTO);
-			ArrayList<BiometricTO> faces = convertToFacesTO(facesWTO);
-			ArrayList<DocumentTO> documents = convertToDocumentsTO(documentsWTO);
+			CardRequestTO cardRequestTO = convertToCardRequestTO(up, vipRegistrationRequestWTO.getCitizenWTO());
+			ArrayList<BiometricTO> fingers = convertToFingersTO(vipRegistrationRequestWTO.getFingersWTO());
+			ArrayList<BiometricTO> faces = convertToFacesTO(vipRegistrationRequestWTO.getFacesWTO());
+			ArrayList<DocumentTO> documents = convertToDocumentsTO(vipRegistrationRequestWTO.getDocumentsWTO());
 			RegistrationDelegator delegator = new RegistrationDelegator();
 			/*delegator.registerVip(up, cardRequestTO, fingers, faces,
 					documents);*/
 			delegator.registerVip(up, cardRequestTO, fingers, faces,
-					documents, featureExtractorIdNormal,featureExtractorIdCC);
+					documents, vipRegistrationRequestWTO.getFeatureExtractorIdNormal(),
+					vipRegistrationRequestWTO.getFeatureExtractorIdCC(),
+					vipRegistrationRequestWTO.getFaceDisabilityStatus());
 			return true;
 		} catch (BaseException e) {
 

@@ -45,9 +45,10 @@ public interface RegistrationService extends Service {
 //    public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
     public void addFingerDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException;
 
-    public void addFaceData(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
+    public void addFaceData(long requestId, ArrayList<BiometricTO> biometricDatas, Integer faceDisabilityStatus) throws BaseException;
 
-    public void addFaceDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException;
+    public void addFaceDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas,
+                                   Integer faceDisabilityStatus) throws BaseException;
 
     public void addDocument(long requestId, ArrayList<DocumentTO> documents) throws BaseException;
 
@@ -137,9 +138,10 @@ public interface RegistrationService extends Service {
 			ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
 			ArrayList<DocumentTO> documents) throws BaseException;*/
 
-	public Boolean saveFromVip(CardRequestTO requestTO,
-			ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
-			ArrayList<DocumentTO> documents, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException;
+	public Boolean saveFromVip(CardRequestTO requestTO, ArrayList<BiometricTO> fingers,
+                               ArrayList<BiometricTO> faces, ArrayList<DocumentTO> documents,
+                               String featureExtractorIdNormal,String featureExtractorIdCC,
+                               Integer faceDisabilityStatus) throws BaseException;
 
 	public PhotoVipWTO getPhotoVip(Long cardRquestId) throws BaseException;
 

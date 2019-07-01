@@ -60,6 +60,7 @@ public class CitizenInfoTO extends ExtEntityTO implements JSONable {
     private String mobile;
     private AFISState afisState;
     private String birthCertificateIssuancePlace;
+    private Integer faceDisabilityStatus;
 //    private int identityChange;
 
     private List<SpouseTO> spouses = new ArrayList<SpouseTO>(0);
@@ -507,6 +508,16 @@ public class CitizenInfoTO extends ExtEntityTO implements JSONable {
 
     public void setDocuments(List<DocumentTO> documents) {
         this.documents = documents;
+    }
+
+
+    @Column(name = "CZI_FACE_DISABILITY_STATUS", columnDefinition = "NUMBER(1,0)")
+    public Integer getFaceDisabilityStatus() {
+        return faceDisabilityStatus;
+    }
+
+    public void setFaceDisabilityStatus(Integer faceDisabilityStatus) {
+        this.faceDisabilityStatus = faceDisabilityStatus;
     }
 
     @Override

@@ -60,7 +60,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
     private static final String DEFAULT_CARD_REQUEST_IDLE_PERIOD = "365";
     private static final String DEFAULT_KEY_FING_CANDIDATE_SIZE_KB = "12";
-    private static final String DEFAULT_KEY_FING_NORMAL_1_SIZE_KB = "1.5";
+    private static final String DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = "1.4";
     private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "1.5";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB = "400";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = "100";
@@ -1360,10 +1360,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         try {
             for (BiometricTO bio : biometricDatas) {
+                Float isoNormal = null;
                 if (BiometricType.FING_CANDIDATE.equals(bio.getType())) {
 
                     Integer fingCandidateSize;
-
                     try {
                         fingCandidateSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_SIZE_KB
                                 , DEFAULT_KEY_FING_CANDIDATE_SIZE_KB));
@@ -1371,36 +1371,26 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                         logger.error(e.getMessage(), e);
                         fingCandidateSize = Integer.valueOf(DEFAULT_KEY_FING_CANDIDATE_SIZE_KB);
                     }
-
                     if (bio.getData().length > (fingCandidateSize * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_094, BizExceptionCode.RSI_094_MSG);
+                    
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
-                    Float fingCandidateSize;
-
                     try {
-                        fingCandidateSize = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_1_SIZE_KB
-                                , DEFAULT_KEY_FING_NORMAL_1_SIZE_KB));
+                        isoNormal =
+                                Float.valueOf(EmsUtil.getProfileValue(
+                                        ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
+                                        , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
-                        fingCandidateSize = Float.valueOf(DEFAULT_KEY_FING_NORMAL_1_SIZE_KB);
+                        isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
                     }
 
-                    if (bio.getData().length > ((int) (fingCandidateSize * 1024)))
+                    if (bio.getData().length > ((int) (isoNormal * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_165, BizExceptionCode.RSI_165_MSG);
                 } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
 
-                    Float fingCandidateSize;
-
-                    try {
-                        fingCandidateSize = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_CANDIDATE_NORMAL_2_SIZE_KB
-                                , DEFAULT_KEY_FING_NORMAL_2_SIZE_KB));
-                    } catch (NumberFormatException e) {
-                        logger.error(e.getMessage(), e);
-                        fingCandidateSize = Float.valueOf(DEFAULT_KEY_FING_NORMAL_2_SIZE_KB);
-                    }
-
-                    if (bio.getData().length > ((int) (fingCandidateSize * 1024)))
+                    if (bio.getData().length > ((int) (isoNormal * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_166, BizExceptionCode.RSI_166_MSG);
                 }
                 addBiometric(biometricDAO, citizenInfoInDb, bio);
@@ -1507,15 +1497,31 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @Override
     @Permissions(value = "ems_addFaceInfo")
     @BizLoggable(logAction = "INSERT", logEntityName = "BIOMETRIC")
-    public void addFaceData(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException {
-        addBiometricData(requestId, biometricDatas);
+    public void addFaceData(long requestId, ArrayList<BiometricTO> biometricDatas,
+                            Integer faceDisabilityStatus) throws BaseException {
 
+        CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
+        if (cr != null) {
+        CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+        if (citizenInfoInDb != null)
+            citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+           getCitizenInfoDAO().update(citizenInfoInDb);
+        }
+        addBiometricData(requestId, biometricDatas);
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), null, SystemId.CCOS, null,
                 CardRequestHistoryAction.FACE_SCAN, getUserProfileTO().getUserName());
     }
 
     @Override
-    public void addFaceDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas) throws BaseException {
+    public void addFaceDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas,
+                                   Integer faceDisabilityStatus) throws BaseException {
+        CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
+        if (cr != null) {
+            CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+            if (citizenInfoInDb != null)
+                citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+            getCitizenInfoDAO().update(citizenInfoInDb);
+        }
         addBiometricData(requestId, biometricDatas);
     }
 
@@ -2356,7 +2362,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @BizLoggable(logAction = "INSERT_VIP", logEntityName = "REQUEST")
     public Boolean saveFromVip(CardRequestTO requestTO,
                                ArrayList<BiometricTO> fingers, ArrayList<BiometricTO> faces,
-                               ArrayList<DocumentTO> documents, String featureExtractorIdNormal, String featureExtractorIdCC) throws BaseException {
+                               ArrayList<DocumentTO> documents, String featureExtractorIdNormal,
+                               String featureExtractorIdCC, Integer faceDisabilityStatus) throws BaseException {
         try {
 
             // do validation
@@ -2425,7 +2432,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             requestTO.setEstelam2Flag(Estelam2FlagType.N);
             requestTO.setReservationDate(new Date());
             requestTO.setRequestedSmsStatus(1);
-
+            requestTO.getCitizen().getCitizenInfo().setFaceDisabilityStatus(faceDisabilityStatus);
             long requestId = save(requestTO);
             CardRequestTO cardRequestAfterInsert = getCardRequestDAO().find(CardRequestTO.class, requestId);
             // set priority to 99

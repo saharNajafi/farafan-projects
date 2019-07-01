@@ -32,8 +32,6 @@ public class BiometricInfoTO extends ExtEntityTO {
     private FingerQualityType fingerQualityType = FingerQualityType.UNDEFINED;
     private String featureExtractorIdNormal = "0201";
     private String featureExtractorIdCC = "0201";
-    private Integer faceDisabilityStatus;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -109,16 +107,6 @@ public class BiometricInfoTO extends ExtEntityTO {
     public void setFeatureExtractorIdCC(String featureExtractorIdCC) {
         this.featureExtractorIdCC = featureExtractorIdCC;
     }
-
-    @Column(name = "BMI_FACE_DISABILITY_STATUS", columnDefinition = "NUMBER(1,0)")
-    public Integer getFaceDisabilityStatus() {
-        return faceDisabilityStatus;
-    }
-
-    public void setFaceDisabilityStatus(Integer faceDisabilityStatus) {
-        this.faceDisabilityStatus = faceDisabilityStatus;
-    }
-
 
 
     @Override

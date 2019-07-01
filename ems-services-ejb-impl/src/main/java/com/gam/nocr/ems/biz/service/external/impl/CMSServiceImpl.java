@@ -499,7 +499,6 @@ public class CMSServiceImpl extends AbstractService implements CMSServiceLocal, 
         map.put("currentChildrenCount", currentChildrenCount);
         map.put("recordedChildrenCount", recordedChildrenCount);
         map.put("featureExtractorID", biometricInfoTO.getFeatureExtractorIdCC());
-        map.put("faceDisabilityStatus",biometricInfoTO.getFaceDisabilityStatus());
         byte[] byteRequest = xmlMapperProvider.writeXML(cardRequestTO, map);
 
         String validateXml = new String(byteRequest);

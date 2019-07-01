@@ -21,7 +21,6 @@ import com.gam.nocr.ems.data.domain.BiometricTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.DocumentTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.date.DateUtil;
@@ -53,15 +52,16 @@ public class CompleteRegistrationServiceImpl extends EMSAbstractService implemen
     @Override
     @Permissions(value = "ems_transferMES")
     @BizLoggable(logAction = "INSERT", logEntityName = "REQUEST")
-    public void register(CardRequestTO requestTO, ArrayList<BiometricTO> fingers
-            , ArrayList<BiometricTO> faces
-            , ArrayList<DocumentTO> documents, byte[] signature, String featureExtractorIdNormal,String featureExtractorIdCC) throws BaseException {
+    public void register(CardRequestTO requestTO, ArrayList<BiometricTO> fingers,
+                         ArrayList<BiometricTO> faces, ArrayList<DocumentTO> documents,
+                         byte[] signature, String featureExtractorIdNormal,
+                         String featureExtractorIdCC, Integer faceDisabilityStatus) throws BaseException {
         RegistrationService registrationService = getRegistrationService();
         registrationService.setUserProfileTO(getUserProfileTO());
         long requestId = registrationService.saveFromMES(requestTO);
 //        registrationService.addFingerDataFromMES(requestId, fingers);
         registrationService.addFingerDataFromMES(requestId, fingers, featureExtractorIdNormal,featureExtractorIdCC);
-        registrationService.addFaceDataFromMES(requestId, faces);
+        registrationService.addFaceDataFromMES(requestId, faces, faceDisabilityStatus);
         registrationService.addDocumentFromMES(requestId, documents);
 //		registrationService.authenticateDocumentFromMES(requestId);
         registrationService.approveRequestFromMES(requestId, signature , getUserProfileTO());

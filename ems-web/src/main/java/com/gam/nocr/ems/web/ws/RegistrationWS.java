@@ -388,7 +388,7 @@ public class RegistrationWS extends EMSWS {
         }
 
         try {
-            registrationDelegator.addFaceData(up, faceInfoWTO.getRequestId(), biometrics);
+            registrationDelegator.addFaceData(up, faceInfoWTO.getRequestId(), biometrics, faceInfoWTO.getFaceDisabilityStatus());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
         } catch (Exception e) {
@@ -726,34 +726,30 @@ public class RegistrationWS extends EMSWS {
      * Transfers MES registration to EMS db
      *
      * @param securityContextWTO The login and session information of the user
-     * @param citizenWTO         Basic information of citizen
-     * @param fingersWTO         Collection of encrypted fingerprint data
-     * @param facesWTO           Collection of face information
-     * @param documentsWTO       Collection of scanned documents
-     * @param signature          The signature of data that is generated using the sign token of the enrollment office
+     * @param mesRequestWTO      Basic information of citizen
+     *                           Collection of encrypted fingerprint data
+     *                           Collection of face information
+     *                           Collection of scanned documents
+     *                           The signature of data that is generated using the sign token of the enrollment office
      *                           manager before sending to EMS
      * @throws InternalException
      */
     @WebMethod
     public void submitMESRequest(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-                                 @WebParam(name = "citizenWTO") CitizenWTO citizenWTO,
-                                 @WebParam(name = "fingers") BiometricWTO[] fingersWTO,
-                                 @WebParam(name = "faces") BiometricWTO[] facesWTO,
-                                 @WebParam(name = "featureExtractorIdNormal") String featureExtractorIdNormal,
-                                 @WebParam(name = "featureExtractorIdCC") String featureExtractorIdCC,
-                                 @WebParam(name = "documents") DocumentWTO[] documentsWTO,
-                                 @WebParam(name = "signature") byte[] signature) throws InternalException {
+                                 @WebParam(name = "mesRequestWTO") MESRequestWTO mesRequestWTO) throws InternalException {
         UserProfileTO up = super.validateRequest(securityContextWTO);
         CompleteRegistrationDelegator delegator = new CompleteRegistrationDelegator();
 
-        CardRequestTO cardRequestTO = convertToCardRequestTO(up, citizenWTO);
-        ArrayList<BiometricTO> fingers = convertToFingersTO(fingersWTO);
-        ArrayList<BiometricTO> faces = convertToFacesTO(facesWTO);
-        ArrayList<DocumentTO> documents = convertToDocumentsTO(documentsWTO);
+        CardRequestTO cardRequestTO = convertToCardRequestTO(up, mesRequestWTO.getCitizenWTO());
+        ArrayList<BiometricTO> fingers = convertToFingersTO(mesRequestWTO.getFingersWTO());
+        ArrayList<BiometricTO> faces = convertToFacesTO(mesRequestWTO.getFacesWTO());
+        ArrayList<DocumentTO> documents = convertToDocumentsTO(mesRequestWTO.getDocumentsWTO());
 
         try {
 //            delegator.register(up, cardRequestTO, fingers, faces, documents, signature);
-            delegator.register(up, cardRequestTO, fingers, faces, documents, signature, featureExtractorIdNormal, featureExtractorIdCC);
+            delegator.register(up, cardRequestTO, fingers, faces, documents,
+                               mesRequestWTO.getSignature(), mesRequestWTO.getFeatureExtractorIdNormal(),
+                               mesRequestWTO.getFeatureExtractorIdCC(), mesRequestWTO.getFaceDisabilityStatus());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {
