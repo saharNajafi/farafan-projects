@@ -699,6 +699,12 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 Element faceImagesElement = doc.createElement("FaceImages");
                 biometricInfoElement.appendChild(faceImagesElement);
 
+                if (citizenInfoTO != null && citizenInfoTO.getFaceDisabilityStatus() != null) {
+                    Attr faceDisabilityStatusAttr = doc.createAttribute("FaceDisabilityStatus");
+                    faceDisabilityStatusAttr.setValue(String.valueOf(citizenInfoTO.getFaceDisabilityStatus()));
+                    faceImagesElement.setAttributeNode(faceDisabilityStatusAttr);
+                }
+
 
                 Element faceImsElement = doc.createElement("FACE_IMS");
                 faceImagesElement.appendChild(faceImsElement);
@@ -807,8 +813,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 Element priority = doc.createElement("Priority");
                 if (cardRequestTO.getPriority() != null) {
                     priority.appendChild(doc.createTextNode(cardRequestTO.getPriority().toString()));
-                }
-                else{
+                } else {
                     priority.appendChild(doc.createTextNode("1"));
                 }
                 requestInfo.appendChild(priority);
