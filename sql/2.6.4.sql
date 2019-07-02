@@ -8,26 +8,26 @@ INSERT INTO "SABA_DEV_EMS"."EMST_FEATURE_EXTRACT_IDS" ("FEI_ID", "FEI_FEATURE_EX
 
 
 INSERT INTO "SABA_DEV_EMS"."INFT_PROFILE_KEY" ("PRF_ID", "PRF_PARENT_ID", "PRF_SYS_ID", "PRF_NAME", "PRF_PRIORITY_CHAIN", "PRF_STATUS", "PRF_VALUES", "PRF_ICON_CLASS", "PRF_PER_ACCESS", "PRF_DEP_ACCESS", "PRF_SYS_ACCESS")
-VALUES (2203, 69, 1, 'nocr.ems.profile.state.ccos.finger.ISO19794NormalFormatMaxSizeBytes', 'P,D,S', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL');
+VALUES (2203, 69, 1, 'nocr.ems.profile.ccos.ISO19794NormalFormatMaxSizeBytes', 'P,D,S', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL');
 
 INSERT INTO "SABA_DEV_EMS"."INFT_SYSTEM_PROFILE" ("SPF_ID", "SPF_PRF_ID", "SPF_CLOB", "SPF_BLOB", "SPF_DATE")
 VALUES (2203, 2203, '1400', NULL, 'NULL');
 -- -------------------------------------------------
 INSERT INTO "SABA_DEV_EMS"."INFT_PROFILE_KEY" ("PRF_ID", "PRF_PARENT_ID", "PRF_SYS_ID", "PRF_NAME", "PRF_PRIORITY_CHAIN", "PRF_STATUS", "PRF_VALUES", "PRF_ICON_CLASS", "PRF_PER_ACCESS", "PRF_DEP_ACCESS", "PRF_SYS_ACCESS")
-VALUES (2204, 69, 1, 'nocr.ems.profile.state.cos.finger.MOCEngineEnhancementNFIQ2QualityThreshold', 'P,D,S', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL')
+VALUES (2204, 69, 1, 'nocr.ems.profile.ccos.finger.singleprint.MOCEngineEnhancementNFIQ2QualityThreshold', 'P,D,S', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL')
 
 INSERT INTO "SABA_DEV_EMS"."INFT_SYSTEM_PROFILE" ("SPF_ID", "SPF_PRF_ID", "SPF_CLOB", "SPF_BLOB", "SPF_DATE")
 VALUES (2204, 2204, '30', NULL, 'NULL');
 -------------------------------------------------
 INSERT INTO "SABA_DEV_EMS"."INFT_PROFILE_KEY" ("PRF_ID", "PRF_PARENT_ID", "PRF_SYS_ID", "PRF_NAME", "PRF_PRIORITY_CHAIN", "PRF_STATUS", "PRF_VALUES", "PRF_ICON_CLASS", "PRF_PER_ACCESS", "PRF_DEP_ACCESS", "PRF_SYS_ACCESS")
-VALUES (2205, 3, 1, 'nocr.ems.profile.state.ccos.document.FaceImageCompressionMaxSizeLimitBytes', 'S,D,P', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL');
+VALUES (2205, 3, 1, 'nocr.ems.profile.ccos.document.FaceImageCompressionMaxSizeLimitBytes', 'S,D,P', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL');
 
 INSERT INTO "SABA_DEV_EMS"."INFT_SYSTEM_PROFILE" ("SPF_ID", "SPF_PRF_ID", "SPF_CLOB", "SPF_BLOB", "SPF_DATE")
 VALUES (2205, 2205, '25600', NULL, 'NULL');
 -------------------------------------------------
 
 INSERT INTO "SABA_DEV_EMS"."INFT_PROFILE_KEY" ("PRF_ID", "PRF_PARENT_ID", "PRF_SYS_ID", "PRF_NAME", "PRF_PRIORITY_CHAIN", "PRF_STATUS", "PRF_VALUES", "PRF_ICON_CLASS", "PRF_PER_ACCESS", "PRF_DEP_ACCESS", "PRF_SYS_ACCESS")
-VALUES (2206, 3, 1, 'nocr.ems.profile.state.ccos.document.SerialNumberImageCompressionMaxSizeLimitBytes', 'S,D,P', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL');
+VALUES (2206, 3, 1, 'nocr.ems.profile.ccos.document.SerialNumberImageCompressionMaxSizeLimitBytes', 'S,D,P', 'H', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL');
 
 INSERT INTO "SABA_DEV_EMS"."INFT_SYSTEM_PROFILE" ("SPF_ID", "SPF_PRF_ID", "SPF_CLOB", "SPF_BLOB", "SPF_DATE")
 VALUES (2206, 2206, '10240', NULL, 'NULL');

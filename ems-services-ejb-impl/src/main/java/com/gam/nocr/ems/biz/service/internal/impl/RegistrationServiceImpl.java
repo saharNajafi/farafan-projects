@@ -64,6 +64,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "1.5";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB = "400";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = "100";
+    private static final String DEFAULT_KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES = "25.6";
+    private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES = "10.24";
     private static final String DEFAULT_SKIP_CMS_CHECK = "false";
     private static final String DEFAULT_SKIP_ESTELAM_CHECK = "false";
     private static final String VIP_STR = "VIP";
@@ -1558,6 +1560,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         try {
             Integer maxDocumentSize;
             Integer minDocumentSize;
+            Float faceImageCompressionMaxSizeLimitBytes;
+            Float serialNumberCompressionMaxSizeLimitBytes;
             try {
                 maxDocumentSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_SCANNED_DOCUMENT_SIZE_KB
                         , DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB));
@@ -1574,12 +1578,34 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 minDocumentSize = Integer.valueOf(DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB);
             }
 
+            try {
+                faceImageCompressionMaxSizeLimitBytes =
+                        Float.valueOf(EmsUtil.getProfileValue(
+                                ProfileKeyName.KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES
+                                , DEFAULT_KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES));
+            } catch (NumberFormatException e) {
+                logger.error(e.getMessage(), e);
+                faceImageCompressionMaxSizeLimitBytes = Float.valueOf(DEFAULT_KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES);
+            }
+
+            try {
+                serialNumberCompressionMaxSizeLimitBytes = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES
+                        , DEFAULT_KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES));
+            } catch (NumberFormatException e) {
+                logger.error(e.getMessage(), e);
+                serialNumberCompressionMaxSizeLimitBytes = Float.valueOf(DEFAULT_KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES);
+            }
+
             StringBuilder result = new StringBuilder().append("Document Type ids are: ");
             for (DocumentTO doc : documents) {
                 if (doc.getData().length > (maxDocumentSize * 1024))
                     throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
                 else if (doc.getData().length < (minDocumentSize * 1024))
                     throw new ServiceException(BizExceptionCode.RSI_128, BizExceptionCode.RSI_128_MSG);
+                else if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
+                    throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
+                else if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                    throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
 
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
@@ -2694,6 +2720,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         try {
             Integer maxDocumentSize;
             Integer minDocumentSize;
+            Float faceImageCompressionMaxSizeLimitBytes;
+            Float serialNumberCompressionMaxSizeLimitBytes;
             try {
                 maxDocumentSize = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_SCANNED_DOCUMENT_SIZE_KB
                         , DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB));
@@ -2710,12 +2738,34 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 minDocumentSize = Integer.valueOf(DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB);
             }
 
+            try {
+                faceImageCompressionMaxSizeLimitBytes =
+                        Float.valueOf(EmsUtil.getProfileValue(
+                                ProfileKeyName.KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES
+                                , DEFAULT_KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES));
+            } catch (NumberFormatException e) {
+                logger.error(e.getMessage(), e);
+                faceImageCompressionMaxSizeLimitBytes = Float.valueOf(DEFAULT_KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES);
+            }
+
+            try {
+                serialNumberCompressionMaxSizeLimitBytes = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES
+                        , DEFAULT_KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES));
+            } catch (NumberFormatException e) {
+                logger.error(e.getMessage(), e);
+                serialNumberCompressionMaxSizeLimitBytes = Float.valueOf(DEFAULT_KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES);
+            }
+
             StringBuilder result = new StringBuilder().append(SystemId.VIP + " " + "Document Type ids are: ");
             for (DocumentTO doc : documents) {
                 if (doc.getData().length > (maxDocumentSize * 1024))
                     throw new ServiceException(BizExceptionCode.RSI_143, BizExceptionCode.RSI_095_MSG);
                 else if (doc.getData().length < (minDocumentSize * 1024))
                     throw new ServiceException(BizExceptionCode.RSI_144, BizExceptionCode.RSI_128_MSG);
+                else if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
+                    throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
+                else if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                    throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
 
                 addDoc(documentDAO, citizenInfoInDb, doc);
 

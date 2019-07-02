@@ -1494,7 +1494,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     return labels.getString("state.disableEnrollmentOffice");
                 } else {
                     String outgoingSMSTO = MessageFormat.format(
-                            labels.getString("state.sms.reserved"), cardRequestTO.getCitizen().getFirstNamePersian(),
+                            labels.getString("state.sms.reserved"),
+                            cardRequestTO.getCitizen().getFirstNamePersian(),
                             cardRequestTO.getCitizen().getSurnamePersian(),
                             DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI),
                             enrollmentOfficeTO.getAddress());

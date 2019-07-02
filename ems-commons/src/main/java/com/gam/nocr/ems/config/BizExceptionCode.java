@@ -476,6 +476,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_167 = "EMS_S_RSI_167";
     public static final String RSI_168 = "EMS_S_RSI_168";
     public static final String RSI_169 = "EMS_S_RSI_169";
+    public static final String RSI_170 = "EMS_S_RSI_170";
+    public static final String RSI_171 = "EMS_S_RSI_171";
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -608,6 +610,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_166_MSG = "Save biometric data encounter error due to large normal2 finger size (default value 1.5KB)";
     public static final String RSI_167_MSG = "featureExtractorIdCC is null";
     public static final String RSI_169_MSG = "this citizen have authenticated in past";
+    public static final String RSI_170_MSG = "Save scanned documents encounter error due to faceImageCompressionMaxSizeLimitBytes size (default value 25.6KB)";
+    public static final String RSI_171_MSG = "Save scanned documents encounter error due to serialNumberCompressionMaxSizeLimitBytes size (default value 10.24KB)";
+
+
 
     // com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
     public static final String KSI_001 = "EMS_S_KSI_001";
