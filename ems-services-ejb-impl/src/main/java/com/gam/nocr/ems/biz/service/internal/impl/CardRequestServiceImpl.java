@@ -1866,8 +1866,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         if (calculateAge(personEnquiryVTOResult.getSolarBirthDate()) < 15) {
             throw new ServiceException(BizExceptionCode.CRE_090, BizExceptionCode.CRE_090_MSG, new Object[]{nationalId});
         }
-
-
     }
 
     public int calculateAge(String solarBirthDate) throws BaseException {
