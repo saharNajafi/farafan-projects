@@ -807,8 +807,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 Element priority = doc.createElement("Priority");
                 if (cardRequestTO.getPriority() != null) {
                     priority.appendChild(doc.createTextNode(cardRequestTO.getPriority().toString()));
-                }
-                else{
+                } else {
                     priority.appendChild(doc.createTextNode("1"));
                 }
                 requestInfo.appendChild(priority);
@@ -918,6 +917,13 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 requestInfo.appendChild(authenticatedByElement);
 
+
+                if (cardRequestTO.getTrackingID() == null || cardRequestTO.getTrackingID().trim().isEmpty()) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_035,
+                            DataExceptionCode.IUC_003_MSG,
+                            new String[]{CLASS_NAME, "TrackingId"});
+                }
                 Element trackingIdElement = doc.createElement("TrackingId");
                 trackingIdElement.appendChild(doc.createTextNode(cardRequestTO.getTrackingID()));
                 requestInfo.appendChild(trackingIdElement);
