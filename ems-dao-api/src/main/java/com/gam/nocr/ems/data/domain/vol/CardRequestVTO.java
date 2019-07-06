@@ -1,14 +1,12 @@
 package com.gam.nocr.ems.data.domain.vol;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.util.EmsUtil;
-
 import flexjson.JSON;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com.com">Alireza Saadat</a>
@@ -43,14 +41,6 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
     private CitizenInfoVTO citizenInfo;
     private List<SpouseVTO> spouses;
     private List<ChildVTO> children;
-
-    private String fatherName;
-    private String birthCertId;
-    private String citizenBirthDate;
-    private String userFirstName;
-    private String userLastName;
-    private Date receiptDate;
-
     public CardRequestVTO() {
     }
 
@@ -308,54 +298,6 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
 
     public void setChildren(List<ChildVTO> children) {
         this.children = children;
-    }
-
-    public String getFatherName() {
-        return fatherName;
-    }
-
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
-
-    public String getBirthCertId() {
-        return birthCertId;
-    }
-
-    public void setBirthCertId(String birthCertId) {
-        this.birthCertId = birthCertId;
-    }
-
-    public String getCitizenBirthDate() {
-        return citizenBirthDate;
-    }
-
-    public void setCitizenBirthDate(String citizenBirthDate) {
-        this.citizenBirthDate = citizenBirthDate;
-    }
-
-    public String getUserFirstName() {
-        return userFirstName;
-    }
-
-    public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
-    }
-
-    public String getUserLastName() {
-        return userLastName;
-    }
-
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
-    }
-
-    public Date getReceiptDate() {
-        return receiptDate;
-    }
-
-    public void setReceiptDate(Date receiptDate) {
-        this.receiptDate = receiptDate;
     }
 }
 
