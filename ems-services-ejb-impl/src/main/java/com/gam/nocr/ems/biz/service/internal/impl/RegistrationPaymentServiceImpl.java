@@ -133,7 +133,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 getCardRequestService().update(cardRequestTO);
             }
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.RGP_020, BizExceptionCode.RGP_020_MSG, e);
+            throw new ServiceException(BizExceptionCode.RGP_014, BizExceptionCode.RGP_014_MSG, e);
         }
     }
 

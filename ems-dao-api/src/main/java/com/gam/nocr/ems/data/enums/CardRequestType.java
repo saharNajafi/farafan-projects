@@ -1,4 +1,4 @@
-package com.gam.nocr.ems.data.enums;
+package com.gam.nocr.ems.data.enums;REPLICA
 
 /**
  * @author: Haeri (haeri@gamelectronics.com)
