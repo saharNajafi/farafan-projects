@@ -44,6 +44,8 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     private static final String DEFAULT_OFFICE_CAPACITY_END_DATE = "15000101";
 
     @Override
+    @Permissions(value = "ems_addOfficeCapacity")
+    @BizLoggable(logAction = "INSERT", logEntityName = "OFFICE_CAPACITY")
     public Long save(OfficeCapacityVTO officeCapacityVTO) throws BaseException {
 
         OfficeCapacityTO officeCapacityTO = null;
@@ -120,6 +122,8 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     }
 
     @Override
+    @Permissions(value = "ems_editOfficeCapacity")
+    @BizLoggable(logAction = "UPDATE", logEntityName = "OFFICE_CAPACITY")
     public Long update(OfficeCapacityVTO officeCapacityVTO) throws BaseException {
         OfficeCapacityTO officeCapacityTO = null;
         int endDate;
@@ -227,7 +231,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     }
 
     @Override
-    @Permissions(value = "ems_removeDepartment")
+    @Permissions(value = "ems_removeOfficeCapacity")
     @BizLoggable(logAction = "DELETE", logEntityName = "OFFICECAPACITY")
     public boolean remove(String officeCapacityIds) throws BaseException {
         try {
@@ -243,6 +247,8 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
     }
 
     @Override
+    @Permissions(value = "ems_viewOfficeCapacity")
+    @BizLoggable(logAction = "LOAD", logEntityName = "OFFICE_CAPACITY")
     public OfficeCapacityVTO load(Long officeCapacityId) throws BaseException {
         OfficeCapacityTO officeCapacityTO;
         OfficeCapacityVTO officeCapacityVTO = new OfficeCapacityVTO();
