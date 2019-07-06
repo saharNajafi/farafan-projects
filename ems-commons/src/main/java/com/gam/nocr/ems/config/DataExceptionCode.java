@@ -118,6 +118,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String IUC_032 = "EMS_D_IUC_032";
     public static final String IUC_033 = "EMS_D_IUC_033";
     public static final String IUC_034 = "EMS_D_IUC_034";
+    public static final String IUC_035 = "EMS_D_IUC_035";
     public static final String IUC_003_MSG = "The mapper '{}' could not do the mapping operation because the instance of type '{}' which was passed to this mapper was null.";
     public static final String IUC_004_MSG = "The mapper could not do the mapping operation because the field of {0} which was passed to this mapper was null.";
 
