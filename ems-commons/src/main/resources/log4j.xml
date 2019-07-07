@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+\<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration debug="true"
                      xmlns:log4j='http://jakarta.apache.org/log4j/'>
@@ -140,7 +140,7 @@
         <param name="MaxBackupIndex" value="5"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"
-                   value="pki: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+                   value="bpi: [%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
         </layout>
     </appender>
 
