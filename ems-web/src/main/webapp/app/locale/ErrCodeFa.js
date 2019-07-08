@@ -562,6 +562,7 @@ Ext.apply(Ems.ErrorCode, {
         EMS_D_PDI_024: Ems.ErrorCode.general.defaultDBError,
         EMS_D_PDI_025: 'جایگاه سازمانی انتخاب شده نا معتبر می باشد.',
         EMS_D_PDI_026: 'جایگاه سازمانی انتخاب شده نا معتبر می باشد.',
+        EMS_D_PDI_041:'این شخص قبلا بعنوان مدیر یک ذفتر ثبت شده است.',
         EMS_D_PTI_001: Ems.ErrorCode.general.defaultDBError,
         EMS_D_PTI_002: Ems.ErrorCode.general.defaultDBError,
         EMS_D_PTI_003: Ems.ErrorCode.general.defaultDBError,
