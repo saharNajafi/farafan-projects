@@ -19,7 +19,9 @@ import org.displaytag.exception.ListHandlerException;
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +44,7 @@ public class PersonDAOImpl extends EmsBaseDAOImpl<PersonTO> implements PersonDAO
     private static final String FOREIGN_KEY_PER_USER_NAME = "FK_PER_TKN_PERSON_ID";
     private static final String FOREIGN_KEY_PERSON_PROFILE_PER_ID = "FK_PERSON_PROFILE_PER_ID";
     private static final String FOREIGN_KEY_ENROLL_OFC_PER_ID = "FK_ENROLL_OFC_PER_ID";
+    private static final String UNIQUE_KEY_AK_ENROLL_OFC_PER_ID = "AK_ENROLL_OFC_PER_ID";
 
     @Override
     @PersistenceContext(unitName = "EmsOraclePU")
@@ -113,6 +116,8 @@ public class PersonDAOImpl extends EmsBaseDAOImpl<PersonTO> implements PersonDAO
                 throw new DAOException(DataExceptionCode.PDI_023, DataExceptionCode.PDI_004_MSG, e);
             if (err.contains(FOREIGN_KEY_ENROLL_OFC_PER_ID))
                 throw new DAOException(DataExceptionCode.PDI_026, DataExceptionCode.PDI_025_MSG, e);
+            if (err.contains(UNIQUE_KEY_AK_ENROLL_OFC_PER_ID))
+                throw new DAOException(DataExceptionCode.PDI_041, DataExceptionCode.PDI_041_MSG, e);
             else
                 throw new DAOException(DataExceptionCode.PDI_024, DataExceptionCode.PDI_005_MSG, e);
         }
