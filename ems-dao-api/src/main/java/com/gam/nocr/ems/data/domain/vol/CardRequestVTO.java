@@ -51,7 +51,7 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
                           String cardType, String cardState, String trackingId,
                           String requestedAction, String requestOrigin,
                           String deliveredOfficeName, Timestamp deliveredDate,
-                          Timestamp reservationDate, Integer flag) {
+                          Timestamp reservationDate, Integer flag,Integer priority) {
         this.id = id;
         this.citizenFirstName = citizenFirstName;
         this.citizenSurname = citizenSurname;
@@ -71,6 +71,7 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
         this.reservationDate = reservationDate;
         this.flag = flag;
 
+        this.priority = priority;
         if (flag != null) {
             faceFlag = (flag & 1) == 1;
             fingerFlag = (flag & 2) == 2;
