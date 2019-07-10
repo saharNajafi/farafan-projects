@@ -17,16 +17,13 @@ import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.*;
-import com.gam.nocr.ems.data.enums.BiometricType;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.CertificateUsage;
-import com.gam.nocr.ems.data.enums.Estelam2FlagType;
-import com.gam.nocr.ems.data.enums.Gender;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.BiometricMapper;
 import com.gam.nocr.ems.data.mapper.tomapper.CardRequestMapper;
 import com.gam.nocr.ems.data.mapper.tomapper.DocumentMapper;
 import com.gam.nocr.ems.data.mapper.tomapper.DocumentTypeMapper;
 import com.gam.nocr.ems.util.EmsUtil;
+import com.gam.nocr.ems.util.NationalIDUtil;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.util.Base64;
@@ -39,6 +36,8 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.WebFault;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -723,6 +722,76 @@ public class RegistrationWS extends EMSWS {
     }
 
     /**
+     * The CCOS calls this service by citizen's firstName, lastName and NID in order to check its existence in EMS. This
+     * service is called in all issuance processes (except first card) by CCOS in order to fetch citizen's information
+     * and fill the registration form (in read-only mode)
+     *
+     * @param securityContextWTO  The login and session information of the user
+     * @param fetchCitizenInfoWTO
+     * @return Registration information for given user (if any found in system)
+     * @throws InternalException
+     */
+    @WebMethod
+    public CitizenInfoWTO fetchCitizenInfo(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+                                       @WebParam(name = "fetchCitizenInfoWTO") fetchCitizenInfoWTO fetchCitizenInfoWTO)
+            throws InternalException {
+
+//        UserProfileTO up = super.validateRequest(securityContextWTO);
+        UserProfileTO up = null;
+        CitizenInfoWTO citizenInfoWTO = null;
+        CitizenTO citizenTO = null;
+        Date birthDate;
+        CardRequestType type = fetchCitizenInfoWTO.getType();
+        try {
+            if (!NationalIDUtil.checkValidNinStr(fetchCitizenInfoWTO.getNationalId())) {
+                throw new InternalException(
+                        WebExceptionCode.RSW_088_MSG + fetchCitizenInfoWTO.getNationalId(),
+                        new EMSWebServiceFault(WebExceptionCode.RSW_088));
+            }
+            if (fetchCitizenInfoWTO.getBirthDate() == null) {
+                throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
+            }
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+             birthDate = simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateLunar());
+            if (type.equals(CardRequestType.REPLICA))
+                citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
+            if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
+                Boolean crnValidation =
+                        registrationDelegator.checkCRN(up, fetchCitizenInfoWTO.getNationalId(),
+                                fetchCitizenInfoWTO.getCrn());
+                if (!crnValidation)
+                    throw new InternalException(
+                            WebExceptionCode.RSW_089_MSG + fetchCitizenInfoWTO.getCrn(),
+                            new EMSWebServiceFault(WebExceptionCode.RSW_089));
+                citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
+            }
+            if (citizenTO == null) {
+                throw new InternalException(WebExceptionCode.RSW_062_MSG + fetchCitizenInfoWTO.getNationalId(),
+                        new EMSWebServiceFault(WebExceptionCode.RSW_093));
+            }
+            if (citizenTO != null) {
+                if (!birthDate.equals(fetchCitizenInfoWTO.getBirthDate()))
+                    throw new InternalException(WebExceptionCode.RSW_090_MSG + fetchCitizenInfoWTO.getBirthDate(),
+                            new EMSWebServiceFault(WebExceptionCode.RSW_090));
+            }
+            registrationDelegator.checkPreviousCardRequestNotStopped(up, citizenTO);
+            try {
+                citizenInfoWTO = CardRequestMapper.convert(citizenTO);
+            } catch (Exception e) {
+                throw new InternalException(WebExceptionCode.RSW_091_MSG,
+                                            new EMSWebServiceFault(WebExceptionCode.RSW_091), e);
+            }
+
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return citizenInfoWTO;
+    }
+
+    /**
      * Transfers MES registration to EMS db
      *
      * @param securityContextWTO The login and session information of the user
@@ -748,8 +817,8 @@ public class RegistrationWS extends EMSWS {
         try {
 //            delegator.register(up, cardRequestTO, fingers, faces, documents, signature);
             delegator.register(up, cardRequestTO, fingers, faces, documents,
-                               mesRequestWTO.getSignature(), mesRequestWTO.getFeatureExtractorIdNormal(),
-                               mesRequestWTO.getFeatureExtractorIdCC(), mesRequestWTO.getFaceDisabilityStatus());
+                    mesRequestWTO.getSignature(), mesRequestWTO.getFeatureExtractorIdNormal(),
+                    mesRequestWTO.getFeatureExtractorIdCC(), mesRequestWTO.getFaceDisabilityStatus());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()), e);
         } catch (Exception e) {

@@ -250,4 +250,13 @@ public class RegistrationDelegator implements Delegator {
 	}
 
 
+    public CitizenTO fetchCitizenInfo(UserProfileTO userProfileTO, String nationalId) throws BaseException{
+        return getService(userProfileTO).fetchCitizenInfo(nationalId);
+
+    }
+
+    public Boolean checkCRN(UserProfileTO userProfileTO, String nationalId, String crn) throws BaseException{
+        return getService(userProfileTO).checkCRN(nationalId, crn);
+
+    }
 }
