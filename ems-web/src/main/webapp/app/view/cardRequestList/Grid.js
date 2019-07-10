@@ -544,6 +544,14 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 }
             },
             {
+                dataIndex: EmsObjectName.cardRequestList.priority,
+                id: EmsObjectName.cardRequestList.priority,
+                text: 'اولویت',
+                sortable: false,
+                filterable: false,
+                filter: false
+            },
+            {
                 dataIndex: EmsObjectName.cardRequestList.fingerFlag,
                 id: EmsObjectName.cardRequestList.fingerFlag,
                 text: 'اثر انگشت',

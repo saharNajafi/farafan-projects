@@ -2600,6 +2600,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                             + "(select dep.dep_name from emst_department dep "
                             + "where dep.dep_id = cr.crq_delivered_office_id) crq_delivered_office_name,"
                             + "c.CRD_DELIVER_DATE, cr.crq_rsv_date, cr.crq_flag "
+                            + ",cr.crq_priority "
                             + "from " + "emst_card_request cr,"
                             + "emst_citizen cz," + "emst_card c,"
                             + "emst_department d " + "where "
@@ -2820,7 +2821,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                             (String) data[11], (String) data[12],
                             (String) data[13], (Timestamp) data[14],
                             (Timestamp) data[15],
-                            ((BigDecimal) data[16]).intValue());
+                            ((BigDecimal) data[16]).intValue(),((BigDecimal )data[17]).intValue());
                     result.add(request);
                 }
             }
