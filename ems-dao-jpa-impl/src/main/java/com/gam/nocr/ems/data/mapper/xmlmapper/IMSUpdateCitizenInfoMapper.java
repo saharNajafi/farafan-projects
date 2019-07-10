@@ -923,6 +923,13 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
                 }
                 requestInfo.appendChild(authenticatedByElement);
 
+
+                if (cardRequestTO.getTrackingID() == null || cardRequestTO.getTrackingID().trim().isEmpty()) {
+                    throw new DataException(
+                            DataExceptionCode.IUC_035,
+                            DataExceptionCode.IUC_003_MSG,
+                            new String[]{CLASS_NAME, "TrackingId"});
+                }
                 Element trackingIdElement = doc.createElement("TrackingId");
                 trackingIdElement.appendChild(doc.createTextNode(cardRequestTO.getTrackingID()));
                 requestInfo.appendChild(trackingIdElement);

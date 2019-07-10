@@ -302,7 +302,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRS_004 = "EMS_S_CRS_004";
     public static final String CRS_005 = "EMS_S_CRS_005";
     public static final String CRS_006 = "EMS_S_CRS_006";
-    public static final String CRS_007 = "EMS_S_CRS_006";
+    public static final String CRS_007 = "EMS_S_CRS_007";
     public static final String CRS_004_MSG = "Card request id cannot not be null";
     public static final String CRS_005_MSG = "Enrollment office id cannot not be null";
     public static final String CRS_006_MSG = "cannot find any office with specified id";
@@ -745,7 +745,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PSI_080 = "EMS_S_PSI_080";
     public static final String PSI_081 = "EMS_S_PSI_081";
     public static final String PSI_082 = "EMS_S_PSI_082";
-    public static final String PSI_083 = "EMS_S_PSI_08";
+    public static final String PSI_083 = "EMS_S_PSI_083";
     public static final String PSI_002_MSG = "There should be a person to persist, it couldn't be null";
     public static final String PSI_003_MSG = "personId couldn't be null, please insert an ID";
     public static final String PSI_006_MSG = "invalid input entry, birth certificate number is empty";
@@ -2883,7 +2883,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
 
     //com.gam.nocr.ems.biz.service.internal.impl.RegistrationPaymentServiceImpl.java
     public static final String RGP_002 = "EMS_S_REG_002";
-    public static final String RGP_020 = "EMS_S_REG_020";
     public static final String RGP_003 = "EMS_S_REG_003";
     public static final String RGP_004 = "EMS_S_REG_004";
     public static final String RGP_005 = "EMS_S_REG_005";
@@ -2895,12 +2894,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_011 = "EMS_S_REG_011";
     public static final String RGP_012 = "EMS_S_REG_012";
     public static final String RGP_013 = "EMS_S_REG_013";
+    public static final String RGP_014 = "EMS_S_REG_014";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
-    public static final String RGP_020_MSG = "an error occurred on savePaymentInfo operation";
     public static final String RGP_003_MSG = "an error occurred on bankInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
     public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
     public static final String RGP_006_MSG = "paidBank is undefined";
+    public static final String RGP_014_MSG = "an error occurred on savePaymentInfo operation";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";
