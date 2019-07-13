@@ -60,7 +60,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
     private static final String DEFAULT_CARD_REQUEST_IDLE_PERIOD = "365";
     private static final String DEFAULT_KEY_FING_CANDIDATE_SIZE_KB = "12";
-    private static final String DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = "1.4";
+    private static final String DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = "1.5";
     private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "1.5";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB = "400";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = "100";
@@ -647,7 +647,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-        ) {
+                ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -1375,11 +1375,12 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     }
                     if (bio.getData().length > (fingCandidateSize * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_094, BizExceptionCode.RSI_094_MSG);
-                    
+
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
                     try {
-                        isoNormal = isNormal();
+                        isoNormal = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
+                                , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
                         isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
@@ -1390,7 +1391,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
 
                     try {
-                        isoNormal = isNormal();
+                        isoNormal = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
+                                , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
                         isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
@@ -1405,12 +1407,6 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             sessionContext.setRollbackOnly();
             throw e;
         }
-    }
-
-    private Float isNormal() {
-        return Float.valueOf(EmsUtil.getProfileValue(
-                ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
-                , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
     }
 
 
@@ -1514,10 +1510,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
         if (cr != null) {
-        CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
-        if (citizenInfoInDb != null)
-            citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
-           getCitizenInfoDAO().update(citizenInfoInDb);
+            CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+            if (citizenInfoInDb != null)
+                citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+            getCitizenInfoDAO().update(citizenInfoInDb);
         }
         addBiometricData(requestId, biometricDatas);
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), null, SystemId.CCOS, null,

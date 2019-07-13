@@ -512,6 +512,7 @@ public class CitizenInfoTO extends ExtEntityTO implements JSONable {
 
 
     @Column(name = "CZI_FACE_DISABILITY_STATUS", columnDefinition = "NUMBER(1,0)")
+    @JSON(include = false)
     public Integer getFaceDisabilityStatus() {
         return faceDisabilityStatus;
     }
