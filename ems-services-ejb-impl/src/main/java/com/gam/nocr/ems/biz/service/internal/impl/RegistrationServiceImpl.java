@@ -1379,10 +1379,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
                     try {
-                        isoNormal =
-                                Float.valueOf(EmsUtil.getProfileValue(
-                                        ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
-                                        , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
+                        isoNormal = isNormal();
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
                         isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
@@ -1391,6 +1388,13 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     if (bio.getData().length > ((int) (isoNormal * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_165, BizExceptionCode.RSI_165_MSG);
                 } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
+
+                    try {
+                        isoNormal = isNormal();
+                    } catch (NumberFormatException e) {
+                        logger.error(e.getMessage(), e);
+                        isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
+                    }
 
                     if (bio.getData().length > ((int) (isoNormal * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_166, BizExceptionCode.RSI_166_MSG);
@@ -1401,6 +1405,12 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             sessionContext.setRollbackOnly();
             throw e;
         }
+    }
+
+    private Float isNormal() {
+        return Float.valueOf(EmsUtil.getProfileValue(
+                ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
+                , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
     }
 
 
