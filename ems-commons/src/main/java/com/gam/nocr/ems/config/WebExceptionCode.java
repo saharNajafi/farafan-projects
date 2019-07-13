@@ -419,6 +419,12 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_085 = "EMS_W_RSW_085";
     public static final String RSW_086 = "EMS_W_RSW_086";
     public static final String RSW_087 = "EMS_W_RSW_087";
+    public static final String RSW_088 = "EMS_W_RSW_088";
+    public static final String RSW_089 = "EMS_W_RSW_089";
+    public static final String RSW_090 = "EMS_W_RSW_090";
+    public static final String RSW_091 = "EMS_W_RSW_091";
+    public static final String RSW_092 = "EMS_W_RSW_092";
+    public static final String RSW_093 = "EMS_W_RSW_093";
     public static final String RSW_001_MSG = "Unable to convert CitizenWTO to CardRequestTO";
     public static final String RSW_002_MSG = "CitizenWTO should not be null";
     public static final String RSW_003_MSG = "Cannot save CitizenWTO which has request Id value, try update instead";
@@ -499,6 +505,11 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_081_MSG = "Unable to convert CitizenWTO to CardRequestTO in preRegistration VIP";
     public static final String RSW_086_MSG = "the feature extractor id normal is empty";
     public static final String RSW_087_MSG = "the feature extractor id cc is empty";
+    public static final String RSW_088_MSG = "national id is invalid";
+    public static final String RSW_089_MSG = "crn is invalid";
+    public static final String RSW_090_MSG = "citizen birthDate is invalid";
+    public static final String RSW_091_MSG = "Unable to generate CitizenInfoWTO";
+    public static final String RSW_092_MSG = "citizen birthDate is null";
 
 
 

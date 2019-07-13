@@ -118,6 +118,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String IUC_032 = "EMS_D_IUC_032";
     public static final String IUC_033 = "EMS_D_IUC_033";
     public static final String IUC_034 = "EMS_D_IUC_034";
+    public static final String IUC_035 = "EMS_D_IUC_035";
     public static final String IUC_003_MSG = "The mapper '{}' could not do the mapping operation because the instance of type '{}' which was passed to this mapper was null.";
     public static final String IUC_004_MSG = "The mapper could not do the mapping operation because the field of {0} which was passed to this mapper was null.";
 
@@ -183,6 +184,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PDI_038 = "EMS_D_PDI_038";
     public static final String PDI_039 = "EMS_D_PDI_039";
     public static final String PDI_040 = "EMS_D_PDI_039";
+    public static final String PDI_041 = "EMS_D_PDI_041";
 
     public static final String PDI_001_MSG = "unable to change status";
     public static final String PDI_002_MSG = "violate unique constraint, national ID already exists";
@@ -194,6 +196,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PDI_010_MSG = "violate foreign key constraint, the person already has profile";
     public static final String PDI_017_MSG = "violate foreign key constraint, the person already assigned as manager";
     public static final String PDI_025_MSG = "Integrity constraint violated, no enrollment office with this id exists";
+    public static final String PDI_041_MSG = "violate unique constraint, can not insert double enrollment_office_manager_id ";
 
 
     // com.gam.nocr.ems.data.dao.impl.SMSDAOImpl

@@ -141,16 +141,17 @@ Ext.define('Ems.view.cardRequestList.Grid', {
         },
         {
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                return 'grid-print-registration-receipt';
-                // if (EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt) {
-                //     var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
+
+                if (EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt) {
+                    return 'grid-print-registration-receipt';
+                    // var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
                 //
                 //     if (cardState != 'IMS_ERROR') {
                 //         return 'grid-print-registration-receipt';
                 // } else
                 //     return 'grid-action-hidden';
-                // } else
-                //     return 'grid-action-hidden';
+                } else
+                    return 'grid-action-hidden';
             },
             tooltip: 'چاپ رسید',
             action: 'printRegistrationReceipt'
@@ -545,7 +546,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             },
             {
                 dataIndex: EmsObjectName.cardRequestList.priority,
-                id: EmsObjectName.cardRequestList.priority,
+                id: EmsObjectName.cardRequestList.documentFlag,
                 text: 'اولویت',
                 sortable: false,
                 filterable: false,

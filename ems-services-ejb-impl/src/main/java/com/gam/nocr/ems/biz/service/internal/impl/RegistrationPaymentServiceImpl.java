@@ -133,7 +133,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 getCardRequestService().update(cardRequestTO);
             }
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.RGP_020, BizExceptionCode.RGP_020_MSG, e);
+            throw new ServiceException(BizExceptionCode.RGP_014, BizExceptionCode.RGP_014_MSG, e);
         }
     }
 
@@ -290,6 +290,8 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                     registrationPaymentTO.setSucceed(true);
                     registrationPaymentTO.setResCode("0");
                     registrationPaymentTO.setPaymentDate(paidDate);
+                    registrationPaymentTO.setRrn(bpiInquiryWTO.getRrn());
+                    registrationPaymentTO.setSystemTraceNo(bpiInquiryWTO.getSystemTraceNo());
                     cardRequestTO.setPaid(true);
                     cardRequestTO.setPaidDate(paidDate);
                     getCardRequestService().update(cardRequestTO);

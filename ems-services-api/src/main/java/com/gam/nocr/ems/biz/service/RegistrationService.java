@@ -14,6 +14,7 @@ import com.gam.nocr.ems.data.domain.ws.PhotoVipWTO;
 import com.gam.nocr.ems.data.enums.BiometricType;
 import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CertificateUsage;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -165,4 +166,7 @@ public interface RegistrationService extends Service {
 	CitizenBirthDateAndGenderWTO getBirthDateAndGenderByRequestId(Long requestId) throws BaseException;
 
 
+    CitizenTO fetchCitizenInfo(String nationalId) throws BaseException;
+
+    Boolean checkCRN(String nationalId, String crn) throws BaseException;
 }

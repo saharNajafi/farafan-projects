@@ -22,6 +22,7 @@ import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.BirthCertIssPlaceVTO;
+import com.gam.nocr.ems.data.domain.vol.CardInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.PersonEnquiryVTO;
 import com.gam.nocr.ems.data.domain.vol.RegistrationVIPVTO;
 import com.gam.nocr.ems.data.domain.ws.*;
@@ -70,6 +71,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     private static final String DEFAULT_SKIP_ESTELAM_CHECK = "false";
     private static final String VIP_STR = "VIP";
     private static final String DEFAULT_KEY_IMS_ESTELAM_IAMGE_ENABLE = "1";
+    private static final String DEFAULT_PRODUCT_ID = "200";
     private static final Logger vipLogger = BaseLog
             .getLogger("VipLogger");
 
@@ -1375,7 +1377,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     }
                     if (bio.getData().length > (fingCandidateSize * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_094, BizExceptionCode.RSI_094_MSG);
-                    
+
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
                     try {
@@ -1504,10 +1506,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
         if (cr != null) {
-        CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
-        if (citizenInfoInDb != null)
-            citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
-           getCitizenInfoDAO().update(citizenInfoInDb);
+            CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+            if (citizenInfoInDb != null)
+                citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+            getCitizenInfoDAO().update(citizenInfoInDb);
         }
         addBiometricData(requestId, biometricDatas);
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), null, SystemId.CCOS, null,
@@ -3052,6 +3054,41 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         return wto;
     }
 
+    @Override
+//    @Permissions(value = "ems_findCitizenInfo")
+//    @BizLoggable(logAction = "LOAD", logEntityName = "CITIZEN")
+    public CitizenTO fetchCitizenInfo(String nationalId) throws BaseException {
+        if (isNullOrEmptyString(nationalId)) {
+            throw new ServiceException(BizExceptionCode.RSI_172,
+                    BizExceptionCode.RSI_172_MSG);
+        }
+        return getIMSManagementService().fetchCitizenInfo(nationalId);
+    }
+
+    @Override
+    public Boolean checkCRN(String nationalId, String crn) throws BaseException {
+        Boolean result = false;
+        List<CardInfoVTO> allCardsList = new ArrayList<CardInfoVTO>();
+        String productId = null;
+        try {
+            ProfileManager pm = ProfileHelper.getProfileManager();
+            productId = (String) pm.getProfile(ProfileKeyName.KEY_CMS_ISSUE_CARD_PRODUCT_ID, true, null, null);
+        } catch (Exception e) {
+            logger.warn(BizExceptionCode.RSI_174, BizExceptionCode.GLB_009_MSG, e);
+        }
+
+        if (productId == null || productId.isEmpty()) {
+            productId = DEFAULT_PRODUCT_ID;
+        }
+        allCardsList = getCMSService().getCitizenCardsByProduct(nationalId, productId);
+        for (int i = 1; i < allCardsList.size(); i++) {
+            if (crn.equals(allCardsList.get(i).getCrn()))
+            result = true;
+        }
+        return result;
+    }
+
+
     private CardRequestService getCardRequestService() throws BaseException {
         ServiceFactory serviceFactory = ServiceFactoryProvider
                 .getServiceFactory();
@@ -3082,5 +3119,21 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         }
         registrationPaymentService.setUserProfileTO(getUserProfileTO());
         return registrationPaymentService;
+    }
+
+    private CMSService getCMSService() throws BaseException {
+        CMSService cmsService;
+        try {
+            cmsService = ServiceFactoryProvider.getServiceFactory()
+                    .getService(EMSLogicalNames.getExternalServiceJNDIName(EMSLogicalNames.SRV_CMS), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.RSI_173,
+                    BizExceptionCode.GLB_002_MSG,
+                    e,
+                    EMSLogicalNames.SRV_CMS.split(","));
+        }
+        cmsService.setUserProfileTO(getUserProfileTO());
+        return cmsService;
     }
 }

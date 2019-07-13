@@ -32,6 +32,7 @@ public class MapperExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRM_018 = "EMS_M_CRM_018";
     public static final String CRM_019 = "EMS_M_CRM_019";
     public static final String CRM_020 = "EMS_M_CRM_020";
+    public static final String CRM_021 = "EMS_M_CRM_021";
 
 
     public static final String CRM_001_MSG = "CitizenVTO should not be null.";
