@@ -1604,17 +1604,18 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append("Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getData().length > (maxDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
-                else if (doc.getData().length < (minDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_128, BizExceptionCode.RSI_128_MSG);
-                else if (doc.getType().getId().equals("52"))
+                if (doc.getType().getId().equals("52")) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                    else if (doc.getType().getId().equals("53"))
-                        if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                            throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
-
+                }else if(doc.getType().getId().equals("53")){
+                    if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
+                }else {
+                    if (doc.getData().length > (maxDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
+                    else if (doc.getData().length < (minDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_128, BizExceptionCode.RSI_128_MSG);
+                }
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
                 result.append(doc.getType().getId()).append(", ");
@@ -2773,9 +2774,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 else if (doc.getType().getId().equals("52"))
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                    else if(doc.getType().getId().equals("53"))
-                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                        throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
+                    else if (doc.getType().getId().equals("53"))
+                        if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                            throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
 
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
