@@ -1375,7 +1375,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     }
                     if (bio.getData().length > (fingCandidateSize * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_094, BizExceptionCode.RSI_094_MSG);
-                    
+
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
                     try {
@@ -1514,10 +1514,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
         CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
         if (cr != null) {
-        CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
-        if (citizenInfoInDb != null)
-            citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
-           getCitizenInfoDAO().update(citizenInfoInDb);
+            CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+            if (citizenInfoInDb != null)
+                citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+            getCitizenInfoDAO().update(citizenInfoInDb);
         }
         addBiometricData(requestId, biometricDatas);
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), null, SystemId.CCOS, null,
@@ -1612,10 +1612,12 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
                 else if (doc.getData().length < (minDocumentSize * 1024))
                     throw new ServiceException(BizExceptionCode.RSI_128, BizExceptionCode.RSI_128_MSG);
-                else if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                else if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
+                else if (doc.getType().getId().equals("52"))
+                    if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
+                    else if (doc.getType().getId().equals("53"))
+                        if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                            throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
 
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
@@ -2772,10 +2774,12 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     throw new ServiceException(BizExceptionCode.RSI_143, BizExceptionCode.RSI_095_MSG);
                 else if (doc.getData().length < (minDocumentSize * 1024))
                     throw new ServiceException(BizExceptionCode.RSI_144, BizExceptionCode.RSI_128_MSG);
-                else if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                else if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
+                else if (doc.getType().getId().equals("52"))
+                    if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
+                    else if(doc.getType().getId().equals("53"))
+                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
 
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
