@@ -99,6 +99,7 @@ Ext.define('Ems.locale.objectName', {
 		oficSuperRegisterOfficeId : 'parentId',
 		oficPostCode : 'zip',
 		oficAddress : 'address',
+		oficCapacity: 'capacity',
 		// oficRating : 'rate',
 		// oficRatingId : 'rateId',
 		workingHoursStartId : 'workingHoursStart',

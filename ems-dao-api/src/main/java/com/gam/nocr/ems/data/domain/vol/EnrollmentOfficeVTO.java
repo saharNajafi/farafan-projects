@@ -75,6 +75,7 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
     private String allowChangeFinger;
     private String officeSettingType;
     private Long ostId;
+    private Integer capacity;
 
 
     public String getName() {
@@ -565,5 +566,13 @@ public class EnrollmentOfficeVTO extends ExtEntityTO {
 
     public void setOstId(Long ostId) {
         this.ostId = ostId;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 }

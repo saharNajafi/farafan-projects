@@ -11,6 +11,7 @@ import com.gam.commons.listreader.ParameterProvider;
 import com.gam.nocr.ems.biz.service.PersonManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.security.SecurityContextService;
 import gampooya.tools.vlp.ListException;
@@ -19,6 +20,9 @@ import gampooya.tools.vlp.ValueListProvider;
 import org.slf4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -158,6 +162,10 @@ public class EnrollmentOfficeProcessor extends EMSVLPListProcessor {
             parameters.put("depPhoneNumber", "%" + depPhoneNumber + "%");
             parts.append(",depPhoneNumber");
         }
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        parameters.put("capdate",Integer.parseInt(CalendarUtil.convertGregorianToPersian(dateFormat.format(
+                new Date())).replaceAll("/", "")));
+        parts.append(",capdate");
 
         ValueListHandler vlh;
         try {
