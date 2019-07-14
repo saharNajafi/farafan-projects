@@ -66,6 +66,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     private static final Logger logger = BaseLog
             .getLogger(CardRequestServiceImpl.class);
     private static final Logger ussdLogger = BaseLog.getLogger("UssdService");
+    private static final Logger trackingIdLogger = BaseLog.getLogger("TrackingIdService");
 
     private static final String DEFAULT_NOCR_SMS_ENDPOINT = "http://sms.sabteahval.ir:8001/SmsProject/SmsPort?wsdl";
     private static final String DEFAULT_NOCR_SMS_NAMESPACE = "http://ws.sms.com/";
@@ -2363,10 +2364,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             nextValue = getCardRequestDAO().nextValueOfRequestTrackingId();
         } catch (BaseException e) {
+            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId:----->"+ e.getMessage());
+            logger.error("Error Occurred in get next value of sequence of TrackingId:----->"+ e.getMessage());
             throw e;
         }
 
         if (nextValue == null) {
+            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             logger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             throw new ServiceException(
                     BizExceptionCode.CRE_087,
@@ -2388,8 +2392,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
             return stringBuilder.toString();
         } catch (Exception e) {
+            trackingIdLogger.error("Error Occurred in generating TrackingId:" + e.getMessage());
             logger.error("Error Occurred in generating TrackingId:" + e.getMessage());
-
             throw new ServiceException(
                     BizExceptionCode.CRE_088,
                     BizExceptionCode.CRE_088_MSG,
