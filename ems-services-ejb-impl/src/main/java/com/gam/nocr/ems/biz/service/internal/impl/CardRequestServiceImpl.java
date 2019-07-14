@@ -2364,8 +2364,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             nextValue = getCardRequestDAO().nextValueOfRequestTrackingId();
         } catch (BaseException e) {
-            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId:----->"+ e.getMessage());
-            logger.error("Error Occurred in get next value of sequence of TrackingId:----->"+ e.getMessage());
+            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId:",e);
+            logger.error("Error Occurred in get next value of sequence of TrackingId:",e);
             throw e;
         }
 
@@ -2392,8 +2392,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
             return stringBuilder.toString();
         } catch (Exception e) {
-            trackingIdLogger.error("Error Occurred in generating TrackingId:" + e.getMessage());
-            logger.error("Error Occurred in generating TrackingId:" + e.getMessage());
+            trackingIdLogger.error("Error Occurred in generating TrackingId:",e);
+            logger.error("Error Occurred in generating TrackingId:",e);
             throw new ServiceException(
                     BizExceptionCode.CRE_088,
                     BizExceptionCode.CRE_088_MSG,
