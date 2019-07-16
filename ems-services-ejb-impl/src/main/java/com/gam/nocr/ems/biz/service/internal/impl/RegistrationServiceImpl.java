@@ -1607,10 +1607,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 if (doc.getType().getId().equals("52")) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                }else if(doc.getType().getId().equals("53")){
+                } else if (doc.getType().getId().equals("53")) {
                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
-                }else {
+                } else {
                     if (doc.getData().length > (maxDocumentSize * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
                     else if (doc.getData().length < (minDocumentSize * 1024))
@@ -2767,17 +2767,18 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append(SystemId.VIP + " " + "Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getData().length > (maxDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_143, BizExceptionCode.RSI_095_MSG);
-                else if (doc.getData().length < (minDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_144, BizExceptionCode.RSI_128_MSG);
-                else if (doc.getType().getId().equals("52"))
+                if (doc.getType().getId().equals("52")) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
-                        throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                    else if (doc.getType().getId().equals("53"))
-                        if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                            throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
-
+                        throw new ServiceException(BizExceptionCode.RSI_172, BizExceptionCode.RSI_170_MSG);
+                } else if (doc.getType().getId().equals("53")) {
+                    if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_173, BizExceptionCode.RSI_171_MSG);
+                } else {
+                    if (doc.getData().length > (maxDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_143, BizExceptionCode.RSI_095_MSG);
+                    else if (doc.getData().length < (minDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_144, BizExceptionCode.RSI_128_MSG);
+                }
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
                 result.append(doc.getType().getId()).append(", ");
