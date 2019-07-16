@@ -317,7 +317,8 @@ Ext.apply(Ems.ErrorCode, {
         EMS_D_DDI_053: 'سیستم به دلیل داشتن درخواستی در حال پردازش که از این دفتر انتقال یافته است، قادر به حذف دفتر نمی باشد.',
         EMS_S_PKI_001: 'بررسی درخواست تغییر وضعیت گواهی کاربر با خطا مواجه شد.'
             + '{(0)}',
-        EMS_S_PKI_00400070: 'امکان باطل نمودن توکن مورد نظر وجود ندارد.'
+        EMS_S_PKI_00400070: 'امکان باطل نمودن توکن مورد نظر وجود ندارد.',
+        EMS_D_PDI_041: 'این شخص قبلا بعنوان مدیر یک دفتر ثبت شده است.'
     },
 
     job: {
@@ -562,7 +563,6 @@ Ext.apply(Ems.ErrorCode, {
         EMS_D_PDI_024: Ems.ErrorCode.general.defaultDBError,
         EMS_D_PDI_025: 'جایگاه سازمانی انتخاب شده نا معتبر می باشد.',
         EMS_D_PDI_026: 'جایگاه سازمانی انتخاب شده نا معتبر می باشد.',
-        EMS_D_PDI_041:'این شخص قبلا بعنوان مدیر یک ذفتر ثبت شده است.',
         EMS_D_PTI_001: Ems.ErrorCode.general.defaultDBError,
         EMS_D_PTI_002: Ems.ErrorCode.general.defaultDBError,
         EMS_D_PTI_003: Ems.ErrorCode.general.defaultDBError,
