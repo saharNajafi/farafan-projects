@@ -146,6 +146,7 @@ Ext.define('Ems.locale.objectName', {
 		g_oficCode : 'g_code',
 		g_oficAddress : 'g_address',
 		g_oficTel : 'g_phone',
+		g_oficcapacity : 'g_capacity',
 		// g_oficRating : 'g_rate',
 		g_tokenStatus : 'g_tokenState',
 		g_superiorOfficeName : 'g_superiorOfficeName',

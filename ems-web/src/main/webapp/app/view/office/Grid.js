@@ -1,9 +1,9 @@
 Ext.define('Ems.view.office.Grid', {
         extend: 'Gam.grid.Crud',
         requires: [
-            'Ems.view.office.Dialog' ,
-            'Ems.view.office.Setting.Dialog' ,
-            'Ems.view.office.OfficeStatusCombobox' ,
+            'Ems.view.office.Dialog',
+            'Ems.view.office.Setting.Dialog',
+            'Ems.view.office.OfficeStatusCombobox',
             'Ems.store.OfficeStore'
         ],
 
@@ -45,7 +45,7 @@ Ext.define('Ems.view.office.Grid', {
                 }
             },
             {
-            	icon: 'resources/themes/images/default/shared/forbidden.png',
+                icon: 'resources/themes/images/default/shared/forbidden.png',
                 tooltip: 'حذف',
                 action: 'revokeOffice',
                 stateful: true,
@@ -131,192 +131,192 @@ Ext.define('Ems.view.office.Grid', {
 //                }
 //            }
             {
-              	 
-         	   tooltip: 'آپلود عکس',
-         	   action: 'changeUploadPhoto',
-         	   getClass: function (value, metadata, record) {
-         		   //debugger;
-         		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	         		   if(record.raw != undefined){	                       
-	         			   var officeSettingType = record.raw.uploadPhoto;
-	         			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	         				   return 'girdAction-LivePhotoActive-icon';
-	         			   else
-	         				   return 'girdAction-LivePhotoDeactive-icon';
-	         		   }else{
-	         			   return 'girdAction-LivePhotoDeactive-icon';
-	         		   }
-         		   }
 
-         	   }
+                tooltip: 'آپلود عکس',
+                action: 'changeUploadPhoto',
+                getClass: function (value, metadata, record) {
+                    //debugger;
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.uploadPhoto;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-LivePhotoActive-icon';
+                            else
+                                return 'girdAction-LivePhotoDeactive-icon';
+                        } else {
+                            return 'girdAction-LivePhotoDeactive-icon';
+                        }
+                    }
+
+                }
             },
             {
-         	   tooltip: 'اخذ اثر انگشت در مد تک انگشتی',
-         	   action: 'changeFingerScanSingleMode',
-         	   getClass: function (value, metadata, record) {
-	         		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	         		   if(record.raw != undefined){
-	         			   var officeSettingType = record.raw.fingerScanSingleMode;
-	
-	         			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	         				   return 'girdAction-FourfourtwoActive-icon';
-	         			   else
-	         				   return 'girdAction-FourfourtwoDeactive-icon';
-	         		   }else{
-	         			   return 'girdAction-FourfourtwoDeactive-icon';
-	         		   }
-	         	   }
-         	   }
+                tooltip: 'اخذ اثر انگشت در مد تک انگشتی',
+                action: 'changeFingerScanSingleMode',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.fingerScanSingleMode;
+
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-FourfourtwoActive-icon';
+                            else
+                                return 'girdAction-FourfourtwoDeactive-icon';
+                        } else {
+                            return 'girdAction-FourfourtwoDeactive-icon';
+                        }
+                    }
+                }
             },
             {
-         	   tooltip: 'اخذ تصویر چهره معلولین',
-         	   action: 'changeDisabilityMode',
-         	   getClass: function (value, metadata, record) {
-         		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	         		   if(record.raw != undefined){
-	         			   var officeSettingType = record.raw.disabilityMode;
-	         			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	         				   return 'girdAction-DisablityModeActive-icon';
-	         			   else
-	         				   return 'girdAction-DisablityModeDeactive-icon'; 
-	         		   }else{
-	         			   return 'girdAction-DisablityModeDeactive-icon'; 
-	         		   }
-	         	   }
-         	   }
+                tooltip: 'اخذ تصویر چهره معلولین',
+                action: 'changeDisabilityMode',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.disabilityMode;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-DisablityModeActive-icon';
+                            else
+                                return 'girdAction-DisablityModeDeactive-icon';
+                        } else {
+                            return 'girdAction-DisablityModeDeactive-icon';
+                        }
+                    }
+                }
             },
             {
-         	   tooltip: 'ثبت درخواست صدور مجدد',
-         	   action: 'changeReIssueRequest',
-         	   getClass: function (value, metadata, record) {
-         		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	         		   if(record.raw != undefined){
-	         			   var officeSettingType = record.raw.reIssueRequest;
-	         			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	         				   return 'girdAction-ReIssueRequestActive-icon';
-	         			   else
-	         				   return 'girdAction-ReIssueRequestDeactive-icon'; 
-	         		   }else{
-	         			   return 'girdAction-ReIssueRequestDeactive-icon'; 
-	         		   }
-	         	   }
-         	   }
-            }, 
-            {
-         	   tooltip: 'مد سالمندی',
-         	   action: 'changeElderyMode',
-         	   getClass: function (value, metadata, record) {
-         		  if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	         		   if(record.raw != undefined){
-	         			   var officeSettingType = record.raw.elderlyMode;
-	         			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	         				   return 'girdAction-ElderyModeActive-icon';
-	         			   else
-	         				   return 'girdAction-ElderyModeDeactive-icon'; 
-	         		   }else{
-	         			   return 'girdAction-ElderyModeDeactive-icon'; 
-	         		   }
-	         	   }
-         	   }
+                tooltip: 'ثبت درخواست صدور مجدد',
+                action: 'changeReIssueRequest',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.reIssueRequest;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-ReIssueRequestActive-icon';
+                            else
+                                return 'girdAction-ReIssueRequestDeactive-icon';
+                        } else {
+                            return 'girdAction-ReIssueRequestDeactive-icon';
+                        }
+                    }
+                }
             },
             {
-          	   tooltip: 'فعالسازی پین جایگزین',
-          	   action: 'changeNMocGeneration',
-          	   getClass: function (value, metadata, record) {
-          		 if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	          		   if(record.raw != undefined){
-	          			   var officeSettingType = record.raw.nMocGeneration;
-	          			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	          				   return 'girdAction-ReplacePinActive-icon';
-	          			   else
-	          				   return 'girdAction-ReplacePinDeactive-icon'; 
-	          		   }else{
-	          			   return 'girdAction-ReplacePinDeactive-icon'; 
-	          		   }
-	          	   }
-          	   }
-             },
-             {
-           	   tooltip: 'تغییر وضعیت انگشتان به قطع در شروع اخذ و بی کیفیت در حین اخذ',
-           	   action: 'changeAmputationAnnouncment',
-           	   getClass: function (value, metadata, record) {
-	           		if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-	           		   if(record.raw != undefined){
-	           			   var officeSettingType = record.raw.amputationAnnouncment;
-	           			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-	           				   return 'girdAction-AmputationAnnouncmentActive-icon';
-	           			   else
-	           				   return 'girdAction-AmputationAnnouncmentDeactive-icon'; 
-	           		   }else{
-	           			   return 'girdAction-AmputationAnnouncmentDeactive-icon'; 
-	           		   }
-	           	   }
-           	   }
-              },
-              {
-              	   tooltip: 'استفاده از اسکنرهای قدیمی',
-              	   action: 'changeUseScannerUI',
-              	   getClass: function (value, metadata, record) {
-   	           		if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-   	           		   if(record.raw != undefined){
-   	           			   var officeSettingType = record.raw.useScannerUI;
-   	           			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-   	           				   return 'girdAction-UseScannerUIActive-icon';
-   	           			   else
-   	           				   return 'girdAction-UseScannerUIDeactive-icon'; 
-   	           		   }else{
-   	           			   return 'girdAction-UseScannerUIDeactive-icon'; 
-   	           		   }
-   	           	   }
-              	   }
-                 },
-                 {
-                 	   tooltip: 'ویرایش دستی پس زمینه',
-                 	   action: 'changeAllowEditBackground',
-                 	   getClass: function (value, metadata, record) {
-      	           		if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-      	           		   if(record.raw != undefined){
-      	           			   var officeSettingType = record.raw.allowEditBackground;
-      	           			   if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-      	           				   return 'girdAction-AllowEditBackgroundActive-icon';
-      	           			   else
-      	           				   return 'girdAction-AllowEditBackgroundDeactive-icon'; 
-      	           		   }else{
-      	           			   return 'girdAction-AllowEditBackgroundDeactive-icon'; 
-      	           		   }
-      	           	   }
-                 	   }
-                    },
+                tooltip: 'مد سالمندی',
+                action: 'changeElderyMode',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.elderlyMode;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-ElderyModeActive-icon';
+                            else
+                                return 'girdAction-ElderyModeDeactive-icon';
+                        } else {
+                            return 'girdAction-ElderyModeDeactive-icon';
+                        }
+                    }
+                }
+            },
+            {
+                tooltip: 'فعالسازی پین جایگزین',
+                action: 'changeNMocGeneration',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.nMocGeneration;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-ReplacePinActive-icon';
+                            else
+                                return 'girdAction-ReplacePinDeactive-icon';
+                        } else {
+                            return 'girdAction-ReplacePinDeactive-icon';
+                        }
+                    }
+                }
+            },
+            {
+                tooltip: 'تغییر وضعیت انگشتان به قطع در شروع اخذ و بی کیفیت در حین اخذ',
+                action: 'changeAmputationAnnouncment',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.amputationAnnouncment;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-AmputationAnnouncmentActive-icon';
+                            else
+                                return 'girdAction-AmputationAnnouncmentDeactive-icon';
+                        } else {
+                            return 'girdAction-AmputationAnnouncmentDeactive-icon';
+                        }
+                    }
+                }
+            },
+            {
+                tooltip: 'استفاده از اسکنرهای قدیمی',
+                action: 'changeUseScannerUI',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.useScannerUI;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-UseScannerUIActive-icon';
+                            else
+                                return 'girdAction-UseScannerUIDeactive-icon';
+                        } else {
+                            return 'girdAction-UseScannerUIDeactive-icon';
+                        }
+                    }
+                }
+            },
+            {
+                tooltip: 'ویرایش دستی پس زمینه',
+                action: 'changeAllowEditBackground',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.allowEditBackground;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-AllowEditBackgroundActive-icon';
+                            else
+                                return 'girdAction-AllowEditBackgroundDeactive-icon';
+                        } else {
+                            return 'girdAction-AllowEditBackgroundDeactive-icon';
+                        }
+                    }
+                }
+            },
             {
                 tooltip: 'امکان انتخاب وضعیت قطع برای انگشتان(برای سالمندان)',
                 action: 'changeAllowAmputatedFinger',
                 getClass: function (value, metadata, record) {
-                    if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-                        if(record.raw != undefined){
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
                             var officeSettingType = record.raw.allowAmputatedFinger;
-                            if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
                                 return 'girdAction-AllowAmputatedFingerActive-icon';
                             else
                                 return 'girdAction-AllowAmputatedFingerInactive-icon';
-                        }else{
+                        } else {
                             return 'girdAction-AllowAmputatedFingerInactive-icon';
                         }
                     }
                 }
-            }   ,
+            },
 
             {
                 tooltip: 'امکان تغییر وضعیت انگشتان در حین اخذ انگشت(حتی پس از اخذ نخستین تصویر برای سالمندان)',
                 action: 'changeAllowChangeFinger',
                 getClass: function (value, metadata, record) {
-                    if(EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting){
-                        if(record.raw != undefined){
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
                             var officeSettingType = record.raw.allowChangeFinger;
-                            if(officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
                                 return 'girdAction-AllowChangeFingerActive-icon';
                             else
                                 return 'girdAction-AllowChangeFingerInactive-icon';
-                        }else{
+                        } else {
                             return 'girdAction-AllowChangeFingerInactive-icon';
                         }
                     }
@@ -333,21 +333,20 @@ Ext.define('Ems.view.office.Grid', {
                 }
             }
 
-            
+
         ],
 
-        contextMenu: [ 'gam.add'],
+        contextMenu: ['gam.add'],
 
         tbar: ['gam.add',
-               {
-                   iconCls: 'girdAction-exportExcel-icon',
-                   text: 'خروجی اکسل',
-                   action: 'exportExcel',
-                   stateful: true,
-                   stateId: this.stateId + 'ExportExcel'
-               }
-           ],
-
+            {
+                iconCls: 'girdAction-exportExcel-icon',
+                text: 'خروجی اکسل',
+                action: 'exportExcel',
+                stateful: true,
+                stateId: this.stateId + 'ExportExcel'
+            }
+        ],
 
 
         initComponent: function () {
@@ -357,15 +356,15 @@ Ext.define('Ems.view.office.Grid', {
 
         getColumnOffice: function () {
             return ([
-                     {
-                         xtype: 'gridcolumn',
-                         width: 150,
-                         text: 'استان',
-                         dataIndex: EmsObjectName.officeNewEdit.provinceName,
-                         id: EmsObjectName.officeNewEdit.provinceName,
-                         filterable: true,
-                         filter: true
-                     },
+                {
+                    xtype: 'gridcolumn',
+                    width: 150,
+                    text: 'استان',
+                    dataIndex: EmsObjectName.officeNewEdit.provinceName,
+                    id: EmsObjectName.officeNewEdit.provinceName,
+                    filterable: true,
+                    filter: true
+                },
                 {
                     xtype: 'gridcolumn',
                     text: 'نام دفتر',
@@ -428,6 +427,13 @@ Ext.define('Ems.view.office.Grid', {
                     filter: true,
                     dataIndex: EmsObjectName.officeNewEdit.oficTel,
                     id: EmsObjectName.officeNewEdit.g_oficTel
+                }, {
+                    xtype: 'gridcolumn',
+                    text: 'ظرفیت',
+                    filterable: false,
+                    filter: false,
+                    dataIndex: EmsObjectName.officeNewEdit.oficCapacity,
+                    id: EmsObjectName.officeNewEdit.g_oficTel
                 },
                 {
                     xtype: 'gridcolumn',
@@ -441,7 +447,7 @@ Ext.define('Ems.view.office.Grid', {
                         store: {
                             fields: ['value', 'label'],
                             data: [
-                                 {
+                                {
                                     value: '0',
                                     label: 'اداره ثبت احوال'
                                 },
@@ -472,21 +478,20 @@ Ext.define('Ems.view.office.Grid', {
                         valueField: 'value'
                     },
                     renderer: function (value) {
-                    	 if (value == "0") {
-                             return "اداره ثبت احوال";
-                         } else if (value == "1") {
-                             return "دفتر پیشخوان";
-                         }else if (value == "2") {
-                             return 'دفتر پست';
-                         }
-                         else if (value == "NOCR") {
-                             return "اداره ثبت احوال";
-                         } else if (value == "OFFICE") {
-                             return "دفتر پیشخوان";
-                         }else if (value == "POST") {
-                             return 'دفتر پست';
-                         }
-                        
+                        if (value == "0") {
+                            return "اداره ثبت احوال";
+                        } else if (value == "1") {
+                            return "دفتر پیشخوان";
+                        } else if (value == "2") {
+                            return 'دفتر پست';
+                        } else if (value == "NOCR") {
+                            return "اداره ثبت احوال";
+                        } else if (value == "OFFICE") {
+                            return "دفتر پیشخوان";
+                        } else if (value == "POST") {
+                            return 'دفتر پست';
+                        }
+
                     }
                 },
                 {
