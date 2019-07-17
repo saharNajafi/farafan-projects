@@ -1604,10 +1604,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append("Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getType().getId().equals("52")) {
+                if (doc.getType().getId()==52L) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                } else if (doc.getType().getId().equals("53")) {
+                } else if (doc.getType().getId()==53L) {
                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
                 } else {
@@ -2767,10 +2767,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append(SystemId.VIP + " " + "Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getType().getId().equals("52")) {
+                if (doc.getType().getId()==52L) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_172, BizExceptionCode.RSI_170_MSG);
-                } else if (doc.getType().getId().equals("53")) {
+                } else if (doc.getType().getId()==53L) {
                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_173, BizExceptionCode.RSI_171_MSG);
                 } else {
