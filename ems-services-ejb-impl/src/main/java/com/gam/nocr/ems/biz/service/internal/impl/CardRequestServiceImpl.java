@@ -2288,7 +2288,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             } else if (CardRequestState.RESERVED.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_086,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            } else {
+            }else if(CardRequestState.PENDING_TO_DELIVER_BY_CMS.equals(cardRequestTO.getState())){
+                throw new ServiceException(BizExceptionCode.CRE_087,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            }else if (CardRequestState.REPEALED.equals(cardRequestTO.getState())){
+                throw new ServiceException(BizExceptionCode.CRE_088,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            }
+            else {
                 Long personID = getPersonService().findPersonIdByUsername(getUserProfileTO().getUserName());
                 PersonTO personTO = getPersonService().find(personID);
                 cardRequestReceiptVTO.setCitizenFirstName(cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getFirstNamePersian() : "");
