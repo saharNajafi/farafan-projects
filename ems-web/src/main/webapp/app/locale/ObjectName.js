@@ -112,7 +112,7 @@ Ext.define('Ems.locale.objectName', {
 		officeDeliverEnable : 'officeDeliverEnable',
 		superiorOfficeId : 'superiorOfficeId',
 		superiorOfficeName : 'superiorOfficeName',
-		fqdn : 'fqdn',
+		fqdn : 'capacity',
 		uploadPhoto : 'uploadPhoto',
 		fingerScanSingleMode : 'fingerScanSingleMode',
 		disabilityMode : 'disabilityMode',
