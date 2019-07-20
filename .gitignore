@@ -1,5 +1,4 @@
 # Directories #
-build/
 bin/
 target/
 libs/
@@ -47,7 +46,6 @@ Desktop.ini
 # NetBeans
 ######################
 nbproject/
-build/
 nbbuild/
 dist/
 nbdist/
