@@ -61,7 +61,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
     private static final String DEFAULT_CARD_REQUEST_IDLE_PERIOD = "365";
     private static final String DEFAULT_KEY_FING_CANDIDATE_SIZE_KB = "12";
-    private static final String DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = "1.4";
+    private static final String DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = "1.5";
     private static final String DEFAULT_KEY_FING_NORMAL_2_SIZE_KB = "1.5";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_SIZE_KB = "400";
     private static final String DEFAULT_KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = "100";
@@ -649,7 +649,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-        ) {
+                ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -1381,10 +1381,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 } else if (BiometricType.FING_NORMAL_1.equals(bio.getType())) {
 
                     try {
-                        isoNormal =
-                                Float.valueOf(EmsUtil.getProfileValue(
-                                        ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
-                                        , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
+                        isoNormal = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
+                                , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
                     } catch (NumberFormatException e) {
                         logger.error(e.getMessage(), e);
                         isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
@@ -1393,6 +1391,14 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     if (bio.getData().length > ((int) (isoNormal * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_165, BizExceptionCode.RSI_165_MSG);
                 } else if (BiometricType.FING_NORMAL_2.equals(bio.getType())) {
+
+                    try {
+                        isoNormal = Float.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES
+                                , DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES));
+                    } catch (NumberFormatException e) {
+                        logger.error(e.getMessage(), e);
+                        isoNormal = Float.valueOf(DEFAULT_KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES);
+                    }
 
                     if (bio.getData().length > ((int) (isoNormal * 1024)))
                         throw new ServiceException(BizExceptionCode.RSI_166, BizExceptionCode.RSI_166_MSG);
@@ -1600,15 +1606,18 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append("Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getData().length > (maxDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
-                else if (doc.getData().length < (minDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_128, BizExceptionCode.RSI_128_MSG);
-                else if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                else if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
-
+                if (doc.getType().getId()==52L) {
+                    if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
+                } else if (doc.getType().getId()==53L) {
+                    if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
+                } else {
+                    if (doc.getData().length > (maxDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_095, BizExceptionCode.RSI_095_MSG);
+                    else if (doc.getData().length < (minDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_128, BizExceptionCode.RSI_128_MSG);
+                }
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
                 result.append(doc.getType().getId()).append(", ");
@@ -2760,15 +2769,18 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append(SystemId.VIP + " " + "Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getData().length > (maxDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_143, BizExceptionCode.RSI_095_MSG);
-                else if (doc.getData().length < (minDocumentSize * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_144, BizExceptionCode.RSI_128_MSG);
-                else if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                else if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
-                    throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
-
+                if (doc.getType().getId()==52L) {
+                    if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_172, BizExceptionCode.RSI_170_MSG);
+                } else if (doc.getType().getId()==53L) {
+                    if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_173, BizExceptionCode.RSI_171_MSG);
+                } else {
+                    if (doc.getData().length > (maxDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_143, BizExceptionCode.RSI_095_MSG);
+                    else if (doc.getData().length < (minDocumentSize * 1024))
+                        throw new ServiceException(BizExceptionCode.RSI_144, BizExceptionCode.RSI_128_MSG);
+                }
                 addDoc(documentDAO, citizenInfoInDb, doc);
 
                 result.append(doc.getType().getId()).append(", ");

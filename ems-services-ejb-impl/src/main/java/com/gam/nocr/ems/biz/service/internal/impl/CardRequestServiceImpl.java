@@ -66,6 +66,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     private static final Logger logger = BaseLog
             .getLogger(CardRequestServiceImpl.class);
     private static final Logger ussdLogger = BaseLog.getLogger("UssdService");
+    private static final Logger trackingIdLogger = BaseLog.getLogger("TrackingIdService");
 
     private static final String DEFAULT_NOCR_SMS_ENDPOINT = "http://sms.sabteahval.ir:8001/SmsProject/SmsPort?wsdl";
     private static final String DEFAULT_NOCR_SMS_NAMESPACE = "http://ws.sms.com/";
@@ -2307,7 +2308,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             } else if (CardRequestState.RESERVED.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_086,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            } else {
+            }else if(CardRequestState.PENDING_TO_DELIVER_BY_CMS.equals(cardRequestTO.getState())){
+                throw new ServiceException(BizExceptionCode.CRE_087,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            }else if (CardRequestState.REPEALED.equals(cardRequestTO.getState())){
+                throw new ServiceException(BizExceptionCode.CRE_088,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            }
+            else {
                 Long personID = getPersonService().findPersonIdByUsername(getUserProfileTO().getUserName());
                 PersonTO personTO = getPersonService().find(personID);
                 cardRequestReceiptVTO.setCitizenFirstName(cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getFirstNamePersian() : "");
@@ -2363,14 +2371,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             nextValue = getCardRequestDAO().nextValueOfRequestTrackingId();
         } catch (BaseException e) {
+            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId:",e);
+            logger.error("Error Occurred in get next value of sequence of TrackingId:",e);
             throw e;
         }
 
         if (nextValue == null) {
+            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             logger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             throw new ServiceException(
-                    BizExceptionCode.CRE_087,
-                    BizExceptionCode.CRE_087_MSG);
+                    BizExceptionCode.CRE_091,
+                    BizExceptionCode.CRE_091_MSG);
         }
 
         try {
@@ -2388,11 +2399,11 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
             return stringBuilder.toString();
         } catch (Exception e) {
-            logger.error("Error Occurred in generating TrackingId:" + e.getMessage());
-
+            trackingIdLogger.error("Error Occurred in generating TrackingId:",e);
+            logger.error("Error Occurred in generating TrackingId:",e);
             throw new ServiceException(
-                    BizExceptionCode.CRE_088,
-                    BizExceptionCode.CRE_088_MSG,
+                    BizExceptionCode.CRE_092,
+                    BizExceptionCode.CRE_092_MSG,
                     e);
         }
     }

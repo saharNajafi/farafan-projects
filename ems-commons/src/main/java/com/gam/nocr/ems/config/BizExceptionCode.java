@@ -245,6 +245,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRE_088 = "EMS_S_CRE_088";
     public static final String CRE_089 = "EMS_S_CRE_089";
     public static final String CRE_090 = "EMS_S_CRE_090";
+    public static final String CRE_091 = "EMS_S_CRE_091";
+    public static final String CRE_092 = "EMS_S_CRE_092";
     public static final String CRE_001_MSG = "Card request id cannot not be null";
     public static final String CRE_002_MSG = "Card request action cannot not be null";
     public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -290,10 +292,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRE_079_MSG = "an error occurred on printRegistrationReceipt operation";
     public static final String CRE_082_MSG = "an error occurred on print operation";
     public static final String CRE_083_MSG = "can not print receipt for this request by state :{0}";
-    public static final String CRE_087_MSG = "next value for generating tracking id is null";
-    public static final String CRE_088_MSG = "error in generating tracking id";
     public static final String CRE_089_MSG = "error in calculate of age of the citizen";
     public static final String CRE_090_MSG = "age of the citizen is less than 15";
+    public static final String CRE_091_MSG = "next value for generating tracking id is null";
+    public static final String CRE_092_MSG = "error in generating tracking id";
 
     // com.gam.nocr.ems.biz.service.internal.impl.CompleteRegistrationServiceImpl
     public static final String CRS_001 = "EMS_S_CRS_001";
