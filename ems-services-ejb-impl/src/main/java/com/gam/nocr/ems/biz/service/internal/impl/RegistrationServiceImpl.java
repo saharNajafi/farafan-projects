@@ -3071,8 +3071,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 //    @BizLoggable(logAction = "LOAD", logEntityName = "CITIZEN")
     public CitizenTO fetchCitizenInfo(String nationalId) throws BaseException {
         if (isNullOrEmptyString(nationalId)) {
-            throw new ServiceException(BizExceptionCode.RSI_172,
-                    BizExceptionCode.RSI_172_MSG);
+            throw new ServiceException(BizExceptionCode.RSI_175,
+                    BizExceptionCode.RSI_175_MSG);
         }
         return getIMSManagementService().fetchCitizenInfo(nationalId);
     }
@@ -3140,7 +3140,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     .getService(EMSLogicalNames.getExternalServiceJNDIName(EMSLogicalNames.SRV_CMS), EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new ServiceException(
-                    BizExceptionCode.RSI_173,
+                    BizExceptionCode.RSI_176,
                     BizExceptionCode.GLB_002_MSG,
                     e,
                     EMSLogicalNames.SRV_CMS.split(","));
