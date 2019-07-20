@@ -736,8 +736,7 @@ public class RegistrationWS extends EMSWS {
                                        @WebParam(name = "fetchCitizenInfoWTO") fetchCitizenInfoWTO fetchCitizenInfoWTO)
             throws InternalException {
 
-//        UserProfileTO up = super.validateRequest(securityContextWTO);
-        UserProfileTO up = null;
+        UserProfileTO up = super.validateRequest(securityContextWTO);
         CitizenInfoWTO citizenInfoWTO = null;
         CitizenTO citizenTO = null;
         Date birthDate;
