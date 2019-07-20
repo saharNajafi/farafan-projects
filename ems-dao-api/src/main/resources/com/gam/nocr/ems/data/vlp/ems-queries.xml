@@ -102,7 +102,9 @@
         <query>
             <main-query>
                 <part name="count">
-                    select count(*)
+                    select count(
+                    distinct
+                    d.dep_id)
                 </part>
                 <part name="main">
                     select
