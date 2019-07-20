@@ -2380,8 +2380,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             logger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             throw new ServiceException(
-                    BizExceptionCode.CRE_087,
-                    BizExceptionCode.CRE_087_MSG);
+                    BizExceptionCode.CRE_091,
+                    BizExceptionCode.CRE_091_MSG);
         }
 
         try {
@@ -2402,8 +2402,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             trackingIdLogger.error("Error Occurred in generating TrackingId:",e);
             logger.error("Error Occurred in generating TrackingId:",e);
             throw new ServiceException(
-                    BizExceptionCode.CRE_088,
-                    BizExceptionCode.CRE_088_MSG,
+                    BizExceptionCode.CRE_092,
+                    BizExceptionCode.CRE_092_MSG,
                     e);
         }
     }
