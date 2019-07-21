@@ -59,3 +59,21 @@ VALUES (seq_val, 3, 1, 'nocr.ems.profile.ccos.document.SerialNumberImageCompress
 
 INSERT INTO gam_main_ems.INFT_SYSTEM_PROFILE (SPF_ID, SPF_PRF_ID, SPF_CLOB, SPF_BLOB, SPF_DATE)
 VALUES (seq_val, seq_val, '10240', NULL, NULL);
+
+
+Rem
+Rem NAME
+Rem
+Rem FUNCTION
+Rem  CRS_1.7.2 , EMS_2.6.4
+Rem
+Rem NOTES
+Rem
+Rem
+Rem MODIFIED
+Rem     شرکت فرافن- 98/04/01-
+Rem
+-------------------------------------------------------------------------------------------
+----------------------------RUN IN GAM_MAIN_EMS--------------------------------------------
+-------------------------------------------------------------------------------------------
+CREATE SEQUENCE GAM_MAIN_EMS.SEQ_CARD_REQUEST_TRACKING_ID INCREMENT BY 1 START WITH 300000000 MAXVALUE 599999999 MINVALUE 300000000 CACHE 1000 NOORDER  NOCYCLE;
