@@ -845,14 +845,21 @@ public class CardRequestMapper {
         else
             citizenInfoWTO.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
         citizenInfoWTO.setFatherFirstNameFA(citizenInfoTO.getFatherFirstNamePersian());
-        citizenInfoWTO.setFatherSureName(citizenInfoTO.getFatherSurname());
         citizenInfoWTO.setFatherNationalId(citizenInfoTO.getFatherNationalID());
         citizenInfoWTO.setMotherFirstNameFA(citizenInfoTO.getMotherFirstNamePersian());
-        citizenInfoWTO.setMotherSureName(citizenInfoTO.getMotherSurname());
         citizenInfoWTO.setMotherNationalId(citizenInfoTO.getMotherNationalID());
         citizenInfoWTO.setAddress(citizenInfoTO.getAddress());
         citizenInfoWTO.setPhone(citizenInfoTO.getPhone());
         citizenInfoWTO.setMobile(citizenInfoTO.getMobile());
+        citizenInfoWTO.setFatherBirthCertId(citizenInfoTO.getFatherBirthCertificateId());
+        citizenInfoWTO.setMotherBirthCertId(citizenInfoTO.getMotherBirthCertificateId());
+        citizenInfoWTO.setLivingPrvId(citizenWTO.getLivingPrvId());
+        citizenInfoWTO.setLivingCityId(citizenWTO.getLivingCityId());
+        citizenInfoWTO.setLivingStateId(citizenWTO.getLivingStateId());
+        citizenInfoWTO.setLivingVillageId(citizenWTO.getLivingVillageId());
+        citizenInfoWTO.setLivingSectorId(citizenWTO.getLivingSectorId());
+        citizenInfoWTO.setUserCityType(citizenWTO.getUserCityType());
         return citizenInfoWTO;
     }
 }
+

@@ -36,6 +36,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.WebFault;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -732,14 +733,13 @@ public class RegistrationWS extends EMSWS {
      * @throws InternalException
      */
     @WebMethod
-    public CitizenInfoWTO fetchCitizenInfo(@WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
-                                       @WebParam(name = "fetchCitizenInfoWTO") fetchCitizenInfoWTO fetchCitizenInfoWTO)
-            throws InternalException {
+    public CitizenInfoWTO fetchCitizenInfo(
+            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
+            @WebParam(name = "fetchCitizenInfoWTO") FetchCitizenInfoWTO fetchCitizenInfoWTO) throws InternalException {
 
         UserProfileTO up = super.validateRequest(securityContextWTO);
         CitizenInfoWTO citizenInfoWTO = null;
         CitizenTO citizenTO = null;
-        Date birthDate;
         CardRequestType type = fetchCitizenInfoWTO.getType();
         try {
             if (!NationalIDUtil.checkValidNinStr(fetchCitizenInfoWTO.getNationalId())) {
@@ -751,8 +751,6 @@ public class RegistrationWS extends EMSWS {
                 throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
             }
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-             birthDate = simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateLunar());
             if (type.equals(CardRequestType.REPLICA))
                 citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
             if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
@@ -770,9 +768,15 @@ public class RegistrationWS extends EMSWS {
                         new EMSWebServiceFault(WebExceptionCode.RSW_093));
             }
             if (citizenTO != null) {
-                if (!birthDate.equals(fetchCitizenInfoWTO.getBirthDate()))
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                Date birthDate =
+                        simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateLunar());
+                Date ctzBirthDate =
+                        simpleDateFormat.parse(fetchCitizenInfoWTO.getBirthDate());
+                if (!(ctzBirthDate.equals(birthDate))) {
                     throw new InternalException(WebExceptionCode.RSW_090_MSG + fetchCitizenInfoWTO.getBirthDate(),
                             new EMSWebServiceFault(WebExceptionCode.RSW_090));
+                }
             }
             registrationDelegator.checkPreviousCardRequestNotStopped(up, citizenTO);
             try {
