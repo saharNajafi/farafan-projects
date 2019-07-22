@@ -5,10 +5,10 @@ import com.gam.nocr.ems.data.enums.CardRequestType;
 import java.io.Serializable;
 import java.util.Date;
 
-public class fetchCitizenInfoWTO implements Serializable {
+public class FetchCitizenInfoWTO implements Serializable {
 
     private String nationalId;
-    private Date birthDate;
+    private String birthDate;
     private String crn;
     private CardRequestType type;
 
@@ -18,14 +18,6 @@ public class fetchCitizenInfoWTO implements Serializable {
 
     public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
     }
 
     public String getCrn() {
@@ -42,5 +34,13 @@ public class fetchCitizenInfoWTO implements Serializable {
 
     public void setType(CardRequestType type) {
         this.type = type;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 }

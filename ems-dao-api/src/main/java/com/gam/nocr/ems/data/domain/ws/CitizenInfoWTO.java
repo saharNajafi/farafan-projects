@@ -25,13 +25,11 @@ public class CitizenInfoWTO implements Serializable {
     private String phone;
     private String mobile;
     private String fatherFirstNameFA;
-    private String fatherFatherName;
-    private String fatherSureName;
     private String fatherNationalId;
+    private String fatherBirthCertId;
     private String motherFirstNameFA;
-    private String motherSureName;
     private String motherNationalId;
-    private Timestamp motherBirthDate;
+    private String motherBirthCertId;
 
     public String getFirstNameFA() {
         return firstNameFA;
@@ -185,22 +183,6 @@ public class CitizenInfoWTO implements Serializable {
         this.fatherFirstNameFA = fatherFirstNameFA;
     }
 
-    public String getFatherFatherName() {
-        return fatherFatherName;
-    }
-
-    public void setFatherFatherName(String fatherFatherName) {
-        this.fatherFatherName = fatherFatherName;
-    }
-
-    public String getFatherSureName() {
-        return fatherSureName;
-    }
-
-    public void setFatherSureName(String fatherSureName) {
-        this.fatherSureName = fatherSureName;
-    }
-
     public String getFatherNationalId() {
         return fatherNationalId;
     }
@@ -217,14 +199,6 @@ public class CitizenInfoWTO implements Serializable {
         this.motherFirstNameFA = motherFirstNameFA;
     }
 
-    public String getMotherSureName() {
-        return motherSureName;
-    }
-
-    public void setMotherSureName(String motherSureName) {
-        this.motherSureName = motherSureName;
-    }
-
     public String getMotherNationalId() {
         return motherNationalId;
     }
@@ -233,11 +207,19 @@ public class CitizenInfoWTO implements Serializable {
         this.motherNationalId = motherNationalId;
     }
 
-    public Timestamp getMotherBirthDate() {
-        return motherBirthDate;
+    public String getFatherBirthCertId() {
+        return fatherBirthCertId;
     }
 
-    public void setMotherBirthDate(Timestamp motherBirthDate) {
-        this.motherBirthDate = motherBirthDate;
+    public void setFatherBirthCertId(String fatherBirthCertId) {
+        this.fatherBirthCertId = fatherBirthCertId;
+    }
+
+    public String getMotherBirthCertId() {
+        return motherBirthCertId;
+    }
+
+    public void setMotherBirthCertId(String motherBirthCertId) {
+        this.motherBirthCertId = motherBirthCertId;
     }
 }
