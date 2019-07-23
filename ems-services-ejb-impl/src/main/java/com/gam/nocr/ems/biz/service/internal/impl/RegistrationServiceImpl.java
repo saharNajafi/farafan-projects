@@ -649,7 +649,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-                ) {
+        ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -1606,10 +1606,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append("Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getType().getId()==52L) {
+                if (doc.getType().getId() == 52L) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_170, BizExceptionCode.RSI_170_MSG);
-                } else if (doc.getType().getId()==53L) {
+                } else if (doc.getType().getId() == 53L) {
                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_171, BizExceptionCode.RSI_171_MSG);
                 } else {
@@ -2769,10 +2769,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
 
             StringBuilder result = new StringBuilder().append(SystemId.VIP + " " + "Document Type ids are: ");
             for (DocumentTO doc : documents) {
-                if (doc.getType().getId()==52L) {
+                if (doc.getType().getId() == 52L) {
                     if (doc.getData().length > (faceImageCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_172, BizExceptionCode.RSI_170_MSG);
-                } else if (doc.getType().getId()==53L) {
+                } else if (doc.getType().getId() == 53L) {
                     if (doc.getData().length > (serialNumberCompressionMaxSizeLimitBytes * 1024))
                         throw new ServiceException(BizExceptionCode.RSI_173, BizExceptionCode.RSI_171_MSG);
                 } else {
@@ -3095,9 +3095,37 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         allCardsList = getCMSService().getCitizenCardsByProduct(nationalId, productId);
         for (int i = 1; i < allCardsList.size(); i++) {
             if (crn.equals(allCardsList.get(i).getCrn()))
-            result = true;
+                result = true;
         }
         return result;
+    }
+
+    @Override
+    public void checkPreviousCardStateValid(String nationalId) throws BaseException{
+        CardRequestTO cardRequestTO;
+        List<CitizenTO> citizenTO = new ArrayList<CitizenTO>();
+            CardRequestDAO cardRequestDAO = getCardRequestDAO();
+            cardRequestTO = getCardRequestDAO().findLastRequestByNationalId(nationalId);
+            if (cardRequestTO != null) {
+                if (!cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
+                    if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)) {
+                        throw new ServiceException(BizExceptionCode.RSI_177,
+                                BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
+                    } else {
+                        citizenTO.add(cardRequestTO.getCitizen());
+                        checkPreviousCardStateValid(cardRequestDAO, citizenTO);
+                    }
+                }
+                if (cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
+                    if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)
+                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED)) {
+                        throw new ServiceException(BizExceptionCode.RSI_178,
+                                BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
+                    }
+
+                }
+
+            }
     }
 
 

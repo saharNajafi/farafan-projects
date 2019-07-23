@@ -750,17 +750,19 @@ public class RegistrationWS extends EMSWS {
             if (fetchCitizenInfoWTO.getBirthDate() == null) {
                 throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
             }
-
-            if (type.equals(CardRequestType.REPLICA))
+            registrationDelegator.checkPreviousCardStateValid(up, fetchCitizenInfoWTO.getNationalId());
+            if (type.equals(CardRequestType.REPLICA)) {
                 citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
+            }
             if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
                 Boolean crnValidation =
                         registrationDelegator.checkCRN(up, fetchCitizenInfoWTO.getNationalId(),
                                 fetchCitizenInfoWTO.getCrn());
-                if (!crnValidation)
+                if (!crnValidation) {
                     throw new InternalException(
                             WebExceptionCode.RSW_089_MSG + fetchCitizenInfoWTO.getCrn(),
                             new EMSWebServiceFault(WebExceptionCode.RSW_089));
+                }
                 citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
             }
             if (citizenTO == null) {
@@ -770,7 +772,7 @@ public class RegistrationWS extends EMSWS {
             if (citizenTO != null) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 Date birthDate =
-                        simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateLunar());
+                        simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateSolar());
                 Date ctzBirthDate =
                         simpleDateFormat.parse(fetchCitizenInfoWTO.getBirthDate());
                 if (!(ctzBirthDate.equals(birthDate))) {
@@ -783,7 +785,7 @@ public class RegistrationWS extends EMSWS {
                 citizenInfoWTO = CardRequestMapper.convert(citizenTO);
             } catch (Exception e) {
                 throw new InternalException(WebExceptionCode.RSW_091_MSG,
-                                            new EMSWebServiceFault(WebExceptionCode.RSW_091), e);
+                        new EMSWebServiceFault(WebExceptionCode.RSW_091), e);
             }
 
         } catch (BaseException e) {

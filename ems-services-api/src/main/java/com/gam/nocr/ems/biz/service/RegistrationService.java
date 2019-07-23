@@ -169,4 +169,6 @@ public interface RegistrationService extends Service {
     CitizenTO fetchCitizenInfo(String nationalId) throws BaseException;
 
     Boolean checkCRN(String nationalId, String crn) throws BaseException;
+
+    void checkPreviousCardStateValid(String nationalId) throws BaseException;
 }
