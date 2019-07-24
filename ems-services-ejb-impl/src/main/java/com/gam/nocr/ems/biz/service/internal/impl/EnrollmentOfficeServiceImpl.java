@@ -414,6 +414,39 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         return gaasService;
     }
 
+    private List<CardRequestState> fetchCriticalInProgressedStatesFromProfile()
+            throws BaseException {
+        String defaultStates = CardRequestState.PENDING_ISSUANCE.name()
+                + ","
+                + CardRequestState.ISSUED.name()
+                + ","
+                + CardRequestState.READY_TO_DELIVER.name()
+                + ","
+                + CardRequestState.CMS_PRODUCTION_ERROR.name();
+
+        String states;
+        try {
+            ProfileManager pm = ProfileHelper.getProfileManager();
+            states = (String) pm.getProfile(
+                    ProfileKeyName.KEY_INPROGRESSED_CARD_REQUEST_STATES, true,
+                    null, null);
+            if (!EmsUtil.checkString(states)) {
+                states = defaultStates;
+            }
+        } catch (Exception e) {
+            logger.warn(BizExceptionCode.EOS_066, BizExceptionCode.EOS_066_MSG);
+            states = defaultStates;
+        }
+
+        List<CardRequestState> criticalInProgressedStates = new ArrayList<CardRequestState>();
+        String[] statesArray = states.split(",");
+        for (String state : statesArray) {
+            criticalInProgressedStates.add(CardRequestState.valueOf(state));
+        }
+        return criticalInProgressedStates;
+    }
+
+
     private List<CardRequestState> fetchInProgressedStatesFromProfile()
             throws BaseException {
         String defaultStates = CardRequestState.RESERVED.name()
@@ -483,6 +516,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             checkEnrollmentOfficeVTO(enrollmentOfficeVTO);
 
             EnrollmentOfficeTO office = new EnrollmentOfficeTO();
+            office.setDeleted(0);
             office.setName(enrollmentOfficeVTO.getName() != null ? enrollmentOfficeVTO.getName().trim().replaceAll("[\\n\\t\\r]", "") : "");
             office.setAddress(enrollmentOfficeVTO.getAddress() != null ? enrollmentOfficeVTO.getAddress().trim().replaceAll("[\\n\\t\\r]", "") : "");
             office.setPostalCode(enrollmentOfficeVTO.getZip());
@@ -1139,8 +1173,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         BizExceptionCode.EOS_070_MSG);
 
             EnrollmentOfficeTO superiorEnrollmentOffice = null;
-            boolean hasCardRequest = checkInProgressRequests(enrollmentOfficeId);
-            if (hasCardRequest) {
+            OfficeCardRequestStates hasCardRequest = checkInProgressRequests(enrollmentOfficeId);
+            if (hasCardRequest == OfficeCardRequestStates.REGULAR_REQUESTS) {
                 if (superiorEnrollmentOfficeId == null
                         && (getEnrollmentOfficeDAO().find(
                         EnrollmentOfficeTO.class, enrollmentOfficeId)
@@ -1250,11 +1284,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         throw exception;
                 }
             }
-            if (!hasCardRequest) {
+            if (hasCardRequest != OfficeCardRequestStates.CRITICAL_REQUESTS) {
                 try {
-                    getActiveShiftDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
-                    getOfficeCapacityDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
-                    return getDepartmentDAO().removeDepartments(enrollmentOfficeId.toString());
+//                    getActiveShiftDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
+//                    getOfficeCapacityDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
+//                    return getDepartmentDAO().removeDepartments(enrollmentOfficeId.toString());
+                    return getEnrollmentOfficeDAO().setDeleted(enrollmentOfficeId);
                 } catch (Exception e) {
                     throw new ServiceException(
                             BizExceptionCode.EOS_103,
@@ -1645,21 +1680,28 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      * @throws com.gam.commons.core.BaseException
      */
     @Override
-    public boolean checkInProgressRequests(Long enrollmentOfficeId)
+    public OfficeCardRequestStates checkInProgressRequests(Long enrollmentOfficeId)
             throws BaseException {
         List<CardRequestState> inProgressedStates = fetchInProgressedStatesFromProfile();
+        List<CardRequestState> criticalInProgressedStates = fetchCriticalInProgressedStatesFromProfile();
         List<Long> cardRequestIds = getCardRequestDAO()
                 .findByEnrollmentOfficeIdAndStates(enrollmentOfficeId,
                         inProgressedStates);
+        List<Long> criticalCardRequestIds = getCardRequestDAO()
+                .findByEnrollmentOfficeIdAndStates(enrollmentOfficeId,
+                        criticalInProgressedStates);
 
         if (cardRequestIds.get(0) > 0) {
             List<Long> enrollmentOfficeIds = getEnrollmentOfficeDAO()
                     .fetchOtherNocrOfficeCountWithSameParentById(
                             enrollmentOfficeId);
-            return enrollmentOfficeIds.get(0) > 0;
-        } else {
-            return false;
+            if (enrollmentOfficeIds.get(0) > 0) {
+                if (criticalCardRequestIds.get(0) > 0)
+                    return OfficeCardRequestStates.CRITICAL_REQUESTS;
+                return OfficeCardRequestStates.REGULAR_REQUESTS;
+            }
         }
+        return OfficeCardRequestStates.NO_REQUEST;
     }
 
     @Override
@@ -2025,13 +2067,13 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                     }
                 }
             }
-            if(result == Boolean.FALSE) {
+            if (result == Boolean.FALSE) {
                 OfficeCapacityTO officeCapacity =
                         getOfficeCapacityService().findByEnrollmentOfficeIdAndDateAndWorkingHour(enrollmentOfficeId);
-                if(officeCapacity != null) {
+                if (officeCapacity != null) {
                     OfficeActiveShiftTO activeShiftTO =
                             getOfficeActiveShiftService().findActiveShiftByOfficeCapacity(officeCapacity.getId());
-                    if(activeShiftTO != null) {
+                    if (activeShiftTO != null) {
                         OfficeCapacityTO officeCapacityTO = activeShiftTO.getOfficeCapacity();
                         if (officeCapacityTO != null) {
                             if (activeShiftTO.getRemainCapacity() > 0 && officeCapacityTO.getCapacity() > 0) {
@@ -2222,7 +2264,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 }
             });
             officeId = reservationTO.getEnrollmentOffice().getId();
-            activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
+            activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             shiftNo = reservationTO.getShiftNo();
             activeShiftTO = findActiveShiftByOfficeAndDateAndShift(officeId, activeDate, shiftNo);
             if (activeShiftTO != null) {
@@ -2271,7 +2313,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 }
             });
             reservationTO = Collections.max(cardRequest.getReservations(), null);
-            Integer reserveDate =Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
+            Integer reserveDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             if (!reservationTO.getShiftNo().equals(shiftNo)
                     || !officeId.equals(reservationTO.getEnrollmentOffice().getId())
                     || !activeDate.equals(reserveDate)) {
@@ -2294,7 +2336,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             }
             reservationTO.setPortalReservationId(officeAppointmentWTO.getId());
             cardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
-            Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/",""));
+            Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/", ""));
             if (today.equals(officeAppointmentWTO.getAppointmentDate())) {
                 fillCardRequestRsvDate(cardRequest, reservationDate, false);
                 getCardRequestService().updateCitizenByEstelam(cardRequest, true, false);
@@ -2327,7 +2369,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     @Override
     public void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException {
         fromDate = EmsUtil.getDateAtMidnight(fromDate);
-        int persianDate = Integer.valueOf(CalendarUtil.getDate(fromDate, new Locale("fa")).replace("/",""));
+        int persianDate = Integer.valueOf(CalendarUtil.getDate(fromDate, new Locale("fa")).replace("/", ""));
         List<OfficeCapacityTO> todateOfficeCapacity = new ArrayList<OfficeCapacityTO>();
 
         /*OfficeCapacityTO officeCapacityMorning = officeCapacityService.findbyEnrollmentOfficeIdAndDateAndShift(enrollmentOfficeTO.getId(), ShiftEnum.MORNING, persianDate);

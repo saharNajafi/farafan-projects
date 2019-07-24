@@ -127,12 +127,12 @@
                             </part>
                             <part name="transferred">
                                 or (
-                                ((select eo.eof_type from emst_enrollment_office eo where eo.eof_id in
+                                ((select eo.eof_type from emst_enrollment_office eo where eo.eof_is_deleted = 0 and eo.eof_id in
                                 (<dependency name="personDirectDepartment"/>)) = 'OFFICE' and
                                 (rq.crq_original_enroll_office_id in
                                 (<dependency name="personDirectDepartment"/>)))
                                 or
-                                ((select eo.eof_type from emst_enrollment_office eo where eo.eof_id in
+                                ((select eo.eof_type from emst_enrollment_office eo where eo.eof_is_deleted = 0 and eo.eof_id in
                                 (<dependency name="personDirectDepartment"/>)) = 'NOCR' and (rq.crq_enroll_office_id in
                                 (<dependency name="personDirectDepartment"/>) and rq.crq_original_enroll_office_id is
                                 not

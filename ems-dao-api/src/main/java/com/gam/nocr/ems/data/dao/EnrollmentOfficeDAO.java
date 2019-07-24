@@ -101,4 +101,6 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
     List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException;
 
     EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws DataException ;
+
+    Boolean setDeleted(Long toString) throws DataException;
 }

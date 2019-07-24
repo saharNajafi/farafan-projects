@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport008_pdf" pageWidth="555" pageHeight="802" columnWidth="515" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="3426ed98-c0d8-441b-9553-ff59e7f924b8">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="parentDepartmentId" class="java.lang.Long"/>
-	<queryString>
-		<![CDATA[SELECT (SELECT COUNT(DEP1.DEP_ID)
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="subreport008_pdf" pageWidth="555" pageHeight="802" columnWidth="515" leftMargin="20"
+              rightMargin="20" topMargin="0" bottomMargin="0" uuid="3426ed98-c0d8-441b-9553-ff59e7f924b8">
+    <property name="ireport.zoom" value="1.0"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <parameter name="parentDepartmentId" class="java.lang.Long"/>
+    <queryString>
+        <![CDATA[SELECT (SELECT COUNT(DEP1.DEP_ID)
         FROM EMST_DEPARTMENT DEP1
         WHERE DEP1.DEP_PARENT_DEP_ID = $P{parentDepartmentId}) departmentcount,
 
        (select sum(rat.rat_size) from emst_rating_info rat
         inner join emst_enrollment_office eof on rat.rat_id = eof.eof_rat_id
         inner join emst_department dep on dep.dep_id = eof.eof_id
-        where dep.dep_parent_dep_id = $P{parentDepartmentId}) ratingsize,
+        where eof_is_deleted = 0 and dep.dep_parent_dep_id = $P{parentDepartmentId}) ratingsize,
 
        (select count(*) from emst_workstation wst
         inner join emst_department dep on wst.wst_enrollment_id = dep.dep_id
@@ -27,7 +31,7 @@
         inner join emst_card_request crq on eof.eof_id = crq.crq_enroll_office_id
         inner join emst_card_request_history crh on crq.crq_id = crh.crh_card_request_id
         inner join emst_rating_info rat on rat.rat_id = eof.eof_rat_id
-        where dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size != 0
+        where eof_is_deleted = 0 and dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size != 0
         and crh.crh_action = 'MANAGER_APPROVAL') activeDepCount,
 
 	(select count(distinct(dep1.dep_id)) from emst_department dep1 where
@@ -42,100 +46,100 @@
         inner join emst_card_request crq on eof.eof_id = crq.crq_enroll_office_id
         inner join emst_card_request_history crh on crq.crq_id = crh.crh_card_request_id
         inner join emst_rating_info rat on rat.rat_id = eof.eof_rat_id
-        where dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size = 0
+        where  eof_is_deleted = 0 and dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size = 0
         and crh.crh_action = 'MANAGER_APPROVAL') tempDeactiveDepCount
 
 FROM DUAL]]>
-	</queryString>
-	<field name="DEPARTMENTCOUNT" class="java.math.BigDecimal"/>
-	<field name="RATINGSIZE" class="java.math.BigDecimal"/>
-	<field name="WORKSTATIONCOUNT" class="java.math.BigDecimal"/>
-	<field name="PERSONCOUNT" class="java.math.BigDecimal"/>
-	<field name="ACTIVEDEPCOUNT" class="java.math.BigDecimal"/>
-	<field name="DEACTIVEDEPCOUNT" class="java.math.BigDecimal"/>
-	<field name="TEMPDEACTIVEDEPCOUNT" class="java.math.BigDecimal"/>
-	<variable name="departmentCount" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{DEPARTMENTCOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="ratingSize" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{RATINGSIZE}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="workstationCount" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{WORKSTATIONCOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="personCount" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{PERSONCOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="activeDepCount" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{ACTIVEDEPCOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="deactiveDepCount" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{DEACTIVEDEPCOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<variable name="tempDeactiveDepCount" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{TEMPDEACTIVEDEPCOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[0]]></initialValueExpression>
-	</variable>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<detail>
-		<band height="27" splitType="Stretch">
-			<textField>
-				<reportElement x="242" y="7" width="42" height="15" uuid="84613193-d699-440f-8208-c6c964a0f288"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{departmentCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="196" y="7" width="42" height="15" uuid="e6becdd3-9350-4ce3-b2e3-7aa3f2d3675e"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($V{ratingSize} == null ? 0 : $V{ratingSize})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="150" y="7" width="42" height="15" uuid="f312c41b-3065-419c-9d64-a6c96dbba24c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{workstationCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="104" y="7" width="42" height="15" uuid="546edf78-d3d7-47e9-beaf-1b3826bf8b5d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{personCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="59" y="7" width="42" height="15" uuid="0dd5139a-c01d-4fd5-888f-43f0d2ca74de"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{activeDepCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="13" y="7" width="42" height="15" uuid="8ca8d748-b163-4763-a0db-6a18b1dce8ba"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{deactiveDepCount}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="-33" y="7" width="42" height="15" uuid="97a4c4e2-8824-4adf-ac09-a85ff3d9af5b"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{tempDeactiveDepCount}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
+    </queryString>
+    <field name="DEPARTMENTCOUNT" class="java.math.BigDecimal"/>
+    <field name="RATINGSIZE" class="java.math.BigDecimal"/>
+    <field name="WORKSTATIONCOUNT" class="java.math.BigDecimal"/>
+    <field name="PERSONCOUNT" class="java.math.BigDecimal"/>
+    <field name="ACTIVEDEPCOUNT" class="java.math.BigDecimal"/>
+    <field name="DEACTIVEDEPCOUNT" class="java.math.BigDecimal"/>
+    <field name="TEMPDEACTIVEDEPCOUNT" class="java.math.BigDecimal"/>
+    <variable name="departmentCount" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{DEPARTMENTCOUNT}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="ratingSize" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{RATINGSIZE}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="workstationCount" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{WORKSTATIONCOUNT}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="personCount" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{PERSONCOUNT}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="activeDepCount" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{ACTIVEDEPCOUNT}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="deactiveDepCount" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{DEACTIVEDEPCOUNT}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="tempDeactiveDepCount" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA[$F{TEMPDEACTIVEDEPCOUNT}]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <detail>
+        <band height="27" splitType="Stretch">
+            <textField>
+                <reportElement x="242" y="7" width="42" height="15" uuid="84613193-d699-440f-8208-c6c964a0f288"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{departmentCount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="196" y="7" width="42" height="15" uuid="e6becdd3-9350-4ce3-b2e3-7aa3f2d3675e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[($V{ratingSize} == null ? 0 : $V{ratingSize})]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="150" y="7" width="42" height="15" uuid="f312c41b-3065-419c-9d64-a6c96dbba24c"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{workstationCount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="104" y="7" width="42" height="15" uuid="546edf78-d3d7-47e9-beaf-1b3826bf8b5d"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{personCount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="59" y="7" width="42" height="15" uuid="0dd5139a-c01d-4fd5-888f-43f0d2ca74de"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{activeDepCount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="13" y="7" width="42" height="15" uuid="8ca8d748-b163-4763-a0db-6a18b1dce8ba"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{deactiveDepCount}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="-33" y="7" width="42" height="15" uuid="97a4c4e2-8824-4adf-ac09-a85ff3d9af5b"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="B Nazanin" isBold="true" pdfFontName="B Nazanin" isPdfEmbedded="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{tempDeactiveDepCount}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
 </jasperReport>

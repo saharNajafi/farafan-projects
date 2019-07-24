@@ -321,7 +321,7 @@ public class PersonDAOImpl extends EmsBaseDAOImpl<PersonTO> implements PersonDAO
 
     		queryBuffer.append(
     				"select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start with dp.dep_id"
-    				+ " in (select pr.per_dep_id from emst_person pr where pr.per_id=:perid union select e.eof_id from emst_enrollment_office e connect by prior e.eof_id=e.eof_superior_office start with e.eof_id"
+    				+ " in (select pr.per_dep_id from emst_person pr where pr.per_id=:perid union select e.eof_id from emst_enrollment_office e where eof_is_deleted = 0 connect by prior e.eof_id=e.eof_superior_office start with e.eof_id"
     				+ " in (select p.per_dep_id from emst_person p where p.per_id=:perid ))");
     		Query query = em.createNativeQuery(queryBuffer.toString()).setParameter("perid", personId);
     		List<?> result = query.getResultList();

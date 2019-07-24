@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.web.action;
 
+import com.gam.nocr.ems.data.enums.OfficeCardRequestStates;
 import gampooya.tools.security.BusinessSecurityException;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
      * A flag indicating whether an enrollment office has any in progress card requests or not. It's mainly used in
      * revoking network token to select a substitution office
      */
-    private Boolean inProgressRequestsFlag;	
+    private OfficeCardRequestStates inProgressRequestsFlag;
    	
    	private String officeSettingType;
 
@@ -423,11 +424,11 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
         this.reason = reason;
     }
 
-    public Boolean getInProgressRequestsFlag() {
+    public OfficeCardRequestStates getInProgressRequestsFlag() {
         return inProgressRequestsFlag;
     }
 
-    public void setInProgressRequestsFlag(Boolean inProgressRequestsFlag) {
+    public void setInProgressRequestsFlag(OfficeCardRequestStates inProgressRequestsFlag) {
         this.inProgressRequestsFlag = inProgressRequestsFlag;
     }
     

@@ -21,6 +21,7 @@ import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
 import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
+import com.gam.nocr.ems.data.enums.OfficeCardRequestStates;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import java.util.Date;
@@ -222,8 +223,8 @@ public class EnrollmentOfficeDelegator implements Delegator {
 //                            Long enrollmentId) throws BaseException {
 //        getService(userProfileTO).deleteEnrollmentOfficeToken(enrollmentId);
 //    }
-    public Boolean checkInProgressRequests(UserProfileTO userProfileTO,
-                                           Long enrollmentId) throws BaseException {
+    public OfficeCardRequestStates checkInProgressRequests(UserProfileTO userProfileTO,
+                                                           Long enrollmentId) throws BaseException {
         return getService(userProfileTO).checkInProgressRequests(enrollmentId);
     }
 

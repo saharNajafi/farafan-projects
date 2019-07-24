@@ -17,6 +17,7 @@ import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
+import com.gam.nocr.ems.data.enums.OfficeCardRequestStates;
 import com.gam.nocr.ems.data.enums.OfficeSettingType;
 import com.gam.nocr.ems.data.enums.ShiftEnum;
 
@@ -83,7 +84,7 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
      * @return true or false
      * @throws BaseException
      */
-    boolean checkInProgressRequests(Long enrollmentOfficeId) throws BaseException;
+    OfficeCardRequestStates checkInProgressRequests(Long enrollmentOfficeId) throws BaseException;
     
     
     //Anbari

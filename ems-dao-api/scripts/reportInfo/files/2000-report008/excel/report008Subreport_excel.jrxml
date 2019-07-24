@@ -14,7 +14,7 @@
        (select sum(rat.rat_size) from emst_rating_info rat
         inner join emst_enrollment_office eof on rat.rat_id = eof.eof_rat_id
         inner join emst_department dep on dep.dep_id = eof.eof_id
-        where dep.dep_parent_dep_id = $P{parentDepartmentId}) ratingsize,
+        where eof_is_deleted = 0 and dep.dep_parent_dep_id = $P{parentDepartmentId}) ratingsize,
 
        (select count(*) from emst_workstation wst
         inner join emst_department dep on wst.wst_enrollment_id = dep.dep_id
@@ -29,7 +29,7 @@
         inner join emst_card_request crq on eof.eof_id = crq.crq_enroll_office_id
         inner join emst_card_request_history crh on crq.crq_id = crh.crh_card_request_id
         inner join emst_rating_info rat on rat.rat_id = eof.eof_rat_id
-        where dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size != 0
+        where eof_is_deleted = 0 and dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size != 0
         and crh.crh_action = 'MANAGER_APPROVAL') activeDepCount,
 
 	(select count(distinct(dep1.dep_id)) from emst_department dep1 where
@@ -44,7 +44,7 @@
         inner join emst_card_request crq on eof.eof_id = crq.crq_enroll_office_id
         inner join emst_card_request_history crh on crq.crq_id = crh.crh_card_request_id
         inner join emst_rating_info rat on rat.rat_id = eof.eof_rat_id
-        where dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size = 0
+        where eof_is_deleted = 0 and dep.dep_parent_dep_id = $P{parentDepartmentId} and rat.rat_size = 0
         and crh.crh_action = 'MANAGER_APPROVAL') tempDeactiveDepCount
 
 FROM DUAL]]>
