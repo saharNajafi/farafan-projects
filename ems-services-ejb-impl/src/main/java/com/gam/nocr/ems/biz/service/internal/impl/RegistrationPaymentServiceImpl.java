@@ -290,6 +290,8 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                     registrationPaymentTO.setSucceed(true);
                     registrationPaymentTO.setResCode("0");
                     registrationPaymentTO.setPaymentDate(paidDate);
+                    registrationPaymentTO.setRrn(bpiInquiryWTO.getRrn() != null ? bpiInquiryWTO.getRrn() : "");
+                    registrationPaymentTO.setSystemTraceNo(bpiInquiryWTO.getSystemTraceNo() != null ? bpiInquiryWTO.getSystemTraceNo() : "");
                     cardRequestTO.setPaid(true);
                     cardRequestTO.setPaidDate(paidDate);
                     getCardRequestService().update(cardRequestTO);

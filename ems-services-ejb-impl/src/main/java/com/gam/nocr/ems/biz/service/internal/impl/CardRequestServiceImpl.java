@@ -2308,7 +2308,14 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             } else if (CardRequestState.RESERVED.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_086,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            } else {
+            }else if(CardRequestState.PENDING_TO_DELIVER_BY_CMS.equals(cardRequestTO.getState())){
+                throw new ServiceException(BizExceptionCode.CRE_087,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            }else if (CardRequestState.REPEALED.equals(cardRequestTO.getState())){
+                throw new ServiceException(BizExceptionCode.CRE_088,
+                        BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
+            }
+            else {
                 Long personID = getPersonService().findPersonIdByUsername(getUserProfileTO().getUserName());
                 PersonTO personTO = getPersonService().find(personID);
                 cardRequestReceiptVTO.setCitizenFirstName(cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getFirstNamePersian() : "");
@@ -2373,8 +2380,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             logger.error("Error Occurred in get next value of sequence of TrackingId. NextValue is null. ");
             throw new ServiceException(
-                    BizExceptionCode.CRE_087,
-                    BizExceptionCode.CRE_087_MSG);
+                    BizExceptionCode.CRE_091,
+                    BizExceptionCode.CRE_091_MSG);
         }
 
         try {
@@ -2395,8 +2402,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             trackingIdLogger.error("Error Occurred in generating TrackingId:",e);
             logger.error("Error Occurred in generating TrackingId:",e);
             throw new ServiceException(
-                    BizExceptionCode.CRE_088,
-                    BizExceptionCode.CRE_088_MSG,
+                    BizExceptionCode.CRE_092,
+                    BizExceptionCode.CRE_092_MSG,
                     e);
         }
     }
