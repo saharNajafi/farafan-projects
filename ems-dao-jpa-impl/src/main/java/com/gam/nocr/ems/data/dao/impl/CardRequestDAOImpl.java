@@ -2617,7 +2617,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                         //.append(" and cr.crq_enroll_office_id in (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=:perid union select e.eof_id from emst_enrollment_office e connect by prior e.eof_id=e.eof_superior_office start with e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=:perid )))");
                         queryBuffer.append(" and nvl(cr.crq_enroll_office_id,-1) in (:depIds)");
                     } else {
-                        queryBuffer.append(" and nvl(cr.crq_enroll_office_id,-1) in (select EOF_ID from EMST_ENROLLMENT_OFFICE union select -1 from dual)");
+                        queryBuffer.append(" and nvl(cr.crq_enroll_office_id,-1) in (select EOF_ID from EMST_ENROLLMENT_OFFICE where eof_is_deleted = 0 union select -1 from dual)");
                     }
 
                     int flag = 0;
@@ -2855,7 +2855,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                         queryBuffer.append(" and nvl(cr.crq_enroll_office_id,-1) in (:depIds)");
                     } else {
                         //queryBuffer.append(" and cr.crq_enroll_office_id in (select EOF_ID from EMST_ENROLLMENT_OFFICE)");
-                        queryBuffer.append(" and nvl(cr.crq_enroll_office_id,-1) in (select EOF_ID from EMST_ENROLLMENT_OFFICE union select -1 from dual)");
+                        queryBuffer.append(" and nvl(cr.crq_enroll_office_id,-1) in (select EOF_ID from EMST_ENROLLMENT_OFFICE where eof_is_deleted = 0 union select -1 from dual)");
                     }
 
 

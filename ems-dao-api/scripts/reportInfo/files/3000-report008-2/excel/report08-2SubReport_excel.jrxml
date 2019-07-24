@@ -20,7 +20,7 @@
 
 	(select rat.rat_size from emst_rating_info rat
   inner join emst_enrollment_office eof on rat.rat_id = eof.eof_rat_id
-  where eof.eof_id = $P{departmentId}) ratsize,
+  where eof_is_deleted = 0  and eof.eof_id = $P{departmentId}) ratsize,
 
 	(select count(wst.wst_id) from emst_workstation wst
 	inner join emst_department dep on wst.wst_enrollment_id = dep.dep_id
