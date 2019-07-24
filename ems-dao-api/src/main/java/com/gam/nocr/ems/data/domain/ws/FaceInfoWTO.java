@@ -8,7 +8,7 @@ public class FaceInfoWTO implements Serializable {
     private Integer faceDisabilityStatus;
     private  BiometricWTO[] biometricWTOs;
 
-    public long getRequestId() {
+    public Long getRequestId() {
         return requestId;
     }
 
