@@ -19,6 +19,7 @@
                 e.eof_id
                 from
                 emst_enrollment_office e
+                where e.eof_is_deleted = 0
                 connect by prior e.eof_id=e.eof_superior_office
                 start with e.eof_id in (select p.per_dep_id from emst_person p where p.per_id={perid})
             </main-query>
@@ -38,7 +39,7 @@
                 select e.eof_id
                 from emst_enrollment_office e,
                 (select pr.per_dep_id from emst_person pr where pr.per_id = {perid}) t
-                where e.eof_id = t.per_dep_id
+                where e.eof_is_deleted = 0 and e.eof_id = t.per_dep_id
                 or e.eof_superior_office = t.per_dep_id
             </main-query>
         </query>

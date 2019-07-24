@@ -29,14 +29,14 @@
 				<part name="enrollment">
 					AND
 					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
-					where eo.eof_id = ed.dep_id
+					where eo.eof_id = ed.dep_id and eo.eof_is_deleted = 0
 					<part name="officeType">
 						and eo.eof_type in ({type})
 					</part>
 					<part name="superior">
 						and eo.eof_id in (select eo2.eof_superior_office from
 						emst_enrollment_office eo2
-						where eo2.eof_id = {officeId})
+						where eo2.eof_is_deleted = 0 and eo2.eof_id = {officeId})
 					</part>
 					<part name="otherNocr">
 						and eo.eof_id not in ({officeId})
@@ -48,7 +48,7 @@
 				</part>
 				<part name="nonEnrollment">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
 				</part>			
 
 			</main-query>
@@ -81,7 +81,7 @@
 				WHERE
 				<part name="enrollment">
 					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
-					where eo.eof_id = ed.dep_id)
+					where eo.eof_id = ed.dep_id and eo.eof_is_deleted = 0)
 					AND
 				</part>
 				DEP_NAME like {depName}
@@ -337,13 +337,13 @@
 				WHERE DEP_NAME like {depName}
 				<part name="nonEnrollment">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
 				</part>
 				<part name="nocroffice">
 					AND
 					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
 					WHERE
-					eo.eof_type in ('NOCR')) AND ed.dep_parent_dep_id = {nocrId}
+					eo.eof_is_deleted = 0 and eo.eof_type in ('NOCR')) AND ed.dep_parent_dep_id = {nocrId}
 				</part>
 				<part name="office">
 					AND
@@ -438,11 +438,11 @@
 				<part name="enrollment">
 					AND
 					ED.DEP_ID in (select eo.eof_id from emst_enrollment_office eo
-					where eo.eof_id = ed.dep_id and eo.eof_type = 'NOCR'
+					where eo.eof_is_deleted = 0 and eo.eof_id = ed.dep_id and eo.eof_type = 'NOCR'
 					<part name="superior">
 						and eo.eof_id in (select eo2.eof_superior_office from
 						emst_enrollment_office eo2
-						where eo2.eof_id = {officeId})
+						where eo2.eof_is_deleted = 0 and eo2.eof_id = {officeId})
 					</part>
 					<part name="otherNocr">
 						and eo.eof_id not in ({officeId})
@@ -454,11 +454,11 @@
 				</part>
 				<part name="nonEnrollment">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
 				</part>
 				<part name="province">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo)
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
 					AND
 					ED.dep_parent_dep_id is not null
 					
@@ -522,7 +522,7 @@
 					DEP_ID,
 					DEP_NAME
 				</part>
-				from EMST_ENROLLMENT_OFFICE join EMST_DEPARTMENT on eof_id = dep_id join emst_location on DEP_LOCATION_ID = loc_id where loc_province_id = {provinceId} and DEP_NAME like {officeName}
+				from EMST_ENROLLMENT_OFFICE join EMST_DEPARTMENT on eof_id = dep_id join emst_location on DEP_LOCATION_ID = loc_id where eof_is_deleted = 0 and loc_province_id = {provinceId} and DEP_NAME like {officeName}
 			</main-query>
 		</query>
 		<dto>

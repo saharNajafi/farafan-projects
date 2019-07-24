@@ -29,9 +29,9 @@
                     EP.PER_REQUEST_STATE,
                     (case
                     when (select count(*) from emst_person ep, emst_enrollment_office eo
-                    where ep.per_id = eo.eof_manager_id and ep.per_id = 7404) > 0 then 'T'
+                    where eo.eof_is_deleted = 0 and ep.per_id = eo.eof_manager_id and ep.per_id = 7404) > 0 then 'T'
                     when (select count(*) from emst_person ep, emst_enrollment_office eo
-                    where ep.per_id = eo.eof_manager_id and ep.per_id = 7404) = 0 then 'F'
+                    where eo.eof_is_deleted = 0 and ep.per_id = eo.eof_manager_id and ep.per_id = 7404) = 0 then 'F'
                     end) ADMIN
                 </part>
                 FROM
@@ -190,6 +190,7 @@
                 emst_office_setting ost,
                 EMST_OFFICE_CAPACITY cap
                 where
+                e.eof_is_deleted = 0 and
                 cap.EOC_OFFICE_ID = e.EOF_ID and
                 l.loc_id = d.dep_location_id and
                 l.loc_province_id=lp.loc_id and
@@ -574,7 +575,7 @@
                 WHERE
                 d.dep_location_id = l.loc_id and
                 l.loc_province_id=lp.loc_id and
-                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo) and
+                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0) and
                 d.dep_id in (<dependency name="personAllDepartmentWithSubDepartment"/>)
                 <part name="address">
                     and d.dep_address like {address}

@@ -1520,9 +1520,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     private String getState(CardRequestTO cardRequestTO) throws BaseException {
         String state = "";
         try {
-            if (cardRequestTO.getState() == CardRequestState.RESERVED ||
-                    cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED ||
-                    cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS) {
+            /*||cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED || cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS*/
+            if (cardRequestTO.getState() == CardRequestState.RESERVED) {
                 return findEnrollmentOffice(cardRequestTO);
             }
 
