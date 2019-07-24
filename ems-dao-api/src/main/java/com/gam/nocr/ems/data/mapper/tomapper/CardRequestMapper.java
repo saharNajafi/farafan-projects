@@ -859,6 +859,7 @@ public class CardRequestMapper {
         citizenInfoWTO.setLivingVillageId(citizenWTO.getLivingVillageId());
         citizenInfoWTO.setLivingSectorId(citizenWTO.getLivingSectorId());
         citizenInfoWTO.setUserCityType(citizenWTO.getUserCityType());
+        citizenInfoWTO.setBirthCertificateIssuancePlace(citizenInfoTO.getBirthCertificateIssuancePlace());
         return citizenInfoWTO;
     }
 }

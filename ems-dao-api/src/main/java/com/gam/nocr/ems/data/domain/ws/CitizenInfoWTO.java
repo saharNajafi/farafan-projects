@@ -14,6 +14,7 @@ public class CitizenInfoWTO implements Serializable {
     private String gender;
     private Long religionId;
     private String birthCertSerial;
+    private String birthCertificateIssuancePlace;
     private String userCityType;
     private Long livingPrvId;
     private Long livingCityId;
@@ -221,5 +222,13 @@ public class CitizenInfoWTO implements Serializable {
 
     public void setMotherBirthCertId(String motherBirthCertId) {
         this.motherBirthCertId = motherBirthCertId;
+    }
+
+    public String getBirthCertificateIssuancePlace() {
+        return birthCertificateIssuancePlace;
+    }
+
+    public void setBirthCertificateIssuancePlace(String birthCertificateIssuancePlace) {
+        this.birthCertificateIssuancePlace = birthCertificateIssuancePlace;
     }
 }
