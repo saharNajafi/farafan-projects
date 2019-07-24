@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class FaceInfoWTO implements Serializable {
 
-    private long requestId;
+    private Long requestId;
     private Integer faceDisabilityStatus;
     private  BiometricWTO[] biometricWTOs;
 
@@ -12,7 +12,7 @@ public class FaceInfoWTO implements Serializable {
         return requestId;
     }
 
-    public void setRequestId(long requestId) {
+    public void setRequestId(Long requestId) {
         this.requestId = requestId;
     }
 
