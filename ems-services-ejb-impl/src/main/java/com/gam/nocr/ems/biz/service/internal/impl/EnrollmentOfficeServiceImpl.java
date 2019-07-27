@@ -516,7 +516,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             checkEnrollmentOfficeVTO(enrollmentOfficeVTO);
 
             EnrollmentOfficeTO office = new EnrollmentOfficeTO();
-            office.setDeleted(0);
+            office.setDeleted(false);
             office.setName(enrollmentOfficeVTO.getName() != null ? enrollmentOfficeVTO.getName().trim().replaceAll("[\\n\\t\\r]", "") : "");
             office.setAddress(enrollmentOfficeVTO.getAddress() != null ? enrollmentOfficeVTO.getAddress().trim().replaceAll("[\\n\\t\\r]", "") : "");
             office.setPostalCode(enrollmentOfficeVTO.getZip());

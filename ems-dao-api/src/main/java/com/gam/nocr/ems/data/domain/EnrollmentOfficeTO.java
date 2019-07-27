@@ -56,7 +56,7 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
     private Boolean fridayMorningActive = false;
     private Boolean fridayEveningActive = false;
     private Boolean singleStageOnly;
-    private Integer isDeleted;
+    private Boolean deleted;
 
 
 
@@ -133,13 +133,14 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
         this.archiveIdCounter = archiveIdCounter;
     }
 
-    @Column(name = "EOF_IS_DELETED")
-    public Integer getDeleted() {
-        return isDeleted;
+    @Column(name = "EOF_IS_DELETED",columnDefinition = "NUMBER(1) DEFAULT 0")
+    @NotNull
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setDeleted(Integer deleted) {
-        isDeleted = deleted;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Enumerated(EnumType.STRING)
