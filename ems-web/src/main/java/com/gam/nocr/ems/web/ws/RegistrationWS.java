@@ -782,6 +782,17 @@ public class RegistrationWS extends EMSWS {
             }
             try {
                 citizenInfoWTO = CardRequestMapper.convert(citizenTO);
+                if(type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)|| type.equals(CardRequestType.REPLICA)){
+                    citizenInfoWTO.setLivingPrvId(0L);
+                    citizenInfoWTO.setLivingCityId(0L);
+                    citizenInfoWTO.setLivingStateId(0L);
+                    citizenInfoWTO.setLivingSectorId(0L);
+                    citizenInfoWTO.setLivingVillageId(0L);
+                    citizenInfoWTO.setAddress("");
+                    citizenInfoWTO.setPhone("");
+                    citizenInfoWTO.setPostCode("");
+                    citizenInfoWTO.setUserCityType("-1");
+                }
             } catch (Exception e) {
                 throw new InternalException(WebExceptionCode.RSW_091_MSG,
                         new EMSWebServiceFault(WebExceptionCode.RSW_091), e);
