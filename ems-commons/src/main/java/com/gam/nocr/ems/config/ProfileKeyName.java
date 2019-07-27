@@ -108,7 +108,7 @@ public class ProfileKeyName {
     public static final String KEY_FING_ISO_19794_NORMAL_FORMAT_MAX_SIZE_BYTES = EMS_PROFILE_ROOT + STATE_ROOT + ".ccos.ISO19794NormalFormatMaxSizeBytes";
     public static final String KEY_SCANNED_DOCUMENT_SIZE_KB = EMS_PROFILE_ROOT + ".scannedDocumentSizeKB";
     public static final String KEY_SCANNED_DOCUMENT_MIN_SIZE_KB = EMS_PROFILE_ROOT + ".scannedDocumentMinSizeKB";
-    public static final String KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES = EMS_PROFILE_ROOT + STATE_ROOT + ".ccos.document.FaceImageCccos.document.FaceImageCompressionMaxSizeLimitBytes";
+    public static final String KEY_SCANNED_DOCUMENT_FACE_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES = EMS_PROFILE_ROOT + STATE_ROOT + ".ccos.document.FaceImageCompressionMaxSizeLimitBytes";
     public static final String KEY_SCANNED_DOCUMENT_SERIAL_NUMBER_IMAGE_COMPRESSION_MAX_SIZE_LIMIT_BYTES = EMS_PROFILE_ROOT + STATE_ROOT + ".ccos.document.SerialNumberImageCompressionMaxSizeLimitBytes";
     public static final String KEY_SMS_RETRY_DURATION = EMS_PROFILE_ROOT + ".smsRetryDuration";
     public static final String KEY_SMS_MAX_RETRY_COUNT = EMS_PROFILE_ROOT + ".smsMaxRetryCount";
