@@ -780,7 +780,6 @@ public class RegistrationWS extends EMSWS {
                             new EMSWebServiceFault(WebExceptionCode.RSW_090));
                 }
             }
-            registrationDelegator.checkPreviousCardRequestNotStopped(up, citizenTO);
             try {
                 citizenInfoWTO = CardRequestMapper.convert(citizenTO);
             } catch (Exception e) {
