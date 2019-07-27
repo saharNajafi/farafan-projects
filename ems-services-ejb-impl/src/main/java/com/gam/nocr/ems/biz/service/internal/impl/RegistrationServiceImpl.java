@@ -3117,8 +3117,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                     }
                 }
                 if (cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
-                    if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)
-                    || cardRequestTO.getState().equals(CardRequestState.DELIVERED)) {
+                    if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)) {
                         throw new ServiceException(BizExceptionCode.RSI_178,
                                 BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
                     }
