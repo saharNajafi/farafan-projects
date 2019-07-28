@@ -1509,13 +1509,16 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @BizLoggable(logAction = "INSERT", logEntityName = "BIOMETRIC")
     public void addFaceData(long requestId, ArrayList<BiometricTO> biometricDatas,
                             Integer faceDisabilityStatus) throws BaseException {
-
-        CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
-        if (cr != null) {
-            CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
-            if (citizenInfoInDb != null)
-                citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
-            getCitizenInfoDAO().update(citizenInfoInDb);
+        try {
+            CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
+            if (cr != null) {
+                CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+                if (citizenInfoInDb != null)
+                    citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+                getCitizenInfoDAO().update(citizenInfoInDb);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
         addBiometricData(requestId, biometricDatas);
         getCardRequestHistoryDAO().create(new CardRequestTO(requestId), null, SystemId.CCOS, null,
@@ -1525,12 +1528,16 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @Override
     public void addFaceDataFromMES(long requestId, ArrayList<BiometricTO> biometricDatas,
                                    Integer faceDisabilityStatus) throws BaseException {
-        CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
-        if (cr != null) {
-            CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
-            if (citizenInfoInDb != null)
-                citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
-            getCitizenInfoDAO().update(citizenInfoInDb);
+        try {
+            CardRequestTO cr = getCardRequestDAO().find(CardRequestTO.class, requestId);
+            if (cr != null) {
+                CitizenInfoTO citizenInfoInDb = cr.getCitizen().getCitizenInfo();
+                if (citizenInfoInDb != null)
+                    citizenInfoInDb.setFaceDisabilityStatus(faceDisabilityStatus);
+                getCitizenInfoDAO().update(citizenInfoInDb);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
         addBiometricData(requestId, biometricDatas);
     }
@@ -2469,7 +2476,11 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             requestTO.setEstelam2Flag(Estelam2FlagType.N);
             requestTO.setReservationDate(new Date());
             requestTO.setRequestedSmsStatus(1);
-            requestTO.getCitizen().getCitizenInfo().setFaceDisabilityStatus(faceDisabilityStatus);
+            try {
+                requestTO.getCitizen().getCitizenInfo().setFaceDisabilityStatus(faceDisabilityStatus);
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
             long requestId = save(requestTO);
             CardRequestTO cardRequestAfterInsert = getCardRequestDAO().find(CardRequestTO.class, requestId);
             // set priority to 99

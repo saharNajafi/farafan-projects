@@ -701,7 +701,7 @@ public class IMSUpdateCitizenInfoMapper implements XMLMapper {
 
                 if (citizenInfoTO != null && citizenInfoTO.getFaceDisabilityStatus() != null) {
                     Attr faceDisabilityStatusAttr = doc.createAttribute("FaceDisabilityStatus");
-                    faceDisabilityStatusAttr.setValue(String.valueOf(citizenInfoTO.getFaceDisabilityStatus()));
+                    faceDisabilityStatusAttr.setValue(citizenInfoTO.getFaceDisabilityStatus().toString());
                     faceImagesElement.setAttributeNode(faceDisabilityStatusAttr);
                 }
 
