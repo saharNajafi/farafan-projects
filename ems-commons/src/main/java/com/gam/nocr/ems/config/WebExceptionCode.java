@@ -508,7 +508,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_088_MSG = "national id is invalid";
     public static final String RSW_089_MSG = "crn is invalid";
     public static final String RSW_090_MSG = "citizen birthDate is invalid";
-    public static final String RSW_091_MSG = "Unable to generate CitizenInfoWTO";
+    public static final String RSW_091_MSG = "Unable to generate CitizenWTO";
     public static final String RSW_092_MSG = "citizen birthDate is null";
 
 
