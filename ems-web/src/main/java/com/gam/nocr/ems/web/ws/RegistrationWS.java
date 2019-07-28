@@ -733,12 +733,12 @@ public class RegistrationWS extends EMSWS {
      * @throws InternalException
      */
     @WebMethod
-    public CitizenInfoWTO fetchCitizenInfo(
+    public CitizenWTO fetchCitizenInfo(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "fetchCitizenInfoWTO") FetchCitizenInfoWTO fetchCitizenInfoWTO) throws InternalException {
 
         UserProfileTO up = super.validateRequest(securityContextWTO);
-        CitizenInfoWTO citizenInfoWTO = null;
+        CitizenWTO citizenWTO = null;
         CitizenTO citizenTO = null;
         CardRequestType type = fetchCitizenInfoWTO.getType();
         try {
@@ -781,17 +781,17 @@ public class RegistrationWS extends EMSWS {
                 }
             }
             try {
-                citizenInfoWTO = CardRequestMapper.convert(citizenTO);
+                 citizenWTO = CardRequestMapper.convert(null, citizenTO);
                 if(type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)|| type.equals(CardRequestType.REPLICA)){
-                    citizenInfoWTO.setLivingPrvId(0L);
-                    citizenInfoWTO.setLivingCityId(0L);
-                    citizenInfoWTO.setLivingStateId(0L);
-                    citizenInfoWTO.setLivingSectorId(0L);
-                    citizenInfoWTO.setLivingVillageId(0L);
-                    citizenInfoWTO.setAddress("");
-                    citizenInfoWTO.setPhone("");
-                    citizenInfoWTO.setPostCode("");
-                    citizenInfoWTO.setUserCityType("-1");
+                    citizenWTO.setLivingPrvId(0L);
+                    citizenWTO.setLivingCityId(0L);
+                    citizenWTO.setLivingStateId(0L);
+                    citizenWTO.setLivingSectorId(0L);
+                    citizenWTO.setLivingVillageId(0L);
+                    citizenWTO.setAddress("");
+                    citizenWTO.setPhone("");
+                    citizenWTO.setPostCode("");
+                    citizenWTO.setUserCityType("-1");
                 }
             } catch (Exception e) {
                 throw new InternalException(WebExceptionCode.RSW_091_MSG,
@@ -803,7 +803,7 @@ public class RegistrationWS extends EMSWS {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return citizenInfoWTO;
+        return citizenWTO;
     }
 
     /**
