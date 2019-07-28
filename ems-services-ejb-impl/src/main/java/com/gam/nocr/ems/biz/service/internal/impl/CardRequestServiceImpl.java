@@ -35,7 +35,6 @@ import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.LangUtil;
 import com.gam.nocr.ems.util.NationalIDUtil;
-import com.gam.nocr.ems.util.Utils;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import gampooya.tools.security.SecurityContextService;
@@ -1186,7 +1185,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         String state = "";
         try {
             nationalId = LangUtil.getEnglishNumber(nationalId);
-            if (!Utils.isValidNin(nationalId)) {
+            if (!NationalIDUtil.checkValidNinStr(nationalId)) {
                 state = labels.getString("state.invalidNationalId");
             } else {
                 CardRequestTO cardRequestTO = getCardRequestDAO().findCardRequestStateByNationalId(nationalId);
@@ -1220,7 +1219,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         String state = "";
         try {
             nationalId = LangUtil.getEnglishNumber(nationalId);
-            if (!Utils.isValidNin(nationalId)) {
+            if (!NationalIDUtil.checkValidNinStr(nationalId)) {
                 state = labels.getString("state.invalidNationalId");
             } else if (!EmsUtil.checkString(birthCertificateSeries)) {
                 state = labels.getString("state.nullBirthCertificateSeries");

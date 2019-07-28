@@ -196,7 +196,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             // em.flush();
             enrollmentOfficeTOList = em
                     .createQuery(
-                            "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.deleted = 0 and EOF1.id NOT IN "
+                            "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.deleted = true and EOF1.id NOT IN "
                                     + "(SELECT EOF.id FROM EnrollmentOfficeTO EOF "
                                     + "where (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
                                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
