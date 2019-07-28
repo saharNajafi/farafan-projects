@@ -12,7 +12,6 @@ import com.gam.nocr.ems.config.MapperExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.ChildrenWTO;
-import com.gam.nocr.ems.data.domain.ws.CitizenInfoWTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.SpouseWTO;
 import com.gam.nocr.ems.data.enums.CardRequestState;
@@ -817,50 +816,7 @@ public class CardRequestMapper {
         		wto.setUserCityType("0");
         	}
 
-	}
-	}
-
-    public static CitizenInfoWTO convert(CitizenTO citizenTO) throws BaseException {
-
-        CitizenInfoTO citizenInfoTO = citizenTO.getCitizenInfo();
-        CitizenWTO citizenWTO = new CitizenWTO();
-        CitizenInfoWTO citizenInfoWTO = new CitizenInfoWTO();
-        citizenInfoWTO.setFirstNameFA(citizenTO.getFirstNamePersian());
-        citizenInfoWTO.setSureNameFA(citizenTO.getSurnamePersian());
-        if (citizenInfoTO.getBirthDateGregorian() != null) {
-            citizenInfoWTO.setBirthDate(citizenInfoTO.getBirthDateGregorian());
         }
-        citizenInfoWTO.setBirthDateHijri(citizenInfoTO.getBirthDateLunar());
-        citizenInfoWTO.setNationalId(citizenTO.getNationalID());
-        if (citizenInfoTO.getGender() != null) {
-            citizenInfoWTO.setGender(citizenInfoTO.getGender().name());
-        }
-        if (citizenInfoTO.getReligion() != null) {
-            citizenInfoWTO.setReligionId(citizenInfoTO.getReligion().getId());
-        }
-        citizenInfoWTO.setPostCode(citizenInfoTO.getPostcode());
-        setGeo(citizenInfoTO, citizenWTO);
-        if(citizenInfoTO.getBirthCertificateSeries() != null && citizenInfoTO.getBirthCertificateSeries().length() > 0)
-            citizenInfoWTO.setBirthCertSerial(citizenInfoTO.getBirthCertificateSeries());
-        else
-            citizenInfoWTO.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
-        citizenInfoWTO.setFatherFirstNameFA(citizenInfoTO.getFatherFirstNamePersian());
-        citizenInfoWTO.setFatherNationalId(citizenInfoTO.getFatherNationalID());
-        citizenInfoWTO.setMotherFirstNameFA(citizenInfoTO.getMotherFirstNamePersian());
-        citizenInfoWTO.setMotherNationalId(citizenInfoTO.getMotherNationalID());
-        citizenInfoWTO.setAddress(citizenInfoTO.getAddress());
-        citizenInfoWTO.setPhone(citizenInfoTO.getPhone());
-        citizenInfoWTO.setMobile(citizenInfoTO.getMobile());
-        citizenInfoWTO.setFatherBirthCertId(citizenInfoTO.getFatherBirthCertificateId());
-        citizenInfoWTO.setMotherBirthCertId(citizenInfoTO.getMotherBirthCertificateId());
-        citizenInfoWTO.setLivingPrvId(citizenWTO.getLivingPrvId());
-        citizenInfoWTO.setLivingCityId(citizenWTO.getLivingCityId());
-        citizenInfoWTO.setLivingStateId(citizenWTO.getLivingStateId());
-        citizenInfoWTO.setLivingVillageId(citizenWTO.getLivingVillageId());
-        citizenInfoWTO.setLivingSectorId(citizenWTO.getLivingSectorId());
-        citizenInfoWTO.setUserCityType(citizenWTO.getUserCityType());
-        citizenInfoWTO.setBirthCertificateIssuancePlace(citizenInfoTO.getBirthCertificateIssuancePlace());
-        return citizenInfoWTO;
     }
 }
 
