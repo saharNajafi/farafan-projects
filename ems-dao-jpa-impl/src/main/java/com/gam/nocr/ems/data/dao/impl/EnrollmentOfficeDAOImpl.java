@@ -73,7 +73,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
 //EditedByAdldoost
             enrollmentOfficeTOList = em.createQuery("SELECT EOF FROM EnrollmentOfficeTO EOF " +
-                    "WHERE (EOF.lastSyncDate IS NULL ) and  EOF.deleted = 0 "
+                    "WHERE (EOF.lastSyncDate IS NULL ) and  EOF.deleted = false "
                     + "and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                     + "or eof.type = 'NOCR') "
@@ -137,7 +137,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             enrollmentOfficeTOList = em
                     .createQuery(
                             "SELECT EOF FROM EnrollmentOfficeTO EOF "
-                                    + "where ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
+                                    + "where eof.deleted = false and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
                                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                                     + "or eof.type = 'NOCR') "
                                     + "and "
@@ -198,7 +198,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     .createQuery(
                             "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.deleted = true and EOF1.id NOT IN "
                                     + "(SELECT EOF.id FROM EnrollmentOfficeTO EOF "
-                                    + "where (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
+                                    + "where eof.deleted = false and (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
                                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                                     + "or eof.type = 'NOCR'))) "
                                     + "and "
