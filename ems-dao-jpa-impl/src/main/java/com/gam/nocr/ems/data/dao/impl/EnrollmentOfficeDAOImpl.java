@@ -249,7 +249,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public List<Long> findSubOffice(Long enrollmentOfficeId) throws BaseException {
         try {
             return em.createQuery("select eof.id from EnrollmentOfficeTO eof " +
-                    "where eof.deleted=0 and eof.type = :enrollmentOfficeType " +
+                    "where eof.deleted=false and eof.type = :enrollmentOfficeType " +
                     "and eof.superiorOffice.id = :enrollmentOfficeId", Long.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
                     .setParameter("enrollmentOfficeType", EnrollmentOfficeType.OFFICE)
@@ -658,7 +658,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             return em.createQuery("select eo.active " +
                             "from EnrollmentOfficeTO eo " +
-                            "where eo.deleted=0 and eo.id=:enrollmentOfficeId"
+                            "where eo.deleted=false and eo.id=:enrollmentOfficeId"
                     , Boolean.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
                     .getSingleResult();
@@ -671,7 +671,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException {
         try {
             return em.createQuery(
-                    "select eo from EnrollmentOfficeTO eo where eo.deleted=0 "
+                    "select eo from EnrollmentOfficeTO eo where eo.deleted = false "
                             + "order by eo.id asc ", EnrollmentOfficeTO.class).getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
