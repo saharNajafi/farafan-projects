@@ -1878,7 +1878,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             int d2 = Integer.parseInt(formatter.format(currentDate));
             int age = (d2 - d1) / 10000;
             return age;
-        } catch (DateFormatException e) {
+        } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.CRE_089, BizExceptionCode.CRE_089_MSG);
         }
     }
