@@ -760,7 +760,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public Boolean setDeleted(Long eofId) throws DataException {
+    public Boolean removeEnrollmentOffice(Long eofId) throws DataException {
         try {
             EnrollmentOfficeTO eof = findEnrollmentOfficeById(eofId);
             eof.setDeleted(true);
