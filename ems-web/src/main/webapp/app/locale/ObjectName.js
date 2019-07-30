@@ -233,6 +233,13 @@ Ext.define('Ems.locale.objectName', {
 		batchLostDate : 'batchLostDate',
 		isConfirm  :'isConfirm'
 	},
+	BatchList :{
+		batchId : 'batchId',
+		cmsID : 'cmsID',
+		departmentName : 'departmentName',
+		batchLostDate : 'batchLostDate',
+		isConfirm  :'isConfirm'
+	},
 	//
 
 	Rating : {

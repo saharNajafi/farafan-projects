@@ -44,6 +44,12 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             },
             tooltip: 'مشاهده تاریخچه',
             action: 'cardRequestHistory'
+        }, {
+            getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+                return 'grid-show-request-batch-id-icon';
+            },
+            tooltip: 'مشاهده کد گروهی',
+            action: 'showRequestBatchId'
         },
         {
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
@@ -145,11 +151,11 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 if (EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt) {
                     return 'grid-print-registration-receipt';
                     // var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
-                //
-                //     if (cardState != 'IMS_ERROR') {
-                //         return 'grid-print-registration-receipt';
-                // } else
-                //     return 'grid-action-hidden';
+                    //
+                    //     if (cardState != 'IMS_ERROR') {
+                    //         return 'grid-print-registration-receipt';
+                    // } else
+                    //     return 'grid-action-hidden';
                 } else
                     return 'grid-action-hidden';
             },
@@ -217,7 +223,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 filter: {
                     xtype: 'officeautocomplete'
                     , hiddenName: EmsObjectName.cardRequestList.enrollmentOfficeId
-//		                                                    
+//
 
                 }
             },
@@ -575,4 +581,3 @@ Ext.define('Ems.view.cardRequestList.Grid', {
         ]);
     }
 });
-

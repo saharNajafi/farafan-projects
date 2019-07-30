@@ -274,6 +274,14 @@ public class CardRequestDelegator implements Delegator {
     }
 
     /**
+     * @author a.amiri
+     */
+    public String findCmsBatchByRequestId(UserProfileTO userProfile, Long requestId)
+            throws BaseException {
+        return getCardManagementService(userProfile).findCmsBatchByRequestId(requestId);
+    }
+
+    /**
      * this method is used to fetch batch lost temp count. The count is used in
      * card lost cartable which are waiting to confirm by 3s admin
      *

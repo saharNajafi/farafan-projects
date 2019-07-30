@@ -9,6 +9,7 @@ Ext.define('Ems.controller.CardRequestListController', {
     extend: 'Gam.app.controller.RemoteDialogBasedGrid',
 
     ns: 'extJsController/cardrequestlist',
+    bUrl: 'extJsController/findbatch',
 
     statics: {
         statefulComponents: [
@@ -89,6 +90,35 @@ Ext.define('Ems.controller.CardRequestListController', {
         }
 
     },
+    doShowRequestBatchId: function (grid, rowIndex) {
+        sessionStorage.setItem('cardRequestId', null);
+        var store = grid.getStore(),
+            me = this;
+        record = store.getAt(rowIndex),
+            id = record.get('id');
+        sessionStorage.setItem('cardRequestId', id);
+        Ext.Ajax.request({
+            url: me.bUrl + '/findBatchIdByCardRequestId',
+            jsonData: {
+                cardRequestId: id
+            },
+            success: function (resp) {
+                var data = Ext.decode(resp.responseText);
+                if (data.success) {
+                    var rec = data.records;
+                    if (rec != null) {
+                        me.loadFormBatchIDView(rec[0], 'View');
+                    } else {
+                        Tools.errorMessageClient(Ems.ErrorCode.client.EMS_C_004);
+                    }
+                } else {
+                    Tools.errorMessageServer(obj.messageInfo);
+                }
+            }, failure: function (resp) {
+                Tools.errorFailure();
+            }
+        });
+    },
     doChangePriority: function (grid, rowIndex) {	// khodayari
         sessionStorage.setItem('cardRequestId', null);
         var store = grid.getStore(),
@@ -121,7 +151,7 @@ Ext.define('Ems.controller.CardRequestListController', {
 
     },
     doPrintRegistrationReceipt: function (grid, rowIndex) {
-        var store = grid.getStore() ,
+        var store = grid.getStore(),
             record = store.getAt(rowIndex);
         sessionStorage.setItem('cardRequestId', record.get('id'));
         var win = Ext.create('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationReceiptWindow');
@@ -129,9 +159,6 @@ Ext.define('Ems.controller.CardRequestListController', {
         printReceiptInfo = printReceipt.down('printRegistrationReceiptFieldSet');
         Tools.MaskUnMask(win);
         win.show();
-
-
-
 
 
         // sessionStorage.setItem('cardRequestId', null);
@@ -196,6 +223,30 @@ Ext.define('Ems.controller.CardRequestListController', {
             priority: cardPriority,
             citizenNId: rec.get(EmsObjectName.cardRequestList.citizenNId)
 
+        }), panelInfo);
+        win.show();
+    },
+    loadFormBatchIDView: function (record, mode) {
+        var win = null;
+
+        if (mode === 'View') {
+            win = Ext.create('Ems.view.cardRequestList.showRequestBatchId.ShowRequestBatchIdWindow');
+            panel = win.down('.showRequestBatchIdDialog');
+            panelInfo = panel.down('showRequestBatchIdFieldSet');
+            Tools.MaskUnMask(win);
+        }
+        var store = Ext.create('Ems.store.BatchListStore', {baseUrl: this.ns});
+        store.add(record);
+        var rec = store.getAt(0);
+        var batchCmsId;
+
+        if (rec.get(EmsObjectName.BatchList.cmsID)) {
+            batchCmsId = rec.get(EmsObjectName.BatchList.cmsID).toString();
+        } else {
+            batchCmsId = '0';
+        }
+        panelInfo.setData(Ext.create('Ems.model.BatchListModel', {
+            cmsID: batchCmsId
         }), panelInfo);
         win.show();
     },
@@ -494,5 +545,4 @@ Ext.define('Ems.controller.CardRequestListController', {
 
 
 });
-
 

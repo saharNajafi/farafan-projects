@@ -13,8 +13,11 @@ import java.util.List;
 public interface BatchDAO extends EmsBaseDAO<BatchTO> {
 
     public List<BatchTO> findAll() throws BaseException;
+
     public Integer countBatchLostTemp(GeneralCriteria criteria) throws BaseException;
 
-	public List<BatchDispatchInfoVTO> fetchBatchLostTempList(
-			GeneralCriteria criteria) throws BaseException;
+    public List<BatchDispatchInfoVTO> fetchBatchLostTempList(
+            GeneralCriteria criteria) throws BaseException;
+
+    public String findCmsIdByRequestId(Long requestId) throws BaseException;
 }

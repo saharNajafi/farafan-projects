@@ -8,10 +8,8 @@ import com.gam.nocr.ems.data.domain.vol.BatchDispatchInfoVTO;
 import com.gam.nocr.ems.data.enums.CardState;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
-import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.DataException;
-import com.gam.commons.core.data.dao.DAOException;
-import com.gam.nocr.ems.config.DataExceptionCode;
+
 import javax.persistence.Query;
 
 import javax.ejb.Local;
@@ -238,4 +236,24 @@ public class BatchDAOImpl extends EmsBaseDAOImpl<BatchTO> implements BatchDAOLoc
 					DataExceptionCode.GLB_006_MSG, e);
 		}
 	}
+
+    @Override
+    public String findCmsIdByRequestId(Long requestId) throws BaseException {
+		List<String> cmsIDList;
+		try {
+			cmsIDList = em.createQuery("SELECT BTC.cmsID " +
+					"FROM BatchTO BTC ,CardTO CRD, CardRequestTO CRT " +
+					"WHERE BTC.id = CRD.batch.id AND CRD.id = CRT.card.id AND " +
+					"CRT.id = :REQUEST_ID", String.class)
+					.setParameter("REQUEST_ID", requestId)
+					.getResultList();
+			if (!cmsIDList.isEmpty()) {
+				return cmsIDList.get(0);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			throw new DataException(DataExceptionCode.CAI_009, DataExceptionCode.GLB_005_MSG, e);
+		}
+    }
 }

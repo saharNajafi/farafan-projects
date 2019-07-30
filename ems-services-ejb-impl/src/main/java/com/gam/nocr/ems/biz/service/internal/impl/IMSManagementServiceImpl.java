@@ -2619,7 +2619,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 //
 //		reqId = imsEnquiryVTO.getRequestId();
 //		if (reqId != null) {
-//			ctz = getCitizenDAO().findByRequestId(reqId);
+//			ctz = getCitizenDAO().findCmsIdByRequestId(reqId);
 //
 //			// TODO :write a query for fetch requests which have state
 //			// "reserved"
@@ -4268,7 +4268,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 //			CardRequestTO cardRequestTO = getCardRequestDAO().find(
 //					CardRequestTO.class, reqId);
 //
-//			CitizenTO ctz = getCitizenDAO().findByRequestId(reqId);
+//			CitizenTO ctz = getCitizenDAO().findCmsIdByRequestId(reqId);
 //			CitizenInfoTO czi = ctz.getCitizenInfo();
 //			String requestedPersonNationaID = ctz.getNationalID();
 //			String citizenInfo = imsEnquiryVTO.getCitizenInfo();

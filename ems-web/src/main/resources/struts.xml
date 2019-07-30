@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
- <constant name="struts.multipart.maxSize" value="5242880" />
+    <constant name="struts.multipart.maxSize" value="5242880"/>
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
 
@@ -26,7 +26,7 @@
             <result name="failure" type="gam-json"/>
         </action>
     </package>
-    
+
     <package name="userToken" extends="gam-json-default" namespace="/extJsController/token">
         <action name="*" class="com.gam.nocr.ems.web.action.PersonTokenAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
@@ -99,8 +99,9 @@
         </action>
     </package>
 
-    <package name="report-result-download" extends="gam-json-default" namespace="/extJsController/reportresult" >
-        <action name="loadGeneratedReport" class="com.gam.nocr.ems.web.action.ReportRequestAction" method="loadGeneratedReport">
+    <package name="report-result-download" extends="gam-json-default" namespace="/extJsController/reportresult">
+        <action name="loadGeneratedReport" class="com.gam.nocr.ems.web.action.ReportRequestAction"
+                method="loadGeneratedReport">
             <result name="success" type="stream">
                 <param name="contentType">${contentType}</param>
                 <param name="contentDisposition">attachment;filename="${resultFileName}"</param>
@@ -129,6 +130,15 @@
         </action>
     </package>
 
+    <package name="find-batch" extends="gam-json-default" namespace="/extJsController/findbatch">
+        <action name="*" class="com.gam.nocr.ems.web.action.FindBatchAction" method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
+
     <package name="downloadReceiptlist" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
         <action name="downloadRecriptFile" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="print">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
@@ -138,7 +148,7 @@
         </action>
     </package>
 
-    
+
     <package name="estelam2False" extends="gam-json-default" namespace="/extJsController/estelam2falselist">
         <action name="*" class="com.gam.nocr.ems.web.action.Estelam2FalseListAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
@@ -147,7 +157,7 @@
             <result name="failure" type="gam-json"/>
         </action>
     </package>
-    
+
     <package name="cmsErrorEvaluate" extends="gam-json-default" namespace="/extJsController/cmserrorevaluatelist">
         <action name="*" class="com.gam.nocr.ems.web.action.CmsErrorEvaluateListAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
@@ -156,7 +166,7 @@
             <result name="failure" type="gam-json"/>
         </action>
     </package>
-    
+
 
     <package name="workstation" extends="gam-json-default" namespace="/extJsController/workstation">
         <action name="*" class="com.gam.nocr.ems.web.action.WorkstationAction" method="{1}">
@@ -200,7 +210,7 @@
             <result name="failure" type="gam-json"/>
         </action>
     </package>
-     <package name="about" extends="gam-json-default" namespace="/extJsController/about">
+    <package name="about" extends="gam-json-default" namespace="/extJsController/about">
         <action name="*" class="com.gam.nocr.ems.web.action.AboutAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
             <interceptor-ref name="gam-json"/>
@@ -217,23 +227,23 @@
             <result name="failure" type="gam-json"/>
         </action>
     </package>
-    
-     <package name="helplist" extends="gam-json-default" namespace="/extJsController/helpfilelist">
+
+    <package name="helplist" extends="gam-json-default" namespace="/extJsController/helpfilelist">
         <action name="*" class="com.gam.nocr.ems.web.action.HelpAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
             <interceptor-ref name="gam-json"/>
             <result name="success" type="gam-json">
-            <param name="contentType">text/html</param> 
+                <param name="contentType">text/html</param>
             </result>
             <result name="failure" type="gam-json">
-            <param name="contentType">text/html</param>
-            
+                <param name="contentType">text/html</param>
+
             </result>
         </action>
     </package>
-    
+
     <package name="downloadHelplist" extends="gam-json-default" namespace="/extJsController/downloadfile">
-    	<action name="downloadHelpFile" class="com.gam.nocr.ems.web.action.HelpAction" method="downloadHelpFile">
+        <action name="downloadHelpFile" class="com.gam.nocr.ems.web.action.HelpAction" method="downloadHelpFile">
             <result name="success" type="stream">
                 <param name="contentType">contentType</param>
                 <param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
@@ -243,7 +253,7 @@
             </result>
         </action>
     </package>
-    
+
     <!-- <package name="downloadHelplist" extends="gam-json-default" namespace="/extJsController/helpfilelist">
         
     </package> -->
@@ -294,27 +304,27 @@
         </action>
     </package>
 
-     <package name="message" extends="gam-json-default" namespace="/extJsController/messages">
+    <package name="message" extends="gam-json-default" namespace="/extJsController/messages">
         <action name="*" class="com.gam.nocr.ems.web.action.PreparedMessageAction" method="{1}">
-               <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
             <interceptor-ref name="gam-json"/>
             <result name="success" type="gam-json">
-            <param name="contentType">text/html</param> 
+                <param name="contentType">text/html</param>
             </result>
             <result name="failure" type="gam-json">
-            <param name="contentType">text/html</param>
+                <param name="contentType">text/html</param>
             </result>
         </action>
     </package>
-	<package name="lostcard" extends="gam-json-default" namespace="/extJsController/lostcard">
-		<action name="*" class="com.gam.nocr.ems.web.action.LostCardAction"
-			method="{1}">
-			<interceptor-ref name="jsonValidationWorkflowStack" />
-			<interceptor-ref name="gam-json" />
-			<result name="success" type="gam-json" />
-			<result name="failure" type="gam-json" />
-		</action>
-	</package>
+    <package name="lostcard" extends="gam-json-default" namespace="/extJsController/lostcard">
+        <action name="*" class="com.gam.nocr.ems.web.action.LostCardAction"
+                method="{1}">
+            <interceptor-ref name="jsonValidationWorkflowStack"/>
+            <interceptor-ref name="gam-json"/>
+            <result name="success" type="gam-json"/>
+            <result name="failure" type="gam-json"/>
+        </action>
+    </package>
     <package name="lostbatch" extends="gam-json-default" namespace="/extJsController/lostbatch">
         <action name="*" class="com.gam.nocr.ems.web.action.LostBatchAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
@@ -322,9 +332,11 @@
             <result name="success" type="gam-json"/>
             <result name="failure" type="gam-json"/>
         </action>
-    </package>   
-    <package name="downloadMessageAttached" extends="gam-json-default" namespace="/extJsController/downloadMessageAttached">
-    	<action name="downloadAttachedFile" class="com.gam.nocr.ems.web.action.PreparedMessageAction" method="downloadAttachedFile">
+    </package>
+    <package name="downloadMessageAttached" extends="gam-json-default"
+             namespace="/extJsController/downloadMessageAttached">
+        <action name="downloadAttachedFile" class="com.gam.nocr.ems.web.action.PreparedMessageAction"
+                method="downloadAttachedFile">
             <result name="success" type="stream">
                 <param name="contentType">contentType</param>
                 <param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
@@ -334,8 +346,6 @@
             </result>
         </action>
     </package>
-    
-    
-    
+
 
 </struts>

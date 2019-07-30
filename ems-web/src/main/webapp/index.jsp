@@ -713,6 +713,12 @@ background-image: none !important;
     cursor: pointer;
 }
 
+.grid-show-request-batch-id-icon {
+    background: url(resources/themes/images/default/shared/view.png) no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 .girdAction-AllowAmputatedFingerActive-icon {
     background: url('resources/themes/images/officeSetting/AllowAmputatedFingerStatusForElderly.png') no-repeat right;
     width: 13px;

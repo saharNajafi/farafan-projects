@@ -168,4 +168,5 @@ public interface CardManagementService extends Service {
 
 	String processOnRequestsWithIdentifyChanged(Integer from) throws BaseException;
 
+	String findCmsBatchByRequestId(Long requestId);
 }
