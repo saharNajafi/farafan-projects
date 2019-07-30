@@ -10,9 +10,6 @@ import com.gam.nocr.ems.biz.service.WorkstationInfoService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
-import com.gam.nocr.ems.data.domain.ws.ClientHardWareSpecWTO;
-import com.gam.nocr.ems.data.domain.ws.ClientNetworkConfigsWTO;
-import com.gam.nocr.ems.data.domain.ws.ClientSoftWareSpecWTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
 import java.util.List;

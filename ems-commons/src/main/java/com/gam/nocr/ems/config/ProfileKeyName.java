@@ -255,4 +255,7 @@ public class ProfileKeyName {
     public static final String KEY_BPI_ENDPOINT = EMS_PROFILE_ROOT + ".bpiEndpoint";
     public static final String KEY_BPI_NAMESPACE = EMS_PROFILE_ROOT + ".bpiNamespace";
 
+    //workstation info
+    public static final String KEY_WORKSTATION_INFO_CHECK_PERIOD = EMS_PROFILE_ROOT + ".workstationCheckPeriod";
+
 }

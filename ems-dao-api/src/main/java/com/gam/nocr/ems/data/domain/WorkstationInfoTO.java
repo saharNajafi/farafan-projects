@@ -6,21 +6,23 @@
 package com.gam.nocr.ems.data.domain;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
+import flexjson.JSON;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
- *
  * @author sahar
  */
 @Entity
 @Table(name = "EMST_WORKSTATION_INFO")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_WORKSTATION_INFO", allocationSize = 1)
 @NamedQueries({
-         @NamedQuery(
-        name = "WorkstationInfoTO.findByWorkstationId",
-        query = "SELECT e FROM WorkstationInfoTO e" +
-                " WHERE e.workstation.id =:workstationId")
+        @NamedQuery(
+                name = "WorkstationInfoTO.findByWorkstationId",
+                query = "SELECT e FROM WorkstationInfoTO e" +
+                        " WHERE e.workstation.id =:workstationId")
 })
 public class WorkstationInfoTO extends ExtEntityTO {
 
@@ -28,18 +30,16 @@ public class WorkstationInfoTO extends ExtEntityTO {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
 
     private Long id;
-    private String macAddressList;
     private String ipAddressList;
     private String cpuType;
-    private Integer ramCapacity;
     private String osVersion;
-    private String computerName;
     private String username;
-    private String gateway;
     private Short hasDotnetFramwork45;
     private Short is64bitOs;
     private WorkstationTO workstation;
     private short gatherState;
+    private Date lastModifiedDate;
+    private String dataAsJson;
 
     public WorkstationInfoTO() {
     }
@@ -56,15 +56,6 @@ public class WorkstationInfoTO extends ExtEntityTO {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Column(name = "WSI_MAC_ADDRESS_LIST")
-    public String getMacAddressList() {
-        return macAddressList;
-    }
-
-    public void setMacAddressList(String macAddressList) {
-        this.macAddressList = macAddressList;
     }
 
     @Column(name = "WSI_IP_ADDRESS_LIST")
@@ -85,15 +76,6 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.cpuType = cpuType;
     }
 
-    @Column(name = "WSI_RAM_CAPACITY")
-    public Integer getRamCapacity() {
-        return ramCapacity;
-    }
-
-    public void setRamCapacity(Integer ramCapacity) {
-        this.ramCapacity = ramCapacity;
-    }
-
     @Column(name = "WSI_OS_VERSION")
     public String getOsVersion() {
         return osVersion;
@@ -103,15 +85,6 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.osVersion = osVersion;
     }
 
-    @Column(name = "WSI_COMPUTER_NAME")
-    public String getComputerName() {
-        return computerName;
-    }
-
-    public void setComputerName(String computerName) {
-        this.computerName = computerName;
-    }
-
     @Column(name = "WSI_USERNAME")
     public String getUsername() {
         return username;
@@ -119,15 +92,6 @@ public class WorkstationInfoTO extends ExtEntityTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Column(name = "WSI_GATEWAY")
-    public String getGateway() {
-        return gateway;
-    }
-
-    public void setGateway(String gateway) {
-        this.gateway = gateway;
     }
 
     @Column(name = "WSI_HAS_DOTNET_FRAMWORK45")
@@ -158,6 +122,16 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.workstation = workstation;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "WSI_LAST_MODIFIED_DATE")
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     @Basic(optional = false)
     @Column(name = "WSI_GATHER_STATE")
     public short getGatherState() {
@@ -166,6 +140,15 @@ public class WorkstationInfoTO extends ExtEntityTO {
 
     public void setGatherState(short gatherState) {
         this.gatherState = gatherState;
+    }
+
+    @Column(name = "WSI_DATA_AS_JSON")
+    public String getDataAsJson() {
+        return dataAsJson;
+    }
+
+    public void setDataAsJson(String dataAsJson) {
+        this.dataAsJson = dataAsJson;
     }
 
     @Override
@@ -192,5 +175,5 @@ public class WorkstationInfoTO extends ExtEntityTO {
     public String toString() {
         return "com.gam.nocr.ems.data.domain.WorkstationInfoTO[ wsiId=" + id + " ]";
     }
-    
+
 }

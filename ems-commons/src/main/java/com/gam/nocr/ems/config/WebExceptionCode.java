@@ -662,6 +662,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WST_012 = "EMSWorkstationPMService0012";
     public static final String WST_013 = "EMSWorkstationPMService0013";
     public static final String WST_014 = "EMSWorkstationPMService0014";
+    public static final String WST_015 = "EMSWorkstationPMService0015";
     public static final String EMSWorkstationPMService0008 = "IP address format is invalid";
     public static final String EMSWorkstationPMService0009 = "MAC address could not be empty";
     public static final String EMSWorkstationPMService0010 = "MAC address is too short";
@@ -669,6 +670,7 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
     public static final String EMSWorkstationPMService0013 = "Username could not be empty";
     public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
+    public static final String EMSWorkstationPMService0015 = "Json format is not valid";
 
     //com.gam.nocr.ems.web.ws.WS.CardRequestStateWS
     public static final String CRQW_001 = "EMS_W_CRQW_001";

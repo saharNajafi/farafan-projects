@@ -6,21 +6,23 @@ import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.profile.ConfigurationFileHandler;
+import com.gam.commons.profile.ProfileException;
+import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationInfoDAO;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
-import com.gam.nocr.ems.data.domain.ws.ClientHardWareSpecWTO;
-import com.gam.nocr.ems.data.domain.ws.ClientNetworkConfigsWTO;
-import com.gam.nocr.ems.data.domain.ws.ClientSoftWareSpecWTO;
 import com.gam.nocr.ems.util.EmsUtil;
+import weblogic.jndi.internal.NameAlreadyUnboundException;
 
 import javax.ejb.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,46 +66,64 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         try {
             if (workstationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
-            if(workstationCode.length() < 40)
+            if (workstationCode.length() < 40)
                 throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
-            if(workstationCode.length() > 40)
+            if (workstationCode.length() > 40)
                 throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.WST_004_MSG);
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
-            if(workstation == null)
+            if (workstation == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
-            if(workstationInfoTO != null)
-                result = workstationInfoTO.getGatherState() != 0;
+
+            //1-
+            if (workstationInfoTO == null)
+                return true;
+            //2-
+            if (workstationInfoTO != null && workstationInfoTO.getGatherState() == 1)
+                return true;
+            //3-
+            try {
+                ProfileManager pm = ProfileHelper.getProfileManager();
+                String checkPeriod = (String) pm.getProfile(ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD, true, null, null);
+                if (workstationInfoTO.getLastModifiedDate() == null)
+                    return true;
+                Date lastModifiedDatePlusCheckPeriod = EmsUtil.getDateAtMidnight(EmsUtil.differDay(workstationInfoTO.getLastModifiedDate(), Integer.valueOf(checkPeriod)));
+                if (new Date().compareTo(lastModifiedDatePlusCheckPeriod) > 0)
+                    return true;
+            } catch (ProfileException e) {
+                e.printStackTrace();
+            }
+
         } catch (BaseException e) {
             e.printStackTrace();
         }
-        return result;
+        return false;
     }
 
     @Override
     public String getReliableVerByPlatform(
-            String workstationCode, WorkstationInfoTO workstationInfoTO) throws BaseException {
+            String workstationCode, WorkstationInfoTO newWorkstationInfoTO) throws BaseException {
         String ccosExactVersion = null;
         WorkstationTO workstation;
-        WorkstationInfoTO workstationInfo = null;
+        WorkstationInfoTO oldWorkstationInfo = null;
         try {
             if (workstationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
-            if(workstationCode.length() < 40)
+            if (workstationCode.length() < 40)
                 throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
-            if(workstationCode.length() > 40)
+            if (workstationCode.length() > 40)
                 throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.WST_004_MSG);
             workstation = getWorkstationDAO().findByActivationCode(workstationCode);
-            if(workstation == null)
+            if (workstation == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
-            workstationInfo =
+            oldWorkstationInfo =
                     getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
-            if (workstationInfo != null) {
-                updateWorkstationInfo(workstationInfoTO, workstationInfo);
+            if (oldWorkstationInfo != null) {
+                updateWorkstationInfo(newWorkstationInfoTO, oldWorkstationInfo);
                 ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             } else if (workstation != null) {
-                workstationInfoTO.setWorkstation(workstation);
-                getWorkstationInfoDAO().create(workstationInfoTO);
+                newWorkstationInfoTO.setWorkstation(workstation);
+                getWorkstationInfoDAO().create(newWorkstationInfoTO);
                 ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             }
         } catch (BaseException e) {
@@ -112,21 +132,35 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         return ccosExactVersion;
     }
 
-    private void updateWorkstationInfo(WorkstationInfoTO workstationInfoTo, WorkstationInfoTO workstationInfo) throws BaseException {
+    private void updateWorkstationInfo(WorkstationInfoTO newWorkstationInfoTo, WorkstationInfoTO oldWorkstationInfo) throws BaseException {
         try {
-            workstationInfo.setMacAddressList(String.valueOf(workstationInfoTo.getMacAddressList()));
-            workstationInfo.setCpuType(workstationInfoTo.getCpuType());
-            workstationInfo.setRamCapacity(workstationInfoTo.getRamCapacity());
-            workstationInfo.setOsVersion(workstationInfoTo.getOsVersion());
-            if(workstationInfoTo.getHasDotnetFramwork45() != null)
-                workstationInfo.setHasDotnetFramwork45(workstationInfoTo.getHasDotnetFramwork45());
-            if(workstationInfoTo.getIs64bitOs()!=null)
-                workstationInfo.setIs64bitOs(workstationInfoTo.getIs64bitOs());
-            workstationInfo.setIpAddressList(String.valueOf(workstationInfoTo.getIpAddressList()));
-            workstationInfo.setComputerName(workstationInfoTo.getComputerName());
-            workstationInfo.setUsername(workstationInfoTo.getUsername());
-            workstationInfo.setGateway(workstationInfoTo.getGateway());
-            getWorkstationInfoDAO().update(workstationInfo);
+            //1-
+            if (String.valueOf(newWorkstationInfoTo.getIpAddressList()) != null)
+                oldWorkstationInfo.setIpAddressList(String.valueOf(newWorkstationInfoTo.getIpAddressList()));
+            //2-
+            if (newWorkstationInfoTo.getCpuType() != null)
+                oldWorkstationInfo.setCpuType(newWorkstationInfoTo.getCpuType());
+            //3-
+            if (newWorkstationInfoTo.getOsVersion() != null)
+                oldWorkstationInfo.setOsVersion(newWorkstationInfoTo.getOsVersion());
+            //4-
+            if (newWorkstationInfoTo.getUsername() != null)
+                oldWorkstationInfo.setUsername(newWorkstationInfoTo.getUsername());
+            //5-
+            if (newWorkstationInfoTo.getHasDotnetFramwork45() != null)
+                oldWorkstationInfo.setHasDotnetFramwork45(newWorkstationInfoTo.getHasDotnetFramwork45());
+            //6-
+            if (newWorkstationInfoTo.getIs64bitOs() != null)
+                oldWorkstationInfo.setIs64bitOs(newWorkstationInfoTo.getIs64bitOs());
+            //7-
+            oldWorkstationInfo.setGatherState(newWorkstationInfoTo.getGatherState());//Always this field be reset!
+            //8-
+            oldWorkstationInfo.setLastModifiedDate(newWorkstationInfoTo.getLastModifiedDate());//Always this field be reset!
+            //9-
+            if (newWorkstationInfoTo.getDataAsJson() != null)
+                oldWorkstationInfo.setDataAsJson(newWorkstationInfoTo.getDataAsJson());
+
+            getWorkstationInfoDAO().update(oldWorkstationInfo);
         } catch (BaseException e) {
             e.printStackTrace();
         }

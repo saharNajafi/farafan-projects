@@ -23,6 +23,7 @@ import javax.xml.ws.WebServiceException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
@@ -688,5 +689,18 @@ public class EmsUtil {
         } else {
             return String.format("%0" + length + "d", Long.valueOf(input));
         }
+    }
+
+    public static boolean isJSONValid(String json) {
+        try {
+            new JSONObject(json);
+        } catch (JSONException ex) {
+            try {
+                new JSONArray(json);
+            } catch (JSONException ex1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
