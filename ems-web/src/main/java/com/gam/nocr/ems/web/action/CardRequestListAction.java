@@ -217,7 +217,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     }
 
-
     /**
      * this method is used to check Receive Batch Id Access
      *

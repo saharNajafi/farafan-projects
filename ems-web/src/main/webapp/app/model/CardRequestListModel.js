@@ -18,6 +18,7 @@ Ext.define('Ems.model.CardRequestListModel', {
         , {name: EmsObjectName.cardRequestList.portalEnrolledDate, type: 'date'}
         , EmsObjectName.cardRequestList.cardRequestState
         , EmsObjectName.cardRequestList.trackingId
+        , EmsObjectName.cardRequestList.attendDate
         , EmsObjectName.cardRequestList.cardType
         , EmsObjectName.cardRequestList.cardState
         , EmsObjectName.cardRequestList.requestedAction

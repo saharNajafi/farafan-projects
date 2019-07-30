@@ -20,6 +20,7 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
     private Long enrollmentOfficeId;
     private String enrollmentOfficeName;
     private Timestamp enrolledDate;
+    private Timestamp attendDate;
     private Timestamp portalEnrolledDate;
     private String cardRequestState;
     private String cardType;
@@ -51,7 +52,7 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
                           String cardType, String cardState, String trackingId,
                           String requestedAction, String requestOrigin,
                           String deliveredOfficeName, Timestamp deliveredDate,
-                          Timestamp reservationDate, Integer flag,Integer priority) {
+                          Timestamp reservationDate, Integer flag,Integer priority,Timestamp attendDate) {
         this.id = id;
         this.citizenFirstName = citizenFirstName;
         this.citizenSurname = citizenSurname;
@@ -70,6 +71,7 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
         this.deliveredDate = deliveredDate;
         this.reservationDate = reservationDate;
         this.flag = flag;
+        this.attendDate = attendDate;
 
         this.priority = priority;
         if (flag != null) {
@@ -299,6 +301,14 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
 
     public void setChildren(List<ChildVTO> children) {
         this.children = children;
+    }
+
+    public Timestamp getAttendDate() {
+        return attendDate;
+    }
+
+    public void setAttendDate(Timestamp attendDate) {
+        this.attendDate = attendDate;
     }
 }
 

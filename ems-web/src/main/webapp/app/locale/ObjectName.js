@@ -380,6 +380,7 @@ Ext.define('Ems.locale.objectName', {
 		portalEnrolledDate : 'portalEnrolledDate',
 		cardRequestState : 'cardRequestState',
 		trackingId : 'trackingId',
+		attendDate : 'attendDate',
 		cardType : 'cardType',
 		cardState : 'cardState',
 		requestedAction : 'requestedAction',

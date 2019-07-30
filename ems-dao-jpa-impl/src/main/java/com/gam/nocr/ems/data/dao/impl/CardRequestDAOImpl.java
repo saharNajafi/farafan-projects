@@ -2601,6 +2601,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                             + "where dep.dep_id = cr.crq_delivered_office_id) crq_delivered_office_name,"
                             + "c.CRD_DELIVER_DATE, cr.crq_rsv_date, cr.crq_flag "
                             + ",cr.crq_priority "
+                            + ",cr.CRQ_REENROLLED_DATE "
                             + "from " + "emst_card_request cr,"
                             + "emst_citizen cz," + "emst_card c,"
                             + "emst_department d " + "where "
@@ -2811,6 +2812,14 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
             if (resultList != null) {
                 for (Object record : resultList) {
                     Object[] data = (Object[]) record;
+                    Timestamp attendDate = null;
+                    if (data[18] != null)//enrolled date
+                        attendDate = (Timestamp) data[18];
+                    else if (data[5] != null)//reenrolled date
+                        attendDate = (Timestamp) data[5];
+                    else if (data[15] != null)//reserved date
+                        attendDate = (Timestamp) data[20];
+
                     CardRequestVTO request = new CardRequestVTO(
                             ((BigDecimal) data[0]).longValue(),
                             (String) data[1], (String) data[2],
@@ -2821,7 +2830,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                             (String) data[11], (String) data[12],
                             (String) data[13], (Timestamp) data[14],
                             (Timestamp) data[15],
-                            ((BigDecimal) data[16]).intValue(),((BigDecimal )data[17]).intValue());
+                            ((BigDecimal) data[16]).intValue(), ((BigDecimal) data[17]).intValue(), attendDate);
                     result.add(request);
                 }
             }

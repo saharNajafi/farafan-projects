@@ -397,6 +397,16 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 filter: true
             },
             {
+                xtype : 'gam.datecolumn',
+                dataIndex: EmsObjectName.cardRequestList.attendDate,
+                id: EmsObjectName.cardRequestList.attendDate,
+                format : Ext.Date.defaultDateTimeFormat,
+                text: 'تاریخ مراجعه',
+                sortable: false,
+                filterable: false,
+                filter: false
+            },
+            {
                 dataIndex: EmsObjectName.cardRequestList.cardType,
                 id: EmsObjectName.cardRequestList.cardType,
                 text: 'نوع کارت',
