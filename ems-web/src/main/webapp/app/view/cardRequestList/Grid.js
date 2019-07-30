@@ -46,9 +46,18 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             action: 'cardRequestHistory'
         }, {
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                return 'grid-show-request-batch-id-icon';
+                if (EmsObjectName.cardRequestedActionMap.hasAccessToReceiveBatchId) {
+                    var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
+                    if (cardState === 'ISSUED'
+                        || cardState ==='READY_TO_DELIVER'
+                        || cardState === 'PENDING_TO_DELIVER_BY_CMS'
+                        || cardState === 'DELIVERED') {
+
+                        return 'grid-show-request-batch-id-icon';
+                    }
+                }
             },
-            tooltip: 'مشاهده کد گروهی',
+            tooltip: 'مشاهده دسته درخواست',
             action: 'showRequestBatchId'
         },
         {
@@ -382,7 +391,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             {
                 dataIndex: EmsObjectName.cardRequestList.trackingId,
                 id: EmsObjectName.cardRequestList.trackingId,
-                text: 'کد پیگیری',
+                text: 'کد رهگیری',
                 sortable: false,
                 filterable: true,
                 filter: true

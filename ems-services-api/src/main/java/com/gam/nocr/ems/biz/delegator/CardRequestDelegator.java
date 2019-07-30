@@ -214,6 +214,13 @@ public class CardRequestDelegator implements Delegator {
 
     }
 
+
+    public boolean hasReceiveBatchIdAccess(UserProfileTO userProfile)
+            throws BaseException {
+        return getService(userProfile).hasReceiveBatchIdAccess();
+
+    }
+
     public boolean hasPrintRegistrationReceipt(UserProfileTO userProfile)
             throws BaseException {
         return getService(userProfile).hasPrintRegistrationReceipt();

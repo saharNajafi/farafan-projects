@@ -923,6 +923,23 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     }
 
     @Override
+    public boolean hasReceiveBatchIdAccess() throws BaseException {
+        try {
+            SecurityContextService securityContextService = new SecurityContextService();
+            if (securityContextService.hasAccess(userProfileTO.getUserName(),
+                    "ems_receiveBatchId")) {
+                return true;
+            }
+
+            return false;
+        } catch (Exception e) {
+            logger.error(BizExceptionCode.CRE_025, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.CRE_025,
+                    BizExceptionCode.GLB_008_MSG, e);
+        }
+    }
+
+    @Override
     public boolean hasPrintRegistrationReceipt() throws BaseException {
         try {
             SecurityContextService securityContextService = new SecurityContextService();
@@ -1414,7 +1431,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.OFFICE) &&
                     cardRequestTO.getAuthenticity() == CardRequestAuthenticity.AUTHENTIC &&
                     cardRequestTO.getOriginalCardRequestOfficeId() != null
-                    ) {
+            ) {
                 if (crqFlag == 5) {
                     String outgoingSMSTO = MessageFormat.format(
                             labels.getString("state.sms.crqFlagOffice5"), enrollmentOfficeTO.getSuperiorOffice().getAddress());
@@ -2306,14 +2323,13 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             } else if (CardRequestState.RESERVED.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_086,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            }else if(CardRequestState.PENDING_TO_DELIVER_BY_CMS.equals(cardRequestTO.getState())){
+            } else if (CardRequestState.PENDING_TO_DELIVER_BY_CMS.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_087,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            }else if (CardRequestState.REPEALED.equals(cardRequestTO.getState())){
+            } else if (CardRequestState.REPEALED.equals(cardRequestTO.getState())) {
                 throw new ServiceException(BizExceptionCode.CRE_088,
                         BizExceptionCode.CRE_083_MSG, new Object[]{cardRequestTO.getState()});
-            }
-            else {
+            } else {
                 Long personID = getPersonService().findPersonIdByUsername(getUserProfileTO().getUserName());
                 PersonTO personTO = getPersonService().find(personID);
                 cardRequestReceiptVTO.setCitizenFirstName(cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getFirstNamePersian() : "");
@@ -2369,8 +2385,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             nextValue = getCardRequestDAO().nextValueOfRequestTrackingId();
         } catch (BaseException e) {
-            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId:",e);
-            logger.error("Error Occurred in get next value of sequence of TrackingId:",e);
+            trackingIdLogger.error("Error Occurred in get next value of sequence of TrackingId:", e);
+            logger.error("Error Occurred in get next value of sequence of TrackingId:", e);
             throw e;
         }
 
@@ -2397,8 +2413,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
             return stringBuilder.toString();
         } catch (Exception e) {
-            trackingIdLogger.error("Error Occurred in generating TrackingId:",e);
-            logger.error("Error Occurred in generating TrackingId:",e);
+            trackingIdLogger.error("Error Occurred in generating TrackingId:", e);
+            logger.error("Error Occurred in generating TrackingId:", e);
             throw new ServiceException(
                     BizExceptionCode.CRE_092,
                     BizExceptionCode.CRE_092_MSG,

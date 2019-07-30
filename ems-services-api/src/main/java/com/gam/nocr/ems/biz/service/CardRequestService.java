@@ -84,6 +84,8 @@ public interface CardRequestService extends Service {
 
 	public boolean hasChangePriorityAccess() throws BaseException;
 
+	public boolean hasReceiveBatchIdAccess() throws BaseException;
+
 	public boolean hasPrintRegistrationReceipt() throws BaseException;
 
 

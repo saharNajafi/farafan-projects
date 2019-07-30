@@ -533,7 +533,7 @@ Ext.define('Ems.locale.objectName', {
 		cmsRequestId : 'cmsRequestId',
 
 
-		officeName : 'officeName',	
+		officeName : 'officeName',
 
 		backDate : 'backDate',
 		//////////////////////////////////////////////////////////////////
@@ -591,6 +591,7 @@ Ext.define('Ems.locale.objectName', {
 		REPEAL_ACCEPTED : 'REPEAL_ACCEPTED',
 		REPEAL_COMPLETE : 'REPEAL_COMPLETE',
 		hasAccessToChangePriority:'hasAccessToChangePriority',
+		hasAccessToReceiveBatchId:'hasAccessToReceiveBatchId',
         hasPrintRegistrationReceipt: 'hasPrintRegistrationReceipt'
 	},
 	tokenRequest : {
@@ -630,7 +631,7 @@ Ext.define('Ems.locale.objectName', {
 		personId : 'personId',
 		personName : 'personName',
 		officeType :'officeType',
-		
+
 		isAll : 'isAll',
 		isManager:'isManager',
 		isAllOffice:'isAllOffice',

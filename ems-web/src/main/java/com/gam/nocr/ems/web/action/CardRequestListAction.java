@@ -40,6 +40,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     private String cardRequestId;
     private boolean hasAccessToChangePriority;
     private boolean hasPrintRegistrationReceipt;
+    private boolean hasAccessToReceiveBatchId;
 
     private CardRequestVTO data;
 
@@ -216,6 +217,29 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     }
 
+
+    /**
+     * this method is used to check Receive Batch Id Access
+     *
+     * @return
+     * @throws BaseException
+     * @author a.amiri
+     */
+    public String hasReceiveBatchIdAccess() throws BaseException {
+        try {
+            hasAccessToReceiveBatchId = new CardRequestDelegator()
+                    .hasReceiveBatchIdAccess(getUserProfile());
+            return SUCCESS_RESULT;
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.CRA_011,
+                    WebExceptionCode.GLB_001_MSG, e);
+        } catch (Exception e) {
+            throw new ActionException(WebExceptionCode.CRA_012,
+                    WebExceptionCode.GLB_003_MSG, e);
+        }
+
+    }
+
     public String hasPrintRegistrationReceipt() throws BaseException {
         try {
             hasPrintRegistrationReceipt =
@@ -321,5 +345,13 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     public void setHasPrintRegistrationReceipt(boolean hasPrintRegistrationReceipt) {
         this.hasPrintRegistrationReceipt = hasPrintRegistrationReceipt;
+    }
+
+    public boolean isHasAccessToReceiveBatchId() {
+        return hasAccessToReceiveBatchId;
+    }
+
+    public void setHasAccessToReceiveBatchId(boolean hasAccessToReceiveBatchId) {
+        this.hasAccessToReceiveBatchId = hasAccessToReceiveBatchId;
     }
 }
