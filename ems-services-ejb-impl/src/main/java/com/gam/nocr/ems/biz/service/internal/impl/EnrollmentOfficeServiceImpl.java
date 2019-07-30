@@ -1288,7 +1288,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 try {
 //                    getActiveShiftDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
 //                    getOfficeCapacityDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
-//                    return getDepartmentDAO().removeDepartments(enrollmentOfficeId.toString());
+//                  return getDepartmentDAO().removeDepartments(enrollmentOfficeId.toString());
                     return getEnrollmentOfficeDAO().removeEnrollmentOffice(enrollmentOfficeId);
                 } catch (Exception e) {
                     throw new ServiceException(

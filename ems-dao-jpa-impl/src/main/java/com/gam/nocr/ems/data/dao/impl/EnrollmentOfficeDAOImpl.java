@@ -552,7 +552,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     @Override
     public Boolean hasOfficeQueryByAccessibility(
             String climbingStairsAbility, String pupilIsVisible
-            , Long enrollmentOfficeId) throws DataException {
+            , Long enrollmentOfficeId) throws BaseException {
         BigDecimal count;
         Map<String, Object> params = new HashMap<String, Object>();
         try {
@@ -577,7 +577,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public Boolean hasOfficeQueryByAccessibility(
             String climbingStairsAbility,
             String pupilIsVisible,
-            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws DataException {
+            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws BaseException {
 
         if (pupilIsVisible.equals("YES") && climbingStairsAbility.equals("YES")) {
             if ((enrollmentOfficeSingleStageTO.getEOF_IGNORE_ICAO_PERMITTED() == Boolean.FALSE || enrollmentOfficeSingleStageTO.getEOF_IGNORE_ICAO_PERMITTED() == Boolean.TRUE)
@@ -668,7 +668,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException {
+    public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException {
         try {
             return em.createQuery(
                     "select eo from EnrollmentOfficeTO eo where eo.deleted = false "
@@ -725,7 +725,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws DataException {
+    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
         EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO = new EnrollmentOfficeSingleStageTO();
         try {
 
@@ -760,7 +760,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public Boolean removeEnrollmentOffice(Long eofId) throws DataException {
+    public Boolean removeEnrollmentOffice(Long eofId) throws BaseException {
         try {
             EnrollmentOfficeTO eof = findEnrollmentOfficeById(eofId);
             eof.setDeleted(true);
@@ -768,7 +768,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             return true;
         } catch (Exception e) {
             throw new DataException(DataExceptionCode.ENI_009,
-                    DataExceptionCode.GLB_006_MSG, e);
+                    DataExceptionCode.GLB_007_MSG, e);
         }
     }
 

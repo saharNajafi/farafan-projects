@@ -98,10 +98,10 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
 
     Boolean officeIsActive(Long enrollmentOfficeId) throws BaseException;
 
-    List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException;
+    List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException;
 
-    EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws DataException ;
+    EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException ;
 
     //This method soft deletes the enrollment office
-    Boolean removeEnrollmentOffice(Long toString) throws DataException;
+    Boolean removeEnrollmentOffice(Long toString) throws BaseException;
 }
