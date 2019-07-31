@@ -747,7 +747,7 @@ public class RegistrationWS extends EMSWS {
                         WebExceptionCode.RSW_088_MSG + fetchCitizenInfoWTO.getNationalId(),
                         new EMSWebServiceFault(WebExceptionCode.RSW_088));
             }
-            if (fetchCitizenInfoWTO.getBirthDate() == null) {
+            if (fetchCitizenInfoWTO.getBirthDate() == null || fetchCitizenInfoWTO.getBirthDate().isEmpty()) {
                 throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
             }
             registrationDelegator.checkPreviousCardStateValid(up, fetchCitizenInfoWTO.getNationalId());

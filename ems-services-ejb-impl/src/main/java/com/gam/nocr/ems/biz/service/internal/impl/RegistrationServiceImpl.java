@@ -71,7 +71,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     private static final String DEFAULT_SKIP_ESTELAM_CHECK = "false";
     private static final String VIP_STR = "VIP";
     private static final String DEFAULT_KEY_IMS_ESTELAM_IAMGE_ENABLE = "1";
-    private static final String DEFAULT_PRODUCT_ID = "200";
+    private static final String DEFAULT_PRODUCT_ID = "eID";
     private static final Logger vipLogger = BaseLog
             .getLogger("VipLogger");
 
@@ -3104,7 +3104,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             productId = DEFAULT_PRODUCT_ID;
         }
         allCardsList = getCMSService().getCitizenCardsByProduct(nationalId, productId);
-        for (int i = 1; i < allCardsList.size(); i++) {
+        for (int i = 0; i < allCardsList.size(); i++) {
             if (crn.equals(allCardsList.get(i).getCrn()))
                 result = true;
         }

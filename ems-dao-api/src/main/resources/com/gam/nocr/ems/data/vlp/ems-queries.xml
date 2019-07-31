@@ -256,8 +256,8 @@
                 </part>
                 <part name="capdate">
                     <![CDATA[
-					and cap.EOC_END_DATE > {capdate} and
-					cap.EOC_START_DATE < {capdate}
+					and cap.EOC_END_DATE >= {capdate} and
+					cap.EOC_START_DATE <= {capdate}
 					]]>
                 </part>
                 <order-by>
