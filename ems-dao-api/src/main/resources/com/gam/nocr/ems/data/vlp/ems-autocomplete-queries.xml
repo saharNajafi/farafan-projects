@@ -351,6 +351,8 @@
 					WHERE
 					eo.eof_type in ('OFFICE')
 					AND
+					eo.EOF_IS_DELETED = 0
+					AND
 					eo.EOF_SUPERIOR_OFFICE in ({nocrId}))
 				</part>
 				<part name="location">

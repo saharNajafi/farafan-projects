@@ -310,7 +310,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             return em.createQuery("select count(eof.id) from EnrollmentOfficeTO eof " +
                     "where eof.deleted = false and eof.parentDepartment.id in " +
-                    "(select t1.parentDepartment.id from EnrollmentOfficeTO t1 where t1.id = :enrollmentOfficeId) " +
+                    "(select t1.parentDepartment.id from EnrollmentOfficeTO t1 where t1.deleted = false and t1.id = :enrollmentOfficeId) " +
                     "and eof.id not in (:enrollmentOfficeId) " +
                     "and eof.type = :type", Long.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
@@ -435,7 +435,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     "SELECT eo.EOF_ID,dep.DEP_NAME FROM EMST_ENROLLMENT_OFFICE eo,emst_department dep  where eo.EOF_IS_DELETED = 0 and eo.EOF_ID in" +
                             " (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
                             "with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=" + personID +
-                            " union select e.eof_id from emst_enrollment_office e connect by " +
+                            " union select e.eof_id from emst_enrollment_office e where e.EOF_IS_DELETED = 0 connect by " +
                             "prior e.eof_id=e.eof_superior_office start with" +
                             " e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=" + personID
                             + " ))) and dep.DEP_ID=eo.EOF_ID and dep.DEP_NAME like '%" + searchString + "%'");
@@ -476,10 +476,10 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                 type = additionalParams.get("type").toString();
             personID = getPersonDAO().findPersonIdByUsername(userProfileTO.getUserName());
             StringBuffer queryBuffer = new StringBuffer(
-                    "SELECT count(*) FROM EMST_ENROLLMENT_OFFICE eo,emst_department dep where eo.deleted = false and eo.EOF_ID in" +
+                    "SELECT count(*) FROM EMST_ENROLLMENT_OFFICE eo,emst_department dep where eo.EOF_IS_DELETED = 0 and eo.EOF_ID in" +
                             " (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
                             "with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=" + personID +
-                            " union select e.eof_id from emst_enrollment_office e connect by " +
+                            " union select e.eof_id from emst_enrollment_office e where e.EOF_IS_DELETED = 0 connect by " +
                             "prior e.eof_id=e.eof_superior_office start with" +
                             " e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=" + personID
                             + " ))) and dep.DEP_ID=eo.EOF_ID and dep.DEP_NAME like '%" + searchString + "%'");
