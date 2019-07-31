@@ -428,7 +428,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         try {
             ProfileManager pm = ProfileHelper.getProfileManager();
             states = (String) pm.getProfile(
-                    ProfileKeyName.KEY_INPROGRESSED_CARD_REQUEST_STATES, true,
+                    ProfileKeyName.KEY_CRITICAL_CARD_REQUEST_STATES, true,
                     null, null);
             if (!EmsUtil.checkString(states)) {
                 states = defaultStates;
@@ -437,7 +437,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             logger.warn(BizExceptionCode.EOS_066, BizExceptionCode.EOS_066_MSG);
             states = defaultStates;
         }
-
         List<CardRequestState> criticalInProgressedStates = new ArrayList<CardRequestState>();
         String[] statesArray = states.split(",");
         for (String state : statesArray) {
@@ -463,12 +462,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 + ","
                 + CardRequestState.APPROVED_BY_AFIS.name()
                 + ","
-                + CardRequestState.PENDING_ISSUANCE.name()
-                + ","
-                + CardRequestState.ISSUED.name()
-                + ","
-                + CardRequestState.READY_TO_DELIVER.name()
-                + ","
                 + CardRequestState.UNSUCCESSFUL_DELIVERY.name()
                 + ","
                 + CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC
@@ -477,7 +470,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 + CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE
                 .name() + "," + CardRequestState.NOT_DELIVERED.name()
                 + "," + CardRequestState.CMS_ERROR.name() + ","
-                + CardRequestState.CMS_PRODUCTION_ERROR.name() + ","
                 + CardRequestState.IMS_ERROR.name();
 
         String states;
@@ -1682,25 +1674,29 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     @Override
     public OfficeCardRequestStates checkInProgressRequests(Long enrollmentOfficeId)
             throws BaseException {
-        List<CardRequestState> inProgressedStates = fetchInProgressedStatesFromProfile();
         List<CardRequestState> criticalInProgressedStates = fetchCriticalInProgressedStatesFromProfile();
-        List<Long> cardRequestIds = getCardRequestDAO()
-                .findByEnrollmentOfficeIdAndStates(enrollmentOfficeId,
-                        inProgressedStates);
+
         List<Long> criticalCardRequestIds = getCardRequestDAO()
                 .findByEnrollmentOfficeIdAndStates(enrollmentOfficeId,
                         criticalInProgressedStates);
 
+        if (criticalCardRequestIds.get(0) > 0) {
+            return OfficeCardRequestStates.CRITICAL_REQUESTS;
+        }
+
+        List<CardRequestState> inProgressedStates = fetchInProgressedStatesFromProfile();
+        List<Long> cardRequestIds = getCardRequestDAO()
+                .findByEnrollmentOfficeIdAndStates(enrollmentOfficeId,
+                        inProgressedStates);
         if (cardRequestIds.get(0) > 0) {
             List<Long> enrollmentOfficeIds = getEnrollmentOfficeDAO()
                     .fetchOtherNocrOfficeCountWithSameParentById(
                             enrollmentOfficeId);
             if (enrollmentOfficeIds.get(0) > 0) {
-                if (criticalCardRequestIds.get(0) > 0)
-                    return OfficeCardRequestStates.CRITICAL_REQUESTS;
                 return OfficeCardRequestStates.REGULAR_REQUESTS;
             }
         }
+
         return OfficeCardRequestStates.NO_REQUEST;
     }
 
