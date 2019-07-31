@@ -15,7 +15,6 @@ import com.gam.nocr.ems.util.JasperUtil;
 import gampooya.tools.security.BusinessSecurityException;
 import org.slf4j.Logger;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,34 +48,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     public void setHasAccessToChangePriority(boolean hasAccessToChangePriority) {
         this.hasAccessToChangePriority = hasAccessToChangePriority;
-    }
-
-    private InputStream inputStream;
-    private String downloadFileName;
-    private String contentType;
-
-    public InputStream getInputStream() {
-        return inputStream;
-    }
-
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-
-    public String getDownloadFileName() {
-        return downloadFileName;
-    }
-
-    public void setDownloadFileName(String downloadFileName) {
-        this.downloadFileName = downloadFileName;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     /**
