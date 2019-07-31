@@ -103,6 +103,11 @@
                 cit.ctz_surname_fa sureNameFA,
                 cinf.czi_father_first_name_fa fatherFirstNameFA,
                 rq.crq_enrolled_date enrolledDate,
+                CASE
+                    when rq.CRQ_REENROLLED_DATE is not null then rq.CRQ_REENROLLED_DATE
+                    when rq.CRQ_ENROLLED_DATE is not null then rq.CRQ_ENROLLED_DATE
+                    WHEN rq.CRQ_RSV_DATE is not null THEN rq.CRQ_RSV_DATE
+                END AS attendDate,
                 rq.crq_rsv_date rsv_date
                 from
                 (select * from emst_card_request where crq_state in
@@ -322,6 +327,7 @@
                 <field name="livingCityName" column="livingCityName"/>
                 <field name="birthCertSerial" column="birthCertSerial"/>
                 <field name="fatherFirstNameFA" column="fatherFirstNameFA"/>
+                <field name="attendDate" column="attendDate"/>
                 <field name="fatherFirstNameEN" column="fatherFirstNameEN"/>
                 <field name="fatherFatherName" column="fatherFatherName"/>
                 <field name="fatherSureName" column="fatherSureName"/>

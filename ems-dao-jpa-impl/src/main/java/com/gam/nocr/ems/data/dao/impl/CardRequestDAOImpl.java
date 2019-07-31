@@ -3013,7 +3013,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
         StringBuffer queryBuffer = new StringBuffer();
         try {
             queryBuffer
-                    .append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode  ")
+                    .append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode ,attendDate ")
                     .append(" from ( ")
                     .append("select ct.ctz_first_name_fa as firstname, ct.ctz_surname_fa as lastname, ")
                     .append("(select inf.czi_father_first_name_fa from emst_citizen_info inf where inf.czi_id = ct.ctz_id) fathername, ")
@@ -3047,7 +3047,8 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     .append("r.crq_requested_action as requestedAction, ")
                     .append("r.crq_type as requestType, ")
                     .append("(case when r.crq_origin= 'V' then 1 else 0 end) hasVipImage, ")
-                    .append("pay.rpy_is_succeed paymentSuccess, pay.rpy_res_code  paymentResCode ")
+                    .append("pay.rpy_is_succeed paymentSuccess, pay.rpy_res_code  paymentResCode, ")
+                    .append("nvl(nvl(r.CRQ_REENROLLED_DATE,r.CRQ_ENROLLED_DATE),r.CRQ_RSV_DATE) AS attendDate ")
                     .append("from emst_card_request r inner join emst_citizen ct ")
                     .append("on r.crq_citizen_id = ct.ctz_id ")
                     .append("left join emst_registration_payment pay on r.crq_payment_id = pay.rpy_id ")
@@ -3414,6 +3415,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     obj.setTrackingId((String) data[11]);
                     obj.setStringType((String) data[12]);
                     obj.setHasVipImage(((BigDecimal) data[13]).toString());
+                    obj.setAttendDate((Timestamp) data[19]);
                     if (data[14] == null)
                         obj.setIsPaid((long) 0);
                     else {
