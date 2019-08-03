@@ -461,5 +461,5 @@ public interface CardRequestDAO extends EmsBaseDAO<CardRequestTO> {
 
     Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
 
-    public Number nextValueOfRequestTrackingId() throws BaseException;
+    public String nextValueOfRequestTrackingId() throws BaseException;
 }
