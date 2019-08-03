@@ -678,7 +678,7 @@
         <nocr.ems-commons.version>2.6.5</nocr.ems-commons.version>
         <nocr.ems-dao-api.version>2.6.5</nocr.ems-dao-api.version>
         <nocr.ems-dao-jpa-impl.version>2.6.5</nocr.ems-dao-jpa-impl.version>
-        <nocr.ems-ear.version>2.6.5</nocr.ems-ear.version>
+        <nocr.ems-ear.version>2.6.6</nocr.ems-ear.version>
         <nocr.ems-services-api.version>2.6.5</nocr.ems-services-api.version>
         <nocr.ems-services-ejb-impl.version>2.6.5</nocr.ems-services-ejb-impl.version>
         <nocr.ems-web.version>2.6.5</nocr.ems-web.version>
