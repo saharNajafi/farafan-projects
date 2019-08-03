@@ -3092,7 +3092,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     public Boolean checkCRN(String nationalId, String crn) throws BaseException {
         Boolean result = false;
         CardRequestTO cardRequestTO = getCardRequestDAO().findLastRequestByNationalId(nationalId);
-        if (crn.equals(cardRequestTO.getCard().getCrn())) {
+        if (cardRequestTO != null && crn.equalsIgnoreCase(cardRequestTO.getCard().getCrn())) {
             result = true;
         }
         return result;
