@@ -183,7 +183,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PDI_037 = "EMS_D_PDI_037";
     public static final String PDI_038 = "EMS_D_PDI_038";
     public static final String PDI_039 = "EMS_D_PDI_039";
-    public static final String PDI_040 = "EMS_D_PDI_039";
+    public static final String PDI_040 = "EMS_D_PDI_040";
     public static final String PDI_041 = "EMS_D_PDI_041";
 
     public static final String PDI_001_MSG = "unable to change status";
