@@ -40,7 +40,7 @@ Ext.define('Ems.controller.NavigationHeaderController', {
         'wReportMenuBizLogManagerBizLog',
         'wReportMenuBizLogManagerCardRequestList',
         'wReportMenuBizLogManagerJobList',
-        'wReportMenuBizLogManagerSystemProfileList' ,
+        'wReportMenuBizLogManagerSystemProfileList',
         'wReportMenuBizLogManagerTokenRequest',
 
         'wReportMenuReportManager',
@@ -48,13 +48,13 @@ Ext.define('Ems.controller.NavigationHeaderController', {
         'wReportMenuReportManagerReportView',
         'wHelpFileListGrid',
         'wTokenRequestListGrid'
-        ,'wHelpFileListGrid'
+        , 'wHelpFileListGrid'
 
     ],
 
 
     views: [
-        'viewport.BasicInfo' ,
+        'viewport.BasicInfo',
         'viewport.UserInfo'
     ],
     refs: [
@@ -136,7 +136,7 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                 }
             }, '[action=Office]': {
                 click: function (btn) {
-                	this.getAccessChangeOfficeSetting();
+                    this.getAccessChangeOfficeSetting();
                     this.onBtnClicked(btn);
                 }
             }, '[action=Workstation]': {
@@ -177,17 +177,13 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                 }
             }, '[action=CardRequestList]': {
                 click: function (btn) {
-                	this.getAccessForCardRequestList();
-                    this.onBtnClicked(btn);
-                }
-            },'[action=CardRequestList]': {
-                click: function (btn) {
-                    this.getAccessToReceiveBatchId();
+                    this.getAccessForCardRequestList();
+                    // this.getAccessToReceiveBatchId();
                     this.onBtnClicked(btn);
                 }
             }, '[action=CmsErrorEvaluateList]': {
                 click: function (btn) {
-                	this.getAccessProduction();
+                    this.getAccessProduction();
                     this.onBtnClicked(btn);
                 }
             }, '[action=Estelam2FalseList]': {
@@ -195,10 +191,10 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                     this.onBtnClicked(btn);
                 }
             }, '[action=HolidayList]': {
-            	click: function (btn) {
-                this.onBtnClicked(btn);
-              	}
-        	}, '[action=JobList]': {
+                click: function (btn) {
+                    this.onBtnClicked(btn);
+                }
+            }, '[action=JobList]': {
                 click: function (btn) {
                     this.onBtnClicked(btn);
                 }
@@ -235,7 +231,7 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                     this.onBtnClicked(btn);
                 }
             },
-            
+
             '[action=TokenRequestList]': {
                 click: function (btn) {
                     this.onBtnClicked(btn);
@@ -306,10 +302,10 @@ Ext.define('Ems.controller.NavigationHeaderController', {
             url: 'extJsController/cmserrorevaluatelist/doAccessProduction',
             jsonData: {},
             success: function (response) {
-            	var accessProduction = (Ext.decode(response.responseText)).accessProduction;
-            	EmsObjectName.cmsErrorEvaluateList.errorDeleteImageAccess = accessProduction.errorDeleteImageAccess;
-            	EmsObjectName.cmsErrorEvaluateList.errorRepealedAccess = accessProduction.errorRepealedAccess;
-            	EmsObjectName.cmsErrorEvaluateList.errorRetryAccess = accessProduction.errorRetryAccess;
+                var accessProduction = (Ext.decode(response.responseText)).accessProduction;
+                EmsObjectName.cmsErrorEvaluateList.errorDeleteImageAccess = accessProduction.errorDeleteImageAccess;
+                EmsObjectName.cmsErrorEvaluateList.errorRepealedAccess = accessProduction.errorRepealedAccess;
+                EmsObjectName.cmsErrorEvaluateList.errorRetryAccess = accessProduction.errorRetryAccess;
             },
             failure: function (response) {
                 Tools.errorFailure();
@@ -323,9 +319,9 @@ Ext.define('Ems.controller.NavigationHeaderController', {
             jsonData: {},
             success: function (response) {
 
-            	//debugger;
-            	var accessViewAndChangeOfficeSetting = (Ext.decode(response.responseText)).accessViewAndChangeOfficeSetting;
-            	EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
+                //debugger;
+                var accessViewAndChangeOfficeSetting = (Ext.decode(response.responseText)).accessViewAndChangeOfficeSetting;
+                EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
 
             },
             failure: function (response) {
@@ -335,17 +331,20 @@ Ext.define('Ems.controller.NavigationHeaderController', {
         });
     },
     getAccessForCardRequestList: function (view) {
-    
+
         Ext.Ajax.request({
-            url: 'extJsController/cardrequestlist/hasChangePriorityAccess',
+            url: 'extJsController/cardrequestlist/checkCardRequestListAccesses',
             jsonData: {},
             success: function (response) {
-            
-            	var hasAccessToChangePriority = JSON.parse(response.responseText).hasAccessToChangePriority;
-            	EmsObjectName.cardRequestedActionMap.hasAccessToChangePriority = hasAccessToChangePriority;
+
+                var hasAccessToChangePriority = JSON.parse(response.responseText).hasAccessToChangePriority;
+                EmsObjectName.cardRequestedActionMap.hasAccessToChangePriority = hasAccessToChangePriority;
 
                 var hasPrintRegistrationReceipt = JSON.parse(response.responseText).hasPrintRegistrationReceipt;
                 EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt = hasPrintRegistrationReceipt;
+
+                var hasAccessToReceiveBatchId = JSON.parse(response.responseText).hasAccessToReceiveBatchId;
+                EmsObjectName.cardRequestedActionMap.hasAccessToReceiveBatchId = hasAccessToReceiveBatchId;
             },
             failure: function (response) {
                 Tools.errorFailure();
@@ -390,8 +389,8 @@ Ext.define('Ems.controller.NavigationHeaderController', {
         Ext.Ajax.request({
             url: 'extJsController/currentUser/fetchJobVariable',
             method: 'POST',
-            success: function(response, request) {
-                if(response.responseText.indexOf('<html xmlns="http://www.w3.org/1999/xhtml">') > 0) {
+            success: function (response, request) {
+                if (response.responseText.indexOf('<html xmlns="http://www.w3.org/1999/xhtml">') > 0) {
                     Tools.deleteAllCookies();
                     Ext.Ajax.request({
                         url: 'extJsController/sessionClearForLogout/logout',
@@ -405,8 +404,8 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                     });
                 }
             }
-         });
-    	if (!(btn.action === this.selectionchange)) {
+        });
+        if (!(btn.action === this.selectionchange)) {
             this.application.launchModule(btn.action);
             this.selectionchange = btn.action;
         }

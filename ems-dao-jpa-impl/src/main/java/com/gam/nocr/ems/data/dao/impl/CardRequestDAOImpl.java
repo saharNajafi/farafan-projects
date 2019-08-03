@@ -2818,7 +2818,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     else if (data[5] != null)//reenrolled date
                         attendDate = (Timestamp) data[5];
                     else if (data[15] != null)//reserved date
-                        attendDate = (Timestamp) data[20];
+                        attendDate = (Timestamp) data[15];
 
                     CardRequestVTO request = new CardRequestVTO(
                             ((BigDecimal) data[0]).longValue(),

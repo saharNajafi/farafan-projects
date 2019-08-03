@@ -172,34 +172,13 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
      * @throws BaseException
      * @author ganjyar
      */
-    public String hasChangePriorityAccess() throws BaseException {
+    public String checkCardRequestListAccesses() throws BaseException {
         try {
             hasAccessToChangePriority = new CardRequestDelegator()
                     .hasChangePriorityAccess(getUserProfile());
 
             hasPrintRegistrationReceipt =
                     new CardRequestDelegator().hasPrintRegistrationReceipt(getUserProfile());
-
-            return SUCCESS_RESULT;
-        } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_011,
-                    WebExceptionCode.GLB_001_MSG, e);
-        } catch (Exception e) {
-            throw new ActionException(WebExceptionCode.CRA_012,
-                    WebExceptionCode.GLB_003_MSG, e);
-        }
-
-    }
-
-    /**
-     * this method is used to check Receive Batch Id Access
-     *
-     * @return
-     * @throws BaseException
-     * @author a.amiri
-     */
-    public String hasReceiveBatchIdAccess() throws BaseException {
-        try {
             hasAccessToReceiveBatchId = new CardRequestDelegator()
                     .hasReceiveBatchIdAccess(getUserProfile());
             return SUCCESS_RESULT;
