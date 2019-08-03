@@ -74,6 +74,7 @@ public class CardRequestVTO extends ExtEntityTO implements Serializable {
         this.attendDate = attendDate;
 
         this.priority = priority;
+
         if (flag != null) {
             faceFlag = (flag & 1) == 1;
             fingerFlag = (flag & 2) == 2;

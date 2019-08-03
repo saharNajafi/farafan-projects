@@ -59,11 +59,11 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
 
     List<Long> fetchOtherNocrOfficeCountWithSameParentById(Long enrollmentOfficeId) throws BaseException;
 
-    EnrollmentOfficeTO loadLazyChildren(EnrollmentOfficeTO enrollmentOffice) throws BaseException;    
-    
+    EnrollmentOfficeTO loadLazyChildren(EnrollmentOfficeTO enrollmentOffice) throws BaseException;
+
     List<Long> getEnrollmentOfficeListIds() throws BaseException;
 
-    
+
     int updateEOFEnableFlag(Long eofId,EOFDeliveryState state) throws BaseException;
 
 	List<Long> getEnrollmentOfficeListIdsByEOFType(EnrollmentOfficeType eofType) throws BaseException;
@@ -71,7 +71,7 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
 	List<Long> getEnrollmentOfficeListIdsByProvince(Long provinceId) throws BaseException;
 
 	List<Long> getEnrollmentOfficeListIdsByProvinceAndType(Long provinceId,EnrollmentOfficeType eofType) throws BaseException;
-	
+
 	//Madanipour
 	List<OfficeSettingTO> fetchOfficeSetting(Long enrollmentOfficeId)throws BaseException;
 
@@ -98,9 +98,10 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
 
     Boolean officeIsActive(Long enrollmentOfficeId) throws BaseException;
 
-    List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException;
+    List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException;
 
-    EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws DataException ;
+    EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException ;
 
-    Boolean setDeleted(Long toString) throws DataException;
+    //This method soft deletes the enrollment office
+    Boolean removeEnrollmentOffice(Long toString) throws BaseException;
 }

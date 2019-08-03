@@ -2381,7 +2381,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     }
 
     public String generateNewTrackingId() throws BaseException {
-        Number nextValue = null;
+        String nextValue = null;
         try {
             nextValue = getCardRequestDAO().nextValueOfRequestTrackingId();
         } catch (BaseException e) {
@@ -2399,18 +2399,15 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
 
         try {
-            Long nextValueAsLong = nextValue.longValue();
-            String str = String.valueOf(nextValueAsLong);
-            char[] charArray = str.toCharArray();
+            char[] charArray = nextValue.toCharArray();
             int sumOfNumber = 0;
             for (int i = 0; i < charArray.length; i++) {
                 sumOfNumber += Character.getNumericValue(charArray[i]);
             }
             long mod = sumOfNumber % 10;
 
-
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(String.valueOf(nextValueAsLong)).append(String.valueOf(mod));
+            stringBuilder.append(nextValue).append(String.valueOf(mod));
             return stringBuilder.toString();
         } catch (Exception e) {
             trackingIdLogger.error("Error Occurred in generating TrackingId:", e);

@@ -1007,7 +1007,7 @@ Ext.define('Ems.controller.OfficeController', {
                         console.log("in progress flag is : " + inProgressFlag);
                         if (inProgressFlag) {
                             //todo
-                            Tools.successMessage("درخواست های دفتر مورد نظر به دفتر انتخاب شده منتقل شد،همچنین از Portal ، CMS  نیز حذف شد");
+                            Tools.successMessage("درخواست های دفتر مورد نظر به دفتر انتخاب شده منتقل شد");
                         }
                         if (win)
                             win.close();

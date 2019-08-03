@@ -122,6 +122,8 @@ public class ProfileKeyName {
 
     public static final String KEY_INPROGRESSED_CARD_REQUEST_STATES = EMS_PROFILE_ROOT + ".inProgressedCardRequestStates";
 
+    public static final String KEY_CRITICAL_CARD_REQUEST_STATES = EMS_PROFILE_ROOT + ".criticalCardRequestStates";
+
     public static final String ACTIVESHIFT_MAXIMUM_DURATION_TO_RESERVE = EMS_PROFILE_ROOT + ".activeShiftMaximumDurationToReserve";
 
     //****SMS****\\

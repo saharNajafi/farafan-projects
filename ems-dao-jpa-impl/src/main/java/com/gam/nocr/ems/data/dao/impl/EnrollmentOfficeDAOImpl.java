@@ -73,7 +73,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
 //EditedByAdldoost
             enrollmentOfficeTOList = em.createQuery("SELECT EOF FROM EnrollmentOfficeTO EOF " +
-                    "WHERE (EOF.lastSyncDate IS NULL ) and  EOF.deleted = 0 "
+                    "WHERE (EOF.lastSyncDate IS NULL ) and  EOF.deleted = false "
                     + "and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                     + "or eof.type = 'NOCR') "
@@ -137,7 +137,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             enrollmentOfficeTOList = em
                     .createQuery(
                             "SELECT EOF FROM EnrollmentOfficeTO EOF "
-                                    + "where ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
+                                    + "where eof.deleted = false and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
                                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                                     + "or eof.type = 'NOCR') "
                                     + "and "
@@ -196,9 +196,9 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             // em.flush();
             enrollmentOfficeTOList = em
                     .createQuery(
-                            "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.deleted = true and EOF1.id NOT IN "
+                            "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.deleted = false and EOF1.id NOT IN "
                                     + "(SELECT EOF.id FROM EnrollmentOfficeTO EOF "
-                                    + "where (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
+                                    + "where eof.deleted = false and (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
                                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                                     + "or eof.type = 'NOCR'))) "
                                     + "and "
@@ -231,7 +231,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         List<EnrollmentOfficeTO> enrollmentOfficeTOList;
         try {
             enrollmentOfficeTOList = em.createQuery("select eofSup from EnrollmentOfficeTO eofSup " +
-                    "where eofSup.deleted = 0 and eofSup.type = :enrollmentOfficeType " +
+                    "where eofSup.deleted = false and eofSup.type = :enrollmentOfficeType " +
                     "and eofSup.id in (select eof.superiorOffice.id from EnrollmentOfficeTO eof " +
                     "where eof.id = :enrollmentOfficeId)", EnrollmentOfficeTO.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
@@ -249,7 +249,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public List<Long> findSubOffice(Long enrollmentOfficeId) throws BaseException {
         try {
             return em.createQuery("select eof.id from EnrollmentOfficeTO eof " +
-                    "where eof.deleted=0 and eof.type = :enrollmentOfficeType " +
+                    "where eof.deleted=false and eof.type = :enrollmentOfficeType " +
                     "and eof.superiorOffice.id = :enrollmentOfficeId", Long.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
                     .setParameter("enrollmentOfficeType", EnrollmentOfficeType.OFFICE)
@@ -289,7 +289,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 
         try {
             enrollmentOfficeTOs = em.createQuery("select eof from EnrollmentOfficeTO eof, PersonTO per " +
-                    "where eof.deleted = 0 and eof.manager.id = per.id " +
+                    "where eof.deleted =false and eof.manager.id = per.id " +
                     "and eof.id = :enrollmentOfficeId " +
                     "and eof.manager.id = :managerId", EnrollmentOfficeTO.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
@@ -309,8 +309,8 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public List<Long> fetchOtherNocrOfficeCountWithSameParentById(Long enrollmentOfficeId) throws BaseException {
         try {
             return em.createQuery("select count(eof.id) from EnrollmentOfficeTO eof " +
-                    "where eof.deleted = 0 and eof.parentDepartment.id in " +
-                    "(select t1.parentDepartment.id from EnrollmentOfficeTO t1 where t1.id = :enrollmentOfficeId) " +
+                    "where eof.deleted = false and eof.parentDepartment.id in " +
+                    "(select t1.parentDepartment.id from EnrollmentOfficeTO t1 where t1.deleted = false and t1.id = :enrollmentOfficeId) " +
                     "and eof.id not in (:enrollmentOfficeId) " +
                     "and eof.type = :type", Long.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
@@ -351,7 +351,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             throws BaseException {
         try {
             return em.createQuery(
-                    "select eo.id from EnrollmentOfficeTO eo where eo.deleted = 0 "
+                    "select eo.id from EnrollmentOfficeTO eo where eo.deleted = false "
                             + "order by eo.id asc ", Long.class).getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
@@ -366,7 +366,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     .createQuery(
                             "UPDATE EnrollmentOfficeTO eof "
                                     + "SET eof.isDeliverEnable = :isDeliverEnable "
-                                    + "WHERE eof.id = :eofId and deleted = 0 ")
+                                    + "WHERE eof.id = :eofId and deleted = false ")
                     .setParameter("eofId", eofId)
                     .setParameter("isDeliverEnable", EOFDeliveryState.toLong(state))
                     .executeUpdate();
@@ -384,7 +384,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             EnrollmentOfficeType eofType) throws BaseException {
         try {
             return em.createQuery("select eof.id from EnrollmentOfficeTO eof " +
-                    "where eof.deleted = 0 and eof.type = :enrollmentOfficeType ", Long.class)
+                    "where eof.deleted = false and eof.type = :enrollmentOfficeType ", Long.class)
                     .setParameter("enrollmentOfficeType", eofType)
                     .getResultList();
         } catch (Exception e) {
@@ -398,7 +398,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             throws BaseException {
         try {
             return em.createQuery("select eof.id from EnrollmentOfficeTO eof,DepartmentTO dep,LocationTO loc " +
-                    "where eof.deleted = 0 and eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId ", Long.class)
+                    "where eof.deleted = false and eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId ", Long.class)
                     .setParameter("provinceId", provinceId)
                     .getResultList();
         } catch (Exception e) {
@@ -412,7 +412,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             Long provinceId, EnrollmentOfficeType eofType) throws BaseException {
         try {
             return em.createQuery("select eof.id from EnrollmentOfficeTO eof,DepartmentTO dep,LocationTO loc " +
-                    "where eof.deleted = 0 and eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId and eof.type =:eofType ", Long.class)
+                    "where eof.deleted = false and eof.id = dep.id and dep.location.id = loc.id and loc.province.id = :provinceId and eof.type =:eofType ", Long.class)
                     .setParameter("provinceId", provinceId)
                     .setParameter("eofType", eofType)
                     .getResultList();
@@ -435,7 +435,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     "SELECT eo.EOF_ID,dep.DEP_NAME FROM EMST_ENROLLMENT_OFFICE eo,emst_department dep  where eo.EOF_IS_DELETED = 0 and eo.EOF_ID in" +
                             " (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
                             "with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=" + personID +
-                            " union select e.eof_id from emst_enrollment_office e connect by " +
+                            " union select e.eof_id from emst_enrollment_office e where e.EOF_IS_DELETED = 0 connect by " +
                             "prior e.eof_id=e.eof_superior_office start with" +
                             " e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=" + personID
                             + " ))) and dep.DEP_ID=eo.EOF_ID and dep.DEP_NAME like '%" + searchString + "%'");
@@ -476,10 +476,10 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                 type = additionalParams.get("type").toString();
             personID = getPersonDAO().findPersonIdByUsername(userProfileTO.getUserName());
             StringBuffer queryBuffer = new StringBuffer(
-                    "SELECT count(*) FROM EMST_ENROLLMENT_OFFICE eo,emst_department dep where eo.deleted = false and eo.EOF_ID in" +
+                    "SELECT count(*) FROM EMST_ENROLLMENT_OFFICE eo,emst_department dep where eo.EOF_IS_DELETED = 0 and eo.EOF_ID in" +
                             " (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
                             "with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=" + personID +
-                            " union select e.eof_id from emst_enrollment_office e connect by " +
+                            " union select e.eof_id from emst_enrollment_office e where e.EOF_IS_DELETED = 0 connect by " +
                             "prior e.eof_id=e.eof_superior_office start with" +
                             " e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=" + personID
                             + " ))) and dep.DEP_ID=eo.EOF_ID and dep.DEP_NAME like '%" + searchString + "%'");
@@ -552,7 +552,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     @Override
     public Boolean hasOfficeQueryByAccessibility(
             String climbingStairsAbility, String pupilIsVisible
-            , Long enrollmentOfficeId) throws DataException {
+            , Long enrollmentOfficeId) throws BaseException {
         BigDecimal count;
         Map<String, Object> params = new HashMap<String, Object>();
         try {
@@ -577,7 +577,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public Boolean hasOfficeQueryByAccessibility(
             String climbingStairsAbility,
             String pupilIsVisible,
-            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws DataException {
+            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws BaseException {
 
         if (pupilIsVisible.equals("YES") && climbingStairsAbility.equals("YES")) {
             if ((enrollmentOfficeSingleStageTO.getEOF_IGNORE_ICAO_PERMITTED() == Boolean.FALSE || enrollmentOfficeSingleStageTO.getEOF_IGNORE_ICAO_PERMITTED() == Boolean.TRUE)
@@ -658,7 +658,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             return em.createQuery("select eo.active " +
                             "from EnrollmentOfficeTO eo " +
-                            "where eo.deleted=0 and eo.id=:enrollmentOfficeId"
+                            "where eo.deleted=false and eo.id=:enrollmentOfficeId"
                     , Boolean.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
                     .getSingleResult();
@@ -668,10 +668,10 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws DAOException {
+    public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException {
         try {
             return em.createQuery(
-                    "select eo from EnrollmentOfficeTO eo where eo.deleted=0 "
+                    "select eo from EnrollmentOfficeTO eo where eo.deleted = false "
                             + "order by eo.id asc ", EnrollmentOfficeTO.class).getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
@@ -725,7 +725,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws DataException {
+    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
         EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO = new EnrollmentOfficeSingleStageTO();
         try {
 
@@ -760,7 +760,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public Boolean setDeleted(Long eofId) throws DataException {
+    public Boolean removeEnrollmentOffice(Long eofId) throws BaseException {
         try {
             EnrollmentOfficeTO eof = findEnrollmentOfficeById(eofId);
             eof.setDeleted(true);
@@ -768,7 +768,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             return true;
         } catch (Exception e) {
             throw new DataException(DataExceptionCode.ENI_009,
-                    DataExceptionCode.GLB_006_MSG, e);
+                    DataExceptionCode.GLB_007_MSG, e);
         }
     }
 

@@ -4829,9 +4829,9 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
         return replicaTypeCount;
     }
 
-    public Number nextValueOfRequestTrackingId() throws BaseException {
+    public String nextValueOfRequestTrackingId() throws BaseException {
         try {
-            return (Number) em.createNativeQuery("SELECT SEQ_CARD_REQUEST_TRACKING_ID.NEXTVAL FROM DUAL").getSingleResult();
+            return em.createNativeQuery("SELECT SEQ_CARD_REQUEST_TRACKING_ID.NEXTVAL FROM DUAL").getSingleResult().toString();
         } catch (Exception e) {
             logger.error("error in get next value of database-sequence for generating trackingId: =================>" + e.getMessage());
             throw new DataException(DataExceptionCode.CDI_109,

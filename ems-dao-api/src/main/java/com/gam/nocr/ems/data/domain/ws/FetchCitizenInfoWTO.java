@@ -3,7 +3,6 @@ package com.gam.nocr.ems.data.domain.ws;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class FetchCitizenInfoWTO implements Serializable {
 
@@ -11,6 +10,9 @@ public class FetchCitizenInfoWTO implements Serializable {
     private String birthDate;
     private String crn;
     private CardRequestType type;
+
+    public FetchCitizenInfoWTO() {
+    }
 
     public String getNationalId() {
         return nationalId;

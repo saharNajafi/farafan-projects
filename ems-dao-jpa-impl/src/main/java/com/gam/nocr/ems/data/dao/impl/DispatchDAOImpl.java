@@ -118,7 +118,7 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
             if (err.contains(UNIQUE_KEY_BATCH_CMS_ID))
                 throw new DAOException(DataExceptionCode.DSI_026,
                         DataExceptionCode.DSI_026_MSG, e);
-            if(err.contains(UNIQUE_KEY_POSTAL_TRACKING_CODE))
+            if (err.contains(UNIQUE_KEY_POSTAL_TRACKING_CODE))
                 throw new DAOException(DataExceptionCode.DSI_082,
                         DataExceptionCode.DSI_082_MSG, e);
             else
@@ -186,7 +186,7 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
             if (err.contains(UNIQUE_KEY_BATCH_CMS_ID))
                 throw new DAOException(DataExceptionCode.DSI_081,
                         DataExceptionCode.DSI_081_MSG, e);
-            if(err.contains(UNIQUE_KEY_POSTAL_TRACKING_CODE))
+            if (err.contains(UNIQUE_KEY_POSTAL_TRACKING_CODE))
                 throw new DAOException(DataExceptionCode.DSI_082,
                         DataExceptionCode.DSI_082_MSG, e);
             else
@@ -795,7 +795,7 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
                                     + "(SELECT COUNT(c1.id) FROM CardTO c1 WHERE c1.batch.id = btc.id AND (c1.receiveDate IS NOT NULL OR c1.lostDate IS NOT NULL))"
                                     + " = (SELECT COUNT(c2.id) FROM CardTO c2 WHERE c2.batch.id = btc.id)"
                                     + ") AND "
-                                    + "dpi.receiverDepartmentId IN (SELECT EOF.id FROM EnrollmentOfficeTO EOF)",
+                                    + "dpi.receiverDepartmentId IN (SELECT EOF.id FROM EnrollmentOfficeTO EOF where EOF.deleted = false)",
                             BatchTO.class)
                     .setParameter("CONTAINER_TYPE",
                             DepartmentDispatchSendType.BATCH)
@@ -833,7 +833,7 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
                                     + "(SELECT COUNT(c1.id) FROM CardTO c1 WHERE c1.batch.id = btc.id AND (c1.receiveDate IS NOT NULL OR c1.lostDate IS NOT NULL))"
                                     + " = (SELECT COUNT(c2.id) FROM CardTO c2 WHERE c2.batch.id = btc.id)"
                                     + ") AND "
-                                    + "dpi.receiverDepartmentId IN (SELECT EOF.id FROM EnrollmentOfficeTO EOF)",
+                                    + "dpi.receiverDepartmentId IN (SELECT EOF.id FROM EnrollmentOfficeTO EOF where EOF.deleted = false)",
                             Long.class)
                     .setParameter("CONTAINER_TYPE",
                             DepartmentDispatchSendType.BATCH)
