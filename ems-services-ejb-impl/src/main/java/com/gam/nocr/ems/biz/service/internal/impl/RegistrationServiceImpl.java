@@ -3091,22 +3091,9 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     @Override
     public Boolean checkCRN(String nationalId, String crn) throws BaseException {
         Boolean result = false;
-        List<CardInfoVTO> allCardsList = new ArrayList<CardInfoVTO>();
-        String productId = null;
-        try {
-            ProfileManager pm = ProfileHelper.getProfileManager();
-            productId = (String) pm.getProfile(ProfileKeyName.KEY_CMS_ISSUE_CARD_PRODUCT_ID, true, null, null);
-        } catch (Exception e) {
-            logger.warn(BizExceptionCode.RSI_174, BizExceptionCode.GLB_009_MSG, e);
-        }
-
-        if (productId == null || productId.isEmpty()) {
-            productId = DEFAULT_PRODUCT_ID;
-        }
-        allCardsList = getCMSService().getCitizenCardsByProduct(nationalId, productId);
-        for (int i = 0; i < allCardsList.size(); i++) {
-            if (crn.equals(allCardsList.get(i).getCrn()))
-                result = true;
+        CardRequestTO cardRequestTO = getCardRequestDAO().findLastRequestByNationalId(nationalId);
+        if (crn.equals(cardRequestTO.getCard().getCrn())) {
+            result = true;
         }
         return result;
     }
