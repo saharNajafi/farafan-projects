@@ -15,7 +15,6 @@ import com.gam.nocr.ems.util.JasperUtil;
 import gampooya.tools.security.BusinessSecurityException;
 import org.slf4j.Logger;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,34 +48,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     public void setHasAccessToChangePriority(boolean hasAccessToChangePriority) {
         this.hasAccessToChangePriority = hasAccessToChangePriority;
-    }
-
-    private InputStream inputStream;
-    private String downloadFileName;
-    private String contentType;
-
-    public InputStream getInputStream() {
-        return inputStream;
-    }
-
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-
-    public String getDownloadFileName() {
-        return downloadFileName;
-    }
-
-    public void setDownloadFileName(String downloadFileName) {
-        this.downloadFileName = downloadFileName;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     /**
@@ -205,27 +176,15 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             hasAccessToChangePriority = new CardRequestDelegator()
                     .hasChangePriorityAccess(getUserProfile());
 
+            hasPrintRegistrationReceipt =
+                    new CardRequestDelegator().hasPrintRegistrationReceipt(getUserProfile());
+
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_011,
                     WebExceptionCode.GLB_001_MSG, e);
         } catch (Exception e) {
             throw new ActionException(WebExceptionCode.CRA_012,
-                    WebExceptionCode.GLB_003_MSG, e);
-        }
-
-    }
-
-    public String hasPrintRegistrationReceipt() throws BaseException {
-        try {
-            hasPrintRegistrationReceipt =
-                    new CardRequestDelegator().hasPrintRegistrationReceipt(getUserProfile());
-            return SUCCESS_RESULT;
-        } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_015,
-                    WebExceptionCode.GLB_001_MSG, e);
-        } catch (Exception e) {
-            throw new ActionException(WebExceptionCode.CRA_016,
                     WebExceptionCode.GLB_003_MSG, e);
         }
 
