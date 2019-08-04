@@ -750,11 +750,14 @@ public class RegistrationWS extends EMSWS {
             if (fetchCitizenInfoWTO.getBirthDate() == null || fetchCitizenInfoWTO.getBirthDate().isEmpty()) {
                 throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
             }
+            if (fetchCitizenInfoWTO.getType() == null) {
+                throw new InternalException(WebExceptionCode.RSW_094_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_094));
+            }
             registrationDelegator.checkPreviousCardStateValid(up, fetchCitizenInfoWTO.getNationalId());
             if (type.equals(CardRequestType.REPLICA)) {
                 citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
             }
-            if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
+            else if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
                 Boolean crnValidation =
                         registrationDelegator.checkCRN(up, fetchCitizenInfoWTO.getNationalId(), fetchCitizenInfoWTO.getCrn());
                 if (!crnValidation) {
