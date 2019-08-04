@@ -3119,6 +3119,10 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                         throw new ServiceException(BizExceptionCode.RSI_178,
                                 BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
                     }
+                    if (!cardRequestTO.getState().equals(CardRequestState.DELIVERED)){
+                        throw new ServiceException(BizExceptionCode.RSI_062,
+                                BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
+                    }
 
                 }
 
