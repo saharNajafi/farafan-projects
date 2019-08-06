@@ -487,6 +487,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_176 = "EMS_S_RSI_176";
     public static final String RSI_177 = "EMS_S_RSI_177";
     public static final String RSI_178 = "EMS_S_RSI_178";
+    public static final String RSI_179 = "EMS_S_RSI_179";
+    public static final String RSI_180 = "EMS_S_RSI_180";
+    public static final String RSI_181 = "EMS_S_RSI_181";
+    public static final String RSI_182 = "EMS_S_RSI_182";
+    public static final String RSI_183 = "EMS_S_RSI_183";
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -622,6 +627,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_170_MSG = "Save scanned documents encounter error due to faceImageCompressionMaxSizeLimitBytes size (default value 25.6KB)";
     public static final String RSI_171_MSG = "Save scanned documents encounter error due to serialNumberCompressionMaxSizeLimitBytes size (default value 10.24KB)";
     public static final String RSI_175_MSG = "Cannot fetch citizenInfo when nationalId is not given";
+    public static final String RSI_179_MSG = "there is not any request for this nationalId";
+    public static final String RSI_180_MSG = "Previous card request is in a state which does not allow a new card request to be made";
+    public static final String RSI_181_MSG = "the crn is invalid";
 
 
 

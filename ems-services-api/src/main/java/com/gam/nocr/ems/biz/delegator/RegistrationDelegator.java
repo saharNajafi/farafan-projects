@@ -255,11 +255,12 @@ public class RegistrationDelegator implements Delegator {
 
     }
 
-    public Boolean checkCRN(UserProfileTO userProfileTO, String nationalId, String crn) throws BaseException{
-        return getService(userProfileTO).checkCRN(nationalId, crn);
+    public void checkCRN(UserProfileTO userProfileTO, String nationalId, String crn) throws BaseException{
+         getService(userProfileTO).checkCRN(nationalId, crn);
     }
 
     public void checkPreviousCardStateValid(UserProfileTO userProfileTO, String nationalId) throws BaseException {
         getService(userProfileTO).checkPreviousCardStateValid(nationalId);
     }
+
 }

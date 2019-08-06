@@ -639,9 +639,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         }
     }
 
-    private void checkPreviousCardStateValid(CardRequestDAO cardRequestDAO,
-                                             List<CitizenTO> citizens) throws BaseException {
-        List<CardRequestTO> cardRequestsForCitizen = cardRequestDAO
+    private void checkPreviousCardStateValid(List<CitizenTO> citizens) throws BaseException {
+        List<CardRequestTO> cardRequestsForCitizen = getCardRequestDAO()
                 .findByCitizen(citizens.get(0));
         CardRequestState state = cardRequestsForCitizen.get(0).getState();
         if ((state != CardRequestState.STOPPED_NOT_FOLLOW_LIMITED_RESERVE)
@@ -653,6 +652,17 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
+        }
+    }
+
+    private void checkPreviousCardStateValid(CardRequestTO cardRequestTO) throws BaseException {
+        CardRequestState state = cardRequestTO.getState();
+        if ((state != CardRequestState.STOPPED_NOT_FOLLOW_LIMITED_RESERVE)
+                && (state != CardRequestState.NOT_DELIVERED)
+                && (state != CardRequestState.DELIVERED)
+                ) {
+            throw new ServiceException(BizExceptionCode.RSI_180,
+                    BizExceptionCode.RSI_180_MSG);
         }
     }
 
@@ -947,7 +957,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             newCardRequest.setCitizen(newCitizen);
         } else {// then citizen with this nid exists
             if (newCardRequest.getId() == null) {// Do this check when saving new request - not when updating
-                checkPreviousCardStateValid(cardRequestDAO, citizens);
+                checkPreviousCardStateValid(citizens);
             }
             CitizenTO citizenLoadedFromDb = citizens.get(0);
             CitizenInfoTO citizenInfoLoadedFromDb = citizenLoadedFromDb.getCitizenInfo();
@@ -2479,7 +2489,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             try {
                 requestTO.getCitizen().getCitizenInfo().setFaceDisabilityStatus(faceDisabilityStatus);
             } catch (Exception e) {
-                logger.error(e.getMessage(),e);
+                logger.error(e.getMessage(), e);
             }
             long requestId = save(requestTO);
             CardRequestTO cardRequestAfterInsert = getCardRequestDAO().find(CardRequestTO.class, requestId);
@@ -3089,44 +3099,53 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     }
 
     @Override
-    public Boolean checkCRN(String nationalId, String crn) throws BaseException {
-        Boolean result = false;
-        CardRequestTO cardRequestTO = getCardRequestDAO().findLastRequestByNationalId(nationalId);
-        if (cardRequestTO != null && crn.equals(cardRequestTO.getCard().getCrn())) {
-            result = true;
+    public void checkCRN(String nationalId, String crn) throws BaseException {
+        List<CardRequestTO> cardRequestTOs = getCardRequestDAO().findByNationalId(nationalId);
+        if (EmsUtil.checkListSize(cardRequestTOs)) {
+            if (cardRequestTOs.size() == 1) {
+                if (cardRequestTOs.get(0).getCard() != null && !cardRequestTOs.get(0).getCard().getCrn().equalsIgnoreCase(crn)) {
+                    throw new ServiceException(BizExceptionCode.RSI_181,
+                            BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                }
+            } else if (cardRequestTOs.size() > 1) {
+                for (int i = 0; i <= cardRequestTOs.size() - 2; i++) {
+                    if (cardRequestTOs.get(i).getCard() != null && cardRequestTOs.get(i).getCard().getCrn().equals(crn)) {
+                        throw new ServiceException(BizExceptionCode.RSI_182,
+                                BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                    } else {
+                        throw new ServiceException(BizExceptionCode.RSI_183,
+                                BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                    }
+                }
+            }
         }
-        return result;
     }
 
     @Override
-    public void checkPreviousCardStateValid(String nationalId) throws BaseException{
+    public void checkPreviousCardStateValid(String nationalId) throws BaseException {
         CardRequestTO cardRequestTO;
-        List<CitizenTO> citizenTO = new ArrayList<CitizenTO>();
-            CardRequestDAO cardRequestDAO = getCardRequestDAO();
-            cardRequestTO = getCardRequestDAO().findLastRequestByNationalId(nationalId);
-            if (cardRequestTO != null) {
-                if (!cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
-                    if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)) {
-                        throw new ServiceException(BizExceptionCode.RSI_177,
-                                BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
-                    } else {
-                        citizenTO.add(cardRequestTO.getCitizen());
-                        checkPreviousCardStateValid(cardRequestDAO, citizenTO);
-                    }
-                }
-                if (cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
-                    if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)) {
-                        throw new ServiceException(BizExceptionCode.RSI_178,
-                                BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
-                    }
-                    if (!cardRequestTO.getState().equals(CardRequestState.DELIVERED)){
-                        throw new ServiceException(BizExceptionCode.RSI_062,
-                                BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
-                    }
 
+        cardRequestTO = getCardRequestDAO().findLastRequestByNationalId(nationalId);
+        if (cardRequestTO != null) {
+            if (!cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
+                if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)) {
+                    throw new ServiceException(BizExceptionCode.RSI_177,
+                            BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
                 }
-
             }
+            if (cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)) {
+                if (cardRequestTO.getState().equals(CardRequestState.PENDING_TO_DELIVER_BY_CMS)) {
+                    throw new ServiceException(BizExceptionCode.RSI_178,
+                            BizExceptionCode.RSI_062_MSG, new String[]{nationalId});
+                }
+            } else {
+                checkPreviousCardStateValid(cardRequestTO);
+            }
+
+        } else {
+            throw new ServiceException(BizExceptionCode.RSI_179,
+                    BizExceptionCode.RSI_179_MSG, new String[]{nationalId});
+        }
     }
 
 
