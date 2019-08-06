@@ -1258,11 +1258,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 enrollmentOfficeTOListForSync.add(getEnrollmentOfficeDAO()
                         .find(EnrollmentOfficeTO.class, enrollmentOfficeId));
                 try {
-                    /*getCMSService()
+                    getCMSService()
                             .updateEnrollmentOffices(
                                     enrollmentOfficeTOListForSync,
                                     EnrollmentOfficeStatus
-                                            .toInteger(EnrollmentOfficeStatus.DISABLED));*/
+                                            .toInteger(EnrollmentOfficeStatus.DISABLED));
                 } catch (Exception exception) {
                     if (exception instanceof ServiceException) {
                         ServiceException serviceException = (ServiceException) exception;

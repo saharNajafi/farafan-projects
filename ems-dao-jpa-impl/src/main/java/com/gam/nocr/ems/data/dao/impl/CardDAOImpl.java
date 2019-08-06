@@ -1,21 +1,5 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
@@ -25,7 +9,17 @@ import com.gam.nocr.ems.data.domain.vol.CardDispatchInfoVTO;
 import com.gam.nocr.ems.data.enums.CardState;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import javax.ejb.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p> TODO -- Explain this class </p>
@@ -258,7 +252,7 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 								.append(" and cr.crq_enroll_office_id in" +
 										" (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
 										"with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id="+criteria.getParameters().get("perid") +
-										" union select e.eof_id from emst_enrollment_office e where eof_is_deleted = 0 connect by " +
+										" union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
 										"prior e.eof_id=e.eof_superior_office start with" +
 										" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+criteria.getParameters().get("perid")+" ))) ");
 					}
@@ -383,7 +377,7 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 								.append(" and cr.crq_enroll_office_id in" +
 										" (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
 										"with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id="+criteria.getParameters().get("perid") +
-										" union select e.eof_id from emst_enrollment_office e where eof_is_deleted = 0 connect by " +
+										" union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
 										"prior e.eof_id=e.eof_superior_office start with" +
 										" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+criteria.getParameters().get("perid")+" ))) ");
 					}
