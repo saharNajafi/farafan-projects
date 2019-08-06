@@ -328,8 +328,21 @@ Ext.define('Ems.view.office.Grid', {
                 action: 'settingOffice',
                 stateful: true,
                 stateId: this.stateId + 'Setting',
+                // getClass: function (value, metadata, record) {
+                //     return 'girdAction-OfficeSetting-icon';
+                // }
                 getClass: function (value, metadata, record) {
-                    return 'girdAction-OfficeSetting-icon';
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.allowChangeFinger;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-OfficeSetting-icon';
+                            else
+                                return 'grid-action-hidden';
+                        } else {
+                            return 'grid-action-hidden';
+                        }
+                    }
                 }
             }
 
