@@ -154,6 +154,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
     }
 
     @Column(name = "WSI_ADDITIONAL_INFO_AS_JSON")
+    @Lob
     public String getAdditionalInfoAsJson() {
         return additionalInfoAsJson;
     }
