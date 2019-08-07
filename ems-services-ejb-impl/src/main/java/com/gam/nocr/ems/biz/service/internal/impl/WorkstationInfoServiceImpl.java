@@ -18,7 +18,6 @@ import com.gam.nocr.ems.data.dao.WorkstationInfoDAO;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
 import com.gam.nocr.ems.util.EmsUtil;
-import weblogic.jndi.internal.NameAlreadyUnboundException;
 
 import javax.ejb.*;
 import java.util.ArrayList;
@@ -134,31 +133,34 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
 
     private void updateWorkstationInfo(WorkstationInfoTO newWorkstationInfoTo, WorkstationInfoTO oldWorkstationInfo) throws BaseException {
         try {
-            //1-
-            if (String.valueOf(newWorkstationInfoTo.getIpAddressList()) != null)
-                oldWorkstationInfo.setIpAddressList(String.valueOf(newWorkstationInfoTo.getIpAddressList()));
-            //2-
-            if (newWorkstationInfoTo.getCpuType() != null)
-                oldWorkstationInfo.setCpuType(newWorkstationInfoTo.getCpuType());
-            //3-
+
+            if (newWorkstationInfoTo.getCpuInfo() != null)
+                oldWorkstationInfo.setCpuInfo(newWorkstationInfoTo.getCpuInfo());
+
             if (newWorkstationInfoTo.getOsVersion() != null)
                 oldWorkstationInfo.setOsVersion(newWorkstationInfoTo.getOsVersion());
-            //4-
-            if (newWorkstationInfoTo.getUsername() != null)
-                oldWorkstationInfo.setUsername(newWorkstationInfoTo.getUsername());
-            //5-
+
             if (newWorkstationInfoTo.getHasDotnetFramwork45() != null)
                 oldWorkstationInfo.setHasDotnetFramwork45(newWorkstationInfoTo.getHasDotnetFramwork45());
-            //6-
-            if (newWorkstationInfoTo.getIs64bitOs() != null)
-                oldWorkstationInfo.setIs64bitOs(newWorkstationInfoTo.getIs64bitOs());
-            //7-
+
+            if (newWorkstationInfoTo.getMemoryCapacity() != null)
+                oldWorkstationInfo.setMemoryCapacity(newWorkstationInfoTo.getMemoryCapacity());
+
+            if (newWorkstationInfoTo.getCcosVersion() != null)
+                oldWorkstationInfo.setCcosVersion(newWorkstationInfoTo.getCcosVersion());
+
+            if (String.valueOf(newWorkstationInfoTo.getIpAddress()) != null)
+                oldWorkstationInfo.setIpAddress(String.valueOf(newWorkstationInfoTo.getIpAddress()));
+
+            if (newWorkstationInfoTo.getUsername() != null)
+                oldWorkstationInfo.setUsername(newWorkstationInfoTo.getUsername());
+
+            if (newWorkstationInfoTo.getAdditionalInfoAsJson() != null)
+                oldWorkstationInfo.setAdditionalInfoAsJson(newWorkstationInfoTo.getAdditionalInfoAsJson());
+
             oldWorkstationInfo.setGatherState(newWorkstationInfoTo.getGatherState());//Always this field be reset!
-            //8-
+
             oldWorkstationInfo.setLastModifiedDate(newWorkstationInfoTo.getLastModifiedDate());//Always this field be reset!
-            //9-
-            if (newWorkstationInfoTo.getDataAsJson() != null)
-                oldWorkstationInfo.setDataAsJson(newWorkstationInfoTo.getDataAsJson());
 
             getWorkstationInfoDAO().update(oldWorkstationInfo);
         } catch (BaseException e) {

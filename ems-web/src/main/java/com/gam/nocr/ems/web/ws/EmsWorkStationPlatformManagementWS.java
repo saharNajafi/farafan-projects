@@ -9,7 +9,6 @@ import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.data.domain.ws.*;
-import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.Utils;
 
 import javax.jws.WebMethod;
@@ -46,7 +45,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
     }
 
     @WebMethod
-    public String registerWorkstationInfo(
+    public void registerWorkstationInfo(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode,
@@ -61,11 +60,11 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         } catch (BaseException e) {
             e.printStackTrace();
         }
-        return verCode;
+        //return verCode;
     }
 
     @WebMethod
-    public String registerWorkstationPlugins(
+    public void registerWorkstationPlugins(
             @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO,
             @WebParam(name = "WorkstationCode", targetNamespace = "")
             @XmlElement(required = true, nillable = false) String workstationCode,
@@ -89,7 +88,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         } catch (BaseException e) {
             throw new InternalException(e.getExceptionCode(), new EMSWebServiceFault(e.getMessage()), e);
         }
-        return verCode;
+        return;
     }
 
 
@@ -110,44 +109,58 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
     private WorkstationInfoTO convertToWorkstationInfo(ClientWorkstationInfo clientWorkstationInfo) throws InternalException {
         WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();
 
-        //1-cpu data==================================================================================================================
-        workstationInfoTO.setCpuType(clientWorkstationInfo.getCpuType());
+        //1-cpu info==================================================================================================================
+        if (clientWorkstationInfo.getCpuInfo() == null || clientWorkstationInfo.getCpuInfo().trim().isEmpty()) {
+            throw new InternalException(WebExceptionCode.EMSWorkstationPMService0018, new EMSWebServiceFault(WebExceptionCode.WST_018));
+        } else {
+            workstationInfoTO.setCpuInfo(clientWorkstationInfo.getCpuInfo());
+        }
 
-        //2-.Operation system data====================================================================================================
-        if (clientWorkstationInfo.getOsVersion() == null)
-            throw new InternalException(
-                    WebExceptionCode.EMSWorkstationPMService0012, new EMSWebServiceFault(WebExceptionCode.WST_012));
-        workstationInfoTO.setOsVersion(clientWorkstationInfo.getOsVersion());
+        //2-.Operation system version====================================================================================================
+        if (clientWorkstationInfo.getOsVersion() == null || clientWorkstationInfo.getOsVersion().trim().isEmpty()) {
+            throw new InternalException(WebExceptionCode.EMSWorkstationPMService0012, new EMSWebServiceFault(WebExceptionCode.WST_012));
+        } else {
+            workstationInfoTO.setOsVersion(clientWorkstationInfo.getOsVersion());
+        }
 
         //3-.net framework============================================================================================================
-        if (clientWorkstationInfo.getHasDotnetFramwork45() != null)
-            workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(
-                    String.valueOf(((clientWorkstationInfo.getHasDotnetFramwork45()) ? 1 : 0))));
+        if (clientWorkstationInfo.getHasDotnetFramwork45() == null) {
+            throw new InternalException(WebExceptionCode.EMSWorkstationPMService0019, new EMSWebServiceFault(WebExceptionCode.WST_019));
+        } else {
+            workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(String.valueOf(((clientWorkstationInfo.getHasDotnetFramwork45()) ? 1 : 0))));
+        }
 
-        //4-is 64 bit=================================================================================================================
-        if (clientWorkstationInfo.getIs64bitOs() != null)
-            workstationInfoTO.setIs64bitOs(Short.parseShort(String.valueOf(((clientWorkstationInfo.getIs64bitOs()) ? 1 : 0))));
+        //4-memory capacity===================================================
+        if (clientWorkstationInfo.getMemoryCapacity() == null || clientWorkstationInfo.getMemoryCapacity().trim().isEmpty()) {
+            throw new InternalException(WebExceptionCode.EMSWorkstationPMService0016, new EMSWebServiceFault(WebExceptionCode.WST_016));
+        } else {
+            workstationInfoTO.setMemoryCapacity(clientWorkstationInfo.getMemoryCapacity().trim());
+        }
+
+        //5-ccos version======================================
+        if (clientWorkstationInfo.getCcosVersion() == null || clientWorkstationInfo.getCcosVersion().trim().isEmpty()) {
+            throw new InternalException(WebExceptionCode.EMSWorkstationPMService0017, new EMSWebServiceFault(WebExceptionCode.WST_017));
+        } else {
+            workstationInfoTO.setCcosVersion(clientWorkstationInfo.getCcosVersion().trim());
+        }
 
         //5-ip addresses=============================================================================================================
-        for (String ipAddress : clientWorkstationInfo.getIpAddressList()) {
-            if (!Utils.isIPValid(ipAddress))
-                throw new InternalException(WebExceptionCode.EMSWorkstationPMService0008, new EMSWebServiceFault(WebExceptionCode.WST_008));
+        if (clientWorkstationInfo.getIpAddress() == null || !Utils.isIPValid(clientWorkstationInfo.getIpAddress())) {
+            throw new InternalException(WebExceptionCode.EMSWorkstationPMService0008, new EMSWebServiceFault(WebExceptionCode.WST_008));
+        } else {
+            workstationInfoTO.setIpAddress(String.valueOf(clientWorkstationInfo.getIpAddress()));
         }
-        workstationInfoTO.setIpAddressList(String.valueOf(clientWorkstationInfo.getIpAddressList()));
 
         //6-username==================================================================================================================
-        if (clientWorkstationInfo.getUsername() == null)
+        if (clientWorkstationInfo.getUsername() == null) {
             throw new InternalException(WebExceptionCode.EMSWorkstationPMService0013, new EMSWebServiceFault(WebExceptionCode.WST_013));
-        workstationInfoTO.setUsername(clientWorkstationInfo.getUsername());
+        } else {
+            workstationInfoTO.setUsername(clientWorkstationInfo.getUsername());
+        }
 
         //7-data as json==============================================================================================================
-        if (clientWorkstationInfo.getDataAsJson() != null && !clientWorkstationInfo.getDataAsJson().trim().isEmpty()) {
-            if (EmsUtil.isJSONValid(clientWorkstationInfo.getDataAsJson())) {
-                workstationInfoTO.setDataAsJson(clientWorkstationInfo.getDataAsJson());
-            } else {
-                throw new InternalException(WebExceptionCode.EMSWorkstationPMService0015, new EMSWebServiceFault(WebExceptionCode.WST_015));
-            }
-        }
+        //it could be null!
+        workstationInfoTO.setAdditionalInfoAsJson(clientWorkstationInfo.getAdditionalInfoAsJson());
 
         //8-last modified date========================================================================================================
         workstationInfoTO.setLastModifiedDate(new Date());

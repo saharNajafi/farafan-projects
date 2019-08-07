@@ -6,7 +6,6 @@
 package com.gam.nocr.ems.data.domain;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
-import flexjson.JSON;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,16 +29,19 @@ public class WorkstationInfoTO extends ExtEntityTO {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
 
     private Long id;
-    private String ipAddressList;
-    private String cpuType;
+    private String cpuInfo;
     private String osVersion;
-    private String username;
     private Short hasDotnetFramwork45;
-    private Short is64bitOs;
-    private WorkstationTO workstation;
+    private String memoryCapacity;
+    private String ccosVersion;
+    private String ipAddress;
+    private String username;
+    private String additionalInfoAsJson;
+
     private short gatherState;
     private Date lastModifiedDate;
-    private String dataAsJson;
+
+    private WorkstationTO workstation;
 
     public WorkstationInfoTO() {
     }
@@ -58,22 +60,31 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.id = id;
     }
 
-    @Column(name = "WSI_IP_ADDRESS_LIST")
-    public String getIpAddressList() {
-        return ipAddressList;
+    @Column(name = "WSI_IP_ADDRESS")
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setIpAddressList(String ipAddressList) {
-        this.ipAddressList = ipAddressList;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
-    @Column(name = "WSI_CPU_TYPE")
-    public String getCpuType() {
-        return cpuType;
+    @Column(name = "WSI_CPU_INFO")
+    public String getCpuInfo() {
+        return cpuInfo;
     }
 
-    public void setCpuType(String cpuType) {
-        this.cpuType = cpuType;
+    public void setCpuInfo(String cpuInfo) {
+        this.cpuInfo = cpuInfo;
+    }
+
+    @Column(name = "WSI_CCOS_VERSION")
+    public String getCcosVersion() {
+        return ccosVersion;
+    }
+
+    public void setCcosVersion(String ccosVersion) {
+        this.ccosVersion = ccosVersion;
     }
 
     @Column(name = "WSI_OS_VERSION")
@@ -83,6 +94,15 @@ public class WorkstationInfoTO extends ExtEntityTO {
 
     public void setOsVersion(String osVersion) {
         this.osVersion = osVersion;
+    }
+
+    @Column(name = "WSI_MEMORY_CAPACITY")
+    public String getMemoryCapacity() {
+        return memoryCapacity;
+    }
+
+    public void setMemoryCapacity(String memoryCapacity) {
+        this.memoryCapacity = memoryCapacity;
     }
 
     @Column(name = "WSI_USERNAME")
@@ -101,15 +121,6 @@ public class WorkstationInfoTO extends ExtEntityTO {
 
     public void setHasDotnetFramwork45(Short hasDotnetFramwork45) {
         this.hasDotnetFramwork45 = hasDotnetFramwork45;
-    }
-
-    @Column(name = "WSI_IS_64BIT_OS")
-    public Short getIs64bitOs() {
-        return is64bitOs;
-    }
-
-    public void setIs64bitOs(Short is64bitOs) {
-        this.is64bitOs = is64bitOs;
     }
 
     @OneToOne
@@ -142,13 +153,13 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.gatherState = gatherState;
     }
 
-    @Column(name = "WSI_DATA_AS_JSON")
-    public String getDataAsJson() {
-        return dataAsJson;
+    @Column(name = "WSI_ADDITIONAL_INFO_AS_JSON")
+    public String getAdditionalInfoAsJson() {
+        return additionalInfoAsJson;
     }
 
-    public void setDataAsJson(String dataAsJson) {
-        this.dataAsJson = dataAsJson;
+    public void setAdditionalInfoAsJson(String additionalInfoAsJson) {
+        this.additionalInfoAsJson = additionalInfoAsJson;
     }
 
     @Override

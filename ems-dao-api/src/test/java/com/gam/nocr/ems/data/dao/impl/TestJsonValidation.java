@@ -1,6 +1,5 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.ws.ClientWorkstationInfo;
 import com.gam.nocr.ems.util.Utils;
 import org.json.*;
@@ -29,21 +28,5 @@ public class TestJsonValidation {
         return true;
     }
 
-    @Test
-    public void testIpAddress(){
-        ClientWorkstationInfo clientWorkstationInfo=new ClientWorkstationInfo();
-        List<String> list=new ArrayList<>(3);
-        list.add("1.1.1.1");
-        list.add("2.2.2.2");
-        list.add("4.255.255.255");
 
-        clientWorkstationInfo.setIpAddressList(list);
-
-        System.out.println(String.valueOf(clientWorkstationInfo.getIpAddressList()));
-
-        for (String ipAddress : clientWorkstationInfo.getIpAddressList()) {
-            if (!Utils.isIPValid(ipAddress))
-                Assert.fail();
-        }
-    }
 }

@@ -1,29 +1,43 @@
 package com.gam.nocr.ems.data.domain.ws;
 
-import java.util.List;
-
 public class ClientWorkstationInfo {
 
-    private List<String> ipAddressList;
-    private String cpuType;
+    private String cpuInfo;
     private String osVersion;
-    private String username;
     private Boolean hasDotnetFramwork45;
-    private Boolean is64bitOs;
-    private String dataAsJson;
+    private String memoryCapacity;
+    private String ccosVersion;
+    private String ipAddress;
+    private String username;
+    private String additionalInfoAsJson;
 
     //region getter and setter
-
-    public List<String> getIpAddressList() {
-        return ipAddressList;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setIpAddressList(List<String> ipAddressList) {
-        this.ipAddressList = ipAddressList;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
-    public String getCpuType() {
-        return cpuType;
+    public String getMemoryCapacity() {
+        return memoryCapacity;
+    }
+
+    public void setMemoryCapacity(String memoryCapacity) {
+        this.memoryCapacity = memoryCapacity;
+    }
+
+    public String getCcosVersion() {
+        return ccosVersion;
+    }
+
+    public void setCcosVersion(String ccosVersion) {
+        this.ccosVersion = ccosVersion;
+    }
+
+    public String getCpuInfo() {
+        return cpuInfo;
     }
 
     public Boolean getHasDotnetFramwork45() {
@@ -34,16 +48,8 @@ public class ClientWorkstationInfo {
         this.hasDotnetFramwork45 = hasDotnetFramwork45;
     }
 
-    public Boolean getIs64bitOs() {
-        return is64bitOs;
-    }
-
-    public void setIs64bitOs(Boolean is64bitOs) {
-        this.is64bitOs = is64bitOs;
-    }
-
-    public void setCpuType(String cpuType) {
-        this.cpuType = cpuType;
+    public void setCpuInfo(String cpuInfo) {
+        this.cpuInfo = cpuInfo;
     }
 
     public String getOsVersion() {
@@ -62,12 +68,13 @@ public class ClientWorkstationInfo {
         this.username = username;
     }
 
-    public String getDataAsJson() {
-        return dataAsJson;
+    public String getAdditionalInfoAsJson() {
+        return additionalInfoAsJson;
     }
 
-    public void setDataAsJson(String dataAsJson) {
-        this.dataAsJson = dataAsJson;
+    public void setAdditionalInfoAsJson(String additionalInfoAsJson) {
+        this.additionalInfoAsJson = additionalInfoAsJson;
     }
+
     //endregion
 }
