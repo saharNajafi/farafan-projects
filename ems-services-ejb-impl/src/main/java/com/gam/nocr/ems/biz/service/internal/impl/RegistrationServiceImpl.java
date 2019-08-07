@@ -3180,20 +3180,4 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         registrationPaymentService.setUserProfileTO(getUserProfileTO());
         return registrationPaymentService;
     }
-
-    private CMSService getCMSService() throws BaseException {
-        CMSService cmsService;
-        try {
-            cmsService = ServiceFactoryProvider.getServiceFactory()
-                    .getService(EMSLogicalNames.getExternalServiceJNDIName(EMSLogicalNames.SRV_CMS), EmsUtil.getUserInfo(userProfileTO));
-        } catch (ServiceFactoryException e) {
-            throw new ServiceException(
-                    BizExceptionCode.RSI_176,
-                    BizExceptionCode.GLB_002_MSG,
-                    e,
-                    EMSLogicalNames.SRV_CMS.split(","));
-        }
-        cmsService.setUserProfileTO(getUserProfileTO());
-        return cmsService;
-    }
 }
