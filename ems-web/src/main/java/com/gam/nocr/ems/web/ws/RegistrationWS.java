@@ -723,7 +723,7 @@ public class RegistrationWS extends EMSWS {
     }
 
     /**
-     * The CCOS calls this service by citizen's firstName, lastName and NID in order to check its existence in EMS. This
+     * The CCOS calls this service by citizen's cardRequestType, crn and nationalId and birthDate in order to check its existence in EMS. This
      * service is called in all issuance processes (except first card) by CCOS in order to fetch citizen's information
      * and fill the registration form (in read-only mode)
      *
@@ -740,71 +740,82 @@ public class RegistrationWS extends EMSWS {
         UserProfileTO up = super.validateRequest(securityContextWTO);
         CitizenWTO citizenWTO = null;
         CitizenTO citizenTO = null;
+        Date birthDate = null;
+        Date ctzBirthDate = null;
         CardRequestType type = fetchCitizenInfoWTO.getType();
-        try {
-            if (!NationalIDUtil.checkValidNinStr(fetchCitizenInfoWTO.getNationalId())) {
-                throw new InternalException(
-                        WebExceptionCode.RSW_088_MSG + fetchCitizenInfoWTO.getNationalId(),
-                        new EMSWebServiceFault(WebExceptionCode.RSW_088));
-            }
-            if (fetchCitizenInfoWTO.getBirthDate() == null || fetchCitizenInfoWTO.getBirthDate().isEmpty()) {
-                throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
-            }
-            if (fetchCitizenInfoWTO.getType() == null) {
-                throw new InternalException(WebExceptionCode.RSW_094_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_094));
-            }
-            registrationDelegator.checkPreviousCardStateValid(up, fetchCitizenInfoWTO.getNationalId());
-            if (type.equals(CardRequestType.REPLICA)) {
-                citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
-            }
-            else if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
-                Boolean crnValidation =
-                        registrationDelegator.checkCRN(up, fetchCitizenInfoWTO.getNationalId(), fetchCitizenInfoWTO.getCrn());
-                if (!crnValidation) {
-                    throw new InternalException(
-                            WebExceptionCode.RSW_089_MSG + fetchCitizenInfoWTO.getCrn(),
-                            new EMSWebServiceFault(WebExceptionCode.RSW_089));
-                }
-                citizenTO = registrationDelegator.fetchCitizenInfo(up, fetchCitizenInfoWTO.getNationalId());
-            }
-            if (citizenTO == null) {
-                throw new InternalException(WebExceptionCode.RSW_062_MSG + fetchCitizenInfoWTO.getNationalId(),
-                        new EMSWebServiceFault(WebExceptionCode.RSW_093));
-            }
-            if (citizenTO != null) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                Date birthDate =
-                        simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateSolar());
-                Date ctzBirthDate =
-                        simpleDateFormat.parse(fetchCitizenInfoWTO.getBirthDate());
-                if (!(ctzBirthDate.equals(birthDate))) {
-                    throw new InternalException(WebExceptionCode.RSW_090_MSG + fetchCitizenInfoWTO.getBirthDate(),
-                            new EMSWebServiceFault(WebExceptionCode.RSW_090));
-                }
-            }
-            try {
-                 citizenWTO = CardRequestMapper.convert(null, citizenTO);
-                if(type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)|| type.equals(CardRequestType.REPLICA)){
-                    citizenWTO.setLivingPrvId(0L);
-                    citizenWTO.setLivingCityId(0L);
-                    citizenWTO.setLivingStateId(0L);
-                    citizenWTO.setLivingSectorId(0L);
-                    citizenWTO.setLivingVillageId(0L);
-                    citizenWTO.setAddress("");
-                    citizenWTO.setPhone("");
-                    citizenWTO.setPostCode("");
-                    citizenWTO.setUserCityType("-1");
-                }
-            } catch (Exception e) {
-                throw new InternalException(WebExceptionCode.RSW_091_MSG,
-                        new EMSWebServiceFault(WebExceptionCode.RSW_091), e);
-            }
 
+        if (!NationalIDUtil.checkValidNinStr(fetchCitizenInfoWTO.getNationalId())) {
+            throw new InternalException(
+                    WebExceptionCode.RSW_088_MSG + fetchCitizenInfoWTO.getNationalId(),
+                    new EMSWebServiceFault(WebExceptionCode.RSW_088));
+        }
+        if (fetchCitizenInfoWTO.getBirthDate() == null || fetchCitizenInfoWTO.getBirthDate().isEmpty()) {
+            throw new InternalException(WebExceptionCode.RSW_092_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_092));
+        }
+        if (fetchCitizenInfoWTO.getType() == null) {
+            throw new InternalException(WebExceptionCode.RSW_094_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_094));
+        }
+        try {
+            registrationDelegator.checkPreviousCardStateValid(up, fetchCitizenInfoWTO.getNationalId());
         } catch (BaseException e) {
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_096_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_096), e);
         }
+        if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE)) {
+            try {
+                registrationDelegator.checkCRN(up, fetchCitizenInfoWTO.getNationalId(), fetchCitizenInfoWTO.getCrn());
+            } catch (BaseException e) {
+                throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+            } catch (Exception e) {
+                throw new InternalException(WebExceptionCode.RSW_097_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_097), e);
+            }
+        }
+
+        try {
+            citizenTO = registrationDelegator.loadCitizen(up, "", "", fetchCitizenInfoWTO.getNationalId());
+        } catch (BaseException e) {
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()), e);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_061_MSG + fetchCitizenInfoWTO.getNationalId(),
+                    new EMSWebServiceFault(WebExceptionCode.RSW_061), e);
+        }
+
+        if (citizenTO == null) {
+            throw new InternalException(WebExceptionCode.RSW_062_MSG + fetchCitizenInfoWTO.getNationalId(),
+                    new EMSWebServiceFault(WebExceptionCode.RSW_093));
+        }
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            birthDate = simpleDateFormat.parse(citizenTO.getCitizenInfo().getBirthDateSolar());
+            ctzBirthDate = simpleDateFormat.parse(fetchCitizenInfoWTO.getBirthDate());
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_098_MSG, new EMSWebServiceFault(WebExceptionCode.RSW_098), e);
+        }
+        if (!(ctzBirthDate.equals(birthDate))) {
+            throw new InternalException(WebExceptionCode.RSW_090_MSG + fetchCitizenInfoWTO.getBirthDate(),
+                    new EMSWebServiceFault(WebExceptionCode.RSW_090));
+        }
+        try {
+            citizenWTO = CardRequestMapper.convert(null, citizenTO);
+            if (type.equals(CardRequestType.EXTEND) || type.equals(CardRequestType.REPLACE) || type.equals(CardRequestType.REPLICA)) {
+                citizenWTO.setLivingPrvId(0L);
+                citizenWTO.setLivingCityId(0L);
+                citizenWTO.setLivingStateId(0L);
+                citizenWTO.setLivingSectorId(0L);
+                citizenWTO.setLivingVillageId(0L);
+                citizenWTO.setAddress("");
+                citizenWTO.setPhone("");
+                citizenWTO.setPostCode("");
+                citizenWTO.setUserCityType("-1");
+            }
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.RSW_091_MSG,
+                    new EMSWebServiceFault(WebExceptionCode.RSW_091), e);
+        }
+
+        citizenWTO.setId(null);
         return citizenWTO;
     }
 
@@ -853,6 +864,7 @@ public class RegistrationWS extends EMSWS {
      * @return Converted data
      * @throws InternalException
      */
+
     private CardRequestTO convertToCardRequestTO(UserProfileTO up, CitizenWTO citizenWTO) throws InternalException {
         CardRequestTO cardRequestTO;
 

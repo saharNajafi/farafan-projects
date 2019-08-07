@@ -1,6 +1,7 @@
 package com.gam.nocr.ems.data.dao.impl;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.data.domain.BatchTO;
@@ -8,17 +9,12 @@ import com.gam.nocr.ems.data.domain.vol.BatchDispatchInfoVTO;
 import com.gam.nocr.ems.data.enums.CardState;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
-import com.gam.commons.core.BaseException;
-import com.gam.commons.core.data.DataException;
-import com.gam.commons.core.data.dao.DAOException;
-import com.gam.nocr.ems.config.DataExceptionCode;
-import javax.persistence.Query;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -71,7 +67,7 @@ public class BatchDAOImpl extends EmsBaseDAOImpl<BatchTO> implements BatchDAOLoc
 								.append(" and df.dpi_receiver_dep_id in" +
 										" (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
 										"with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id="+criteria.getParameters().get("perid") +
-										" union select e.eof_id from emst_enrollment_office e where eof_is_deleted = 0 connect by " +
+										" union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
 										"prior e.eof_id=e.eof_superior_office start with" +
 										" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+criteria.getParameters().get("perid")+" ))) ");
 					}
@@ -148,7 +144,7 @@ public class BatchDAOImpl extends EmsBaseDAOImpl<BatchTO> implements BatchDAOLoc
 								.append(" and df.dpi_receiver_dep_id in" +
 										" (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
 										"with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id="+criteria.getParameters().get("perid") +
-										" union select e.eof_id from emst_enrollment_office e where eof_is_deleted = 0 connect by " +
+										" union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
 										"prior e.eof_id=e.eof_superior_office start with" +
 										" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+criteria.getParameters().get("perid")+" ))) ");
 					}
