@@ -25,9 +25,15 @@ import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
+
+import com.gam.commons.profile.*;
+import com.gam.nocr.ems.config.*;
 
 /**
  * Base class for all CCOS web services. It has some base methods (e.g. authorization) that may be used in child classes
@@ -131,37 +137,73 @@ public class EMSWS {
 
 
     //Anbari
-    private Boolean validateCCOSMinVersion(String ccosVersion) {
-
-        String ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, DEFAULT_CCOS_EXACT_VERSION));
+    private Boolean validateCCOSMinVersion(String currentCcosVersion) {
         Integer isCcosVersionCheck = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_ENABLE_CCOS_VERSION_CHECK, DEFAULT_ENABLE_CCOS_CHECK));
-        if (isCcosVersionCheck == 0 || "vip".equals(ccosVersion)) // not checking ccos version
+        if (isCcosVersionCheck == 0 || "vip".equals(currentCcosVersion)) // not checking ccos version
             return true;
-        else if (ccosExactVersion.equals(ccosVersion) || versionCompare(ccosExactVersion, ccosVersion) == -1)
-            return true;
-        else
-            return false;
-
+        List<String> ccosVersions = getCompatibleClientVerList();
+        return versionsCompare(currentCcosVersion, ccosVersions);
     }
 
-    public static int versionCompare(String str1, String str2) {
-        String[] vals1 = str1.split("\\.");
-        String[] vals2 = str2.split("\\.");
-        int i = 0;
-        // set index to first non-equal ordinal or length of shortest version string
-        while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
-            i++;
+    public List<String> getCompatibleClientVerList() {
+        try {
+            List<String> verCodeList = new ArrayList<String>();
+            ProfileManager pm = ProfileHelper.getProfileManager();
+            String ccosExactVersions = (String) pm.getProfile(ProfileKeyName.KEY_CCOS_EXACT_VERSION, true, null, null);
+            String[] verCode = ccosExactVersions.split(",");
+            try {
+                if (verCode.length > 0) {
+                    Collections.addAll(verCodeList, verCode);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return verCodeList;
+        } catch (Exception ex) {
+            return null;
         }
-        // compare first non-equal ordinal number
-        if (i < vals1.length && i < vals2.length) {
-            int diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
-            return Integer.signum(diff);
-        }
-        // the strings are equal or one string is a substring of the other
-        // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
-        return Integer.signum(vals1.length - vals2.length);
     }
+//
+//
+//    private static int versionCompare(String str1, String str2) {
+//        String[] vals1 = str1.split("\\.");
+//        String[] vals2 = str2.split("\\.");
+//        int i = 0;
+//        // set index to first non-equal ordinal or length of shortest version string
+//        while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
+//            i++;
+//        }
+//        // compare first non-equal ordinal number
+//        if (i < vals1.length && i < vals2.length) {
+//            int diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
+//            return Integer.signum(diff);
+//        }
+//        // the strings are equal or one string is a substring of the other
+//        // e.g. "1.2.3" = "1.2.3" or "1.2.3" < "1.2.3.4"
+//        return Integer.signum(vals1.length - vals2.length);
+//    }
 
+    private static boolean versionsCompare(String ccosVersion, List<String> validVersions) {
+        String[] currentVersion = ccosVersion.split("\\.");
+        //check if any of current version is compatible with any of exciting versions
+        for (String validVersion : validVersions) {
+            String[] version = validVersion.split("\\.");
+            //check if they both have the same size
+            if (version.length != currentVersion.length)
+                break;
+            int i = 0;
+            // check if current number in both strings are either equals or valid versions current character is *
+            while (i < version.length && (currentVersion[i].equals(version[i]) || version[i].equals("*"))) {
+                i++;
+            }
+            if (i == version.length) {
+                //when we find the first version that current version is compatible with, our search ends and we return true
+                return true;
+            }
+        }
+        //if none of the versions compatible with current version we return false
+        return false;
+    }
 
     /**
      * Indicates whether the type of enrollment office of the user is NOCR or not. It would be used by the CCOS in its

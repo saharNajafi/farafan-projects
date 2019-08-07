@@ -91,20 +91,19 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         return;
     }
 
-
-    @WebMethod
-    public List<String> getCompatibleClientVerList(
-            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO
-    ) throws InternalException {
-        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
-        List<String> verCode = null;
-        try {
-            verCode = workstationInfoDelegator.getCompatibleClientVerList(userProfileTO);
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return verCode;
-    }
+//    @WebMethod
+//    public List<String> getCompatibleClientVerList(
+//            @WebParam(name = "securityContextWTO") SecurityContextWTO securityContextWTO
+//    ) throws InternalException {
+//        UserProfileTO userProfileTO = super.validateRequest(securityContextWTO);
+//        List<String> verCode = null;
+//        try {
+//            verCode = workstationInfoDelegator.getCompatibleClientVerList(userProfileTO);
+//        } catch (BaseException e) {
+//            e.printStackTrace();
+//        }
+//        return verCode;
+//    }
 
     private WorkstationInfoTO convertToWorkstationInfo(ClientWorkstationInfo clientWorkstationInfo) throws InternalException {
         WorkstationInfoTO workstationInfoTO = new WorkstationInfoTO();

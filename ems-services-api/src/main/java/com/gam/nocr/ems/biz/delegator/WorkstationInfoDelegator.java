@@ -52,13 +52,13 @@ public class WorkstationInfoDelegator implements Delegator {
         return verCode;
     }
 
-    public List<String> getCompatibleClientVerList(UserProfileTO userProfileTO) throws BaseException {
-        List<String> verCode = null;
-        try {
-            verCode = getService(userProfileTO).getCompatibleClientVerList();
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return verCode;
-    }
+//    public List<String> getCompatibleClientVerList(UserProfileTO userProfileTO) throws BaseException {
+//        List<String> verCode = null;
+//        try {
+//            verCode = getService(userProfileTO).getCompatibleClientVerList();
+//        } catch (BaseException e) {
+//            e.printStackTrace();
+//        }
+//        return verCode;
+//    }
 }
