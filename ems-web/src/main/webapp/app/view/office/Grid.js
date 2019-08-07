@@ -31,7 +31,17 @@ Ext.define('Ems.view.office.Grid', {
                 stateful: true,
                 stateId: this.stateId + 'Capacity',
                 getClass: function (value, metadata, record) {
-                    return 'girdAction-OfficeCapacity-icon';
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.uploadPhoto;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-OfficeCapacity-icon';
+                            else
+                                return 'grid-action-hidden';
+                        } else {
+                            return 'grid-action-hidden';
+                        }
+                    }
                 }
             },
             {
@@ -41,15 +51,38 @@ Ext.define('Ems.view.office.Grid', {
                 stateful: true,
                 stateId: this.stateId + 'UserList',
                 getClass: function (value, metadata, record) {
-                    return 'girdAction-UserList-icon';
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.uploadPhoto;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-UserList-icon';
+                            else
+                                return 'grid-action-hidden';
+                        } else {
+                            return 'grid-action-hidden';
+                        }
+                    }
                 }
             },
             {
-                icon: 'resources/themes/images/default/shared/forbidden.png',
                 tooltip: 'حذف',
                 action: 'revokeOffice',
                 stateful: true,
                 stateId: this.stateId + 'CancelToken',
+                getClass: function (value, metadata, record) {
+                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
+                        if (record.raw != undefined) {
+                            var officeSettingType = record.raw.uploadPhoto;
+                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
+                                return 'girdAction-forbidden-icon';
+                            else
+                                return 'grid-action-hidden';
+                        } else {
+                            return 'grid-action-hidden';
+                        }
+                    }
+
+                }
 //                getClass: function (value, metadata, record) {
 //                    var deleteToken = record.get(EmsObjectName.officeNewEdit.tokenStatus);
 //                    var officeType = record.get(EmsObjectName.officeNewEdit.officeType);
