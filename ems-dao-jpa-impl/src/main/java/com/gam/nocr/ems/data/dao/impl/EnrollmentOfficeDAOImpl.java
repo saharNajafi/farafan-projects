@@ -764,6 +764,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             EnrollmentOfficeTO eof = findEnrollmentOfficeById(eofId);
             eof.setDeleted(true);
+            eof.setActive(false);
             update(eof);
             return true;
         } catch (Exception e) {

@@ -1,7 +1,7 @@
 package com.gam.nocr.ems.data.enums;
 
-public enum OfficeCardRequestStates {
-    NO_REQUEST, REGULAR_REQUESTS, CRITICAL_REQUESTS;
+public enum enrollmentOfficeDeletableStates {
+    NO_REQUEST, REGULAR_REQUESTS, CRITICAL_REQUESTS, NOCR_OFFICE;
 
     @Override
     public String toString() {
@@ -12,6 +12,8 @@ public enum OfficeCardRequestStates {
                 return "REGULAR_REQUESTS";
             case CRITICAL_REQUESTS:
                 return "CRITICAL_REQUESTS";
+            case NOCR_OFFICE:
+                return "NOCR_OFFICE";
         }
         return null;
     }
