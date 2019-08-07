@@ -422,7 +422,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 + ","
                 + CardRequestState.READY_TO_DELIVER.name()
                 + ","
-                + CardRequestState.CMS_PRODUCTION_ERROR.name();
+                + CardRequestState.CMS_PRODUCTION_ERROR.name()
+                + ","
+                + CardRequestState.PENDING_TO_DELIVER_BY_CMS.name()
+                + ","
+                + CardRequestState.CMS_ERROR.name();
 
         String states;
         try {
@@ -454,24 +458,20 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 + ","
                 + CardRequestState.DOCUMENT_AUTHENTICATED.name()
                 + ","
-                + CardRequestState.APPROVED_BY_MES.name()
-                + ","
                 + CardRequestState.APPROVED.name()
                 + ","
                 + CardRequestState.SENT_TO_AFIS.name()
                 + ","
                 + CardRequestState.APPROVED_BY_AFIS.name()
                 + ","
-                + CardRequestState.UNSUCCESSFUL_DELIVERY.name()
+                + CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC.name()
                 + ","
-                + CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC
-                .name()
+                + CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE.name()
                 + ","
-                + CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE
-                .name() + "," + CardRequestState.NOT_DELIVERED.name()
-                + "," + CardRequestState.CMS_ERROR.name() + ","
-                + CardRequestState.IMS_ERROR.name();
-
+                + CardRequestState.IMS_ERROR.name() + ","
+                + CardRequestState.DELIVERED.name() + ","
+                + CardRequestState.REPEALED.name() + ","
+                + CardRequestState.STOPPED.name();
         String states;
         try {
             ProfileManager pm = ProfileHelper.getProfileManager();
@@ -1159,14 +1159,25 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         BizExceptionCode.EOS_053_MSG);
             }
 
+            enrollmentOfficeDeletableStates hasCardRequest = checkInProgressRequests(enrollmentOfficeId);
+            if (hasCardRequest == enrollmentOfficeDeletableStates.NOCR_OFFICE) {
+                throw new ServiceException(BizExceptionCode.EOS_104,
+                        BizExceptionCode.EOS_100_MSG);
+            }
+
+            if (hasCardRequest == enrollmentOfficeDeletableStates.CRITICAL_REQUESTS) {
+                throw new ServiceException(BizExceptionCode.EOS_105,
+                        BizExceptionCode.EOS_101_MSG);
+            }
+
             List<Long> officeIdList = findSubOffice(enrollmentOfficeId);
             if (EmsUtil.checkListSize(officeIdList))
                 throw new ServiceException(BizExceptionCode.EOS_071,
                         BizExceptionCode.EOS_070_MSG);
 
-            EnrollmentOfficeTO superiorEnrollmentOffice = null;
-            OfficeCardRequestStates hasCardRequest = checkInProgressRequests(enrollmentOfficeId);
-            if (hasCardRequest == OfficeCardRequestStates.REGULAR_REQUESTS) {
+
+            if (hasCardRequest == enrollmentOfficeDeletableStates.REGULAR_REQUESTS) {
+                EnrollmentOfficeTO superiorEnrollmentOffice = null;
                 if (superiorEnrollmentOfficeId == null
                         && (getEnrollmentOfficeDAO().find(
                         EnrollmentOfficeTO.class, enrollmentOfficeId)
@@ -1196,107 +1207,95 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                         }
                     }
                 }
-            }
-            if (superiorEnrollmentOffice != null) {
+                if (superiorEnrollmentOffice != null) {
 
-                List<Long> cardRequestIds = getCardRequestDAO()
-                        .getCardRequestForSubstituteAndDeleteEOF(
-                                enrollmentOfficeId);
-                getCardRequestDAO().replaceSuperiorWithOfficeId(
-                        superiorEnrollmentOffice.getId(), enrollmentOfficeId,
-                        cardRequestIds);
+                    List<Long> cardRequestIds = getCardRequestDAO()
+                            .getCardRequestForSubstituteAndDeleteEOF(
+                                    enrollmentOfficeId);
+                    getCardRequestDAO().replaceSuperiorWithOfficeId(
+                            superiorEnrollmentOffice.getId(), enrollmentOfficeId,
+                            cardRequestIds);
 
-                // madanipour for logging in transfer scenario
-                String lastEofName = getDepartmentDAO().fetchDepartment(
-                        enrollmentOfficeId).getName();
-                String newEofName = getDepartmentDAO().fetchDepartment(
-                        superiorEnrollmentOfficeId).getName();
-                for (Long id : cardRequestIds) {
-                    getCardRequestHistoryDAO()
-                            .create(new CardRequestTO(id),
-                                    "حذف " + lastEofName + " و انتقال درخواست ها به "
-                                            + newEofName,
-                                    SystemId.EMS,
-                                    null,
-                                    CardRequestHistoryAction.TRANSFER_TO_SUPERIOR_OFFICE,
-                                    getUserProfileTO().getUserName());
+                    // madanipour for logging in transfer scenario
+                    String lastEofName = getDepartmentDAO().fetchDepartment(
+                            enrollmentOfficeId).getName();
+                    String newEofName = getDepartmentDAO().fetchDepartment(
+                            superiorEnrollmentOfficeId).getName();
+                    for (Long id : cardRequestIds) {
+                        getCardRequestHistoryDAO()
+                                .create(new CardRequestTO(id),
+                                        "حذف " + lastEofName + " و انتقال درخواست ها به "
+                                                + newEofName,
+                                        SystemId.EMS,
+                                        null,
+                                        CardRequestHistoryAction.TRANSFER_TO_SUPERIOR_OFFICE,
+                                        getUserProfileTO().getUserName());
 
+                    }
                 }
 
                 getDispatchInfoDAO().replaceDispatchInfoReceiverDepId(
                         enrollmentOfficeId, superiorEnrollmentOffice.getId());
             }
-
-            //todo:@Namjoofar @Shirin_Abbasi this record not should delete physically. We need have it because of historeis.
-            //<editor-fold desc="set is not active">
-            EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, enrollmentOfficeId);
-            enrollmentOfficeTO.setActive(false);
-            getEnrollmentOfficeDAO().update(enrollmentOfficeTO);
-            //</editor-fold>
-
-            if (getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class,
-                    enrollmentOfficeId).getType() == EnrollmentOfficeType.NOCR) {
-                // Adldoost -- check oef doesn't have card request
-                if (getCardRequestDAO().findEnrollmentOfficeCardRequestCount(
-                        enrollmentOfficeId) > (long) 0) {
-                    throw new ServiceException(BizExceptionCode.EOS_078,
-                            BizExceptionCode.EOS_078_MSG);
-                }
-
-
-                //<editor-fold desc="EMS don't need to portals verification to delete anymore!">
-                /*getPortalBaseInfoService()
-                        .checkEnrollmentOfficeDeletePossibilityAndPerform(
-                                enrollmentOfficeId);*/
-                //</editor-fold>
-
-
-                // Anbari :Call CMS immediately after deleting office : if CMS
-                // does not have the specified usersite catch the appropriate
-                // exception and continue as a normal situation
-                List<EnrollmentOfficeTO> enrollmentOfficeTOListForSync = new ArrayList<EnrollmentOfficeTO>();
-                enrollmentOfficeTOListForSync.add(getEnrollmentOfficeDAO()
-                        .find(EnrollmentOfficeTO.class, enrollmentOfficeId));
-                try {
-                    /*getCMSService()
-                            .updateEnrollmentOffices(
-                                    enrollmentOfficeTOListForSync,
-                                    EnrollmentOfficeStatus
-                                            .toInteger(EnrollmentOfficeStatus.DISABLED));*/
-                } catch (Exception exception) {
-                    if (exception instanceof ServiceException) {
-                        ServiceException serviceException = (ServiceException) exception;
-                        if (serviceException.getExceptionCode().equals(
-                                BizExceptionCode.CSI_110)) {
-                            logger.info("CMS EOF Does not Exist : "
-                                    + serviceException.getMessage());
-                        } else
-                            throw exception;
-                    } else
-                        throw exception;
-                }
+            // Adldoost -- check oef doesn't have card request
+            if (getCardRequestDAO().findEnrollmentOfficeCardRequestCount(
+                    enrollmentOfficeId) > (long) 0) {
+                throw new ServiceException(BizExceptionCode.EOS_078,
+                        BizExceptionCode.EOS_078_MSG);
             }
-            if (hasCardRequest != OfficeCardRequestStates.CRITICAL_REQUESTS) {
-                try {
+            try {
 //                    getActiveShiftDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
 //                    getOfficeCapacityDAO().removeByEnrollmentOfficeId(enrollmentOfficeId);
 //                  return getDepartmentDAO().removeDepartments(enrollmentOfficeId.toString());
-                    return getEnrollmentOfficeDAO().removeEnrollmentOffice(enrollmentOfficeId);
-                } catch (Exception e) {
-                    throw new ServiceException(
-                            BizExceptionCode.EOS_103,
-                            BizExceptionCode.GLB_008_MSG,
-                            e);
+                Boolean deletedSuccessful = getEnrollmentOfficeDAO().removeEnrollmentOffice(enrollmentOfficeId);
+                if (deletedSuccessful) {
+                    //<editor-fold desc="EMS don't need to portals verification to delete anymore!">
+                /*getPortalBaseInfoService()
+                        .checkEnrollmentOfficeDeletePossibilityAndPerform(
+                                enrollmentOfficeId);*/
+                    //</editor-fold>
+
+                    // Anbari :Call CMS immediately after deleting office : if CMS
+                    // does not have the specified usersite catch the appropriate
+                    // exception and continue as a normal situation
+                    List<EnrollmentOfficeTO> enrollmentOfficeTOListForSync = new ArrayList<EnrollmentOfficeTO>();
+                    enrollmentOfficeTOListForSync.add(getEnrollmentOfficeDAO()
+                            .find(EnrollmentOfficeTO.class, enrollmentOfficeId));
+                    try {
+                        getCMSService()
+                                .updateEnrollmentOffices(
+                                        enrollmentOfficeTOListForSync,
+                                        EnrollmentOfficeStatus
+                                                .toInteger(EnrollmentOfficeStatus.DISABLED));
+                    } catch (Exception exception) {
+                        if (exception instanceof ServiceException) {
+                            ServiceException serviceException = (ServiceException) exception;
+                            if (serviceException.getExceptionCode().equals(
+                                    BizExceptionCode.CSI_110)) {
+                                logger.info("CMS EOF Does not Exist : "
+                                        + serviceException.getMessage());
+                            } else
+                                throw exception;
+                        } else
+                            throw exception;
+                    }
                 }
-            } else {
-                return true;
+                return deletedSuccessful;
+            } catch (Exception e) {
+                throw new ServiceException(
+                        BizExceptionCode.EOS_103,
+                        BizExceptionCode.GLB_008_MSG,
+                        e);
             }
-        } catch (BaseException e) {
+        } catch (
+                BaseException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             throw new ServiceException(BizExceptionCode.EOS_052,
                     BizExceptionCode.GLB_008_MSG, e);
         }
+
     }
 
     // Commented By Adldoost
@@ -1672,7 +1671,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
      * @throws com.gam.commons.core.BaseException
      */
     @Override
-    public OfficeCardRequestStates checkInProgressRequests(Long enrollmentOfficeId)
+    public enrollmentOfficeDeletableStates checkInProgressRequests(Long enrollmentOfficeId)
             throws BaseException {
         List<CardRequestState> criticalInProgressedStates = fetchCriticalInProgressedStatesFromProfile();
 
@@ -1680,8 +1679,14 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 .findByEnrollmentOfficeIdAndStates(enrollmentOfficeId,
                         criticalInProgressedStates);
 
+        EnrollmentOfficeTO office = getEnrollmentOfficeDAO().findEnrollmentOfficeById(enrollmentOfficeId);
+
+        if (EnrollmentOfficeType.NOCR.equals(office.getType())) {
+            return enrollmentOfficeDeletableStates.NOCR_OFFICE;
+        }
+
         if (criticalCardRequestIds.get(0) > 0) {
-            return OfficeCardRequestStates.CRITICAL_REQUESTS;
+            return enrollmentOfficeDeletableStates.CRITICAL_REQUESTS;
         }
 
         List<CardRequestState> inProgressedStates = fetchInProgressedStatesFromProfile();
@@ -1693,11 +1698,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                     .fetchOtherNocrOfficeCountWithSameParentById(
                             enrollmentOfficeId);
             if (enrollmentOfficeIds.get(0) > 0) {
-                return OfficeCardRequestStates.REGULAR_REQUESTS;
+                return enrollmentOfficeDeletableStates.REGULAR_REQUESTS;
             }
         }
 
-        return OfficeCardRequestStates.NO_REQUEST;
+        return enrollmentOfficeDeletableStates.NO_REQUEST;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.gam.nocr.ems.web.action;
 
-import com.gam.nocr.ems.data.enums.OfficeCardRequestStates;
+import com.gam.nocr.ems.data.enums.enrollmentOfficeDeletableStates;
 import gampooya.tools.security.BusinessSecurityException;
 
 import java.util.ArrayList;
@@ -16,9 +16,7 @@ import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
 import com.gam.nocr.ems.biz.delegator.EnrollmentOfficeDelegator;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.WebExceptionCode;
-import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
-import com.gam.nocr.ems.data.enums.OfficeSettingType;
 import com.gam.nocr.ems.util.EmsUtil;
 
 /**
@@ -49,7 +47,7 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
      * A flag indicating whether an enrollment office has any in progress card requests or not. It's mainly used in
      * revoking network token to select a substitution office
      */
-    private OfficeCardRequestStates inProgressRequestsFlag;
+    private enrollmentOfficeDeletableStates inProgressRequestsFlag;
    	
    	private String officeSettingType;
 
@@ -424,11 +422,11 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
         this.reason = reason;
     }
 
-    public OfficeCardRequestStates getInProgressRequestsFlag() {
+    public enrollmentOfficeDeletableStates getInProgressRequestsFlag() {
         return inProgressRequestsFlag;
     }
 
-    public void setInProgressRequestsFlag(OfficeCardRequestStates inProgressRequestsFlag) {
+    public void setInProgressRequestsFlag(enrollmentOfficeDeletableStates inProgressRequestsFlag) {
         this.inProgressRequestsFlag = inProgressRequestsFlag;
     }
     
@@ -448,9 +446,4 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
 			Boolean accessViewAndChangeOfficeSetting) {
 		this.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
 	}
-
-
- 	
- 	
-     
 }
