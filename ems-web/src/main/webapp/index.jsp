@@ -182,6 +182,12 @@
     height: 16px;
     cursor: pointer;
 }
+.girdAction-forbidden-icon {
+    background: url('resources/themes/images/default/shared/forbidden.png') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 
 .girdAction-tahvil-icon {
     background: url('resources/themes/images/TokenIcon/tahvil.gif') no-repeat right;

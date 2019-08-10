@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
-import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
@@ -17,8 +16,7 @@ import com.gam.nocr.ems.data.domain.OfficeCapacityTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
-import com.gam.nocr.ems.data.enums.OfficeCardRequestStates;
-import com.gam.nocr.ems.data.enums.OfficeSettingType;
+import com.gam.nocr.ems.data.enums.enrollmentOfficeDeletableStates;
 import com.gam.nocr.ems.data.enums.ShiftEnum;
 
 /**
@@ -84,7 +82,7 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
      * @return true or false
      * @throws BaseException
      */
-    OfficeCardRequestStates checkInProgressRequests(Long enrollmentOfficeId) throws BaseException;
+    enrollmentOfficeDeletableStates checkInProgressRequests(Long enrollmentOfficeId) throws BaseException;
     
     
     //Anbari
