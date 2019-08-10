@@ -188,9 +188,6 @@ public class EMSWS {
         //check if any of current version is compatible with any of exciting versions
         for (String validVersion : validVersions) {
             String[] version = validVersion.split("\\.");
-            //check if they both have the same size
-            if (version.length != currentVersion.length)
-                break;
             int i = 0;
             // check if current number in both strings are either equals or valid versions current character is *
             while (i < version.length && (currentVersion[i].equals(version[i]) || version[i].equals("*"))) {
