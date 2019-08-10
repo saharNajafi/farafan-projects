@@ -22,7 +22,7 @@ public class EmsCardRequestHistoryProcessor extends EMSVLPListProcessor {
         //  Retrieve a VLP implementation of the underlying project
         ValueListProvider vlp = getValueListProvider();
         //  Determine requested ordering of the result
-        String orderBy = getOrderBy(paramProvider) != null ? getOrderBy(paramProvider) : "Date Asc";
+        String orderBy = getOrderBy(paramProvider) != null ? getOrderBy(paramProvider) : "date asc";
         //  Create an instance of VLH base on given parameters
         ValueListHandler vlh;
 

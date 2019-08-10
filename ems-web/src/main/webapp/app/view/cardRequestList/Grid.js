@@ -13,7 +13,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
 
     stateId: 'wCardRequestListGrid',
 
-    title: 'مدیدیت درخواستها',
+    title: 'مدیریت درخواستها',
 
     multiSelect: false,
 
