@@ -546,7 +546,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
             },
             {
                 dataIndex: EmsObjectName.cardRequestList.priority,
-                // id: EmsObjectName.cardRequestList.documentFlag,
+                id: EmsObjectName.cardRequestList.priority,
                 text: 'اولویت',
                 sortable: false,
                 filterable: false,
