@@ -23,7 +23,7 @@ import java.util.List;
                 name = "EnrollmentOfficeTO.findEnrollmentOfficeById",
                 query = " select eof" +
                         " from EnrollmentOfficeTO eof" +
-                        " where eof.id =:eofId and deleted = false "
+                        " where eof.id =:eofId and eof.deleted = false "
         )
 })
 @PrimaryKeyJoinColumn(name = "EOF_ID", referencedColumnName = "DEP_ID")
@@ -133,8 +133,8 @@ public class EnrollmentOfficeTO extends DepartmentTO implements JSONable {
         this.archiveIdCounter = archiveIdCounter;
     }
 
-    @Column(name = "EOF_IS_DELETED",columnDefinition = "NUMBER(1) DEFAULT 0")
     @NotNull
+    @Column(name = "EOF_IS_DELETED",columnDefinition = "NUMBER(1) DEFAULT 0")
     public Boolean getDeleted() {
         return deleted;
     }

@@ -425,6 +425,11 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_091 = "EMS_W_RSW_091";
     public static final String RSW_092 = "EMS_W_RSW_092";
     public static final String RSW_093 = "EMS_W_RSW_093";
+    public static final String RSW_094 = "EMS_W_RSW_094";
+    public static final String RSW_095 = "EMS_W_RSW_095";
+    public static final String RSW_096 = "EMS_W_RSW_096";
+    public static final String RSW_097 = "EMS_W_RSW_097";
+    public static final String RSW_098 = "EMS_W_RSW_098";
     public static final String RSW_001_MSG = "Unable to convert CitizenWTO to CardRequestTO";
     public static final String RSW_002_MSG = "CitizenWTO should not be null";
     public static final String RSW_003_MSG = "Cannot save CitizenWTO which has request Id value, try update instead";
@@ -510,6 +515,11 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSW_090_MSG = "citizen birthDate is invalid";
     public static final String RSW_091_MSG = "Unable to generate CitizenWTO";
     public static final String RSW_092_MSG = "citizen birthDate is null";
+    public static final String RSW_094_MSG = "reissue request type is null";
+    public static final String RSW_095_MSG = "Exception occured in load citizen";
+    public static final String RSW_096_MSG = "Exception occured in check previous request";
+    public static final String RSW_097_MSG = "Exception occured in check crn code";
+    public static final String RSW_098_MSG = "Exception occured in parse birthday";
 
 
 
