@@ -454,7 +454,7 @@ Ext.define('Ems.view.office.Grid', {
                     filterable: true,
                     filter: true,
                     dataIndex: EmsObjectName.officeNewEdit.oficTel,
-                    id: EmsObjectName.officeNewEdit.hasStair
+                    id: EmsObjectName.officeNewEdit.g_oficTel
                 }, {
                     xtype: 'gridcolumn',
                     text: 'ظرفیت',

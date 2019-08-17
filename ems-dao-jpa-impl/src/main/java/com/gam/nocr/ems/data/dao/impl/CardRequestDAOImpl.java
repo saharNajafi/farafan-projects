@@ -4822,7 +4822,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
         try {
             return em.createNativeQuery("SELECT SEQ_CARD_REQUEST_TRACKING_ID.NEXTVAL FROM DUAL").getSingleResult().toString();
         } catch (Exception e) {
-            logger.error("error in get next value of database-sequence for generating trackingId: =================>" + e.getMessage());
+            logger.error("error in get next value of database-sequence for generating trackingId:" + e.getMessage());
             throw new DataException(DataExceptionCode.CDI_109,
                     DataExceptionCode.CDI_109_MSG, e);
         }
