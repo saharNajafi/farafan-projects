@@ -568,6 +568,8 @@ Ext.define('Ems.controller.OfficeController', {
                             offWin.show();
                         } else if (obj.inProgressRequestsFlag === 'CRITICAL_REQUESTS') {
                             Tools.errorMessageClient("امکان حذف این دفتر بعلت نوع درخواستهای موجود در آن وجود ندارد.");
+                        } else if (obj.inProgressRequestsFlag === 'NOCR_OFFICE') {
+                            Tools.errorMessageClient("امکان حذف ادارات وجود ندارد.");
                         } else {
                             this.doSubstituteAndDelete(officeID, null, null, false);
                         }

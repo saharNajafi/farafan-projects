@@ -366,7 +366,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     .createQuery(
                             "UPDATE EnrollmentOfficeTO eof "
                                     + "SET eof.isDeliverEnable = :isDeliverEnable "
-                                    + "WHERE eof.id = :eofId and deleted = false ")
+                                    + "WHERE eof.id = :eofId and eof.deleted = false ")
                     .setParameter("eofId", eofId)
                     .setParameter("isDeliverEnable", EOFDeliveryState.toLong(state))
                     .executeUpdate();
@@ -558,7 +558,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             String selectQuery = " SELECT COUNT(1) " +
                     " FROM EMST_ENROLLMENT_OFFICE EOF" +
-                    " WHERE EOF_IS_DELETED = 0 and EOF_ID =:ID ";
+                    " WHERE EOF.EOF_IS_DELETED = 0 and EOF.EOF_ID =:ID ";
             params.put("ID", enrollmentOfficeId);
             selectQuery += findByAccessibility(climbingStairsAbility, pupilIsVisible);
             Query query = em.createNativeQuery(selectQuery);
@@ -611,7 +611,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             String selectQuery = " SELECT COUNT(1) " +
                     " FROM EMST_ENROLLMENT_OFFICE EOF" +
-                    " WHERE EOF_IS_DELETED = 0 and EOF_ID =:ID ";
+                    " WHERE EOF.EOF_IS_DELETED = 0 and EOF.EOF_ID =:ID ";
             params.put("ID", enrollmentOfficeId);
             selectQuery += findByInstruments(abilityToGo, hasTwoFingersScanable);
             Query query = em.createNativeQuery(selectQuery);
@@ -764,6 +764,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
             EnrollmentOfficeTO eof = findEnrollmentOfficeById(eofId);
             eof.setDeleted(true);
+            eof.setActive(false);
             update(eof);
             return true;
         } catch (Exception e) {
