@@ -142,6 +142,7 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
     private List<ReservationTO> reservations = new ArrayList<ReservationTO>(0);
 
     private RegistrationPaymentTO registrationPaymentTO;
+    private Long selectDeliveryOfficeId;
 
     public CardRequestTO() {
     }
@@ -517,6 +518,15 @@ public class CardRequestTO extends ExtEntityTO implements Serializable, JSONable
 
     public void setRegistrationPaymentTO(RegistrationPaymentTO registrationPaymentTO) {
         this.registrationPaymentTO = registrationPaymentTO;
+    }
+
+    @Column(name = "CRQ_SELECT_DELIVERY_OFFICE_ID")
+    public Long getSelectDeliveryOfficeId() {
+        return selectDeliveryOfficeId;
+    }
+
+    public void setSelectDeliveryOfficeId(Long selectDeliveryOfficeId) {
+        this.selectDeliveryOfficeId = selectDeliveryOfficeId;
     }
 
     @Override

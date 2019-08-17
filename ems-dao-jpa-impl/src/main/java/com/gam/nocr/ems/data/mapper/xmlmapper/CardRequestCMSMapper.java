@@ -247,7 +247,24 @@ public class CardRequestCMSMapper implements XMLMapper {
 
             Element userSiteID = doc.createElement("UserSiteID");
             //Anbari
-            if (cardRequestTO.getEnrollmentOffice() != null) {
+            if (cardRequestTO.getSelectDeliveryOfficeId() != null){
+                EnrollmentOfficeTO dbEnrollmentOffice =
+                        getEnrollmentOfficeDAO().loadLazyChildren(
+                                new EnrollmentOfficeTO(cardRequestTO.getSelectDeliveryOfficeId()));
+                if (dbEnrollmentOffice.getSuperiorOffice() == null) {
+                    userSiteID.appendChild(doc.createTextNode(
+                            String.valueOf(dbEnrollmentOffice.getId())));
+                } else {
+                    if (EnrollmentOfficeDeliverStatus.ENABLED.equals(dbEnrollmentOffice.getDeliver()))
+                        userSiteID.appendChild(doc.createTextNode(
+                                String.valueOf(dbEnrollmentOffice.getId())));
+                    else
+                        userSiteID.appendChild(doc.createTextNode(
+                                String.valueOf(dbEnrollmentOffice.getSuperiorOffice().getId())));
+
+                }
+            }
+           else if (cardRequestTO.getEnrollmentOffice() != null) {
                 //load lazy
                 EnrollmentOfficeTO dbEnrollmentOffice = getEnrollmentOfficeDAO().loadLazyChildren(cardRequestTO.getEnrollmentOffice());
                 if (dbEnrollmentOffice.getSuperiorOffice() == null) {
