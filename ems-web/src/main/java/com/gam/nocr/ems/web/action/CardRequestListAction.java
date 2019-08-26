@@ -24,7 +24,7 @@ import java.util.Map;
  * Main action class to handle all requests from card requests list
  *
  * @author <a href="mailto:moghaddam@gamelectronics.com">Ehsan Zaery
- *         Moghaddam</a>
+ * Moghaddam</a>
  */
 public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
@@ -210,6 +210,24 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
                     WebExceptionCode.GLB_001_MSG, e);
         }
 
+    }
+
+    /**
+     * this method is used to check if we can print this card request or not?
+     *
+     * @return String
+     * @throws BaseException
+     * @author amiri
+     */
+    public String canPrintRegistration() throws BaseException {
+        try {
+            new CardRequestDelegator().printRegistrationReceipt(
+                    getUserProfile()
+                    , Long.parseLong(getCardRequestId()));
+            return SUCCESS_RESULT;
+        } catch (BusinessSecurityException e) {
+            throw new ActionException(WebExceptionCode.PEA_004, WebExceptionCode.GLB_001_MSG, e);
+        }
     }
 
     public void print() throws BaseException {

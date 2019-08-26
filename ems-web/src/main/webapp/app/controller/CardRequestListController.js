@@ -153,43 +153,85 @@ Ext.define('Ems.controller.CardRequestListController', {
     doPrintRegistrationReceipt: function (grid, rowIndex) {
         var store = grid.getStore(),
             record = store.getAt(rowIndex);
-        sessionStorage.setItem('cardRequestId', record.get('id'));
-        var win = Ext.create('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationReceiptWindow');
-        printReceipt = win.down('.printRegistrationReceiptDialog');
-        printReceiptInfo = printReceipt.down('printRegistrationReceiptFieldSet');
-        Tools.MaskUnMask(win);
-        win.show();
+        var reqId = record.get(EmsObjectName.userForm.id);
+        Ext.Ajax.request({
+            url: this.ns + '/canPrintRegistration', params: {
+                cardRequestId: reqId
+            }, success: function (resp) {
+                var data = Ext.decode(resp.responseText);
+                if (data.success) {
+                    sessionStorage.setItem('cardRequestId', reqId);
+                    var win = Ext.create('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationReceiptWindow');
+                    printReceipt = win.down('.printRegistrationReceiptDialog');
+                    printReceiptInfo = printReceipt.down('printRegistrationReceiptFieldSet');
+                    Tools.MaskUnMask(win);
+                    win.show();
+                } else {
+                    Tools.errorMessageServer(data.messageInfo)
+                }
+            }, failure: function () {
+                Tools.errorFailure();
+            }
+        });
+
+    },
+    // doPrintRegistrationReceipt: function (grid, rowIndex) {
+    //     var store = grid.getStore(),
+    //         record = store.getAt(rowIndex);
+    //     var reqId = record.get('id');
+    //     Ext.Ajax.request({
+    //         url: this.ns + '/canPrintRegistration',
+    //         params: {
+    //             cardRequestId: reqId
+    //         },
+    //         success: function (resp) {
+    //             var data = Ext.decode(resp.responseText);
+    //             if (data.success) {
+    //                 sessionStorage.setItem('cardRequestId', reqId);
+    //                 var win = Ext.create('Ems.view.cardRequestList.printRegistrationReceipt.PrintRegistrationReceiptWindow');
+    //                 printReceipt = win.down('.printRegistrationReceiptDialog');
+    //                 printReceiptInfo = printReceipt.down('printRegistrationReceiptFieldSet');
+    //                 Tools.MaskUnMask(win);
+    //                 win.show();
+    //             } else {
+    //                 Tools.errorMessageClient("چاپ رسید برای این شهروند مقدور نمی باشد");
+    //                 //
+    //             }
+    //         }, failure: function (resp) {
+    //             Tools.errorFailure();
+    //         }
+    //     });
 
 
-        // sessionStorage.setItem('cardRequestId', null);
-        // var store = grid.getStore(),
-        //     me = this;
-        // record = store.getAt(rowIndex),
-        //     id = record.get('id');
-        // Ext.Ajax.request({
-        //     url: me.ns + '/printRegistrationReceipt',
-        //     jsonData: {
-        //         cardRequestId: id
-        //     },
-        //     success: function (resp) {
-        //         var data = Ext.decode(resp.responseText);
-        //         if (data.success) {
-        //             var rec = data.records;
-        //             if (rec != null) {
-        //                 me.loadPrintView(rec[0], 'Print');
-        //             } else {
-        //                 Tools.errorMessageClient(Ems.ErrorCode.client.EMS_C_004);
-        //             }
-        //         } else {
-        //             Tools.errorMessageServer(obj.messageInfo);
-        //         }
-        //     }, failure: function (resp) {
-        //         Tools.errorFailure();
-        //     }
-        // });
+    // sessionStorage.setItem('cardRequestId', null);
+    // var store = grid.getStore(),
+    //     me = this;
+    // record = store.getAt(rowIndex),
+    //     id = record.get('id');
+    // Ext.Ajax.request({
+    //     url: me.ns + '/printRegistrationReceipt',
+    //     jsonData: {
+    //         cardRequestId: id
+    //     },
+    //     success: function (resp) {
+    //         var data = Ext.decode(resp.responseText);
+    //         if (data.success) {
+    //             var rec = data.records;
+    //             if (rec != null) {
+    //                 me.loadPrintView(rec[0], 'Print');
+    //             } else {
+    //                 Tools.errorMessageClient(Ems.ErrorCode.client.EMS_C_004);
+    //             }
+    //         } else {
+    //             Tools.errorMessageServer(obj.messageInfo);
+    //         }
+    //     }, failure: function (resp) {
+    //         Tools.errorFailure();
+    //     }
+    // });
 
 
-    }, loadFormEditView: function (record, mode) {
+ loadFormEditView: function (record, mode) {
         var win = null;
 
         if (mode === 'View') {
@@ -249,7 +291,8 @@ Ext.define('Ems.controller.CardRequestListController', {
             cmsID: batchCmsId
         }), panelInfo);
         win.show();
-    },
+    }
+    ,
     loadPrintView: function (record, mode) {
         var win = null;
         if (mode === 'Print') {
@@ -275,7 +318,8 @@ Ext.define('Ems.controller.CardRequestListController', {
         //     receiptDate: rec.get(EmsObjectName.cardRequestList.receiptDate)
         // }), printReceiptInfo);
         win.show();
-    },
+    }
+    ,
     getUpdatePriorityFrom: function (btn) {
 
         var me = this;
@@ -306,7 +350,8 @@ Ext.define('Ems.controller.CardRequestListController', {
                 Tools.errorFailure();
             }
         });
-    },
+    }
+    ,
     /**
      * Handler of repeal request action
      * @param grid      Card requests grid
@@ -314,7 +359,8 @@ Ext.define('Ems.controller.CardRequestListController', {
      */
     doRepealCardRequest: function (grid, rowIndex) {
         this.repealCardRequest(grid, rowIndex);
-    },
+    }
+    ,
 
     /**
      * Handler of reject repeal request action. It would be called when the 3S user rejects EOF request for repealing
@@ -327,7 +373,8 @@ Ext.define('Ems.controller.CardRequestListController', {
 
         //  This is same as undoRepealCardRequest, so call the same service
         this.doUndoRepealCardRequest(grid, rowIndex);
-    },
+    }
+    ,
 
     /**
      * Handler of accept repeal request action. It would be called when the 3S user accepts EOF request for repealing
@@ -338,7 +385,8 @@ Ext.define('Ems.controller.CardRequestListController', {
      */
     doAcceptRepealCardRequest: function (grid, rowIndex) {
         this.repealCardRequest(grid, rowIndex);
-    },
+    }
+    ,
 
     /**
      * Handler of undo repeal request action.
@@ -355,7 +403,8 @@ Ext.define('Ems.controller.CardRequestListController', {
         message = message.replace('{1}', record.get(EmsObjectName.cardRequestList.citizenSurname));
         message = message.replace('{2}', record.get(EmsObjectName.cardRequestList.citizenNId));
         Tools.messageBoxConfirm(message, Ext.bind(this.sendRepealCardRequest, this, [grid, record.get("id"), 'REPEAL_UNDO']));
-    },
+    }
+    ,
 
     /**
      * General handler for 'accept repeal request' and 'repeal request' actions.
@@ -372,7 +421,8 @@ Ext.define('Ems.controller.CardRequestListController', {
         message = message.replace('{1}', record.get(EmsObjectName.cardRequestList.citizenSurname));
         message = message.replace('{2}', record.get(EmsObjectName.cardRequestList.citizenNId));
         Tools.messageBoxConfirm(message, Ext.bind(this.sendRepealCardRequest, this, [grid, record.get("id"), 'REPEAL_ACCEPTED']));
-    },
+    }
+    ,
 
     /**
      * Callback method to be called after user confirmation for repealing a card request
@@ -408,7 +458,8 @@ Ext.define('Ems.controller.CardRequestListController', {
                 Tools.errorFailure();
             }
         });
-    },
+    }
+    ,
 
     doExportExcel: function (btn) {
         var grid = btn.up('toolbar').up('grid');
@@ -440,19 +491,13 @@ Ext.define('Ems.controller.CardRequestListController', {
             }
         }
         Gam.util.PopupWindow.open(config);
-    },
+    }
+    ,
 
 
     /**
      * Fetches detailed information about selected card request from server to be displayed in a popup dialog
      */
-
-
-
-
-
-
-
     loadFormViaServer: function (view, record, baseUrl, params) {
         var me = this,
             formPanel = view.down('form');
@@ -544,5 +589,6 @@ Ext.define('Ems.controller.CardRequestListController', {
     }
 
 
-});
+})
+;
 

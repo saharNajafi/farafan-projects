@@ -140,7 +140,7 @@
     </package>
 
     <package name="downloadReceiptlist" extends="gam-json-default" namespace="/extJsController/cardrequestlist">
-        <action name="downloadRecriptFile" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="print">
+        <action name="downloadRecriptFile" class="com.gam.nocr.ems.web.action.CardRequestListAction" method="{1}">
             <interceptor-ref name="jsonValidationWorkflowStack"/>
             <interceptor-ref name="gam-json"/>
             <result name="success" type="gam-json"/>
