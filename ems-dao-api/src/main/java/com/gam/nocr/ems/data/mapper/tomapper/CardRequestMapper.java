@@ -26,6 +26,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -672,7 +674,7 @@ public class CardRequestMapper {
         czi.setFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);
         czi.setSurnameEnglish(ConstValues.DEFAULT_NAMES_EN);
         czi.setBirthCertificateId(ConstValues.DEFAULT_NUMBER);
-        czi.setBirthDateGregorian(wto.getBirthDate());
+        czi.setBirthDateGregorian(DateUtil.convert(wto.getBirthDate().toString(), DateUtil.JALALI));
         czi.setBirthDateLunar(wto.getBirthDateHijri());//15
         if (wto.getGender() != null) {
             try {

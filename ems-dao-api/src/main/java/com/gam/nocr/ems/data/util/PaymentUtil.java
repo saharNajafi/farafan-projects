@@ -14,6 +14,7 @@ import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NationalIDUtil;
 import gampooya.tools.date.DateFormatException;
+import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -67,8 +68,11 @@ public class PaymentUtil {
             czi.setFirstNameEnglish(notValue);
             czi.setSurnameEnglish(notValue);
             czi.setBirthCertificateId(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()));
-            czi.setBirthDateGregorian(singlePreRegistrationWTO.getBirthDateGregorian());
-            czi.setBirthDateSolar(CalendarUtil.addSlashToPersianDate(String.valueOf(singlePreRegistrationWTO.getBirthDateSolar())));
+            String birthDateSolar =
+                    CalendarUtil.addSlashToPersianDate(
+                            String.valueOf(singlePreRegistrationWTO.getBirthDateSolar()));
+            czi.setBirthDateGregorian(DateUtil.convert(birthDateSolar, DateUtil.JALALI));
+            czi.setBirthDateSolar(birthDateSolar);
             czi.setBirthDateLunar(singlePreRegistrationWTO.getBirthDateLunar());
             try {
                 czi.setGender(GenderEnum.getEMSGender(singlePreRegistrationWTO.getGender()));

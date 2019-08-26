@@ -26,6 +26,7 @@ import com.gam.nocr.ems.data.util.CrsChecker;
 import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.LangUtil;
+import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -417,7 +418,8 @@ public class ReservationServiceImpl extends EMSAbstractService
         return citizenService;
     }
 
-    public void editPersonalInformation(CardRequestTO emsCardRequestTO, CardRequestTO cardRequestTO) throws BaseException {
+    public void editPersonalInformation(CardRequestTO emsCardRequestTO, CardRequestTO cardRequestTO)
+            throws BaseException, DateFormatException {
         // check edit personal information forbidden now?
         getInternalServiceChecker().checkEditPersonalInformationEnabled(cardRequestTO);
 
@@ -442,7 +444,9 @@ public class ReservationServiceImpl extends EMSAbstractService
         //update personal information
         cardRequestTO.getCitizen().getCitizenInfo().setBirthDateSolar(emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar());
         cardRequestTO.getCitizen().getCitizenInfo().setBirthDateLunar(emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateLunar());
-        cardRequestTO.getCitizen().getCitizenInfo().setBirthDateGregorian(emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateGregorian());
+        cardRequestTO.getCitizen().getCitizenInfo().setBirthDateGregorian(
+                DateUtil.convert(emsCardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar(), DateUtil.JALALI)
+        );
         cardRequestTO.getCitizen().getCitizenInfo().setGender(emsCardRequestTO.getCitizen().getCitizenInfo().getGender());
         cardRequestTO.getCitizen().getCitizenInfo().setReligion(emsCardRequestTO.getCitizen().getCitizenInfo().getReligion());
         cardRequestTO.getCitizen().getCitizenInfo().setMotherFirstNamePersian(emsCardRequestTO.getCitizen().getCitizenInfo().getMotherFirstNamePersian());
