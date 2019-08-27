@@ -2341,8 +2341,9 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 cardRequestReceiptVTO.setFatherName(cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getCitizenInfo().getFatherFirstNamePersian() : "");
                 cardRequestReceiptVTO.setBirthDateSolar(cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getCitizenInfo().getBirthDateSolar() : "");
                 cardRequestReceiptVTO.setReceiptDate(DateUtil.convert(new Date(), DateUtil.JALALI));
-                cardRequestReceiptVTO.setUserFirstName(personTO.getFirstName() != null ? personTO.getFirstName() : "");
+                cardRequestReceiptVTO.setUserFirstName     (personTO.getFirstName() != null ? personTO.getFirstName() : "");
                 cardRequestReceiptVTO.setUserLastName(personTO.getLastName() != null ? personTO.getLastName() : "");
+                cardRequestReceiptVTO.setEnrollmentName(personTO.getDepartmentName()!=null? personTO.getDepartmentName():"");
             }
         } catch (BaseException e) {
             throw e;

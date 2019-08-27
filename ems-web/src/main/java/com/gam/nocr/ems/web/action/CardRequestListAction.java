@@ -273,6 +273,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             parameters.put("trackingId", cardRequestReceiptVTO.getTrackingID());
             parameters.put("printDate", cardRequestReceiptVTO.getReceiptDate());
             parameters.put("userName", cardRequestReceiptVTO.getUserFirstName() + " " + cardRequestReceiptVTO.getUserLastName());
+            parameters.put("enrollmentName", cardRequestReceiptVTO.getEnrollmentName());
             JasperUtil.generatePDFWithOutDataSource(sourceFileName, cardRequestReceiptVTO.getNationalID(), parameters);
             return;
 

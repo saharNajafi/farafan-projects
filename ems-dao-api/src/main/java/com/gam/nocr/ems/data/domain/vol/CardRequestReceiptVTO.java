@@ -20,6 +20,7 @@ public class CardRequestReceiptVTO extends ExtEntityTO implements Serializable {
     private String receiptDate;
     private String userFirstName;
     private String userLastName;
+    private String enrollmentName;
 
     public CardRequestReceiptVTO() {
     }
@@ -110,5 +111,13 @@ public class CardRequestReceiptVTO extends ExtEntityTO implements Serializable {
 
     public void setUserLastName(String userLastName) {
         this.userLastName = userLastName;
+    }
+
+    public String getEnrollmentName() {
+        return enrollmentName;
+    }
+
+    public void setEnrollmentName(String enrollmentName) {
+        this.enrollmentName = enrollmentName;
     }
 }
