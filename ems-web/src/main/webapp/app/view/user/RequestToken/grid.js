@@ -151,7 +151,31 @@ Ext.define('Ems.view.user.RequestToken.grid', {
                         }
                     }
                 }
-            }
+            },
+            {
+                xtype: 'gridcolumn',
+                width: 150,
+                text: ' دلیل صدور توکن ',
+                dataIndex: EmsObjectName.userRequestToken.reason,
+                renderer: function (value) {
+                    if (value && typeof value === 'string') {
+                        switch (value) {
+                            case "FIRST_TOKEN":
+                                return 'صدور اولیه';
+                                break;
+                            case "REPLICA":
+                                return 'المثنی';
+                                break;
+                            case "REPLACED":
+                                return 'صدور به دلیل خرابی';
+                                break;
+                            default :
+                                return 'نا مشخص';
+                                break;
+                        }
+                    }
+                }
+            },
         ]);
     }
 });

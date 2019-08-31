@@ -21,5 +21,9 @@ Ext.define('Ems.model.userRequestTokenGridModel', {
         {
             name: EmsObjectName.userRequestToken.deleteToken
         }
+        ,
+        {
+            name: EmsObjectName.userRequestToken.reason
+        }
     ]
 });
