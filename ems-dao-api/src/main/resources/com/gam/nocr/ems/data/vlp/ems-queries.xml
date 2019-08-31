@@ -422,7 +422,8 @@
                     SELECT
                     PT.PTK_ID,
                     PT.PTK_STATE,
-                    PT.PTK_TYPE
+                    PT.PTK_TYPE,
+                    PT.PTK_REASON
                 </part>
                 FROM
                 EMST_PERSON_TOKEN PT
@@ -445,6 +446,7 @@
                 <field name="id" column="PTK_ID"/>
                 <field name="tokenState" column="PTK_STATE"/>
                 <field name="tokenType" column="PTK_TYPE"/>
+                <field name="tokenReason" column="PTK_REASON"/>
             </dto-fields>
         </dto>
     </list>

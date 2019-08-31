@@ -30,6 +30,8 @@ public class PersonTokenAction extends ListControllerImpl<PersonTokenVTO> {
 
 	private String tokenType;
 
+	private String tokenReason;
+
 	private String requestID;
 
 	private Date requestDate;
@@ -191,4 +193,11 @@ public class PersonTokenAction extends ListControllerImpl<PersonTokenVTO> {
 		this.issuanceDate = issuanceDate;
 	}
 
+	public String getTokenReason() {
+		return tokenReason;
+	}
+
+	public void setTokenReason(String tokenReason) {
+		this.tokenReason = tokenReason;
+	}
 }

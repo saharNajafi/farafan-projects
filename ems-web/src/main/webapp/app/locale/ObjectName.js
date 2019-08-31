@@ -83,7 +83,8 @@ Ext.define('Ems.locale.objectName', {
 	userRequestToken : {
 		status : 'tokenState',
 		code : 'tokenType',
-		deleteToken : 'deleteToken'
+		deleteToken : 'deleteToken',
+		reason: 'tokenReason'
 	},
 
 	//
@@ -599,6 +600,7 @@ Ext.define('Ems.locale.objectName', {
 		id:'id',
 		tokenType : 'tokenType',
 		tokenState : 'tokenState',
+		tokenReason: 'tokenReason',
 		requestDate : 'requestDate',
 		issuanceDate : 'issuanceDate',
 		deliverDate :'deliverDate',
