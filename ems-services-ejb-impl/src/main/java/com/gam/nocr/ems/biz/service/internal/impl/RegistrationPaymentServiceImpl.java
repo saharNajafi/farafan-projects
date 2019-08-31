@@ -122,6 +122,14 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 cardRequestPayment.setPaymentDate(new Date());
                 cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
                 cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
+                if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
+                    if (registrationPaymentTO.getTerminalId() != null) {
+                        cardRequestPayment.setTerminalId(registrationPaymentTO.getTerminalId());
+                    }
+                    if (registrationPaymentTO.getMerchantId() != null) {
+                        cardRequestPayment.setMerchantId(registrationPaymentTO.getMerchantId());
+                    }
+                }
                 getCardRequestService().update(cardRequestTO);
             } else {
                 registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
