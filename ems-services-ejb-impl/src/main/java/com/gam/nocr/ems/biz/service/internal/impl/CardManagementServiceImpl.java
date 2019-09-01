@@ -1994,11 +1994,17 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                 case BIOMETRIC_CHANGE:
                     notifyUnsuccessfulDeliveryForBiometricChange(requestID, reason);
                     break;
+
                 case FACE_IMAGE_UNMATCHED:
                     notifyUnsuccessfulDeliveryForFaceImageUnmatched(requestID, reason);
                     break;
+
                 case BIOMETRIC_FACE_ERROR:
                     notifyUnsuccessfulDeliveryForbioAndFaceError(requestID, reason);
+                    break;
+
+                case BIOMETRIC_14_TRY_FINGER_ERROR:
+                    notifyUnsuccessfulDeliveryForBioFourteenFingerTry(requestID, reason);
                     break;
 
             }
@@ -2090,6 +2096,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                         switch (cardRequestHistoryTO
                                 .getCardRequestHistoryAction()) {
                             case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
+                            case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER:
                             case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_CFINGER: {
                                 // Removing the biometric data which belong to
                                 // Finger
@@ -2793,5 +2800,39 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
         }
     }
 
+
+    /**
+     * The method notifyUnsuccessfulDeliveryForBioFourteenFingerTry is used to handle all the activities which are needed in
+     * unsuccessful Delivery by reason of '14 times tried and finger unmatched'
+     * this method is called when 14 times tried and finger unmatched with current cut fingers
+     *
+     * @param requestID an object of type {@link Long} which represents the id of an specified object of type {@link
+     *                  CardRequestTO}
+     * @param reason    an enumeration instance of type {@link UnSuccessfulDeliveryRequestReason}
+     * @throws {@link BaseException}
+     * @author ganjyar
+     */
+    private void notifyUnsuccessfulDeliveryForBioFourteenFingerTry(Long requestID, UnSuccessfulDeliveryRequestReason reason) throws BaseException {
+        CardRequestTO cardRequestTO = getCardRequestDAO().find(
+                CardRequestTO.class, requestID);
+        if (cardRequestTO == null) {
+            throw new ServiceException(BizExceptionCode.CMS_013,
+                    BizExceptionCode.CMS_011_MSG);
+        }
+        if (CardRequestState.READY_TO_DELIVER.equals(cardRequestTO.getState())) {
+            cardRequestTO
+                    .setState(CardRequestState.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC);
+            getCardRequestHistoryDAO()
+                    .create(new CardRequestTO(cardRequestTO.getId()),
+                            null,
+                            SystemId.EMS,
+                            null,
+                            CardRequestHistoryAction.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER,
+                            getUserProfileTO().getUserName());
+        } else {
+            throw new ServiceException(BizExceptionCode.CMS_030,
+                    BizExceptionCode.CMS_030_MSG);
+        }
+    }
 
 }
