@@ -2,13 +2,13 @@ package com.gam.nocr.ems.data.mapper.tomapper;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.profile.ProfileException;
+import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.ChildVTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.SpouseVTO;
-import com.gam.nocr.ems.config.ConstValues;
-import com.gam.nocr.ems.config.DataExceptionCode;
-import com.gam.nocr.ems.config.MapperExceptionCode;
+import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.ChildrenWTO;
@@ -97,9 +97,22 @@ public class CardRequestMapper {
                 throw new BaseException(MapperExceptionCode.CRM_011, MapperExceptionCode.CRM_005_MSG, e, new String[]{wto.getGender()});
             }
         }
+
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
+        } else {
+            try {
+                //set default religion as Islam:
+                ProfileManager pm = ProfileHelper.getProfileManager();
+                Long religionIdAsIslam = Long.valueOf((String) pm.getProfile(ProfileKeyName.KEY_RELIGION_AS_ISLAM, true, null, null));
+                ReligionTO religionTO = new ReligionTO();
+                religionTO.setId(religionIdAsIslam);
+                czi.setReligion(religionTO);
+            } catch (ProfileException e) {
+                e.printStackTrace();
+            }
         }
+
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(wto.getEmail());
         /* Decided to use birthCertificateIssuancePlace instead of birthCertPrvId
@@ -685,6 +698,17 @@ public class CardRequestMapper {
         }
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
+        }else {
+            try {
+                //set default religion as Islam:
+                ProfileManager pm = ProfileHelper.getProfileManager();
+                Long religionIdAsIslam = Long.valueOf((String) pm.getProfile(ProfileKeyName.KEY_RELIGION_AS_ISLAM, true, null, null));
+                ReligionTO religionTO = new ReligionTO();
+                religionTO.setId(religionIdAsIslam);
+                czi.setReligion(religionTO);
+            } catch (ProfileException e) {
+                e.printStackTrace();
+            }
         }
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(ConstValues.DEFAULT_NAMES_EN);
