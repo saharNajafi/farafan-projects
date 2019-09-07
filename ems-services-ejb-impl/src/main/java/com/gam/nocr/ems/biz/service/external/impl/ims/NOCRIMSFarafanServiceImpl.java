@@ -960,7 +960,6 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             Object[] mapKeys = resultMap.keySet().toArray();
             for (Object mapKey : mapKeys) {
                 imsUpdateResultVTO.setRequestID(requestId);
-
                 imsUpdateResultVTO.setNationalId(mapKey.toString());
                 if (resultMap.get(mapKey.toString()).contains("EXCEPTION:")) {
                     String error = resultMap.get(mapKey.toString()).split("EXCEPTION:")[1];
@@ -970,19 +969,18 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
                 } else {
                     imsUpdateResultVTO.setAfisState(AFISState.convertToAFISState(resultMap.get(mapKey.toString())));
                 }
-
                 //		TODO : Calling IMS_IdentityChangeService on future, but now set this attribute with a dummy value
                 imsUpdateResultVTO.setIdentityChanged(0000);
             }
 
-          /*  List<ErrorInfo> errCodes = transferInfo.getErrCodes();
+            List<ErrorInfo> errCodes = transferInfo.getErrCodes();
             if (errCodes != null && !errCodes.isEmpty()) {
                 List<IMSErrorInfo> imsErrCodes = new ArrayList<IMSErrorInfo>();
                 for (ErrorInfo errCode : errCodes) {
                     imsErrCodes.add(new IMSErrorInfo(errCode.getCode(), errCode.getDesc()));
                 }
                 imsUpdateResultVTO.setErrorCodes(imsErrCodes);
-            }*/
+            }
             if (transferInfo.getErrMessage().contains("UPDT-000018") && transferInfo.getData() != null) //OK with Image : so parse the XML IMS_UPDT_000018
             {
                 if (transferInfo.getData() == null) {

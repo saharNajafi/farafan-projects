@@ -17,46 +17,46 @@ public class IMSUpdateResultVTO extends ExtEntityTO {
     private String errorCode;
     private String errorMessage;
     private String nationalId;
-    private byte[] faceIMS; 
+    private byte[] faceIMS;
     private byte[] faceLASER;
-    private byte[] faceCHIP ;
-    private byte[] faceMLI ;
-//    private List<IMSErrorInfo> errorCodes= new ArrayList<IMSErrorInfo>();
+    private byte[] faceCHIP;
+    private byte[] faceMLI;
+    private List<IMSErrorInfo> errorCodes = new ArrayList<IMSErrorInfo>();
 
 
     public byte[] getFaceIMS() {
-		return faceIMS;
-	}
+        return faceIMS;
+    }
 
-	public void setFaceIMS(byte[] faceIMS) {
-		this.faceIMS = faceIMS;
-	}
+    public void setFaceIMS(byte[] faceIMS) {
+        this.faceIMS = faceIMS;
+    }
 
-	public byte[] getFaceLASER() {
-		return faceLASER;
-	}
+    public byte[] getFaceLASER() {
+        return faceLASER;
+    }
 
-	public void setFaceLASER(byte[] faceLASER) {
-		this.faceLASER = faceLASER;
-	}
+    public void setFaceLASER(byte[] faceLASER) {
+        this.faceLASER = faceLASER;
+    }
 
-	public byte[] getFaceCHIP() {
-		return faceCHIP;
-	}
+    public byte[] getFaceCHIP() {
+        return faceCHIP;
+    }
 
-	public void setFaceCHIP(byte[] faceCHIP) {
-		this.faceCHIP = faceCHIP;
-	}
+    public void setFaceCHIP(byte[] faceCHIP) {
+        this.faceCHIP = faceCHIP;
+    }
 
-	public byte[] getFaceMLI() {
-		return faceMLI;
-	}
+    public byte[] getFaceMLI() {
+        return faceMLI;
+    }
 
-	public void setFaceMLI(byte[] faceMLI) {
-		this.faceMLI = faceMLI;
-	}
+    public void setFaceMLI(byte[] faceMLI) {
+        this.faceMLI = faceMLI;
+    }
 
-	public String getRequestID() {
+    public String getRequestID() {
         return requestID;
     }
 
@@ -104,11 +104,11 @@ public class IMSUpdateResultVTO extends ExtEntityTO {
         this.nationalId = nationalId;
     }
 
- /*   public List<IMSErrorInfo> getErrorCodes() {
+    public List<IMSErrorInfo> getErrorCodes() {
         return errorCodes;
     }
 
     public void setErrorCodes(List<IMSErrorInfo> errorCodes) {
         this.errorCodes = errorCodes;
-    }*/
+    }
 }

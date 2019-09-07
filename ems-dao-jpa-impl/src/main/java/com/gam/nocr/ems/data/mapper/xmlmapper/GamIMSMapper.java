@@ -96,7 +96,7 @@ public class GamIMSMapper implements XMLMapper {
 		}
 
 		imsUpdateResultVTO.setIdentityChanged(Integer.valueOf(tempAttrArray[2]));
-		imsUpdateResultVTO.setErrorCode(tempAttrArray[3]);
+//		imsUpdateResultVTO.setErrorCode(tempAttrArray[3]);
 		imsUpdateResultVTO.setErrorMessage(tempAttrArray[4]);
 
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -201,7 +201,7 @@ public class GamIMSMapper implements XMLMapper {
 				stringBuilder.append(",");
 				stringBuilder.append(imsUpdateResultVTO.getIdentityChanged());
 				stringBuilder.append(",");
-				stringBuilder.append(imsUpdateResultVTO.getErrorCode());
+//				stringBuilder.append(imsUpdateResultVTO.getErrorCode());
 				stringBuilder.append(",");
 				stringBuilder.append(imsUpdateResultVTO.getErrorMessage());
 
