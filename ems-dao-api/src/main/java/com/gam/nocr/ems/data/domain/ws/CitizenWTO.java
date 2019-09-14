@@ -2,6 +2,7 @@ package com.gam.nocr.ems.data.domain.ws;
 
 import java.sql.Timestamp;
 
+import com.gam.nocr.ems.data.enums.IPGProviderEnum;
 import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseLog;
@@ -86,6 +87,7 @@ public class CitizenWTO {
 
     private Long isPaid;
     private Timestamp paidDate;
+    private IPGProviderEnum paidBank;
 
     private static final Logger logger = BaseLog.getLogger(EmsUtil.class);
     private Boolean paymentStatus = Boolean.FALSE;
@@ -644,5 +646,13 @@ public class CitizenWTO {
 
     public void setAttendDate(Timestamp attendDate) {
         this.attendDate = attendDate;
+    }
+
+    public IPGProviderEnum getPaidBank() {
+        return paidBank;
+    }
+
+    public void setPaidBank(IPGProviderEnum paidBank) {
+        this.paidBank = paidBank;
     }
 }
