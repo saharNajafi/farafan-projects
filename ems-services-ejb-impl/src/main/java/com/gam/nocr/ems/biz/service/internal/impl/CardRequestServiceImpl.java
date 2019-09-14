@@ -1281,7 +1281,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getState() == CardRequestState.RESERVED &&
                     (cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V ||
                             cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R) &&
-                    cardRequestTO.getReservationDate().before(new Date()) &&
+                    compareDate(cardRequestTO.getReservationDate(), new Date()) < 0 &&
                     cardRequestTO.getAuthenticity() == null)
                 notAttended = true;
         } catch (Exception e) {
@@ -1352,6 +1352,17 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             Integer crqFlag = getCardRequestDAO().fetchBiometricFlag(cardRequestTO.getId());
             CardRequestHistoryTO crhList = getCardRequestHistoryDAO().findByCardRequestId(cardRequestTO.getId());
             EnrollmentOfficeTO enrollmentOfficeTO = cardRequestTO.getEnrollmentOffice();
+
+//          Condition 0
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -1);
+            if ((cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS ||
+                    cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED)
+                    && compareDate(cardRequestTO.getReservationDate(), calendar.getTime()) < 0) {
+                return labels.getString("state.Expired");
+            }
+
+
 //			Condition 1
             if (cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
                     (enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR) ||
@@ -1445,6 +1456,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     return labels.getString("state.crqFlagOffice0");
                 }
             }
+
 //			Approved
             if (cardRequestTO.getState() == CardRequestState.APPROVED &&
                     enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR)) {
@@ -1486,12 +1498,28 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return "";
     }
 
+    private int compareDate(Date date1, Date date2) {
+        return truncateToDay(date1).compareTo(truncateToDay(date2));
+    }
+
+    private Date truncateToDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        date = calendar.getTime();
+        return date;
+    }
+
+
     private Boolean findReserved(CardRequestTO cardRequestTO) throws Exception {
         Boolean state = false;
         try {
             if ((cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R ||
                     cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V)
-                    && cardRequestTO.getReservationDate().compareTo(new Date()) >= 0
+                    && compareDate(cardRequestTO.getReservationDate(), new Date()) >= 0
                     && !cardRequestTO.getReservations().isEmpty()) {
                 state = true;
             }
@@ -1520,7 +1548,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
                     return MessageFormat.format(
                             labels.getString("state.enableEnrollmentOffice"),
-                            DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI));
+                            DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI), enrollmentOfficeTO.getName());
                 }
             } else if (findReservationAttended(cardRequestTO)) {
                 return labels.getString("state.notAttend");
@@ -1573,6 +1601,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
             if (cardRequestTO.getState() == CardRequestState.READY_TO_DELIVER)
                 return findReadyToDeliverState(cardRequestTO);
+
+
             switch (cardRequestTO.getState()) {
                 case VERIFIED_IMS:
                     state = labels.getString("state.registered");
@@ -1844,8 +1874,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getCard() != null) {
                 cal.setTime(cardRequestTO.getCard().getIssuanceDate());
                 cal.add(Calendar.YEAR, 7);
-                if (!(cal.getTime().equals(new Date())
-                        || cal.getTime().after(new Date()))) {
+                if (compareDate(cal.getTime(), new Date()) < 0) {
                     throw new ServiceException(BizExceptionCode.CRE_061, BizExceptionCode.CRE_061_MSG, new Object[]{cardRequestTO.getId()});
                 }
             }
@@ -2343,7 +2372,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 cardRequestReceiptVTO.setReceiptDate(DateUtil.convert(new Date(), DateUtil.JALALI));
                 cardRequestReceiptVTO.setUserFirstName(personTO.getFirstName() != null ? personTO.getFirstName() : "");
                 cardRequestReceiptVTO.setUserLastName(personTO.getLastName() != null ? personTO.getLastName() : "");
-                cardRequestReceiptVTO.setEnrollmentName(cardRequestTO.getEnrollmentOffice()!=null? cardRequestTO.getEnrollmentOffice().getName():"");
+                cardRequestReceiptVTO.setEnrollmentName(cardRequestTO.getEnrollmentOffice() != null ? cardRequestTO.getEnrollmentOffice().getName() : "");
             }
         } catch (BaseException e) {
             throw e;
