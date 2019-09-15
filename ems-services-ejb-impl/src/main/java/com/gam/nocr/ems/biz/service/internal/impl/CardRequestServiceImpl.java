@@ -884,6 +884,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                         throw new ServiceException(BizExceptionCode.CRE_024,
                                 BizExceptionCode.CRE_024_MSG);
                     cardRequestTO.setPriority(inPriority);
+                    getCardRequestHistoryDAO().create(cardRequestTO,
+                                    null,
+                                    SystemId.EMS,
+                                    null,
+                                    CardRequestHistoryAction.PRIORITY_IS_CHANGED,
+                                    getUserProfileTO().getUserName());
                 }
             } else
                 throw new ServiceException(BizExceptionCode.CRE_026,
