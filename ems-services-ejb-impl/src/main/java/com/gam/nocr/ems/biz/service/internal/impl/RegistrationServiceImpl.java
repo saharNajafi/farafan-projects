@@ -648,7 +648,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-                ) {
+        ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -660,7 +660,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         if ((state != CardRequestState.STOPPED_NOT_FOLLOW_LIMITED_RESERVE)
                 && (state != CardRequestState.NOT_DELIVERED)
                 && (state != CardRequestState.DELIVERED)
-                ) {
+        ) {
             throw new ServiceException(BizExceptionCode.RSI_180,
                     BizExceptionCode.RSI_180_MSG);
         }
@@ -962,15 +962,19 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             CitizenTO citizenLoadedFromDb = citizens.get(0);
             CitizenInfoTO citizenInfoLoadedFromDb = citizenLoadedFromDb.getCitizenInfo();
             citizenInfoDAO = getCitizenInfoDAO();
-            if (citizenInfoLoadedFromDb != null) {// Information for this citizen is currently in the db
-                citizenLoadedFromDb.setCitizenInfo(null);
-                citizenInfoLoadedFromDb.setCitizen(null);
-                citizenInfoDAO.delete(citizenInfoLoadedFromDb); // Cascade on remove should be implemented in the database
-            }
             CitizenInfoTO newCitizenInfo = newCardRequest.getCitizen().getCitizenInfo();
             newCitizenInfo.setCitizen(citizenLoadedFromDb);
-            newCitizenInfo.setId(null);
-            citizenInfoDAO.create(newCitizenInfo);
+
+            if (citizenInfoLoadedFromDb != null) {// Information for this citizen is currently in the db
+                newCitizenInfo.setId(citizenInfoLoadedFromDb.getId());
+                citizenInfoDAO.update(newCitizenInfo);
+//                citizenLoadedFromDb.setCitizenInfo(null);
+//                citizenInfoLoadedFromDb.setCitizen(null);
+//                citizenInfoDAO.delete(citizenInfoLoadedFromDb); // Cascade on remove should be implemented in the database
+            } else {
+                newCitizenInfo.setId(null);
+                citizenInfoDAO.create(newCitizenInfo);
+            }
             citizenLoadedFromDb.setCitizenInfo(newCitizenInfo);
 
             CitizenTO newCitizen = newCardRequest.getCitizen();
