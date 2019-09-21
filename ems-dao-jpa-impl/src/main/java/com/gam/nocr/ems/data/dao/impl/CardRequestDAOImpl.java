@@ -2813,9 +2813,9 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                 for (Object record : resultList) {
                     Object[] data = (Object[]) record;
                     Timestamp attendDate = null;
-                    if (data[18] != null)//enrolled date
+                    if (data[18] != null)//reenrolled date
                         attendDate = (Timestamp) data[18];
-                    else if (data[5] != null)//reenrolled date
+                    else if (data[5] != null)//enrolled date
                         attendDate = (Timestamp) data[5];
                     else if (data[15] != null)//reserved date
                         attendDate = (Timestamp) data[15];

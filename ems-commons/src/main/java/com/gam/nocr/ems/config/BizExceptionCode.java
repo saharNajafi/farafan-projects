@@ -1746,6 +1746,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_092 = "EMS_S_CMS_092";
     public static final String CMS_093 = "EMS_S_CMS_093";
     public static final String CMS_100 = "EMS_S_CMS_100";
+    public static final String CMS_101 = "EMS_S_CMS_101";
+    public static final String CMS_102 = "EMS_S_CMS_102";
+    public static final String CMS_103 = "EMS_S_CMS_103";
 
     public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
     public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
@@ -1771,13 +1774,17 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_071_MSG = "There is not any batch with the given batch id.";
     public static final String CMS_072_MSG = "The batch state must be 'shipped'.";
     public static final String CMS_073_MSG = "The lost date for batch is null.";
+    public static final String CMS_074_MSG = "The request is not allowable because of ccos lost or missed request pending ";
+    public static final String CMS_075_MSG = "The request of type 'EXTEND' is not allowable because of issuance Date ";
     public static final String CMS_083_MSG = "The IMS service is down.";
     public static final String CMS_084_MSG = "The estelam result is failed.Try again.";
     public static final String CMS_085_MSG = "The finger_all is empty or null.";
     public static final String CMS_088_MSG = "The request id which is on card is null";
     public static final String CMS_089_MSG = "record does not exist in IMS";
-    public static final String CMS_074_MSG = "The request is not allowable because of ccos lost or missed request pending ";
-    public static final String CMS_075_MSG = "The request of type 'EXTEND' is not allowable because of issuance Date ";
+    public static final String CMS_101_MSG = "request Id can not be null";
+    public static final String CMS_102_MSG = "cms Id can not be null";
+    public static final String CMS_103_MSG = "unhandled exception in find Cms Batch By Request Id";
+
 
     // com.gam.nocr.ems.biz.service.internal.impl.LocationServiceImpl
     public static final String LMS_001 = "EMS_S_LMS_001";

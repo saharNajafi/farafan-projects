@@ -2711,25 +2711,26 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     @Override
-    public String findCmsBatchByRequestId(Long requestId) {
+    public String findCmsBatchByRequestId(Long requestId) throws BaseException {
         try {
+            String cmsId = "";
+
             if (requestId == null) {
-                throw new ServiceException(BizExceptionCode.CMS_070,
-                        BizExceptionCode.CMS_070_MSG);
+                throw new ServiceException(BizExceptionCode.CMS_101,
+                        BizExceptionCode.CMS_101_MSG);
             }
-            String cmsId = getBatchDAO().findCmsIdByRequestId(requestId);
+            cmsId = getBatchDAO().findCmsIdByRequestId(requestId);
             if (cmsId == null) {
-                throw new ServiceException(BizExceptionCode.CMS_071,
-                        BizExceptionCode.CMS_071_MSG);
+                throw new ServiceException(BizExceptionCode.CMS_102,
+                        BizExceptionCode.CMS_102_MSG);
             }
             return cmsId;
-        } catch (ServiceException e) {
-            e.printStackTrace();
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CMS_103,
+                    BizExceptionCode.CMS_103_MSG, e);
         }
-
-        return null;
     }
 
     /**

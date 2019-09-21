@@ -63,29 +63,36 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         WorkstationInfoTO workstationInfoTO = null;
         boolean result = false;
         try {
-            if (workstationCode == null)
+            if (workstationCode == null) {
                 throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
-            if (workstationCode.length() < 40)
+            }
+            if (workstationCode.length() < 40) {
                 throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
-            if (workstationCode.length() > 40)
+            }
+            if (workstationCode.length() > 40) {
                 throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.WST_004_MSG);
+            }
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
-            if (workstation == null)
+            if (workstation == null) {
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
+            }
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
 
             //1-
-            if (workstationInfoTO == null)
+            if (workstationInfoTO == null) {
                 return true;
+            }
             //2-
-            if (workstationInfoTO != null && workstationInfoTO.getGatherState() == 1)
+            if (workstationInfoTO != null && workstationInfoTO.getGatherState() == 1) {
                 return true;
+            }
             //3-
             try {
                 ProfileManager pm = ProfileHelper.getProfileManager();
                 String checkPeriod = (String) pm.getProfile(ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD, true, null, null);
-                if (workstationInfoTO.getLastModifiedDate() == null)
+                if (workstationInfoTO.getLastModifiedDate() == null) {
                     return true;
+                }
                 Date lastModifiedDatePlusCheckPeriod = EmsUtil.getDateAtMidnight(EmsUtil.differDay(workstationInfoTO.getLastModifiedDate(), Integer.valueOf(checkPeriod)));
                 if (new Date().compareTo(lastModifiedDatePlusCheckPeriod) > 0)
                     return true;
