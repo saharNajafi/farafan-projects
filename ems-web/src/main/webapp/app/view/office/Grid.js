@@ -32,15 +32,9 @@ Ext.define('Ems.view.office.Grid', {
                 stateId: this.stateId + 'Capacity',
                 getClass: function (value, metadata, record) {
                     if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
-                        if (record.raw != undefined) {
-                            var officeSettingType = record.raw.uploadPhoto;
-                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-                                return 'girdAction-OfficeCapacity-icon';
-                            else
-                                return 'grid-action-hidden';
-                        } else {
-                            return 'grid-action-hidden';
-                        }
+                        return 'girdAction-OfficeCapacity-icon';
+                    } else {
+                        return 'grid-action-hidden';
                     }
                 }
             },
@@ -52,15 +46,9 @@ Ext.define('Ems.view.office.Grid', {
                 stateId: this.stateId + 'UserList',
                 getClass: function (value, metadata, record) {
                     if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
-                        if (record.raw != undefined) {
-                            var officeSettingType = record.raw.uploadPhoto;
-                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-                                return 'girdAction-UserList-icon';
-                            else
-                                return 'grid-action-hidden';
-                        } else {
-                            return 'grid-action-hidden';
-                        }
+                        return 'girdAction-UserList-icon';
+                    } else {
+                        return 'grid-action-hidden';
                     }
                 }
             },
@@ -71,18 +59,12 @@ Ext.define('Ems.view.office.Grid', {
                 stateId: this.stateId + 'CancelToken',
                 getClass: function (value, metadata, record) {
                     if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
-                        if (record.raw != undefined) {
-                            var officeSettingType = record.raw.uploadPhoto;
-                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-                                return 'girdAction-forbidden-icon';
-                            else
-                                return 'grid-action-hidden';
-                        } else {
-                            return 'grid-action-hidden';
-                        }
+                        return 'girdAction-forbidden-icon';
+                    } else {
+                        return 'grid-action-hidden';
                     }
-
                 }
+
 //                getClass: function (value, metadata, record) {
 //                    var deleteToken = record.get(EmsObjectName.officeNewEdit.tokenStatus);
 //                    var officeType = record.get(EmsObjectName.officeNewEdit.officeType);
@@ -357,7 +339,7 @@ Ext.define('Ems.view.office.Grid', {
             },
             {
                 // icon: 'resources/themes/images/user/UserList.png',
-                tooltip: 'تنظیمات',
+                tooltip: 'تنظیمات LDS',
                 action: 'settingOffice',
                 stateful: true,
                 stateId: this.stateId + 'Setting',
@@ -366,20 +348,12 @@ Ext.define('Ems.view.office.Grid', {
                 // }
                 getClass: function (value, metadata, record) {
                     if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
-                        if (record.raw != undefined) {
-                            var officeSettingType = record.raw.allowChangeFinger;
-                            if (officeSettingType != null && officeSettingType != "" && officeSettingType == "1")
-                                return 'girdAction-OfficeSetting-icon';
-                            else
-                                return 'grid-action-hidden';
+                        return 'girdAction-OfficeSetting-icon';
                         } else {
                             return 'grid-action-hidden';
                         }
                     }
                 }
-            }
-
-
         ],
 
         contextMenu: ['gam.add'],
@@ -472,7 +446,7 @@ Ext.define('Ems.view.office.Grid', {
                     filterable: true,
                     filter: true,
                     dataIndex: EmsObjectName.officeNewEdit.oficTel,
-                    id: EmsObjectName.officeNewEdit.hasStair
+                    id: EmsObjectName.officeNewEdit.g_oficTel
                 }, {
                     xtype: 'gridcolumn',
                     text: 'ظرفیت',

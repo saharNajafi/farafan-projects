@@ -1475,7 +1475,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if ((cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R ||
                     cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V)
                     && cardRequestTO.getReservationDate().compareTo(new Date()) >= 0
-                    && !cardRequestTO.getReservations().isEmpty()) {
+                    /*&& !cardRequestTO.getReservations().isEmpty()*/) {
                 state = true;
             }
         } catch (Exception e) {

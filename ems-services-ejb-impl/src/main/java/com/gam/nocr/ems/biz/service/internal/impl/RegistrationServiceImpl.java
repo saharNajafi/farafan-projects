@@ -648,7 +648,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-        ) {
+                ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -3103,20 +3103,28 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         List<CardRequestTO> cardRequestTOs = getCardRequestDAO().findByNationalId(nationalId);
         if (EmsUtil.checkListSize(cardRequestTOs)) {
             if (cardRequestTOs.size() == 1) {
-                if (cardRequestTOs.get(0).getCard() != null && !cardRequestTOs.get(0).getCard().getCrn().equalsIgnoreCase(crn)) {
-                    throw new ServiceException(BizExceptionCode.RSI_181,
-                            BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
-                }
-            } else if (cardRequestTOs.size() > 1) {
-                for (int i = 0; i <= cardRequestTOs.size() - 2; i++) {
-                    if (cardRequestTOs.get(i).getCard() != null && cardRequestTOs.get(i).getCard().getCrn().equals(crn)) {
-                        throw new ServiceException(BizExceptionCode.RSI_182,
-                                BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
-                    } else {
-                        throw new ServiceException(BizExceptionCode.RSI_183,
+                if (cardRequestTOs.get(0).getCard() != null) {
+                    if (!cardRequestTOs.get(0).getCard().getCrn().equals(crn)) {
+                        throw new ServiceException(BizExceptionCode.RSI_181,
                                 BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
                     }
+                } else {
+                    throw new ServiceException(BizExceptionCode.RSI_184,
+                            BizExceptionCode.RSI_184_MSG, new String[]{nationalId});
                 }
+            } else if (cardRequestTOs.size() > 1) {
+                if (cardRequestTOs.get(cardRequestTOs.size() - 1).getCard() != null &&
+                        !cardRequestTOs.get(cardRequestTOs.size() - 1).getCard().getCrn().equals(crn)) {
+                    for (int i = 0; i <= cardRequestTOs.size() - 2; i++) {
+                        if (cardRequestTOs.get(i).getCard() != null && cardRequestTOs.get(i).getCard().getCrn().equals(crn)) {
+                            throw new ServiceException(BizExceptionCode.RSI_182,
+                                    BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                        }
+                    }
+                    throw new ServiceException(BizExceptionCode.RSI_183,
+                            BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                }
+
             }
         }
     }
