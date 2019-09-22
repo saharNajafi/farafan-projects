@@ -43,3 +43,8 @@ alter table GAM_MAIN_EMS.EMST_WORKSTATION_INFO  add constraint EMST_WORKSTATION_
   BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "TS_NOCR_EMS_INDEX" ;
 
+
+
+insert into gam_main_gaas.GAST_ACCESS
+(ACS_ID, ACS_NAME, ACS_ENABLED, ACS_COMMENT)
+values(gam_main_gaas.GAS_SEQ_GAST_ACCESS_ID.nextval,'ems_PrintRegistrationReceipt','Y','دریافت شماره دسته درخواست');
