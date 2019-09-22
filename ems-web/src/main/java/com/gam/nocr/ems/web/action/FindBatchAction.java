@@ -49,12 +49,15 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
             String cmsBatch = new CardRequestDelegator().findCmsBatchByRequestId(
                     getUserProfile(), cardRequestId);
             BatchDispatchInfoVTO batchDispatchInfoVTO = new BatchDispatchInfoVTO();
-            batchDispatchInfoVTO.setCmsID("شماره دسته ندارد.");
-            if (cmsBatch != null)
-                batchDispatchInfoVTO.setCmsID(cmsBatch);
+//            batchDispatchInfoVTO.setCmsID("شماره دسته ندارد.");
+//            if (cmsBatch w != null)
+            batchDispatchInfoVTO.setCmsID(cmsBatch);
             List<BatchDispatchInfoVTO> batchDispatchInfoVTOS = new ArrayList<BatchDispatchInfoVTO>();
             batchDispatchInfoVTOS.add(batchDispatchInfoVTO);
-            setRecords(batchDispatchInfoVTOS);
+            if (cmsBatch != null)
+                setRecords(batchDispatchInfoVTOS);
+            else
+                setRecords(null);
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_021,
