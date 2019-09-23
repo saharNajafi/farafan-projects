@@ -37,10 +37,8 @@ public class WorkstationInfoTO extends ExtEntityTO {
     private String ipAddress;
     private String username;
     private String additionalInfoAsJson;
-
     private short gatherState;
     private Date lastModifiedDate;
-
     private WorkstationTO workstation;
 
     public WorkstationInfoTO() {
