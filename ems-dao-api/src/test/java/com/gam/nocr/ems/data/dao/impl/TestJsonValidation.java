@@ -1,13 +1,6 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import com.gam.nocr.ems.data.domain.ws.ClientWorkstationInfo;
-import com.gam.nocr.ems.util.Utils;
 import org.json.*;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestJsonValidation {
     public static void main(String[] args) {

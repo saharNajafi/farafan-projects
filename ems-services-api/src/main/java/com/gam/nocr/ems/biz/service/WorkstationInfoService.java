@@ -13,7 +13,7 @@ public interface WorkstationInfoService extends Service {
 
     boolean isReliableVerInquiryRequired(String workStationId) throws BaseException;
 
-    String getReliableVerByPlatform(String workStationCode, WorkstationInfoTO workstationInfoTO) throws BaseException;
+    void getReliableVerByPlatform(String workStationCode, WorkstationInfoTO workstationInfoTO) throws BaseException;
 
     List<String> getCompatibleClientVerList() throws BaseException;
 }

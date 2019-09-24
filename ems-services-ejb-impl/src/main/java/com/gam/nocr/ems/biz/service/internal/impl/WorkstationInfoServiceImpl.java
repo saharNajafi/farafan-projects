@@ -1,6 +1,7 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
@@ -18,6 +19,7 @@ import com.gam.nocr.ems.data.dao.WorkstationInfoDAO;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.slf4j.Logger;
 
 import javax.ejb.*;
 import java.util.ArrayList;
@@ -33,11 +35,15 @@ import java.util.List;
 public class WorkstationInfoServiceImpl extends EMSAbstractService
         implements WorkstationInfoServiceLocal, WorkstationInfoServiceRemote {
 
+    public final static String WORKSTATION_INFO_PERIOD_DEFAULT_VALUE = "40";//AS DAY
+    private static final Logger workstationInfoLogger = BaseLog.getLogger("WorkstationInfoLogger");
+
     public WorkstationInfoDAO getWorkstationInfoDAO() throws BaseException {
         try {
             return DAOFactoryProvider.getDAOFactory().getDAO(
                     EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATIONINFO));
         } catch (DAOFactoryException e) {
+            workstationInfoLogger.error(BizExceptionCode.NIO_001 + " : " + BizExceptionCode.GLB_002_MSG, e);
             throw new DelegatorException(
                     BizExceptionCode.WSI_001,
                     BizExceptionCode.GLB_001_MSG,
@@ -90,6 +96,9 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             try {
                 ProfileManager pm = ProfileHelper.getProfileManager();
                 String checkPeriod = (String) pm.getProfile(ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD, true, null, null);
+                if (checkPeriod == null) {
+                    checkPeriod = WORKSTATION_INFO_PERIOD_DEFAULT_VALUE;
+                }
                 if (workstationInfoTO.getLastModifiedDate() == null) {
                     return true;
                 }
@@ -97,19 +106,24 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
                 if (new Date().compareTo(lastModifiedDatePlusCheckPeriod) > 0)
                     return true;
             } catch (ProfileException e) {
-                e.printStackTrace();
+                throw new ServiceException(
+                        BizExceptionCode.WSTI_004,
+                        BizExceptionCode.WSTI_004_MSG,
+                        e);
             }
 
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw new ServiceException(
+                    BizExceptionCode.WSTI_005,
+                    BizExceptionCode.WSTI_005_MSG,
+                    e);
         }
         return false;
     }
 
     @Override
-    public String getReliableVerByPlatform(
+    public void getReliableVerByPlatform(
             String workstationCode, WorkstationInfoTO newWorkstationInfoTO) throws BaseException {
-        String ccosExactVersion = null;
         WorkstationTO workstation;
         WorkstationInfoTO oldWorkstationInfo = null;
         try {
@@ -126,57 +140,45 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
                     getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
             if (oldWorkstationInfo != null) {
                 updateWorkstationInfo(newWorkstationInfoTO, oldWorkstationInfo);
-                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             } else if (workstation != null) {
                 newWorkstationInfoTO.setWorkstation(workstation);
                 getWorkstationInfoDAO().create(newWorkstationInfoTO);
-                ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
             }
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(
+                    BizExceptionCode.WSTI_003,
+                    BizExceptionCode.WSTI_003_MSG,
+                    e);
         }
-        return ccosExactVersion;
     }
 
     private void updateWorkstationInfo(WorkstationInfoTO newWorkstationInfoTo, WorkstationInfoTO oldWorkstationInfo) throws BaseException {
         try {
 
-            if (newWorkstationInfoTo.getCpuInfo() != null)
-                oldWorkstationInfo.setCpuInfo(newWorkstationInfoTo.getCpuInfo());
-
-            if (newWorkstationInfoTo.getOsVersion() != null)
-                oldWorkstationInfo.setOsVersion(newWorkstationInfoTo.getOsVersion());
-
-            if (newWorkstationInfoTo.getHasDotnetFramwork45() != null)
-                oldWorkstationInfo.setHasDotnetFramwork45(newWorkstationInfoTo.getHasDotnetFramwork45());
-
-            if (newWorkstationInfoTo.getMemoryCapacity() != null)
-                oldWorkstationInfo.setMemoryCapacity(newWorkstationInfoTo.getMemoryCapacity());
-
-            if (newWorkstationInfoTo.getCcosVersion() != null)
-                oldWorkstationInfo.setCcosVersion(newWorkstationInfoTo.getCcosVersion());
-
-            if (String.valueOf(newWorkstationInfoTo.getIpAddress()) != null)
-                oldWorkstationInfo.setIpAddress(String.valueOf(newWorkstationInfoTo.getIpAddress()));
-
-            if (newWorkstationInfoTo.getUsername() != null)
-                oldWorkstationInfo.setUsername(newWorkstationInfoTo.getUsername());
-
-            if (newWorkstationInfoTo.getAdditionalInfoAsJson() != null)
-                oldWorkstationInfo.setAdditionalInfoAsJson(newWorkstationInfoTo.getAdditionalInfoAsJson());
-
+            oldWorkstationInfo.setCpuInfo(newWorkstationInfoTo.getCpuInfo());
+            oldWorkstationInfo.setOsVersion(newWorkstationInfoTo.getOsVersion());
+            oldWorkstationInfo.setHasDotnetFramwork45(newWorkstationInfoTo.getHasDotnetFramwork45());
+            oldWorkstationInfo.setMemoryCapacity(newWorkstationInfoTo.getMemoryCapacity());
+            oldWorkstationInfo.setCcosVersion(newWorkstationInfoTo.getCcosVersion());
+            oldWorkstationInfo.setIpAddress(String.valueOf(newWorkstationInfoTo.getIpAddress()));
+            oldWorkstationInfo.setUsername(newWorkstationInfoTo.getUsername());
+            oldWorkstationInfo.setAdditionalInfoAsJson(newWorkstationInfoTo.getAdditionalInfoAsJson());
             oldWorkstationInfo.setGatherState(newWorkstationInfoTo.getGatherState());//Always this field be reset!
-
             oldWorkstationInfo.setLastModifiedDate(newWorkstationInfoTo.getLastModifiedDate());//Always this field be reset!
 
             getWorkstationInfoDAO().update(oldWorkstationInfo);
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw new ServiceException(
+                    BizExceptionCode.WSTI_002,
+                    BizExceptionCode.WSTI_002_MSG,
+                    e);
         }
     }
 
     @Override
-    public List<String> getCompatibleClientVerList() {
+    public List<String> getCompatibleClientVerList() throws BaseException {
         List<String> verCodeList = new ArrayList<String>();
         try {
             String[] verCode =
@@ -187,7 +189,10 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ServiceException(
+                    BizExceptionCode.WSTI_001,
+                    BizExceptionCode.WSTI_001_MSG,
+                    e);
         }
         return verCodeList;
     }
