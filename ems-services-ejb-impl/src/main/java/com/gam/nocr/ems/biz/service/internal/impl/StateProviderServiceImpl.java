@@ -94,7 +94,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
         try {
             SecurityContextService securityContextService = new SecurityContextService();
             ProfileManager profileManager = ProfileHelper.getProfileManager();
-            Long personID =  getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
             PersonTO personTO = getPersonService().find(personID);
             Integer perId = null;
             try {
@@ -123,6 +123,10 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         stateProviderTO.setValue(enrollmentOfficeTO.getType().name());
                     else if (stateId.endsWith("enrollmentOfficeId"))
                         stateProviderTO.setValue(enrollmentOfficeTO.getId().toString());
+                } else if (stateId.endsWith("enrollmentOfficeName")) {
+                    Long userDepartmentId = getUserProfileTO().getDepID();
+                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
+                    stateProviderTO.setValue(enrollmentOfficeTO.getName());
                 }
                 //Anbari
                 else if (stateId.endsWith("isDeliver")) {
@@ -288,8 +292,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     } else {
                         stateProviderTO.setValue("");
                     }
-                }
-                else if (stateId.endsWith("MOCEngineEnhancementParameter")) {
+                } else if (stateId.endsWith("MOCEngineEnhancementParameter")) {
                     if (officeSettingTO.getFeatureExtractIdsTO() != null) {
                         Set<FeatureExtractIdsTO> featureExtractIds = officeSettingTO.getFeatureExtractIdsTO();
                         for (FeatureExtractIdsTO fei : featureExtractIds) {
@@ -300,8 +303,7 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     } else {
                         stateProviderTO.setValue("");
                     }
-                }
-                else if (stateId.endsWith("tokenExpire")) {
+                } else if (stateId.endsWith("tokenExpire")) {
                     try {
                         ProfileManager pm = ProfileHelper.getProfileManager();
                         String tokenExpireDateValue = (String) pm.getProfile(ProfileKeyName.Signature_Token_Expire_Notification_Days, true, null, null);
@@ -314,20 +316,19 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
 
                     }
 
-                }else if (stateId.endsWith("userFirstName")) {
-                            if(personTO!=null){
-                                stateProviderTO.setValue(personTO.getFirstName());
-                            } else {
+                } else if (stateId.endsWith("userFirstName")) {
+                    if (personTO != null) {
+                        stateProviderTO.setValue(personTO.getFirstName());
+                    } else {
                         stateProviderTO.setValue("");
                     }
-                }else if (stateId.endsWith("userLastName")) {
-                    if(personTO!=null){
+                } else if (stateId.endsWith("userLastName")) {
+                    if (personTO != null) {
                         stateProviderTO.setValue(personTO.getLastName());
                     } else {
                         stateProviderTO.setValue("");
                     }
-                }
-                else {
+                } else {
                     value = (String) profileManager.getProfile(ProfileKeyName.STATE_ROOT + "." + stateId, true, null, null);
                     if (value != null && value.trim().length() > 0)
                         stateProviderTO.setValue(value);
