@@ -630,7 +630,8 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
 //    public static final String CRA_009 = "EMS_A_CRA_009";
 //    public static final String CRA_010 = "EMS_A_CRA_010";
     public static final String CRA_013_MSG="invalid input entry, request id is empty";
-    
+    public static final String CRA_022_MSG="Exception in get batch request id";
+
     //com.gam.nocr.ems.web.ws.RequestWS
     public static final String RQW_001 = "EMS_W_RQW_001";
     public static final String RQW_002 = "EMS_W_RQW_002";
