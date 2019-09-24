@@ -3048,7 +3048,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     .append("r.crq_type as requestType, ")
                     .append("(case when r.crq_origin= 'V' then 1 else 0 end) hasVipImage, ")
                     .append("pay.rpy_is_succeed paymentSuccess, pay.rpy_res_code  paymentResCode, ")
-                    .append("r.CRQ_REENROLLED_DATE  AS reenrollDate ")
+                    .append("r.crq_reenrolled_date  AS reenrollDate ")
                     .append("from emst_card_request r inner join emst_citizen ct ")
                     .append("on r.crq_citizen_id = ct.ctz_id ")
                     .append("left join emst_registration_payment pay on r.crq_payment_id = pay.rpy_id ")
@@ -3416,11 +3416,11 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     obj.setStringType((String) data[12]);
                     obj.setHasVipImage(((BigDecimal) data[13]).toString());
                     Timestamp attendDate = null;
-                    if (data[18] != null)//reenrolled date
+                    if (data[19] != null)//reenrolled date
                         attendDate = (Timestamp) data[19];
-                    else if (data[5] != null)//enrolled date
+                    else if (data[4] != null)//enrolled date
                         attendDate = (Timestamp) data[4];
-                    else if (data[15] != null)//reserved date
+                    else if (data[5] != null)//reserved date
                         attendDate = (Timestamp) data[5];
                     obj.setAttendDate(attendDate);
                     if (data[14] == null)
