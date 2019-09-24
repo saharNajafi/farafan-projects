@@ -632,7 +632,6 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_181_MSG = "the crn is invalid";
 
 
-
     // com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
     public static final String KSI_001 = "EMS_S_KSI_001";
     public static final String KSI_002 = "EMS_S_KSI_002";
@@ -2827,6 +2826,19 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WST_012_MSG = "OS version could not be empty";
     public static final String WST_013_MSG = "Username could not be empty";
     public static final String WST_014_MSG = "Computer name could not be empty";
+
+    //	com.gam.nocr.ems.biz.service.internal.impl.WorkstationInfoServiceImpl
+    public static final String WSTI_001 = "EMS_S_WSTI_001";
+    public static final String WSTI_002 = "EMS_S_WSTI_002";
+    public static final String WSTI_003 = "EMS_S_WSTI_003";
+    public static final String WSTI_004 = "EMS_S_WSTI_004";
+    public static final String WSTI_005 = "EMS_S_WSTI_005";
+    public static final String WSTI_001_MSG = "ccos-version has a problem";
+    public static final String WSTI_002_MSG = "update workstation info error at updateWorkstationInfo";
+    public static final String WSTI_003_MSG = "update workstation info error at getReliableVerByPlatform";
+    public static final String WSTI_004_MSG = "WORKSTATION_INFO_CHECK_PERIOD property error";
+    public static final String WSTI_005_MSG = "update workstation info error at isReliableVerInquiryRequired";
+
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
     public static final String OC_001 = "EMS_S_OC_001";
