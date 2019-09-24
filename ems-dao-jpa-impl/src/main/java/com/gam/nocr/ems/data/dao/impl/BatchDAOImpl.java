@@ -239,7 +239,7 @@ public class BatchDAOImpl extends EmsBaseDAOImpl<BatchTO> implements BatchDAOLoc
     public String findCmsIdByRequestId(Long requestId) throws BaseException {
 		List<Long> cmsIDList;
 		try {
-			cmsIDList = em.createQuery("SELECT CRT.card.batch.id " +
+			cmsIDList = em.createQuery("SELECT CRT.card.batch.cmsID " +
 					"FROM CardRequestTO CRT " +
 					"WHERE CRT.id = :REQUEST_ID", Long.class)
 					.setParameter("REQUEST_ID", requestId)
