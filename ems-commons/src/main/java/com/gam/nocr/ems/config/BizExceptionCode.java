@@ -492,6 +492,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_181 = "EMS_S_RSI_181";
     public static final String RSI_182 = "EMS_S_RSI_182";
     public static final String RSI_183 = "EMS_S_RSI_183";
+    public static final String RSI_184 = "EMS_S_RSI_184";
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -630,6 +631,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_179_MSG = "there is not any request for this nationalId";
     public static final String RSI_180_MSG = "Previous card request is in a state which does not allow a new card request to be made";
     public static final String RSI_181_MSG = "the crn is invalid";
+    public static final String RSI_184_MSG = "there is not any crn ";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
