@@ -1265,7 +1265,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getState() == CardRequestState.RESERVED &&
                     (cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V ||
                             cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R) &&
-                    DateUtil.compare(cardRequestTO.getReservationDate(), new Date(), false) == 0 &&
+                    DateUtil.getDateWithoutTime(cardRequestTO.getReservationDate()).compareTo(DateUtil.getDateWithoutTime(new Date())) == 0 &&
                     cardRequestTO.getAuthenticity() == null)
                 notAttended = true;
         } catch (Exception e) {
@@ -1275,6 +1275,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
         return notAttended;
     }
+
+
 
     private Date incrementDateUtil(Date curentDate, Integer increment) {
         Calendar cal = Calendar.getInstance();
