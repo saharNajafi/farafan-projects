@@ -107,7 +107,9 @@
                     d.dep_id)
                 </part>
                 <part name="main">
-                    select distinct lp.loc_name PROVINCE_NAME,
+                    select
+                    distinct
+                    lp.loc_name PROVINCE_NAME,
                     d.dep_id,
                     d.dep_address,
                     d.dep_code,
