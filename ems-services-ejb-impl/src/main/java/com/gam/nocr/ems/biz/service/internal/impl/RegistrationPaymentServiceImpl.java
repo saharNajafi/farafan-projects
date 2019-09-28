@@ -178,11 +178,11 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             // Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
             //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
-           /* Map<String, String> registrationPaymentResult =
-                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);*/
-            result.setPaymentAmount(cardRequestTO.getRegistrationPaymentTO().getAmountPaid());
+            Map<String, String> registrationPaymentResult =
+                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);
+            result.setPaymentAmount(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             result.setOrderId(String.valueOf(registrationPaymentTO.getOrderId()));
-            result.setPaymentCode(registrationPaymentTO.getPaymentCode());
+            result.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             return result;
         } catch (Exception e) {
             if (e instanceof ServiceException) {
