@@ -2485,6 +2485,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_030 = "EMS_S_NIO_030";
     public static final String NIO_031 = "EMS_S_NIO_031";
     public static final String NIO_033 = "EMS_S_NIO_033";
+    public static final String NIO_034 = "EMS_S_NIO_034";
+    public static final String NIO_035 = "EMS_S_NIO_035";
+    public static final String NIO_036 = "EMS_S_NIO_036";
     public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system for NationalId: {0}.";
     public static final String NIO_014_MSG = "The returned value of the service of getEstelam2 is null. ";
     public static final String NIO_015_MSG = "No record was found for this person in IMS to return. The main exception message which has returned from IMS is: ";
@@ -2835,11 +2838,21 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WSTI_003 = "EMS_S_WSTI_003";
     public static final String WSTI_004 = "EMS_S_WSTI_004";
     public static final String WSTI_005 = "EMS_S_WSTI_005";
+    public static final String WSTI_006 = "EMS_S_WSTI_006";
+    public static final String WSTI_007 = "EMS_S_WSTI_007";
+    public static final String WSTI_008 = "EMS_S_WSTI_008";
+    public static final String WSTI_009 = "EMS_S_WSTI_009";
+    public static final String WSTI_010 = "EMS_S_WSTI_010";
+    public static final String WSTI_011 = "EMS_S_WSTI_011";
     public static final String WSTI_001_MSG = "ccos-version has a problem";
     public static final String WSTI_002_MSG = "update workstation info error at updateWorkstationInfo";
     public static final String WSTI_003_MSG = "update workstation info error at getReliableVerByPlatform";
     public static final String WSTI_004_MSG = "WORKSTATION_INFO_CHECK_PERIOD property error";
     public static final String WSTI_005_MSG = "update workstation info error at isReliableVerInquiryRequired";
+    public static final String WSTI_008_MSG = "WorkstationCode is empty";
+    public static final String WSTI_009_MSG = "WorkstationCode is too short";
+    public static final String WSTI_010_MSG = "WorkstationCode is too long";
+    public static final String WSTI_011_MSG = "Workstation is null";
 
 
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
@@ -2934,12 +2947,14 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_012 = "EMS_S_REG_012";
     public static final String RGP_013 = "EMS_S_REG_013";
     public static final String RGP_014 = "EMS_S_REG_014";
+    public static final String RGP_015 = "EMS_S_REG_015";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_003_MSG = "an error occurred on bankInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
     public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
     public static final String RGP_006_MSG = "paidBank is undefined";
     public static final String RGP_014_MSG = "an error occurred on savePaymentInfo operation";
+    public static final String RGP_015_MSG = "PreRegistration Payment not found for national id: {0}";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";

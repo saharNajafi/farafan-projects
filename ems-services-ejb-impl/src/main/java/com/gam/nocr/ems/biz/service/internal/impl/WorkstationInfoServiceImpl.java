@@ -7,12 +7,9 @@ import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.profile.ConfigurationFileHandler;
-import com.gam.commons.profile.ProfileException;
-import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationInfoDAO;
@@ -21,7 +18,9 @@ import com.gam.nocr.ems.data.domain.WorkstationTO;
 import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
 
-import javax.ejb.*;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,9 +42,9 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             return DAOFactoryProvider.getDAOFactory().getDAO(
                     EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATIONINFO));
         } catch (DAOFactoryException e) {
-            workstationInfoLogger.error(BizExceptionCode.NIO_001 + " : " + BizExceptionCode.GLB_002_MSG, e);
+            workstationInfoLogger.error(BizExceptionCode.WSTI_006 + " : " + BizExceptionCode.GLB_002_MSG, e);
             throw new DelegatorException(
-                    BizExceptionCode.WSI_001,
+                    BizExceptionCode.WSTI_006,
                     BizExceptionCode.GLB_001_MSG,
                     e,
                     new String[]{EMSLogicalNames.DAO_WORKSTATIONINFO});
@@ -57,7 +56,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATION));
         } catch (DAOFactoryException e) {
             throw new DelegatorException(
-                    BizExceptionCode.WSI_001,
+                    BizExceptionCode.WSTI_007,
                     BizExceptionCode.GLB_001_MSG,
                     e,
                     new String[]{EMSLogicalNames.DAO_WORKSTATION});
@@ -70,17 +69,17 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
         boolean result = false;
         try {
             if (workstationCode == null) {
-                throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
+                throw new ServiceException(BizExceptionCode.WSTI_008, BizExceptionCode.WSTI_008_MSG);
             }
             if (workstationCode.length() < 40) {
-                throw new ServiceException(BizExceptionCode.WST_003, BizExceptionCode.WST_003_MSG);
+                throw new ServiceException(BizExceptionCode.WSTI_009, BizExceptionCode.WSTI_009_MSG);
             }
             if (workstationCode.length() > 40) {
-                throw new ServiceException(BizExceptionCode.WST_004, BizExceptionCode.WST_004_MSG);
+                throw new ServiceException(BizExceptionCode.WSTI_010, BizExceptionCode.WSTI_010_MSG);
             }
             WorkstationTO workstation = getWorkstationDAO().findByActivationCode(workstationCode);
             if (workstation == null) {
-                throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
+                throw new ServiceException(BizExceptionCode.WSTI_011, BizExceptionCode.WSTI_011_MSG);
             }
             workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
 
@@ -93,24 +92,17 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
                 return true;
             }
             //3-
-            try {
-                ProfileManager pm = ProfileHelper.getProfileManager();
-                String checkPeriod = (String) pm.getProfile(ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD, true, null, null);
-                if (checkPeriod == null) {
-                    checkPeriod = WORKSTATION_INFO_PERIOD_DEFAULT_VALUE;
-                }
-                if (workstationInfoTO.getLastModifiedDate() == null) {
-                    return true;
-                }
-                Date lastModifiedDatePlusCheckPeriod = EmsUtil.getDateAtMidnight(EmsUtil.differDay(workstationInfoTO.getLastModifiedDate(), Integer.valueOf(checkPeriod)));
-                if (new Date().compareTo(lastModifiedDatePlusCheckPeriod) > 0)
-                    return true;
-            } catch (ProfileException e) {
-                throw new ServiceException(
-                        BizExceptionCode.WSTI_004,
-                        BizExceptionCode.WSTI_004_MSG,
-                        e);
+
+            Integer checkPeriod = Integer.valueOf(EmsUtil.getProfileValue(
+                    ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD,
+                    WORKSTATION_INFO_PERIOD_DEFAULT_VALUE));
+
+            if (workstationInfoTO.getLastModifiedDate() == null) {
+                return true;
             }
+            Date lastModifiedDatePlusCheckPeriod = EmsUtil.getDateAtMidnight(EmsUtil.differDay(workstationInfoTO.getLastModifiedDate(), checkPeriod));
+            if (new Date().compareTo(lastModifiedDatePlusCheckPeriod) > 0)
+                return true;
 
         } catch (BaseException e) {
             throw new ServiceException(
