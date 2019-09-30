@@ -52,11 +52,38 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
             return null;
         }
         List<StateProviderTO> result = new ArrayList<StateProviderTO>(stateIds.size());
+
+        SecurityContextService securityContextService = null;
+        ProfileManager profileManager = null;
+        Long personID = null;
+        PersonTO personTO = null;
+        EnrollmentOfficeTO enrollmentOfficeTO = null;
+        OfficeSettingTO officeSettingTO = null;
+
+        try {
+            securityContextService = new SecurityContextService();
+            profileManager = ProfileHelper.getProfileManager();
+            personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
+            personTO = getPersonService().find(personID);
+            enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, getUserProfileTO().getDepID());
+            officeSettingTO = getOfficeSettingDAO().findByOfficeId(getUserProfileTO().getDepID());
+        } catch (Exception e) {
+            //TODO: Throw Exception with appropriate Exception Code
+            logger.error(BizExceptionCode.GLB_ERR_MSG, e);
+        }
+
         for (String stateId : stateIds) {
             if (stateId != null && stateId.trim().length() != 0) {
                 StateProviderTO stateProviderTO = null;
                 try {
-                    stateProviderTO = fetchState(stateId);
+                    stateProviderTO = fetchState(
+                            stateId,
+                            securityContextService,
+                            profileManager,
+                            personID,
+                            personTO,
+                            enrollmentOfficeTO,
+                            officeSettingTO);
                 } catch (Exception ex) {
                     EMSLog.getLogger(this.getClass()).error("Exception happened while trying to find stateId:" + stateId + ".", ex);
                     stateProviderTO.setStateId(stateId);
@@ -86,16 +113,19 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
         }
     }
 
-    private StateProviderTO fetchState(String stateId) {
+    private StateProviderTO fetchState(String stateId,
+                                       SecurityContextService securityContextService,
+                                       ProfileManager profileManager,
+                                       Long personID,
+                                       PersonTO personTO,
+                                       EnrollmentOfficeTO enrollmentOfficeTO,
+                                       OfficeSettingTO officeSettingTO) {
         if (stateId == null)
             return null;
         StateProviderTO stateProviderTO = new StateProviderTO();
         stateProviderTO.setStateId(stateId);
         try {
-            SecurityContextService securityContextService = new SecurityContextService();
-            ProfileManager profileManager = ProfileHelper.getProfileManager();
-            Long personID = getPersonService().findPersonIdByUsername(userProfileTO.getUserName());
-            PersonTO personTO = getPersonService().find(personID);
+
             Integer perId = null;
             try {
                 perId = Integer.parseInt("" + personID);
@@ -109,37 +139,25 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                 if (value != null && value.trim().length() > 0)
                     stateProviderTO.setValue(value);
             } else if (stateId.startsWith("ccos.")) {
-                OfficeSettingTO officeSettingTO = getOfficeSettingDAO().findByOfficeId(getUserProfileTO().getDepID());
                 if (stateId.endsWith("currentDate")) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     String date = format.format(new Date());
                     /*date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);*/
                     stateProviderTO.setValue(date);
                 } else if (stateId.endsWith("officeType") || stateId.endsWith("enrollmentOfficeId")) {
-                    Long userDepartmentId = getUserProfileTO().getDepID();
-                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
-
                     if (stateId.endsWith("officeType"))
                         stateProviderTO.setValue(enrollmentOfficeTO.getType().name());
                     else if (stateId.endsWith("enrollmentOfficeId"))
                         stateProviderTO.setValue(enrollmentOfficeTO.getId().toString());
                 } else if (stateId.endsWith("enrollmentOfficeName")) {
-                    Long userDepartmentId = getUserProfileTO().getDepID();
-                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
                     stateProviderTO.setValue(enrollmentOfficeTO.getName());
-                }
-                //Anbari
-                else if (stateId.endsWith("isDeliver")) {
-                    Long userDepartmentId = getUserProfileTO().getDepID();
-                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
+                } else if (stateId.endsWith("isDeliver")) {
                     if (EnrollmentOfficeType.OFFICE.equals(enrollmentOfficeTO.getType()) && EnrollmentOfficeDeliverStatus.ENABLED.equals(enrollmentOfficeTO.getDeliver()))
                         stateProviderTO.setValue("1");
                     else
                         stateProviderTO.setValue("0");
                 } else if (stateId.endsWith("isVIP")) {
                     try {
-                        long depID = userProfileTO.getDepID();
-                        EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, depID);
                         String enrollmentOfficeCode = enrollmentOfficeTO.getCode();
                         ProfileManager pm = ProfileHelper.getProfileManager();
                         String codeVip = (String) pm.getProfile(ProfileKeyName.KEY_VIP_ENROLLMENT_OFFICE, true, null, null);
@@ -148,20 +166,11 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         else
                             stateProviderTO.setValue("0");
                     } catch (Exception e) {
-
                         EMSLog.getLogger(this.getClass()).error("Exception happened while trying to find stateId:" + "isVip" + ".", e);
                         stateProviderTO.setStateId("isVip");
                         stateProviderTO.setValue("0");
-
                     }
-
-                }
-                /**
-                 * edited by Madanipour
-                 * check some setting that should be set for each office
-                 */
-
-                else if (stateId.endsWith("canImportFaceFromFile")) {
+                } else if (stateId.endsWith("canImportFaceFromFile")) {
 
                     if (officeSettingTO.getUploadPhoto()) {
 
