@@ -344,6 +344,16 @@
                     <xsd:documentation>marriagePage</xsd:documentation>
                 </xsd:annotation>
             </xsd:enumeration>
+            <xsd:enumeration value="52">
+                <xsd:annotation>
+                    <xsd:documentation>documentCertificateDetectedFaceImage</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="53">
+                <xsd:annotation>
+                    <xsd:documentation>documentCertificateDetectedSerialNumberImage</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
             <xsd:enumeration value="100">
                 <xsd:annotation>
                     <xsd:documentation>childrenPage</xsd:documentation>
