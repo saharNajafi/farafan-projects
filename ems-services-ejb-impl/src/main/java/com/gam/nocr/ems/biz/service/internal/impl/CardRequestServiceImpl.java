@@ -933,8 +933,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
             return false;
         } catch (Exception e) {
-            logger.error(BizExceptionCode.CRE_025, e.getMessage(), e);
-            throw new ServiceException(BizExceptionCode.CRE_025,
+            logger.error(BizExceptionCode.CRE_093, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.CRE_093,
                     BizExceptionCode.GLB_008_MSG, e);
         }
     }

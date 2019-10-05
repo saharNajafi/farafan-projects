@@ -247,6 +247,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRE_090 = "EMS_S_CRE_090";
     public static final String CRE_091 = "EMS_S_CRE_091";
     public static final String CRE_092 = "EMS_S_CRE_092";
+    public static final String CRE_093 = "EMS_S_CRE_093";
     public static final String CRE_001_MSG = "Card request id cannot not be null";
     public static final String CRE_002_MSG = "Card request action cannot not be null";
     public static final String CRE_007_MSG = "Card request cannot not be null";
