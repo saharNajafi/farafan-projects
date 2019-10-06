@@ -1058,7 +1058,6 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         return false;
     }
 
-    @Override
     /**
      * The method revokeAndSubstitute is used to replace a specified enrollmentOffice with another one
      *
@@ -1150,7 +1149,8 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     // }
     // Adldoost
     // madanipour
-    @Permissions(value = "ems_revokeNetworkToken")
+    @Override
+    @Permissions(value = "ems_removeEnrollmentOffice")
     public boolean substituteAndDelete(Long enrollmentOfficeId,
                                        Long superiorEnrollmentOfficeId) throws BaseException {
         try {
