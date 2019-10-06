@@ -18,6 +18,7 @@ import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
+import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeSingleStageVTO;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
 import com.gam.nocr.ems.data.domain.ws.HealthStatusWTO;
 import com.gam.nocr.ems.data.domain.ws.OfficeAppointmentWTO;
@@ -1061,7 +1062,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     /**
      * The method revokeAndSubstitute is used to replace a specified enrollmentOffice with another one
      *
-     * @param enrollmentOfficeId is an instance of type {@link Long} which represents the id of the main enrollmentOffice
+     * @param enrollmentOfficeId         is an instance of type {@link Long} which represents the id of the main enrollmentOffice
      * @param superiorEnrollmentOfficeId is an instance of type {@link Long} which represents the id of the superior enrollmentOffice
      * @param reason
      * @param comment
@@ -2025,12 +2026,13 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             throw new ServiceException(BizExceptionCode.EOS_100, BizExceptionCode.PRR_006_MSG);
         }
 
-        EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO = findEnrollmentOfficeSingleStageById(enrollmentOfficeId);
-
+        EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO = findEnrollmentOfficeSingleStageById(enrollmentOfficeId);
+        if (enrollmentOfficeSingleStageTO == null) {
+            throw new ServiceException(BizExceptionCode.EOS_106, BizExceptionCode.EOS_106_MSG);
+        }
         if (!hasEnoughCapacityToday(nationalId, enrollmentOfficeId)) {
             throw new ServiceException(BizExceptionCode.EOS_087, BizExceptionCode.EOS_087_MSG);
         }
-
         if (!hasEnoughAccessibilityForSingleStageEnrollment(
                 healthStatusWTO.getHasTwoFingerScanable().getCode(),
                 healthStatusWTO.getPupilIsVisible().getCode(),
@@ -2123,7 +2125,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     public Boolean hasEnoughAccessibilityForSingleStageEnrollment(
             String climbingStairsAbility,
             String pupilIsVisible,
-            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws ServiceException {
+            EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO) throws ServiceException {
         try {
             return getEnrollmentOfficeDAO().hasOfficeQueryByAccessibility(
                     climbingStairsAbility, pupilIsVisible, enrollmentOfficeSingleStageTO);
@@ -2162,7 +2164,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     public Boolean hasEnoughInstrumentsForSingleStageEnrollment(
             String abilityToGo,
             String hasTwoFingersScanable,
-            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws ServiceException {
+            EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO) throws ServiceException {
         try {
             return getEnrollmentOfficeDAO().hasOfficeQueryByInstruments(abilityToGo, hasTwoFingersScanable, enrollmentOfficeSingleStageTO);
         } catch (BaseException e) {
@@ -2265,7 +2267,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 }
             });
             officeId = reservationTO.getEnrollmentOffice().getId();
-            activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
+            activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             shiftNo = reservationTO.getShiftNo();
             activeShiftTO = findActiveShiftByOfficeAndDateAndShift(officeId, activeDate, shiftNo);
             if (activeShiftTO != null) {
@@ -2314,7 +2316,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
                 }
             });
             reservationTO = Collections.max(cardRequest.getReservations(), null);
-            Integer reserveDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/",""));
+            Integer reserveDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             if (!reservationTO.getShiftNo().equals(shiftNo)
                     || !officeId.equals(reservationTO.getEnrollmentOffice().getId())
                     || !activeDate.equals(reserveDate)) {
@@ -2337,7 +2339,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             }
             reservationTO.setPortalReservationId(officeAppointmentWTO.getId());
             cardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
-            Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/",""));
+            Integer today = Integer.valueOf(CalendarUtil.getDate(new Date(), new Locale("fa")).replace("/", ""));
             if (today.equals(officeAppointmentWTO.getAppointmentDate())) {
                 fillCardRequestRsvDate(cardRequest, reservationDate, false);
                 getCardRequestService().updateCitizenByEstelam(cardRequest, true, false);
@@ -2370,7 +2372,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     @Override
     public void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException {
         fromDate = EmsUtil.getDateAtMidnight(fromDate);
-        int persianDate = Integer.valueOf(CalendarUtil.getDate(fromDate, new Locale("fa")).replace("/",""));
+        int persianDate = Integer.valueOf(CalendarUtil.getDate(fromDate, new Locale("fa")).replace("/", ""));
         List<OfficeCapacityTO> todateOfficeCapacity = new ArrayList<OfficeCapacityTO>();
 
         /*OfficeCapacityTO officeCapacityMorning = officeCapacityService.findbyEnrollmentOfficeIdAndDateAndShift(enrollmentOfficeTO.getId(), ShiftEnum.MORNING, persianDate);
@@ -2466,7 +2468,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     }
 
     @Override
-    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
+    public EnrollmentOfficeSingleStageVTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
         return getEnrollmentOfficeDAO().findEnrollmentOfficeSingleStageById(enrollmentOfficeId);
     }
 

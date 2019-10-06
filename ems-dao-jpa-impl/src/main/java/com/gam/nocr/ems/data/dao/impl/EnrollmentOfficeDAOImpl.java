@@ -12,7 +12,7 @@ import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.PersonDAO;
 import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeSingleStageTO;
+import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeSingleStageVTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.enums.EOFDeliveryState;
@@ -577,7 +577,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public Boolean hasOfficeQueryByAccessibility(
             String climbingStairsAbility,
             String pupilIsVisible,
-            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws BaseException {
+            EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO) throws BaseException {
 
         if (pupilIsVisible.equals("YES") && climbingStairsAbility.equals("YES")) {
             if ((enrollmentOfficeSingleStageTO.getEOF_IGNORE_ICAO_PERMITTED() == Boolean.FALSE || enrollmentOfficeSingleStageTO.getEOF_IGNORE_ICAO_PERMITTED() == Boolean.TRUE)
@@ -630,7 +630,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public Boolean hasOfficeQueryByInstruments(
             String abilityToGo,
             String hasTwoFingersScanable,
-            EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws BaseException {
+            EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO) throws BaseException {
 
         if (abilityToGo.equals("YES") && hasTwoFingersScanable.equals("YES")) {
             if ((enrollmentOfficeSingleStageTO.getEOF_HAS_PORTABILITY_EQUIPMENT() == Boolean.FALSE || enrollmentOfficeSingleStageTO.getEOF_HAS_PORTABILITY_EQUIPMENT() == Boolean.TRUE)
@@ -725,8 +725,8 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     }
 
     @Override
-    public EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
-        EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO = new EnrollmentOfficeSingleStageTO();
+    public EnrollmentOfficeSingleStageVTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException {
+        EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO = null;
         try {
 
             String myQuery =
@@ -737,19 +737,21 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                             " EOF_DEFINE_NMOC_PERMITTED ," +
                             " EOF_IS_ACTIVE " +
                             " FROM EMST_ENROLLMENT_OFFICE EOF" +
-                            " WHERE EOF_IS_DELETED = 0 and EOF_ID=? ";
+                            " WHERE EOF_IS_DELETED = 0 and EOF_ID= :eofID ";
 
             Query query = em.createNativeQuery(myQuery);
-            query.setParameter(1, enrollmentOfficeId);
-            Object[] object = (Object[]) query.getSingleResult();
-
-            enrollmentOfficeSingleStageTO.setEOF_IGNORE_ICAO_PERMITTED(convertBigDecimalToBoolean(object[0]));
-            enrollmentOfficeSingleStageTO.setEOF_HAS_STAIR(convertBigDecimalToBoolean(object[1]));
-            enrollmentOfficeSingleStageTO.setEOF_HAS_ELEVATOR(convertBigDecimalToBoolean(object[2]));
-            enrollmentOfficeSingleStageTO.setEOF_HAS_PORTABILITY_EQUIPMENT(convertBigDecimalToBoolean(object[3]));
-            enrollmentOfficeSingleStageTO.setEOF_DEFINE_NMOC_PERMITTED(convertBigDecimalToBoolean(object[4]));
-            enrollmentOfficeSingleStageTO.setEOF_IS_ACTIVE(convertBigDecimalToBoolean(object[5]));
-
+            query.setParameter("eofID", enrollmentOfficeId);
+            List resultList = query.getResultList();
+            if (resultList.size() != 0) {
+                    Object[] officeTo = (Object[]) resultList.get(0);
+                enrollmentOfficeSingleStageTO = new EnrollmentOfficeSingleStageVTO();
+                    enrollmentOfficeSingleStageTO.setEOF_IGNORE_ICAO_PERMITTED(convertBigDecimalToBoolean(officeTo[0]));
+                    enrollmentOfficeSingleStageTO.setEOF_HAS_STAIR(convertBigDecimalToBoolean(officeTo[1]));
+                    enrollmentOfficeSingleStageTO.setEOF_HAS_ELEVATOR(convertBigDecimalToBoolean(officeTo[2]));
+                    enrollmentOfficeSingleStageTO.setEOF_HAS_PORTABILITY_EQUIPMENT(convertBigDecimalToBoolean(officeTo[3]));
+                    enrollmentOfficeSingleStageTO.setEOF_DEFINE_NMOC_PERMITTED(convertBigDecimalToBoolean(officeTo[4]));
+                    enrollmentOfficeSingleStageTO.setEOF_IS_ACTIVE(convertBigDecimalToBoolean(officeTo[5]));
+            }
         } catch (Exception e) {
             throw new DataException(
                     DataExceptionCode.ENI_018,
