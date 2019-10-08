@@ -132,18 +132,18 @@
                     e.EOF_POST_DESTINATION_CODE,
                     d.dep_dn || '.' ||
                     d.dep_parent_dn fqdn,
-                    (select dp.dep_name from emst_department dp
-                    where
-                    dp.dep_id=d.dep_parent_dep_id) parent_name,
+                    (select dp.dep_name
+                    from emst_department dp
+                    where dp.dep_id = d.dep_parent_dep_id) parent_name,
                     (case
                     when
-                    l.loc_type = 1 then l.loc_name || ' (شهرستان ' || (select
-                    l2.loc_name from
-                    emst_location l2 where l2.loc_id = l.loc_county_id)
+                    l.loc_type = 1 then l.loc_name || ' (شهرستان ' || (select l2.loc_name
+                    from emst_location l2
+                    where l2.loc_id = l.loc_county_id)
                     || ')'
-                    when l.loc_type = 2 then l.loc_name || ' (دهستان ' || (select
-                    l2.loc_name from
-                    emst_location l2 where l2.loc_id =
+                    when l.loc_type = 2 then l.loc_name || ' (دهستان ' || (select l2.loc_name
+                    from emst_location l2
+                    where l2.loc_id =
                     l.loc_district_id) || ')'
                     else l.loc_name
                     end) location_name,
@@ -162,9 +162,9 @@
                     e.eof_area,
                     e.eof_fax,
                     e.eof_superior_office,
-                    (select ed.dep_name from
-                    emst_department ed where
-                    ed.dep_id=e.eof_superior_office)
+                    (select ed.dep_name
+                    from emst_department ed
+                    where ed.dep_id = e.eof_superior_office)
                     eof_superior_office_name,
                     ost.ost_upload_photo upload_photo,
                     ost.ost_finger_scan_single_mode finger_scan_single_mode,
@@ -178,7 +178,30 @@
                     ost.OST_ALW_AMPT_FING_STA_ELD,
                     ost.OST_ALW_CHG_FING_DUR_CAP_ELD,
                     ost.OST_ID,
-                    sum (cap.EOC_CAPACITY) over (partition by cap.EOC_OFFICE_ID ) capacity
+
+
+                    <![CDATA[
+                        (nvl((select distinct last_value(EOC_CAPACITY) over (partition by eoc_office_id order by eoc_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) capacity
+                        from EMST_OFFICE_CAPACITY
+                        where e.EOF_ID = EOC_OFFICE_ID
+                        and EOC_SHIFT_NO = 1
+                        and EOC_END_DATE >=
+                        {capdate}
+                        and EOC_START_DATE <=
+                        {capdate}
+                        ),0)
+                        +
+                        nvl((select distinct last_value(EOC_CAPACITY) over (partition by eoc_office_id order by eoc_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) capacity
+                        from EMST_OFFICE_CAPACITY
+                        where e.EOF_ID = EOC_OFFICE_ID
+                        and EOC_SHIFT_NO = 0
+                        and EOC_END_DATE >=
+                        {capdate}
+                        and EOC_START_DATE <=
+                        {capdate}
+                        ),0)+0
+                        ) capacity
+                    ]]>
 
                 </part>
                 from
@@ -187,11 +210,9 @@
                 emst_department d,
                 emst_enrollment_office e,
                 emst_person p,
-                emst_office_setting ost,
-                EMST_OFFICE_CAPACITY cap
+                emst_office_setting ost
                 where
                 e.eof_is_deleted = 0 and
-                e.EOF_ID = cap.EOC_OFFICE_ID(+) and
                 l.loc_id = d.dep_location_id and
                 l.loc_province_id=lp.loc_id and
                 d.dep_id=e.eof_id and
@@ -253,12 +274,6 @@
                 </part>
                 <part name="singleStageOnly">
                     and e.SINGLE_STAGE_ONLY like {singleStageOnly}
-                </part>
-                <part name="capdate">
-                    <![CDATA[
-					and cap.EOC_END_DATE >= {capdate} and
-					cap.EOC_START_DATE <= {capdate}
-					]]>
                 </part>
                 <order-by>
                     d.dep_id

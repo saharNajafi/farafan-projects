@@ -648,7 +648,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                 && (state != CardRequestState.STOPPED)
                 && (state != CardRequestState.DELIVERED)
 //				&& (state != CardRequestState.REPEALED)
-                ) {
+        ) {
             throw new ServiceException(BizExceptionCode.RSI_062,
                     BizExceptionCode.RSI_062_MSG, new String[]{citizens
                     .get(0).getNationalID()});
@@ -660,7 +660,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         if ((state != CardRequestState.STOPPED_NOT_FOLLOW_LIMITED_RESERVE)
                 && (state != CardRequestState.NOT_DELIVERED)
                 && (state != CardRequestState.DELIVERED)
-                ) {
+        ) {
             throw new ServiceException(BizExceptionCode.RSI_180,
                     BizExceptionCode.RSI_180_MSG);
         }
@@ -962,15 +962,19 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             CitizenTO citizenLoadedFromDb = citizens.get(0);
             CitizenInfoTO citizenInfoLoadedFromDb = citizenLoadedFromDb.getCitizenInfo();
             citizenInfoDAO = getCitizenInfoDAO();
-            if (citizenInfoLoadedFromDb != null) {// Information for this citizen is currently in the db
-                citizenLoadedFromDb.setCitizenInfo(null);
-                citizenInfoLoadedFromDb.setCitizen(null);
-                citizenInfoDAO.delete(citizenInfoLoadedFromDb); // Cascade on remove should be implemented in the database
-            }
             CitizenInfoTO newCitizenInfo = newCardRequest.getCitizen().getCitizenInfo();
             newCitizenInfo.setCitizen(citizenLoadedFromDb);
-            newCitizenInfo.setId(null);
-            citizenInfoDAO.create(newCitizenInfo);
+
+            if (citizenInfoLoadedFromDb != null) {// Information for this citizen is currently in the db
+                newCitizenInfo.setId(citizenInfoLoadedFromDb.getId());
+                citizenInfoDAO.update(newCitizenInfo);
+//                citizenLoadedFromDb.setCitizenInfo(null);
+//                citizenInfoLoadedFromDb.setCitizen(null);
+//                citizenInfoDAO.delete(citizenInfoLoadedFromDb); // Cascade on remove should be implemented in the database
+            } else {
+                newCitizenInfo.setId(null);
+                citizenInfoDAO.create(newCitizenInfo);
+            }
             citizenLoadedFromDb.setCitizenInfo(newCitizenInfo);
 
             CitizenTO newCitizen = newCardRequest.getCitizen();
@@ -3103,14 +3107,18 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         List<CardRequestTO> cardRequestTOs = getCardRequestDAO().findByNationalId(nationalId);
         if (EmsUtil.checkListSize(cardRequestTOs)) {
             if (cardRequestTOs.size() == 1) {
-                if (cardRequestTOs.get(0).getCard() != null && !cardRequestTOs.get(0).getCard().getCrn().equalsIgnoreCase(crn)) {
-                    throw new ServiceException(BizExceptionCode.RSI_181,
-                            BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                if (cardRequestTOs.get(0).getCard() != null) {
+                    if (!cardRequestTOs.get(0).getCard().getCrn().equals(crn)) {
+                        throw new ServiceException(BizExceptionCode.RSI_181,
+                                BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
+                    }
+                } else {
+                    throw new ServiceException(BizExceptionCode.RSI_184,
+                            BizExceptionCode.RSI_184_MSG, new String[]{nationalId});
                 }
             } else if (cardRequestTOs.size() > 1) {
-
                 if (cardRequestTOs.get(cardRequestTOs.size() - 1).getCard() != null &&
-                        !cardRequestTOs.get(cardRequestTOs.size() - 1).getCard().getCrn().equalsIgnoreCase(crn)) {
+                        !cardRequestTOs.get(cardRequestTOs.size() - 1).getCard().getCrn().equals(crn)) {
                     for (int i = 0; i <= cardRequestTOs.size() - 2; i++) {
                         if (cardRequestTOs.get(i).getCard() != null && cardRequestTOs.get(i).getCard().getCrn().equals(crn)) {
                             throw new ServiceException(BizExceptionCode.RSI_182,

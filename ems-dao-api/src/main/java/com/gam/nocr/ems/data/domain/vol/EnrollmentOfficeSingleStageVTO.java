@@ -1,8 +1,9 @@
-package com.gam.nocr.ems.data.domain;
+package com.gam.nocr.ems.data.domain.vol;
 
-import java.io.Serializable;
 
-public class EnrollmentOfficeSingleStageTO implements Serializable {
+import com.gam.commons.core.data.domain.ExtEntityTO;
+
+public class EnrollmentOfficeSingleStageVTO extends ExtEntityTO {
 
     private Boolean EOF_IGNORE_ICAO_PERMITTED;
     private Boolean EOF_HAS_STAIR;
@@ -11,16 +12,16 @@ public class EnrollmentOfficeSingleStageTO implements Serializable {
     private Boolean EOF_DEFINE_NMOC_PERMITTED;
     private Boolean EOF_IS_ACTIVE;
 
-    public EnrollmentOfficeSingleStageTO() {
+    public EnrollmentOfficeSingleStageVTO() {
 
     }
 
-    public EnrollmentOfficeSingleStageTO(Boolean EOF_IGNORE_ICAO_PERMITTED,
-                                         Boolean EOF_HAS_STAIR,
-                                         Boolean EOF_HAS_ELEVATOR,
-                                         Boolean EOF_HAS_PORTABILITY_EQUIPMENT,
-                                         Boolean EOF_DEFINE_NMOC_PERMITTED,
-                                         Boolean EOF_IS_ACTIVE) {
+    public EnrollmentOfficeSingleStageVTO(Boolean EOF_IGNORE_ICAO_PERMITTED,
+                                          Boolean EOF_HAS_STAIR,
+                                          Boolean EOF_HAS_ELEVATOR,
+                                          Boolean EOF_HAS_PORTABILITY_EQUIPMENT,
+                                          Boolean EOF_DEFINE_NMOC_PERMITTED,
+                                          Boolean EOF_IS_ACTIVE) {
         this.EOF_IGNORE_ICAO_PERMITTED = EOF_IGNORE_ICAO_PERMITTED;
         this.EOF_HAS_STAIR = EOF_HAS_STAIR;
         this.EOF_HAS_ELEVATOR = EOF_HAS_ELEVATOR;
@@ -78,4 +79,6 @@ public class EnrollmentOfficeSingleStageTO implements Serializable {
         this.EOF_IS_ACTIVE = EOF_IS_ACTIVE;
     }
     //endregion
+
+
 }

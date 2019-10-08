@@ -68,11 +68,8 @@ public class PaymentUtil {
             czi.setFirstNameEnglish(notValue);
             czi.setSurnameEnglish(notValue);
             czi.setBirthCertificateId(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()));
-            String birthDateSolar =
-                    CalendarUtil.addSlashToPersianDate(
-                            String.valueOf(singlePreRegistrationWTO.getBirthDateSolar()));
-            czi.setBirthDateGregorian(DateUtil.convert(birthDateSolar, DateUtil.JALALI));
-            czi.setBirthDateSolar(birthDateSolar);
+            czi.setBirthDateGregorian(singlePreRegistrationWTO.getBirthDateGregorian());
+            czi.setBirthDateSolar(CalendarUtil.addSlashToPersianDate(String.valueOf(singlePreRegistrationWTO.getBirthDateSolar())));
             czi.setBirthDateLunar(singlePreRegistrationWTO.getBirthDateLunar());
             try {
                 czi.setGender(GenderEnum.getEMSGender(singlePreRegistrationWTO.getGender()));

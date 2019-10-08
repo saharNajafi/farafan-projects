@@ -171,18 +171,18 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         try {
             PaymentInfoWTO result = new PaymentInfoWTO();
             CardRequestTO cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
-            if (cardRequestTO.getRegistrationPaymentTO() == null) {
-                throw new ServiceException(BizExceptionCode.ISC_010, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
-            }
             RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
+            if (registrationPaymentTO == null) {
+                throw new ServiceException(BizExceptionCode.RGP_015, BizExceptionCode.RGP_015_MSG, new Object[]{nationalId});
+            }
             // Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
             //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
-           /* Map<String, String> registrationPaymentResult =
-                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);*/
-            result.setPaymentAmount(cardRequestTO.getRegistrationPaymentTO().getAmountPaid());
+            Map<String, String> registrationPaymentResult =
+                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);
+            result.setPaymentAmount(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             result.setOrderId(String.valueOf(registrationPaymentTO.getOrderId()));
-            result.setPaymentCode(registrationPaymentTO.getPaymentCode());
+            result.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             return result;
         } catch (Exception e) {
             if (e instanceof ServiceException) {

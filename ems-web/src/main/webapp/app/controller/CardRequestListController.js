@@ -285,7 +285,7 @@ Ext.define('Ems.controller.CardRequestListController', {
         if (rec.get(EmsObjectName.BatchList.cmsID)) {
             batchCmsId = rec.get(EmsObjectName.BatchList.cmsID).toString();
         } else {
-            batchCmsId = '0';
+            batchCmsId = Ems.ErrorCode.client.EMS_C_004;
         }
         panelInfo.setData(Ext.create('Ems.model.BatchListModel', {
             cmsID: batchCmsId

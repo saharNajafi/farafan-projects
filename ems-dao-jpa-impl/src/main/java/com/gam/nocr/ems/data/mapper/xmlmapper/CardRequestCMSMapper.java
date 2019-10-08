@@ -247,26 +247,16 @@ public class CardRequestCMSMapper implements XMLMapper {
 
             Element userSiteID = doc.createElement("UserSiteID");
             //Anbari
-            if (cardRequestTO.getSelectDeliveryOfficeId() != null){
-                EnrollmentOfficeTO dbEnrollmentOffice =
-                        getEnrollmentOfficeDAO().loadLazyChildren(
-                                new EnrollmentOfficeTO(cardRequestTO.getSelectDeliveryOfficeId()));
-                if (dbEnrollmentOffice.getSuperiorOffice() == null) {
-                    userSiteID.appendChild(doc.createTextNode(
-                            String.valueOf(dbEnrollmentOffice.getId())));
-                } else {
-                    if (EnrollmentOfficeDeliverStatus.ENABLED.equals(dbEnrollmentOffice.getDeliver()))
-                        userSiteID.appendChild(doc.createTextNode(
-                                String.valueOf(dbEnrollmentOffice.getId())));
-                    else
-                        userSiteID.appendChild(doc.createTextNode(
-                                String.valueOf(dbEnrollmentOffice.getSuperiorOffice().getId())));
-
-                }
+            Long enrollmentOfficeId = null;
+            if(cardRequestTO.getSelectDeliveryOfficeId() != null) {
+                enrollmentOfficeId = cardRequestTO.getSelectDeliveryOfficeId();
+            }else if(cardRequestTO.getEnrollmentOffice() != null){
+                enrollmentOfficeId = cardRequestTO.getEnrollmentOffice().getId();
             }
-           else if (cardRequestTO.getEnrollmentOffice() != null) {
+            if (enrollmentOfficeId != null) {
                 //load lazy
-                EnrollmentOfficeTO dbEnrollmentOffice = getEnrollmentOfficeDAO().loadLazyChildren(cardRequestTO.getEnrollmentOffice());
+                EnrollmentOfficeTO dbEnrollmentOffice = getEnrollmentOfficeDAO().loadLazyChildren(
+                        new EnrollmentOfficeTO(enrollmentOfficeId));
                 if (dbEnrollmentOffice.getSuperiorOffice() == null) {
                     userSiteID.appendChild(doc.createTextNode(String
                             .valueOf(dbEnrollmentOffice

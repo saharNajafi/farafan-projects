@@ -37,10 +37,8 @@ public class WorkstationInfoTO extends ExtEntityTO {
     private String ipAddress;
     private String username;
     private String additionalInfoAsJson;
-
     private short gatherState;
     private Date lastModifiedDate;
-
     private WorkstationTO workstation;
 
     public WorkstationInfoTO() {
@@ -55,11 +53,13 @@ public class WorkstationInfoTO extends ExtEntityTO {
         return id;
     }
 
+
     @Override
     public void setId(Long id) {
         this.id = id;
     }
 
+    @NotNull
     @Column(name = "WSI_IP_ADDRESS")
     public String getIpAddress() {
         return ipAddress;
@@ -69,6 +69,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.ipAddress = ipAddress;
     }
 
+    @NotNull
     @Column(name = "WSI_CPU_INFO")
     public String getCpuInfo() {
         return cpuInfo;
@@ -78,6 +79,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.cpuInfo = cpuInfo;
     }
 
+    @NotNull
     @Column(name = "WSI_CCOS_VERSION")
     public String getCcosVersion() {
         return ccosVersion;
@@ -87,6 +89,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.ccosVersion = ccosVersion;
     }
 
+    @NotNull
     @Column(name = "WSI_OS_VERSION")
     public String getOsVersion() {
         return osVersion;
@@ -96,6 +99,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.osVersion = osVersion;
     }
 
+    @NotNull
     @Column(name = "WSI_MEMORY_CAPACITY")
     public String getMemoryCapacity() {
         return memoryCapacity;
@@ -105,6 +109,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.memoryCapacity = memoryCapacity;
     }
 
+    @NotNull
     @Column(name = "WSI_USERNAME")
     public String getUsername() {
         return username;
@@ -114,6 +119,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.username = username;
     }
 
+    @NotNull
     @Column(name = "WSI_HAS_DOTNET_FRAMWORK45")
     public Short getHasDotnetFramwork45() {
         return hasDotnetFramwork45;
@@ -124,7 +130,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
     }
 
     @OneToOne
-    @JoinColumn(name = "WSI_WORKSTATION_ID")
+    @JoinColumn(name = "WSI_WORKSTATION_ID",nullable = false)
     public WorkstationTO getWorkstation() {
         return workstation;
     }
@@ -133,6 +139,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.workstation = workstation;
     }
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "WSI_LAST_MODIFIED_DATE")
     public Date getLastModifiedDate() {
@@ -143,6 +150,7 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    @NotNull
     @Basic(optional = false)
     @Column(name = "WSI_GATHER_STATE")
     public short getGatherState() {
@@ -153,8 +161,9 @@ public class WorkstationInfoTO extends ExtEntityTO {
         this.gatherState = gatherState;
     }
 
-    @Column(name = "WSI_ADDITIONAL_INFO_AS_JSON")
+    @NotNull
     @Lob
+    @Column(name = "WSI_ADDITIONAL_INFO_AS_JSON")
     public String getAdditionalInfoAsJson() {
         return additionalInfoAsJson;
     }
