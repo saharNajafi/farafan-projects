@@ -1529,7 +1529,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
                     return MessageFormat.format(
                             labels.getString("state.enableEnrollmentOffice"),
-                            DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI), enrollmentOfficeTO.getName());
+                            DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI));
                 }
             } else if (findReservationAttended(cardRequestTO)) {
                 return labels.getString("state.notAttend");
