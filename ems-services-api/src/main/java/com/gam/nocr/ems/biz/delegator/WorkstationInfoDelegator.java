@@ -39,17 +39,16 @@ public class WorkstationInfoDelegator implements Delegator {
            return getService(userProfileTO).isReliableVerInquiryRequired(workstationCode);
     }
 
-    public String getReliableVerByPlatform(
+    public void getReliableVerByPlatform(
             UserProfileTO userProfileTO, String workstationCode, WorkstationInfoTO workstationInfoTO)
             throws BaseException {
-        String verCode = null;
         try {
-            verCode = getService(userProfileTO).getReliableVerByPlatform(
+            getService(userProfileTO).getReliableVerByPlatform(
                     workstationCode, workstationInfoTO);
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw e;
         }
-        return verCode;
+        return;
     }
 
 //    public List<String> getCompatibleClientVerList(UserProfileTO userProfileTO) throws BaseException {

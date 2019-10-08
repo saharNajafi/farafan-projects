@@ -1597,7 +1597,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                 if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt()
                         || personEnquiryVTOResult.getIsExceptionMessage() || personEnquiryVTOResult.getIsDead() == 1) {
                     if (personEnquiryVTOResult.getIsExceptionMessage()) {
-                        throw new ServiceException(BizExceptionCode.NIO_001, personEnquiryVTOResult.getDescription());
+                        throw new ServiceException(BizExceptionCode.NIO_034, personEnquiryVTOResult.getDescription());
                     }
                     if (personEnquiryVTOResult.getIsDead() == 1) {
                         throw new ServiceException(BizExceptionCode.NOCR_IMS_05, personEnquiryVTOResult.getDescription());
@@ -1605,7 +1605,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                     if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt()) {
                         throw new ServiceException(BizExceptionCode.NIO_002, personEnquiryVTOResult.getDescription());
                     }
-                    throw new ServiceException(BizExceptionCode.NIO_001, BizExceptionCode.NIO_001_MSG, new Object[]{nationalId});
+                    throw new ServiceException(BizExceptionCode.NIO_035, BizExceptionCode.NIO_001_MSG, new Object[]{nationalId});
                 }
             }
             return personEnquiryVTOResult;

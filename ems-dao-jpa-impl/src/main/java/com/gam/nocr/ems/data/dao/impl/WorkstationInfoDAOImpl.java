@@ -71,9 +71,11 @@ public class WorkstationInfoDAOImpl extends EmsBaseDAOImpl<WorkstationInfoTO>
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.WST_002, DataExceptionCode.WST_002_MSG, e);
         }
-        if (EmsUtil.checkListSize(workstationInfoTOs))
+        if (EmsUtil.checkListSize(workstationInfoTOs)) {
             return workstationInfoTOs.get(0);
-        else
+        }
+        else {
             return null;
+        }
     }
 }

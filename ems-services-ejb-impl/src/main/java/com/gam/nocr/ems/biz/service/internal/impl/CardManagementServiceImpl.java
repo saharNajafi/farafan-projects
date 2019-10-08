@@ -1,41 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_BIOMETRIC;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_BIOMETRIC_INFO;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_CARDREQUEST_BLOBS;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_DOCUMENT;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
-import static com.gam.nocr.ems.data.enums.CMSCardState.DESTROYED;
-import static com.gam.nocr.ems.data.enums.CMSCardState.EXPIRED;
-import static com.gam.nocr.ems.data.enums.CMSCardState.HANDED_OUT;
-import static com.gam.nocr.ems.data.enums.CMSCardState.MISSING;
-import static com.gam.nocr.ems.data.enums.CMSCardState.REVOKED;
-import static com.gam.nocr.ems.data.enums.CMSCardState.SUSPENDED;
-import static com.gam.nocr.ems.data.enums.CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_EXTEND;
-import static com.gam.nocr.ems.data.enums.CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD;
-import static com.gam.nocr.ems.data.enums.CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_REPLACE;
-import static com.gam.nocr.ems.data.enums.CardRequestType.UNSUCCESSFUL_DELIVERY_FOR_REPLICA;
-
-import gampooya.tools.date.DateUtil;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
-
-import javax.annotation.Resource;
-import javax.ejb.AsyncResult;
-import javax.ejb.Asynchronous;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -48,61 +12,36 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.biz.service.BusinessLogService;
-import com.gam.nocr.ems.biz.service.CMSService;
-import com.gam.nocr.ems.biz.service.CardRequestService;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.IMSManagementService;
-import com.gam.nocr.ems.biz.service.IMSService;
+import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
-import com.gam.nocr.ems.data.dao.BatchDAO;
-import com.gam.nocr.ems.data.dao.BiometricDAO;
-import com.gam.nocr.ems.data.dao.BiometricInfoDAO;
-import com.gam.nocr.ems.data.dao.CardDAO;
-import com.gam.nocr.ems.data.dao.CardRequestBlobsDAO;
-import com.gam.nocr.ems.data.dao.CardRequestDAO;
-import com.gam.nocr.ems.data.dao.CardRequestHistoryDAO;
-import com.gam.nocr.ems.data.dao.CitizenDAO;
-import com.gam.nocr.ems.data.dao.DispatchDAO;
-import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
-import com.gam.nocr.ems.data.dao.NistHeaderDAO;
-import com.gam.nocr.ems.data.domain.BatchTO;
-import com.gam.nocr.ems.data.domain.BiometricTO;
-import com.gam.nocr.ems.data.domain.BoxTO;
-import com.gam.nocr.ems.data.domain.BusinessLogTO;
-import com.gam.nocr.ems.data.domain.CardRequestHistoryTO;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
-import com.gam.nocr.ems.data.domain.CardTO;
-import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.DispatchInfoTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.domain.NistHeaderTO;
+import com.gam.nocr.ems.data.dao.*;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.BatchDispatchInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.CardDispatchInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.CardInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.EmsCardDeliverInfo;
 import com.gam.nocr.ems.data.domain.ws.ImsCitizenInfoRequestWTO;
 import com.gam.nocr.ems.data.domain.ws.ImsCitizenInfoResponseWTO;
-import com.gam.nocr.ems.data.enums.BatchState;
-import com.gam.nocr.ems.data.enums.BiometricType;
-import com.gam.nocr.ems.data.enums.BoxState;
-import com.gam.nocr.ems.data.enums.BusinessLogAction;
-import com.gam.nocr.ems.data.enums.BusinessLogActionAttitude;
-import com.gam.nocr.ems.data.enums.BusinessLogEntity;
-import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.CardRequestType;
-import com.gam.nocr.ems.data.enums.CardState;
-import com.gam.nocr.ems.data.enums.DepartmentDispatchSendType;
-import com.gam.nocr.ems.data.enums.SystemId;
-import com.gam.nocr.ems.data.enums.UnSuccessfulDeliveryRequestReason;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NistParser;
 import com.gam.nocr.ems.util.NistResult;
+import gampooya.tools.date.DateUtil;
+import org.slf4j.Logger;
+
+import javax.annotation.Resource;
+import javax.ejb.*;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.concurrent.Future;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.*;
+import static com.gam.nocr.ems.data.enums.CMSCardState.*;
+import static com.gam.nocr.ems.data.enums.CardRequestType.*;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -2718,25 +2657,25 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     @Override
-    public String findCmsBatchByRequestId(Long requestId) {
+    public String findCmsBatchByRequestId(Long requestId) throws BaseException {
         try {
+            String cmsId = "";
             if (requestId == null) {
-                throw new ServiceException(BizExceptionCode.CMS_070,
-                        BizExceptionCode.CMS_070_MSG);
+                throw new ServiceException(BizExceptionCode.CMS_101,
+                        BizExceptionCode.CMS_101_MSG);
             }
-            String cmsId = getBatchDAO().findCmsIdByRequestId(requestId);
+            cmsId = getBatchDAO().findCmsIdByRequestId(requestId);
             if (cmsId == null) {
-                throw new ServiceException(BizExceptionCode.CMS_071,
-                        BizExceptionCode.CMS_071_MSG);
+                throw new ServiceException(BizExceptionCode.CMS_102,
+                        BizExceptionCode.CMS_102_MSG);
             }
             return cmsId;
-        } catch (ServiceException e) {
-            e.printStackTrace();
         } catch (BaseException e) {
-            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CMS_103,
+                    BizExceptionCode.CMS_103_MSG, e);
         }
-
-        return null;
     }
 
     /**

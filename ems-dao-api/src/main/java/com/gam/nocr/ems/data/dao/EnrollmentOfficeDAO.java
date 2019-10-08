@@ -8,7 +8,7 @@ import com.gam.commons.core.data.DataException;
 import com.gam.commons.core.data.dao.DAOException;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeSingleStageTO;
+import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeSingleStageVTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
 import com.gam.nocr.ems.data.domain.OfficeSettingTO;
 import com.gam.nocr.ems.data.enums.EOFDeliveryState;
@@ -88,19 +88,19 @@ public interface EnrollmentOfficeDAO extends EmsBaseDAO<EnrollmentOfficeTO> {
             String climbingStairsAbility, String pupilIsVisible, Long enrollmentOfficeId) throws BaseException;
 
     Boolean hasOfficeQueryByAccessibility(
-            String climbingStairsAbility, String pupilIsVisible, EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO ) throws BaseException;
+            String climbingStairsAbility, String pupilIsVisible, EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO ) throws BaseException;
 
     Boolean hasOfficeQueryByInstruments(
             String abilityToGo, String hasTwoFingersScanable, Long enrollmentOfficeId) throws BaseException;
 
     Boolean hasOfficeQueryByInstruments(
-            String abilityToGo, String hasTwoFingersScanable, EnrollmentOfficeSingleStageTO enrollmentOfficeSingleStageTO) throws BaseException;
+            String abilityToGo, String hasTwoFingersScanable, EnrollmentOfficeSingleStageVTO enrollmentOfficeSingleStageTO) throws BaseException;
 
     Boolean officeIsActive(Long enrollmentOfficeId) throws BaseException;
 
     List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException;
 
-    EnrollmentOfficeSingleStageTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException ;
+    EnrollmentOfficeSingleStageVTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException ;
 
     //This method soft deletes the enrollment office
     Boolean removeEnrollmentOffice(Long toString) throws BaseException;

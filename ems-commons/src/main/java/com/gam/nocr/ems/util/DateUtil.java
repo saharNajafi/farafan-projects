@@ -1,11 +1,15 @@
 package com.gam.nocr.ems.util;
 
+import gampooya.tools.date.DateException;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Resource;
-import javax.ejb.SessionContext;
 import javax.faces.model.SelectItem;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static gampooya.tools.date.DateUtil.getDateWithoutTime;
 
 /**
  * Created by safiary on 10/7/17.
@@ -156,5 +160,19 @@ public class DateUtil {
         cal.setTime(curentDate);
         cal.add(Calendar.DATE, increment);
         return cal.getTime();
+    }
+
+    public static int compare(Date date1, Date date2, boolean withTime) throws DateException {
+        if(date1 != null && date2 != null) {
+            if(!withTime) {
+                date1 = getDateWithoutTime(date1);
+                date2 = getDateWithoutTime(date2);
+            }
+
+            int i = date1.compareTo(date2);
+            return i;
+        } else {
+            throw new DateException("Date arguments can\'t be null.");
+        }
     }
 }
