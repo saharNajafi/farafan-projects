@@ -567,8 +567,8 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
                         } else {// Means that request has been verified by IMS
                             /*
                              * Fetch card request by id to update verified
-							 * request
-							 */
+                             * request
+                             */
                             CardRequestTO cardRequestTO = getCardRequestDAO()
                                     .find(CardRequestTO.class, (Long) requestId);
                             if (cardRequestTO == null) {
@@ -580,29 +580,29 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
                             cardRequestTO.setMetadata(allMetaData
                                     + onlineEnquiryMetadata);
 
-							/*
+                            /*
                              * Check whether or not the verified request is
-							 * MES-based request
-							 */
+                             * MES-based request
+                             */
                             if (CardRequestOrigin.M.equals(cardRequestTO
                                     .getOrigin())) {
-								/*
-								 * if request was MES-based, it is compulsory to
-								 * check biometric flag in table of
-								 * emst_card_request to be confident about
-								 * updating request to an adequate state
-								 */
+                                /*
+                                 * if request was MES-based, it is compulsory to
+                                 * check biometric flag in table of
+                                 * emst_card_request to be confident about
+                                 * updating request to an adequate state
+                                 */
                                 Integer biometricFlag = getCardRequestDAO()
                                         .fetchBiometricFlag(
                                                 cardRequestTO.getId());
-								/*
-								 * if flag equals to 7, means biometric info of
-								 * request has been set completely, so the state
-								 * can be changed to APPROVED; otherwise,
-								 * request state should be backed to
-								 * DOCUMENT_AUTHENTICATED in order to be ready
-								 * for preparing biometric info
-								 */
+                                /*
+                                 * if flag equals to 7, means biometric info of
+                                 * request has been set completely, so the state
+                                 * can be changed to APPROVED; otherwise,
+                                 * request state should be backed to
+                                 * DOCUMENT_AUTHENTICATED in order to be ready
+                                 * for preparing biometric info
+                                 */
                                 if (biometricFlag != null && biometricFlag == 7) {
                                     cardRequestTO
                                             .setState(CardRequestState.APPROVED);
@@ -3468,9 +3468,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             } else if (strKey.contains(reqId.toString())) {
 
 
-                if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt() || personEnquiryVTOResult.getIsExceptionMessage() || personEnquiryVTOResult.getIsDead() == 1)
-
-                {
+                if (personEnquiryVTOResult.getIsServiceDown() || personEnquiryVTOResult.getIsEstelamCorrupt() || personEnquiryVTOResult.getIsExceptionMessage() || personEnquiryVTOResult.getIsDead() == 1) {
 
                     if (personEnquiryVTOResult.getIsExceptionMessage()) {
                         cardRequestTO.setEstelam2Flag(Estelam2FlagType.N);
@@ -4647,18 +4645,25 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
                     imsUpdateResultVTO.getRequestID(), result,
                     CardRequestHistoryAction.AFIS_RECEIVE_ERROR);
         }
+
+        if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
+            createImsResultErrorMessage(crq, imsUpdateResultVTO);
+        }
     }
 
-    /*private String createImsReultErrorMessage(IMSUpdateResultVTO imsUpdateResultVTO) {
-        String errorMessage = imsUpdateResultVTO.getErrorMessage();
+    private void createImsResultErrorMessage(CardRequestTO crq, IMSUpdateResultVTO imsUpdateResultVTO) throws BaseException {
         List<IMSErrorInfo> errorCodes = imsUpdateResultVTO.getErrorCodes();
+        List<Long> crqIds = new ArrayList<Long>();
+        crqIds.add(crq.getId());
+        crq.setState(CardRequestState.IMS_ERROR);
         if (errorCodes != null) {
             for (IMSErrorInfo errorCode : errorCodes) {
-                errorMessage += errorCode.toString() + " ,";
+                createCardRequestHistory(crqIds,
+                        imsUpdateResultVTO.getRequestID(), errorCode.toString(),
+                        CardRequestHistoryAction.AFIS_RECEIVE_ERROR);
             }
         }
-        return errorMessage;
-    }*/
+    }
 
     //Anbari:IMS
     private void setIdentityChangeAndAfisState(CardRequestTO crq, IMSUpdateResultVTO imsUpdateResultVTO) throws BaseException,

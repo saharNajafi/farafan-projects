@@ -1,5 +1,6 @@
 package com.gam.nocr.ems.data.domain;
 
+import com.gam.nocr.ems.data.enums.TokenReason;
 import com.gam.nocr.ems.data.enums.TokenState;
 import com.gam.nocr.ems.data.enums.TokenType;
 import com.gam.nocr.ems.util.JSONable;
@@ -21,6 +22,9 @@ public class PersonTokenTO extends TokenTO implements JSONable {
     private Date deliverDate;
     private String tokenState;
     private String tokenType;
+    private TokenReason ptReason;
+    private String tokenReason;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -37,6 +41,16 @@ public class PersonTokenTO extends TokenTO implements JSONable {
 
     public void setType(TokenType type) {
         this.type = type;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PTK_REASON")
+    public TokenReason getPtReason() {
+        return ptReason;
+    }
+
+    public void setPtReason(TokenReason reason) {
+        this.ptReason = reason;
     }
 
     @ManyToOne
@@ -103,15 +117,15 @@ public class PersonTokenTO extends TokenTO implements JSONable {
     public void setTokenType(String lType) {
         this.tokenType = lType;
     }
-    
+
     @Column(name = "PTK_DELIVER_DATE")
     public Date getDeliverDate() {
-		return deliverDate;
-	}
-    
+        return deliverDate;
+    }
+
     public void setDeliverDate(Date deliverDate) {
-		this.deliverDate = deliverDate;
-	}
+        this.deliverDate = deliverDate;
+    }
 
     @Override
     public String toString() {
@@ -134,5 +148,14 @@ public class PersonTokenTO extends TokenTO implements JSONable {
         }
         jsonObject += "}";
         return jsonObject;
+    }
+
+    @Transient
+    public String getTokenReason() {
+        return tokenReason;
+    }
+
+    public void setTokenReason(String tokenReason) {
+        this.tokenReason = tokenReason;
     }
 }

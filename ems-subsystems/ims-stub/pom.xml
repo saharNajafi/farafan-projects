@@ -30,7 +30,7 @@
                         <configuration>
                             <wsdlUrls>
                                 <wsdlUrl>
-                                    http://10.7.17.186/ImsServiceService?wsdl
+                                    http://10.7.17.186/ims-eqc/ImsServiceService?WSDL
                                 </wsdlUrl>
                             </wsdlUrls>
                             <staleFile>${project.build.sourceDirectory}/stale/wsdl.cmsWsdl.done</staleFile>

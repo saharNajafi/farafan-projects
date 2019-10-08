@@ -1,6 +1,8 @@
 package com.gam.nocr.ems.data.util;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.profile.ProfileException;
+import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.PaymentWTO;
@@ -77,7 +79,23 @@ public class PaymentUtil {
                 throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e,
                         new String[]{singlePreRegistrationWTO.getGender().toString()});
             }
-            czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
+
+            if (singlePreRegistrationWTO.getReligion() != null && singlePreRegistrationWTO.getReligion().getCode() != null) {
+                czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
+            } else {
+                try {
+                    //set default religion as Islam:
+                    ProfileManager pm = ProfileHelper.getProfileManager();
+                    Long religionIdAsIslam = Long.valueOf((String) pm.getProfile(ProfileKeyName.KEY_RELIGION_AS_ISLAM, true, null, null));
+                    ReligionTO religionTO = new ReligionTO();
+                    religionTO.setId(religionIdAsIslam);
+                    czi.setReligion(religionTO);
+                } catch (ProfileException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             czi.setMobile(singlePreRegistrationWTO.getCellphoneNumber());
             czi.setBirthCertificateSeries(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()));
             try {

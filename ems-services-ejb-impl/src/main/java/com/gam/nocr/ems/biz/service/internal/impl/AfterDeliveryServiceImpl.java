@@ -294,6 +294,12 @@ public class AfterDeliveryServiceImpl extends EMSAbstractService implements Afte
         List<Long> ids = new ArrayList<Long>();
         ids.add(cr.getCard().getId());
         getCardDAO().updateCardsState(ids, CardState.DELIVERED);
+        getCardRequestHistoryDAO().create(
+                new CardRequestTO(requestId)
+                , "AfterDelivery : RESUME"
+                , SystemId.CCOS, null
+                , CardRequestHistoryAction.AFTER_DELIVERY_RESUME
+                , getUserProfileTO().getUserName());
         getBusinessLogService().insertLog(
                 new BusinessLogTO(new Timestamp(new Date().getTime()), getUserProfileTO().getUserName(), BusinessLogAction.AFTER_DELIVERY_RESUME, BusinessLogEntity.REQUEST, Long.toString(requestId),
                         complementaryData));
@@ -354,6 +360,13 @@ public class AfterDeliveryServiceImpl extends EMSAbstractService implements Afte
         List<Long> ids = new ArrayList<Long>();
         ids.add(cr.getCard().getId());
         getCardDAO().updateCardsState(ids, CardState.LOST);
+        getCardRequestHistoryDAO().create(
+                new CardRequestTO(requestId)
+                , "AfterDelivery : SUSPEND"
+                , SystemId.CCOS, null
+                , CardRequestHistoryAction.AFTER_DELIVERY_SUSPEND
+                , getUserProfileTO().getUserName());
+
         getBusinessLogService().insertLog(
                 new BusinessLogTO(new Timestamp(new Date().getTime()), getUserProfileTO().getUserName(), BusinessLogAction.AFTER_DELIVERY_SUSPEND, BusinessLogEntity.REQUEST, Long.toString(requestId),
                         complementaryData));

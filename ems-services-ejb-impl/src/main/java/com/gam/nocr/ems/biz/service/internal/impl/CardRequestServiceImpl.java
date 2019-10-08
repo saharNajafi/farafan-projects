@@ -884,6 +884,12 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                         throw new ServiceException(BizExceptionCode.CRE_024,
                                 BizExceptionCode.CRE_024_MSG);
                     cardRequestTO.setPriority(inPriority);
+                    getCardRequestHistoryDAO().create(cardRequestTO,
+                                    null,
+                                    SystemId.EMS,
+                                    null,
+                                    CardRequestHistoryAction.PRIORITY_IS_CHANGED,
+                                    getUserProfileTO().getUserName());
                 }
             } else
                 throw new ServiceException(BizExceptionCode.CRE_026,
@@ -1448,6 +1454,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     return labels.getString("state.crqFlagOffice0");
                 }
             }
+
 //			Approved
             if (cardRequestTO.getState() == CardRequestState.APPROVED &&
                     enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR)) {
@@ -1522,7 +1529,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
                     return MessageFormat.format(
                             labels.getString("state.enableEnrollmentOffice"),
-                            DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI));
+                            DateUtil.convert(cardRequestTO.getReservationDate(), DateUtil.JALALI), enrollmentOfficeTO.getName());
                 }
             } else if (findReservationAttended(cardRequestTO)) {
                 return labels.getString("state.notAttend");
@@ -1585,6 +1592,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
             if (cardRequestTO.getState() == CardRequestState.READY_TO_DELIVER)
                 return findReadyToDeliverState(cardRequestTO);
+
+
             switch (cardRequestTO.getState()) {
                 case VERIFIED_IMS:
                     state = labels.getString("state.registered");
@@ -2355,7 +2364,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                 cardRequestReceiptVTO.setReceiptDate(DateUtil.convert(new Date(), DateUtil.JALALI));
                 cardRequestReceiptVTO.setUserFirstName(personTO.getFirstName() != null ? personTO.getFirstName() : "");
                 cardRequestReceiptVTO.setUserLastName(personTO.getLastName() != null ? personTO.getLastName() : "");
-                cardRequestReceiptVTO.setEnrollmentName(cardRequestTO.getEnrollmentOffice()!=null? cardRequestTO.getEnrollmentOffice().getName():"");
+                cardRequestReceiptVTO.setEnrollmentName(cardRequestTO.getEnrollmentOffice() != null ? cardRequestTO.getEnrollmentOffice().getName() : "");
             }
         } catch (BaseException e) {
             throw e;

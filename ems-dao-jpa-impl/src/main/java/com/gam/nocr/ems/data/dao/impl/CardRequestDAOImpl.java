@@ -1,6 +1,7 @@
 package com.gam.nocr.ems.data.dao.impl;
 
 import com.gam.nocr.ems.data.domain.*;
+import com.gam.nocr.ems.data.enums.*;
 import gampooya.tools.date.DateUtil;
 
 import java.math.BigDecimal;
@@ -38,17 +39,6 @@ import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.CitizenWTO;
 import com.gam.nocr.ems.data.domain.ws.SyncCardRequestWTO;
-import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
-import com.gam.nocr.ems.data.enums.CardRequestOrigin;
-import com.gam.nocr.ems.data.enums.CardRequestState;
-import com.gam.nocr.ems.data.enums.CardRequestType;
-import com.gam.nocr.ems.data.enums.CardRequestedAction;
-import com.gam.nocr.ems.data.enums.DepartmentDispatchSendType;
-import com.gam.nocr.ems.data.enums.EnrollmentOfficeDeliverStatus;
-import com.gam.nocr.ems.data.enums.EnrollmentOfficeType;
-import com.gam.nocr.ems.data.enums.Estelam2FlagType;
-import com.gam.nocr.ems.data.enums.SMSTypeState;
-import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
 
@@ -3013,7 +3003,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
         StringBuffer queryBuffer = new StringBuffer();
         try {
             queryBuffer
-                    .append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode ,reenrollDate ")
+                    .append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode ,reenrollDate, paidBank ")
                     .append(" from ( ")
                     .append("select ct.ctz_first_name_fa as firstname, ct.ctz_surname_fa as lastname, ")
                     .append("(select inf.czi_father_first_name_fa from emst_citizen_info inf where inf.czi_id = ct.ctz_id) fathername, ")
@@ -3046,6 +3036,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     .append("r.crq_paid_date as paidDate, ")
                     .append("r.crq_requested_action as requestedAction, ")
                     .append("r.crq_type as requestType, ")
+                    .append("r.crq_paid_bank as paidBank, ")
                     .append("(case when r.crq_origin= 'V' then 1 else 0 end) hasVipImage, ")
                     .append("pay.rpy_is_succeed paymentSuccess, pay.rpy_res_code  paymentResCode, ")
                     .append("r.crq_reenrolled_date  AS reenrollDate ")
@@ -3441,6 +3432,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     }
                     String paymentResCode = data[18] == null ? null : data[18].toString();
                     obj.setPaymentStatus(isSuccessfulPayment && "0".equals(paymentResCode));
+                    obj.setPaidBank((IPGProviderEnum) data[20]);
                     result.add(obj);
                 }
             }

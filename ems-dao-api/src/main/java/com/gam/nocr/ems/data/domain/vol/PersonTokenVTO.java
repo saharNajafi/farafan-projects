@@ -1,17 +1,14 @@
 package com.gam.nocr.ems.data.domain.vol;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import com.gam.commons.core.data.domain.ExtEntityTO;
-import com.sun.xml.ws.api.ha.StickyFeature;
 
-import flexjson.JSON;
+import java.sql.Timestamp;
 
 public class PersonTokenVTO extends ExtEntityTO {
 
 	private String tokenState;
 	private String tokenType;
+	private String tokenReason;
 	private String requestID;
 	private Timestamp requestDate;
 	private Timestamp issuanceDate;
@@ -102,4 +99,11 @@ public class PersonTokenVTO extends ExtEntityTO {
 		this.departmentName = departmentName;
 	}
 
+	public String getTokenReason() {
+		return tokenReason;
+	}
+
+	public void setTokenReason(String tokenReason) {
+		this.tokenReason = tokenReason;
+	}
 }

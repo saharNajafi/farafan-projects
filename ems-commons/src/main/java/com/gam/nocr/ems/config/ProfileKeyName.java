@@ -260,4 +260,6 @@ public class ProfileKeyName {
     //workstation info
     public static final String KEY_WORKSTATION_INFO_CHECK_PERIOD = EMS_PROFILE_ROOT + ".workstationCheckPeriod";
 
+    //religion
+    public static final String KEY_RELIGION_AS_ISLAM = EMS_PROFILE_ROOT + ".religionAsIslam";
 }
