@@ -1608,6 +1608,9 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                     throw new ServiceException(BizExceptionCode.NIO_001, BizExceptionCode.NIO_001_MSG, new Object[]{nationalId});
                 }
             }
+            if(personEnquiryVTOResult.getDescription().contains("login.invalid.user")){
+                throw new ServiceException(BizExceptionCode.NIO_034, BizExceptionCode.NIO_034_MSG, new Object[]{nationalId});
+            }
             return personEnquiryVTOResult;
 
         } catch (BaseException e) {
@@ -1688,6 +1691,12 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                 }
 
                 if (estelam3scMessage.contains("err.record.not.found")) {
+                    personEnquiryVTOResult.setIsRecordNotFound(true);
+                    personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
+                    return personEnquiryVTOResult;
+                }
+
+                if (estelam3scMessage.contains("login.invalid.user")) {
                     personEnquiryVTOResult.setIsRecordNotFound(true);
                     personEnquiryVTOResult.setDescription(estelam3scMessage.get(0));
                     return personEnquiryVTOResult;
