@@ -2496,7 +2496,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_037_MSG = "IMS INVALID SOLAR BIRTHDATE ";
     public static final String NIO_038_MSG = "IMS INVALID FATHER NAME ";
     public static final String NIO_039_MSG = "IMS INVALID GENDER NAME ";
-    public static final String NIO_034_MSG = "login invalid user";
+    public static final String NIO_034_MSG = "invalid username or password";
 
 
     // com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSFarafanServiceImpl
