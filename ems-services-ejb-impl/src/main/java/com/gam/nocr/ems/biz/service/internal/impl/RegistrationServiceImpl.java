@@ -3121,10 +3121,11 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
                                     BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
                         }
                     }
+
+                }else {
                     throw new ServiceException(BizExceptionCode.RSI_183,
                             BizExceptionCode.RSI_181_MSG, new String[]{nationalId});
                 }
-
             }
         }
     }
