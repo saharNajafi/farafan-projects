@@ -54,9 +54,9 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public String getReliableVerByPlugin (
+    public void getReliableVerByPlugin (
             String workstationCode, List<WorkstationPluginsTO> workstationPluginsList) throws BaseException {
-        String ccosExactVersion = null;
+
         try {
             if (workstationCode == null)
                 throw new ServiceException(BizExceptionCode.WST_002, BizExceptionCode.WST_002_MSG);
@@ -76,10 +76,9 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
                 workstationPluginsTO.setState(workstationPlugin.getState());
                 getWorkstationPluginsDAO().create(workstationPluginsTO);
             }
-            ccosExactVersion = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, null));
+
         } catch (BaseException e) {
             e.printStackTrace();
         }
-        return ccosExactVersion;
     }
 }

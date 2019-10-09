@@ -279,11 +279,6 @@ public class CalendarUtil {
 
     }
 
-
-    public static void main(String[] args) {
-        System.out.println(CalendarUtil.getPersianDateTime(new Date()));
-    }
-
     public static String getTimeWithoutDot(Date date, Locale locale) {
 
         if (date == null)

@@ -247,6 +247,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CRE_090 = "EMS_S_CRE_090";
     public static final String CRE_091 = "EMS_S_CRE_091";
     public static final String CRE_092 = "EMS_S_CRE_092";
+    public static final String CRE_093 = "EMS_S_CRE_093";
     public static final String CRE_001_MSG = "Card request id cannot not be null";
     public static final String CRE_002_MSG = "Card request action cannot not be null";
     public static final String CRE_007_MSG = "Card request cannot not be null";
@@ -492,6 +493,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_181 = "EMS_S_RSI_181";
     public static final String RSI_182 = "EMS_S_RSI_182";
     public static final String RSI_183 = "EMS_S_RSI_183";
+    public static final String RSI_184 = "EMS_S_RSI_184";
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -629,8 +631,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_175_MSG = "Cannot fetch citizenInfo when nationalId is not given";
     public static final String RSI_179_MSG = "there is not any request for this nationalId";
     public static final String RSI_180_MSG = "Previous card request is in a state which does not allow a new card request to be made";
-    public static final String RSI_181_MSG = "the crn is invalid";
-
+    public static final String RSI_181_MSG = "the crn is invalid for national id :{}";
+    public static final String RSI_184_MSG = "there is not any card for national id:{}  ";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.AfterDeliveryServiceImpl
@@ -1241,6 +1243,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_103 = "EMS_S_EOS_103";
     public static final String EOS_104 = "EMS_S_EOS_104";
     public static final String EOS_105 = "EMS_S_EOS_105";
+    public static final String EOS_106 = "EMS_S_EOS_106";
     public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
     public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
     public static final String EOS_006_MSG = "Enrollment office name is too long";
@@ -1305,6 +1308,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_099_MSG = "Office is not active - only active-office can do single stage registration";
     public static final String EOS_100_MSG = "NOCR Offices cann't be deleted";
     public static final String EOS_101_MSG = "Enrollment offices with critical requests cann't be deleted";
+    public static final String EOS_106_MSG = "there is not any EnrollmentOffice";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.DepartmentServiceImpl
@@ -1746,6 +1750,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_092 = "EMS_S_CMS_092";
     public static final String CMS_093 = "EMS_S_CMS_093";
     public static final String CMS_100 = "EMS_S_CMS_100";
+    public static final String CMS_101 = "EMS_S_CMS_101";
+    public static final String CMS_102 = "EMS_S_CMS_102";
+    public static final String CMS_103 = "EMS_S_CMS_103";
 
     public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
     public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
@@ -1771,13 +1778,17 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_071_MSG = "There is not any batch with the given batch id.";
     public static final String CMS_072_MSG = "The batch state must be 'shipped'.";
     public static final String CMS_073_MSG = "The lost date for batch is null.";
+    public static final String CMS_074_MSG = "The request is not allowable because of ccos lost or missed request pending ";
+    public static final String CMS_075_MSG = "The request of type 'EXTEND' is not allowable because of issuance Date ";
     public static final String CMS_083_MSG = "The IMS service is down.";
     public static final String CMS_084_MSG = "The estelam result is failed.Try again.";
     public static final String CMS_085_MSG = "The finger_all is empty or null.";
     public static final String CMS_088_MSG = "The request id which is on card is null";
     public static final String CMS_089_MSG = "record does not exist in IMS";
-    public static final String CMS_074_MSG = "The request is not allowable because of ccos lost or missed request pending ";
-    public static final String CMS_075_MSG = "The request of type 'EXTEND' is not allowable because of issuance Date ";
+    public static final String CMS_101_MSG = "request Id can not be null";
+    public static final String CMS_102_MSG = "cms Id can not be null";
+    public static final String CMS_103_MSG = "unhandled exception in find Cms Batch By Request Id";
+
 
     // com.gam.nocr.ems.biz.service.internal.impl.LocationServiceImpl
     public static final String LMS_001 = "EMS_S_LMS_001";
@@ -2478,6 +2489,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_031 = "EMS_S_NIO_031";
     public static final String NIO_033 = "EMS_S_NIO_033";
     public static final String NIO_034 = "EMS_S_NIO_034";
+    public static final String NIO_035 = "EMS_S_NIO_035";
+    public static final String NIO_036 = "EMS_S_NIO_036";
+    public static final String NIO_040 = "EMS_S_NIO_040";
     public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system for NationalId: {0}.";
     public static final String NIO_014_MSG = "The returned value of the service of getEstelam2 is null. ";
     public static final String NIO_015_MSG = "No record was found for this person in IMS to return. The main exception message which has returned from IMS is: ";
@@ -2496,7 +2510,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_037_MSG = "IMS INVALID SOLAR BIRTHDATE ";
     public static final String NIO_038_MSG = "IMS INVALID FATHER NAME ";
     public static final String NIO_039_MSG = "IMS INVALID GENDER NAME ";
-    public static final String NIO_034_MSG = "Invalid username or password";
+    public static final String NIO_040_MSG = "Invalid username or password";
 
 
     // com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSFarafanServiceImpl
@@ -2823,6 +2837,29 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String WST_013_MSG = "Username could not be empty";
     public static final String WST_014_MSG = "Computer name could not be empty";
 
+    //	com.gam.nocr.ems.biz.service.internal.impl.WorkstationInfoServiceImpl
+    public static final String WSTI_001 = "EMS_S_WSTI_001";
+    public static final String WSTI_002 = "EMS_S_WSTI_002";
+    public static final String WSTI_003 = "EMS_S_WSTI_003";
+    public static final String WSTI_004 = "EMS_S_WSTI_004";
+    public static final String WSTI_005 = "EMS_S_WSTI_005";
+    public static final String WSTI_006 = "EMS_S_WSTI_006";
+    public static final String WSTI_007 = "EMS_S_WSTI_007";
+    public static final String WSTI_008 = "EMS_S_WSTI_008";
+    public static final String WSTI_009 = "EMS_S_WSTI_009";
+    public static final String WSTI_010 = "EMS_S_WSTI_010";
+    public static final String WSTI_011 = "EMS_S_WSTI_011";
+    public static final String WSTI_001_MSG = "ccos-version has a problem";
+    public static final String WSTI_002_MSG = "update workstation info error at updateWorkstationInfo";
+    public static final String WSTI_003_MSG = "update workstation info error at getReliableVerByPlatform";
+    public static final String WSTI_004_MSG = "WORKSTATION_INFO_CHECK_PERIOD property error";
+    public static final String WSTI_005_MSG = "update workstation info error at isReliableVerInquiryRequired";
+    public static final String WSTI_008_MSG = "WorkstationCode is empty";
+    public static final String WSTI_009_MSG = "WorkstationCode is too short";
+    public static final String WSTI_010_MSG = "WorkstationCode is too long";
+    public static final String WSTI_011_MSG = "Workstation is null";
+
+
     //com.gam.nocr.ems.biz.service.internal.impl.OfficeCapacityServiceImpl
     public static final String OC_001 = "EMS_S_OC_001";
     public static final String OC_002 = "EMS_S_OC_002";
@@ -2915,12 +2952,14 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_012 = "EMS_S_REG_012";
     public static final String RGP_013 = "EMS_S_REG_013";
     public static final String RGP_014 = "EMS_S_REG_014";
+    public static final String RGP_015 = "EMS_S_REG_015";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_003_MSG = "an error occurred on bankInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
     public static final String RGP_005_MSG = "an error occurred on assignPaymentToEnrollment operation";
     public static final String RGP_006_MSG = "paidBank is undefined";
     public static final String RGP_014_MSG = "an error occurred on savePaymentInfo operation";
+    public static final String RGP_015_MSG = "PreRegistration Payment not found for national id: {0}";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";

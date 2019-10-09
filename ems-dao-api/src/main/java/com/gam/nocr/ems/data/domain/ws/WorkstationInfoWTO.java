@@ -1,6 +1,6 @@
 package com.gam.nocr.ems.data.domain.ws;
 
-public class ClientWorkstationInfo {
+public class WorkstationInfoWTO {
 
     private String cpuInfo;
     private String osVersion;

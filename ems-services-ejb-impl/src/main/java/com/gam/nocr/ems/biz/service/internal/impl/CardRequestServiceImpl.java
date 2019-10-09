@@ -933,8 +933,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
             return false;
         } catch (Exception e) {
-            logger.error(BizExceptionCode.CRE_025, e.getMessage(), e);
-            throw new ServiceException(BizExceptionCode.CRE_025,
+            logger.error(BizExceptionCode.CRE_093, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.CRE_093,
                     BizExceptionCode.GLB_008_MSG, e);
         }
     }
@@ -1281,7 +1281,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getState() == CardRequestState.RESERVED &&
                     (cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V ||
                             cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R) &&
-                    cardRequestTO.getReservationDate().before(new Date()) &&
+                    DateUtil.getDateWithoutTime(cardRequestTO.getReservationDate()).compareTo(DateUtil.getDateWithoutTime(new Date())) < 0 &&
                     cardRequestTO.getAuthenticity() == null)
                 notAttended = true;
         } catch (Exception e) {
@@ -1291,6 +1291,8 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
         return notAttended;
     }
+
+
 
     private Date incrementDateUtil(Date curentDate, Integer increment) {
         Calendar cal = Calendar.getInstance();
@@ -1352,6 +1354,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             Integer crqFlag = getCardRequestDAO().fetchBiometricFlag(cardRequestTO.getId());
             CardRequestHistoryTO crhList = getCardRequestHistoryDAO().findByCardRequestId(cardRequestTO.getId());
             EnrollmentOfficeTO enrollmentOfficeTO = cardRequestTO.getEnrollmentOffice();
+
 //			Condition 1
             if (cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED &&
                     (enrollmentOfficeTO.getType().equals(EnrollmentOfficeType.NOCR) ||
@@ -1491,8 +1494,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         try {
             if ((cardRequestTO.getEstelam2Flag() == Estelam2FlagType.R ||
                     cardRequestTO.getEstelam2Flag() == Estelam2FlagType.V)
-                    && cardRequestTO.getReservationDate().compareTo(new Date()) >= 0
-                    && !cardRequestTO.getReservations().isEmpty()) {
+                    && DateUtil.getDateWithoutTime(cardRequestTO.getReservationDate()).compareTo(DateUtil.getDateWithoutTime(new Date())) >= 0) {
                 state = true;
             }
         } catch (Exception e) {
@@ -1550,6 +1552,16 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
             if (cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED ||
                     cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS ||
                     cardRequestTO.getState() == CardRequestState.APPROVED) {
+                try {
+                    if ((cardRequestTO.getState() == CardRequestState.REFERRED_TO_CCOS ||
+                            cardRequestTO.getState() == CardRequestState.DOCUMENT_AUTHENTICATED)
+                            && DateUtil.getDateWithoutTime(cardRequestTO.getReservationDate()).compareTo(DateUtil.getDateWithoutTime(new Date())) < 0) {
+                        return labels.getString("state.Expired");
+                    }
+                } catch (Exception e) {
+                    //This exception never occur because dates dates above should not be null
+                    ussdLogger.error(e.getMessage(), e);
+                }
                 return findCrqFlagByCardRequest(cardRequestTO);
             }
 

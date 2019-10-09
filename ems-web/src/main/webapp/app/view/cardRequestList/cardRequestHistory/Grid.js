@@ -171,7 +171,9 @@ Ext.define('Ems.view.cardRequestList.cardRequestHistory.Grid', {
                     case 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IMAGE':
                         requestedAction = 'عدم تطابق تصویر چهره';
                         break;
-                        
+                    case 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER':
+                        requestedAction = 'عدم تطابق انگشتان';
+                        break;
 
                 }
 

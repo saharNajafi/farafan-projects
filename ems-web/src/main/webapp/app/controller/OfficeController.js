@@ -240,10 +240,12 @@ Ext.define('Ems.controller.OfficeController', {
                     }
                     list.push(obj);
                     if (flag) {
+                        Gam.Msg.showWaitMsg();
                         Ext.Ajax.request({
                             url: 'extJsController/officeCapacity' + '/save',
                             jsonData: {records: list},
                             success: function (response) {
+                                Gam.Msg.hideWaitMsg();
                                 var obj = Ext.decode(response.responseText);
                                 if (obj.messageInfo.message != "Ems.ErrorCode.security.EMS_S_AUT_004") {
                                     if (Ext.JSON.decode(response.responseText).success) {
@@ -264,7 +266,7 @@ Ext.define('Ems.controller.OfficeController', {
                             },
                             failure: function () {
                                 // Ext.Msg.alert('خطا', 'خطایی رخ داده است');
-                                Gam.Msg.showWaitMsg();
+                                Gam.Msg.hideWaitMsg();
                                 Tools.errorFailure();
                             }
                         });
