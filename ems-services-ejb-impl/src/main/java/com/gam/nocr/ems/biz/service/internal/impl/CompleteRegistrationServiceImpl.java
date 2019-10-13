@@ -21,6 +21,7 @@ import com.gam.nocr.ems.data.domain.BiometricTO;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.DocumentTO;
 import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
+import com.gam.nocr.ems.data.enums.CardRequestHistoryAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.date.DateUtil;
@@ -101,7 +102,7 @@ public class CompleteRegistrationServiceImpl extends EMSAbstractService implemen
                 "Registration receipt is printed"
                 , SystemId.CCOS
                 , cardRequestId.toString()
-                , null
+                , CardRequestHistoryAction.PRINT_REGISTRATION_RECEIPT
                 , getUserProfileTO().getUserName());
 
         return archiveId;
