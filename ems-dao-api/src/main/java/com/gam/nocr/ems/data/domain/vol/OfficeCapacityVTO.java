@@ -106,7 +106,7 @@ public class OfficeCapacityVTO extends ExtEntityTO {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             if(startDate != null) {
-                date = sdf.parse(startDate.substring(0, 9));
+                date = sdf.parse(startDate.substring(0, 10));
                 if (date.after(new Date()))
                     editable = true;
             }

@@ -2373,7 +2373,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                     "Registration receipt is printed"
                     , SystemId.EMS
                     , cardRequestId.toString()
-                    , null
+                    , CardRequestHistoryAction.PRINT_REGISTRATION_RECEIPT
                     , getUserProfileTO().getUserName());
         } catch (BaseException e) {
             throw e;
