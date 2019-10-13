@@ -2492,6 +2492,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_034 = "EMS_S_NIO_034";
     public static final String NIO_035 = "EMS_S_NIO_035";
     public static final String NIO_036 = "EMS_S_NIO_036";
+    public static final String NIO_040 = "EMS_S_NIO_040";
     public static final String NIO_001_MSG = "Exception(s) occurred in the getEstelam2 service of the IMS sub system for NationalId: {0}.";
     public static final String NIO_014_MSG = "The returned value of the service of getEstelam2 is null. ";
     public static final String NIO_015_MSG = "No record was found for this person in IMS to return. The main exception message which has returned from IMS is: ";
@@ -2510,6 +2511,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String NIO_037_MSG = "IMS INVALID SOLAR BIRTHDATE ";
     public static final String NIO_038_MSG = "IMS INVALID FATHER NAME ";
     public static final String NIO_039_MSG = "IMS INVALID GENDER NAME ";
+    public static final String NIO_040_MSG = "Invalid username or password";
 
 
     // com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSFarafanServiceImpl
