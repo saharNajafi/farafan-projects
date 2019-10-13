@@ -3,7 +3,9 @@ package com.gam.nocr.ems.data.domain.vol;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 
-public class EnrollmentOfficeSingleStageVTO extends ExtEntityTO {
+import java.io.Serializable;
+
+public class EnrollmentOfficeSingleStageVTO extends ExtEntityTO implements Serializable {
 
     private Boolean EOF_IGNORE_ICAO_PERMITTED;
     private Boolean EOF_HAS_STAIR;
