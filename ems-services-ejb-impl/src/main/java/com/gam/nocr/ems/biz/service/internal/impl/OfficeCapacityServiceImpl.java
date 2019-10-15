@@ -211,7 +211,7 @@ public class OfficeCapacityServiceImpl extends EMSAbstractService implements
             if (officeCapacityTO == null)
                 throw new ServiceException(BizExceptionCode.OC_002, BizExceptionCode.OC_002_MSG, new Long[]{officeCapacityVTO.getId()});
             startDate = convertPersianToGregorian(String.valueOf(officeCapacityTO.getStartDate()));
-            date = sdf.parse(startDate.substring(0, 9));
+            date = sdf.parse(startDate.substring(0, 10));
             if (date.before(new Date()))
                 throw new ServiceException(BizExceptionCode.OC_013, BizExceptionCode.OC_013_MSG);
             officeCapacityTO.setCapacity(Short.parseShort(officeCapacityVTO.getCapacity()));
