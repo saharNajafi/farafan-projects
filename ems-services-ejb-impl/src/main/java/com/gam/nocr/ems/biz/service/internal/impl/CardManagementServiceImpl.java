@@ -2573,8 +2573,10 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
 						throw new ServiceException(BizExceptionCode.CMS_100,
 								BizExceptionCode.CMS_085_MSG);
 					else
-						throw new ServiceException(response.getLogInfo(),
-							BizExceptionCode.CMS_084_MSG);
+//						throw new ServiceException(response.getLogInfo(),
+//							BizExceptionCode.CMS_084_MSG);
+                    throw new ServiceException(BizExceptionCode.CMS_101,
+                            BizExceptionCode.CMS_084_MSG);
 				}
 
 				CardRequestHistoryAction historyAction = null;
