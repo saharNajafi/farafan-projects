@@ -103,18 +103,6 @@ import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NistParser;
 import com.gam.nocr.ems.util.NistResult;
-import gampooya.tools.date.DateUtil;
-import org.slf4j.Logger;
-
-import javax.annotation.Resource;
-import javax.ejb.*;
-import java.sql.Timestamp;
-import java.util.*;
-import java.util.concurrent.Future;
-
-import static com.gam.nocr.ems.config.EMSLogicalNames.*;
-import static com.gam.nocr.ems.data.enums.CMSCardState.*;
-import static com.gam.nocr.ems.data.enums.CardRequestType.*;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -2728,6 +2716,30 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
 					BizExceptionCode.GLB_008_MSG, e);
 		}
 	}
+
+
+    @Override
+    public String findCmsBatchByRequestId(Long requestId) throws BaseException {
+        try {
+            String cmsId = "";
+            if (requestId == null) {
+                throw new ServiceException(BizExceptionCode.CMS_104,
+                        BizExceptionCode.CMS_104_MSG);
+            }
+            cmsId = getBatchDAO().findCmsIdByRequestId(requestId);
+            if (cmsId == null) {
+                throw new ServiceException(BizExceptionCode.CMS_102,
+                        BizExceptionCode.CMS_102_MSG);
+            }
+            return cmsId;
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.CMS_103,
+                    BizExceptionCode.CMS_103_MSG, e);
+        }
+    }
+
 	  /**
      * The method notifyUnsuccessfulDeliveryForFaceImageUnmatched is used to handle all the activities which are needed in
      * unsuccessful Delivery by reason of 'face image unmatched'
