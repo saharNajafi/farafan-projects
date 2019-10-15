@@ -161,27 +161,27 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     private CardRequestService getCardRequestService(UserProfileTO userProfileTO)
-            throws BaseException {
-        CardRequestService cardRequestService;
-        try {
-            cardRequestService = ServiceFactoryProvider
-                    .getServiceFactory()
-                    .getService(
-                            EMSLogicalNames
-                                    .getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
-        } catch (ServiceFactoryException e) {
-            throw new DelegatorException(BizExceptionCode.CRD_001,
-                    BizExceptionCode.GLB_002_MSG, e,
-                    EMSLogicalNames.SRV_CARD_REQUEST.split(","));
-        }
-        cardRequestService.setUserProfileTO(userProfileTO);
-        return cardRequestService;
-    }
+			throws BaseException {
+		CardRequestService cardRequestService;
+		try {
+			cardRequestService = ServiceFactoryProvider
+					.getServiceFactory()
+					.getService(
+							EMSLogicalNames
+									.getServiceJNDIName(EMSLogicalNames.SRV_CARD_REQUEST), EmsUtil.getUserInfo(userProfileTO));
+		} catch (ServiceFactoryException e) {
+			throw new DelegatorException(BizExceptionCode.CRD_001,
+					BizExceptionCode.GLB_002_MSG, e,
+					EMSLogicalNames.SRV_CARD_REQUEST.split(","));
+		}
+		cardRequestService.setUserProfileTO(userProfileTO);
+		return cardRequestService;
+	}
 
     /**
+     * @author ganjyar
      * @return an instance of type batchDAO
      * @throws {@link BaseException}
-     * @author ganjyar
      */
     private BatchDAO getBatchDAO() throws BaseException {
         try {
@@ -255,26 +255,26 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     private BiometricInfoDAO getBiometricInfoDAO() throws BaseException {
-        try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(
-                    getDaoJNDIName(DAO_BIOMETRIC_INFO));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.CMS_084,
-                    BizExceptionCode.GLB_001_MSG, e,
-                    DAO_BIOMETRIC_INFO.split(","));
-        }
-    }
+		try {
+			return DAOFactoryProvider.getDAOFactory().getDAO(
+					getDaoJNDIName(DAO_BIOMETRIC_INFO));
+		} catch (DAOFactoryException e) {
+			throw new ServiceException(BizExceptionCode.CMS_084,
+					BizExceptionCode.GLB_001_MSG, e,
+					DAO_BIOMETRIC_INFO.split(","));
+		}
+	}
 
-    //Anbari : Separate  Insertion of CardRequest Blobs
-    private CardRequestBlobsDAO getCardRequestBlobs() throws BaseException {
-        try {
-            return DAOFactoryProvider.getDAOFactory().getDAO(
-                    getDaoJNDIName(DAO_CARDREQUEST_BLOBS));
-        } catch (DAOFactoryException e) {
-            throw new ServiceException(BizExceptionCode.RSI_162,
-                    BizExceptionCode.GLB_001_MSG, e, DAO_DOCUMENT.split(","));
-        }
-    }
+  //Anbari : Separate  Insertion of CardRequest Blobs
+  	private CardRequestBlobsDAO getCardRequestBlobs() throws BaseException {
+  		try {
+  			return DAOFactoryProvider.getDAOFactory().getDAO(
+  					getDaoJNDIName(DAO_CARDREQUEST_BLOBS));
+  		} catch (DAOFactoryException e) {
+  			throw new ServiceException(BizExceptionCode.RSI_162,
+  					BizExceptionCode.GLB_001_MSG, e, DAO_DOCUMENT.split(","));
+  		}
+  	}
 
 
     /**
@@ -440,9 +440,9 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             throw new ServiceException(BizExceptionCode.CMS_005, BizExceptionCode.CMS_005_MSG);
 
         } else if (HANDED_OUT.getCmsCardState() != cardInfoVTO.getStatus()) {
-            if (SUSPENDED.getCmsCardState() == cardInfoVTO.getStatus()) {
-                throw new ServiceException(BizExceptionCode.CMS_062, BizExceptionCode.CMS_005_MSG);
-            }
+        	if (SUSPENDED.getCmsCardState() == cardInfoVTO.getStatus()){
+        		throw new ServiceException(BizExceptionCode.CMS_062, BizExceptionCode.CMS_005_MSG);
+        	}
             throw new ServiceException(BizExceptionCode.CMS_044, BizExceptionCode.CMS_005_MSG);
         }
     }
@@ -464,13 +464,13 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                 }
 
                 //Anbari: check issuanceDate of lastCard
-                Integer extenVvalidYear = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND, DEFAULT_DURATION_OF_VALID_YEAR_FOR_EXTEND));
+                Integer extenVvalidYear = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND,DEFAULT_DURATION_OF_VALID_YEAR_FOR_EXTEND));
                 Date issuanceDate = latestCardInfoVTO.getIssuanceDate();
-                if (issuanceDate != null) {
-                    Date validDate = EmsUtil.getDateAtMidnight(EmsUtil.differYear(issuanceDate, extenVvalidYear));
-                    Date currenetDate = EmsUtil.getDateAtMidnight(new Date());
-                    if (validDate.after(currenetDate))
-                        throw new ServiceException(BizExceptionCode.CMS_085, BizExceptionCode.CMS_075_MSG);
+                if(issuanceDate != null){
+	                Date validDate = EmsUtil.getDateAtMidnight(EmsUtil.differYear(issuanceDate, extenVvalidYear));
+	                Date currenetDate = EmsUtil.getDateAtMidnight(new Date());
+	                if(validDate.after(currenetDate))
+	                	 throw new ServiceException(BizExceptionCode.CMS_085, BizExceptionCode.CMS_075_MSG);
                 }
 
             } else {
@@ -522,34 +522,33 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * In this method first checks profilekey for confirmation missed batches is true or false.
      * if it was true then just fetch batches which confirmed and if it was false just fetch batches which their lost
      * date is greater than interval missed time.
-     *
      * @return a list of type {@link BatchTO}
      * @throws {@link BaseException}
      */
-    private List<BatchTO> findMissedBatches(Integer from, Integer to)
-            throws BaseException {
+	private List<BatchTO> findMissedBatches(Integer from, Integer to)
+			throws BaseException {
 
-        try {
-            // true: need to manager confirm
-            if (Boolean.valueOf(EmsUtil.getProfileValue(
-                    ProfileKeyName.KEY_LOST_CARD_CONFIRM,
-                    DEFAULT_CARD_LOST_CONFIRM))) {
-                return getDispatchDAO().findMissedBatchesConfirmed(from, to);
+		try {
+			// true: need to manager confirm
+			if (Boolean.valueOf(EmsUtil.getProfileValue(
+					ProfileKeyName.KEY_LOST_CARD_CONFIRM,
+					DEFAULT_CARD_LOST_CONFIRM))) {
+				return getDispatchDAO().findMissedBatchesConfirmed(from, to);
 
-            } else {
+			} else {
 
-                return getDispatchDAO().findMissedBatches(from, to);
+				return getDispatchDAO().findMissedBatches(from, to);
 
-            }
+			}
 
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_081,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_081,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
 
-    }
+	}
 
     /**
      * The method findMissedBoxes is used to fetch the list of boxes which were missed
@@ -566,34 +565,33 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * In this method first checks profilekey for confirmation missed card is true or false.
      * if it was true then just fetch cards which confirmed and if it was false just fetch cards which their lost
      * date is greater than interval missed time.
-     *
      * @return a list of type {@link CardTO}
      * @throws {@link BaseException}
      */
-    private List<CardTO> findMissedCards(Integer from, Integer to)
-            throws BaseException {
+	private List<CardTO> findMissedCards(Integer from, Integer to)
+			throws BaseException {
 
-        try {
-            // true: need to manager confirm
-            if (Boolean.valueOf(EmsUtil.getProfileValue(
-                    ProfileKeyName.KEY_LOST_CARD_CONFIRM,
-                    DEFAULT_CARD_LOST_CONFIRM))) {
-                return getDispatchDAO().findMissedCardsConfirmed(from, to);
+		try {
+			// true: need to manager confirm
+			if (Boolean.valueOf(EmsUtil.getProfileValue(
+					ProfileKeyName.KEY_LOST_CARD_CONFIRM,
+					DEFAULT_CARD_LOST_CONFIRM))) {
+				return getDispatchDAO().findMissedCardsConfirmed(from, to);
 
-            } else {
+			} else {
 
-                return getDispatchDAO().findMissedCards(from, to);
+				return getDispatchDAO().findMissedCards(from, to);
 
-            }
+			}
 
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_061,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_061,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
 
-    }
+	}
 
     /**
      * The method findCardRequestsByState is used to fetch the list of cards which were missed
@@ -684,23 +682,24 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
 
         CardInfoVTO oldCardInfoVTO = getCMSService().getCurrentCitizenCardByProduct(citizenTO.getNationalID(), productId);
         try {
-            if (!oldCardInfoVTO.getCrn().equals(cardRequestTO.getCard().getCrn())) {
-                getCMSService().revokeCard(oldCardInfoVTO.getCrn(), oldCardInfoVTO.getReason());
-                addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
-            }
+        	if(!oldCardInfoVTO.getCrn().equals(cardRequestTO.getCard().getCrn()))
+        	{
+            getCMSService().revokeCard(oldCardInfoVTO.getCrn(), oldCardInfoVTO.getReason());
+            addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
+        	}
             getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
             addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
             addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
         } catch (BaseException e) {
             logger.error(e.getMessage(), e);
-            if (BizExceptionCode.CSI_071.equals(e.getExceptionCode())) {
-                if (!oldCardInfoVTO.getCrn().equals(
-                        cardRequestTO.getCard().getCrn()))
-                    addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
-                getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
-                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
-            } else {
+			if (BizExceptionCode.CSI_071.equals(e.getExceptionCode())) {
+				if (!oldCardInfoVTO.getCrn().equals(
+						cardRequestTO.getCard().getCrn()))
+					addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
+				getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
+				addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+				addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+			} else {
                 throw e;
             }
         }
@@ -743,27 +742,27 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
         }
 
         CardInfoVTO oldCardInfoVTO = getCMSService().getCurrentCitizenCardByProduct(citizenTO.getNationalID(), productId);
-        try {
-            if (!oldCardInfoVTO.getCrn().equals(
-                    cardRequestTO.getCard().getCrn())) {
-                getCMSService().revokeCard(oldCardInfoVTO.getCrn(),
-                        oldCardInfoVTO.getReason());
-                addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
-            }
-            getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
-            addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-            addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
-        } catch (BaseException e) {
+		try {
+			if (!oldCardInfoVTO.getCrn().equals(
+					cardRequestTO.getCard().getCrn())) {
+				getCMSService().revokeCard(oldCardInfoVTO.getCrn(),
+						oldCardInfoVTO.getReason());
+				addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
+			}
+			getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
+			addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+			addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+		} catch (BaseException e) {
             logger.error(e.getMessage(), e);
-            if (BizExceptionCode.CSI_071.equals(e.getExceptionCode())) {
-                if (!oldCardInfoVTO.getCrn().equals(
-                        cardRequestTO.getCard().getCrn())) {
-                    addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
-                }
-                getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
-                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
-            } else {
+			if (BizExceptionCode.CSI_071.equals(e.getExceptionCode())) {
+				if (!oldCardInfoVTO.getCrn().equals(
+						cardRequestTO.getCard().getCrn())) {
+					addToList(cardIdListForRevoke, oldCardInfoVTO.getCrn());
+				}
+				getCMSService().cardHandedOut(cardRequestTO.getCard().getCrn());
+				addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+				addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+			} else {
                 throw e;
             }
         }
@@ -1125,66 +1124,66 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             List<BatchTO> batchTOList = findReceivedBatches(from, to);
             List<Long> batchIdList = new ArrayList<Long>();
             for (BatchTO batchTO : batchTOList) {
-                try {
-                    getCMSService().batchReceipt(batchTO.getCmsID());
-                    batchIdList.add(batchTO.getId());
-                } catch (ServiceException e) {
-                    if (BizExceptionCode.CSI_014.equals(e.getExceptionCode())
-                            || BizExceptionCode.CSI_015.equals(e
-                            .getExceptionCode())
-                            || BizExceptionCode.CSI_016.equals(e
-                            .getExceptionCode())) {
-                        logger.error(e.getMessage(), e);
-                        throw e;
+				try {
+					getCMSService().batchReceipt(batchTO.getCmsID());
+					batchIdList.add(batchTO.getId());
+				} catch (ServiceException e) {
+					if (BizExceptionCode.CSI_014.equals(e.getExceptionCode())
+							|| BizExceptionCode.CSI_015.equals(e
+									.getExceptionCode())
+							|| BizExceptionCode.CSI_016.equals(e
+									.getExceptionCode())) {
+						logger.error(e.getMessage(), e);
+						throw e;
 
-                    } else if (BizExceptionCode.CSI_017.equals(e
-                            .getExceptionCode())) {
-                        batchIdList.add(batchTO.getId());
+					} else if (BizExceptionCode.CSI_017.equals(e
+							.getExceptionCode())) {
+						batchIdList.add(batchTO.getId());
 
-                    } else if (BizExceptionCode.CSI_114.equals(e
-                            .getExceptionCode())) {
-                        logger.error(e.getMessage(), e);
-                        throw e;
-                    }
-                }
+					} else if (BizExceptionCode.CSI_114.equals(e
+							.getExceptionCode())) {
+						logger.error(e.getMessage(), e);
+						throw e;
+					}
+				}
             }
             if (batchIdList.size() > 0) {
                 getDispatchDAO().updateBatchesState(batchIdList, BatchState.RECEIVED);
 
-                for (Long batchId : batchIdList) {
-                    CardRequestTO cardRequestTO = getCardRequestDAO()
-                            .findByContainerId(batchId,
-                                    DepartmentDispatchSendType.BATCH);
-                    getCardRequestHistoryDAO().create(cardRequestTO, null,
-                            SystemId.CMS, null,
-                            CardRequestHistoryAction.BATCH_RECEIVED, null);
+				for (Long batchId : batchIdList) {
+					CardRequestTO cardRequestTO = getCardRequestDAO()
+							.findByContainerId(batchId,
+									DepartmentDispatchSendType.BATCH);
+					getCardRequestHistoryDAO().create(cardRequestTO, null,
+							SystemId.CMS, null,
+							CardRequestHistoryAction.BATCH_RECEIVED, null);
 
-                    // add outgoingSMS
-                    if (getDispatchDAO().isValidToSendDeliverySms(batchId) != null) {
-                        List<Long> cardRequestIds = getCardRequestDAO()
-                                .getCardRequestsByBatchID(batchId);
-                        for (Long cardRequestId : cardRequestIds) {
-                            getCardRequestDAO()
-                                    .addRequestedSmsForReadyToDeliverReq(
-                                            cardRequestId);
-                        }
-                    }
-                }
+					// add outgoingSMS
+					if (getDispatchDAO().isValidToSendDeliverySms(batchId) != null) {
+						List<Long> cardRequestIds = getCardRequestDAO()
+								.getCardRequestsByBatchID(batchId);
+						for (Long cardRequestId : cardRequestIds) {
+							getCardRequestDAO()
+									.addRequestedSmsForReadyToDeliverReq(
+											cardRequestId);
+						}
+					}
+				}
             }
             /**
              * For BusinessLog
              */
             return EmsUtil.toJSON("receivedBatchIds:" + batchIdList);
         } catch (BaseException e) {
-            sessionContext.setRollbackOnly();
+			sessionContext.setRollbackOnly();
             throw e;
         } catch (Exception e) {
-            sessionContext.setRollbackOnly();
+			sessionContext.setRollbackOnly();
             throw new ServiceException(BizExceptionCode.CMS_034, BizExceptionCode.GLB_008_MSG, e);
         }
     }
 
-    /**
+	/**
      * The method notifyMissedBatches is used to be sent the report of missing for the specified batches
      *
      * @throws {@link BaseException}
@@ -1196,7 +1195,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             List<BatchTO> batchTOList = findMissedBatches(from, to);
             List<Long> batchIdList = new ArrayList<Long>();
             for (BatchTO batchTO : batchTOList) {
-                batchIdList.add(batchTO.getId());
+            	 batchIdList.add(batchTO.getId());
                 try {
                     getCMSService().batchMissed(batchTO.getCmsID(), "");
                     batchIdList.add(batchTO.getId());
@@ -1243,7 +1242,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             List<BoxTO> boxTOList = findMissedBoxes(from, to);
             List<Long> boxIdList = new ArrayList<Long>();
             for (BoxTO boxTO : boxTOList) {
-                boxIdList.add(boxTO.getId());
+            	 boxIdList.add(boxTO.getId());
                 try {
                     getCMSService().boxMissed(boxTO.getCmsID(), "");
                     boxIdList.add(boxTO.getId());
@@ -1287,15 +1286,15 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     public String notifyMissedCards(Integer from, Integer to) throws BaseException {
         try {
 
-            String description = null;
-            // true: need to manager confirm
-            if (Boolean.valueOf(EmsUtil.getProfileValue(
-                    ProfileKeyName.KEY_LOST_CARD_CONFIRM,
-                    DEFAULT_CARD_LOST_CONFIRM))) {
+        	String description=null;
+        	// true: need to manager confirm
+        	if (Boolean.valueOf(EmsUtil.getProfileValue(
+					ProfileKeyName.KEY_LOST_CARD_CONFIRM,
+					DEFAULT_CARD_LOST_CONFIRM))) {
 
-                description = "lostCardConfirm is true";
-            }
-            List<CardTO> cardTOList = findMissedCards(from, to);
+        		description="lostCardConfirm is true";
+			}
+        	List<CardTO> cardTOList = findMissedCards(from, to);
             List<Long> cardIdList = new ArrayList<Long>();
             for (CardTO cardTO : cardTOList) {
 //            	cardIdList.add(cardTO.getId());            	
@@ -1350,9 +1349,9 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     @Override
     public Boolean notifyCardsHandedOut(Long cardRequestId) throws BaseException {
         try {
-            // List<CardRequestTO> cardRequestTOList = getCardRequestDAO().findRequestsByBoundaryLimitAndState(from, to,CardRequestState.PENDING_TO_DELIVER_BY_CMS);
+           // List<CardRequestTO> cardRequestTOList = getCardRequestDAO().findRequestsByBoundaryLimitAndState(from, to,CardRequestState.PENDING_TO_DELIVER_BY_CMS);
 
-            CardRequestTO cardRequestTO = getCardRequestDAO().find(CardRequestTO.class, cardRequestId);
+            CardRequestTO cardRequestTO = getCardRequestDAO().find(CardRequestTO.class,cardRequestId);
             //handoutJobLogger.info("The list of card requests which are ready to be delivered contains {} records", cardRequestTOList.size());
             //if (EmsUtil.checkListSize(cardRequestTO)) {
             if (cardRequestTO != null) {
@@ -1362,182 +1361,182 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                 List<String> cardCRNListForRevoke = new ArrayList<String>();
                 List<String> cardIdListForExpire = new ArrayList<String>();
 
-                //     for (CardRequestTO cardRequestTO : cardRequestTOList) {
+           //     for (CardRequestTO cardRequestTO : cardRequestTOList) {
 
-                /**
-                 * Wrapping UnsuccessfulDelivery types on to the similar ones. By using this method all the unsuccessful
-                 * delivery type for the next cards are wrap to there type.
-                 * For instance :
-                 * UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD is converted to FIRST_CARD and this scenario is repeated for the other types.
-                 */
-                CardRequestType cardRequestType = wrapCardRequestType(cardRequestTO);
+                    /**
+                     * Wrapping UnsuccessfulDelivery types on to the similar ones. By using this method all the unsuccessful
+                     * delivery type for the next cards are wrap to there type.
+                     * For instance :
+                     * UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD is converted to FIRST_CARD and this scenario is repeated for the other types.
+                     */
+                    CardRequestType cardRequestType = wrapCardRequestType(cardRequestTO);
 
-                handoutJobLogger.info("Delivering card request {} of type {} with crn {}", new Object[]{cardRequestTO.getId(), cardRequestTO.getType(), cardRequestTO.getCard().getCrn()});
-                switch (cardRequestType) {
-                    case FIRST_CARD:
-                        try {
-                            deliverFirstCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-                            if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                    handoutJobLogger.info("Delivering card request {} of type {} with crn {}", new Object[]{cardRequestTO.getId(), cardRequestTO.getType(), cardRequestTO.getCard().getCrn()});
+                    switch (cardRequestType) {
+                        case FIRST_CARD:
+                            try {
+                                deliverFirstCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
+                            } catch (ServiceException e) {
+                                handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                                if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                    addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                    addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                                } else if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                    List<Long> requestIdList = new ArrayList<Long>();
+                                    requestIdList.add(cardRequestTO.getId());
+                                    getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                    updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
-
-                    case REPLICA:
-                        try {
-                            /**
-                             * The method deliverReplicaCard is used to handle the businesses which are needed in delivering the replica card,
-                             * and also handles in advance revoked cards(ExceptionCode : CSI_071)
-                             */
-                            deliverReplicaCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
-
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
-
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
-
-                    case REPLACE:
-                        try {
-                            /**
-                             * The method deliverReplaceCard is used to handle the businesses which are needed in delivering the replace card,
-                             * and also handles in advance revoked cards(ExceptionCode : CSI_071)
-                             */
-                            deliverReplaceCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-//							getCurrentCitizenCardByProduct exceptions
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
-
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                cardRequestIdListForDeliver.add(cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
-
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
-
-                    case EXTEND:
-                        try {
-                            /**
-                             * The method deliverExtendCard is used to handle the businesses which are needed in delivering the extend card,
-                             * and also handles in advance expired cards(ExceptionCode : CSI_050)
-                             */
-                            deliverExtendCard(cardRequestTO, cardIdListForExpire, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-//							getCurrentCitizenCardByProduct exceptions
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
-
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
-
-                            } else {
-                                throw e;
+                                } else {
+                                    throw e;
+                                }
                             }
                             break;
-                        }
 
-                    case UNSUCCESSFUL_DELIVERY:
-                        try {
-                            /**
-                             * The method deliverUnsuccessfulDeliveryCard is used to handle the businesses which are needed in delivering the unsuccessfulDelivered card,
-                             */
-                            deliverUnsuccessfulDeliveryCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                        case REPLICA:
+                            try {
+                                /**
+                                 * The method deliverReplicaCard is used to handle the businesses which are needed in delivering the replica card,
+                                 * and also handles in advance revoked cards(ExceptionCode : CSI_071)
+                                 */
+                                deliverReplicaCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
+                            } catch (ServiceException e) {
+                                handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                                if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                    List<Long> requestIdList = new ArrayList<Long>();
+                                    requestIdList.add(cardRequestTO.getId());
+                                    getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                    updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                                } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                    addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                    addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else {
-                                throw e;
+                                } else {
+                                    throw e;
+                                }
                             }
+                            break;
+
+                        case REPLACE:
+                            try {
+                                /**
+                                 * The method deliverReplaceCard is used to handle the businesses which are needed in delivering the replace card,
+                                 * and also handles in advance revoked cards(ExceptionCode : CSI_071)
+                                 */
+                                deliverReplaceCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
+                            } catch (ServiceException e) {
+                                handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+//							getCurrentCitizenCardByProduct exceptions
+                                if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                    List<Long> requestIdList = new ArrayList<Long>();
+                                    requestIdList.add(cardRequestTO.getId());
+                                    getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                    updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+
+                                } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                    cardRequestIdListForDeliver.add(cardRequestTO.getId());
+                                    addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+
+                                } else {
+                                    throw e;
+                                }
+                            }
+                            break;
+
+                        case EXTEND:
+                            try {
+                                /**
+                                 * The method deliverExtendCard is used to handle the businesses which are needed in delivering the extend card,
+                                 * and also handles in advance expired cards(ExceptionCode : CSI_050)
+                                 */
+                                deliverExtendCard(cardRequestTO, cardIdListForExpire, cardRequestIdListForDeliver, cardIdListForDeliver);
+                            } catch (ServiceException e) {
+                                handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+//							getCurrentCitizenCardByProduct exceptions
+                                if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                    List<Long> requestIdList = new ArrayList<Long>();
+                                    requestIdList.add(cardRequestTO.getId());
+                                    getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                    updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+
+                                } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                    addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                    addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+
+                                } else {
+                                    throw e;
+                                }
+                                break;
+                            }
+
+                        case UNSUCCESSFUL_DELIVERY:
+                            try {
+                                /**
+                                 * The method deliverUnsuccessfulDeliveryCard is used to handle the businesses which are needed in delivering the unsuccessfulDelivered card,
+                                 */
+                                deliverUnsuccessfulDeliveryCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
+                            } catch (ServiceException e) {
+                                handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                                if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                    List<Long> requestIdList = new ArrayList<Long>();
+                                    requestIdList.add(cardRequestTO.getId());
+                                    getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                    updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+
+                                } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                    addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                    addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+
+                                } else {
+                                    throw e;
+                                }
+                            }
+                            break;
+
+                    }
+
+                    // IMS setCitizenCardDelivered Service =================================================
+                    try {
+                    	CardTO card = cardRequestTO.getCard();
+                    	Long batchId = card.getBatch().getId();
+                    	EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, cardRequestTO.getDeliveredOfficeId());
+                    	EmsCardDeliverInfo cardDeliverInfo = new EmsCardDeliverInfo();
+                        cardDeliverInfo.setCardbatchId(batchId);
+                        cardDeliverInfo.setCardDeliveredDate(card.getDeliverDate());
+                        cardDeliverInfo.setCardlostDate(card.getLostDate());
+                        cardDeliverInfo.setCardreceivedDate(card.getReceiveDate());
+                        cardDeliverInfo.setCardshipmentDate(card.getShipmentDate());
+                        cardDeliverInfo.setCardState(card.getState());
+                        cardDeliverInfo.setEstelamId(0);
+                        cardDeliverInfo.setOfficeCode(Integer.parseInt(enrollmentOfficeTO.getCode()));
+                        cardDeliverInfo.setPersonNin(Long.parseLong(cardRequestTO.getCitizen().getNationalID()));
+                        cardDeliverInfo.setCrn(card.getCrn());
+                        cardDeliverInfo.setCardIssuanceDate(card.getIssuanceDate());
+                        cardDeliverInfo.setCardRequestId(cardRequestId);
+                        boolean imsDeliverFlag = getIMSService().setCitizenCardDelivered(cardDeliverInfo);
+
+                        handoutJobLogger.info("The return value of the IMS webservice of setCitizenCardDelivered is: " + imsDeliverFlag);
+                        if (!imsDeliverFlag) {
+                            cardRequestIdListForDeliver.remove(cardRequestTO.getId());
+                            cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
+                            handoutJobLogger.warn("setCitizenCardDelivered of IMS returned false for request {} (CRN={}). So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
                         }
-                        break;
-
-                }
-
-                // IMS setCitizenCardDelivered Service =================================================
-                try {
-                    CardTO card = cardRequestTO.getCard();
-                    Long batchId = card.getBatch().getId();
-                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, cardRequestTO.getDeliveredOfficeId());
-                    EmsCardDeliverInfo cardDeliverInfo = new EmsCardDeliverInfo();
-                    cardDeliverInfo.setCardbatchId(batchId);
-                    cardDeliverInfo.setCardDeliveredDate(card.getDeliverDate());
-                    cardDeliverInfo.setCardlostDate(card.getLostDate());
-                    cardDeliverInfo.setCardreceivedDate(card.getReceiveDate());
-                    cardDeliverInfo.setCardshipmentDate(card.getShipmentDate());
-                    cardDeliverInfo.setCardState(card.getState());
-                    cardDeliverInfo.setEstelamId(0);
-                    cardDeliverInfo.setOfficeCode(Integer.parseInt(enrollmentOfficeTO.getCode()));
-                    cardDeliverInfo.setPersonNin(Long.parseLong(cardRequestTO.getCitizen().getNationalID()));
-                    cardDeliverInfo.setCrn(card.getCrn());
-                    cardDeliverInfo.setCardIssuanceDate(card.getIssuanceDate());
-                    cardDeliverInfo.setCardRequestId(cardRequestId);
-                    boolean imsDeliverFlag = getIMSService().setCitizenCardDelivered(cardDeliverInfo);
-
-                    handoutJobLogger.info("The return value of the IMS webservice of setCitizenCardDelivered is: " + imsDeliverFlag);
-                    if (!imsDeliverFlag) {
+                    } catch (Exception e) {
+                        handoutJobLogger.error("An exception happened while calling setCitizenCardDelivered of IMS.", e);
                         cardRequestIdListForDeliver.remove(cardRequestTO.getId());
                         cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
-                        handoutJobLogger.warn("setCitizenCardDelivered of IMS returned false for request {} (CRN={}). So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
+                        handoutJobLogger.info("State of card request {} (CRN={}) will not be changed to DELIVERED. So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
+                        if (e instanceof BaseException) {
+                            logger.error(((BaseException) e).getExceptionCode(), e.getMessage(), e);
+                        } else {
+                            logger.error(BizExceptionCode.CMS_051, BizExceptionCode.GLB_008_MSG, e);
+                        }
                     }
-                } catch (Exception e) {
-                    handoutJobLogger.error("An exception happened while calling setCitizenCardDelivered of IMS.", e);
-                    cardRequestIdListForDeliver.remove(cardRequestTO.getId());
-                    cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
-                    handoutJobLogger.info("State of card request {} (CRN={}) will not be changed to DELIVERED. So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
-                    if (e instanceof BaseException) {
-                        logger.error(((BaseException) e).getExceptionCode(), e.getMessage(), e);
-                    } else {
-                        logger.error(BizExceptionCode.CMS_051, BizExceptionCode.GLB_008_MSG, e);
-                    }
-                }
-                // =====================================================================================
+                    // =====================================================================================
 
-                //    }//End for
+            //    }//End for
 
                 handoutJobLogger.info("Updating state of card requests to REVOKED for these CRNs :[{}] ", cardCRNListForRevoke);
 
@@ -1550,10 +1549,10 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                     handoutJobLogger.info("Updating state of card requests to DELIVERED for these card request IDs :[{}] ", cardRequestIdListForDeliver);
 
                     handoutJobLogger.info("Updating history of card requests about delivering notification for these card request IDs :[{}] ", cardRequestIdListForDeliver);
-                    //    for (Long cardRequestId : cardRequestIdListForDeliver) {
-                    getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId), null, SystemId.CMS, null,
-                            CardRequestHistoryAction.NOTIFY_CARD_DELIVER, null);
-                    //   }
+                //    for (Long cardRequestId : cardRequestIdListForDeliver) {
+                        getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId), null, SystemId.CMS, null,
+                                CardRequestHistoryAction.NOTIFY_CARD_DELIVER, null);
+                 //   }
                 }
 
                 if (EmsUtil.checkListSize(cardIdListForDeliver)) {
@@ -1580,236 +1579,237 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
 
+
     @Override
     @Asynchronous
     public Future<String> notifyCardsHandedOutAsync(Long cardRequestId) throws BaseException {
         try {
-            // List<CardRequestTO> cardRequestTOList = getCardRequestDAO().findRequestsByBoundaryLimitAndState(from, to,CardRequestState.PENDING_TO_DELIVER_BY_CMS);
+           // List<CardRequestTO> cardRequestTOList = getCardRequestDAO().findRequestsByBoundaryLimitAndState(from, to,CardRequestState.PENDING_TO_DELIVER_BY_CMS);
 
-            CardRequestTO cardRequestTO = getCardRequestDAO().find(CardRequestTO.class, cardRequestId);
+            CardRequestTO cardRequestTO = getCardRequestDAO().find(CardRequestTO.class,cardRequestId);
             //handoutJobLogger.info("The list of card requests which are ready to be delivered contains {} records", cardRequestTOList.size());
             //if (EmsUtil.checkListSize(cardRequestTO)) {
             if (cardRequestTO != null) {
                 List<Long> cardRequestIdListForDeliver = new ArrayList<Long>();
-                List<Long> cardIdListForDeliver = new ArrayList<Long>();
-                List<String> cardCRNListForRevoke = new ArrayList<String>();
-                List<String> cardIdListForExpire = new ArrayList<String>();
+                 List<Long> cardIdListForDeliver = new ArrayList<Long>();
+                 List<String> cardCRNListForRevoke = new ArrayList<String>();
+                 List<String> cardIdListForExpire = new ArrayList<String>();
 
-                //     for (CardRequestTO cardRequestTO : cardRequestTOList) {
+            //     for (CardRequestTO cardRequestTO : cardRequestTOList) {
 
-                /**
-                 * Wrapping UnsuccessfulDelivery types on to the similar ones. By using this method all the unsuccessful
-                 * delivery type for the next cards are wrap to there type.
-                 * For instance :
-                 * UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD is converted to FIRST_CARD and this scenario is repeated for the other types.
-                 */
-                CardRequestType cardRequestType = wrapCardRequestType(cardRequestTO);
+                     /**
+                      * Wrapping UnsuccessfulDelivery types on to the similar ones. By using this method all the unsuccessful
+                      * delivery type for the next cards are wrap to there type.
+                      * For instance :
+                      * UNSUCCESSFUL_DELIVERY_FOR_FIRST_CARD is converted to FIRST_CARD and this scenario is repeated for the other types.
+                      */
+                     CardRequestType cardRequestType = wrapCardRequestType(cardRequestTO);
 
-                handoutJobLogger.info("Delivering card request {} of type {} with crn {}", new Object[]{cardRequestTO.getId(), cardRequestTO.getType(), cardRequestTO.getCard().getCrn()});
-                switch (cardRequestType) {
-                    case FIRST_CARD:
-                        try {
-                            deliverFirstCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-                            if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                     handoutJobLogger.info("Delivering card request {} of type {} with crn {}", new Object[]{cardRequestTO.getId(), cardRequestTO.getType(), cardRequestTO.getCard().getCrn()});
+                     switch (cardRequestType) {
+                         case FIRST_CARD:
+                             try {
+                                 deliverFirstCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
+                             } catch (ServiceException e) {
+                                 handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                                 if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                     addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                     addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                                 } else if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                     List<Long> requestIdList = new ArrayList<Long>();
+                                     requestIdList.add(cardRequestTO.getId());
+                                     getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                     updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
+                                 } else {
+                                     throw e;
+                                 }
+                             }
+                             break;
 
-                    case REPLICA:
-                        try {
-                            /**
-                             * The method deliverReplicaCard is used to handle the businesses which are needed in delivering the replica card,
-                             * and also handles in advance revoked cards(ExceptionCode : CSI_071)
-                             */
-                            deliverReplicaCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                         case REPLICA:
+                             try {
+                                 /**
+                                  * The method deliverReplicaCard is used to handle the businesses which are needed in delivering the replica card,
+                                  * and also handles in advance revoked cards(ExceptionCode : CSI_071)
+                                  */
+                                 deliverReplicaCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
+                             } catch (ServiceException e) {
+                                 handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                                 if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                     List<Long> requestIdList = new ArrayList<Long>();
+                                     requestIdList.add(cardRequestTO.getId());
+                                     getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                     updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                                 } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                     addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                     addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
+                                 } else {
+                                     throw e;
+                                 }
+                             }
+                             break;
 
-                    case REPLACE:
-                        try {
-                            /**
-                             * The method deliverReplaceCard is used to handle the businesses which are needed in delivering the replace card,
-                             * and also handles in advance revoked cards(ExceptionCode : CSI_071)
-                             */
-                            deliverReplaceCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                         case REPLACE:
+                             try {
+                                 /**
+                                  * The method deliverReplaceCard is used to handle the businesses which are needed in delivering the replace card,
+                                  * and also handles in advance revoked cards(ExceptionCode : CSI_071)
+                                  */
+                                 deliverReplaceCard(cardRequestTO, cardCRNListForRevoke, cardRequestIdListForDeliver, cardIdListForDeliver);
+                             } catch (ServiceException e) {
+                                 handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
 // 							getCurrentCitizenCardByProduct exceptions
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                                 if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                     List<Long> requestIdList = new ArrayList<Long>();
+                                     requestIdList.add(cardRequestTO.getId());
+                                     getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                     updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                cardRequestIdListForDeliver.add(cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                                 } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                     cardRequestIdListForDeliver.add(cardRequestTO.getId());
+                                     addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
+                                 } else {
+                                     throw e;
+                                 }
+                             }
+                             break;
 
-                    case EXTEND:
-                        try {
-                            /**
-                             * The method deliverExtendCard is used to handle the businesses which are needed in delivering the extend card,
-                             * and also handles in advance expired cards(ExceptionCode : CSI_050)
-                             */
-                            deliverExtendCard(cardRequestTO, cardIdListForExpire, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                         case EXTEND:
+                             try {
+                                 /**
+                                  * The method deliverExtendCard is used to handle the businesses which are needed in delivering the extend card,
+                                  * and also handles in advance expired cards(ExceptionCode : CSI_050)
+                                  */
+                                 deliverExtendCard(cardRequestTO, cardIdListForExpire, cardRequestIdListForDeliver, cardIdListForDeliver);
+                             } catch (ServiceException e) {
+                                 handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
 // 							getCurrentCitizenCardByProduct exceptions
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                                 if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                     List<Long> requestIdList = new ArrayList<Long>();
+                                     requestIdList.add(cardRequestTO.getId());
+                                     getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                     updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                                 } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                     addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                     addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else {
-                                throw e;
-                            }
-                            break;
-                        }
+                                 } else {
+                                     throw e;
+                                 }
+                                 break;
+                             }
 
-                    case UNSUCCESSFUL_DELIVERY:
-                        try {
-                            /**
-                             * The method deliverUnsuccessfulDeliveryCard is used to handle the businesses which are needed in delivering the unsuccessfulDelivered card,
-                             */
-                            deliverUnsuccessfulDeliveryCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
-                        } catch (ServiceException e) {
-                            handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
-                            if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
-                                List<Long> requestIdList = new ArrayList<Long>();
-                                requestIdList.add(cardRequestTO.getId());
-                                getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
-                                updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
+                         case UNSUCCESSFUL_DELIVERY:
+                             try {
+                                 /**
+                                  * The method deliverUnsuccessfulDeliveryCard is used to handle the businesses which are needed in delivering the unsuccessfulDelivered card,
+                                  */
+                                 deliverUnsuccessfulDeliveryCard(cardRequestTO, cardRequestIdListForDeliver, cardIdListForDeliver);
+                             } catch (ServiceException e) {
+                                 handoutJobLogger.error("Unable to deliver card request " + cardRequestTO.getId() + " of type " + cardRequestTO.getType() + " with crn " + cardRequestTO.getCard().getCrn(), e);
+                                 if (BizExceptionCode.CSI_112.equals(e.getExceptionCode())) {
+                                     List<Long> requestIdList = new ArrayList<Long>();
+                                     requestIdList.add(cardRequestTO.getId());
+                                     getCardRequestDAO().updateCardRequestsState(requestIdList, CardRequestState.CMS_ERROR);
+                                     updateCardRequestHistory(cardRequestTO, "", "FAILURE_VALUE" + "-" + e.getMessage());
 
-                            } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
-                                addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
-                                addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
+                                 } else if (BizExceptionCode.CSI_043.equals(e.getExceptionCode())) {
+                                     addToList(cardRequestIdListForDeliver, cardRequestTO.getId());
+                                     addToList(cardIdListForDeliver, cardRequestTO.getCard().getId());
 
-                            } else {
-                                throw e;
-                            }
-                        }
-                        break;
+                                 } else {
+                                     throw e;
+                                 }
+                             }
+                             break;
 
-                }
+                     }
 
-                // IMS setCitizenCardDelivered Service =================================================
-                try {
-                    CardTO card = cardRequestTO.getCard();
-                    Long batchId = card.getBatch().getId();
-                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, cardRequestTO.getDeliveredOfficeId());
-                    EmsCardDeliverInfo cardDeliverInfo = new EmsCardDeliverInfo();
-                    cardDeliverInfo.setCardbatchId(batchId);
-                    cardDeliverInfo.setCardDeliveredDate(card.getDeliverDate());
-                    cardDeliverInfo.setCardlostDate(card.getLostDate());
-                    cardDeliverInfo.setCardreceivedDate(card.getReceiveDate());
-                    cardDeliverInfo.setCardshipmentDate(card.getShipmentDate());
-                    cardDeliverInfo.setCardState(card.getState());
-                    cardDeliverInfo.setEstelamId(0);
-                    cardDeliverInfo.setOfficeCode(Integer.parseInt(enrollmentOfficeTO.getCode()));
-                    cardDeliverInfo.setPersonNin(Long.parseLong(cardRequestTO.getCitizen().getNationalID()));
-                    cardDeliverInfo.setCrn(card.getCrn());
-                    cardDeliverInfo.setCardIssuanceDate(card.getIssuanceDate());
-                    cardDeliverInfo.setCardRequestId(cardRequestId);
-                    boolean imsDeliverFlag = getIMSService().setCitizenCardDelivered(cardDeliverInfo);
+                     // IMS setCitizenCardDelivered Service =================================================
+                     try {
+                     	CardTO card = cardRequestTO.getCard();
+                     	Long batchId = card.getBatch().getId();
+                     	EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, cardRequestTO.getDeliveredOfficeId());
+                     	EmsCardDeliverInfo cardDeliverInfo = new EmsCardDeliverInfo();
+                         cardDeliverInfo.setCardbatchId(batchId);
+                         cardDeliverInfo.setCardDeliveredDate(card.getDeliverDate());
+                         cardDeliverInfo.setCardlostDate(card.getLostDate());
+                         cardDeliverInfo.setCardreceivedDate(card.getReceiveDate());
+                         cardDeliverInfo.setCardshipmentDate(card.getShipmentDate());
+                         cardDeliverInfo.setCardState(card.getState());
+                         cardDeliverInfo.setEstelamId(0);
+                         cardDeliverInfo.setOfficeCode(Integer.parseInt(enrollmentOfficeTO.getCode()));
+                         cardDeliverInfo.setPersonNin(Long.parseLong(cardRequestTO.getCitizen().getNationalID()));
+                         cardDeliverInfo.setCrn(card.getCrn());
+                         cardDeliverInfo.setCardIssuanceDate(card.getIssuanceDate());
+                         cardDeliverInfo.setCardRequestId(cardRequestId);
+                         boolean imsDeliverFlag = getIMSService().setCitizenCardDelivered(cardDeliverInfo);
 
-                    handoutJobLogger.info("The return value of the IMS webservice of setCitizenCardDelivered is: " + imsDeliverFlag);
-                    if (!imsDeliverFlag) {
-                        cardRequestIdListForDeliver.remove(cardRequestTO.getId());
-                        cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
-                        handoutJobLogger.warn("setCitizenCardDelivered of IMS returned false for request {} (CRN={}). So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
-                    }
-                } catch (Exception e) {
-                    handoutJobLogger.error("An exception happened while calling setCitizenCardDelivered of IMS.", e);
-                    cardRequestIdListForDeliver.remove(cardRequestTO.getId());
-                    cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
-                    handoutJobLogger.info("State of card request {} (CRN={}) will not be changed to DELIVERED. So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
-                    if (e instanceof BaseException) {
-                        logger.error(((BaseException) e).getExceptionCode(), e.getMessage(), e);
-                    } else {
-                        logger.error(BizExceptionCode.CMS_051, BizExceptionCode.GLB_008_MSG, e);
-                    }
-                }
-                // =====================================================================================
+                         handoutJobLogger.info("The return value of the IMS webservice of setCitizenCardDelivered is: " + imsDeliverFlag);
+                         if (!imsDeliverFlag) {
+                             cardRequestIdListForDeliver.remove(cardRequestTO.getId());
+                             cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
+                             handoutJobLogger.warn("setCitizenCardDelivered of IMS returned false for request {} (CRN={}). So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
+                         }
+                     } catch (Exception e) {
+                         handoutJobLogger.error("An exception happened while calling setCitizenCardDelivered of IMS.", e);
+                         cardRequestIdListForDeliver.remove(cardRequestTO.getId());
+                         cardIdListForDeliver.remove(cardRequestTO.getCard().getId());
+                         handoutJobLogger.info("State of card request {} (CRN={}) will not be changed to DELIVERED. So this request will be included in next round of CardHandoutNotification job", cardRequestTO.getId(), cardRequestTO.getCard().getCrn());
+                         if (e instanceof BaseException) {
+                             logger.error(((BaseException) e).getExceptionCode(), e.getMessage(), e);
+                         } else {
+                             logger.error(BizExceptionCode.CMS_051, BizExceptionCode.GLB_008_MSG, e);
+                         }
+                     }
+                     // =====================================================================================
 
-                //    }//End for
+             //    }//End for
 
-                handoutJobLogger.info("Updating state of card requests to REVOKED for these CRNs :[{}] ", cardCRNListForRevoke);
+                 handoutJobLogger.info("Updating state of card requests to REVOKED for these CRNs :[{}] ", cardCRNListForRevoke);
 
-                if (EmsUtil.checkListSize(cardCRNListForRevoke)) {
-                    getCardDAO().updateCardsStateByCRN(cardCRNListForRevoke, CardState.REVOKED);
-                }
+                 if (EmsUtil.checkListSize(cardCRNListForRevoke)) {
+                     getCardDAO().updateCardsStateByCRN(cardCRNListForRevoke, CardState.REVOKED);
+                 }
 
-                if (EmsUtil.checkListSize(cardRequestIdListForDeliver)) {
-                    getCardRequestDAO().updateCardRequestsState(cardRequestIdListForDeliver, CardRequestState.DELIVERED);
-                    handoutJobLogger.info("Updating state of card requests to DELIVERED for these card request IDs :[{}] ", cardRequestIdListForDeliver);
+                 if (EmsUtil.checkListSize(cardRequestIdListForDeliver)) {
+                     getCardRequestDAO().updateCardRequestsState(cardRequestIdListForDeliver, CardRequestState.DELIVERED);
+                     handoutJobLogger.info("Updating state of card requests to DELIVERED for these card request IDs :[{}] ", cardRequestIdListForDeliver);
 
-                    handoutJobLogger.info("Updating history of card requests about delivering notification for these card request IDs :[{}] ", cardRequestIdListForDeliver);
-                    //    for (Long cardRequestId : cardRequestIdListForDeliver) {
-                    getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId), null, SystemId.CMS, null,
-                            CardRequestHistoryAction.NOTIFY_CARD_DELIVER, null);
-                    //   }
-                }
+                     handoutJobLogger.info("Updating history of card requests about delivering notification for these card request IDs :[{}] ", cardRequestIdListForDeliver);
+                 //    for (Long cardRequestId : cardRequestIdListForDeliver) {
+                         getCardRequestHistoryDAO().create(new CardRequestTO(cardRequestId), null, SystemId.CMS, null,
+                                 CardRequestHistoryAction.NOTIFY_CARD_DELIVER, null);
+                  //   }
+                 }
 
-                if (EmsUtil.checkListSize(cardIdListForDeliver)) {
-                    getCardDAO().updateCardsState(cardIdListForDeliver, CardState.DELIVERED);
-                    handoutJobLogger.info("Updating state of cards to DELIVERED for these card IDs :[{}] ", cardIdListForDeliver);
-                }
+                 if (EmsUtil.checkListSize(cardIdListForDeliver)) {
+                     getCardDAO().updateCardsState(cardIdListForDeliver, CardState.DELIVERED);
+                     handoutJobLogger.info("Updating state of cards to DELIVERED for these card IDs :[{}] ", cardIdListForDeliver);
+                 }
 
-                /**
-                 * BusinessLog
-                 */
-                Map<Object, Object> businessLogMap = new HashMap<Object, Object>();
-                businessLogMap.put("deliveredCardRequestIds", cardRequestIdListForDeliver);
-                businessLogMap.put("deliveredCardIds", cardIdListForDeliver);
-                createBusinessLog(BusinessLogAction.NOTIFY_HANDOUT, BusinessLogEntity.CARD, "system",
-                        EmsUtil.convertStringToJSONFormat("cardHandedOutInfo", businessLogMap), true);
-            }
-            //return loopFlag;
-            return new AsyncResult<String>("");
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_038, BizExceptionCode.GLB_008_MSG, e);
-        }
+                 /**
+                  * BusinessLog
+                  */
+                 Map<Object, Object> businessLogMap = new HashMap<Object, Object>();
+                 businessLogMap.put("deliveredCardRequestIds", cardRequestIdListForDeliver);
+                 businessLogMap.put("deliveredCardIds", cardIdListForDeliver);
+                 createBusinessLog(BusinessLogAction.NOTIFY_HANDOUT, BusinessLogEntity.CARD, "system",
+                         EmsUtil.convertStringToJSONFormat("cardHandedOutInfo", businessLogMap), true);
+             }
+             //return loopFlag;
+             return new AsyncResult<String>("");
+         } catch (BaseException e) {
+             throw e;
+         } catch (Exception e) {
+             throw new ServiceException(BizExceptionCode.CMS_038, BizExceptionCode.GLB_008_MSG, e);
+         }
     }
 
 
@@ -1847,7 +1847,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             tempCardRequestTO.setSignedReceipt(signedReceipt);
 //            
 
-            // CardRequestBlobsTO findcardRequestBlobsTO = getCardRequestBlobs().findByCardRequestId(requestId);
+           // CardRequestBlobsTO findcardRequestBlobsTO = getCardRequestBlobs().findByCardRequestId(requestId);
 //            CardRequestBlobsTO findcardRequestBlobsTO = getCardRequestBlobs().find(CardRequestBlobsTO.class, requestId);
 //            if(findcardRequestBlobsTO != null)
 //            {
@@ -1869,8 +1869,9 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             //******************
 
 
+
             updateRequestState(tempCardRequestTO, CardRequestState.READY_TO_DELIVER, CardRequestState.PENDING_TO_DELIVER_BY_CMS);
-            getCardDAO().updateDeliverDate(requestId, new Date());
+            getCardDAO().updateDeliverDate(requestId,new Date());
 
             getCardRequestHistoryDAO().create(new CardRequestTO(tempCardRequestTO.getId()), null, SystemId.CCOS,
                     null, CardRequestHistoryAction.DELIVERED_TO_CITIZEN, getUserProfileTO().getUserName());
@@ -1922,9 +1923,9 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
 //                case IDENTITY_CHANGE:
 //                    notifyUnsuccessfulDeliveryForIdentityChange(requestID, reason);
 //                    break;
-                case BIOMETRIC_FINGER_ERROR:
-                    notifyUnsuccessfulDeliveryForCutFingersChanged(requestID, reason);
-                    break;
+            	case BIOMETRIC_FINGER_ERROR:
+            		notifyUnsuccessfulDeliveryForCutFingersChanged(requestID, reason);
+            		break;
 
                 case CARD_DAMAGE:
                     notifyUnsuccessfulDeliveryForDamagedCard(requestID, reason);
@@ -2020,10 +2021,10 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                 cardRequestIdsForLog.add(cardRequestTO.getId().toString());
                 cardIdsForLog.add(cardRequestTO.getCard().getId().toString());
                 try {
-                    unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
-                    unsuccessfulDeliveryLogger.info("\n-------------------------------- revoke card ----------------------------------------------");
-                    unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
-                    unsuccessfulDeliveryLogger.info("\nrequest id is:" + cardRequestTO.getId());
+                	unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
+		            unsuccessfulDeliveryLogger.info("\n-------------------------------- revoke card ----------------------------------------------");
+		            unsuccessfulDeliveryLogger.info("\n-------------------------------------------------------------------------------------------");
+		            unsuccessfulDeliveryLogger.info("\nrequest id is:"+cardRequestTO.getId());
                     revokeCard(cardRequestTO, "");
                     //Some extensions on the type of request
                     branchUnsuccessfulDeliveryType(cardRequestTO);
@@ -2076,81 +2077,87 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                             }
                             break;
 
-                            default:
-                                break;
-                        }
-                        if (stop) {
+						default:
+							break;
+						}
+						if(stop)
+							{
 
-                            cardRequestTO.setState(CardRequestState.DOCUMENT_AUTHENTICATED);
-                            cardRequestTO.setReEnrolledDate(new Date());
-                            break;
-                        }
-                    }
+								cardRequestTO.setState(CardRequestState.DOCUMENT_AUTHENTICATED);
+								cardRequestTO.setReEnrolledDate(new Date());
+								break;
+							}
+						}
+
+
 
 
                 } catch (BaseException e) {
-                    unsuccessfulDeliveryLogger.error(e.getExceptionCode(), e.getMessage(), e);
+                	unsuccessfulDeliveryLogger.error(e.getExceptionCode(), e.getMessage(), e);
                     if (BizExceptionCode.CSI_071.equals(e.getExceptionCode())) {
 //					Some extensions on the type of request
                         branchUnsuccessfulDeliveryType(cardRequestTO);
 
                         List<CardRequestHistoryTO> allHistorys = getCardRequestHistoryDAO().fetchAllHistoryByRequestId(cardRequestTO.getId());
                         for (CardRequestHistoryTO cardRequestHistoryTO : allHistorys) {
-                            boolean stop = false;
+    						boolean stop=false;
 
-                            switch (cardRequestHistoryTO
-                                    .getCardRequestHistoryAction()) {
-                                case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
-                                case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_CFINGER: {
-                                    // Removing the biometric data which belong to
-                                    // Finger
-                                    unsuccessfulDeliveryLogger.info("\nremove finger biometric and finger info");
-                                    unsuccessfulDeliveryLogger.info("\ncard request history action is:" + cardRequestHistoryTO
-                                            .getCardRequestHistoryAction());
-                                    unsuccessfulDeliveryLogger.info("\ncard request history id is:" + cardRequestHistoryTO
-                                            .getId());
-                                    getBiometricDAO().removeFingersInfoByCitizenId(
-                                            cardRequestTO.getCitizen().getId());
-                                    getBiometricInfoDAO().removeBiometricInfo(
-                                            cardRequestTO.getCitizen().getId());
-                                    stop = true;
-                                }
-                                break;
-                                case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER_IMAGE: {
-                                    unsuccessfulDeliveryLogger.info("\nremove finger biometric and finger info and biometric face");
-                                    unsuccessfulDeliveryLogger.info("\ncard request history action is:" + cardRequestHistoryTO
-                                            .getCardRequestHistoryAction());
-                                    unsuccessfulDeliveryLogger.info("\ncard request history id is:" + cardRequestHistoryTO
-                                            .getId());
-                                    getBiometricDAO().removeFingersInfoByCitizenId(
-                                            cardRequestTO.getCitizen().getId());
-                                    getBiometricInfoDAO().removeBiometricInfo(
-                                            cardRequestTO.getCitizen().getId());
-                                    getBiometricDAO().removeFaceInfoByCitizenId(cardRequestTO.getCitizen().getId());
-                                    stop = true;
-                                }
-                                break;
-                                case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IMAGE: {
-                                    unsuccessfulDeliveryLogger.info("\nremove biometric face");
-                                    unsuccessfulDeliveryLogger.info("\ncard request history action is:" + cardRequestHistoryTO
-                                            .getCardRequestHistoryAction());
-                                    unsuccessfulDeliveryLogger.info("\ncard request history id is:" + cardRequestHistoryTO
-                                            .getId());
-                                    getBiometricDAO().removeFaceInfoByCitizenId(cardRequestTO.getCitizen().getId());
-                                    stop = true;
-                                }
-                                break;
+    						switch (cardRequestHistoryTO
+    								.getCardRequestHistoryAction()) {
+    						case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC:
+    						case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_CFINGER: {
+    							// Removing the biometric data which belong to
+    							// Finger
+    							unsuccessfulDeliveryLogger.info("\nremove finger biometric and finger info");
+    							unsuccessfulDeliveryLogger.info("\ncard request history action is:"+cardRequestHistoryTO
+    									.getCardRequestHistoryAction());
+    							unsuccessfulDeliveryLogger.info("\ncard request history id is:"+cardRequestHistoryTO
+    									.getId());
+    							getBiometricDAO().removeFingersInfoByCitizenId(
+    									cardRequestTO.getCitizen().getId());
+    							getBiometricInfoDAO().removeBiometricInfo(
+    									cardRequestTO.getCitizen().getId());
+    							stop=true;
+    						}
+    							break;
+    						case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER_IMAGE:
+    						{
+    							unsuccessfulDeliveryLogger.info("\nremove finger biometric and finger info and biometric face");
+    							unsuccessfulDeliveryLogger.info("\ncard request history action is:"+cardRequestHistoryTO
+    									.getCardRequestHistoryAction());
+    							unsuccessfulDeliveryLogger.info("\ncard request history id is:"+cardRequestHistoryTO
+    									.getId());
+    							getBiometricDAO().removeFingersInfoByCitizenId(
+    									cardRequestTO.getCitizen().getId());
+    							getBiometricInfoDAO().removeBiometricInfo(
+    									cardRequestTO.getCitizen().getId());
+    							getBiometricDAO().removeFaceInfoByCitizenId(cardRequestTO.getCitizen().getId());
+    							stop=true;
+    						}
+    							break;
+    						case UNSUCCESSFUL_DELIVERY_BECAUSE_OF_IMAGE:
+    						{
+    							unsuccessfulDeliveryLogger.info("\nremove biometric face");
+    							unsuccessfulDeliveryLogger.info("\ncard request history action is:"+cardRequestHistoryTO
+    									.getCardRequestHistoryAction());
+    							unsuccessfulDeliveryLogger.info("\ncard request history id is:"+cardRequestHistoryTO
+    									.getId());
+    							getBiometricDAO().removeFaceInfoByCitizenId(cardRequestTO.getCitizen().getId());
+    							stop=true;
+    						}
+    							break;
 
-                                default:
-                                    break;
-                            }
-                            if (stop) {
+    						default:
+    							break;
+    						}
+    						if(stop)
+    							{
 
-                                cardRequestTO.setState(CardRequestState.DOCUMENT_AUTHENTICATED);
-                                cardRequestTO.setReEnrolledDate(new Date());
-                                break;
-                            }
-                        }
+    								cardRequestTO.setState(CardRequestState.DOCUMENT_AUTHENTICATED);
+    								cardRequestTO.setReEnrolledDate(new Date());
+    								break;
+    							}
+    						}
 
                     } else {
                         throw e;
@@ -2161,10 +2168,10 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             businessLogMap.put("cardIds", cardIdsForLog.toString());
             return EmsUtil.convertStringToJSONFormat("requestsWithBiometricProblem", businessLogMap);
         } catch (BaseException e) {
-            unsuccessfulDeliveryLogger.error(e.getExceptionCode(), e.getMessage(), e);
+        	unsuccessfulDeliveryLogger.error(e.getExceptionCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            unsuccessfulDeliveryLogger.error("unhandle exception occurred:", e.getMessage(), e);
+        	unsuccessfulDeliveryLogger.error("unhandle exception occurred:", e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.CMS_056, BizExceptionCode.GLB_008_MSG, e);
         }
     }
@@ -2175,8 +2182,8 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     @Override
-    public List<Long> findRequestsIdByState(CardRequestState cardRequestState, Integer fetchLimit) throws BaseException {
-        return getCardRequestDAO().findRequestsIdByState(cardRequestState, fetchLimit);
+    public List<Long> findRequestsIdByState(CardRequestState cardRequestState,Integer fetchLimit) throws BaseException {
+        return getCardRequestDAO().findRequestsIdByState(cardRequestState,fetchLimit);
     }
 
     @Override
@@ -2188,31 +2195,30 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * in this method first is checked that the profilekey for confirm lost card is true or false
      * if it was true then it means in business it must check that has been done confirm for batches or not.
      * if it was false then it means in business it dont need to check confirm. instead of it we check the interval time.
-     *
      * @author ganjyar
      */
     @Override
     public Long findMissedBatchesCount() throws BaseException {
 
-        try {
-            // true: need to manager confirm
-            if (Boolean.valueOf(EmsUtil.getProfileValue(
-                    ProfileKeyName.KEY_LOST_CARD_CONFIRM,
-                    DEFAULT_CARD_LOST_CONFIRM))) {
-                return getDispatchDAO().findMissedBatchesCountConfirmed();
+		try {
+			// true: need to manager confirm
+			if (Boolean.valueOf(EmsUtil.getProfileValue(
+					ProfileKeyName.KEY_LOST_CARD_CONFIRM,
+					DEFAULT_CARD_LOST_CONFIRM))) {
+				return getDispatchDAO().findMissedBatchesCountConfirmed();
 
-            } else {
+			} else {
 
-                return getDispatchDAO().findMissedBatchesCount();
+				return getDispatchDAO().findMissedBatchesCount();
 
-            }
+			}
 
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_080,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_080,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
 
 
     }
@@ -2227,31 +2233,30 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * in this method first is checked that the profilekey for confirm lost card is true or false
      * if it was true then it means in business it must check that has been done confirm for cards or not.
      * if it was false then it means in business it dont need to check confirm. instead of it we check the interval time.
-     *
      * @author ganjyar
      */
     @Override
-    public Long findMissedCardsCount() throws BaseException {
-        try {
-            // true: need to manager confirm
-            if (Boolean.valueOf(EmsUtil.getProfileValue(
-                    ProfileKeyName.KEY_LOST_CARD_CONFIRM,
-                    DEFAULT_CARD_LOST_CONFIRM))) {
-                return getDispatchDAO().findMissedCardsCountConfirmed();
+	public Long findMissedCardsCount() throws BaseException {
+		try {
+			// true: need to manager confirm
+			if (Boolean.valueOf(EmsUtil.getProfileValue(
+					ProfileKeyName.KEY_LOST_CARD_CONFIRM,
+					DEFAULT_CARD_LOST_CONFIRM))) {
+				return getDispatchDAO().findMissedCardsCountConfirmed();
 
-            } else {
+			} else {
 
-                return getDispatchDAO().findMissedCardsCount();
+				return getDispatchDAO().findMissedCardsCount();
 
-            }
+			}
 
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_078,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
-    }
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_078,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+	}
 
     /**
      * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -2280,66 +2285,64 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             throw new ServiceException(BizExceptionCode.CMS_061, BizExceptionCode.GLB_008_MSG, e);
         }
     }
+	/**
+	 * this method is used to confirm lost card in 3s
+	 * @author ganjyar
+	 */
+	@Override
+	@Permissions(value = "ems_viewCardLost")
+	public void doConfirmLostCard(Long cardId)
+			throws BaseException {
+		try {
+			if (cardId == null) {
+				throw new ServiceException(BizExceptionCode.CMS_063,
+						BizExceptionCode.CMS_063_MSG);
+			}
+			CardTO card = getCardDAO().find(CardTO.class, cardId);
+			if (card == null) {
+				throw new ServiceException(BizExceptionCode.CMS_065,
+						BizExceptionCode.CMS_065_MSG);
+			}
+			if (card.getState() != CardState.SHIPPED) {
+				throw new ServiceException(BizExceptionCode.CMS_066,
+						BizExceptionCode.CMS_066_MSG);
 
-    /**
-     * this method is used to confirm lost card in 3s
-     *
-     * @author ganjyar
-     */
-    @Override
-    @Permissions(value = "ems_viewCardLost")
-    public void doConfirmLostCard(Long cardId)
-            throws BaseException {
-        try {
-            if (cardId == null) {
-                throw new ServiceException(BizExceptionCode.CMS_063,
-                        BizExceptionCode.CMS_063_MSG);
-            }
-            CardTO card = getCardDAO().find(CardTO.class, cardId);
-            if (card == null) {
-                throw new ServiceException(BizExceptionCode.CMS_065,
-                        BizExceptionCode.CMS_065_MSG);
-            }
-            if (card.getState() != CardState.SHIPPED) {
-                throw new ServiceException(BizExceptionCode.CMS_066,
-                        BizExceptionCode.CMS_066_MSG);
+			}
+			if (card.getLostDate() == null) {
+				throw new ServiceException(BizExceptionCode.CMS_067,
+						BizExceptionCode.CMS_067_MSG);
+			}
+			logger.info("confirming lost card with id :"+cardId);
+			card.setIsLostCardConfirmed(true);
+			return;
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_064,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
 
-            }
-            if (card.getLostDate() == null) {
-                throw new ServiceException(BizExceptionCode.CMS_067,
-                        BizExceptionCode.CMS_067_MSG);
-            }
-            logger.info("confirming lost card with id :" + cardId);
-            card.setIsLostCardConfirmed(true);
-            return;
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_064,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
+	}
 
-    }
+	/**
+	 * This method fetch lost cards which are confirmed by manager in 3s
+	 * @author ganjyar
+	 *
+	 */
+	@Override
+	public List<CardDispatchInfoVTO> fetchCardLostTempList(
+			GeneralCriteria criteria) throws BaseException {
+		try {
+			return getCardDAO().fetchCardLostTempList(criteria);
 
-    /**
-     * This method fetch lost cards which are confirmed by manager in 3s
-     *
-     * @author ganjyar
-     */
-    @Override
-    public List<CardDispatchInfoVTO> fetchCardLostTempList(
-            GeneralCriteria criteria) throws BaseException {
-        try {
-            return getCardDAO().fetchCardLostTempList(criteria);
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_068,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
 
-        } catch (BaseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.CMS_068,
-                    BizExceptionCode.GLB_008_MSG, e);
-        }
-
-    }
+	}
 
     /**
      * This method count lost cards which are confirmed by manager in 3s
