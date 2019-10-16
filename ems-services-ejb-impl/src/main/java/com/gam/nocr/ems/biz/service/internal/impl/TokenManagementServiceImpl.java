@@ -757,8 +757,9 @@ public class TokenManagementServiceImpl extends EMSAbstractService implements
             }
 
             findAndRevokeDeliveredPersonTokenWithSameType(personTokenTO);
-            doActivation(personTokenTO, personTokenTO.getType());
+            //doActivation(personTokenTO, personTokenTO.getType());
             personTokenTO.setState(TokenState.DELIVERED);
+            personTokenTO.setDeliverDate(new Date());
             getPersonTokenDAO().update(personTokenTO);
 
         } else {
