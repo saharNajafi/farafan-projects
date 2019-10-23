@@ -1608,7 +1608,7 @@ public class NOCRIMSOnlineServiceImpl extends AbstractService implements NOCRIMS
                     throw new ServiceException(BizExceptionCode.NIO_035, BizExceptionCode.NIO_001_MSG, new Object[]{nationalId});
                 }
             }
-            if(personEnquiryVTOResult.getDescription().contains("login.invalid.user")){
+            if (personEnquiryVTOResult.getDescription() != null && personEnquiryVTOResult.getDescription().contains("login.invalid.user")) {
                 throw new ServiceException(BizExceptionCode.NIO_040, BizExceptionCode.NIO_040_MSG, new Object[]{nationalId});
             }
             return personEnquiryVTOResult;
