@@ -3088,8 +3088,6 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     }
 
     @Override
-//    @Permissions(value = "ems_findCitizenInfo")
-//    @BizLoggable(logAction = "LOAD", logEntityName = "CITIZEN")
     public CitizenTO fetchCitizenInfo(String nationalId) throws BaseException {
         if (isNullOrEmptyString(nationalId)) {
             throw new ServiceException(BizExceptionCode.RSI_175,

@@ -630,7 +630,13 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
 //    public static final String CRA_009 = "EMS_A_CRA_009";
 //    public static final String CRA_010 = "EMS_A_CRA_010";
     public static final String CRA_013_MSG="invalid input entry, request id is empty";
-    public static final String CRA_022_MSG="Exception in get batch request id";
+
+
+    //com.gam.nocr.ems.web.action.FindBatchAction
+    public static final String FBA_001 = "EMS_A_FBA_001";
+    public static final String FBA_002 = "EMS_A_FBA_002";
+    public static final String FBA_002_MSG="Exception in get batch request id";
+
 
     //com.gam.nocr.ems.web.ws.RequestWS
     public static final String RQW_001 = "EMS_W_RQW_001";
@@ -668,30 +674,30 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     public static final String MSW_002_MSG = "Unable to get content message";
 
     //com.gam.nocr.ems.web.ws.EmsWorkStationPlatformManagementWS
-    public static final String WST_008 = "EMSWorkstationPMService0008";
-    public static final String WST_009 = "EMSWorkstationPMService0009";
-    public static final String WST_010 = "EMSWorkstationPMService0010";
-    public static final String WST_011 = "EMSWorkstationPMService0011";
-    public static final String WST_012 = "EMSWorkstationPMService0012";
-    public static final String WST_013 = "EMSWorkstationPMService0013";
-    public static final String WST_014 = "EMSWorkstationPMService0014";
-    public static final String WST_015 = "EMSWorkstationPMService0015";
-    public static final String WST_016 = "EMSWorkstationPMService0016";
-    public static final String WST_017 = "EMSWorkstationPMService0017";
-    public static final String WST_018 = "EMSWorkstationPMService0018";
-    public static final String WST_019 = "EMSWorkstationPMService0019";
-    public static final String EMSWorkstationPMService0008 = "IP address format is invalid";
-    public static final String EMSWorkstationPMService0009 = "MAC address could not be empty";
-    public static final String EMSWorkstationPMService0010 = "MAC address is too short";
-    public static final String EMSWorkstationPMService0011 = "MAC address is too long";
-    public static final String EMSWorkstationPMService0012 = "OS version could not be empty";
-    public static final String EMSWorkstationPMService0013 = "Username could not be empty";
-    public static final String EMSWorkstationPMService0014 = "Computer name could not be empty";
-    public static final String EMSWorkstationPMService0015 = "Json format is not valid";
-    public static final String EMSWorkstationPMService0016 = "Memory capacity is required";
-    public static final String EMSWorkstationPMService0017 = "Ccos version is required";
-    public static final String EMSWorkstationPMService0018 = "Cpu info is required";
-    public static final String EMSWorkstationPMService0019 = "Dot net frame work version is required";
+    public static final String WST_008 = "EMS_W_WST_008";
+    public static final String WST_009 = "EMS_W_WST_009";
+    public static final String WST_010 = "EMS_W_WST_010";
+    public static final String WST_011 = "EMS_W_WST_011";
+    public static final String WST_012 = "EMS_W_WST_012";
+    public static final String WST_013 = "EMS_W_WST_013";
+    public static final String WST_014 = "EMS_W_WST_014";
+    public static final String WST_015 = "EMS_W_WST_015";
+    public static final String WST_016 = "EMS_W_WST_016";
+    public static final String WST_017 = "EMS_W_WST_017";
+    public static final String WST_018 = "EMS_W_WST_018";
+    public static final String WST_019 = "EMS_W_WST_019";
+    public static final String WST_008_MSG = "IP address format is invalid";
+    public static final String WST_009_MSG = "Unhandled exception occured in isWorkstationInfoRequired";
+    public static final String WST_010_MSG = "Unhandled exception occured in registerWorkstationInfo";
+    public static final String WST_011_MSG = "Unhandled exception occured in registerWorkstationPlugins";
+    public static final String WST_012_MSG = "OS version could not be empty";
+    public static final String WST_013_MSG = "Username could not be empty";
+    public static final String WST_014_MSG = "Computer name could not be empty";
+    public static final String WST_015_MSG = "Json format is not valid";
+    public static final String WST_016_MSG = "Memory capacity is required";
+    public static final String WST_017_MSG = "Ccos version is required";
+    public static final String WST_018_MSG = "Cpu info is required";
+    public static final String WST_019_MSG = "Dot net frame work version is required";
 
     //com.gam.nocr.ems.web.ws.WS.CardRequestStateWS
     public static final String CRQW_001 = "EMS_W_CRQW_001";

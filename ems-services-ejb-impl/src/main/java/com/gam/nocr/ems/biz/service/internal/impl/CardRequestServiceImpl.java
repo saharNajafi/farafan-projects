@@ -2366,7 +2366,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return cardRequestReceiptVTO;
     }
 
-    public void print(Long cardRequestId) throws BaseException {
+    public void createHistoryOfReceipt(Long cardRequestId) throws BaseException {
         try {
             getCardRequestHistoryService().create(
                     new CardRequestTO(cardRequestId),
