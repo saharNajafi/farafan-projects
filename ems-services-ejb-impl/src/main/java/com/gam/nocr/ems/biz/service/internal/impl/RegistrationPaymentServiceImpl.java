@@ -23,6 +23,7 @@ import com.gam.nocr.ems.data.domain.ws.PaymentInfoWTO;
 import com.gam.nocr.ems.data.domain.ws.TargetBankWTO;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.data.enums.IPGProviderEnum;
+import com.gam.nocr.ems.data.enums.PaymentTypeEnum;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 
@@ -120,6 +121,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 cardRequestPayment.setAmountPaid(registrationPaymentTO.getAmountPaid());
                 cardRequestPayment.setPaidBank(registrationPaymentTO.getPaidBank());
                 cardRequestPayment.setPaymentDate(new Date());
+                cardRequestPayment.setPaymentType(registrationPaymentTO.getPaymentType());
                 cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
                 cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
                 if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
@@ -134,6 +136,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             } else {
                 registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
                 registrationPaymentTO.setPaymentDate(new Date());
+                registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
                 RegistrationPaymentTO registrationPayment = getRegistrationPaymentDAO().create(registrationPaymentTO);
                 cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
                 cardRequestTO.setPaidDate(registrationPayment.getPaymentDate());
