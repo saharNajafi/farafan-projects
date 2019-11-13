@@ -112,6 +112,10 @@ public class PersonDelegator implements Delegator {
         return getService(userProfileTO).informAcceptableTypes(personId);
     }
 
+    public String checkDeliveredTokens(UserProfileTO userProfileTO, Long personId) throws BaseException {
+        return getService(userProfileTO).checkDeliveredTokens(personId);
+    }
+
     public SearchResult fetchRoles(UserProfileTO userProfileTO, String searchString, int from, int to, String orderBy) throws BaseException {
         return getService(userProfileTO).fetchRoles(searchString, from, to, orderBy);
     }

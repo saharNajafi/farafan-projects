@@ -53,6 +53,11 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     private String validTokenTypes;
 
     /**
+     * Check if user already has a delivered token
+     */
+    private String hasActiveToken;
+
+    /**
      * The description text used when revoking a token
      */
     private String description;
@@ -99,9 +104,9 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     }
 
     /**
-     *  Loads a person information base on its identifier specified as 'ids'
+     * Loads a person information base on its identifier specified as 'ids'
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String load() throws BaseException {
@@ -123,10 +128,11 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
             throw new ActionException(WebExceptionCode.PEA_002, WebExceptionCode.GLB_001_MSG, e);
         }
     }
+
     /**
-     *  Deletes a person information base on its identifier specified as 'ids'
+     * Deletes a person information base on its identifier specified as 'ids'
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String delete() throws BaseException {
@@ -144,7 +150,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Reverses the status of current user. If he/she is already an active user, makes it de-active and vice versa.
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String changeStatus() throws BaseException {
@@ -164,7 +170,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Called by 3S when a user registration request (from CCOS) is rejected by an administrator in 3S
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String rejectPerson() throws BaseException {
@@ -183,7 +189,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Given a role identifier and returns the list of all permissions it has
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String fetchRolePermissionList() throws BaseException {
@@ -201,7 +207,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Given a token request data (e.g. type) and registers a new token request (first token or replicate)
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String issuePersonToken() throws BaseException {
@@ -252,7 +258,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Given a token identifier and registers a reissue request for it (issuing the same token type)
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String reissuePersonToken() throws BaseException {
@@ -270,7 +276,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Registers the delivery of person token to its owner
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String deliverPersonToken() throws BaseException {
@@ -288,7 +294,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Revokes given person token
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String revokePersonToken() throws BaseException {
@@ -331,7 +337,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
      * Returns valid token types that given person can requests. It would be used in 3S GUI in order to enable/disable
      * token type radio buttons
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String informAcceptableTypes() throws BaseException {
@@ -342,6 +348,9 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
 
             setValidTokenTypes(acceptableTypes);
 
+            String deliveredTokens = personDelegator.checkDeliveredTokens(getUserProfile(), Long.parseLong(getPersonId()));
+            setHasActiveToken(deliveredTokens);
+
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.PEA_006, WebExceptionCode.GLB_001_MSG, e);
@@ -351,7 +360,7 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
     /**
      * Removes a token request (if it's not already in progress or has not been processed)
      *
-     * @return  {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
+     * @return {@link com.gam.commons.core.web.struts2.extJsController.BaseController#SUCCESS_RESULT}
      * @throws BaseException
      */
     public String deleteToken() throws BaseException {
@@ -405,6 +414,14 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
 
     public void setValidTokenTypes(String validTokenTypes) {
         this.validTokenTypes = validTokenTypes;
+    }
+
+    public void setHasActiveToken(String hasActiveToken) {
+        this.hasActiveToken = hasActiveToken;
+    }
+
+    public String getHasActiveToken() {
+        return hasActiveToken;
     }
 
     public String getDescription() {

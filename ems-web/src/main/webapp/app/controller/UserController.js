@@ -3,7 +3,6 @@ Ext.define('Ems.controller.UserController', {
 
     ns: 'extJsController/user',
 
-
     statics: {
         statefulComponents: [
             'wUserGrid',
@@ -17,7 +16,7 @@ Ext.define('Ems.controller.UserController', {
     },
 
     requires: ['Gam.button.Add',
-               'Ems.controller.util.ExcelExporter'],
+        'Ems.controller.util.ExcelExporter'],
 
     views: [
         'user.Grid',
@@ -82,7 +81,7 @@ Ext.define('Ems.controller.UserController', {
         {
             ref: 'userRequestToken',
             selector: 'userrequesttoken'
-        } ,
+        },
         {
             ref: 'userRequestTokenDeleteTokenForm',
             selector: 'userrequesttokendeletetokenform'
@@ -99,12 +98,12 @@ Ext.define('Ems.controller.UserController', {
         this.personId = null;
         this.lastValue = null;
         this.userActive = null;
+        this.hasActiveToken = null;
         this.excelExporter = new Ems.controller.util.ExcelExporter();
         this.callParent(arguments);
     }, init: function () {
 
         var me = this;
-
 
         /*        this.BirthCertSeriesCheck=function(value,field){
          // var st = this.CheckLength(value,field,6);
@@ -140,17 +139,17 @@ Ext.define('Ems.controller.UserController', {
         this.control({
             //"[action=ManagementToken]":{'click':this.getManagementToken},
 
-            "userrequesttoken actioncolumn": { 'actionclick': this.onActionClick },
+            "userrequesttoken actioncolumn": {'actionclick': this.onActionClick},
 
-            "[action=butUserAccessChoice]": {  'click': this.getUserAccessChoice, scope: this     },
+            "[action=butUserAccessChoice]": {'click': this.getUserAccessChoice, scope: this},
 
-            "button[itemId=btnRoleRemove]": { "click": this.getBtnRoleRemove, scope: this    },
+            "button[itemId=btnRoleRemove]": {"click": this.getBtnRoleRemove, scope: this},
 
-            "button[itemId=btnRemoveAccess]": {  "click": this.getBtnRemoveAccess, scope: this    },
+            "button[itemId=btnRemoveAccess]": {"click": this.getBtnRemoveAccess, scope: this},
 
-            "[action=butUserRolesChoice]": {  'click': this.getUserRolesChoice, scope: this    },
+            "[action=butUserRolesChoice]": {'click': this.getUserRolesChoice, scope: this},
 
-            "[action=btnNewEditUser]": { 'click': this.getSaveFromEdit, scope: this },
+            "[action=btnNewEditUser]": {'click': this.getSaveFromEdit, scope: this},
 
             "userrequesttokenform  #tokenManagementRadioGroup": {
                 'change': this.onTokenManagementRadioChange,
@@ -160,7 +159,7 @@ Ext.define('Ems.controller.UserController', {
             "#roleAutocomplet": {
                 select: function (autocomplete, record, value) {
                     var store = Ext.getCmp('roleMultiSelectds').getStore(),
-                        autoModel = {  value: null, text: null    },
+                        autoModel = {value: null, text: null},
                         i;
 
                     for (i = 0; i < record.length; i++) {
@@ -184,7 +183,7 @@ Ext.define('Ems.controller.UserController', {
             "#accessAutocomplet": {
                 select: function (autocomplete, record, value) {
                     var store = Ext.getCmp('accessMultiSelectds').getStore(),
-                        autoModel = {  id: null, name: null    },
+                        autoModel = {id: null, name: null},
                         i;
 
                     for (i = 0; i < record.length; i++) {
@@ -282,7 +281,6 @@ Ext.define('Ems.controller.UserController', {
         if (!form.getForm().isValid()) {
             return false;
         }
-        ;
 
         var valueForm = form.getValues();
         var departmen = this.getUsercmborganizationalstatus();
@@ -709,8 +707,7 @@ Ext.define('Ems.controller.UserController', {
                         if (obj.success) {
                             store.load();
                             win.close();
-                        }
-                        else {
+                        } else {
                             Tools.errorMessageServer(obj.messageInfo)
                         }
                     } catch (e) {
@@ -741,10 +738,17 @@ Ext.define('Ems.controller.UserController', {
                 return;
             } else {
                 var record = this.getUserRequestTokenForm().getValues();
+
                 if (!record.reasonDeleteToken) {
                     Tools.errorMessageClient("لطفا دلیل صدور توکن را انتخاب نمایید");
                     Tools.UserRequestToken.RegisterRequestToken++;
                     return;
+                } else if (record.reasonDeleteToken === 'N') {
+                    if (Tools.UserRequestToken.hasActiveToken.indexOf(record.tokenType) >= 0) {
+                        Tools.errorMessageClient("اولین صدور این توکن برای این کاربر نیست. لطفا دلیل درست را انتخاب نمایید.");
+                        Tools.UserRequestToken.RegisterRequestToken++;
+                        return;
+                    }
                 }
             }
             this.onSaveRequestToken(radioChecked);
@@ -752,26 +756,26 @@ Ext.define('Ems.controller.UserController', {
         }
     },
     onSaveRequestToken: function (radioChecked) {
-    	var me = this;
+        var me = this;
         var record = this.getUserRequestTokenForm().getValues();
-    	if(record.reasonDeleteToken == "D" && record.tokenType == "S"){
-    		 var msg = " با ثبت درخواست توکن، توکن قبلی شما ابطال خواهد شد. آیا اطمینان دارید؟ ";
+        if (record.reasonDeleteToken == "D" && record.tokenType == "S") {
+            var msg = " با ثبت درخواست توکن، توکن قبلی شما ابطال خواهد شد. آیا اطمینان دارید؟ ";
 
- 	        var fn = function () {
- 	        	me.saveRequest(record , radioChecked);
- 	        };
+            var fn = function () {
+                me.saveRequest(record, radioChecked);
+            };
 
- 	        Tools.messageBoxConfirm(msg, fn);
- 	        return;
-    	}else{
-    		me.saveRequest(record , radioChecked);
-    	}
-        
+            Tools.messageBoxConfirm(msg, fn);
+            return;
+        } else {
+            me.saveRequest(record, radioChecked);
+        }
+
 
     },
-    
-    saveRequest : function(record , radioChecked){
-    	var tt = record.tokenType;
+
+    saveRequest: function (record, radioChecked) {
+        var tt = record.tokenType;
         var reas = record.reasonDeleteToken,
             me = this;
         Gam.Msg.showWaitMsg();
@@ -884,8 +888,7 @@ Ext.define('Ems.controller.UserController', {
                     if (obj.success) {
                         grid.getStore().load();
                         this.getInformAcceptableTypes(this, Tools.UserRequestToken.userId, null, 'Add');
-                    }
-                    else {
+                    } else {
                         Tools.errorMessageServer(obj.messageInfo)
                     }
                 } catch (e) {
@@ -921,8 +924,7 @@ Ext.define('Ems.controller.UserController', {
                         var obj = Ext.decode(response.responseText);
                         if (obj.success) {
                             store.load();
-                        }
-                        else {
+                        } else {
                             Tools.errorMessageServer(obj.messageInfo)
                         }
                     } catch (e) {
@@ -989,8 +991,8 @@ Ext.define('Ems.controller.UserController', {
             success: function (response) {
                 var data = Ext.decode(response.responseText);
                 if (data.success) {
+                    Tools.UserRequestToken.hasActiveToken = data.hasActiveToken;
                     view.getPositionRadioGroup(objRadio, data.validTokenTypes, mode);
-
                 } else {
                     Tools.errorMessageServer(obj.messageInfo)
                 }
@@ -1089,7 +1091,7 @@ Ext.define('Ems.controller.UserController', {
         } else {
             userRequestIssuanceCombo.store.filterBy(function (record) {
                 var code = record.get('code');
-                return (code == 'D' || code == 'R' ) ? true : false;
+                return (code == 'D' || code == 'R') ? true : false;
             });
         }
 

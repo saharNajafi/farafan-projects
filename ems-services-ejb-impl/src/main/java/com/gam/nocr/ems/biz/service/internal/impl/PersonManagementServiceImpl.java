@@ -479,6 +479,33 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
         }
     }
 
+
+    @Override
+    public String checkDeliveredTokens(Long personId) throws BaseException {
+        String acceptableTypes = "";
+        try {
+
+            List<PersonTokenTO> personTokenTOList = getPersonTokenDAO().findByPersonId(personId);
+
+            if (EmsUtil.checkListSize(personTokenTOList)) {
+                List<TokenState> tokenStates = new ArrayList<TokenState>();
+                tokenStates.add(TokenState.DELIVERED);
+
+                for (PersonTokenTO personTokenTO : personTokenTOList) {
+                    if (tokenStates.contains(personTokenTO.getState())) {
+                        String sub = String.valueOf(personTokenTO.getType().toString().charAt(0));
+                        acceptableTypes = acceptableTypes +  sub ;
+                    }
+                }
+            }
+            return acceptableTypes;
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ServiceException(BizExceptionCode.PSI_053, BizExceptionCode.GLB_008_MSG, e);
+        }
+    }
+
     @Override
     public DepartmentTO loadDepartmentByPersonId(Long personId) throws BaseException {
         try {
@@ -999,11 +1026,11 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
 
     @Override
-    public PersonTO find( Long personId) throws BaseException {
+    public PersonTO find(Long personId) throws BaseException {
         PersonTO personTO = null;
         try {
-        if (personId == 0)
-            throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.PSI_003_MSG);
+            if (personId == 0)
+                throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.PSI_003_MSG);
             personTO = getPersonDAO().find(PersonTO.class, personId);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.GLB_008_MSG, e);

@@ -32,6 +32,8 @@ public interface PersonManagementService extends TokenService {
 
     public String informAcceptableTypes(Long personId) throws BaseException;
 
+    public String checkDeliveredTokens(Long personId) throws BaseException;
+
     public DepartmentTO loadDepartmentByPersonId(Long personId) throws BaseException;
 
     public SearchResult fetchRoles(String searchString, int from, int to, String orderBy) throws BaseException;

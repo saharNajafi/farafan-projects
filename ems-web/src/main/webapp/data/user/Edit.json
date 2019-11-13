@@ -68,5 +68,6 @@
     "success": true,
     "tokenId": null,
     "tokenType": null,
-    "validTokenTypes": null
+    "validTokenTypes": null,
+    "hasActiveToken": null
 }
