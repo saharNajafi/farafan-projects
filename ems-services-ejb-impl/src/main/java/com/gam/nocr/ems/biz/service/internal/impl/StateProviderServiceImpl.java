@@ -115,7 +115,9 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                     String date = format.format(new Date());
                     /*date = DateUtil.convert(new Date(), DateUtil.GREGORIAN);*/
                     stateProviderTO.setValue(date);
-                } else if (stateId.endsWith("officeType") || stateId.endsWith("enrollmentOfficeId")) {
+                } else if (stateId.endsWith("officeType") ||
+                        stateId.endsWith("enrollmentOfficeId") ||
+                        stateId.endsWith("enrollmentOfficeName")) {
                     Long userDepartmentId = getUserProfileTO().getDepID();
                     EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
 
@@ -123,10 +125,8 @@ public class StateProviderServiceImpl extends EMSAbstractService implements Stat
                         stateProviderTO.setValue(enrollmentOfficeTO.getType().name());
                     else if (stateId.endsWith("enrollmentOfficeId"))
                         stateProviderTO.setValue(enrollmentOfficeTO.getId().toString());
-                } else if (stateId.endsWith("enrollmentOfficeName")) {
-                    Long userDepartmentId = getUserProfileTO().getDepID();
-                    EnrollmentOfficeTO enrollmentOfficeTO = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, userDepartmentId);
-                    stateProviderTO.setValue(enrollmentOfficeTO.getName());
+                    else if (stateId.endsWith("enrollmentOfficeName"))
+                        stateProviderTO.setValue(enrollmentOfficeTO.getName());
                 }
                 //Anbari
                 else if (stateId.endsWith("isDeliver")) {

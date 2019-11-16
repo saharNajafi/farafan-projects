@@ -352,23 +352,6 @@ Ext.define('Ems.controller.NavigationHeaderController', {
 
         });
     },
-    getAccessToReceiveBatchId: function (view) {
-
-        Ext.Ajax.request({
-            url: 'extJsController/cardrequestlist/hasReceiveBatchIdAccess',
-            jsonData: {},
-            success: function (response) {
-
-                var hasAccessToReceiveBatchId = JSON.parse(response.responseText).hasAccessToReceiveBatchId;
-                EmsObjectName.cardRequestedActionMap.hasAccessToReceiveBatchId = hasAccessToReceiveBatchId;
-            },
-            failure: function (response) {
-                Tools.errorFailure();
-            }
-
-        });
-    },
-
     getUserInfo: function (view) {
         Ext.Ajax.request({
             url: 'extJsController/currentUser/fetchUserInfo',

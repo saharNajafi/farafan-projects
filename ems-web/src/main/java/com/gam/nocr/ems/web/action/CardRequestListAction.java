@@ -257,7 +257,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
         }
 
         try {
-            new CardRequestDelegator().print(
+            new CardRequestDelegator().createHistoryOfReceipt(
                     getUserProfile()
                     , Long.parseLong(getCardRequestId()));
 

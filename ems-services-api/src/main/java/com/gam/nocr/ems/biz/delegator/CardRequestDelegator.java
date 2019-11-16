@@ -1,7 +1,5 @@
 package com.gam.nocr.ems.biz.delegator;
 
-import java.util.List;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.delegator.Delegator;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -23,6 +21,8 @@ import com.gam.nocr.ems.data.enums.GenderEnum;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.sharedobjects.GeneralCriteria;
 import com.gam.nocr.ems.util.EmsUtil;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com.com">Alireza Saadat</a>
@@ -338,7 +338,7 @@ public class CardRequestDelegator implements Delegator {
     /**
      * this method sets all bio and document data to null
      *
-     * @param citizenIds
+     * @param citizenId
      * @author ganjyar
      */
 
@@ -409,8 +409,8 @@ public class CardRequestDelegator implements Delegator {
         return getService(userProfileTO).printRegistrationReceipt(cardRequestId);
     }
 
-    public void print(UserProfileTO userProfileTO, Long cardRequestId) throws BaseException {
-        getService(userProfileTO).print(cardRequestId);
+    public void createHistoryOfReceipt(UserProfileTO userProfileTO, Long cardRequestId) throws BaseException {
+        getService(userProfileTO).createHistoryOfReceipt(cardRequestId);
     }
 
     public String generateNewTrackingId(UserProfileTO userProfileTO) throws BaseException {

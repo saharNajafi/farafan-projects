@@ -35,11 +35,11 @@ public class WorkstationPluginsDelegator implements Delegator {
         return workstationPluginsService;
     }
 
-    public void getReliableVerByPlugin(
+    public void registerWorkstationPlugins(
             UserProfileTO userProfileTO, String workStationCode, List<WorkstationPluginsTO> workstationPluginsList)
             throws BaseException {
         try {
-            getService(userProfileTO).getReliableVerByPlugin(workStationCode, workstationPluginsList);
+            getService(userProfileTO).registerWorkstationPlugins(workStationCode, workstationPluginsList);
         } catch (BaseException e) {
             throw e;
         }
