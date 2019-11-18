@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface WorkstationPluginsService extends Service {
 
-    void getReliableVerByPlugin(
+    void registerWorkstationPlugins(
             String workStationCode, List<WorkstationPluginsTO> workstationPluginsList) throws BaseException;
 
 }

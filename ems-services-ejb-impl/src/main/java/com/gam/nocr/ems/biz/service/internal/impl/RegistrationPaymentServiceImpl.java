@@ -201,7 +201,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         }
     }
 
-    public Map<String, String> getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId) {
+    public Map<String, String> getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId) throws BaseException {
         String paymentAmount = null;
         String paymentCode = null;
         Map map = new HashMap<String, String>();
@@ -211,7 +211,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 replicaTypeCount =
                         getCardRequestService().countCardRequestByNationalIdAndType(nationalId, cardRequestType);
             } catch (BaseException e) {
-                e.printStackTrace();
+                throw e;
             }
             if (replicaTypeCount == 0) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,

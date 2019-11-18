@@ -1755,6 +1755,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_102 = "EMS_S_CMS_102";
     public static final String CMS_103 = "EMS_S_CMS_103";
     public static final String CMS_104 = "EMS_S_CMS_104";
+    public static final String CMS_105 = "EMS_S_CMS_105";
+    public static final String CMS_106 = "EMS_S_CMS_106";
 
     public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
     public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
