@@ -176,6 +176,13 @@
             <artifactId>json-path</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farafan.customLog
+            </groupId>
+            <artifactId>ems-custom-log-entities</artifactId>
+            <version>${nocr.ems-custom-log.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
