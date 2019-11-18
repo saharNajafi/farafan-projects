@@ -7,6 +7,7 @@ package com.gam.nocr.ems.data.domain;
 
 import com.gam.commons.core.data.domain.ExtEntityTO;
 import com.gam.nocr.ems.data.enums.IPGProviderEnum;
+import com.gam.nocr.ems.data.enums.PaymentTypeEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -49,7 +50,7 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
     private CitizenTO citizenTO;
     private String terminalId;
     private String merchantId;
-
+    private PaymentTypeEnum paymentType;
 
 
     @Id
@@ -204,6 +205,15 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
 
     public void setMerchantId(String merchantId) {
         this.merchantId = merchantId;
+    }
+
+    @Column(name = "RPY_PAYMENT_TYPE")
+    public PaymentTypeEnum getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentTypeEnum paymentType) {
+        this.paymentType = paymentType;
     }
 
     public RegistrationPaymentTO() {
