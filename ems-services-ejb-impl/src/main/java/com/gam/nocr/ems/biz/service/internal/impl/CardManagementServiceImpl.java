@@ -2754,13 +2754,13 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      *                  CardRequestTO}
      * @param reason    an enumeration instance of type {@link UnSuccessfulDeliveryRequestReason}
      * @throws {@link BaseException}
-     * @author ganjyar
+     * @author amiri
      */
     private void notifyUnsuccessfulDeliveryForBioFourteenFingerTry(Long requestID, UnSuccessfulDeliveryRequestReason reason) throws BaseException {
         CardRequestTO cardRequestTO = getCardRequestDAO().find(
                 CardRequestTO.class, requestID);
         if (cardRequestTO == null) {
-            throw new ServiceException(BizExceptionCode.CMS_013,
+            throw new ServiceException(BizExceptionCode.CMS_106,
                     BizExceptionCode.CMS_011_MSG);
         }
         if (CardRequestState.READY_TO_DELIVER.equals(cardRequestTO.getState())) {
@@ -2774,7 +2774,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                             CardRequestHistoryAction.UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER,
                             getUserProfileTO().getUserName());
         } else {
-            throw new ServiceException(BizExceptionCode.CMS_030,
+            throw new ServiceException(BizExceptionCode.CMS_105,
                     BizExceptionCode.CMS_030_MSG);
         }
     }

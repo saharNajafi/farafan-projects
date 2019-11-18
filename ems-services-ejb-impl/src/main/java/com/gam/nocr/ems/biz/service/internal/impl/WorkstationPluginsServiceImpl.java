@@ -8,15 +8,14 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
-import com.gam.nocr.ems.config.ProfileKeyName;
 import com.gam.nocr.ems.data.dao.WorkstationDAO;
 import com.gam.nocr.ems.data.dao.WorkstationPluginsDAO;
 import com.gam.nocr.ems.data.domain.WorkstationPluginsTO;
 import com.gam.nocr.ems.data.domain.WorkstationTO;
-import com.gam.nocr.ems.data.domain.ws.PluginInfoWTO;
-import com.gam.nocr.ems.util.EmsUtil;
 
-import javax.ejb.*;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import java.util.List;
 
 /**
@@ -54,7 +53,7 @@ public class WorkstationPluginsServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public void getReliableVerByPlugin (
+    public void registerWorkstationPlugins (
             String workstationCode, List<WorkstationPluginsTO> workstationPluginsList) throws BaseException {
 
         try {

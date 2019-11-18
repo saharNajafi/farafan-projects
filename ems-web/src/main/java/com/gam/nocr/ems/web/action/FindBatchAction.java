@@ -55,11 +55,11 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
             setRecords(batchDispatchInfoVTOS);
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_021,
+            throw new ActionException(WebExceptionCode.FBA_001,
                     WebExceptionCode.GLB_001_MSG, e);
         } catch (Exception e) {
-            throw new ActionException(WebExceptionCode.CRA_022,
-                    WebExceptionCode.CRA_022_MSG, e);
+            throw new ActionException(WebExceptionCode.FBA_002,
+                    WebExceptionCode.FBA_002_MSG, e);
         }
 
     }

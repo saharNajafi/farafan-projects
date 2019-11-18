@@ -1048,6 +1048,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             registrationPaymentTO.setPaymentDate(new Date());
             registrationPaymentTO.setMatchFlag((short) 1);
             registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFINED);
+            registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
             String nationalId = newCardRequest.getCitizen().getNationalID();
             Map<String, String> registrationPaymentResult =
                     getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);
@@ -3092,8 +3093,6 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
     }
 
     @Override
-//    @Permissions(value = "ems_findCitizenInfo")
-//    @BizLoggable(logAction = "LOAD", logEntityName = "CITIZEN")
     public CitizenTO fetchCitizenInfo(String nationalId) throws BaseException {
         if (isNullOrEmptyString(nationalId)) {
             throw new ServiceException(BizExceptionCode.RSI_175,

@@ -25,6 +25,7 @@
 		<module>ems-subsystems</module>
 		<module>ems-gam-ims-web</module>
 		<module>ems-gam-ims-ear</module>
+		<module>ems-custom-log-entities</module>
 	</modules>
 
 	<dependencies>
@@ -686,6 +687,7 @@
         <nocr.ems-mes.version>1.0.1.5</nocr.ems-mes.version>
         <nocr.ems-software.version>1.0.0</nocr.ems-software.version>
         <nocr.ems-gam-ims.version>1.0.0-SNAPSHOT</nocr.ems-gam-ims.version>
+        <nocr.ems-custom-log.version>1.0.0</nocr.ems-custom-log.version>
 
         <!-- ============= External Module Version ============== -->
         <external-cms.version>1.1.0</external-cms.version>

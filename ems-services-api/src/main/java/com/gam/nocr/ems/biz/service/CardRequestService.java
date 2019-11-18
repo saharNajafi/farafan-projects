@@ -134,7 +134,7 @@ public interface CardRequestService extends Service {
 
 	CardRequestReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
 
-     void print(Long cardRequestId) throws BaseException;
+     void createHistoryOfReceipt(Long cardRequestId) throws BaseException;
 
 	String generateNewTrackingId() throws BaseException ;
 

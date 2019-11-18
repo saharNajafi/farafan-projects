@@ -51,6 +51,7 @@ public class EMSLogicalNames {
     public static String SRV_CITIZEN = "CitizenService";
     public static String SRV_CITIZEN_INFO = "CitizenInfoService";
     public static String SRV_EMKS = "EmksService";
+    public static String SRV_CUSTOM_LOG = "CustomLogService";
 
     public static String SRV_ABOUT = "AboutService";
     public static String SRV_HELP = "HelpService";
@@ -139,6 +140,7 @@ public class EMSLogicalNames {
     public static String DAO_CARDREQUEST_BLOBS = "CardRequestBlobsDAO";
     public static String DAO_PURGE_HISTORY = "PurgeHistoryDAO";
     public static String DAO_EXCEPTION_CODE = "ExceptionCodeDAO";
+    public static String DAO_CUSTOMLOG = "CustomLogDAO";
 
     /**
      * DAOs, which are required in GamIms implementation

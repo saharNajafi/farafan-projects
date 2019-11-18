@@ -599,7 +599,6 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CDI_109_MSG = "an error occur in get next value for generating tracking id from database sequence";
 
 
-
     // com.gam.nocr.ems.data.dao.impl.DocTypeDAOImpl
     public static final String DCT_001 = "EMS_D_DCT_001";
     public static final String DCT_002 = "EMS_D_DCT_002";
@@ -1151,4 +1150,8 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.data.dao.impl.OfficeSettingDAOImpl.java
     public static final String OSTD_001 = "EMS_D_OST_001";
     public static final String OSTD_001_MSG = "findById operation could not be executed";
+
+    //customLog
+    public static final String CST_001 = "EMS_D_CST_001";
+    public static final String CST_001_MSG = "exception insert new log in custom-log";
 }

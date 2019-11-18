@@ -12,8 +12,6 @@ import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
 import com.gam.nocr.ems.util.EmsUtil;
 
-import java.util.List;
-
 /**
  * Created by Najafi Sahar najafisahaar@yahoo.com on 11/18/17.
  */
@@ -34,16 +32,16 @@ public class WorkstationInfoDelegator implements Delegator {
         return workstationInfoService;
     }
 
-    public Boolean isReliableVerInquiryRequired(
+    public Boolean workstationInfoRequired(
             UserProfileTO userProfileTO, String workstationCode) throws BaseException{
-           return getService(userProfileTO).isReliableVerInquiryRequired(workstationCode);
+           return getService(userProfileTO).workstationInfoRequired(workstationCode);
     }
 
-    public void getReliableVerByPlatform(
+    public void registerWorkstationInfo(
             UserProfileTO userProfileTO, String workstationCode, WorkstationInfoTO workstationInfoTO)
             throws BaseException {
         try {
-            getService(userProfileTO).getReliableVerByPlatform(
+            getService(userProfileTO).registerWorkstationInfo(
                     workstationCode, workstationInfoTO);
         } catch (BaseException e) {
             throw e;

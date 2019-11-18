@@ -8,6 +8,6 @@ import com.gam.nocr.ems.data.domain.WorkstationInfoTO;
  */
 public interface WorkstationInfoDAO extends EmsBaseDAO<WorkstationInfoTO>{
 
-    public WorkstationInfoTO isReliableVerInquiryRequired(Long workstationId) throws BaseException;
+    public WorkstationInfoTO findByWorkstationId(Long workstationId) throws BaseException;
 
 }

@@ -11,6 +11,7 @@ import com.gam.nocr.ems.data.domain.ws.SinglePreRegistrationWTO;
 import com.gam.nocr.ems.data.enums.CardRequestOrigin;
 import com.gam.nocr.ems.data.enums.GenderEnum;
 import com.gam.nocr.ems.data.enums.IPGProviderEnum;
+import com.gam.nocr.ems.data.enums.PaymentTypeEnum;
 import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
@@ -46,6 +47,7 @@ public class PaymentUtil {
             registrationPaymentTO.setRrn(registrationPaymentWTO.getRRN());
             registrationPaymentTO.setDescription(registrationPaymentWTO.getDescription());
             registrationPaymentTO.setMatchFlag((short) 1);
+            registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
             return registrationPaymentTO;
         } catch (Exception e) {
             throw new BaseException(WebExceptionCode.CPW_016_MSG, WebExceptionCode.CPW_016, e);
@@ -123,6 +125,7 @@ public class PaymentUtil {
             registrationPaymentTO.setResCode(null);
             registrationPaymentTO.setSystemTraceNo(null);
             registrationPaymentTO.setMatchFlag((short) 1);
+            registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
             cardRequestTO.setRegistrationPaymentTO(registrationPaymentTO);
             cardRequestTO.setPaid(false);
             ReservationTO reservationTO = new ReservationTO();

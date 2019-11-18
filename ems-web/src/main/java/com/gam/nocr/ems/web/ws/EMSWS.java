@@ -32,9 +32,6 @@ import java.util.List;
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
-import com.gam.commons.profile.*;
-import com.gam.nocr.ems.config.*;
-
 /**
  * Base class for all CCOS web services. It has some base methods (e.g. authorization) that may be used in child classes
  *
@@ -139,29 +136,26 @@ public class EMSWS {
     //Anbari
     private Boolean validateCCOSMinVersion(String currentCcosVersion) {
         Integer isCcosVersionCheck = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_ENABLE_CCOS_VERSION_CHECK, DEFAULT_ENABLE_CCOS_CHECK));
-        if (isCcosVersionCheck == 0 || "vip".equals(currentCcosVersion)) // not checking ccos version
+        if (isCcosVersionCheck == 0 || "vip".equals(currentCcosVersion)) { // not checking ccos version
             return true;
-        List<String> ccosVersions = getCompatibleClientVerList();
-        return versionsCompare(currentCcosVersion, ccosVersions);
+        } else {
+            List<String> ccosVersions = getCompatibleClientVerList();
+            return versionsCompare(currentCcosVersion, ccosVersions);
+        }
     }
 
     public List<String> getCompatibleClientVerList() {
+        List<String> verCodeList = new ArrayList<String>();
         try {
-            List<String> verCodeList = new ArrayList<String>();
-            ProfileManager pm = ProfileHelper.getProfileManager();
-            String ccosExactVersions = (String) pm.getProfile(ProfileKeyName.KEY_CCOS_EXACT_VERSION, true, null, null);
+            String ccosExactVersions = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, DEFAULT_CCOS_EXACT_VERSION));
             String[] verCode = ccosExactVersions.split(",");
-            try {
-                if (verCode.length > 0) {
-                    Collections.addAll(verCodeList, verCode);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (verCode.length > 0) {
+                Collections.addAll(verCodeList, verCode);
             }
-            return verCodeList;
         } catch (Exception ex) {
-            return null;
+            logger.error("Exception occured in get compatible client version list:",ex);
         }
+        return verCodeList;
     }
 //
 //

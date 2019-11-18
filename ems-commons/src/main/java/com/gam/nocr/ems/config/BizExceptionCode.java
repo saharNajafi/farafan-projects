@@ -1755,6 +1755,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_102 = "EMS_S_CMS_102";
     public static final String CMS_103 = "EMS_S_CMS_103";
     public static final String CMS_104 = "EMS_S_CMS_104";
+    public static final String CMS_105 = "EMS_S_CMS_105";
+    public static final String CMS_106 = "EMS_S_CMS_106";
 
     public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
     public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
@@ -3010,4 +3012,14 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String BPI_006 = "EMS_S_BPI_006";
     public static final String BPI_007 = "EMS_S_BPI_007";
     public static final String BPI_008 = "EMS_S_BPI_008";
+
+    //com.gam.nocr.ems.biz.service.internal.impl.CustomLogServiceImpl
+    public static final String CST_001 = "EMS_S_CST_001";
+    public static final String CST_002 = "EMS_S_CST_002";
+    public static final String CST_003 = "EMS_S_CST_003";
+    public static final String CST_004 = "EMS_S_CST_004";
+    public static final String CST_005 = "EMS_S_CST_005";
+    public static final String CST_006 = "EMS_S_CST_006";
+    public static final String CST_005_MSG = "custom-system The logEntityName: {} for the is incorrect";
+    public static final String CST_006_MSG = "custom-system The logAction: {} is incorrect";
 }
