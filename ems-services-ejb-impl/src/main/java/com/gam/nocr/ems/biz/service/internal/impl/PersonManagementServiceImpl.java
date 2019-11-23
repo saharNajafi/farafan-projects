@@ -7,6 +7,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
+import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
 import gampooya.tools.vlp.ListException;
 import gampooya.tools.vlp.ValueListHandler;
 
@@ -193,6 +194,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Permissions(value = "ems_editPerson")
     @BizLoggable(logAction = "UPDATE", logEntityName = "PERSON")
     @TransactionAttribute(TransactionAttributeType.NEVER)
+    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
     public Long update(PersonVTO to) throws BaseException {
         try {
             if (to == null)
