@@ -68,7 +68,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
         },
         {
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                if (EmsObjectName.cardRequestedActionMap.hasAccessToChangePriority) {
+                if (EmsObjectNaName.cardRequestedActionMap.hasAccessToChangePriority) {
                     var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
 
                     if (cardState != 'PENDING_ISSUANCE'
@@ -400,7 +400,12 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 text: 'کد رهگیری',
                 sortable: false,
                 filterable: true,
-                filter: true
+                filter: {
+                    xtype: 'textfield',
+                    vtype: 'numeric',
+                    enforceMaxLength: true,
+                    maxLength: 10
+                }
             },
             {
                 dataIndex: EmsObjectName.cardRequestList.attendDate,
