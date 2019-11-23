@@ -47,7 +47,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
         },
         {
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                if (EmsObjectNaName.cardRequestedActionMap.hasAccessToChangePriority) {
+                if (EmsObjectName.cardRequestedActionMap.hasAccessToChangePriority) {
                     var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
 
                     if (cardState != 'PENDING_ISSUANCE'
