@@ -47,7 +47,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
         },
         {
             getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                if (EmsObjectName.cardRequestedActionMap.hasAccessToChangePriority) {
+                if (EmsObjectNaName.cardRequestedActionMap.hasAccessToChangePriority) {
                     var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
 
                     if (cardState != 'PENDING_ISSUANCE'
@@ -82,7 +82,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                     (state == "VERIFIED_IMS") || (state == "NOT_VERIFIED_BY_IMS") || (state == "RESERVED") ||
                     (state == "REFERRED_TO_CCOS") || (state == "DOCUMENT_AUTHENTICATED") || (state == "APPROVED")) &&
                     ((requestedAction != EmsObjectName.cardRequestedActionMap.REPEALING) &&
-                        (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
+                    (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
                     return 'grid-repeal-request-action-icon';
                 }
 
@@ -101,7 +101,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                     (state == "VERIFIED_IMS") || (state == "NOT_VERIFIED_BY_IMS") || (state == "RESERVED") ||
                     (state == "REFERRED_TO_CCOS") || (state == "DOCUMENT_AUTHENTICATED") || (state == "APPROVED")) &&
                     ((requestedAction == EmsObjectName.cardRequestedActionMap.REPEALING) &&
-                        (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
+                    (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
                     return 'grid-Checked-action-icon';
                 }
 
@@ -145,11 +145,11 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 if (EmsObjectName.cardRequestedActionMap.hasPrintRegistrationReceipt) {
                     return 'grid-print-registration-receipt';
                     // var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
-                //
-                //     if (cardState != 'IMS_ERROR') {
-                //         return 'grid-print-registration-receipt';
-                // } else
-                //     return 'grid-action-hidden';
+                    //
+                    //     if (cardState != 'IMS_ERROR') {
+                    //         return 'grid-print-registration-receipt';
+                    // } else
+                    //     return 'grid-action-hidden';
                 } else
                     return 'grid-action-hidden';
             },
@@ -379,7 +379,12 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 text: 'کد پیگیری',
                 sortable: false,
                 filterable: true,
-                filter: true
+                filter: {
+                    xtype: 'textfield',
+                    vtype: 'numeric',
+                    enforceMaxLength: true,
+                    maxLength: 10
+                }
             },
             {
                 dataIndex: EmsObjectName.cardRequestList.cardType,
