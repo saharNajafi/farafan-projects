@@ -2600,7 +2600,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                             + "(select dep.dep_name from emst_department dep "
                             + "where dep.dep_id = cr.crq_delivered_office_id) crq_delivered_office_name,"
                             + "c.CRD_DELIVER_DATE, cr.crq_rsv_date, cr.crq_flag "
-                            + ",cr.crq_priority "
+                            + ",nvl(cr.crq_priority,1) "
                             + ",cr.CRQ_REENROLLED_DATE "
                             + "from " + "emst_card_request cr,"
                             + "emst_citizen cz," + "emst_card c,"
