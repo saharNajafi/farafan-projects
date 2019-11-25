@@ -2,15 +2,19 @@ package com.gam.nocr.ems.web.action;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
 import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
+import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.WebExceptionCode;
+import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestReceiptVTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.CcosBundle;
+import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.JasperUtil;
 import gampooya.tools.security.BusinessSecurityException;
 import org.slf4j.Logger;
@@ -150,11 +154,21 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
      */
     public String updateCardRequestPriority() throws BaseException {
         try {
-
-            new CardRequestDelegator().updateCardRequestPriority(
-                    getUserProfile(), cardRequestId, priority);
-
-            return SUCCESS_RESULT;
+            if (EmsUtil.checkString(priority)
+                    && EmsUtil.checkString(cardRequestId)) {
+                CardRequestTO cardRequestTO = new CardRequestDelegator().loadById(Long.valueOf(cardRequestId));
+                new CardRequestDelegator().updateCardRequestPriority(
+                        getUserProfile(),
+                        cardRequestTO,
+                        cardRequestTO.getId(),
+                        cardRequestTO.getPriority(),//old priority
+                        priority//new priority
+                );
+                return SUCCESS_RESULT;
+            } else {
+                throw new ServiceException(WebExceptionCode.CRA_023,
+                        WebExceptionCode.CRA_023_MSG);
+            }
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_009,
                     WebExceptionCode.GLB_001_MSG, e);

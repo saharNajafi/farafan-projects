@@ -14,6 +14,8 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.*;
+import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
+import com.gam.nocr.ems.biz.service.annotations.ExcludeFromCustomLogging;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
 import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
@@ -869,28 +871,26 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @author ganjyar
      */
     @Override
-    public void updateCardRequestPriority(String cardRequestId, String priority)
-            throws BaseException {
+    @CustomLoggable(logAction = "UPDATE", logEntityName = "CHANGE_PRIORITY")
+    public void updateCardRequestPriority(
+            @ExcludeFromCustomLogging CardRequestTO cardRequestTO,
+            Long cardRequestId,
+            Integer oldPriority,
+            String newPriority) throws BaseException {
         try {
-
-            if (EmsUtil.checkString(priority)
-                    && EmsUtil.checkString(cardRequestId)) {
-
-                CardRequestTO cardRequestTO = getCardRequestDAO().find(
-                        CardRequestTO.class, Long.parseLong(cardRequestId));
-                if (cardRequestTO != null) {
-                    int inPriority = Integer.parseInt(priority);
-                    if (inPriority > 99 || inPriority < 0)
-                        throw new ServiceException(BizExceptionCode.CRE_024,
-                                BizExceptionCode.CRE_024_MSG);
-                    cardRequestTO.setPriority(inPriority);
-                    getCardRequestHistoryDAO().create(cardRequestTO,
-                                    null,
-                                    SystemId.EMS,
-                                    null,
-                                    CardRequestHistoryAction.PRIORITY_IS_CHANGED,
-                                    getUserProfileTO().getUserName());
-                }
+            if (cardRequestTO != null) {
+                int inPriority = Integer.parseInt(newPriority);
+                if (inPriority > 99 || inPriority < 0)
+                    throw new ServiceException(BizExceptionCode.CRE_024,
+                            BizExceptionCode.CRE_024_MSG);
+                cardRequestTO.setPriority(inPriority);
+                getCardRequestDAO().update(cardRequestTO);
+                getCardRequestHistoryDAO().create(cardRequestTO,
+                        null,
+                        SystemId.EMS,
+                        null,
+                        CardRequestHistoryAction.PRIORITY_IS_CHANGED,
+                        getUserProfileTO().getUserName());
             } else
                 throw new ServiceException(BizExceptionCode.CRE_026,
                         BizExceptionCode.CRE_026_MSG);
@@ -1003,7 +1003,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
 
     }
 
-    private CardRequestTO loadById(Long cardRequestId) throws BaseException {
+    public CardRequestTO loadById(Long cardRequestId) throws BaseException {
         if (cardRequestId == 0) {
             throw new ServiceException(BizExceptionCode.CRE_027,
                     BizExceptionCode.CRE_027_MSG);
@@ -1297,7 +1297,6 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         }
         return notAttended;
     }
-
 
 
     private Date incrementDateUtil(Date curentDate, Integer increment) {
