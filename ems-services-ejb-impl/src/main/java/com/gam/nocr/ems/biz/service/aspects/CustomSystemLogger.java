@@ -10,6 +10,7 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.domain.EntityTO;
 import com.gam.nocr.ems.biz.service.CustomLogService;
 import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
+import com.gam.nocr.ems.biz.service.annotations.ExcludeFromCustomLogging;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.util.EmsUtil;
@@ -21,6 +22,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 
 import javax.ejb.EJBTransactionRolledbackException;
+import java.lang.annotation.Annotation;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -247,12 +249,27 @@ public class CustomSystemLogger {
             customLogTo.setActor(username);
         }
 
+        Annotation[][] anns = ((MethodSignature) thisJoinPoint.getSignature()).getMethod().getParameterAnnotations();
+
         parameterValues = thisJoinPoint.getArgs();
         signature = (MethodSignature) thisJoinPoint.getSignature();
         parameterNames = signature.getParameterNames();
         if (parameterValues != null) {
             boolean entityIdAssignedFlag = false;
             for (int i = 0; i < parameterValues.length; i++) {
+
+                boolean shouldBeExcluded = false;
+                for (Annotation annotation : anns[i]) {
+                    if (annotation instanceof ExcludeFromCustomLogging) {
+                        shouldBeExcluded = true;
+                        break;
+                    }
+                }
+                if (shouldBeExcluded) {
+                    //System.out.println("should be excluded===>"+parameterNames[i]);
+                    continue;
+                }
+
                 additionalData += "{ " + parameterNames[i] + ": " + EmsUtil.toJSON(parameterValues[i]) + "} ";
                 Long id;
                 if (!entityIdAssignedFlag) {
