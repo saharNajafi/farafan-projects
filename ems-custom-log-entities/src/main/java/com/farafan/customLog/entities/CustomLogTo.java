@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 public class CustomLogTo extends ExtEntityTO {
 
     private Timestamp date;
+
     private String actor;
     private CustomLogAction action;
     private CustomLogEntity entityName;
