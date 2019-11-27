@@ -20,29 +20,31 @@ import java.sql.Timestamp;
 public class CustomLogTo extends ExtEntityTO {
 
     private Timestamp date;
-
     private String actor;
     private CustomLogAction action;
     private CustomLogEntity entityName;
     private String entityID;
     private String editedValue;
     private String additionalData;
+    private Boolean isActionSuccess;
+
 
     private String actionNameStr;
     private String entityNameStr;
     private String status;
-    private Boolean isActionSuccess;
 
     public CustomLogTo() {
     }
 
-    public CustomLogTo(Timestamp date, String actor, CustomLogAction action, CustomLogEntity entityName, String entityID, String additionalData) {
+    public CustomLogTo(Timestamp date, String actor, CustomLogAction action, CustomLogEntity entityName, String entityID, Boolean isActionSuccess, String additionalData, String editedValue) {
         this.date = date;
         this.actor = actor;
         this.action = action;
         this.entityName = entityName;
         this.entityID = entityID;
+        this.isActionSuccess = isActionSuccess;
         this.additionalData = additionalData;
+        this.editedValue = editedValue;
     }
 
     @Id
@@ -122,6 +124,16 @@ public class CustomLogTo extends ExtEntityTO {
         this.additionalData = additionalData;
     }
 
+    @Column(name = "CUSTOM_IS_ACTION_SUCCESS")
+    @JSON(include = false)
+    public Boolean getActionSuccess() {
+        return isActionSuccess;
+    }
+
+    public void setActionSuccess(Boolean actionSuccess) {
+        this.isActionSuccess = actionSuccess;
+    }
+
     @Transient
     @JSON(include = false)
     public String getActionNameStr() {
@@ -152,15 +164,7 @@ public class CustomLogTo extends ExtEntityTO {
         this.status = status;
     }
 
-    @Column(name = "CUSTOM_IS_ACTION_SUCCESS")
-    @JSON(include = false)
-    public Boolean getActionSuccess() {
-        return isActionSuccess;
-    }
 
-    public void setActionSuccess(Boolean actionSuccess) {
-        this.isActionSuccess = actionSuccess;
-    }
 
     @Override
     public String toString() {
