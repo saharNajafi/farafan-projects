@@ -64,12 +64,22 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     private String priority;
 
+    private String oldPriority;
+
     public String getPriority() {
         return priority;
     }
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getOldPriority() {
+        return oldPriority;
+    }
+
+    public void setOldPriority(String oldPriority) {
+        this.oldPriority = oldPriority;
     }
 
     @Override
@@ -154,21 +164,11 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
      */
     public String updateCardRequestPriority() throws BaseException {
         try {
-            if (EmsUtil.checkString(priority)
-                    && EmsUtil.checkString(cardRequestId)) {
-                CardRequestTO cardRequestTO = new CardRequestDelegator().loadById(Long.valueOf(cardRequestId));
-                new CardRequestDelegator().updateCardRequestPriority(
-                        getUserProfile(),
-                        cardRequestTO,
-                        cardRequestTO.getId(),
-                        cardRequestTO.getPriority(),//old priority
-                        priority//new priority
-                );
-                return SUCCESS_RESULT;
-            } else {
-                throw new ServiceException(WebExceptionCode.CRA_023,
-                        WebExceptionCode.CRA_023_MSG);
-            }
+
+            new CardRequestDelegator().updateCardRequestPriority(
+                    getUserProfile(), cardRequestId, oldPriority, priority);
+
+            return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
             throw new ActionException(WebExceptionCode.CRA_009,
                     WebExceptionCode.GLB_001_MSG, e);
@@ -176,7 +176,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             throw new ActionException(WebExceptionCode.CRA_010,
                     WebExceptionCode.GLB_003_MSG, e);
         }
-
     }
 
     /**

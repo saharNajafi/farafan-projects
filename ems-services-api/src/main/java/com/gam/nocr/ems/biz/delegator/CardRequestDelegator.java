@@ -201,15 +201,14 @@ public class CardRequestDelegator implements Delegator {
 
     /**
      * @param userProfile
-     * @param cardRequestTO
+     * @param cardRequestId
      * @param newPriority
      * @throws BaseException
      * @author ganjyar
      */
     public void updateCardRequestPriority(UserProfileTO userProfile,
-                                          CardRequestTO cardRequestTO, Long cardRequestId, Integer oldPriority, String newPriority) throws BaseException {
+                                          String cardRequestId, String oldPriority, String newPriority) throws BaseException {
         getService(userProfile).updateCardRequestPriority(
-                cardRequestTO,
                 cardRequestId,
                 oldPriority,
                 newPriority);

@@ -2,5 +2,6 @@ package com.farafan.customLog.enums;
 
 public enum CustomLogEntity {
     PASSWORD,
-    CHANGE_PRIORITY
+    CHANGE_PRIORITY,
+    PERSON;
 }

@@ -873,24 +873,23 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
     @Override
     @CustomLoggable(logAction = "UPDATE", logEntityName = "CHANGE_PRIORITY")
     public void updateCardRequestPriority(
-            @ExcludeFromCustomLogging CardRequestTO cardRequestTO,
-            Long cardRequestId,
-            Integer oldPriority,
+            String cardRequestId,
+            String oldPriority,
             String newPriority) throws BaseException {
         try {
-            if (cardRequestTO != null) {
-                int inPriority = Integer.parseInt(newPriority);
-                if (inPriority > 99 || inPriority < 0)
-                    throw new ServiceException(BizExceptionCode.CRE_024,
-                            BizExceptionCode.CRE_024_MSG);
-                cardRequestTO.setPriority(inPriority);
-                getCardRequestDAO().update(cardRequestTO);
-                getCardRequestHistoryDAO().create(cardRequestTO,
-                        null,
-                        SystemId.EMS,
-                        null,
-                        CardRequestHistoryAction.PRIORITY_IS_CHANGED,
-                        getUserProfileTO().getUserName());
+
+            if (EmsUtil.checkString(newPriority)
+                    && EmsUtil.checkString(cardRequestId)) {
+
+                CardRequestTO cardRequestTO = getCardRequestDAO().find(
+                        CardRequestTO.class, Long.parseLong(cardRequestId));
+                if (cardRequestTO != null) {
+                    int inPriority = Integer.parseInt(newPriority);
+                    if (inPriority > 99 || inPriority < 0)
+                        throw new ServiceException(BizExceptionCode.CRE_024,
+                                BizExceptionCode.CRE_024_MSG);
+                    cardRequestTO.setPriority(inPriority);
+                }
             } else
                 throw new ServiceException(BizExceptionCode.CRE_026,
                         BizExceptionCode.CRE_026_MSG);

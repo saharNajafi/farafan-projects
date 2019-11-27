@@ -80,7 +80,7 @@ public interface CardRequestService extends Service {
 
 	public CardRequestVTO findCardRequestById(String cardRequestId) throws BaseException;
 
-	public void updateCardRequestPriority(CardRequestTO cardRequestTO, Long cardRequestId, Integer oldPriority, String newPriority) throws BaseException;
+	public void updateCardRequestPriority(String cardRequestId, String oldPriority,String newPriority) throws BaseException;
 
 	public boolean hasChangePriorityAccess() throws BaseException;
 

@@ -8,6 +8,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
 import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
+import com.gam.nocr.ems.biz.service.interfaces.PersonPasswordChange;
 import gampooya.tools.vlp.ListException;
 import gampooya.tools.vlp.ValueListHandler;
 
@@ -85,7 +86,7 @@ import com.tangosol.net.NamedCache;
 @Stateless(name = "PersonManagementService")
 @Local(PersonManagementServiceLocal.class)
 @Remote(PersonManagementServiceRemote.class)
-public class PersonManagementServiceImpl extends EMSAbstractService implements PersonManagementServiceLocal, PersonManagementServiceRemote {
+public class PersonManagementServiceImpl extends EMSAbstractService implements PersonManagementServiceLocal, PersonManagementServiceRemote , PersonPasswordChange {
 
     private static final Logger logger = BaseLog.getLogger(PersonManagementServiceImpl.class);
 
@@ -99,6 +100,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Permissions(value = "ems_editPerson || ems_addPerson")
     @BizLoggable(logAction = "INSERT", logEntityName = "PERSON")
     @TransactionAttribute(TransactionAttributeType.NEVER)
+    @CustomLoggable(logAction = "INSERT", logEntityName = "PERSON")
     public Long save(PersonVTO to) throws BaseException {
         if (to == null)
             throw new ServiceException(BizExceptionCode.PSI_002, BizExceptionCode.PSI_002_MSG);
@@ -191,10 +193,14 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
 
     @Override
+    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
+    public void needChangePassword(Long userId) {
+    }
+
+    @Override
     @Permissions(value = "ems_editPerson")
     @BizLoggable(logAction = "UPDATE", logEntityName = "PERSON")
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
     public Long update(PersonVTO to) throws BaseException {
         try {
             if (to == null)
@@ -216,6 +222,11 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 
             personInfoVTO.getUserInfoVTO().setPersonId(personTO.getId());
             gaasService.update(personInfoVTO.getUserInfoVTO());
+
+            //to logging change-password history:
+            if (to.getPassword()!=null && !to.getPassword().trim().isEmpty()){
+                needChangePassword(personTO.getId());
+            }
 
             NamedCache permissionCache = CacheFactory.getCache("repl.timelim.lru.gam.tools.permissionCache");
             permissionCache.remove(personTO.getUserName());
