@@ -674,14 +674,14 @@
 
     <properties>
         <!-- ============= NOCR module Version ============== -->
-        <nocr.ems.version>2.6.6.0</nocr.ems.version>
-        <nocr.ems-commons.version>2.6.6.0</nocr.ems-commons.version>
-        <nocr.ems-dao-api.version>2.6.6.0</nocr.ems-dao-api.version>
-        <nocr.ems-dao-jpa-impl.version>2.6.6.0</nocr.ems-dao-jpa-impl.version>
-        <nocr.ems-ear.version>2.6.6.0</nocr.ems-ear.version>
-        <nocr.ems-services-api.version>2.6.6.0</nocr.ems-services-api.version>
-        <nocr.ems-services-ejb-impl.version>2.6.6.0</nocr.ems-services-ejb-impl.version>
-        <nocr.ems-web.version>2.6.6.0</nocr.ems-web.version>
+        <nocr.ems.version>2.6.6.1</nocr.ems.version>
+        <nocr.ems-commons.version>2.6.6.1</nocr.ems-commons.version>
+        <nocr.ems-dao-api.version>2.6.6.1</nocr.ems-dao-api.version>
+        <nocr.ems-dao-jpa-impl.version>2.6.6.1</nocr.ems-dao-jpa-impl.version>
+        <nocr.ems-ear.version>2.6.6.1</nocr.ems-ear.version>
+        <nocr.ems-services-api.version>2.6.6.1</nocr.ems-services-api.version>
+        <nocr.ems-services-ejb-impl.version>2.6.6.1</nocr.ems-services-ejb-impl.version>
+        <nocr.ems-web.version>2.6.6.1</nocr.ems-web.version>
         <nocr.ems-ccos.version>2.7.0.14</nocr.ems-ccos.version>
         <nocr.ems-mes.version>1.0.1.5</nocr.ems-mes.version>
         <nocr.ems-software.version>1.0.0</nocr.ems-software.version>
