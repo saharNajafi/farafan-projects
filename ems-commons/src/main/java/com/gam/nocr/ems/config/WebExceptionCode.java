@@ -661,7 +661,9 @@ public class WebExceptionCode extends BaseRuntimeExceptionCode {
     //com.gam.nocr.ems.web.action.LostCardAction    
     public static final String LCA_001 = "EMS_A_LCA_001";
     public static final String LCA_002 = "EMS_A_LCA_002";
-    
+    public static final String LCA_003 = "EMS_A_LCA_003";
+    public static final String LCA_004 = "EMS_A_LCA_004";
+
     //com.gam.nocr.ems.web.action.LostBatchAction
     public static final String LBA_001 = "EMS_A_LBA_001";
     public static final String LBA_002 = "EMS_A_LBA_002";

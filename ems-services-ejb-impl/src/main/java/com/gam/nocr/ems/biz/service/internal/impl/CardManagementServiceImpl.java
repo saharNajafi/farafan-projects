@@ -2324,6 +2324,45 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
 
 	}
 
+    /**
+	 * this method is used to unconfirm lost card in 3s
+	 * @author Namjoofar
+	 */
+	@Override
+	@Permissions(value = "ems_viewCardLost")
+	public void doUnconfirmLostCard(Long cardId)
+			throws BaseException {
+		try {
+            if (cardId == null) {
+                throw new ServiceException(BizExceptionCode.CMS_107,
+                        BizExceptionCode.CMS_107_MSG);
+            }
+            CardTO card = getCardDAO().find(CardTO.class, cardId);
+            if (card == null) {
+                throw new ServiceException(BizExceptionCode.CMS_108,
+                        BizExceptionCode.CMS_108_MSG);
+            }
+            if (card.getState() != CardState.SHIPPED) {
+                throw new ServiceException(BizExceptionCode.CMS_109,
+                        BizExceptionCode.CMS_109_MSG);
+
+            }
+            if (card.getLostDate() == null) {
+                throw new ServiceException(BizExceptionCode.CMS_110,
+                        BizExceptionCode.CMS_110_MSG);
+            }
+			logger.info("unconfirming lost card with id :" + cardId);
+            card.setLostDate(null);
+			return;
+		} catch (BaseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ServiceException(BizExceptionCode.CMS_111,
+					BizExceptionCode.GLB_008_MSG, e);
+		}
+
+	}
+
 	/**
 	 * This method fetch lost cards which are confirmed by manager in 3s
 	 * @author ganjyar

@@ -247,6 +247,14 @@ public class CardRequestDelegator implements Delegator {
     }
 
     /**
+     * @author Namjoofar
+     */
+    public void doUnconfirmLostCard(UserProfileTO userProfile, Long cardId)
+            throws BaseException {
+        getCardManagementService(userProfile).doUnconfirmLostCard(cardId);
+    }
+
+    /**
      * this method is used to fetch card lost temp list. The list is used in
      * card lost cartable which are waiting to confirm by 3s admin
      *

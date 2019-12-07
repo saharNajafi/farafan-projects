@@ -49,5 +49,28 @@ Ext.define('Ems.controller.LostCardController', {
               Tools.errorFailure();
           }
       });
-  },
+    },
+    doUnconfirmLostCard: function (grid, rowIndex) {
+
+
+      var store = grid.getStore(),
+          record = store.getAt(rowIndex).data,
+          id = record.id,
+          me = this;
+
+      Ext.Ajax.request({
+
+          url: me.ns + '/doUnconfirmLostCard', jsonData: {
+        	  cardId: id
+          }, success: function (resp) {
+              var data = Ext.decode(resp.responseText);
+              if (data.success) {
+            	  grid.getStore().load();
+              }
+
+          }, failure: function (resp) {
+              Tools.errorFailure();
+          }
+      });
+    }
 });

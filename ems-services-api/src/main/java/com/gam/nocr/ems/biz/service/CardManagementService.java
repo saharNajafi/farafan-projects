@@ -132,6 +132,11 @@ public interface CardManagementService extends Service {
 	public void doConfirmLostCard(Long cardId) throws BaseException;
 
 	/**
+	 * @author Namjoofar
+	 */
+	public void doUnconfirmLostCard(Long cardId) throws BaseException;
+
+	/**
 	 * @author ganjyar
 	 * 
 	 */

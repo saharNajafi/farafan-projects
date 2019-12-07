@@ -58,13 +58,28 @@ public class LostCardAction extends ListControllerImpl<CardDispatchInfoVTO> {
 			logger.info("Confirming lost card with id : " + getCardId());
 			return SUCCESS_RESULT;
 		} catch (BusinessSecurityException e) {
+			throw new ActionException(WebExceptionCode.LCA_003,
+					WebExceptionCode.GLB_001_MSG, e);
+		} catch (Exception e) {
+			throw new ActionException(WebExceptionCode.LCA_004,
+					WebExceptionCode.GLB_003_MSG, e);
+		}
+
+	}
+
+	public String doUnconfirmLostCard() throws BaseException {
+		try {
+			new CardRequestDelegator().doUnconfirmLostCard(getUserProfile(),
+					Long.valueOf(cardId));
+			logger.info("Unconfirming lost card with id : " + getCardId());
+			return SUCCESS_RESULT;
+		} catch (BusinessSecurityException e) {
 			throw new ActionException(WebExceptionCode.LCA_001,
 					WebExceptionCode.GLB_001_MSG, e);
 		} catch (Exception e) {
 			throw new ActionException(WebExceptionCode.LCA_002,
 					WebExceptionCode.GLB_003_MSG, e);
 		}
-
 	}
 
 }
