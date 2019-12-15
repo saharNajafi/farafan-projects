@@ -615,6 +615,12 @@
     height: 16px;
     cursor: pointer;
 }
+.girdAction-lost-noconfirm-icon {
+    background: url('resources/themes/images/dispath/undoSend.png') no-repeat right;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
 .girdAction-unconfirm-icon {
     background: url('resources/themes/images/dispath/undoSend.png') no-repeat right;
     width: 16px;

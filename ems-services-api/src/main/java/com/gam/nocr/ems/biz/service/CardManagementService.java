@@ -155,6 +155,12 @@ public interface CardManagementService extends Service {
 	 */
 	void doConfirmLostBatch(Long batchId) throws BaseException;
 
+	/**
+	 * @author Namjoofar
+	 *
+	 */
+	void doUnconfirmLostBatch(Long batchId) throws BaseException;
+
 
 	/**
 	 * @author ganjyar

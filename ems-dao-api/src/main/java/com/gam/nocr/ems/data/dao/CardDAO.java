@@ -69,4 +69,10 @@ public interface CardDAO extends EmsBaseDAO<CardTO> {
 	 */
 	void updateLostConfirmBytBatchConfirm(Long batchId) throws BaseException;
 
+	/**
+	 *
+	 * @author Namjoofar
+	 */
+	void unconfirmAllCardsOfBatch(Long batchId) throws BaseException;
+
 }

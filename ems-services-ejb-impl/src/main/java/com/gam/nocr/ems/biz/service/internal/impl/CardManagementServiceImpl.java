@@ -2451,6 +2451,49 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     /**
+     * this method is used to unconfirm lost batch which are missed in ccos.
+     * a job will do confirmation and notify cms
+     *
+     * @author Namjoofar
+     */
+    @Override
+    @Permissions(value = "ems_viewCardLost")
+    public void doUnconfirmLostBatch(Long batchId) throws BaseException {
+        try {
+            if (batchId == null) {
+                throw new ServiceException(BizExceptionCode.CMS_112,
+                        BizExceptionCode.CMS_112_MSG);
+            }
+            BatchTO batch = getBatchDAO().find(BatchTO.class, batchId);
+            if (batch == null) {
+                throw new ServiceException(BizExceptionCode.CMS_113,
+                        BizExceptionCode.CMS_113_MSG);
+            }
+            if (batch.getState() != BatchState.SHIPPED) {
+                throw new ServiceException(BizExceptionCode.CMS_114,
+                        BizExceptionCode.CMS_114_MSG);
+
+            }
+            List<DispatchInfoTO> dispatchInfo = getDispatchDAO().findByContainerId(batchId);
+
+            if (dispatchInfo.get(0).getLostDate() == null) {
+                throw new ServiceException(BizExceptionCode.CMS_115,
+                        BizExceptionCode.CMS_115_MSG);
+            }
+            logger.info("unconfirming lost batch with id :" + batchId);
+            getCardDAO().unconfirmAllCardsOfBatch(batchId);
+            return;
+        } catch (BaseException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        } catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            throw new ServiceException(BizExceptionCode.CMS_116,
+                    BizExceptionCode.GLB_008_MSG, e);
+        }
+    }
+
+    /**
      * This method count lost batches which are confirmed by manager in 3s
      *
      * @author ganjyar

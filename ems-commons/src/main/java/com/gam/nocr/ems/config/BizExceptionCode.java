@@ -1762,6 +1762,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_109 = "EMS_S_CMS_109";
     public static final String CMS_110 = "EMS_S_CMS_110";
     public static final String CMS_111 = "EMS_S_CMS_111";
+    public static final String CMS_112 = "EMS_S_CMS_112";
+    public static final String CMS_113 = "EMS_S_CMS_113";
+    public static final String CMS_114 = "EMS_S_CMS_114";
+    public static final String CMS_115 = "EMS_S_CMS_115";
+    public static final String CMS_116 = "EMS_S_CMS_116";
 
     public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
     public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
@@ -1801,7 +1806,10 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_108_MSG = "There is not any card with the given card id.";
     public static final String CMS_109_MSG = "The card state must be 'shipped'.";
     public static final String CMS_110_MSG = "The lost date for card is null.";
-
+    public static final String CMS_112_MSG = "Invalid batch id. The given batch id cannot be null.";
+    public static final String CMS_113_MSG = "There is not any batch with the given batch id.";
+    public static final String CMS_114_MSG = "The batch state must be 'shipped'.";
+    public static final String CMS_115_MSG = "The lost date for batch is null.";
 
     // com.gam.nocr.ems.biz.service.internal.impl.LocationServiceImpl
     public static final String LMS_001 = "EMS_S_LMS_001";

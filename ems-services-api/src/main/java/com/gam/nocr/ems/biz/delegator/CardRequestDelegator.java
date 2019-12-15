@@ -289,6 +289,14 @@ public class CardRequestDelegator implements Delegator {
     }
 
     /**
+     * @author Namjoofar
+     */
+    public void doUnconfirmLostBatch(UserProfileTO userProfile, Long batchId)
+            throws BaseException {
+        getCardManagementService(userProfile).doUnconfirmLostBatch(batchId);
+    }
+
+    /**
      * @author a.amiri
      */
     public String findCmsBatchByRequestId(UserProfileTO userProfile, Long requestId)

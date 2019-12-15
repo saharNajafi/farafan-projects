@@ -52,4 +52,26 @@ Ext.define('Ems.controller.LostBatchController', {
             }
         });
     },
+    doUnconfirmlostbatch: function (grid, rowIndex) {
+    	 var store = grid.getStore(),
+         record = store.getAt(rowIndex).data,
+         id = record.id,
+         me = this;
+
+        Ext.Ajax.request({
+
+            url: me.ns + '/doUnconfirmLostBatch', jsonData: {
+            	batchId: id
+            }, success: function (resp) {
+                var data = Ext.decode(resp.responseText);
+                if (data.success) {
+                	 grid.getStore().load();
+
+                }
+
+            }, failure: function (resp) {
+                Tools.errorFailure();
+            }
+        });
+    },
 });

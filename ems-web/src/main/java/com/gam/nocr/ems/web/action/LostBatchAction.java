@@ -65,4 +65,19 @@ public class LostBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
 
 	}
 
+	public String doUnconfirmLostBatch() throws BaseException {
+		try {
+			new CardRequestDelegator().doUnconfirmLostBatch(getUserProfile(),
+					Long.valueOf(batchId));
+			logger.info("Unconfirming lost batch with id : " + getBatchId());
+			return SUCCESS_RESULT;
+		} catch (BusinessSecurityException e) {
+			throw new ActionException(WebExceptionCode.LBA_001,
+					WebExceptionCode.GLB_001_MSG, e);
+		} catch (Exception e) {
+			throw new ActionException(WebExceptionCode.LBA_002,
+					WebExceptionCode.GLB_003_MSG, e);
+		}
+	}
+
 }

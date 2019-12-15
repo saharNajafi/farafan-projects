@@ -933,6 +933,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CAI_015 = "EMS_D_CAI_015";
     public static final String CAI_016 = "EMS_D_CAI_016";
     public static final String CAI_017 = "EMS_D_CAI_017";
+    public static final String CAI_018 = "EMS_D_CAI_018";
     public static final String CAI_002_MSG = "violate unique constraint, Card serial number already exists";
     public static final String CAI_005_MSG = "unique constraint violated, card serial number already exists";
 

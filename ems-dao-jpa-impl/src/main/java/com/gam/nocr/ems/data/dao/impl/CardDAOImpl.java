@@ -454,4 +454,26 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 		}
 
 	}
+
+	/**
+	 * this method used to update all cards of a batch when a lost batch is unconfirmed by 3s.
+	 * then all cards lost-date will be null.
+	 * @author ٔNamjoofar
+	 *
+	 */
+	@Override
+	public void unconfirmAllCardsOfBatch(Long batchId) throws BaseException {
+		try {
+			em.createQuery(
+					"update CardTO crt "
+							+ "set crt.lostDate = :lostDate"
+							+ " where crt.batch.id = :batchId")
+					.setParameter("batchId", batchId)
+					.setParameter("lostDate", null).executeUpdate();
+			em.flush();
+		} catch (Exception e) {
+			throw new DataException(DataExceptionCode.CAI_018,
+					DataExceptionCode.GLB_006_MSG, e);
+		}
+	}
 }
