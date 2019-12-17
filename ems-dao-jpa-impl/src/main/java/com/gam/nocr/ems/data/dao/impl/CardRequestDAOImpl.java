@@ -4817,16 +4817,18 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
     }
 
     @Override
-    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType cardRequestType) throws BaseException {
+    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType cardRequestType, Long crqId) throws BaseException {
         Long replicaTypeCount;
         try {
             Query query = em.createQuery(
                     "select count(*) " +
                             "from CardRequestTO crq " +
                             "where crq.citizen.nationalID=:NATIONALID " +
-                            "and crq.type=:TYPE");
+                            "and crq.type=:TYPE " +
+                            "and crq.id!=:ID ");
             query.setParameter("NATIONALID", nationalId);
             query.setParameter("TYPE", cardRequestType);
+            query.setParameter("ID", crqId);
             replicaTypeCount = (Long) query.getSingleResult();
         } catch (Exception e) {
             logger.error(DataExceptionCode.CDI_108_MSG, new Object[]{"nationalId", String.valueOf(nationalId)});
