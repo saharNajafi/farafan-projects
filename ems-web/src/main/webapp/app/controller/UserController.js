@@ -803,6 +803,7 @@ Ext.define('Ems.controller.UserController', {
 
                     }
                 } else {
+                    Gam.Msg.hideWaitMsg();
                     Tools.errorMessageServer(data.messageInfo)
                 }
             }, failure: function (response) {
