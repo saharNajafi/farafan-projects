@@ -62,9 +62,9 @@ public class CCOSPaymentWS extends EMSWS {
                     personalInfoWTO.getNationalId(), personalInfoWTO.getBirthDateSolar()
                     , personalInfoWTO.getCertSerialNo(), personalInfoWTO.getGender());
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
         } catch (Exception e) {
-            throwInternalException(WebExceptionCode.CPW_001, WebExceptionCode.CPW_001_MSG, e, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_001_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_001), e);
         }
     }
 
@@ -86,9 +86,9 @@ public class CCOSPaymentWS extends EMSWS {
                     , personalHealthStatusWTO.getHealthStatusWTO()
                     , personalHealthStatusWTO.getEnrollmentOfficeId());
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
         } catch (Exception e) {
-            throwInternalException(WebExceptionCode.CPW_002, WebExceptionCode.CPW_002_MSG, e, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_002_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_002), e);
         }
     }
 
@@ -113,9 +113,9 @@ public class CCOSPaymentWS extends EMSWS {
             try {
                 cardRequestTO = reservationDelegator.transferReservationsToEMS(userProfileTO, reservationTo);
             } catch (BaseException e) {
-                throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-            } catch (Exception ex) {
-                throwInternalException(WebExceptionCode.CPW_009, WebExceptionCode.CPW_009_MSG, ex, ccosLogger);
+                throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
+            } catch (Exception e) {
+                throw new InternalException(WebExceptionCode.CPW_009_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_009), e);
             }
             SingleStagePreRegistrationWTO singleStagePreRegistrationWTO = new SingleStagePreRegistrationWTO();
             singleStagePreRegistrationWTO.setTrackingId(reservationTo.getCardRequest().getTrackingID());
@@ -133,11 +133,10 @@ public class CCOSPaymentWS extends EMSWS {
                     .getCode(), internalException);
             throw internalException;
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
         } catch (Exception e) {
-            throwInternalException(WebExceptionCode.CPW_013, WebExceptionCode.CPW_013_MSG, e, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_013_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_013), e);
         }
-        return null;
     }
 
     /**
@@ -180,11 +179,10 @@ public class CCOSPaymentWS extends EMSWS {
         try {
             return registrationPaymentDelegator.getPayAmountInfo(userProfileTO, personalInfoWTO.getNationalId());
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_011, WebExceptionCode.CPW_011_MSG, ex, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_011_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_011), e);
         }
-        return null;
     }
 
     /**
@@ -206,9 +204,9 @@ public class CCOSPaymentWS extends EMSWS {
                 throwInternalException(WebExceptionCode.CPW_024, WebExceptionCode.CPW_024_MSG, ccosLogger);
             registrationPaymentDelegator.registerTargetBank(userProfileTO, targetBankWTO);
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_023, WebExceptionCode.CPW_023_MSG, ex, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_023_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_023), e);
         }
     }
 
@@ -228,16 +226,16 @@ public class CCOSPaymentWS extends EMSWS {
 
         UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
         if (paymentWTO == null || paymentWTO.getRegistrationPaymentWTO() == null) {
-            throwInternalException(WebExceptionCode.CPW_004, WebExceptionCode.CPW_008_MSG, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_008_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_008));
         }
         try {
             RegistrationPaymentTO registrationPaymentTO = PaymentUtil.convertToRegistrationPayment(paymentWTO);
             registrationPaymentDelegator.savePaymentInfo(userProfileTO, registrationPaymentTO,
                     paymentWTO.getNationalId());
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_010, WebExceptionCode.CPW_010_MSG, ex, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_010_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_010), e);
         }
     }
 
@@ -254,31 +252,31 @@ public class CCOSPaymentWS extends EMSWS {
             @XmlElement(required = true, nillable = false) PersonEnquiryWTO personEnquiry
     ) throws InternalException, BaseException {
         if (personEnquiry == null) {
-            throwInternalException(WebExceptionCode.CPW_020, WebExceptionCode.CPW_020_MSG, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_020_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_020));
         }
         if (!NationalIDUtil.checkValidNinStr(personEnquiry.getNationalId())) {
-            throwInternalException(WebExceptionCode.CPW_003, WebExceptionCode.CPW_003_MSG + personEnquiry.getNationalId(), ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_003_MSG + personEnquiry.getNationalId(), new EMSWebServiceFault(WebExceptionCode.CPW_003));
         }
         UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
         // fetch card request
         CardRequestTO cardRequest = null;
         try {
             cardRequest = cardRequestDelegator.findLastRequestByNationalId(userProfileTO, personEnquiry.getNationalId());
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_018, WebExceptionCode.CPW_018_MSG, ex, ccosLogger);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_018_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_018), e);
         }
         if (cardRequest == null) {
-            throwInternalException(WebExceptionCode.CPW_005, WebExceptionCode.CPW_005_MSG + personEnquiry.getNationalId(), ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_005_MSG + personEnquiry.getNationalId(), new EMSWebServiceFault(WebExceptionCode.CPW_005));
         }
         PersonEnquiryWTO personEnquiryWTO = null;
         try {
             personEnquiryWTO = cardRequestDelegator.updateCitizenByEstelam(userProfileTO, cardRequest, true, false);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_006, WebExceptionCode.CPW_006_MSG, ex, ccosLogger);
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_006_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_006), e);
         }
         if (personEnquiryWTO.getIsServiceDown()
                 || personEnquiryWTO.getIsEstelamCorrupt()) {
-            throwInternalException(WebExceptionCode.CPW_007, WebExceptionCode.CPW_007_MSG, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_007_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_007));
         }
     }
 
@@ -302,11 +300,10 @@ public class CCOSPaymentWS extends EMSWS {
                             userProfileTO, String.valueOf(preRegistrationWTO.getNationalId()));
             return EmsUtil.makeFixLengthWithZeroPadding(cardRequestTO.getCitizen().getNationalID(), 30);
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_014, WebExceptionCode.CPW_014_MSG, ex, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_014_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_014), e);
         }
-        return null;
     }
 
     /**
@@ -331,9 +328,9 @@ public class CCOSPaymentWS extends EMSWS {
             registrationPaymentDelegator.assignPaymentToEnrollment(
                     userProfileTO, registrationPaymentTO, paymentWTO.getNationalId());
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_015, WebExceptionCode.CPW_015_MSG, ex, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode(), e.getArgs()));
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_015_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_015), e);
         }
     }
 
@@ -353,14 +350,14 @@ public class CCOSPaymentWS extends EMSWS {
         UserProfileTO userProfileTO = super.validateCCOSUser(securityContextWTO, ccosLogger);
         Boolean result = false;
         if (nationalId == null) {
-            throwInternalException(WebExceptionCode.CPW_021, WebExceptionCode.CPW_021_MSG, ccosLogger);
+            throw new InternalException(WebExceptionCode.CPW_021_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_021));
         }
         try {
             result = registrationPaymentDelegator.bankInquiry(userProfileTO, nationalId);
         } catch (BaseException e) {
-            throwInternalException(e.getExceptionCode(), e.getMessage(), e.getArgs(), e, ccosLogger);
-        } catch (Exception ex) {
-            throwInternalException(WebExceptionCode.CPW_022, WebExceptionCode.CPW_022_MSG, ex, ccosLogger);
+            throw new InternalException(e.getMessage(), new EMSWebServiceFault(e.getExceptionCode()));
+        } catch (Exception e) {
+            throw new InternalException(WebExceptionCode.CPW_022_MSG, new EMSWebServiceFault(WebExceptionCode.CPW_022), e);
         }
         return result;
     }
