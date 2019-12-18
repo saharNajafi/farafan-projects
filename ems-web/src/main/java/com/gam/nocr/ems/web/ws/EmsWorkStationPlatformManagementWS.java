@@ -137,9 +137,9 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         //3-.net framework============================================================================================================
         if (workstationInfoWTO.getHasDotnetFramwork45() == null) {
             //throw new InternalException(WebExceptionCode.WST_019_MSG, new EMSWebServiceFault(WebExceptionCode.WST_019));
-            workstationInfoTO.setHasDotnetFramwork45((short) 0);
+            workstationInfoTO.setHasDotnetFramwork45(INVALID_PARAM);
         } else {
-            workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(String.valueOf(((workstationInfoWTO.getHasDotnetFramwork45()) ? 1 : 0))));
+            workstationInfoTO.setHasDotnetFramwork45(String.valueOf(workstationInfoWTO.getHasDotnetFramwork45()));
         }
 
         //4-memory capacity===================================================
@@ -182,7 +182,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
         workstationInfoTO.setLastModifiedDate(new Date());
 
         //9-gather state==============================================================================================================
-        workstationInfoTO.setGatherState((short) 0);
+        workstationInfoTO.setGatherState(false);
 
         return workstationInfoTO;
     }
