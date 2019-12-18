@@ -11,6 +11,8 @@ import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.commons.profile.ConfigurationFileHandler;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.GAASService;
+import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
+import com.gam.nocr.ems.biz.service.interfaces.PersonPasswordChange;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.data.dao.CertificateDAO;
@@ -42,8 +44,12 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.*;
 @Stateless(name = "UserManagementService")
 @Local(UserManagementServiceLocal.class)
 @Remote(UserManagementServiceRemote.class)
-public class UserManagementServiceImpl extends EMSAbstractService implements UserManagementServiceLocal, UserManagementServiceRemote {
+public class UserManagementServiceImpl extends EMSAbstractService implements UserManagementServiceLocal, UserManagementServiceRemote , PersonPasswordChange {
 
+    @Override
+    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
+    public void needChangePassword(Long userId) {
+    }
 
     @Override
     @BizLoggable(logAction = "CHANGE_PASSWORD", logEntityName = "PERSON")
@@ -65,6 +71,9 @@ public class UserManagementServiceImpl extends EMSAbstractService implements Use
                         Base64.encode(EmsUtil.MD5Digest(userProfileTO.getUserName() + userVTO.getOldPassword()), "UTF-8"),
                         Base64.encode(EmsUtil.MD5Digest(userProfileTO.getUserName() + userVTO.getNewPassword()), "UTF-8")
                 );
+
+                //to logging change-password history:
+                needChangePassword(personID);
             } catch (UnsupportedEncodingException e) {
                 throw new ServiceException(BizExceptionCode.USI_006, BizExceptionCode.USI_006_MSG, e);
             }

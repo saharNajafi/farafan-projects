@@ -5,6 +5,6 @@ import com.gam.commons.core.BaseException;
 
 public interface CustomLogDAO extends EmsBaseDAO<CustomLogTo> {
 
-    public void insertLog(CustomLogTo to) throws BaseException;
+    public CustomLogTo insertLog(CustomLogTo to) throws BaseException;
 
 }

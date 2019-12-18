@@ -331,7 +331,8 @@ Ext.define('Ems.controller.CardRequestListController', {
             url: me.ns + '/updateCardRequestPriority', jsonData: {
 
                 priority: parseInt(Ext.getCmp('cardRequestPriorityCombo').rawValue),
-                cardRequestId: sessionStorage.getItem('cardRequestId')
+                cardRequestId: sessionStorage.getItem('cardRequestId'),
+                oldPriority: record.get('priority')
             },
             success: function (response) {
                 Gam.Msg.hideWaitMsg();

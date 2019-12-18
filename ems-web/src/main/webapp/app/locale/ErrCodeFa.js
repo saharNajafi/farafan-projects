@@ -533,6 +533,7 @@ Ext.apply(Ems.ErrorCode, {
         EMS_S_PSI_058: 'کاربر مورد نظر یافت نشد.',
         EMS_S_PSI_071: 'سیستم به دلیل وجود توکن برای کاربر مورد نظر، قادر به حذف وی نمی باشد. لطفا توکن های کاربر را حذف و دوباره تلاش نمایید.',
         EMS_S_PSI_072: 'حذف مدیر سیستم امکان پذیر نمی باشد.',
+        EMS_S_PSI_065: Ems.ErrorCode.general.defaultSystemError,
         EMS_S_PSI_073: Ems.ErrorCode.general.defaultEmptyDataError,
         EMS_S_PSI_074: Ems.ErrorCode.general.defaultSystemError,
         EMS_S_PSI_075: 'سیستم قادر به تغییر جایگاه سازمانی مدیر دفتر نمی باشد. لطفا ابتدا مدیر دفتر را تغییر دهید.',

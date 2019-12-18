@@ -2,13 +2,13 @@ package com.gam.nocr.ems.data.mapper.tomapper;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
-import com.gam.commons.profile.ProfileException;
-import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.external.client.portal.CardRequestWTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.ChildVTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.CitizenVTO;
 import com.gam.nocr.ems.biz.service.external.client.portal.SpouseVTO;
-import com.gam.nocr.ems.config.*;
+import com.gam.nocr.ems.config.ConstValues;
+import com.gam.nocr.ems.config.DataExceptionCode;
+import com.gam.nocr.ems.config.MapperExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.domain.ws.ChildrenWTO;
@@ -17,6 +17,7 @@ import com.gam.nocr.ems.data.domain.ws.SpouseWTO;
 import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.data.enums.Gender;
+import com.gam.nocr.ems.data.enums.ReligionEnum;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
@@ -77,8 +78,8 @@ public class CardRequestMapper {
             crq.setState(CardRequestState.toState(wto.getState()));
         }
         crq.setTrackingID(wto.getTrackingId());
-      //************************Anbari:Payment
-        crq.setPaid(wto.getIsPaid()== null ? false : wto.getIsPaid().intValue() == 1);
+        //************************Anbari:Payment
+        crq.setPaid(wto.getIsPaid() == null ? false : wto.getIsPaid().intValue() == 1);
         crq.setPaidDate(wto.getPaidDate());
         //**************************
 
@@ -99,16 +100,7 @@ public class CardRequestMapper {
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
         } else {
-            try {
-                //set default religion as Islam:
-                ProfileManager pm = ProfileHelper.getProfileManager();
-                Long religionIdAsIslam = Long.valueOf((String) pm.getProfile(ProfileKeyName.KEY_RELIGION_AS_ISLAM, true, null, null));
-                ReligionTO religionTO = new ReligionTO();
-                religionTO.setId(religionIdAsIslam);
-                czi.setReligion(religionTO);
-            } catch (ProfileException e) {
-                e.printStackTrace();
-            }
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
 
         czi.setPostcode(wto.getPostCode());
@@ -119,38 +111,37 @@ public class CardRequestMapper {
 		}*/
         czi.setBirthCertificateIssuancePlace(wto.getBirthCertPrvName());
         // set location
-        if(wto.getUserCityType() == null)
-        	
-        	throw new BaseException(MapperExceptionCode.CRM_018, MapperExceptionCode.CRM_018_MSG);
-        if(wto.getUserCityType().equals("2")) //is vip
+        if (wto.getUserCityType() == null)
+
+            throw new BaseException(MapperExceptionCode.CRM_018, MapperExceptionCode.CRM_018_MSG);
+        if (wto.getUserCityType().equals("2")) //is vip
         {
-        	czi.setLiving(null);
-        	czi.setLivingCity(null);
-        }
-        else {
-        	
-        	if (wto.getLivingPrvId() == null || wto.getLivingPrvId()==0) 
-        		
-        		throw new BaseException(MapperExceptionCode.CRM_017, MapperExceptionCode.CRM_017_MSG);
-        	
-        	czi.setLiving(new LocationTO(wto.getLivingPrvId()));
-        	
-        	// 1 -----> shahr
-        	// 0 ------> dehestan
-        	if (wto.getUserCityType().equals("1")) {
-        		if (wto.getLivingCityId() == null || wto.getLivingCityId()==0) 
-        			
-        			throw new BaseException(MapperExceptionCode.CRM_019, MapperExceptionCode.CRM_019_MSG);
-        		czi.setLivingCity(new LocationTO(wto.getLivingCityId()));
-        		
-        		
-        	} else if (wto.getUserCityType().equals("0")) {
-        		if (wto.getLivingVillageId() == null || wto.getLivingVillageId()==0) 
-        			
-        			throw new BaseException(MapperExceptionCode.CRM_020, MapperExceptionCode.CRM_020_MSG);
-        		czi.setLivingCity(new LocationTO(wto.getLivingVillageId()));
-        		
-        	}
+            czi.setLiving(null);
+            czi.setLivingCity(null);
+        } else {
+
+            if (wto.getLivingPrvId() == null || wto.getLivingPrvId() == 0)
+
+                throw new BaseException(MapperExceptionCode.CRM_017, MapperExceptionCode.CRM_017_MSG);
+
+            czi.setLiving(new LocationTO(wto.getLivingPrvId()));
+
+            // 1 -----> shahr
+            // 0 ------> dehestan
+            if (wto.getUserCityType().equals("1")) {
+                if (wto.getLivingCityId() == null || wto.getLivingCityId() == 0)
+
+                    throw new BaseException(MapperExceptionCode.CRM_019, MapperExceptionCode.CRM_019_MSG);
+                czi.setLivingCity(new LocationTO(wto.getLivingCityId()));
+
+
+            } else if (wto.getUserCityType().equals("0")) {
+                if (wto.getLivingVillageId() == null || wto.getLivingVillageId() == 0)
+
+                    throw new BaseException(MapperExceptionCode.CRM_020, MapperExceptionCode.CRM_020_MSG);
+                czi.setLivingCity(new LocationTO(wto.getLivingVillageId()));
+
+            }
         }
 
         czi.setBirthCertificateSeries(wto.getBirthCertSerial());
@@ -211,48 +202,46 @@ public class CardRequestMapper {
         ChildVTO chi;
 
         vto.setId(to.getId());
-        if (to.getEnrollmentOffice()!=null) {
+        if (to.getEnrollmentOffice() != null) {
             vto.setEnrollmentOfficeId(to.getEnrollmentOffice().getId());
             vto.setEnrollmentOfficeName(to.getEnrollmentOffice().getName());
         }
-        if (to.getEnrolledDate()!=null){
-            vto.setEnrolledDate((Timestamp)to.getEnrolledDate());
+        if (to.getEnrolledDate() != null) {
+            vto.setEnrolledDate((Timestamp) to.getEnrolledDate());
         }
-        if (to.getPortalEnrolledDate()!=null)
-        {
+        if (to.getPortalEnrolledDate() != null) {
             vto.setPortalEnrolledDate((Timestamp) to.getPortalEnrolledDate());
         }
-        if (to.getState()!=null){
-               vto.setCardRequestState(to.getState().name());
+        if (to.getState() != null) {
+            vto.setCardRequestState(to.getState().name());
         }
-        if (to.getType()!=null){
+        if (to.getType() != null) {
             vto.setCardType(to.getType().name());
-         }
-        if (to.getCard()!=null && to.getCard().getState()!=null)
-        vto.setCardState(to.getCard().getState().name());
+        }
+        if (to.getCard() != null && to.getCard().getState() != null)
+            vto.setCardState(to.getCard().getState().name());
         vto.setTrackingId(to.getTrackingID());
-        if (to.getRequestedAction()!=null) {
+        if (to.getRequestedAction() != null) {
             vto.setRequestedAction(to.getRequestedAction().name());
         }
         vto.setRequestOrigin(to.getOrigin().name());
-        if (to.getDeliveredOfficeId()!=null) {
+        if (to.getDeliveredOfficeId() != null) {
             vto.setDeliveredOfficeName(to.getDeliveredOfficeId().toString());
         }
-         vto.setReservationDate((Timestamp)to.getReservationDate());
+        vto.setReservationDate((Timestamp) to.getReservationDate());
 
-        if (to.getCitizen()!=null )
-        {
-            if (to.getCitizen().getCitizenInfo()!=null){
+        if (to.getCitizen() != null) {
+            if (to.getCitizen().getCitizenInfo() != null) {
                 vto.setCitizenInfo(CitizenInfoMapper.convert(to.getCitizen().getCitizenInfo()));
                 vto.setSpouses(new ArrayList<com.gam.nocr.ems.data.domain.vol.SpouseVTO>());
-                if (EmsUtil.checkListSize(to.getCitizen().getCitizenInfo().getSpouses()) ){
-                    for(SpouseTO spouse:to.getCitizen().getCitizenInfo().getSpouses()){
+                if (EmsUtil.checkListSize(to.getCitizen().getCitizenInfo().getSpouses())) {
+                    for (SpouseTO spouse : to.getCitizen().getCitizenInfo().getSpouses()) {
                         vto.getSpouses().add(SpouseMapper.convertToEmsSpouseVTO(spouse));
                     }
                 }
                 vto.setChildren(new ArrayList<com.gam.nocr.ems.data.domain.vol.ChildVTO>());
-                if (EmsUtil.checkListSize(to.getCitizen().getCitizenInfo().getChildren())){
-                    for(ChildTO child:to.getCitizen().getCitizenInfo().getChildren()){
+                if (EmsUtil.checkListSize(to.getCitizen().getCitizenInfo().getChildren())) {
+                    for (ChildTO child : to.getCitizen().getCitizenInfo().getChildren()) {
                         vto.getChildren().add(ChildMapper.convertToEmsVTO(child));
                     }
                 }
@@ -263,7 +252,7 @@ public class CardRequestMapper {
         return vto;
     }
     //hossein 8 feature end
-    
+
     public static CitizenWTO convert(CardRequestTO crq, CitizenTO ctz) throws BaseException {
         if (ctz == null) {
             throw new BaseException(MapperExceptionCode.CRM_012, MapperExceptionCode.CRM_012_MSG);
@@ -326,13 +315,13 @@ public class CardRequestMapper {
         setGeo(czi, wto);
 //        wto.setBirthCertSerial(czi.getBirthCertificateSeries());
         //wto.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
-        
-      //Anbari:Estelam getCertCerial       
-        if(czi.getBirthCertificateSeries() != null && czi.getBirthCertificateSeries().length() > 0)
-        	wto.setBirthCertSerial(czi.getBirthCertificateSeries());        
+
+        //Anbari:Estelam getCertCerial
+        if (czi.getBirthCertificateSeries() != null && czi.getBirthCertificateSeries().length() > 0)
+            wto.setBirthCertSerial(czi.getBirthCertificateSeries());
         else
-        	 wto.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
-        
+            wto.setBirthCertSerial(ConstValues.DEFAULT_CERT_SERIAL);
+
         wto.setFatherFirstNameFA(czi.getFatherFirstNamePersian());
         wto.setFatherFirstNameEN(czi.getFatherFirstNameEnglish());
         wto.setFatherFatherName(czi.getFatherFatherName());//25
@@ -343,14 +332,14 @@ public class CardRequestMapper {
         }
         wto.setFatherBirthCertId(czi.getFatherBirthCertificateId());
 //        wto.setFatherBirthCertSeries(czi.getFatherBirthCertificateSeries());//30
-       // wto.setFatherBirthCertSeries(ConstValues.DEFAULT_CERT_SERIAL);//30
-        
+        // wto.setFatherBirthCertSeries(ConstValues.DEFAULT_CERT_SERIAL);//30
+
         //Anbari:Estelam getFather BirthCertCerial
-        if(czi.getFatherBirthCertificateSeries() != null && czi.getFatherBirthCertificateSeries().length() > 0)
-        	wto.setFatherBirthCertSeries(czi.getBirthCertificateSeries());        
+        if (czi.getFatherBirthCertificateSeries() != null && czi.getFatherBirthCertificateSeries().length() > 0)
+            wto.setFatherBirthCertSeries(czi.getBirthCertificateSeries());
         else
-        	 wto.setFatherBirthCertSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        
+            wto.setFatherBirthCertSeries(ConstValues.DEFAULT_CERT_SERIAL);
+
         wto.setMotherFirstNameFA(czi.getMotherFirstNamePersian());
         wto.setMotherSureName(czi.getMotherSurname());
         wto.setMotherNationalId(czi.getMotherNationalID());
@@ -360,13 +349,13 @@ public class CardRequestMapper {
         wto.setMotherFatherName(czi.getMotherFatherName());//35
         wto.setMotherBirthCertId(czi.getMotherBirthCertificateId());
         //wto.setMotherBirthCertSeries(czi.getMotherBirthCertificateSeries());
-        
+
         //Anbari:Estelam getMother BirthCertCerial
-        if(czi.getMotherBirthCertificateSeries() != null && czi.getMotherBirthCertificateSeries().length() > 0)
-        	wto.setMotherBirthCertSeries(czi.getMotherBirthCertificateSeries());        
+        if (czi.getMotherBirthCertificateSeries() != null && czi.getMotherBirthCertificateSeries().length() > 0)
+            wto.setMotherBirthCertSeries(czi.getMotherBirthCertificateSeries());
         else
-        	 wto.setMotherBirthCertSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        
+            wto.setMotherBirthCertSeries(ConstValues.DEFAULT_CERT_SERIAL);
+
         wto.setAddress(czi.getAddress());
         wto.setPhone(czi.getPhone());
         wto.setMobile(czi.getMobile());
@@ -662,11 +651,11 @@ public class CardRequestMapper {
         return citizenWTO;
     }
 
-    
+
     //Anbari convert citizenWRO to cardRequestTO (for preRegistration VIP in CCOS)
-   	public static CardRequestTO convertVIPRequest(CitizenWTO wto) throws BaseException, DateFormatException {
-   		
-   		if (wto == null) {
+    public static CardRequestTO convertVIPRequest(CitizenWTO wto) throws BaseException, DateFormatException {
+
+        if (wto == null) {
             throw new BaseException(MapperExceptionCode.CRM_015, MapperExceptionCode.CRM_008_MSG);
         }
 
@@ -681,7 +670,7 @@ public class CardRequestMapper {
         ctz.setSurnamePersian(ConstValues.DEFAULT_NAMES_FA);
         ctz.setNationalID(wto.getNationalId());
 
-        
+
         czi.setFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);
         czi.setSurnameEnglish(ConstValues.DEFAULT_NAMES_EN);
         czi.setBirthCertificateId(ConstValues.DEFAULT_NUMBER);
@@ -696,78 +685,68 @@ public class CardRequestMapper {
         }
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
-        }else {
-            try {
-                //set default religion as Islam:
-                ProfileManager pm = ProfileHelper.getProfileManager();
-                Long religionIdAsIslam = Long.valueOf((String) pm.getProfile(ProfileKeyName.KEY_RELIGION_AS_ISLAM, true, null, null));
-                ReligionTO religionTO = new ReligionTO();
-                religionTO.setId(religionIdAsIslam);
-                czi.setReligion(religionTO);
-            } catch (ProfileException e) {
-                e.printStackTrace();
-            }
+        } else {
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(ConstValues.DEFAULT_NAMES_EN);
         czi.setBirthCertificateIssuancePlace(wto.getBirthCertPrvName());
-        
+
         czi.setAddress(wto.getAddress());
         czi.setPhone(EmsUtil.checkString(wto.getPhone()) ? wto.getPhone() : ConstValues.DEFAULT_NUMBER);//40
         czi.setMobile(wto.getMobile());
-      
+
         //************************* For 5 Layer Location
-        if(wto.getUserCityType() == null)
-        	
-        	throw new BaseException(MapperExceptionCode.CRM_018, MapperExceptionCode.CRM_018_MSG);
-        if(wto.getUserCityType().equals("2")) //is vip
+        if (wto.getUserCityType() == null)
+
+            throw new BaseException(MapperExceptionCode.CRM_018, MapperExceptionCode.CRM_018_MSG);
+        if (wto.getUserCityType().equals("2")) //is vip
         {
-        	czi.setLiving(null);
-        	czi.setLivingCity(null);
-        }
-        else {
-        	
-        	if (wto.getLivingPrvId() == null || wto.getLivingPrvId()==0) 
-        		
-        		throw new BaseException(MapperExceptionCode.CRM_017, MapperExceptionCode.CRM_017_MSG);
-        	
-        	czi.setLiving(new LocationTO(wto.getLivingPrvId()));
-        	
-        	// 1 -----> shahr
-        	// 0 ------> dehestan
-        	if (wto.getUserCityType().equals("1")) {
-        		if (wto.getLivingCityId() == null || wto.getLivingCityId()==0 ) 
-        			
-        			throw new BaseException(MapperExceptionCode.CRM_019, MapperExceptionCode.CRM_019_MSG);
-        		czi.setLivingCity(new LocationTO(wto.getLivingCityId()));
-        		
-        		
-        	} else if (wto.getUserCityType().equals("0")) {
-        		if (wto.getLivingVillageId() == null || wto.getLivingVillageId()==0) 
-        			
-        			throw new BaseException(MapperExceptionCode.CRM_020, MapperExceptionCode.CRM_020_MSG);
-        		czi.setLivingCity(new LocationTO(wto.getLivingVillageId()));
-        		
-        	}
+            czi.setLiving(null);
+            czi.setLivingCity(null);
+        } else {
+
+            if (wto.getLivingPrvId() == null || wto.getLivingPrvId() == 0)
+
+                throw new BaseException(MapperExceptionCode.CRM_017, MapperExceptionCode.CRM_017_MSG);
+
+            czi.setLiving(new LocationTO(wto.getLivingPrvId()));
+
+            // 1 -----> shahr
+            // 0 ------> dehestan
+            if (wto.getUserCityType().equals("1")) {
+                if (wto.getLivingCityId() == null || wto.getLivingCityId() == 0)
+
+                    throw new BaseException(MapperExceptionCode.CRM_019, MapperExceptionCode.CRM_019_MSG);
+                czi.setLivingCity(new LocationTO(wto.getLivingCityId()));
+
+
+            } else if (wto.getUserCityType().equals("0")) {
+                if (wto.getLivingVillageId() == null || wto.getLivingVillageId() == 0)
+
+                    throw new BaseException(MapperExceptionCode.CRM_020, MapperExceptionCode.CRM_020_MSG);
+                czi.setLivingCity(new LocationTO(wto.getLivingVillageId()));
+
+            }
         }
         //****************************   
         czi.setBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        
+
         //father
         czi.setFatherFirstNamePersian(EmsUtil.checkString(wto.getFatherFirstNameFA()) ? wto.getFatherFirstNameFA() : ConstValues.DEFAULT_NAMES_FA);
         czi.setFatherFirstNameEnglish(ConstValues.DEFAULT_NAMES_EN);//25
         czi.setFatherFatherName(ConstValues.DEFAULT_NAMES_FA);
         czi.setFatherSurname(ConstValues.DEFAULT_NAMES_FA);
         czi.setFatherNationalID(EmsUtil.checkString(wto.getFatherNationalId()) ? wto.getFatherNationalId() : ConstValues.DEFAULT_NID);
-        czi.setFatherBirthDateSolar(DateUtil.convert(ConstValues.DEFAULT_DATE,DateUtil.JALALI));
+        czi.setFatherBirthDateSolar(DateUtil.convert(ConstValues.DEFAULT_DATE, DateUtil.JALALI));
         czi.setFatherBirthCertificateId(EmsUtil.checkString(wto.getFatherBirthCertId()) ? wto.getFatherBirthCertId() : ConstValues.DEFAULT_NUMBER);//30
         czi.setFatherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
-        
+
         //mother
         czi.setMotherFirstNamePersian(wto.getMotherFirstNameFA());
         czi.setMotherSurname(ConstValues.DEFAULT_NAMES_FA);
         czi.setMotherNationalID(EmsUtil.checkString(wto.getMotherNationalId()) ? wto.getMotherNationalId() : ConstValues.DEFAULT_NID);
-        czi.setMotherBirthDateSolar(DateUtil.convert(ConstValues.DEFAULT_DATE,DateUtil.JALALI));//35
+        czi.setMotherBirthDateSolar(DateUtil.convert(ConstValues.DEFAULT_DATE, DateUtil.JALALI));//35
         czi.setMotherFatherName(ConstValues.DEFAULT_NAMES_FA);
         czi.setMotherBirthCertificateId(EmsUtil.checkString(wto.getMotherBirthCertId()) ? wto.getMotherBirthCertId() : ConstValues.DEFAULT_NUMBER);
         czi.setMotherBirthCertificateSeries(ConstValues.DEFAULT_CERT_SERIAL);
@@ -787,58 +766,57 @@ public class CardRequestMapper {
                 czi.getChildren().add(chi);
             }
         }
-        
+
         ctz.setCitizenInfo(czi);
         czi.setCitizen(ctz);
         crq.setCitizen(ctz);
-        
+
         return crq;
-   	}
-/**
- * this method is used to set geo serial base on living city
- * @author ganjyar
- * @param czi
- * @param wto
- */
-	private static void setGeo(CitizenInfoTO czi, CitizenWTO wto) {
-		//ostan
+    }
+
+    /**
+     * this method is used to set geo serial base on living city
+     *
+     * @param czi
+     * @param wto
+     * @author ganjyar
+     */
+    private static void setGeo(CitizenInfoTO czi, CitizenWTO wto) {
+        //ostan
         if (czi.getLiving() != null) {
             wto.setLivingPrvName(czi.getLiving().getName());
             wto.setLivingPrvId(czi.getLiving().getId());
         }
-        if(czi.getLivingCity()!=null){
-       //shahrestan 
-        String countyName = null;
-        if (czi.getLivingCity().getCounty() != null) {
-        	countyName = czi.getLivingCity().getCounty().getName();
-        	wto.setLivingStateName(countyName);//20
-        	wto.setLivingStateId(czi.getLivingCity().getCounty().getId());
-        }
-        //bakhsh
-        if (czi.getLivingCity().getTownship() != null) {
-        	wto.setLivingSectorName(czi.getLivingCity().getTownship().getName());
-        	wto.setLivingSectorId(czi.getLivingCity().getTownship().getId());
-        }
-      
-        	// 1 -----> shahr
+        if (czi.getLivingCity() != null) {
+            //shahrestan
+            String countyName = null;
+            if (czi.getLivingCity().getCounty() != null) {
+                countyName = czi.getLivingCity().getCounty().getName();
+                wto.setLivingStateName(countyName);//20
+                wto.setLivingStateId(czi.getLivingCity().getCounty().getId());
+            }
+            //bakhsh
+            if (czi.getLivingCity().getTownship() != null) {
+                wto.setLivingSectorName(czi.getLivingCity().getTownship().getName());
+                wto.setLivingSectorId(czi.getLivingCity().getTownship().getId());
+            }
+
+            // 1 -----> shahr
             // 0 ------> dehestan
-        	if( czi.getLivingCity().getType().equals("1"))
-        	{
-        		//shahr
-        		wto.setLivingCityName(czi.getLivingCity().getName());
-        		wto.setLivingCityId(czi.getLivingCity().getId());
-        		wto.setUserCityType("1");
-        	}
-        	else if( czi.getLivingCity().getType().equals("2"))
-        	{
-        		//dehestan
-        		wto.setLivingCityName(czi.getLivingCity().getDistrict().getName());//20
-        		wto.setLivingCityId(czi.getLivingCity().getDistrict().getId());
-        		//rusta
-        		wto.setLivingVillageName(czi.getLivingCity().getName());
-        		wto.setLivingVillageId(czi.getLivingCity().getId());
-        		wto.setUserCityType("0");
-        	}
+            if (czi.getLivingCity().getType().equals("1")) {
+                //shahr
+                wto.setLivingCityName(czi.getLivingCity().getName());
+                wto.setLivingCityId(czi.getLivingCity().getId());
+                wto.setUserCityType("1");
+            } else if (czi.getLivingCity().getType().equals("2")) {
+                //dehestan
+                wto.setLivingCityName(czi.getLivingCity().getDistrict().getName());//20
+                wto.setLivingCityId(czi.getLivingCity().getDistrict().getId());
+                //rusta
+                wto.setLivingVillageName(czi.getLivingCity().getName());
+                wto.setLivingVillageId(czi.getLivingCity().getId());
+                wto.setUserCityType("0");
+            }
 
         }
     }

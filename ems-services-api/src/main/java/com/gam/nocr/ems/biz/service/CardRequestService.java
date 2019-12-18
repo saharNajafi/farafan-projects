@@ -6,7 +6,6 @@ import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.CitizenTO;
-import com.gam.nocr.ems.data.domain.RegistrationPaymentTO;
 import com.gam.nocr.ems.data.domain.vol.AccessProductionVTO;
 import com.gam.nocr.ems.data.domain.vol.CCOSCriteria;
 import com.gam.nocr.ems.data.domain.vol.CardRequestReceiptVTO;
@@ -80,7 +79,7 @@ public interface CardRequestService extends Service {
 
 	public CardRequestVTO findCardRequestById(String cardRequestId) throws BaseException;
 
-	public void updateCardRequestPriority(String cardRequestId, String priority) throws BaseException;
+	public void updateCardRequestPriority(String cardRequestId, String oldPriority,String newPriority) throws BaseException;
 
 	public boolean hasChangePriorityAccess() throws BaseException;
 
@@ -130,12 +129,14 @@ public interface CardRequestService extends Service {
 
 	CardRequestTO findByCitizenId(CitizenTO citizenTO) throws BaseException;
 
-	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException;
+	Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type, Long crqId) throws BaseException;
 
 	CardRequestReceiptVTO printRegistrationReceipt(long cardRequestId) throws BaseException;
 
      void createHistoryOfReceipt(Long cardRequestId) throws BaseException;
 
 	String generateNewTrackingId() throws BaseException ;
+
+	CardRequestTO loadById(Long cardRequestId) throws BaseException;
 
 }

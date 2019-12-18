@@ -2,15 +2,19 @@ package com.gam.nocr.ems.web.action;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
+import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
 import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
+import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.WebExceptionCode;
+import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestReceiptVTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.CcosBundle;
+import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.JasperUtil;
 import gampooya.tools.security.BusinessSecurityException;
 import org.slf4j.Logger;
@@ -60,12 +64,22 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     private String priority;
 
+    private String oldPriority;
+
     public String getPriority() {
         return priority;
     }
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getOldPriority() {
+        return oldPriority;
+    }
+
+    public void setOldPriority(String oldPriority) {
+        this.oldPriority = oldPriority;
     }
 
     @Override
@@ -152,7 +166,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
         try {
 
             new CardRequestDelegator().updateCardRequestPriority(
-                    getUserProfile(), cardRequestId, priority);
+                    getUserProfile(), cardRequestId, oldPriority, priority);
 
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
@@ -162,7 +176,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
             throw new ActionException(WebExceptionCode.CRA_010,
                     WebExceptionCode.GLB_003_MSG, e);
         }
-
     }
 
     /**

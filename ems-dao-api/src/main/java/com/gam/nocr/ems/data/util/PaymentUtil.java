@@ -1,23 +1,19 @@
 package com.gam.nocr.ems.data.util;
 
 import com.gam.commons.core.BaseException;
-import com.gam.commons.profile.ProfileException;
-import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.config.*;
+import com.gam.nocr.ems.config.ConstValues;
+import com.gam.nocr.ems.config.MapperExceptionCode;
+import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.PaymentWTO;
 import com.gam.nocr.ems.data.domain.ws.RegistrationPaymentWTO;
 import com.gam.nocr.ems.data.domain.ws.SinglePreRegistrationWTO;
-import com.gam.nocr.ems.data.enums.CardRequestOrigin;
-import com.gam.nocr.ems.data.enums.GenderEnum;
-import com.gam.nocr.ems.data.enums.IPGProviderEnum;
-import com.gam.nocr.ems.data.enums.PaymentTypeEnum;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NationalIDUtil;
 import gampooya.tools.date.DateFormatException;
-import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -85,16 +81,7 @@ public class PaymentUtil {
             if (singlePreRegistrationWTO.getReligion() != null && singlePreRegistrationWTO.getReligion().getCode() != null) {
                 czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
             } else {
-                try {
-                    //set default religion as Islam:
-                    ProfileManager pm = ProfileHelper.getProfileManager();
-                    Long religionIdAsIslam = Long.valueOf((String) pm.getProfile(ProfileKeyName.KEY_RELIGION_AS_ISLAM, true, null, null));
-                    ReligionTO religionTO = new ReligionTO();
-                    religionTO.setId(religionIdAsIslam);
-                    czi.setReligion(religionTO);
-                } catch (ProfileException e) {
-                    e.printStackTrace();
-                }
+                czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
             }
 
 

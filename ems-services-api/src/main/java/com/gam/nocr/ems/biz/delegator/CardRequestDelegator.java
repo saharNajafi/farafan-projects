@@ -73,6 +73,10 @@ public class CardRequestDelegator implements Delegator {
         return getService(null).findRequestCountByAction(cardRequestedAction);
     }
 
+    public CardRequestTO loadById(Long cardRequestId) throws BaseException {
+        return getService(null).loadById(cardRequestId);
+    }
+
     public void doCardRequestRepealActionBySystem(Integer from)
             throws BaseException {
         List<Long> requestIds = getService(null).repealCardRequest(from);
@@ -198,14 +202,16 @@ public class CardRequestDelegator implements Delegator {
     /**
      * @param userProfile
      * @param cardRequestId
-     * @param priority
+     * @param newPriority
      * @throws BaseException
      * @author ganjyar
      */
     public void updateCardRequestPriority(UserProfileTO userProfile,
-                                          String cardRequestId, String priority) throws BaseException {
-        getService(userProfile).updateCardRequestPriority(cardRequestId,
-                priority);
+                                          String cardRequestId, String oldPriority, String newPriority) throws BaseException {
+        getService(userProfile).updateCardRequestPriority(
+                cardRequestId,
+                oldPriority,
+                newPriority);
     }
 
     public boolean hasChangePriorityAccess(UserProfileTO userProfile)
