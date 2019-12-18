@@ -4817,7 +4817,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                             "from CardRequestTO crq " +
                             "where crq.citizen.nationalID=:NATIONALID " +
                             "and crq.type=:TYPE " +
-                            "and (:ID is NULL or crq.id != :ID) ");
+                            "and crq.id != :ID");
             query.setParameter("NATIONALID", nationalId);
             query.setParameter("TYPE", cardRequestType);
             query.setParameter("ID", crqId);
