@@ -2308,10 +2308,10 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
         return cardRequestService;
     }
 
-    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type) throws BaseException {
+    public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType type, Long crqId) throws BaseException {
         Long replicaTypeCount = null;
         try {
-            replicaTypeCount = getCardRequestDAO().countCardRequestByNationalIdAndType(nationalId, type);
+            replicaTypeCount = getCardRequestDAO().countCardRequestByNationalIdAndType(nationalId, type, crqId);
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.CRE_074, BizExceptionCode.CRE_074_MSG);
         }

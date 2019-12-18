@@ -22,7 +22,6 @@ import com.gam.nocr.ems.config.*;
 import com.gam.nocr.ems.data.dao.*;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.BirthCertIssPlaceVTO;
-import com.gam.nocr.ems.data.domain.vol.CardInfoVTO;
 import com.gam.nocr.ems.data.domain.vol.PersonEnquiryVTO;
 import com.gam.nocr.ems.data.domain.vol.RegistrationVIPVTO;
 import com.gam.nocr.ems.data.domain.ws.*;
@@ -1050,7 +1049,8 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFINED);
             String nationalId = newCardRequest.getCitizen().getNationalID();
             Map<String, String> registrationPaymentResult =
-                    getRegistrationPaymentService().getPaymentAmountAndPaymentCode(newCardRequest.getType(), nationalId);
+                    getRegistrationPaymentService().getPaymentAmountAndPaymentCode(
+                            newCardRequest.getType(), nationalId, newCardRequest.getId());
             registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             getRegistrationPaymentDAO().create(registrationPaymentTO);
