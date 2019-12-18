@@ -31,13 +31,13 @@ public class WorkstationInfoTO extends ExtEntityTO {
     private Long id;
     private String cpuInfo;
     private String osVersion;
-    private Short hasDotnetFramwork45;
+    private String hasDotnetFramwork45;
     private String memoryCapacity;
     private String ccosVersion;
     private String ipAddress;
     private String username;
     private String additionalInfoAsJson;
-    private short gatherState;
+    private Boolean gatherState;
     private Date lastModifiedDate;
     private WorkstationTO workstation;
 
@@ -121,11 +121,11 @@ public class WorkstationInfoTO extends ExtEntityTO {
 
     @NotNull
     @Column(name = "WSI_HAS_DOTNET_FRAMWORK45")
-    public Short getHasDotnetFramwork45() {
+    public String getHasDotnetFramwork45() {
         return hasDotnetFramwork45;
     }
 
-    public void setHasDotnetFramwork45(Short hasDotnetFramwork45) {
+    public void setHasDotnetFramwork45(String hasDotnetFramwork45) {
         this.hasDotnetFramwork45 = hasDotnetFramwork45;
     }
 
@@ -153,11 +153,11 @@ public class WorkstationInfoTO extends ExtEntityTO {
     @NotNull
     @Basic(optional = false)
     @Column(name = "WSI_GATHER_STATE")
-    public short getGatherState() {
+    public Boolean getGatherState() {
         return gatherState;
     }
 
-    public void setGatherState(short gatherState) {
+    public void setGatherState(Boolean gatherState) {
         this.gatherState = gatherState;
     }
 
