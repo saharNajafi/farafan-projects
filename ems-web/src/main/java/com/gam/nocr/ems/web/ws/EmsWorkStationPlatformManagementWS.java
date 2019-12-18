@@ -38,6 +38,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
     private WorkstationInfoDelegator workstationInfoDelegator = new WorkstationInfoDelegator();
     private WorkstationPluginsDelegator workstationPluginsDelegator = new WorkstationPluginsDelegator();
     private static final Logger workstationInfoLogger = BaseLog.getLogger("WorkstationInfoLogger");
+    private static final String INVALID_PARAM = "unknown";
 
     @WebMethod
     public boolean isWorkstationInfoRequired(
@@ -52,7 +53,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             workstationInfoLogger.error(e.getMessage() + ":" + e.getMessage(), e);
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(
                     e.getExceptionCode()), e);
-        }catch (Exception e){
+        } catch (Exception e) {
             workstationInfoLogger.error("Unhandled Exception In Calling Web service :", e);
             throw new InternalException(
                     WebExceptionCode.WST_009_MSG, new EMSWebServiceFault(WebExceptionCode.WST_009), e);
@@ -72,7 +73,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             workstationInfoDelegator.registerWorkstationInfo(
                     userProfileTO, workstationCode, workstationInfoTO);
         } catch (BaseException e) {
-            workstationInfoLogger.error(e.getExceptionCode() + ":" + e.getMessage(),e);
+            workstationInfoLogger.error(e.getExceptionCode() + ":" + e.getMessage(), e);
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(
                     e.getExceptionCode()), e);
         } catch (Exception e) {
@@ -107,8 +108,7 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
             workstationInfoLogger.error(e.getExceptionCode() + ":" + e.getMessage(), e);
             throw new InternalException(e.getMessage(), new EMSWebServiceFault(
                     e.getExceptionCode()), e);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             workstationInfoLogger.error("Unhandled Exception In Calling Web service :", e);
             throw new InternalException(
                     WebExceptionCode.WST_011_MSG, new EMSWebServiceFault(WebExceptionCode.WST_011), e);
@@ -120,49 +120,56 @@ public class EmsWorkStationPlatformManagementWS extends EMSWS {
 
         //1-cpu info==================================================================================================================
         if (!EmsUtil.checkString(workstationInfoWTO.getCpuInfo())) {
-            throw new InternalException(WebExceptionCode.WST_018_MSG, new EMSWebServiceFault(WebExceptionCode.WST_018));
+            //throw new InternalException(WebExceptionCode.WST_018_MSG, new EMSWebServiceFault(WebExceptionCode.WST_018));
+            workstationInfoTO.setCpuInfo(INVALID_PARAM);
         } else {
             workstationInfoTO.setCpuInfo(workstationInfoWTO.getCpuInfo());
         }
 
         //2-.Operation system version====================================================================================================
         if (!EmsUtil.checkString(workstationInfoWTO.getOsVersion())) {
-            throw new InternalException(WebExceptionCode.WST_012_MSG, new EMSWebServiceFault(WebExceptionCode.WST_012));
+            //throw new InternalException(WebExceptionCode.WST_012_MSG, new EMSWebServiceFault(WebExceptionCode.WST_012));
+            workstationInfoTO.setOsVersion(INVALID_PARAM);
         } else {
             workstationInfoTO.setOsVersion(workstationInfoWTO.getOsVersion());
         }
 
         //3-.net framework============================================================================================================
         if (workstationInfoWTO.getHasDotnetFramwork45() == null) {
-            throw new InternalException(WebExceptionCode.WST_019_MSG, new EMSWebServiceFault(WebExceptionCode.WST_019));
+            //throw new InternalException(WebExceptionCode.WST_019_MSG, new EMSWebServiceFault(WebExceptionCode.WST_019));
+            workstationInfoTO.setHasDotnetFramwork45((short) 0);
         } else {
             workstationInfoTO.setHasDotnetFramwork45(Short.parseShort(String.valueOf(((workstationInfoWTO.getHasDotnetFramwork45()) ? 1 : 0))));
         }
 
         //4-memory capacity===================================================
         if (!EmsUtil.checkString(workstationInfoWTO.getMemoryCapacity())) {
-            throw new InternalException(WebExceptionCode.WST_016_MSG, new EMSWebServiceFault(WebExceptionCode.WST_016));
+            //throw new InternalException(WebExceptionCode.WST_016_MSG, new EMSWebServiceFault(WebExceptionCode.WST_016));
+            workstationInfoTO.setMemoryCapacity(INVALID_PARAM);
         } else {
             workstationInfoTO.setMemoryCapacity(workstationInfoWTO.getMemoryCapacity().trim());
         }
 
         //5-ccos version======================================
         if (!EmsUtil.checkString(workstationInfoWTO.getCcosVersion())) {
-            throw new InternalException(WebExceptionCode.WST_017_MSG, new EMSWebServiceFault(WebExceptionCode.WST_017));
+            //throw new InternalException(WebExceptionCode.WST_017_MSG, new EMSWebServiceFault(WebExceptionCode.WST_017));
+            workstationInfoTO.setCcosVersion(INVALID_PARAM);
         } else {
             workstationInfoTO.setCcosVersion(workstationInfoWTO.getCcosVersion().trim());
         }
 
         //5-ip addresses=============================================================================================================
         if (!EmsUtil.checkString(workstationInfoWTO.getIpAddress()) || !Utils.isIPValid(workstationInfoWTO.getIpAddress())) {
-            throw new InternalException(WebExceptionCode.WST_008_MSG, new EMSWebServiceFault(WebExceptionCode.WST_008));
+            //throw new InternalException(WebExceptionCode.WST_008_MSG, new EMSWebServiceFault(WebExceptionCode.WST_008));
+            workstationInfoTO.setIpAddress(INVALID_PARAM);
         } else {
             workstationInfoTO.setIpAddress(String.valueOf(workstationInfoWTO.getIpAddress()));
         }
 
         //6-username==================================================================================================================
         if (!EmsUtil.checkString(workstationInfoWTO.getUsername())) {
-            throw new InternalException(WebExceptionCode.WST_013_MSG, new EMSWebServiceFault(WebExceptionCode.WST_013));
+            //throw new InternalException(WebExceptionCode.WST_013_MSG, new EMSWebServiceFault(WebExceptionCode.WST_013));
+            workstationInfoTO.setUsername(INVALID_PARAM);
         } else {
             workstationInfoTO.setUsername(workstationInfoWTO.getUsername());
         }
