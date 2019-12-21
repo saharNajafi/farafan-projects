@@ -2413,8 +2413,8 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
 
 
     //IMS:Anbari : COMMENTED
-	/*
-	@Override
+    /*
+    @Override
 	public List<Long> findAfisResultRequestsCountByState(CardRequestState cardRequestState,Integer fetchLimit)
 			throws BaseException {
 		try {
@@ -2722,7 +2722,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
             queryBuffer.append(" order by nvl(cr.crq_enroll_office_id,-1), cr.crq_id ");
 
 /*			if (EmsUtil.checkString(criteria.getOrderBy())) {
-				String orderBy = criteria.getOrderBy();
+                String orderBy = criteria.getOrderBy();
 				String sortKey = "cr.crq_id";
 				String dir = "asc";
 
@@ -4812,15 +4812,20 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
     public Long countCardRequestByNationalIdAndType(String nationalId, CardRequestType cardRequestType, Long crqId) throws BaseException {
         Number replicaTypeCount;
         try {
-            Query query = em.createQuery(
-                    "select count(*) " +
-                            "from CardRequestTO crq " +
-                            "where crq.citizen.nationalID=:NATIONALID " +
-                            "and crq.type=:TYPE " +
-                            "and crq.id != :ID");
+
+            String stringQuery = "select count(*) " +
+                    "from CardRequestTO crq " +
+                    "where crq.citizen.nationalID=:NATIONALID " +
+                    "and crq.type=:TYPE ";
+            if (crqId != null) {
+                stringQuery += "and crq.id != :ID";
+            }
+            Query query = em.createQuery(stringQuery);
             query.setParameter("NATIONALID", nationalId);
             query.setParameter("TYPE", cardRequestType);
-            query.setParameter("ID", crqId);
+            if(crqId != null) {
+                query.setParameter("ID", crqId);
+            }
             replicaTypeCount = (Number) query.getSingleResult();
             return replicaTypeCount == null ? 0L : replicaTypeCount.longValue();
         } catch (Exception e) {
