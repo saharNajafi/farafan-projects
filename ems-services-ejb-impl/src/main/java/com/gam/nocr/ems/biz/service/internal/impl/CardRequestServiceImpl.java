@@ -871,7 +871,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @author ganjyar
      */
     @Override
-    @CustomLoggable(logAction = "UPDATE", logEntityName = "CHANGE_PRIORITY")
+    @CustomLoggable(logAction = "CHANGE_PRIORITY", logEntityName = "CARD_REQUEST")
     public void updateCardRequestPriority(
             String cardRequestId,
             String oldPriority,

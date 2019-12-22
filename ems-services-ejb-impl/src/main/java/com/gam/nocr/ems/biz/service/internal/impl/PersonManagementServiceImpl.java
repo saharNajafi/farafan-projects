@@ -100,7 +100,6 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Permissions(value = "ems_editPerson || ems_addPerson")
     @BizLoggable(logAction = "INSERT", logEntityName = "PERSON")
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    @CustomLoggable(logAction = "INSERT", logEntityName = "PERSON")
     public Long save(PersonVTO to) throws BaseException {
         if (to == null)
             throw new ServiceException(BizExceptionCode.PSI_002, BizExceptionCode.PSI_002_MSG);
@@ -193,7 +192,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
 
     @Override
-    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
+    @CustomLoggable(logAction = "CHANGE_PASSWORD",logEntityName = "PERSON")
     public void needChangePassword(Long userId) {
     }
 

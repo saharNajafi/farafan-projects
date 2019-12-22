@@ -47,7 +47,7 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.*;
 public class UserManagementServiceImpl extends EMSAbstractService implements UserManagementServiceLocal, UserManagementServiceRemote , PersonPasswordChange {
 
     @Override
-    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
+    @CustomLoggable(logAction = "CHANGE_PASSWORD",logEntityName = "PERSON")
     public void needChangePassword(Long userId) {
     }
 
