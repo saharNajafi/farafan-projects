@@ -2974,6 +2974,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_013 = "EMS_S_REG_013";
     public static final String RGP_014 = "EMS_S_REG_014";
     public static final String RGP_015 = "EMS_S_REG_015";
+    public static final String RGP_016 = "EMS_S_REG_016";
+    public static final String RGP_017 = "EMS_S_REG_017";
     public static final String RGP_002_MSG = "an error occurred on get Payment Amount";
     public static final String RGP_003_MSG = "an error occurred on bankInquiry operation";
     public static final String RGP_004_MSG = "an error occurred on registerTargetBank operation";
@@ -2981,6 +2983,8 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_006_MSG = "paidBank is undefined";
     public static final String RGP_014_MSG = "an error occurred on savePaymentInfo operation";
     public static final String RGP_015_MSG = "PreRegistration Payment not found for national id: {0}";
+    public static final String RGP_016_MSG = "next value for generating payment code is null";
+    public static final String RGP_017_MSG = "error in generating payment code";
 
     //com.gam.nocr.ems.biz.service.CardRequestHistoryServiceImpl.java
     public static final String CRHS_001 = "EMS_S_CRH_001";

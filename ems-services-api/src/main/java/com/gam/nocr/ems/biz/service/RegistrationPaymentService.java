@@ -30,4 +30,6 @@ public interface RegistrationPaymentService extends Service {
     Boolean bankInquiry(String nationalId) throws BaseException;
 
     void registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException;
+
+    String generateNewPaymentCode() throws BaseException;
 }

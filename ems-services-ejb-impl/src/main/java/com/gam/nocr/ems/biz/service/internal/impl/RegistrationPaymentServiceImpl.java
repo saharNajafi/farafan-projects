@@ -1,6 +1,7 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
 import com.gam.commons.core.BaseException;
+import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.biz.service.factory.ServiceFactory;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
@@ -26,6 +27,7 @@ import com.gam.nocr.ems.data.enums.IPGProviderEnum;
 import com.gam.nocr.ems.data.enums.PaymentTypeEnum;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.slf4j.Logger;
 
 import javax.ejb.*;
 
@@ -47,6 +49,8 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 @Remote(RegistrationPaymentServiceRemote.class)
 public class RegistrationPaymentServiceImpl extends EMSAbstractService
         implements RegistrationPaymentServiceLocal, RegistrationPaymentServiceRemote {
+
+    private static final Logger logger = BaseLog.getLogger("RegistrationPaymentCodeServiceLogger");
 
     private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_CARD = "200000";
     private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA = "400000";
@@ -378,4 +382,42 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         }
         return bpiInquiryService;
     }
+
+    @Override
+    public String generateNewPaymentCode() throws BaseException {
+        String nextValue = null;
+        try {
+            nextValue = getRegistrationPaymentDAO().nextValueOfRegistrationPaymentCode();
+        } catch (BaseException e) {
+            logger.error("Error Occurred in get next value of sequence of payment code:", e);
+            throw e;
+        }
+
+        if (nextValue == null) {
+            logger.error("Error Occurred in get next value of sequence of payment code. NextValue is null. ");
+            throw new ServiceException(
+                    BizExceptionCode.RGP_016,
+                    BizExceptionCode.RGP_016_MSG);
+        }
+
+        try {
+            char[] charArray = nextValue.toCharArray();
+            int sumOfNumber = 0;
+            for (int i = 0; i < charArray.length; i++) {
+                sumOfNumber += Character.getNumericValue(charArray[i]);
+            }
+            long mod = sumOfNumber % 10;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(nextValue).append(String.valueOf(mod));
+            return stringBuilder.toString();
+        } catch (Exception e) {
+            logger.error("Error Occurred in generating payment code:", e);
+            throw new ServiceException(
+                    BizExceptionCode.RGP_017,
+                    BizExceptionCode.RGP_017_MSG,
+                    e);
+        }
+    }
+
 }

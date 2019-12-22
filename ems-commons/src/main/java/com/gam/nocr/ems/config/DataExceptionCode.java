@@ -1118,9 +1118,11 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RGP_001 = "EMS_D_RGP_001";
     public static final String RGP_002 = "EMS_D_RGP_002";
     public static final String RGP_003 = "EMS_D_RGP_003";
+    public static final String RGP_004 = "EMS_D_RGP_004";
     public static final String RGP_001_MSG = "the findByCitizenId operation could not be executed";
     public static final String RGP_002_MSG = "unable to to save registrationPayment";
     public static final String RGP_003_MSG = "unable to to findLastCardRequestPaymentByNationalId";
+    public static final String RGP_004_MSG = "an error occur in get next value for generating payment code from database sequence";
 
     //com.gam.nocr.ems.util.CrsChecker.java
     public static final String REG_007 = "EMS_D_REG_07";

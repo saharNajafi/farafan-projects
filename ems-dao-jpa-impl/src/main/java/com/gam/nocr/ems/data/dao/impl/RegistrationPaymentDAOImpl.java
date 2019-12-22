@@ -68,5 +68,15 @@ public class RegistrationPaymentDAOImpl extends EmsBaseDAOImpl<RegistrationPayme
         return !registrationPaymentTO.isEmpty() ? registrationPaymentTO.get(0) : null;
     }
 
+    @Override
+    public String nextValueOfRegistrationPaymentCode() throws BaseException {
+        try {
+            return em.createNativeQuery("SELECT SEQ_EMS_REG_PAYMENT_CODE.NEXTVAL FROM DUAL").getSingleResult().toString();
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.RGP_004,
+                    DataExceptionCode.RGP_004_MSG, e);
+        }
+    }
+
 
 }

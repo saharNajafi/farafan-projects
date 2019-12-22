@@ -12,4 +12,6 @@ public interface RegistrationPaymentDAO extends EmsBaseDAO<RegistrationPaymentTO
     RegistrationPaymentTO findByCitizenId(Long id) throws BaseException;
 
     RegistrationPaymentTO findLastCardRequestPaymentByNationalId(String nationalId) throws DataException;
+
+    String nextValueOfRegistrationPaymentCode() throws BaseException;
 }

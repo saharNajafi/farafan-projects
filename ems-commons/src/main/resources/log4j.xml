@@ -717,6 +717,15 @@
             <param name="ConversionPattern" value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
         </layout>
     </appender>
+    
+    <appender name="RegistrationPaymentCodeServiceRollingAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${log_dir}/registrationPaymentServiceLogger.log"/>
+        <param name="MaxFileSize" value="100MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{dd MMM yyyy HH:mm:ss,SSS}]: %-5p %l %x - %m%n"/>
+        </layout>
+    </appender>
 
     <!-- ======================================================================== -->
     <!-- Logger -->
@@ -1019,6 +1028,11 @@
     <logger name="TrackingIdService" additivity="false">
         <level value="WARN"/>
         <appender-ref ref="TrackingIdRollingAppender"/>
+    </logger>
+    
+    <logger name="RegistrationPaymentCodeServiceLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="RegistrationPaymentCodeServiceRollingAppender"/>
     </logger>
 
     <root>
