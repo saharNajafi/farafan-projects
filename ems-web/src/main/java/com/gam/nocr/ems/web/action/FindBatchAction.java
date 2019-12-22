@@ -24,14 +24,6 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
 
     private Long cardRequestId;
 
-    public Long getCardRequestId() {
-        return cardRequestId;
-    }
-
-    public void setCardRequestId(Long cardRequestId) {
-        this.cardRequestId = cardRequestId;
-    }
-
     @Override
     public void setRecords(List<BatchDispatchInfoVTO> records) {
         this.records = records;
@@ -47,7 +39,7 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
     public String findBatchIdByCardRequestId() throws BaseException {
         try {
             String cmsBatch = new CardRequestDelegator().findCmsBatchByRequestId(
-                    getUserProfile(), cardRequestId);
+                    getUserProfile(), getCardRequestId());
             BatchDispatchInfoVTO batchDispatchInfoVTO = new BatchDispatchInfoVTO();
             batchDispatchInfoVTO.setCmsID(cmsBatch);
             List<BatchDispatchInfoVTO> batchDispatchInfoVTOS = new ArrayList<BatchDispatchInfoVTO>();
@@ -64,4 +56,11 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
 
     }
 
+    public Long getCardRequestId() {
+        return cardRequestId;
+    }
+
+    public void setCardRequestId(Long cardRequestId) {
+        this.cardRequestId = cardRequestId;
+    }
 }

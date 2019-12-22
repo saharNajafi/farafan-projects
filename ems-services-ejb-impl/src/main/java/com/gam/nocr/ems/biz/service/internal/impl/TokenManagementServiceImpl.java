@@ -1,20 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getServiceJNDIName;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-
-import com.gam.nocr.ems.data.enums.*;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -28,11 +13,7 @@ import com.gam.commons.core.data.dao.factory.DAOFactory;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
-import com.gam.nocr.ems.biz.service.BusinessLogService;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.GAASService;
-import com.gam.nocr.ems.biz.service.MessageService;
-import com.gam.nocr.ems.biz.service.PKIService;
+import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.DataExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
@@ -41,14 +22,23 @@ import com.gam.nocr.ems.data.dao.CertificateDAO;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.PersonDAO;
 import com.gam.nocr.ems.data.dao.PersonTokenDAO;
-import com.gam.nocr.ems.data.domain.BusinessLogTO;
-import com.gam.nocr.ems.data.domain.CertificateTO;
-import com.gam.nocr.ems.data.domain.PersonTO;
-import com.gam.nocr.ems.data.domain.PersonTokenTO;
-import com.gam.nocr.ems.data.domain.TokenTO;
+import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.vol.PersonTokenVTO;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.PersonTokenMapper;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.slf4j.Logger;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
+import static com.gam.nocr.ems.config.EMSLogicalNames.getServiceJNDIName;
 //Adldoost
 //import com.gam.nocr.ems.data.dao.NetworkTokenDAO;
 //Adldoost
@@ -611,11 +601,13 @@ public class TokenManagementServiceImpl extends EMSAbstractService implements
         newPersonTokenTO.setState(TokenState.READY_TO_ISSUE);
         newPersonTokenTO.setRequestDate(new Date());
 
+
         if (reason == ReplicaReason.DAMAGE) {
             newPersonTokenTO.setPtReason(TokenReason.REPLACED);
         } else {
             newPersonTokenTO.setPtReason(TokenReason.REPLICA);
         }
+
 
         newPersonTokenTO = getPersonTokenDAO().create(newPersonTokenTO);
         return newPersonTokenTO.getId();

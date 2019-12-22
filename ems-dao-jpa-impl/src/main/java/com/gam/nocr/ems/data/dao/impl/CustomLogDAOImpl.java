@@ -23,10 +23,11 @@ public class CustomLogDAOImpl extends EmsBaseDAOImpl<CustomLogTo> implements Cus
     }
 
     @Override
-    public void insertLog(CustomLogTo to) throws BaseException {
+    public CustomLogTo insertLog(CustomLogTo customLogTo) throws BaseException {
         try {
-            em.persist(to);
+            CustomLogTo to =  super.create(customLogTo);
             em.flush();
+            return to;
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.CST_001, DataExceptionCode.CST_001_MSG, e);
         }

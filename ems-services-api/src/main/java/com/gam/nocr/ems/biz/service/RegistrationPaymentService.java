@@ -25,7 +25,7 @@ public interface RegistrationPaymentService extends Service {
 
     RegistrationPaymentTO addRegistrationPayment(RegistrationPaymentTO registrationPaymentTO) throws BaseException;
 
-    Map getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId)throws BaseException;
+    Map getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId, Long id)throws BaseException;
 
     Boolean bankInquiry(String nationalId) throws BaseException;
 

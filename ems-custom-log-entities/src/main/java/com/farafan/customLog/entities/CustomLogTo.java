@@ -14,7 +14,6 @@ import java.sql.Timestamp;
  */
 
 @Entity
-//@Table(name = "EMST_CUSTOME_LOG", schema = "EmsOraclePUSecond")
 @Table(name = "EMST_CUSTOME_LOG")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CUSTOME_LOG", allocationSize = 1)
 public class CustomLogTo extends ExtEntityTO {
@@ -49,12 +48,12 @@ public class CustomLogTo extends ExtEntityTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @Column(name = "CUSTOM_ID")
+    @Column(name = "CTL_ID")
     public Long getId() {
         return super.getId();
     }
 
-    @Column(name = "CUSTOM_DATE", nullable = false)
+    @Column(name = "CTL_DATE", nullable = false)
     public Timestamp getDate() {
         return date;
     }
@@ -63,7 +62,7 @@ public class CustomLogTo extends ExtEntityTO {
         this.date = date;
     }
 
-    @Column(name = "CUSTOM_ACTOR", length = 255, nullable = false)
+    @Column(name = "CTL_ACTOR", length = 255, nullable = false)
     public String getActor() {
         return actor;
     }
@@ -73,7 +72,7 @@ public class CustomLogTo extends ExtEntityTO {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CUSTOM_ACTION", length = 255, nullable = false)
+    @Column(name = "CTL_ACTION", length = 255, nullable = false)
     public CustomLogAction getAction() {
         return action;
     }
@@ -83,7 +82,7 @@ public class CustomLogTo extends ExtEntityTO {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CUSTOM_ENTITY_NAME", length = 255, nullable = false)
+    @Column(name = "CTL_ENTITY_NAME", length = 255, nullable = false)
     public CustomLogEntity getEntityName() {
         return entityName;
     }
@@ -92,7 +91,7 @@ public class CustomLogTo extends ExtEntityTO {
         this.entityName = entityName;
     }
 
-    @Column(name = "CUSTOM_ENTITY_ID", length = 255, nullable = false)
+    @Column(name = "CTL_ENTITY_ID", length = 255, nullable = false)
     public String getEntityID() {
         return entityID;
     }
@@ -103,7 +102,7 @@ public class CustomLogTo extends ExtEntityTO {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "CUSTOM_EDITED_VALUE")
+    @Column(name = "CTL_EDITED_VALUE")
     public String getEditedValue() {
         return editedValue;
     }
@@ -114,7 +113,7 @@ public class CustomLogTo extends ExtEntityTO {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "CUSTOM_ADDITIONAL_DATA")
+    @Column(name = "CTL_ADDITIONAL_DATA")
     @JSON(include = false)
     public String getAdditionalData() {
         return additionalData;
@@ -124,7 +123,7 @@ public class CustomLogTo extends ExtEntityTO {
         this.additionalData = additionalData;
     }
 
-    @Column(name = "CUSTOM_IS_ACTION_SUCCESS")
+    @Column(name = "CTL_IS_ACTION_SUCCESS")
     @JSON(include = false)
     public Boolean getActionSuccess() {
         return isActionSuccess;

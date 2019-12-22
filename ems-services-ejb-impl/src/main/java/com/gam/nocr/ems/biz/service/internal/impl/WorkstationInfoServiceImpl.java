@@ -88,7 +88,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
                 return true;
             }
             //2-
-            if (workstationInfoTO != null && workstationInfoTO.getGatherState() == 1) {
+            if (workstationInfoTO != null && workstationInfoTO.getGatherState()) {
                 return true;
             }
             //3-
