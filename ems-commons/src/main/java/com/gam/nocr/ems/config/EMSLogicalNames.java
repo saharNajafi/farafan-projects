@@ -78,6 +78,7 @@ public class EMSLogicalNames {
     public static String SRV_NIF = "NOCRIMSFarafanService";
     public static String SRV_IMS_BATCH = "NOCRIMSBatchService";
     public static String SRV_IMS_FARAFAN = "NOCRIMSFarafanService";
+    public static String SRV_PAYMENT_CODE = "PaymentCodeService";
 
 
     // Data Layer Logical Names

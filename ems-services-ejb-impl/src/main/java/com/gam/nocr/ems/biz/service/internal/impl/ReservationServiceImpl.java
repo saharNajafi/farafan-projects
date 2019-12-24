@@ -281,9 +281,13 @@ public class ReservationServiceImpl extends EMSAbstractService
         if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
             RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
             registrationPaymentTO.setCitizenTO(citizenTO);
+            Long superiorOffice =  reservationTO.getEnrollmentOffice().getSuperiorOffice() != null
+                    ? reservationTO.getEnrollmentOffice().getSuperiorOffice().getId()
+                    : reservationTO.getEnrollmentOffice().getId();
             Map<String, String> registrationPaymentResult =
                     getRegistrationPaymentService().getPaymentAmountAndPaymentCode(
-                            emsCardRequest.getType(), citizenTO.getNationalID(), emsCardRequest.getId());
+                            emsCardRequest.getType(), citizenTO.getNationalID()
+                            , emsCardRequest.getId(), superiorOffice);
             registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             registrationPaymentTO = getRegistrationPaymentService().addRegistrationPayment(registrationPaymentTO);

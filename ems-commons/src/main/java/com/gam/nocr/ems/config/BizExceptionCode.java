@@ -3043,4 +3043,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CST_006 = "EMS_S_CST_006";
     public static final String CST_005_MSG = "custom-system The logEntityName: {} for the is incorrect";
     public static final String CST_006_MSG = "custom-system The logAction: {} is incorrect";
+
+    //com.gam.nocr.ems.biz.service.internal.impl.PaymentCodeServiceImpl
+    public static final String PYC_001 = "EMS_S_PYC_001";
+    public static final String PYC_002 = "EMS_S_PYC_002";
+    public static final String PYC_003 = "EMS_S_PYC_003";
+
+
 }

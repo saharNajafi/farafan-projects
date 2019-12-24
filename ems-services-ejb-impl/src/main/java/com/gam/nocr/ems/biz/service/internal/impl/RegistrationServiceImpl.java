@@ -1049,9 +1049,13 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             registrationPaymentTO.setPaidBank(IPGProviderEnum.UNDEFINED);
             registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
             String nationalId = newCardRequest.getCitizen().getNationalID();
+            Long superiorOffice =  newCardRequest.getEnrollmentOffice().getSuperiorOffice() != null
+                    ? newCardRequest.getEnrollmentOffice().getSuperiorOffice().getId()
+                    : newCardRequest.getEnrollmentOffice().getId();
             Map<String, String> registrationPaymentResult =
                     getRegistrationPaymentService().getPaymentAmountAndPaymentCode(
-                            newCardRequest.getType(), nationalId, newCardRequest.getId());
+                            newCardRequest.getType(), nationalId, newCardRequest.getId()
+                            , superiorOffice);
             registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
             getRegistrationPaymentDAO().create(registrationPaymentTO);

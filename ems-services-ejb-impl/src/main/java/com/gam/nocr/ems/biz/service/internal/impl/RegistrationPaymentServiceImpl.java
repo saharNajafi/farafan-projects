@@ -13,6 +13,7 @@ import com.gam.nocr.ems.biz.service.CitizenService;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.external.client.bpi.BpiInquiryWTO;
 import com.gam.nocr.ems.biz.service.external.impl.BpiInquiryService;
+import com.gam.nocr.ems.biz.service.ims.PaymentCodeService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileKeyName;
@@ -28,6 +29,7 @@ import com.gam.nocr.ems.data.enums.PaymentTypeEnum;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 import org.slf4j.Logger;
+
 
 import javax.ejb.*;
 
@@ -51,6 +53,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         implements RegistrationPaymentServiceLocal, RegistrationPaymentServiceRemote {
 
     private static final Logger logger = BaseLog.getLogger("RegistrationPaymentCodeServiceLogger");
+
 
     private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_CARD = "200000";
     private static final String DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA = "400000";
@@ -193,8 +196,13 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             // Long orderId = cardRequestTO.getRegistrationPaymentTO().getOrderId();
             //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
+           Long superiorOffice =  cardRequestTO.getEnrollmentOffice().getSuperiorOffice() != null
+                    ? cardRequestTO.getEnrollmentOffice().getSuperiorOffice().getId()
+                    : cardRequestTO.getEnrollmentOffice().getId();
             Map<String, String> registrationPaymentResult =
-                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId, cardRequestTO.getId());
+                    getPaymentAmountAndPaymentCode(cardRequestTO.getType()
+                            , nationalId, cardRequestTO.getId()
+                            , superiorOffice);
             result.setPaymentAmount(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             result.setOrderId(String.valueOf(registrationPaymentTO.getOrderId()));
             result.setPaymentCode(registrationPaymentResult.get("paymentCode"));
@@ -209,9 +217,10 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     }
 
     public Map<String, String> getPaymentAmountAndPaymentCode(
-            CardRequestType cardRequestType, String nationalId, Long crqId) throws BaseException {
+            CardRequestType cardRequestType, String nationalId, Long crqId, Long eofId) throws BaseException {
         String paymentAmount = null;
         String paymentCode = null;
+        String code = null;
         Map map = new HashMap<String, String>();
         if (cardRequestType.equals(CardRequestType.REPLICA)) {
             Long replicaTypeCount = 0L;
@@ -224,32 +233,33 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             if (replicaTypeCount == 0) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA);
-                paymentCode = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
+                code = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
             }
             if (replicaTypeCount == 1) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_SECOND_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA);
-                paymentCode = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
+                code = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
             }
             if (replicaTypeCount >= 2) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_THIRD_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA);
-                paymentCode = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
+                code = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
             }
         } else if (cardRequestType.equals(CardRequestType.FIRST_CARD)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_CARD,
                     DEFAULT_PAYMENT_AMOUNT_FIRST_CARD);
-            paymentCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
+            code = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
         } else if (cardRequestType.equals(CardRequestType.REPLACE)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_REPLACE,
                     DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE);
-            paymentCode = Configuration.getProperty("PAYMENT.REPLACE.CODE");
+            code = Configuration.getProperty("PAYMENT.REPLACE.CODE");
         } else if (cardRequestType.equals(CardRequestType.EXTEND)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_EXTEND,
                     DEFAULT_KEY_PAYMENT_AMOUNT_EXTEND);
             //todo:should change to extend payment code (Namjoofar).
-            paymentCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
+            code = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
         }
+        paymentCode = getPaymentCodeService().fetchPaymentCode(eofId, code);
         map.put("paymentAmount", paymentAmount);
         map.put("paymentCode", paymentCode);
         return map;
@@ -367,22 +377,6 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         return cardRequestService;
     }
 
-    private BpiInquiryService getBpiInquiryService() throws BaseException {
-        ServiceFactory serviceFactory = ServiceFactoryProvider.getServiceFactory();
-        BpiInquiryService bpiInquiryService;
-        try {
-            bpiInquiryService = serviceFactory.getService(EMSLogicalNames
-                    .getExternalServiceJNDIName(EMSLogicalNames.SRV_BPI), EmsUtil.getUserInfo(userProfileTO));
-        } catch (ServiceFactoryException e) {
-            throw new ServiceException(
-                    BizExceptionCode.RGP_012,
-                    BizExceptionCode.GLB_002_MSG,
-                    e,
-                    EMSLogicalNames.SRV_BPI.split(","));
-        }
-        return bpiInquiryService;
-    }
-
     @Override
     public String generateNewPaymentCode() throws BaseException {
         String nextValue = null;
@@ -420,4 +414,35 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         }
     }
 
+    private BpiInquiryService getBpiInquiryService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider.getServiceFactory();
+        BpiInquiryService bpiInquiryService;
+        try {
+            bpiInquiryService = serviceFactory.getService(EMSLogicalNames
+                    .getExternalServiceJNDIName(EMSLogicalNames.SRV_BPI), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(
+                    BizExceptionCode.RGP_012,
+                    BizExceptionCode.GLB_002_MSG,
+                    e,
+                    EMSLogicalNames.SRV_BPI.split(","));
+        }
+        return bpiInquiryService;
+    }
+
+    private PaymentCodeService getPaymentCodeService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        PaymentCodeService paymentCodeService;
+        try {
+            paymentCodeService = serviceFactory.getService(EMSLogicalNames
+                    .getServiceJNDIName(EMSLogicalNames.SRV_PAYMENT_CODE), EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.RGP_016,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_PAYMENT_CODE.split(","));
+        }
+        paymentCodeService.setUserProfileTO(getUserProfileTO());
+        return paymentCodeService;
+    }
 }

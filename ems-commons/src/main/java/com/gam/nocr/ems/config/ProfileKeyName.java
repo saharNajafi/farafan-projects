@@ -260,4 +260,10 @@ public class ProfileKeyName {
     //workstation info
     public static final String KEY_WORKSTATION_INFO_CHECK_PERIOD = EMS_PROFILE_ROOT + ".workstationCheckPeriod";
 
+    //PaymentCodeServiceImpl
+    public static final String KEY_CPI_DEPOSIT_ID = EMS_PROFILE_ROOT + ".CPIDepositId";
+    public static final String KEY_ORGANIZATION_PAYMENT_CODE = EMS_PROFILE_ROOT + ".organizationPaymentCode";
+    public static final String KEY_CPI_INCOME_CODE = EMS_PROFILE_ROOT + ".CPIIncomeCode";
+
+
 }

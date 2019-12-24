@@ -2427,6 +2427,11 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     }
 
+    @Override
+    public EnrollmentOfficeTO getSuperiorOffice(Long enrollmentOfficeId) throws BaseException{
+       return getEnrollmentOfficeDAO().getSuperiorOffice(enrollmentOfficeId);
+    }
+
     private void changeCardRequestEstelamStatus(CardRequestTO cardRequest) {
         cardRequest.setEstelam2Flag(Estelam2FlagType.R);
         String doesNotExist = Configuration.getProperty("dont.exit");
