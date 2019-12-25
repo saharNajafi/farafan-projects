@@ -3043,4 +3043,13 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CST_006 = "EMS_S_CST_006";
     public static final String CST_005_MSG = "custom-system The logEntityName: {} for the is incorrect";
     public static final String CST_006_MSG = "custom-system The logAction: {} is incorrect";
+
+    //com.gam.nocr.ems.biz.service.internal.impl.ProvinceCodeServiceImpl
+    public static final String PCS_001 = "EMS_S_PCS_001";
+    public static final String PCS_002 = "EMS_S_PCS_002";
+    public static final String PCS_003 = "EMS_S_PCS_003";
+    public static final String PCS_004 = "EMS_S_PCS_004";
+    public static final String PCS_005 = "EMS_S_PCS_005";
+    public static final String PCS_004_MSG = "can not find enrollment office by this id:{}";
+
 }

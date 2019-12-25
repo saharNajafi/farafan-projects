@@ -2482,4 +2482,9 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
             );
         }
     }
+
+    @Override
+    public EnrollmentOfficeTO findEnrollmentOfficeById(Long enrollmentOfficeId) throws BaseException {
+        return getEnrollmentOfficeDAO().findEnrollmentOfficeById(enrollmentOfficeId);
+    }
 }

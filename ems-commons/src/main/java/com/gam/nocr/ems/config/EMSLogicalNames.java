@@ -141,6 +141,7 @@ public class EMSLogicalNames {
     public static String DAO_PURGE_HISTORY = "PurgeHistoryDAO";
     public static String DAO_EXCEPTION_CODE = "ExceptionCodeDAO";
     public static String DAO_CUSTOMLOG = "CustomLogDAO";
+    public static String DAO_PROVINCE_CODE = "ProvinceCodeDAO";
 
     /**
      * DAOs, which are required in GamIms implementation

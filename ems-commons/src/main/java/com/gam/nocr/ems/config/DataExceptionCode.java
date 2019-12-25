@@ -1157,4 +1157,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     //customLog
     public static final String CST_001 = "EMS_D_CST_001";
     public static final String CST_001_MSG = "exception insert new log in custom-log";
+
+    //com.gam.nocr.ems.data.dao.impl.ProvinceCodeDAOImpl
+    public static final String PCD_001 = "EMS_D_PCD_001";
 }
