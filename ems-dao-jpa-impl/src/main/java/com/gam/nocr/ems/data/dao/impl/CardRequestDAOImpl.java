@@ -3003,7 +3003,7 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
         StringBuffer queryBuffer = new StringBuffer();
         try {
             queryBuffer
-                    .append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode ,reenrollDate, paidBank ")
+                    .append("select firstname, lastname, fathername, nationalId, enrolledDate, reservedDate, requestId, citizenId, state, originalOfficeId, originalOfficeName, trackingId, requestType, hasVipImage, isPaid, paidDate, requestedAction, paymentSuccess, paymentResCode ,reenrollDate, paiedBank ")
                     .append(" from ( ")
                     .append("select ct.ctz_first_name_fa as firstname, ct.ctz_surname_fa as lastname, ")
                     .append("(select inf.czi_father_first_name_fa from emst_citizen_info inf where inf.czi_id = ct.ctz_id) fathername, ")
@@ -3036,10 +3036,10 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     .append("r.crq_paid_date as paidDate, ")
                     .append("r.crq_requested_action as requestedAction, ")
                     .append("r.crq_type as requestType, ")
-                    .append("r.crq_paid_bank as paidBank, ")
                     .append("(case when r.crq_origin= 'V' then 1 else 0 end) hasVipImage, ")
                     .append("pay.rpy_is_succeed paymentSuccess, pay.rpy_res_code  paymentResCode, ")
-                    .append("r.crq_reenrolled_date  AS reenrollDate ")
+                    .append("r.crq_reenrolled_date  AS reenrollDate, ")
+                    .append("pay.rpy_paied_bank as paiedBank ")
                     .append("from emst_card_request r inner join emst_citizen ct ")
                     .append("on r.crq_citizen_id = ct.ctz_id ")
                     .append("left join emst_registration_payment pay on r.crq_payment_id = pay.rpy_id ")
@@ -3432,7 +3432,12 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
                     }
                     String paymentResCode = data[18] == null ? null : data[18].toString();
                     obj.setPaymentStatus(isSuccessfulPayment && "0".equals(paymentResCode));
-                    obj.setPaidBank((IPGProviderEnum) data[20]);
+                    if(data[20] != null){
+                        obj.setPaiedBank(IPGProviderEnum.values()[((BigDecimal) data[20]).intValue()]);
+                    }else {
+                        obj.setPaiedBank(IPGProviderEnum.UNDEFINED);
+                    }
+
                     result.add(obj);
                 }
             }

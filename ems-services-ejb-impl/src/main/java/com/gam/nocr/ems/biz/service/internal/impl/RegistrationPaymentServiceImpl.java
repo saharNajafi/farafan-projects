@@ -260,14 +260,16 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     public void registerTargetBank(TargetBankWTO targetBankWTO) throws BaseException {
         CardRequestTO cardRequestTO;
         try {
-            if (targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED))
+            if (targetBankWTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED)) {
                 throw new ServiceException(BizExceptionCode.RGP_006, BizExceptionCode.RGP_006_MSG
                         , new Object[]{targetBankWTO.getNationalId()});
+            }
             cardRequestTO =
                     getCardRequestService().findLastRequestByNationalId(targetBankWTO.getNationalId());
-            if (cardRequestTO.getRegistrationPaymentTO() == null)
+            if (cardRequestTO.getRegistrationPaymentTO() == null) {
                 throw new ServiceException(BizExceptionCode.RGP_007, BizExceptionCode.ISC_011_MSG
                         , new Object[]{targetBankWTO.getNationalId()});
+            }
 
             RegistrationPaymentTO registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
             registrationPaymentTO.setPaidBank(targetBankWTO.getPaidBank());
@@ -285,9 +287,10 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         Boolean result = false;
         try {
             cardRequestTO = getCardRequestService().findLastRequestByNationalId(nationalId);
-            if (cardRequestTO.getRegistrationPaymentTO() == null)
+            if (cardRequestTO.getRegistrationPaymentTO() == null) {
                 throw new ServiceException(
                         BizExceptionCode.RGP_008, BizExceptionCode.ISC_011_MSG, new Object[]{nationalId});
+            }
 
             registrationPaymentTO = cardRequestTO.getRegistrationPaymentTO();
             if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.UNDEFINED))

@@ -501,10 +501,9 @@ public class TokenManagementServiceImpl extends EMSAbstractService implements
         newPersonTokenTO.setType(oldPersonTokenTO.getType());
         newPersonTokenTO.setState(TokenState.READY_TO_ISSUE);
         newPersonTokenTO.setRequestDate(new Date());
+        newPersonTokenTO.setPtReason(TokenReason.REPLICA);
         newPersonTokenTO = getPersonTokenDAO().create(newPersonTokenTO);
 
-        //TODO is this the right one?
-        newPersonTokenTO.setPtReason(TokenReason.REPLICA);
         return newPersonTokenTO.getId();
     }
 

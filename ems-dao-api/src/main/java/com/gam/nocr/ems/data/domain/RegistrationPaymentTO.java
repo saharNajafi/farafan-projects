@@ -207,6 +207,9 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
         this.merchantId = merchantId;
     }
 
+    @Basic(optional = false)
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "RPY_PAYMENT_TYPE")
     public PaymentTypeEnum getPaymentType() {
         return paymentType;
