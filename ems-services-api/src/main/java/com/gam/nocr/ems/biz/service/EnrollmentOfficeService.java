@@ -129,5 +129,8 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
 
     EnrollmentOfficeSingleStageVTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException;
 
+    EnrollmentOfficeTO findEnrollmentOfficeById(Long enrollmentOfficeId) throws BaseException;
+
     EnrollmentOfficeTO getSuperiorOffice(Long enrollmentOfficeId) throws BaseException;
+
 }
