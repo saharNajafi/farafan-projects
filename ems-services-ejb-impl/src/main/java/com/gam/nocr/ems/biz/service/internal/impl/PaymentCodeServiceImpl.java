@@ -9,13 +9,16 @@ import com.gam.commons.profile.ProfileException;
 import com.gam.commons.profile.ProfileManager;
 import com.gam.nocr.ems.biz.service.EMSAbstractService;
 import com.gam.nocr.ems.biz.service.EnrollmentOfficeService;
+import com.gam.nocr.ems.biz.service.ProvinceCodeService;
 import com.gam.nocr.ems.biz.service.RegistrationPaymentService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.data.domain.ProvinceCodeTO;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.Verhoeff;
+import com.gam.nocr.ems.util.VerhoeffForPaymentCode;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -33,43 +36,49 @@ public class PaymentCodeServiceImpl extends EMSAbstractService
 
 
     @Override
-    public String fetchPaymentCode(Long eofId, String code) throws BaseException {
-        String  CPIDepositId;
-        String  organizationPaymentCode;
-        String  CPIIncomeId;
-        String superiorOffice;
+    public String fetchPaymentCode(Long superiorOffice, String serviceType) throws BaseException {
+        String CPIDepositId;
+        String organizationPaymentCode;
+        String CPIIncomeId;
         String sequence;
+        String provinceCode = null;
+        String verhoeffCode;
+        String paymentCode;
         try {
-        // 1
-        CPIDepositId =
+            CPIDepositId =
                     EmsUtil.getProfileValue(
                             ProfileKeyName.KEY_CPI_DEPOSIT_ID,
                             KEY_CPI_DEPOSIT_ID_DEFAULT_VALUE);
-
-//       2-3    Verhoeff.generateVerhoeff()
-            // 4-7
             organizationPaymentCode =
                     EmsUtil.getProfileValue(
                             ProfileKeyName.KEY_ORGANIZATION_PAYMENT_CODE,
                             KEY_ORGANIZATION_PAYMENT_CODE_DEFAULT_VALUE);
-            //8-9 code ostan
-            //10-15
+            ProvinceCodeTO provinceCodeTO =
+                    getProvinceCodeService().findByEnrollmentOfficeId(superiorOffice);
+            if (provinceCodeTO != null) {
+                provinceCode =
+                        String.valueOf(provinceCodeTO.getProvinceCode());
+            } else {
+                throw new ServiceException(BizExceptionCode.PYC_001, BizExceptionCode.PYC_001_MSG);
+            }
             CPIIncomeId =
                     EmsUtil.getProfileValue(
                             ProfileKeyName.KEY_CPI_INCOME_CODE,
                             KEY_CPI_INCOME_CODE_DEFAULT_VALUE);
-            //16-17 code
-            //18-27
-            sequence = getRegistrationPaymentService().generateNewPaymentCode();
-            //28-30
-            superiorOffice = String.valueOf(getEnrollmentOfficeService().getSuperiorOffice(eofId).getId());
-
-
+            sequence =
+                    getRegistrationPaymentService().generateNewPaymentCode();
+            String verhoeffNum =
+                    CPIDepositId + organizationPaymentCode + provinceCode
+                    + CPIIncomeId + serviceType + sequence + superiorOffice;
+            verhoeffCode =
+                    VerhoeffForPaymentCode.generate(verhoeffNum);
+            paymentCode =
+                    CPIDepositId + verhoeffCode + organizationPaymentCode + provinceCode
+                    + CPIIncomeId + serviceType + sequence + superiorOffice;
         } catch (Exception e) {
-//            logger.warn(BizExceptionCode.EOS_066, BizExceptionCode.EOS_066_MSG);
-            throw new ServiceException(BizExceptionCode.PYC_001, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.PYC_002, e.getMessage(), e);
         }
-        return null;
+        return paymentCode;
     }
 
     private EnrollmentOfficeService getEnrollmentOfficeService() throws BaseException {
@@ -78,9 +87,10 @@ public class PaymentCodeServiceImpl extends EMSAbstractService
         EnrollmentOfficeService enrollmentOfficeService;
         try {
             enrollmentOfficeService = serviceFactory.getService(EMSLogicalNames
-                    .getServiceJNDIName(EMSLogicalNames.SRV_ENROLLMENT_OFFICE), EmsUtil.getUserInfo(userProfileTO));
+                            .getServiceJNDIName(EMSLogicalNames.SRV_ENROLLMENT_OFFICE)
+                    , EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
-            throw new ServiceException(BizExceptionCode.PYC_002,
+            throw new ServiceException(BizExceptionCode.PYC_003,
                     BizExceptionCode.GLB_002_MSG, e,
                     EMSLogicalNames.SRV_ENROLLMENT_OFFICE.split(","));
         }
@@ -94,13 +104,31 @@ public class PaymentCodeServiceImpl extends EMSAbstractService
         RegistrationPaymentService registrationPaymentService;
         try {
             registrationPaymentService = serviceFactory.getService(EMSLogicalNames
-                    .getServiceJNDIName(EMSLogicalNames.SRV_REGISTRATION_PAYMENT), EmsUtil.getUserInfo(userProfileTO));
+                            .getServiceJNDIName(EMSLogicalNames.SRV_REGISTRATION_PAYMENT)
+                    , EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
-            throw new ServiceException(BizExceptionCode.PYC_003,
+            throw new ServiceException(BizExceptionCode.PYC_004,
                     BizExceptionCode.GLB_002_MSG, e,
                     EMSLogicalNames.SRV_REGISTRATION_PAYMENT.split(","));
         }
         registrationPaymentService.setUserProfileTO(getUserProfileTO());
         return registrationPaymentService;
+    }
+
+    private ProvinceCodeService getProvinceCodeService() throws BaseException {
+        ServiceFactory serviceFactory = ServiceFactoryProvider
+                .getServiceFactory();
+        ProvinceCodeService provinceCodeService;
+        try {
+            provinceCodeService = serviceFactory.getService(EMSLogicalNames
+                            .getServiceJNDIName(EMSLogicalNames.SRV_PROVINCE_CODE)
+                    , EmsUtil.getUserInfo(userProfileTO));
+        } catch (ServiceFactoryException e) {
+            throw new ServiceException(BizExceptionCode.PYC_005,
+                    BizExceptionCode.GLB_002_MSG, e,
+                    EMSLogicalNames.SRV_PROVINCE_CODE.split(","));
+        }
+        provinceCodeService.setUserProfileTO(getUserProfileTO());
+        return provinceCodeService;
     }
 }

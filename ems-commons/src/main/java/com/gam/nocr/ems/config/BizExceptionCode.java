@@ -3056,6 +3056,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PYC_001 = "EMS_S_PYC_001";
     public static final String PYC_002 = "EMS_S_PYC_002";
     public static final String PYC_003 = "EMS_S_PYC_003";
+    public static final String PYC_004 = "EMS_S_PYC_004";
+    public static final String PYC_005 = "EMS_S_PYC_005";
+    public static final String PYC_001_MSG = "provinceCode is null";
 
 
 }

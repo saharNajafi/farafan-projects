@@ -217,10 +217,10 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
     }
 
     public Map<String, String> getPaymentAmountAndPaymentCode(
-            CardRequestType cardRequestType, String nationalId, Long crqId, Long eofId) throws BaseException {
+            CardRequestType cardRequestType, String nationalId, Long crqId, Long superiorOffice) throws BaseException {
         String paymentAmount = null;
         String paymentCode = null;
-        String code = null;
+        String serviceCode = null;
         Map map = new HashMap<String, String>();
         if (cardRequestType.equals(CardRequestType.REPLICA)) {
             Long replicaTypeCount = 0L;
@@ -233,33 +233,33 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             if (replicaTypeCount == 0) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_FIRST_REPLICA);
-                code = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
+                serviceCode = Configuration.getProperty("PAYMENT.FIRST.REPLICA.CODE");
             }
             if (replicaTypeCount == 1) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_SECOND_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_SECOND_REPLICA);
-                code = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
+                serviceCode = Configuration.getProperty("PAYMENT.SECOND.REPLICA.CODE");
             }
             if (replicaTypeCount >= 2) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_THIRD_REPLICA,
                         DEFAULT_PAYMENT_AMOUNT_THIRD_REPLICA);
-                code = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
+                serviceCode = Configuration.getProperty("PAYMENT.THIRD.REPLICA.CODE");
             }
         } else if (cardRequestType.equals(CardRequestType.FIRST_CARD)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_CARD,
                     DEFAULT_PAYMENT_AMOUNT_FIRST_CARD);
-            code = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
+            serviceCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
         } else if (cardRequestType.equals(CardRequestType.REPLACE)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_REPLACE,
                     DEFAULT_KEY_PAYMENT_AMOUNT_REPLACE);
-            code = Configuration.getProperty("PAYMENT.REPLACE.CODE");
+            serviceCode = Configuration.getProperty("PAYMENT.REPLACE.CODE");
         } else if (cardRequestType.equals(CardRequestType.EXTEND)) {
             paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_EXTEND,
                     DEFAULT_KEY_PAYMENT_AMOUNT_EXTEND);
             //todo:should change to extend payment code (Namjoofar).
-            code = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
+            serviceCode = Configuration.getProperty("PAYMENT.FIRST.CARD.CODE");
         }
-        paymentCode = getPaymentCodeService().fetchPaymentCode(eofId, code);
+        paymentCode = getPaymentCodeService().fetchPaymentCode(superiorOffice, serviceCode);
         map.put("paymentAmount", paymentAmount);
         map.put("paymentCode", paymentCode);
         return map;

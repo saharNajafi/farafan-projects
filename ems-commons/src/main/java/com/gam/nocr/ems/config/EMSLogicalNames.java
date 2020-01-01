@@ -63,6 +63,7 @@ public class EMSLogicalNames {
     public static String SRV_INTERNAL_SERVICE_CHEKER= "InternalServiceChecker";
     public static String SRV_REGISTRATION_PAYMENT= "RegistrationPaymentService";
     public static String SRV_CARD_REQUEST_HISTORY= "CardRequestHistoryService";
+    public static String SRV_PROVINCE_CODE= "provinceCodeService";
     // Proxy Services
     public static String SRV_GAAS = "GAASService";
     public static String SRV_CAS = "CASService";
