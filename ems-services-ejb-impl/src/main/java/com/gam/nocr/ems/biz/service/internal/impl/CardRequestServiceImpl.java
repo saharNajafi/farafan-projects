@@ -1,5 +1,7 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
+import com.farafan.customLog.enums.CustomLogAction;
+import com.farafan.customLog.enums.CustomLogEntity;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -871,7 +873,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @author ganjyar
      */
     @Override
-    @CustomLoggable(logAction = "CHANGE_PRIORITY", logEntityName = "CARD_REQUEST")
+    @CustomLoggable(logAction = CustomLogAction.CHANGE_PRIORITY, logEntityName = CustomLogEntity.CARD_REQUEST)
     public void updateCardRequestPriority(
             String cardRequestId,
             String oldPriority,
