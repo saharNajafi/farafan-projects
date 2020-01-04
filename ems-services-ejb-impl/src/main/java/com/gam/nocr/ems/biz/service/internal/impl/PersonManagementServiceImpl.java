@@ -99,6 +99,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Override
     @Permissions(value = "ems_editPerson || ems_addPerson")
     @BizLoggable(logAction = "INSERT", logEntityName = "PERSON")
+    @CustomLoggable(logAction = "INSERT_PERSON",logEntityName = "PERSON")
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Long save(PersonVTO to) throws BaseException {
         if (to == null)

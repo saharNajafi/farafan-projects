@@ -34,7 +34,7 @@ import java.util.Date;
 @Aspect
 public class CustomSystemLogger {
 
-    private static final Logger logger = BaseLog.getLogger(CustomSystemLogger.class);
+    private static final Logger logger = BaseLog.getLogger("CustomSystemLogger");
     private static final String DEFAULT_ENTITY_ID = " ";
     private static final String INPUT_VALUE = "input:";
     private static final String OUTPUT_VALUE = "output:";

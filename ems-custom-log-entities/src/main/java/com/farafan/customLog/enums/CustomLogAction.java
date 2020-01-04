@@ -5,5 +5,6 @@ package com.farafan.customLog.enums;
  */
 public enum CustomLogAction {
     CHANGE_PASSWORD,
-    CHANGE_PRIORITY
+    CHANGE_PRIORITY,
+    INSERT_PERSON
 }
