@@ -7,6 +7,8 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
+import com.farafan.customLog.enums.CustomLogAction;
+import com.farafan.customLog.enums.CustomLogEntity;
 import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
 import com.gam.nocr.ems.biz.service.interfaces.PersonPasswordChange;
 import gampooya.tools.vlp.ListException;
@@ -86,7 +88,7 @@ import com.tangosol.net.NamedCache;
 @Stateless(name = "PersonManagementService")
 @Local(PersonManagementServiceLocal.class)
 @Remote(PersonManagementServiceRemote.class)
-public class PersonManagementServiceImpl extends EMSAbstractService implements PersonManagementServiceLocal, PersonManagementServiceRemote , PersonPasswordChange {
+public class PersonManagementServiceImpl extends EMSAbstractService implements PersonManagementServiceLocal, PersonManagementServiceRemote, PersonPasswordChange {
 
     private static final Logger logger = BaseLog.getLogger(PersonManagementServiceImpl.class);
 
@@ -99,7 +101,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Override
     @Permissions(value = "ems_editPerson || ems_addPerson")
     @BizLoggable(logAction = "INSERT", logEntityName = "PERSON")
-    @CustomLoggable(logAction = "INSERT_PERSON",logEntityName = "PERSON")
+    @CustomLoggable(logAction = CustomLogAction.INSERT_PERSON, logEntityName = CustomLogEntity.PERSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public Long save(PersonVTO to) throws BaseException {
         if (to == null)
@@ -193,7 +195,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
 
     @Override
-    @CustomLoggable(logAction = "CHANGE_PASSWORD",logEntityName = "PERSON")
+    @CustomLoggable(logAction = CustomLogAction.CHANGE_PASSWORD, logEntityName = CustomLogEntity.PERSON)
     public void needChangePassword(Long userId) {
     }
 
@@ -224,7 +226,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
             gaasService.update(personInfoVTO.getUserInfoVTO());
 
             //to logging change-password history:
-            if (to.getPassword()!=null && !to.getPassword().trim().isEmpty()){
+            if (to.getPassword() != null && !to.getPassword().trim().isEmpty()) {
                 needChangePassword(personTO.getId());
             }
 
@@ -1012,11 +1014,11 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
 
     @Override
-    public PersonTO find( Long personId) throws BaseException {
+    public PersonTO find(Long personId) throws BaseException {
         PersonTO personTO = null;
         try {
-        if (personId == 0)
-            throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.PSI_003_MSG);
+            if (personId == 0)
+                throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.PSI_003_MSG);
             personTO = getPersonDAO().find(PersonTO.class, personId);
         } catch (BaseException e) {
             throw new ServiceException(BizExceptionCode.PSI_083, BizExceptionCode.GLB_008_MSG, e);

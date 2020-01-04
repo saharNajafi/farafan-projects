@@ -152,13 +152,11 @@ public class CustomSystemLogger {
         MethodSignature signature;
         String additionalData = "InputParams:";
 
-        String logEntityName = logData.logEntityName();
-        String logAction = logData.logAction();
         String logActor = logData.logActor();
 
         CustomLogTo customLogTo = new CustomLogTo();
-        customLogTo.setAction(actionMapper(logAction));
-        customLogTo.setEntityName(entityMapper(logEntityName));
+        customLogTo.setAction(logData.logAction());
+        customLogTo.setEntityName(logData.logEntityName());
 
         // for customLogTo actor
         String username = null;
@@ -223,13 +221,11 @@ public class CustomSystemLogger {
 //        String additionalData = "InputParams:";
         String additionalData = "{" + INPUT_VALUE;
 
-        String logEntityName = logData.logEntityName();
-        String logAction = logData.logAction();
         String logActor = logData.logActor();
 
         CustomLogTo customLogTo = new CustomLogTo();
-        customLogTo.setAction(actionMapper(logAction));
-        customLogTo.setEntityName(entityMapper(logEntityName));
+        customLogTo.setAction(logData.logAction());
+        customLogTo.setEntityName(logData.logEntityName());
         customLogTo.setDate(new Timestamp(new Date().getTime()));
 
         // for customLogTo actor
@@ -299,35 +295,4 @@ public class CustomSystemLogger {
         return customLogTo;
     }
 
-    /**
-     * Finds the enum type from @CustomLogEntity corresponding to the logAction
-     *
-     * @param logEntityName
-     * @return
-     * @throws BaseException
-     */
-    private CustomLogEntity entityMapper(String logEntityName) throws BaseException {
-        try {
-            return CustomLogEntity.valueOf(logEntityName);
-        } catch (Exception ex) {
-            Object[] args = {logEntityName};
-            throw new BaseException(BizExceptionCode.CST_005, BizExceptionCode.CST_005_MSG, args);
-        }
-    }
-
-    /**
-     * Finds the enum type from @CustomLogAction corresponding to the logAction
-     *
-     * @param logAction
-     * @return
-     * @throws BaseException
-     */
-    private CustomLogAction actionMapper(String logAction) throws BaseException {
-        try {
-            return CustomLogAction.valueOf(logAction);
-        } catch (Exception ex) {
-            Object[] args = {logAction};
-            throw new BaseException(BizExceptionCode.CST_006, BizExceptionCode.CST_006_MSG, args);
-        }
-    }
 }
