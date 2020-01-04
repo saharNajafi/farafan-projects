@@ -79,7 +79,7 @@ public class ProvinceCodeServiceImpl extends EMSAbstractService implements Provi
                 Object[] args = {enrollmentOfficeId};
                 throw new ServiceException(BizExceptionCode.PCS_004, BizExceptionCode.PCS_004_MSG, args);
             }
-            return findByLocationId(enrollmentOfficeTO.getLocId());
+            return findByLocationId(enrollmentOfficeTO.getLocation().getProvince().getId());
         } catch (BaseException be) {
             throw be;
         } catch (Exception e) {
