@@ -121,17 +121,11 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 cardRequestPayment.setAmountPaid(registrationPaymentTO.getAmountPaid());
                 cardRequestPayment.setPaidBank(registrationPaymentTO.getPaidBank());
                 cardRequestPayment.setPaymentDate(new Date());
-                cardRequestPayment.setPaymentType(registrationPaymentTO.getPaymentType());
+                cardRequestPayment.setPaymentType(PaymentTypeEnum.PCPOSE);
+                cardRequestPayment.setTerminalId(registrationPaymentTO.getTerminalId()!= null ? registrationPaymentTO.getTerminalId() : "");
+                cardRequestPayment.setMerchantId(registrationPaymentTO.getMerchantId()!=null ?registrationPaymentTO.getMerchantId() : "");
                 cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
                 cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
-                if (registrationPaymentTO.getPaidBank().equals(IPGProviderEnum.SADAD)) {
-                    if (registrationPaymentTO.getTerminalId() != null) {
-                        cardRequestPayment.setTerminalId(registrationPaymentTO.getTerminalId());
-                    }
-                    if (registrationPaymentTO.getMerchantId() != null) {
-                        cardRequestPayment.setMerchantId(registrationPaymentTO.getMerchantId());
-                    }
-                }
                 getCardRequestService().update(cardRequestTO);
             } else {
                 registrationPaymentTO.setCitizenTO(cardRequestTO.getCitizen());
@@ -305,6 +299,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                     registrationPaymentTO.setSucceed(true);
                     registrationPaymentTO.setResCode("0");
                     registrationPaymentTO.setPaymentDate(paidDate);
+                    registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
                     registrationPaymentTO.setRrn(bpiInquiryWTO.getRrn() != null ? bpiInquiryWTO.getRrn() : "");
                     registrationPaymentTO.setSystemTraceNo(bpiInquiryWTO.getSystemTraceNo() != null ? bpiInquiryWTO.getSystemTraceNo() : "");
                     cardRequestTO.setPaid(true);

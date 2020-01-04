@@ -22,7 +22,7 @@ public class PersonTokenTO extends TokenTO implements JSONable {
     private Date deliverDate;
     private String tokenState;
     private String tokenType;
-    private TokenReason ptReason;
+    private TokenReason ptReason = TokenReason.FIRST_TOKEN;
     private String tokenReason;
 
 

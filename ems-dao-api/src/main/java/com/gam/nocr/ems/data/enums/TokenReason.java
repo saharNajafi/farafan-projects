@@ -5,8 +5,8 @@ package com.gam.nocr.ems.data.enums;
  */
 public enum TokenReason {
     FIRST_TOKEN(1,"N","صدوراولیه"),
-    REPLICA(2,"D","صدور مجدد به دلیل خرابی"),
-    REPLACED(3,"R","صدورالمثنی");
+    REPLACED(2,"D","صدور مجدد به دلیل خرابی"),
+    REPLICA(3,"R","صدورالمثنی");
 
     private final Integer id;
     private final String code;

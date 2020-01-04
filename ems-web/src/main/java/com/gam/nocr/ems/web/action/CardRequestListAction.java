@@ -2,19 +2,15 @@ package com.gam.nocr.ems.web.action;
 
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
-import com.gam.commons.core.biz.service.ServiceException;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
 import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
-import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.WebExceptionCode;
-import com.gam.nocr.ems.data.domain.CardRequestTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestReceiptVTO;
 import com.gam.nocr.ems.data.domain.vol.CardRequestVTO;
 import com.gam.nocr.ems.data.enums.CardRequestedAction;
 import com.gam.nocr.ems.data.enums.SystemId;
 import com.gam.nocr.ems.util.CcosBundle;
-import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.JasperUtil;
 import gampooya.tools.security.BusinessSecurityException;
 import org.slf4j.Logger;
@@ -47,14 +43,6 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     private CardRequestVTO data;
 
-    public boolean isHasAccessToChangePriority() {
-        return hasAccessToChangePriority;
-    }
-
-    public void setHasAccessToChangePriority(boolean hasAccessToChangePriority) {
-        this.hasAccessToChangePriority = hasAccessToChangePriority;
-    }
-
     /**
      * In repealing a card request (or undoing it), the type of action requested
      * by user (repeal, undo, accept, etc.) is passed from client as this
@@ -66,21 +54,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     private String oldPriority;
 
-    public String getPriority() {
-        return priority;
-    }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public String getOldPriority() {
-        return oldPriority;
-    }
-
-    public void setOldPriority(String oldPriority) {
-        this.oldPriority = oldPriority;
-    }
 
     @Override
     public void setRecords(List<CardRequestVTO> records) {
@@ -111,21 +85,7 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
         }
     }
 
-    public String getCardRequestId() {
-        return cardRequestId;
-    }
 
-    public void setCardRequestId(String cardRequestId) {
-        this.cardRequestId = cardRequestId;
-    }
-
-    public String getCardRequestAction() {
-        return cardRequestAction;
-    }
-
-    public void setCardRequestAction(String cardRequestAction) {
-        this.cardRequestAction = cardRequestAction;
-    }
 
     /**
      * this method is used in change priority process .this method finds a card
@@ -308,6 +268,15 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
     }
     //hossein 8feature end
 
+    public boolean isHasAccessToChangePriority() {
+        return hasAccessToChangePriority;
+    }
+
+    public void setHasAccessToChangePriority(boolean hasAccessToChangePriority) {
+        this.hasAccessToChangePriority = hasAccessToChangePriority;
+    }
+
+
     public boolean isHasPrintRegistrationReceipt() {
         return hasPrintRegistrationReceipt;
     }
@@ -322,5 +291,37 @@ public class CardRequestListAction extends ListControllerImpl<CardRequestVTO> {
 
     public void setHasAccessToReceiveBatchId(boolean hasAccessToReceiveBatchId) {
         this.hasAccessToReceiveBatchId = hasAccessToReceiveBatchId;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getOldPriority() {
+        return oldPriority;
+    }
+
+    public void setOldPriority(String oldPriority) {
+        this.oldPriority = oldPriority;
+    }
+
+    public String getCardRequestId() {
+        return cardRequestId;
+    }
+
+    public void setCardRequestId(String cardRequestId) {
+        this.cardRequestId = cardRequestId;
+    }
+
+    public String getCardRequestAction() {
+        return cardRequestAction;
+    }
+
+    public void setCardRequestAction(String cardRequestAction) {
+        this.cardRequestAction = cardRequestAction;
     }
 }
