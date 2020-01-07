@@ -122,8 +122,8 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
                 cardRequestPayment.setPaidBank(registrationPaymentTO.getPaidBank());
                 cardRequestPayment.setPaymentDate(new Date());
                 cardRequestPayment.setPaymentType(PaymentTypeEnum.PCPOSE);
-                cardRequestPayment.setTerminalId(registrationPaymentTO.getTerminalId()!= null ? registrationPaymentTO.getTerminalId() : "");
-                cardRequestPayment.setMerchantId(registrationPaymentTO.getMerchantId()!=null ?registrationPaymentTO.getMerchantId() : "");
+                cardRequestPayment.setTerminalCode(registrationPaymentTO.getTerminalCode()!= null ? registrationPaymentTO.getTerminalCode() : "");
+                cardRequestPayment.setMerchantCode(registrationPaymentTO.getMerchantCode()!=null ?registrationPaymentTO.getMerchantCode() : "");
                 cardRequestTO.setPaidDate(registrationPaymentTO.getPaymentDate());
                 cardRequestTO.setPaid(registrationPaymentTO.isSucceed());
                 getCardRequestService().update(cardRequestTO);

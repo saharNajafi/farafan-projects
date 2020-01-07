@@ -48,8 +48,8 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
     private String resCode;
     private short matchFlag;
     private CitizenTO citizenTO;
-    private String terminalId;
-    private String merchantId;
+    private String terminalCode;
+    private String merchantCode;
     private PaymentTypeEnum paymentType;
 
 
@@ -189,22 +189,22 @@ public class RegistrationPaymentTO extends ExtEntityTO implements Serializable {
         this.citizenTO = citizenTO;
     }
 
-    @Column(name = "RPY_TERMINAl_ID", length = 50, columnDefinition = "VARCHAR2(50)")
-    public String getTerminalId() {
-        return terminalId;
+    @Column(name = "RPY_TERMINAl_CODE", length = 50, columnDefinition = "VARCHAR2(50)")
+    public String getTerminalCode() {
+        return terminalCode;
     }
 
-    public void setTerminalId(String terminalId) {
-        this.terminalId = terminalId;
+    public void setTerminalCode(String terminalCode) {
+        this.terminalCode = terminalCode;
     }
 
-    @Column(name = "RPY_MERCHANT_ID", length = 50, columnDefinition = "VARCHAR2(50)")
-    public String getMerchantId() {
-        return merchantId;
+    @Column(name = "RPY_MERCHANT_CODE", length = 50, columnDefinition = "VARCHAR2(50)")
+    public String getMerchantCode() {
+        return merchantCode;
     }
 
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
+    public void setMerchantCode(String merchantCode) {
+        this.merchantCode = merchantCode;
     }
 
     @Basic(optional = false)
