@@ -164,10 +164,10 @@ Ext.define('Ems.view.user.RequestToken.grid', {
                                 return 'صدور اولیه';
                                 break;
                             case "REPLICA":
-                                return 'المثنی';
+                                return 'صدورالمثنی';
                                 break;
                             case "REPLACED":
-                                return 'صدور به دلیل خرابی';
+                                return 'صدور مجدد به دلیل خرابی';
                                 break;
                             default :
                                 return 'نا مشخص';
@@ -175,7 +175,7 @@ Ext.define('Ems.view.user.RequestToken.grid', {
                         }
                     }
                 }
-            },
+            }
         ]);
     }
 });
