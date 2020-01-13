@@ -208,7 +208,7 @@ public class ProfileKeyName {
     public static final String KEY_ASYNC_ENABLE_HANDOUT = EMS_PROFILE_ROOT + ".asyncEnableHandOut";
     public static final String KEY_ASYNC_ENABLE_IMSUPDATE = EMS_PROFILE_ROOT + ".asyncEnableImsUpdate";
     public static final String KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND = ".extendValidYear";
-    public static final String KEY_DURATION_OF_VALID_YEAR_TOLERANCE_FOR_EXTEND = ".extendValidYearTolerance";
+    public static final String KEY_DURATION_OF_VALID_YEAR_TOLERANCE_FOR_EXTEND = EMS_PROFILE_ROOT + ".extendValidYearTolerance";
 
     //Anbari:Estelam
     public static final String KEY_IMS_ESTELAM_IAMGE_ENABLE = EMS_PROFILE_ROOT + ".imsEstelamImageEnable";
