@@ -12,6 +12,14 @@ public enum LocationType {
     VILLAGE,
     COUNTRY;
 
+//1    شهر        CITY
+//2    روستا   VILLAGE
+//3    كشور    COUNTRY
+//4    استان  PROVINCE
+//5    شهرستان  COUNTY
+//6    بخش    TOWNSHIP
+//7   دهستان  DISTRICT
+
     public static String toNocrString(LocationType type) {
         if (type == null) {
             return null;

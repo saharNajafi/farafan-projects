@@ -69,5 +69,6 @@ public enum CardRequestHistoryAction {
     CHANGE_PIN,
     REJECT_FACE_INFO_BY_MANAGER,
     REJECT_DOC_INFO_BY_MANAGER,
+    PRINT_REGISTRATION_RECEIPT,
     UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER // if user tried 14 times and finger print didn't match
 }

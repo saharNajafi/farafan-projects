@@ -24,14 +24,6 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
 
     private Long cardRequestId;
 
-    public Long getCardRequestId() {
-        return cardRequestId;
-    }
-
-    public void setCardRequestId(Long cardRequestId) {
-        this.cardRequestId = cardRequestId;
-    }
-
     @Override
     public void setRecords(List<BatchDispatchInfoVTO> records) {
         this.records = records;
@@ -47,7 +39,7 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
     public String findBatchIdByCardRequestId() throws BaseException {
         try {
             String cmsBatch = new CardRequestDelegator().findCmsBatchByRequestId(
-                    getUserProfile(), cardRequestId);
+                    getUserProfile(), getCardRequestId());
             BatchDispatchInfoVTO batchDispatchInfoVTO = new BatchDispatchInfoVTO();
             batchDispatchInfoVTO.setCmsID(cmsBatch);
             List<BatchDispatchInfoVTO> batchDispatchInfoVTOS = new ArrayList<BatchDispatchInfoVTO>();
@@ -55,13 +47,20 @@ public class FindBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
             setRecords(batchDispatchInfoVTOS);
             return SUCCESS_RESULT;
         } catch (BusinessSecurityException e) {
-            throw new ActionException(WebExceptionCode.CRA_021,
+            throw new ActionException(WebExceptionCode.FBA_001,
                     WebExceptionCode.GLB_001_MSG, e);
         } catch (Exception e) {
-            throw new ActionException(WebExceptionCode.CRA_022,
-                    WebExceptionCode.CRA_022_MSG, e);
+            throw new ActionException(WebExceptionCode.FBA_002,
+                    WebExceptionCode.FBA_002_MSG, e);
         }
 
     }
 
+    public Long getCardRequestId() {
+        return cardRequestId;
+    }
+
+    public void setCardRequestId(Long cardRequestId) {
+        this.cardRequestId = cardRequestId;
+    }
 }

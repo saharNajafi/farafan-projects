@@ -163,15 +163,27 @@ public class ReservationServiceImpl extends EMSAbstractService
     private CardRequestTO reserve(ReservationTO reservationTO, CardRequestTO cardRequestTO)
             throws BaseException {
         String nationalId = cardRequestTO != null && cardRequestTO.getCitizen() != null ? cardRequestTO.getCitizen().getNationalID() : null;
-        CardRequestTO emsCardRequest = reservationTO.getCardRequest();
+        CardRequestTO emsCardRequest = new CardRequestTO();
         try {
+            emsCardRequest = reservationTO.getCardRequest();
             if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
                 emsCardRequest.setPaid(reservationTO.isPaid());
                 emsCardRequest.setPaidDate(reservationTO.getPaidDate());
             }
             CitizenTO citizenTO = cardRequestTO.getCitizen();
             emsCardRequest.setCitizen(citizenTO);
-            fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
+            emsCardRequest.setType(cardRequestTO.getType());
+
+            RegistrationPaymentTO emsPayment = cardRequestTO.getRegistrationPaymentTO();
+            if (emsPayment != null) {
+                emsCardRequest.setRegistrationPaymentTO(emsPayment);
+            } else {
+                RegistrationPaymentTO crsPayment = reservationTO.getCardRequest().getRegistrationPaymentTO();
+                crsPayment.setCitizenTO(citizenTO);
+                crsPayment = getRegistrationPaymentService().addRegistrationPayment(crsPayment);
+                emsCardRequest.setRegistrationPaymentTO(crsPayment);
+            }
+
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
             getCardRequestService().addCardRequest(emsCardRequest);
             Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
@@ -187,9 +199,9 @@ public class ReservationServiceImpl extends EMSAbstractService
             reservationTO = addReservation(reservationTO);
             getCardRequestHistoryService().create(
                     reservationTO.getCardRequest(),
-                    "CRS Reservation Date: "
+                    "CCOS Reservation Date: "
                             + DateUtil.convert(reservationTO.getDate(),
-                            DateUtil.JALALI), SystemId.PORTAL, null,
+                            DateUtil.JALALI), SystemId.CCOS, null,
                     CardRequestHistoryAction.TRANSFER_RESERVE, null);
             return emsCardRequest;
         } catch (BaseException e) {
@@ -266,30 +278,19 @@ public class ReservationServiceImpl extends EMSAbstractService
     }
 
     private void fillRegistrationPayment(ReservationTO reservationTO, CardRequestTO emsCardRequest, CitizenTO citizenTO) throws BaseException {
-        CardRequestTO cardRequestTO =
-                getCardRequestService().findLastRequestByNationalId(citizenTO.getNationalID());
-        if(cardRequestTO !=null) {
-            if (cardRequestTO.getState().equals(CardRequestState.REPEALED)
-                    && cardRequestTO.getType().equals(CardRequestType.FIRST_CARD)
-                    && cardRequestTO.getRegistrationPaymentTO() != null) {
-                emsCardRequest.setRegistrationPaymentTO(cardRequestTO.getRegistrationPaymentTO());
-                emsCardRequest.setPaid(true);
-                emsCardRequest.setPaidDate(cardRequestTO.getRegistrationPaymentTO().getPaymentDate());
-            }
-        }else {
-            if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
-                RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
-                registrationPaymentTO.setCitizenTO(citizenTO);
-                Map<String, String> registrationPaymentResult =
-                        getRegistrationPaymentService().getPaymentAmountAndPaymentCode(emsCardRequest.getType(), citizenTO.getNationalID());
-                registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
-                registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
-                registrationPaymentTO = getRegistrationPaymentService().addRegistrationPayment(registrationPaymentTO);
-                emsCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
-            } else {
-                throw new ServiceException(BizExceptionCode.RS_006,
-                        BizExceptionCode.RS_007_MSG);
-            }
+        if (reservationTO.getCardRequest().getRegistrationPaymentTO() != null) {
+            RegistrationPaymentTO registrationPaymentTO = reservationTO.getCardRequest().getRegistrationPaymentTO();
+            registrationPaymentTO.setCitizenTO(citizenTO);
+            Map<String, String> registrationPaymentResult =
+                    getRegistrationPaymentService().getPaymentAmountAndPaymentCode(
+                            emsCardRequest.getType(), citizenTO.getNationalID(), emsCardRequest.getId());
+            registrationPaymentTO.setAmountPaid(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
+            registrationPaymentTO.setPaymentCode(registrationPaymentResult.get("paymentCode"));
+            registrationPaymentTO = getRegistrationPaymentService().addRegistrationPayment(registrationPaymentTO);
+            emsCardRequest.setRegistrationPaymentTO(registrationPaymentTO);
+        } else {
+            throw new ServiceException(BizExceptionCode.RS_006,
+                    BizExceptionCode.RS_007_MSG);
         }
     }
 

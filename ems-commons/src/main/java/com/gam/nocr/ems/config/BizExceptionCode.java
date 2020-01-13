@@ -494,6 +494,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String RSI_182 = "EMS_S_RSI_182";
     public static final String RSI_183 = "EMS_S_RSI_183";
     public static final String RSI_184 = "EMS_S_RSI_184";
+    public static final String RSI_185 = "EMS_S_RSI_185";
     public static final String RSI_006_MSG = "Card request cannot not be null";
     public static final String RSI_008_MSG = "CTZ_FIRST_NAME_FA cannot not be null";
     public static final String RSI_009_MSG = "CTZ_SURNAME_FA cannot not be null";
@@ -1753,6 +1754,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_101 = "EMS_S_CMS_101";
     public static final String CMS_102 = "EMS_S_CMS_102";
     public static final String CMS_103 = "EMS_S_CMS_103";
+    public static final String CMS_104 = "EMS_S_CMS_104";
+    public static final String CMS_105 = "EMS_S_CMS_105";
+    public static final String CMS_106 = "EMS_S_CMS_106";
 
     public static final String CMS_002_MSG = "The request of type 'FIRST_CARD' is not allowable. ";
     public static final String CMS_003_MSG = "The request of type 'REPLICA' is not allowable. ";
@@ -1785,9 +1789,9 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String CMS_085_MSG = "The finger_all is empty or null.";
     public static final String CMS_088_MSG = "The request id which is on card is null";
     public static final String CMS_089_MSG = "record does not exist in IMS";
-    public static final String CMS_101_MSG = "request Id can not be null";
     public static final String CMS_102_MSG = "cms Id can not be null";
     public static final String CMS_103_MSG = "unhandled exception in find Cms Batch By Request Id";
+    public static final String CMS_104_MSG = "request Id can not be null";
 
 
     // com.gam.nocr.ems.biz.service.internal.impl.LocationServiceImpl

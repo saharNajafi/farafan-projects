@@ -49,13 +49,19 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 if (EmsObjectName.cardRequestedActionMap.hasAccessToReceiveBatchId) {
                     var cardState = record.get(EmsObjectName.cardRequestList.cardRequestState);
                     if (cardState === 'ISSUED'
-                        || cardState ==='READY_TO_DELIVER'
+                        || cardState === 'READY_TO_DELIVER'
                         || cardState === 'PENDING_TO_DELIVER_BY_CMS'
-                        || cardState === 'DELIVERED') {
+                        || cardState === 'DELIVERED'
+                        || cardState === 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_DAMAGE'
+                        || cardState === 'UNSUCCESSFUL_DELIVERY_BECAUSE_OF_BIOMETRIC') {
 
                         return 'grid-show-request-batch-id-icon';
                     }
+                    else
+                        return 'grid-action-hidden';
                 }
+                else
+                    return 'grid-action-hidden';
             },
             tooltip: 'مشاهده دسته درخواست',
             action: 'showRequestBatchId'
@@ -97,7 +103,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                     (state == "VERIFIED_IMS") || (state == "NOT_VERIFIED_BY_IMS") || (state == "RESERVED") ||
                     (state == "REFERRED_TO_CCOS") || (state == "DOCUMENT_AUTHENTICATED") || (state == "APPROVED")) &&
                     ((requestedAction != EmsObjectName.cardRequestedActionMap.REPEALING) &&
-                        (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
+                    (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
                     return 'grid-repeal-request-action-icon';
                 }
 
@@ -116,7 +122,7 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                     (state == "VERIFIED_IMS") || (state == "NOT_VERIFIED_BY_IMS") || (state == "RESERVED") ||
                     (state == "REFERRED_TO_CCOS") || (state == "DOCUMENT_AUTHENTICATED") || (state == "APPROVED")) &&
                     ((requestedAction == EmsObjectName.cardRequestedActionMap.REPEALING) &&
-                        (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
+                    (requestedAction != EmsObjectName.cardRequestedActionMap.REPEAL_ACCEPTED))) {
                     return 'grid-Checked-action-icon';
                 }
 
@@ -394,7 +400,12 @@ Ext.define('Ems.view.cardRequestList.Grid', {
                 text: 'کد رهگیری',
                 sortable: false,
                 filterable: true,
-                filter: true
+                filter: {
+                    xtype: 'textfield',
+                    vtype: 'numeric',
+                    enforceMaxLength: true,
+                    maxLength: 10
+                }
             },
             {
                 dataIndex: EmsObjectName.cardRequestList.attendDate,

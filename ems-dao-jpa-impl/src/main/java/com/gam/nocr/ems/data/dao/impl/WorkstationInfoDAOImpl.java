@@ -61,7 +61,7 @@ public class WorkstationInfoDAOImpl extends EmsBaseDAOImpl<WorkstationInfoTO>
     }
 
     @Override
-    public WorkstationInfoTO isReliableVerInquiryRequired(Long workstationId) throws BaseException {
+    public WorkstationInfoTO findByWorkstationId(Long workstationId) throws BaseException {
         List<WorkstationInfoTO> workstationInfoTOs = null;
         try {
             workstationInfoTOs =

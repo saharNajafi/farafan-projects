@@ -179,7 +179,7 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             //implement dynamic payment amount based on card-request state history
             //first card, delivered, multiple delivered,...
             Map<String, String> registrationPaymentResult =
-                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId);
+                    getPaymentAmountAndPaymentCode(cardRequestTO.getType(), nationalId, cardRequestTO.getId());
             result.setPaymentAmount(Integer.valueOf(registrationPaymentResult.get("paymentAmount")));
             result.setOrderId(String.valueOf(registrationPaymentTO.getOrderId()));
             result.setPaymentCode(registrationPaymentResult.get("paymentCode"));
@@ -193,7 +193,8 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
         }
     }
 
-    public Map<String, String> getPaymentAmountAndPaymentCode(CardRequestType cardRequestType, String nationalId) {
+    public Map<String, String> getPaymentAmountAndPaymentCode(
+            CardRequestType cardRequestType, String nationalId, Long crqId) throws BaseException {
         String paymentAmount = null;
         String paymentCode = null;
         Map map = new HashMap<String, String>();
@@ -201,9 +202,9 @@ public class RegistrationPaymentServiceImpl extends EMSAbstractService
             Long replicaTypeCount = 0L;
             try {
                 replicaTypeCount =
-                        getCardRequestService().countCardRequestByNationalIdAndType(nationalId, cardRequestType);
+                        getCardRequestService().countCardRequestByNationalIdAndType(nationalId, cardRequestType, crqId);
             } catch (BaseException e) {
-                e.printStackTrace();
+                throw e;
             }
             if (replicaTypeCount == 0) {
                 paymentAmount = EmsUtil.getProfileValue(ProfileKeyName.KEY_PAYMENT_AMOUNT_FIRST_REPLICA,

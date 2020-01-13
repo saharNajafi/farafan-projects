@@ -42,7 +42,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             return DAOFactoryProvider.getDAOFactory().getDAO(
                     EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_WORKSTATIONINFO));
         } catch (DAOFactoryException e) {
-            workstationInfoLogger.error(BizExceptionCode.WSTI_006 + " : " + BizExceptionCode.GLB_002_MSG, e);
+            workstationInfoLogger.error(BizExceptionCode.WSTI_006 + " : " + BizExceptionCode.GLB_001_MSG, e);
             throw new DelegatorException(
                     BizExceptionCode.WSTI_006,
                     BizExceptionCode.GLB_001_MSG,
@@ -64,7 +64,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public boolean isReliableVerInquiryRequired(String workstationCode) throws BaseException {
+    public boolean workstationInfoRequired(String workstationCode) throws BaseException {
         WorkstationInfoTO workstationInfoTO = null;
         boolean result = false;
         try {
@@ -81,25 +81,23 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             if (workstation == null) {
                 throw new ServiceException(BizExceptionCode.WSTI_011, BizExceptionCode.WSTI_011_MSG);
             }
-            workstationInfoTO = getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
+            workstationInfoTO = getWorkstationInfoDAO().findByWorkstationId(workstation.getId());
 
             //1-
             if (workstationInfoTO == null) {
                 return true;
             }
             //2-
-            if (workstationInfoTO != null && workstationInfoTO.getGatherState() == 1) {
+            if (workstationInfoTO != null && workstationInfoTO.getGatherState()) {
                 return true;
             }
             //3-
-
-            Integer checkPeriod = Integer.valueOf(EmsUtil.getProfileValue(
-                    ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD,
-                    WORKSTATION_INFO_PERIOD_DEFAULT_VALUE));
-
             if (workstationInfoTO.getLastModifiedDate() == null) {
                 return true;
             }
+            Integer checkPeriod = Integer.valueOf(EmsUtil.getProfileValue(
+                    ProfileKeyName.KEY_WORKSTATION_INFO_CHECK_PERIOD,
+                    WORKSTATION_INFO_PERIOD_DEFAULT_VALUE));
             Date lastModifiedDatePlusCheckPeriod = EmsUtil.getDateAtMidnight(EmsUtil.differDay(workstationInfoTO.getLastModifiedDate(), checkPeriod));
             if (new Date().compareTo(lastModifiedDatePlusCheckPeriod) > 0)
                 return true;
@@ -114,7 +112,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
     }
 
     @Override
-    public void getReliableVerByPlatform(
+    public void registerWorkstationInfo(
             String workstationCode, WorkstationInfoTO newWorkstationInfoTO) throws BaseException {
         WorkstationTO workstation;
         WorkstationInfoTO oldWorkstationInfo = null;
@@ -129,7 +127,7 @@ public class WorkstationInfoServiceImpl extends EMSAbstractService
             if (workstation == null)
                 throw new ServiceException(BizExceptionCode.WST_001, BizExceptionCode.WST_001_MSG);
             oldWorkstationInfo =
-                    getWorkstationInfoDAO().isReliableVerInquiryRequired(workstation.getId());
+                    getWorkstationInfoDAO().findByWorkstationId(workstation.getId());
             if (oldWorkstationInfo != null) {
                 updateWorkstationInfo(newWorkstationInfoTO, oldWorkstationInfo);
             } else if (workstation != null) {
