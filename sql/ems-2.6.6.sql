@@ -58,3 +58,6 @@ values(gam_main_gaas.GAS_SEQ_GAST_ACCESS_ID.nextval,'ems_receiveBatchId','Y','د
 ALTER TABLE GAM_MAIN_EMS.EMST_CARD_REQUEST
   ADD (CRQ_SELECT_DELIVERY_OFFICE_ID NUMBER(19) );
 COMMENT ON COLUMN GAM_MAIN_EMS.EMST_CARD_REQUEST.CRQ_SELECT_DELIVERY_OFFICE_ID IS 'دفتر انتخابی شهروند برای تغییر دفتر تحویل';
+
+
+insert into gast_access values(3112,'ems_ViewAndChangeOfficeOnCardSetting','Y','ویرایش تنظیمات اطلاعات بیومتریک کارت');

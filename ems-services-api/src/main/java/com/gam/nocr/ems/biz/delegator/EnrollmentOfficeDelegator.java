@@ -292,4 +292,8 @@ public class EnrollmentOfficeDelegator implements Delegator {
                                                             Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException {
         getService(null).updateActiveShiftForEnrollmentOfficeAndDate(enrollmentOfficeTO, fromDate, officeCapacityMap);
     }
+
+    public Boolean getHasAccessToViewAndChangeOfficeOnCardSetting(UserProfileTO userProfile)  throws BaseException{
+        return getService(userProfile).getHasAccessToViewAndChangeOfficeOnCardSetting(userProfile);
+    }
 }

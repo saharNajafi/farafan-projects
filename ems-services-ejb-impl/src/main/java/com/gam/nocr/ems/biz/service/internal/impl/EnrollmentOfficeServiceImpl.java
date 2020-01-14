@@ -1959,6 +1959,25 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
     }
 
+    @Override
+    public Boolean getHasAccessToViewAndChangeOfficeOnCardSetting(UserProfileTO userProfile)
+            throws BaseException {
+        try {
+            SecurityContextService securityContextService = new SecurityContextService();
+            if (securityContextService.hasAccess(userProfileTO.getUserName(),
+                    "ems_ViewAndChangeOfficeOnCardSetting")) {
+                return true;
+            }
+
+            return false;
+        } catch (Exception e) {
+            logger.error(BizExceptionCode.EOS_107, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.EOS_107,
+                    BizExceptionCode.GLB_008_MSG, e);
+        }
+
+    }
+
 
     //Anbari - userPerm-commented
     /*@Override

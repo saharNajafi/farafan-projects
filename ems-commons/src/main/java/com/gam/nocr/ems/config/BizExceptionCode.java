@@ -1245,6 +1245,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String EOS_104 = "EMS_S_EOS_104";
     public static final String EOS_105 = "EMS_S_EOS_105";
     public static final String EOS_106 = "EMS_S_EOS_106";
+    public static final String EOS_107 = "EMS_S_EOS_107";
     public static final String EOS_004_MSG = "Enrollment office VTO cannot be null";
     public static final String EOS_005_MSG = "Enrollment office name cannot be null or empty";
     public static final String EOS_006_MSG = "Enrollment office name is too long";

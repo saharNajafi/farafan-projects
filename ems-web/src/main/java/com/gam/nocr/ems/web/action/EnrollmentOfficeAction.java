@@ -52,6 +52,7 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
    	private String officeSettingType;
 
 	private Boolean accessViewAndChangeOfficeSetting;
+	private Boolean hasAccessToViewAndChangeOfficeOnCardSetting;
 
 
 
@@ -387,7 +388,9 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
 		try {
 			EnrollmentOfficeDelegator enrollmentOfficeDelegator = new EnrollmentOfficeDelegator();
 			accessViewAndChangeOfficeSetting  = enrollmentOfficeDelegator.getAccessViewAndChangeOfficeSetting(getUserProfile());
-			
+
+			hasAccessToViewAndChangeOfficeOnCardSetting =
+                    enrollmentOfficeDelegator.getHasAccessToViewAndChangeOfficeOnCardSetting(getUserProfile());
 			return SUCCESS_RESULT;
 		} catch (BusinessSecurityException e) {
 			throw new ActionException(WebExceptionCode.CRA_006,
@@ -446,4 +449,12 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
 			Boolean accessViewAndChangeOfficeSetting) {
 		this.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
 	}
+
+    public Boolean getHasAccessToViewAndChangeOfficeOnCardSetting() {
+        return hasAccessToViewAndChangeOfficeOnCardSetting;
+    }
+
+    public void setHasAccessToViewAndChangeOfficeOnCardSetting(Boolean hasAccessToViewAndChangeOfficeOnCardSetting) {
+        this.hasAccessToViewAndChangeOfficeOnCardSetting = hasAccessToViewAndChangeOfficeOnCardSetting;
+    }
 }
