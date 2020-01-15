@@ -464,13 +464,40 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                 }
 
                 //Anbari: check issuanceDate of lastCard
-                Integer extenVvalidYear = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND,DEFAULT_DURATION_OF_VALID_YEAR_FOR_EXTEND));
+                Integer extendValidYear = Integer.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_DURATION_OF_VALID_YEAR_FOR_EXTEND, DEFAULT_DURATION_OF_VALID_YEAR_FOR_EXTEND));
+                String tolerance =
+                        EmsUtil.getProfileValue(
+                                ProfileKeyName.KEY_DURATION_OF_VALID_YEAR_TOLERANCE_FOR_EXTEND, "");
                 Date issuanceDate = latestCardInfoVTO.getIssuanceDate();
-                if(issuanceDate != null){
-	                Date validDate = EmsUtil.getDateAtMidnight(EmsUtil.differYear(issuanceDate, extenVvalidYear));
-	                Date currenetDate = EmsUtil.getDateAtMidnight(new Date());
-	                if(validDate.after(currenetDate))
-	                	 throw new ServiceException(BizExceptionCode.CMS_085, BizExceptionCode.CMS_075_MSG);
+                if (issuanceDate != null) {
+                    Date validDate =
+                            EmsUtil.getDateAtMidnight(EmsUtil.differYear(issuanceDate, extendValidYear));
+                    if (tolerance != null) {
+                        Integer dateYear = 0;
+                        Integer dateMonth = 0;
+                        Integer dateDay = 0;
+                        if (tolerance.contains("y")) {
+                            dateYear = Integer.valueOf(tolerance.split("y")[0]);
+                        }
+                        if (tolerance.contains("m")) {
+                            dateMonth = Integer.valueOf(tolerance.split("m")[0]);
+                        }
+                        if (tolerance.contains("d")) {
+                            dateDay = Integer.valueOf(tolerance.split("d")[0]);
+                        }
+                        if (dateYear != 0) {
+                            validDate = EmsUtil.getDateAtMidnight(EmsUtil.differYear(validDate, -dateYear));
+                        }
+                        if (dateMonth != 0) {
+                            validDate = EmsUtil.getDateAtMidnight(EmsUtil.differMonth(validDate, -dateMonth));
+                        }
+                        if (dateDay != 0) {
+                            validDate = EmsUtil.getDateAtMidnight(EmsUtil.differDay(validDate, -dateDay));
+                        }
+                    }
+                    Date currenetDate = EmsUtil.getDateAtMidnight(new Date());
+                    if (validDate.after(currenetDate))
+                        throw new ServiceException(BizExceptionCode.CMS_085, BizExceptionCode.CMS_075_MSG);
                 }
 
             } else {
