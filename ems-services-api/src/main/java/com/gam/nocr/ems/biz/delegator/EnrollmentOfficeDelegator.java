@@ -293,7 +293,7 @@ public class EnrollmentOfficeDelegator implements Delegator {
         getService(null).updateActiveShiftForEnrollmentOfficeAndDate(enrollmentOfficeTO, fromDate, officeCapacityMap);
     }
 
-    public Boolean getHasAccessToViewAndChangeOfficeOnCardSetting(UserProfileTO userProfile)  throws BaseException{
-        return getService(userProfile).getHasAccessToViewAndChangeOfficeOnCardSetting(userProfile);
+    public Boolean getAccessToViewAndChangeOfFeIdSetting(UserProfileTO userProfile)  throws BaseException{
+        return getService(userProfile).getAccessToViewAndChangeOfFeIdSetting(userProfile);
     }
 }

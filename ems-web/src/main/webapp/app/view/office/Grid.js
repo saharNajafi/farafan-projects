@@ -347,7 +347,7 @@ Ext.define('Ems.view.office.Grid', {
                 //     return 'girdAction-OfficeSetting-icon';
                 // }
                 getClass: function (value, metadata, record) {
-                    if (EmsObjectName.officeNewEdit.hasAccessToViewAndChangeOfficeOnCardSetting) {
+                    if (EmsObjectName.officeNewEdit.accessToViewAndChangeOfFeIdSetting) {
                         return 'girdAction-OfficeSetting-icon';
                         } else {
                             return 'grid-action-hidden';

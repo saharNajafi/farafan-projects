@@ -60,4 +60,6 @@ ALTER TABLE GAM_MAIN_EMS.EMST_CARD_REQUEST
 COMMENT ON COLUMN GAM_MAIN_EMS.EMST_CARD_REQUEST.CRQ_SELECT_DELIVERY_OFFICE_ID IS 'دفتر انتخابی شهروند برای تغییر دفتر تحویل';
 
 
-insert into gast_access values(3112,'ems_ViewAndChangeOfficeOnCardSetting','Y','ویرایش تنظیمات اطلاعات بیومتریک کارت');
+insert into gam_main_gaas.GAST_ACCESS
+ (ACS_ID, ACS_NAME, ACS_ENABLED, ACS_COMMENT)
+ values(gam_main_gaas.GAS_SEQ_GAST_ACCESS_ID.nextval,'ems_viewAndChangeOfFeIdSetting','Y','ویرایش تنظیمات الگوی استخراج اطلاعات بیومتریک');

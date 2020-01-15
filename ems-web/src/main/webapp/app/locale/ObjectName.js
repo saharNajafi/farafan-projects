@@ -139,7 +139,7 @@ Ext.define('Ems.locale.objectName', {
 		locationId : 'locId',
 		location : 'locName',
 		accessViewAndChangeOfficeSetting : 'accessViewAndChangeOfficeSetting',
-        hasAccessToViewAndChangeOfficeOnCardSetting : 'hasAccessToViewAndChangeOfficeOnCardSetting',
+		accessToViewAndChangeOfFeIdSetting : 'accessToViewAndChangeOfFeIdSetting',
 
 		g_oficName : 'g_name',
 		g_mangName : 'g_managerName',

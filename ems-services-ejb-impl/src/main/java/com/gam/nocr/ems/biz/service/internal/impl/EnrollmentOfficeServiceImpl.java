@@ -1960,12 +1960,12 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
     }
 
     @Override
-    public Boolean getHasAccessToViewAndChangeOfficeOnCardSetting(UserProfileTO userProfile)
+    public Boolean getAccessToViewAndChangeOfFeIdSetting(UserProfileTO userProfile)
             throws BaseException {
         try {
             SecurityContextService securityContextService = new SecurityContextService();
             if (securityContextService.hasAccess(userProfileTO.getUserName(),
-                    "ems_ViewAndChangeOfficeOnCardSetting")) {
+                    "ems_viewAndChangeOfFeIdSetting")) {
                 return true;
             }
 

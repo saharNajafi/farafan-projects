@@ -1,13 +1,5 @@
 package com.gam.nocr.ems.web.action;
 
-import com.gam.nocr.ems.data.enums.enrollmentOfficeDeletableStates;
-import gampooya.tools.security.BusinessSecurityException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
@@ -17,7 +9,13 @@ import com.gam.nocr.ems.biz.delegator.EnrollmentOfficeDelegator;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.vol.EnrollmentOfficeVTO;
+import com.gam.nocr.ems.data.enums.enrollmentOfficeDeletableStates;
 import com.gam.nocr.ems.util.EmsUtil;
+import gampooya.tools.security.BusinessSecurityException;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Manages all AJAX interactions related to enrollment office section
@@ -52,7 +50,7 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
    	private String officeSettingType;
 
 	private Boolean accessViewAndChangeOfficeSetting;
-	private Boolean hasAccessToViewAndChangeOfficeOnCardSetting;
+	private Boolean accessToViewAndChangeOfFeIdSetting;
 
 
 
@@ -389,8 +387,8 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
 			EnrollmentOfficeDelegator enrollmentOfficeDelegator = new EnrollmentOfficeDelegator();
 			accessViewAndChangeOfficeSetting  = enrollmentOfficeDelegator.getAccessViewAndChangeOfficeSetting(getUserProfile());
 
-			hasAccessToViewAndChangeOfficeOnCardSetting =
-                    enrollmentOfficeDelegator.getHasAccessToViewAndChangeOfficeOnCardSetting(getUserProfile());
+            accessToViewAndChangeOfFeIdSetting =
+                    enrollmentOfficeDelegator.getAccessToViewAndChangeOfFeIdSetting(getUserProfile());
 			return SUCCESS_RESULT;
 		} catch (BusinessSecurityException e) {
 			throw new ActionException(WebExceptionCode.CRA_006,
@@ -450,11 +448,11 @@ public class EnrollmentOfficeAction extends ListControllerImpl<EnrollmentOfficeV
 		this.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
 	}
 
-    public Boolean getHasAccessToViewAndChangeOfficeOnCardSetting() {
-        return hasAccessToViewAndChangeOfficeOnCardSetting;
+    public Boolean getAccessToViewAndChangeOfFeIdSetting() {
+        return accessToViewAndChangeOfFeIdSetting;
     }
 
-    public void setHasAccessToViewAndChangeOfficeOnCardSetting(Boolean hasAccessToViewAndChangeOfficeOnCardSetting) {
-        this.hasAccessToViewAndChangeOfficeOnCardSetting = hasAccessToViewAndChangeOfficeOnCardSetting;
+    public void setAccessToViewAndChangeOfFeIdSetting(Boolean accessToViewAndChangeOfFeIdSetting) {
+        this.accessToViewAndChangeOfFeIdSetting = accessToViewAndChangeOfFeIdSetting;
     }
 }

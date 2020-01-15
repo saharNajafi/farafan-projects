@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -165,7 +164,7 @@ public class EMSWS {
         return newVerCode;
     }
 
-    private static String removeInvalidItems(String record) {
+    private String removeInvalidItems(String record) {
         StringBuilder stringBuilder = new StringBuilder();
         String[] verCode = record.split(",");
         String temp;

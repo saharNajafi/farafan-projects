@@ -129,5 +129,5 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
 
     EnrollmentOfficeSingleStageVTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException;
 
-    Boolean getHasAccessToViewAndChangeOfficeOnCardSetting(UserProfileTO userProfile) throws BaseException;;
+    Boolean getAccessToViewAndChangeOfFeIdSetting(UserProfileTO userProfile) throws BaseException;;
 }

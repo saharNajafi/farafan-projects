@@ -22,6 +22,7 @@ public class NewExactTest {
         List<String> myList = new ArrayList<String>();
 
         myList.add("2.8.6.10,2.8.6.11,2.8.6.*");
+        myList.add("  12.*,12.1.*  ,   12.1.2.* ,    12.1.3.4.*   ");
         myList.add("2.7.6. ,2.5.6.66 , 2.8.6.*");
         myList.add("2.s.q. ,2 , 2.*");
         myList.add("2.s.q.* ,2.5.. , 2.");

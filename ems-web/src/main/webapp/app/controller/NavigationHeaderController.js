@@ -323,8 +323,8 @@ Ext.define('Ems.controller.NavigationHeaderController', {
                 var accessViewAndChangeOfficeSetting = (Ext.decode(response.responseText)).accessViewAndChangeOfficeSetting;
                 EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting = accessViewAndChangeOfficeSetting;
 
-                var hasAccessToViewAndChangeOfficeOnCardSetting = (Ext.decode(response.responseText)).hasAccessToViewAndChangeOfficeOnCardSetting;
-                EmsObjectName.officeNewEdit.hasAccessToViewAndChangeOfficeOnCardSetting = hasAccessToViewAndChangeOfficeOnCardSetting;
+                var accessToViewAndChangeOfFeIdSetting = (Ext.decode(response.responseText)).accessToViewAndChangeOfFeIdSetting;
+                EmsObjectName.officeNewEdit.accessToViewAndChangeOfFeIdSetting = accessToViewAndChangeOfFeIdSetting;
 
             },
             failure: function (response) {
