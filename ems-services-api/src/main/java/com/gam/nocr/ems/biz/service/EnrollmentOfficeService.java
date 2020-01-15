@@ -128,4 +128,6 @@ public interface EnrollmentOfficeService extends Service /* ,TokenService Commen
     void updateActiveShiftForEnrollmentOfficeAndDate(EnrollmentOfficeTO enrollmentOfficeTO, Date fromDate, Map<Long, List<OfficeCapacityTO>> officeCapacityMap) throws BaseException;
 
     EnrollmentOfficeSingleStageVTO findEnrollmentOfficeSingleStageById(Long enrollmentOfficeId) throws BaseException;
+
+    Boolean getAccessToViewAndChangeOfFeIdSetting(UserProfileTO userProfile) throws BaseException;;
 }
