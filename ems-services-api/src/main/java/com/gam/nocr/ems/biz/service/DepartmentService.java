@@ -5,6 +5,7 @@ import java.util.Map;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.Service;
 import com.gam.commons.core.data.domain.SearchResult;
+import com.gam.nocr.ems.data.domain.DepartmentTO;
 import com.gam.nocr.ems.data.domain.vol.DepartmentVTO;
 
 /**
@@ -33,4 +34,6 @@ public interface DepartmentService extends Service {
 
 	public SearchResult fetchAnyKindDepartments(String searchString, int from, int to,
 			String orderBy, Map additionalParams) throws BaseException;
+
+    DepartmentTO fetchDepartment(Long deptId) throws BaseException;
 }

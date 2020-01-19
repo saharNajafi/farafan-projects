@@ -7,14 +7,12 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryException;
 import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.profile.ProfileException;
 import com.gam.commons.profile.ProfileManager;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.EnrollmentOfficeService;
-import com.gam.nocr.ems.biz.service.ProvinceCodeService;
-import com.gam.nocr.ems.biz.service.RegistrationPaymentService;
+import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.ProfileHelper;
 import com.gam.nocr.ems.config.ProfileKeyName;
+import com.gam.nocr.ems.data.domain.DepartmentTO;
 import com.gam.nocr.ems.data.domain.ProvinceCodeTO;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.Verhoeff;
@@ -44,6 +42,7 @@ public class PaymentCodeServiceImpl extends EMSAbstractService
         String provinceCode = null;
         String verhoeffCode;
         String paymentCode;
+        String depCode = null;
         try {
             CPIDepositId =
                     EmsUtil.getProfileValue(
@@ -67,35 +66,47 @@ public class PaymentCodeServiceImpl extends EMSAbstractService
                             KEY_CPI_INCOME_CODE_DEFAULT_VALUE);
             sequence =
                     getRegistrationPaymentService().generateNewPaymentCode();
+
+            DepartmentTO departmentTO =
+                    getDepartmentService().fetchDepartment(superiorOffice);
+            if(departmentTO != null){
+                if (departmentTO.getCode().length() == 3) {
+                    depCode = departmentTO.getCode();
+                } else if (departmentTO.getCode().length() > 3) {
+                    depCode = departmentTO.getCode().substring(departmentTO.getCode().length() - 3);
+                }
+            }else {
+                throw new ServiceException(BizExceptionCode.PYC_006, BizExceptionCode.PYC_006_MSG);
+            }
             String verhoeffNum =
                     CPIDepositId + organizationPaymentCode + provinceCode
-                    + CPIIncomeId + serviceType + sequence + superiorOffice;
+                            + CPIIncomeId + serviceType + sequence + depCode;
             verhoeffCode =
                     VerhoeffForPaymentCode.generate(verhoeffNum);
             paymentCode =
                     CPIDepositId + verhoeffCode + organizationPaymentCode + provinceCode
-                    + CPIIncomeId + serviceType + sequence + superiorOffice;
+                    + CPIIncomeId + serviceType + sequence + depCode;
         } catch (Exception e) {
             throw new ServiceException(BizExceptionCode.PYC_002, e.getMessage(), e);
         }
         return paymentCode;
     }
 
-    private EnrollmentOfficeService getEnrollmentOfficeService() throws BaseException {
+    private DepartmentService getDepartmentService() throws BaseException {
         ServiceFactory serviceFactory = ServiceFactoryProvider
                 .getServiceFactory();
-        EnrollmentOfficeService enrollmentOfficeService;
+        DepartmentService departmentService;
         try {
-            enrollmentOfficeService = serviceFactory.getService(EMSLogicalNames
-                            .getServiceJNDIName(EMSLogicalNames.SRV_ENROLLMENT_OFFICE)
+            departmentService = serviceFactory.getService(EMSLogicalNames
+                            .getServiceJNDIName(EMSLogicalNames.SRV_DEPARTMENT)
                     , EmsUtil.getUserInfo(userProfileTO));
         } catch (ServiceFactoryException e) {
             throw new ServiceException(BizExceptionCode.PYC_003,
                     BizExceptionCode.GLB_002_MSG, e,
-                    EMSLogicalNames.SRV_ENROLLMENT_OFFICE.split(","));
+                    EMSLogicalNames.SRV_DEPARTMENT.split(","));
         }
-        enrollmentOfficeService.setUserProfileTO(getUserProfileTO());
-        return enrollmentOfficeService;
+        departmentService.setUserProfileTO(getUserProfileTO());
+        return departmentService;
     }
 
     private RegistrationPaymentService getRegistrationPaymentService() throws BaseException {

@@ -499,6 +499,11 @@ public class DepartmentServiceImpl extends EMSAbstractService implements Departm
              throw new ServiceException(BizExceptionCode.DSI_034, BizExceptionCode.GLB_008_MSG, e);
          }
     }
+
+    @Override
+   public DepartmentTO fetchDepartment(Long deptId) throws BaseException{
+       return getDepartmentDAO().fetchDepartment(deptId);
+    }
     
   //Anbari
     private PersonManagementService getPersonService() throws BaseException {
