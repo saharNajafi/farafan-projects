@@ -17,7 +17,6 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
-import com.gam.nocr.ems.biz.service.annotations.ExcludeFromCustomLogging;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
 import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
@@ -891,6 +890,15 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                         throw new ServiceException(BizExceptionCode.CRE_024,
                                 BizExceptionCode.CRE_024_MSG);
                     cardRequestTO.setPriority(inPriority);
+                    getCardRequestDAO().update(cardRequestTO);
+                    getCardRequestHistoryDAO().create(cardRequestTO,
+                            null,
+                            SystemId.EMS,
+                            null,
+                            CardRequestHistoryAction.PRIORITY_IS_CHANGED,
+                            getUserProfileTO().getUserName());
+
+
                 }
             } else
                 throw new ServiceException(BizExceptionCode.CRE_026,
