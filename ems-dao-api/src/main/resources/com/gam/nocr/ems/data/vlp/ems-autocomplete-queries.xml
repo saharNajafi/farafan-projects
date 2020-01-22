@@ -48,7 +48,7 @@
 				</part>
 				<part name="nonEnrollment">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo )
 				</part>			
 
 			</main-query>
@@ -337,7 +337,7 @@
 				WHERE DEP_NAME like {depName}
 				<part name="nonEnrollment">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo )
 				</part>
 				<part name="nocroffice">
 					AND
@@ -351,7 +351,7 @@
 					WHERE
 					eo.eof_type in ('OFFICE')
 					AND
-					eo.EOF_IS_DELETED = 0
+					eo.eof_is_deleted = 0
 					AND
 					eo.EOF_SUPERIOR_OFFICE in ({nocrId}))
 				</part>
@@ -456,11 +456,11 @@
 				</part>
 				<part name="nonEnrollment">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo )
 				</part>
 				<part name="province">
 					AND
-					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0 )
+					ED.DEP_ID not in (select eo.eof_id from emst_enrollment_office eo )
 					AND
 					ED.dep_parent_dep_id is not null
 					

@@ -590,7 +590,7 @@
                 WHERE
                 d.dep_location_id = l.loc_id and
                 l.loc_province_id=lp.loc_id and
-                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0) and
+                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo) and
                 d.dep_id in (<dependency name="personAllDepartmentWithSubDepartment"/>)
                 <part name="address">
                     and d.dep_address like {address}
