@@ -233,7 +233,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             enrollmentOfficeTOList = em.createQuery("select eofSup from EnrollmentOfficeTO eofSup " +
                     "where eofSup.deleted = false and eofSup.type = :enrollmentOfficeType " +
                     "and eofSup.id in (select eof.superiorOffice.id from EnrollmentOfficeTO eof " +
-                    "where eof.id = :enrollmentOfficeId)", EnrollmentOfficeTO.class)
+                    "where eof.deleted = false and eof.id = :enrollmentOfficeId)", EnrollmentOfficeTO.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
                     .setParameter("enrollmentOfficeType", EnrollmentOfficeType.NOCR)
                     .getResultList();
@@ -289,7 +289,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 
         try {
             enrollmentOfficeTOs = em.createQuery("select eof from EnrollmentOfficeTO eof, PersonTO per " +
-                    "where eof.deleted =false and eof.manager.id = per.id " +
+                    "where eof.manager.id = per.id " +
                     "and eof.id = :enrollmentOfficeId " +
                     "and eof.manager.id = :managerId", EnrollmentOfficeTO.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
@@ -366,7 +366,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     .createQuery(
                             "UPDATE EnrollmentOfficeTO eof "
                                     + "SET eof.isDeliverEnable = :isDeliverEnable "
-                                    + "WHERE eof.id = :eofId and eof.deleted = false ")
+                                    + "WHERE eof.id = :eofId")
                     .setParameter("eofId", eofId)
                     .setParameter("isDeliverEnable", EOFDeliveryState.toLong(state))
                     .executeUpdate();
@@ -546,7 +546,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             throw new DAOException(DataExceptionCode.ENI_015,
                     DataExceptionCode.ENI_015_MSG, e);
         }
-        return enrollmentOfficeList != null ? enrollmentOfficeList.get(0) : null;
+        return EmsUtil.checkListSize(enrollmentOfficeList)  ? enrollmentOfficeList.get(0) : null;
     }
 
     @Override
@@ -671,7 +671,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException {
         try {
             return em.createQuery(
-                    "select eo from EnrollmentOfficeTO eo where eo.deleted = false "
+                    "select eo from EnrollmentOfficeTO eo "
                             + "order by eo.id asc ", EnrollmentOfficeTO.class).getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);

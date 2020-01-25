@@ -1682,7 +1682,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
         EnrollmentOfficeTO office = getEnrollmentOfficeDAO().findEnrollmentOfficeById(enrollmentOfficeId);
 
-        if (EnrollmentOfficeType.NOCR.equals(office.getType())) {
+        if (office != null && EnrollmentOfficeType.NOCR.equals(office.getType())) {
             return enrollmentOfficeDeletableStates.NOCR_OFFICE;
         }
 

@@ -763,6 +763,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PSI_081 = "EMS_S_PSI_081";
     public static final String PSI_082 = "EMS_S_PSI_082";
     public static final String PSI_083 = "EMS_S_PSI_083";
+    public static final String PSI_084 = "EMS_S_PSI_084";
     public static final String PSI_002_MSG = "There should be a person to persist, it couldn't be null";
     public static final String PSI_003_MSG = "personId couldn't be null, please insert an ID";
     public static final String PSI_006_MSG = "invalid input entry, birth certificate number is empty";
@@ -817,6 +818,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     // public static final String PSI_079_MSG =
     // "The person with the id of '{}', was not found.";
     public static final String PSI_080_MSG = "cannot change department of NOCR manager";
+    public static final String PSI_084_MSG = "cannot select deleted office for department";
 
     // com.gam.nocr.ems.biz.service.internal.impl.UserManagementServiceImpl
     public static final String USI_001 = "EMS_S_USI_001";
