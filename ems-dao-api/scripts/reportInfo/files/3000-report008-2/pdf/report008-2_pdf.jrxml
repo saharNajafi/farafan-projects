@@ -35,9 +35,9 @@
  left join EMST_ENROLLMENT_OFFICE EOF on dep.dep_id = eof.eof_id
  left join EMST_ENROLLMENT_OFFICE SUP on eof.eof_superior_office = sup.eof_id
    where(
-  (( dep.dep_parent_dep_id = $P{nocrDep}) and $P{nocrDep} not in(select eof_id from EMST_ENROLLMENT_OFFICE where eof_is_deleted = 0))
-  or (eof_is_deleted = 0 and (eof.eof_id = $P{nocrDep} or eof.eof_superior_office= $P{nocrDep}))
-  or (eof_is_deleted = 0 and eof.eof_id = $P{nocrDep})
+  (( dep.dep_parent_dep_id = $P{nocrDep}) and $P{nocrDep} not in(select eof_id from EMST_ENROLLMENT_OFFICE))
+  or ((eof.eof_id = $P{nocrDep} or eof.eof_superior_office= $P{nocrDep}))
+  or (eof.eof_id = $P{nocrDep})
   )
   order by mod(DEP_CODE,1000),to_number(DEP_CODE)]]>
 	</queryString>
