@@ -1,5 +1,7 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
+import com.farafan.customLog.enums.CustomLogAction;
+import com.farafan.customLog.enums.CustomLogEntity;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.biz.service.BizLoggable;
 import com.gam.commons.core.biz.service.ServiceException;
@@ -44,10 +46,10 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.*;
 @Stateless(name = "UserManagementService")
 @Local(UserManagementServiceLocal.class)
 @Remote(UserManagementServiceRemote.class)
-public class UserManagementServiceImpl extends EMSAbstractService implements UserManagementServiceLocal, UserManagementServiceRemote , PersonPasswordChange {
+public class UserManagementServiceImpl extends EMSAbstractService implements UserManagementServiceLocal, UserManagementServiceRemote, PersonPasswordChange {
 
     @Override
-    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
+    @CustomLoggable(logAction = CustomLogAction.CHANGE_PASSWORD, logEntityName = CustomLogEntity.PERSON)
     public void needChangePassword(Long userId) {
     }
 

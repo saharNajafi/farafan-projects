@@ -22,7 +22,7 @@ public class PersonTokenTO extends TokenTO implements JSONable {
     private Date deliverDate;
     private String tokenState;
     private String tokenType;
-    private TokenReason ptReason;
+    private TokenReason ptReason = TokenReason.FIRST_TOKEN;
     private String tokenReason;
 
 
@@ -127,6 +127,15 @@ public class PersonTokenTO extends TokenTO implements JSONable {
         this.deliverDate = deliverDate;
     }
 
+    @Transient
+    public String getTokenReason() {
+        return tokenReason;
+    }
+
+    public void setTokenReason(String tokenReason) {
+        this.tokenReason = tokenReason;
+    }
+
     @Override
     public String toString() {
         return toJSON();
@@ -148,14 +157,5 @@ public class PersonTokenTO extends TokenTO implements JSONable {
         }
         jsonObject += "}";
         return jsonObject;
-    }
-
-    @Transient
-    public String getTokenReason() {
-        return tokenReason;
-    }
-
-    public void setTokenReason(String tokenReason) {
-        this.tokenReason = tokenReason;
     }
 }

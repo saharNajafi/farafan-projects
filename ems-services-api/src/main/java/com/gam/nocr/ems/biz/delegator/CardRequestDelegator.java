@@ -73,9 +73,6 @@ public class CardRequestDelegator implements Delegator {
         return getService(null).findRequestCountByAction(cardRequestedAction);
     }
 
-    public CardRequestTO loadById(Long cardRequestId) throws BaseException {
-        return getService(null).loadById(cardRequestId);
-    }
 
     public void doCardRequestRepealActionBySystem(Integer from)
             throws BaseException {

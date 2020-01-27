@@ -480,6 +480,7 @@
                     PT.PTK_ID,
                     PT.PTK_STATE,
                     PT.PTK_TYPE,
+                    PT.PTK_REASON,
                     PT.PTK_ISSUANCE_DATE,
                     PT.PTK_REQUEST_DATE,
                     PT.PTK_DELIVER_DATE,
@@ -507,6 +508,9 @@
                 </part>
                 <part name="tokenType">
                     AND PT.PTK_TYPE = {tokenType}
+                </part>
+                <part name="tokenReason">
+                    AND PT.PTK_REASON = {tokenReason}
                 </part>
                 <part name="adminName">
                     AND (PER.PER_FIRST_NAME LIKE {adminName} or
@@ -551,7 +555,7 @@
                 <field name="deliverDate" column="PTK_DELIVER_DATE"/>
                 <field name="adminName" column="adminName"/>
                 <field name="departmentName" column="DEP_NAME"/>
-
+                <field name="tokenReason" column="PTK_REASON"/>
             </dto-fields>
         </dto>
     </list>
@@ -592,7 +596,7 @@
                 WHERE
                 d.dep_location_id = l.loc_id and
                 l.loc_province_id=lp.loc_id and
-                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo where eo.eof_is_deleted = 0) and
+                d.dep_id not in (select eo.eof_id from emst_enrollment_office eo) and
                 d.dep_id in (<dependency name="personAllDepartmentWithSubDepartment"/>)
                 <part name="address">
                     and d.dep_address like {address}

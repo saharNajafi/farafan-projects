@@ -28,7 +28,7 @@
 
     <persistence-unit name="EmsOraclePUSecond" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <jta-data-source>jdbc/GamNocrEmsOracleDSSecond</jta-data-source>
+        <jta-data-source>jdbc/FarafanNocrEmsOracleDS</jta-data-source>
         <!-- Entities are not cached unless explicitly marked as cacheable -->
 
         <class>com.farafan.customLog.entities.CustomLogTo</class>

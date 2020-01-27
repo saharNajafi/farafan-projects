@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
@@ -145,17 +145,43 @@ public class EMSWS {
     }
 
     public List<String> getCompatibleClientVerList() {
-        List<String> verCodeList = new ArrayList<String>();
+        List<String> newVerCode = new ArrayList();
         try {
             String ccosExactVersions = String.valueOf(EmsUtil.getProfileValue(ProfileKeyName.KEY_CCOS_EXACT_VERSION, DEFAULT_CCOS_EXACT_VERSION));
+            ccosExactVersions = removeInvalidItems(ccosExactVersions);
+            ccosExactVersions.replaceAll("\\s+", "");
             String[] verCode = ccosExactVersions.split(",");
-            if (verCode.length > 0) {
-                Collections.addAll(verCodeList, verCode);
+            String temp;
+            for (int m = 0; m < verCode.length; m++) {
+                temp = verCode[m].trim();
+                if (!temp.isEmpty()) {
+                    newVerCode.add(temp);
+                }
             }
         } catch (Exception ex) {
-            logger.error("Exception occured in get compatible client version list:",ex);
+            logger.error("Exception occured in get compatible client version list:", ex);
         }
-        return verCodeList;
+        return newVerCode;
+    }
+
+    private String removeInvalidItems(String record) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] verCode = record.split(",");
+        String temp;
+        for (int i = 0; i < verCode.length; i++) {
+            temp = verCode[i].trim();
+            if (Pattern.compile("^\\d+((\\.\\d+))*$").matcher(temp).matches()
+                    ||
+                    Pattern.compile("^\\d+((\\.\\d+))*+(.\\*)$").matcher(temp).matches()) {
+                stringBuilder.append(temp).append(",");
+            }
+        }
+
+        String validItems = stringBuilder.toString().trim();
+        if (validItems.isEmpty())
+            return "";
+
+        return validItems.substring(0, validItems.length() - 1);
     }
 //
 //

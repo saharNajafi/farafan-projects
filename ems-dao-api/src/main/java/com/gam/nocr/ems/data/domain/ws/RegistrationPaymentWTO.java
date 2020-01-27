@@ -25,8 +25,8 @@ public class RegistrationPaymentWTO implements Serializable {
     private String resCode;
     private YesNoEnum ignoreICAOPermitted;
     private YesNoEnum defineNMOCPermitted;
-    private String marchantKey;
-    private String terminalId;
+    private String marchantCode;
+    private String terminalCode;
 
     public RegistrationPaymentWTO() {
     }
@@ -158,19 +158,19 @@ public class RegistrationPaymentWTO implements Serializable {
         this.ignoreICAOPermitted = ignoreICAOPermitted;
     }
 
-    public String getMarchantKey() {
-        return marchantKey;
+    public String getMarchantCode() {
+        return marchantCode;
     }
 
-    public void setMarchantKey(String marchantKey) {
-        this.marchantKey = marchantKey;
+    public void setMarchantCode(String marchantCode) {
+        this.marchantCode = marchantCode;
     }
 
-    public String getTerminalId() {
-        return terminalId;
+    public String getTerminalCode() {
+        return terminalCode;
     }
 
-    public void setTerminalId(String terminalId) {
-        this.terminalId = terminalId;
+    public void setTerminalCode(String terminalCode) {
+        this.terminalCode = terminalCode;
     }
 }

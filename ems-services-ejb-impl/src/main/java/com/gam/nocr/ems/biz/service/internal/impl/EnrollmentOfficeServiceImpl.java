@@ -1682,7 +1682,7 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
 
         EnrollmentOfficeTO office = getEnrollmentOfficeDAO().findEnrollmentOfficeById(enrollmentOfficeId);
 
-        if (EnrollmentOfficeType.NOCR.equals(office.getType())) {
+        if (office != null && EnrollmentOfficeType.NOCR.equals(office.getType())) {
             return enrollmentOfficeDeletableStates.NOCR_OFFICE;
         }
 
@@ -1954,6 +1954,25 @@ public class EnrollmentOfficeServiceImpl extends EMSAbstractService implements
         } catch (Exception e) {
             logger.error(BizExceptionCode.EOS_083, e.getMessage(), e);
             throw new ServiceException(BizExceptionCode.EOS_083,
+                    BizExceptionCode.GLB_008_MSG, e);
+        }
+
+    }
+
+    @Override
+    public Boolean getAccessToViewAndChangeOfFeIdSetting(UserProfileTO userProfile)
+            throws BaseException {
+        try {
+            SecurityContextService securityContextService = new SecurityContextService();
+            if (securityContextService.hasAccess(userProfileTO.getUserName(),
+                    "ems_viewAndChangeOfFeIdSetting")) {
+                return true;
+            }
+
+            return false;
+        } catch (Exception e) {
+            logger.error(BizExceptionCode.EOS_107, e.getMessage(), e);
+            throw new ServiceException(BizExceptionCode.EOS_107,
                     BizExceptionCode.GLB_008_MSG, e);
         }
 
