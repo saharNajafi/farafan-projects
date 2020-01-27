@@ -7,6 +7,8 @@ import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
 import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
 
+import com.farafan.customLog.enums.CustomLogAction;
+import com.farafan.customLog.enums.CustomLogEntity;
 import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
 import com.gam.nocr.ems.biz.service.interfaces.PersonPasswordChange;
 import gampooya.tools.vlp.ListException;
@@ -42,40 +44,36 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.SearchResult;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.GAASService;
-import com.gam.nocr.ems.biz.service.PersonManagementService;
-import com.gam.nocr.ems.biz.service.TokenManagementService;
-import com.gam.nocr.ems.biz.service.UserManagementService;
+import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.PersonDAO;
 import com.gam.nocr.ems.data.dao.PersonTokenDAO;
-import com.gam.nocr.ems.data.domain.DepartmentTO;
-import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.domain.PersonTO;
-import com.gam.nocr.ems.data.domain.PersonTokenTO;
-import com.gam.nocr.ems.data.domain.vol.PermissionVTO;
-import com.gam.nocr.ems.data.domain.vol.PermissionVTOWrapper;
-import com.gam.nocr.ems.data.domain.vol.PersonInfoVTO;
-import com.gam.nocr.ems.data.domain.vol.PersonVTO;
-import com.gam.nocr.ems.data.domain.vol.RoleVTO;
-import com.gam.nocr.ems.data.domain.vol.RoleVTOWrapper;
-import com.gam.nocr.ems.data.domain.vol.UserInfoVTO;
-import com.gam.nocr.ems.data.domain.ws.PermissionsWTO;
-import com.gam.nocr.ems.data.enums.BooleanType;
-import com.gam.nocr.ems.data.enums.PersonRequestStatus;
-import com.gam.nocr.ems.data.enums.ReplicaReason;
-import com.gam.nocr.ems.data.enums.TokenOrigin;
-import com.gam.nocr.ems.data.enums.TokenState;
-import com.gam.nocr.ems.data.enums.TokenType;
+import com.gam.nocr.ems.data.domain.*;
+import com.gam.nocr.ems.data.domain.vol.*;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.PersonMapper;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
+import gampooya.tools.vlp.ListException;
+import gampooya.tools.vlp.ValueListHandler;
+import org.apache.commons.validator.EmailValidator;
+import org.displaytag.exception.ListHandlerException;
+import org.nocr.NIN;
+import org.slf4j.Logger;
+
+import javax.annotation.Resource;
+import javax.ejb.*;
+import javax.transaction.UserTransaction;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.*;
 
 /**
  * <p> TODO -- Explain this class </p>
@@ -86,7 +84,7 @@ import com.tangosol.net.NamedCache;
 @Stateless(name = "PersonManagementService")
 @Local(PersonManagementServiceLocal.class)
 @Remote(PersonManagementServiceRemote.class)
-public class PersonManagementServiceImpl extends EMSAbstractService implements PersonManagementServiceLocal, PersonManagementServiceRemote , PersonPasswordChange {
+public class PersonManagementServiceImpl extends EMSAbstractService implements PersonManagementServiceLocal, PersonManagementServiceRemote, PersonPasswordChange {
 
     private static final Logger logger = BaseLog.getLogger(PersonManagementServiceImpl.class);
 
@@ -99,8 +97,8 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Override
     @Permissions(value = "ems_editPerson || ems_addPerson")
     @BizLoggable(logAction = "INSERT", logEntityName = "PERSON")
+    @CustomLoggable(logAction = CustomLogAction.INSERT_PERSON, logEntityName = CustomLogEntity.PERSON)
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    @CustomLoggable(logAction = "INSERT", logEntityName = "PERSON")
     public Long save(PersonVTO to) throws BaseException {
         if (to == null)
             throw new ServiceException(BizExceptionCode.PSI_002, BizExceptionCode.PSI_002_MSG);
@@ -193,7 +191,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     }
 
     @Override
-    @CustomLoggable(logAction = "UPDATE",logEntityName = "PASSWORD")
+    @CustomLoggable(logAction = CustomLogAction.CHANGE_PASSWORD, logEntityName = CustomLogEntity.PERSON)
     public void needChangePassword(Long userId) {
     }
 
@@ -224,7 +222,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
             gaasService.update(personInfoVTO.getUserInfoVTO());
 
             //to logging change-password history:
-            if (to.getPassword()!=null && !to.getPassword().trim().isEmpty()){
+            if (to.getPassword() != null && !to.getPassword().trim().isEmpty()) {
                 needChangePassword(personTO.getId());
             }
 
@@ -890,8 +888,16 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 //			if (!EmsUtil.checkRegex(newPersonTO.getUserName(), EmsUtil.latinAlphaConstraint))
 //				throw new ServiceException(BizExceptionCode.PSI_052, BizExceptionCode.PSI_052_MSG);
             // Department
-            if (newPersonTO.getDepartment().getId() == null)
+            if (newPersonTO.getDepartment().getId() == null) {
                 throw new ServiceException(BizExceptionCode.PSI_018, BizExceptionCode.PSI_018_MSG);
+            }else if(newPersonTO.getDepartment().getId() != null){
+                EnrollmentOfficeDAO enrollmentOfficeDAO = getEnrollmentOfficeDAO();
+                EnrollmentOfficeTO enrollmentOfficeTO = enrollmentOfficeDAO.
+                        findEnrollmentOfficeById(newPersonTO.getDepartment().getId());
+                if(enrollmentOfficeTO == null){
+                    throw new ServiceException(BizExceptionCode.PSI_084, BizExceptionCode.PSI_084_MSG);
+                }
+            }
             else {
                 if (oldPersonTO != null && oldPersonTO.getDepartment() != null) {
                     if (!oldPersonTO.getDepartment().getId().equals(newPersonTO.getDepartment().getId())) {
@@ -899,6 +905,13 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 
                         EnrollmentOfficeTO enrollmentOfficeTO = enrollmentOfficeDAO.
                                 fetchOfficeByIdAndManagerId(oldPersonTO.getDepartment().getId(), oldPersonTO.getId());
+
+                        EnrollmentOfficeTO newEnrollmentOfficeTO = enrollmentOfficeDAO.
+                                findEnrollmentOfficeById(newPersonTO.getDepartment().getId());
+
+                        if(newEnrollmentOfficeTO == null){
+                            throw new ServiceException(BizExceptionCode.PSI_084, BizExceptionCode.PSI_084_MSG);
+                        }
 
                         if (enrollmentOfficeTO != null) {
 

@@ -44,6 +44,8 @@ public class PaymentUtil {
             registrationPaymentTO.setDescription(registrationPaymentWTO.getDescription());
             registrationPaymentTO.setMatchFlag((short) 1);
             registrationPaymentTO.setPaymentType(PaymentTypeEnum.PCPOSE);
+            registrationPaymentTO.setTerminalCode(registrationPaymentWTO.getTerminalCode() != null ? registrationPaymentWTO.getTerminalCode() : "");
+            registrationPaymentTO.setMerchantCode(registrationPaymentTO.getMerchantCode() != null ? registrationPaymentTO.getMerchantCode() : "");
             return registrationPaymentTO;
         } catch (Exception e) {
             throw new BaseException(WebExceptionCode.CPW_016_MSG, WebExceptionCode.CPW_016, e);

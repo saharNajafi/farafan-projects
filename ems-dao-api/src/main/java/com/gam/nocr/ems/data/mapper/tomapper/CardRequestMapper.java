@@ -302,6 +302,8 @@ public class CardRequestMapper {
 
         if (czi.getReligion() != null) {
             wto.setReligionId(czi.getReligion().getId());
+        }else{
+            wto.setReligionId(Long.valueOf(ReligionEnum.ISLAM.getCode()));
         }
         wto.setPostCode(czi.getPostcode());
         wto.setEmail(czi.getEmail());//15

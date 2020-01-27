@@ -1,16 +1,14 @@
 package com.gam.nocr.ems.data.domain.ws;
 
-import java.sql.Timestamp;
-
-import com.gam.nocr.ems.data.enums.IPGProviderEnum;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseLog;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.enums.CardRequestType;
+import com.gam.nocr.ems.data.enums.IPGProviderEnum;
 import com.gam.nocr.ems.util.EmsUtil;
-
 import flexjson.JSON;
+import org.slf4j.Logger;
+
+import java.sql.Timestamp;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -87,7 +85,7 @@ public class CitizenWTO {
 
     private Long isPaid;
     private Timestamp paidDate;
-    private IPGProviderEnum paidBank;
+    private IPGProviderEnum paiedBank;
 
     private static final Logger logger = BaseLog.getLogger(EmsUtil.class);
     private Boolean paymentStatus = Boolean.FALSE;
@@ -648,11 +646,11 @@ public class CitizenWTO {
         this.attendDate = attendDate;
     }
 
-    public IPGProviderEnum getPaidBank() {
-        return paidBank;
+    public IPGProviderEnum getPaiedBank() {
+        return paiedBank;
     }
 
-    public void setPaidBank(IPGProviderEnum paidBank) {
-        this.paidBank = paidBank;
+    public void setPaiedBank(IPGProviderEnum paiedBank) {
+        this.paiedBank = paiedBank;
     }
 }

@@ -1,5 +1,8 @@
 package com.gam.nocr.ems.data.domain.vol;
 
+import com.gam.nocr.ems.config.ConstValues;
+import com.gam.nocr.ems.data.enums.SystemId;
+
 import java.io.Serializable;
 
 /**
@@ -37,9 +40,9 @@ public class IMSErrorInfo implements Serializable{
 
     @Override
     public String toString() {
-        return "IMSErrorInfo{" +
-                "code=" + code +
-                ", desc='" + desc + '\'' +
-                '}';
+        return SystemId.IMS.name() + ":"
+                + ConstValues.GAM_ERROR_WITH_NO_RETRY +
+                "errorCode=" + code +
+                ", errorDescription='" + desc + '\'';
     }
 }

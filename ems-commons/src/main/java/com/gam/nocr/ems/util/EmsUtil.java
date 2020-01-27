@@ -257,6 +257,13 @@ public class EmsUtil {
         return cal.getTime();
     }
 
+   public static Date differMonth(Date date, Integer value) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, value);
+        return cal.getTime();
+    }
+
 
     /**
      * Given a {@link java.util.Date} value, adds number of hours to it (specified as 'value' parameter) and returns a

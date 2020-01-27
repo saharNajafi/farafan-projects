@@ -1,17 +1,5 @@
 package com.gam.nocr.ems.web.listreader.processor;
 
-import gampooya.tools.security.SecurityContextService;
-import gampooya.tools.vlp.ListException;
-import gampooya.tools.vlp.ValueListHandler;
-import gampooya.tools.vlp.ValueListProvider;
-
-import java.sql.Timestamp;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -24,6 +12,14 @@ import com.gam.nocr.ems.biz.service.PersonManagementService;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.util.EmsUtil;
+import gampooya.tools.security.SecurityContextService;
+import gampooya.tools.vlp.ListException;
+import gampooya.tools.vlp.ValueListHandler;
+import gampooya.tools.vlp.ValueListProvider;
+import org.slf4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 public class TokenRenewalRequestProcessor extends EMSVLPListProcessor {
 
@@ -64,6 +60,7 @@ public class TokenRenewalRequestProcessor extends EMSVLPListProcessor {
 		
 		String tokenType = paramProvider.getFilter("tokenType");
 		String tokenState = paramProvider.getFilter("tokenState");
+		String tokenReason = paramProvider.getFilter("tokenReason");
 		String adminName = paramProvider.getFilter("adminName");
 		String departmentName = paramProvider.getFilter("departmentName");
 		String fromDate = paramProvider.getFilter("fromDate");
@@ -76,6 +73,10 @@ public class TokenRenewalRequestProcessor extends EMSVLPListProcessor {
 		if (EmsUtil.checkString(tokenState)) {
 			parameters.put("tokenState", tokenState);
 			parts.append(",tokenState");
+		}
+		if (EmsUtil.checkString(tokenReason)) {
+			parameters.put("tokenReason", tokenReason);
+			parts.append(",tokenReason");
 		}
 		if (EmsUtil.checkString(adminName)) {
 			parameters.put("adminName", "%" + adminName + "%");

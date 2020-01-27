@@ -1,5 +1,7 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
+import com.farafan.customLog.enums.CustomLogAction;
+import com.farafan.customLog.enums.CustomLogEntity;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -15,7 +17,6 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.UserProfileTO;
 import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
-import com.gam.nocr.ems.biz.service.annotations.ExcludeFromCustomLogging;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsDelegate;
 import com.gam.nocr.ems.biz.service.external.client.nocrSms.SmsService;
 import com.gam.nocr.ems.biz.service.external.impl.ims.NOCRIMSOnlineService;
@@ -871,7 +872,7 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
      * @author ganjyar
      */
     @Override
-    @CustomLoggable(logAction = "UPDATE", logEntityName = "CHANGE_PRIORITY")
+    @CustomLoggable(logAction = CustomLogAction.CHANGE_PRIORITY, logEntityName = CustomLogEntity.CARD_REQUEST)
     public void updateCardRequestPriority(
             String cardRequestId,
             String oldPriority,
@@ -889,6 +890,15 @@ public class CardRequestServiceImpl extends EMSAbstractService implements
                         throw new ServiceException(BizExceptionCode.CRE_024,
                                 BizExceptionCode.CRE_024_MSG);
                     cardRequestTO.setPriority(inPriority);
+                    getCardRequestDAO().update(cardRequestTO);
+                    getCardRequestHistoryDAO().create(cardRequestTO,
+                            null,
+                            SystemId.EMS,
+                            null,
+                            CardRequestHistoryAction.PRIORITY_IS_CHANGED,
+                            getUserProfileTO().getUserName());
+
+
                 }
             } else
                 throw new ServiceException(BizExceptionCode.CRE_026,
