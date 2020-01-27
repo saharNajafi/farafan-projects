@@ -73,7 +73,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
         try {
 //EditedByAdldoost
             enrollmentOfficeTOList = em.createQuery("SELECT EOF FROM EnrollmentOfficeTO EOF " +
-                    "WHERE (EOF.lastSyncDate IS NULL ) and  EOF.deleted = false "
+                    "WHERE EOF.lastSyncDate IS NULL and  EOF.deleted = false "
                     + "and ( eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED') "
                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                     + "or eof.type = 'NOCR') "
@@ -196,14 +196,16 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             // em.flush();
             enrollmentOfficeTOList = em
                     .createQuery(
-                            "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.deleted = false and EOF1.id NOT IN "
+                            "SELECT EOF1 FROM EnrollmentOfficeTO EOF1 where (EOF1.id NOT IN "
                                     + "(SELECT EOF.id FROM EnrollmentOfficeTO EOF "
-                                    + "where eof.deleted = false and (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
+                                    + "where (eof.id in (select ntk1.enrollmentOffice.id from NetworkTokenTO NTK1 where ntk1.state = 'DELIVERED' ) "
                                     + "or eof.id not in (select ntk2.enrollmentOffice.id from NetworkTokenTO NTK2) "
                                     + "or eof.type = 'NOCR'))) "
                                     + "and "
                                     + "((EOF1.lastSyncDate IS NOT NULL AND EOF1.lastSyncDate < EOF1.lastModifiedDate) OR "
-                                    + "(EOF1.lastSyncDate < EOF1.parentDepartment.lastModifiedDate)) ",
+                                    + "(EOF1.lastSyncDate < EOF1.parentDepartment.lastModifiedDate)) "
+                                    + "or "
+                                    + "EOF1.deleted = true ",
                             EnrollmentOfficeTO.class).getResultList();
             em.flush();
         } catch (Exception e) {
@@ -233,7 +235,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             enrollmentOfficeTOList = em.createQuery("select eofSup from EnrollmentOfficeTO eofSup " +
                     "where eofSup.deleted = false and eofSup.type = :enrollmentOfficeType " +
                     "and eofSup.id in (select eof.superiorOffice.id from EnrollmentOfficeTO eof " +
-                    "where eof.id = :enrollmentOfficeId)", EnrollmentOfficeTO.class)
+                    "where eof.deleted = false and eof.id = :enrollmentOfficeId)", EnrollmentOfficeTO.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
                     .setParameter("enrollmentOfficeType", EnrollmentOfficeType.NOCR)
                     .getResultList();
@@ -289,7 +291,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
 
         try {
             enrollmentOfficeTOs = em.createQuery("select eof from EnrollmentOfficeTO eof, PersonTO per " +
-                    "where eof.deleted =false and eof.manager.id = per.id " +
+                    "where eof.manager.id = per.id " +
                     "and eof.id = :enrollmentOfficeId " +
                     "and eof.manager.id = :managerId", EnrollmentOfficeTO.class)
                     .setParameter("enrollmentOfficeId", enrollmentOfficeId)
@@ -366,7 +368,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
                     .createQuery(
                             "UPDATE EnrollmentOfficeTO eof "
                                     + "SET eof.isDeliverEnable = :isDeliverEnable "
-                                    + "WHERE eof.id = :eofId and eof.deleted = false ")
+                                    + "WHERE eof.id = :eofId")
                     .setParameter("eofId", eofId)
                     .setParameter("isDeliverEnable", EOFDeliveryState.toLong(state))
                     .executeUpdate();
@@ -546,7 +548,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             throw new DAOException(DataExceptionCode.ENI_015,
                     DataExceptionCode.ENI_015_MSG, e);
         }
-        return enrollmentOfficeList != null ? enrollmentOfficeList.get(0) : null;
+        return EmsUtil.checkListSize(enrollmentOfficeList) ? enrollmentOfficeList.get(0) : null;
     }
 
     @Override
@@ -671,7 +673,7 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
     public List<EnrollmentOfficeTO> getEnrollmentOfficeList() throws BaseException {
         try {
             return em.createQuery(
-                    "select eo from EnrollmentOfficeTO eo where eo.deleted = false "
+                    "select eo from EnrollmentOfficeTO eo "
                             + "order by eo.id asc ", EnrollmentOfficeTO.class).getResultList();
         } catch (Exception e) {
             throw new DAOException(DataExceptionCode.ENI_010, DataExceptionCode.GLB_005_MSG, e);
@@ -743,14 +745,14 @@ public class EnrollmentOfficeDAOImpl extends EmsBaseDAOImpl<EnrollmentOfficeTO> 
             query.setParameter("eofID", enrollmentOfficeId);
             List resultList = query.getResultList();
             if (resultList.size() != 0) {
-                    Object[] officeTo = (Object[]) resultList.get(0);
+                Object[] officeTo = (Object[]) resultList.get(0);
                 enrollmentOfficeSingleStageTO = new EnrollmentOfficeSingleStageVTO();
-                    enrollmentOfficeSingleStageTO.setEOF_IGNORE_ICAO_PERMITTED(convertBigDecimalToBoolean(officeTo[0]));
-                    enrollmentOfficeSingleStageTO.setEOF_HAS_STAIR(convertBigDecimalToBoolean(officeTo[1]));
-                    enrollmentOfficeSingleStageTO.setEOF_HAS_ELEVATOR(convertBigDecimalToBoolean(officeTo[2]));
-                    enrollmentOfficeSingleStageTO.setEOF_HAS_PORTABILITY_EQUIPMENT(convertBigDecimalToBoolean(officeTo[3]));
-                    enrollmentOfficeSingleStageTO.setEOF_DEFINE_NMOC_PERMITTED(convertBigDecimalToBoolean(officeTo[4]));
-                    enrollmentOfficeSingleStageTO.setEOF_IS_ACTIVE(convertBigDecimalToBoolean(officeTo[5]));
+                enrollmentOfficeSingleStageTO.setEOF_IGNORE_ICAO_PERMITTED(convertBigDecimalToBoolean(officeTo[0]));
+                enrollmentOfficeSingleStageTO.setEOF_HAS_STAIR(convertBigDecimalToBoolean(officeTo[1]));
+                enrollmentOfficeSingleStageTO.setEOF_HAS_ELEVATOR(convertBigDecimalToBoolean(officeTo[2]));
+                enrollmentOfficeSingleStageTO.setEOF_HAS_PORTABILITY_EQUIPMENT(convertBigDecimalToBoolean(officeTo[3]));
+                enrollmentOfficeSingleStageTO.setEOF_DEFINE_NMOC_PERMITTED(convertBigDecimalToBoolean(officeTo[4]));
+                enrollmentOfficeSingleStageTO.setEOF_IS_ACTIVE(convertBigDecimalToBoolean(officeTo[5]));
             }
         } catch (Exception e) {
             throw new DataException(

@@ -1,34 +1,5 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_ENROLLMENT_OFFICE;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_PERSON;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_PERSON_TOKEN;
-import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
-
-import gampooya.tools.vlp.ListException;
-import gampooya.tools.vlp.ValueListHandler;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.transaction.UserTransaction;
-
-import org.apache.commons.validator.EmailValidator;
-import org.displaytag.exception.ListHandlerException;
-import org.nocr.NIN;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -40,40 +11,36 @@ import com.gam.commons.core.biz.service.factory.ServiceFactoryProvider;
 import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.SearchResult;
-import com.gam.nocr.ems.biz.service.EMSAbstractService;
-import com.gam.nocr.ems.biz.service.GAASService;
-import com.gam.nocr.ems.biz.service.PersonManagementService;
-import com.gam.nocr.ems.biz.service.TokenManagementService;
-import com.gam.nocr.ems.biz.service.UserManagementService;
+import com.gam.nocr.ems.biz.service.*;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
 import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.dao.PersonDAO;
 import com.gam.nocr.ems.data.dao.PersonTokenDAO;
-import com.gam.nocr.ems.data.domain.DepartmentTO;
-import com.gam.nocr.ems.data.domain.EMSAutocompleteTO;
-import com.gam.nocr.ems.data.domain.EnrollmentOfficeTO;
-import com.gam.nocr.ems.data.domain.PersonTO;
-import com.gam.nocr.ems.data.domain.PersonTokenTO;
-import com.gam.nocr.ems.data.domain.vol.PermissionVTO;
-import com.gam.nocr.ems.data.domain.vol.PermissionVTOWrapper;
-import com.gam.nocr.ems.data.domain.vol.PersonInfoVTO;
-import com.gam.nocr.ems.data.domain.vol.PersonVTO;
-import com.gam.nocr.ems.data.domain.vol.RoleVTO;
-import com.gam.nocr.ems.data.domain.vol.RoleVTOWrapper;
-import com.gam.nocr.ems.data.domain.vol.UserInfoVTO;
-import com.gam.nocr.ems.data.domain.ws.PermissionsWTO;
-import com.gam.nocr.ems.data.enums.BooleanType;
-import com.gam.nocr.ems.data.enums.PersonRequestStatus;
-import com.gam.nocr.ems.data.enums.ReplicaReason;
-import com.gam.nocr.ems.data.enums.TokenOrigin;
-import com.gam.nocr.ems.data.enums.TokenState;
-import com.gam.nocr.ems.data.enums.TokenType;
+import com.gam.nocr.ems.data.domain.*;
+import com.gam.nocr.ems.data.domain.vol.*;
+import com.gam.nocr.ems.data.enums.*;
 import com.gam.nocr.ems.data.mapper.tomapper.PersonMapper;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
+import gampooya.tools.vlp.ListException;
+import gampooya.tools.vlp.ValueListHandler;
+import org.apache.commons.validator.EmailValidator;
+import org.displaytag.exception.ListHandlerException;
+import org.nocr.NIN;
+import org.slf4j.Logger;
+
+import javax.annotation.Resource;
+import javax.ejb.*;
+import javax.transaction.UserTransaction;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.gam.nocr.ems.config.EMSLogicalNames.*;
 
 /**
  * <p> TODO -- Explain this class </p>
@@ -850,8 +817,16 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 //			if (!EmsUtil.checkRegex(newPersonTO.getUserName(), EmsUtil.latinAlphaConstraint))
 //				throw new ServiceException(BizExceptionCode.PSI_052, BizExceptionCode.PSI_052_MSG);
             // Department
-            if (newPersonTO.getDepartment().getId() == null)
+            if (newPersonTO.getDepartment().getId() == null) {
                 throw new ServiceException(BizExceptionCode.PSI_018, BizExceptionCode.PSI_018_MSG);
+            }else if(newPersonTO.getDepartment().getId() != null){
+                EnrollmentOfficeDAO enrollmentOfficeDAO = getEnrollmentOfficeDAO();
+                EnrollmentOfficeTO enrollmentOfficeTO = enrollmentOfficeDAO.
+                        findEnrollmentOfficeById(newPersonTO.getDepartment().getId());
+                if(enrollmentOfficeTO == null){
+                    throw new ServiceException(BizExceptionCode.PSI_084, BizExceptionCode.PSI_084_MSG);
+                }
+            }
             else {
                 if (oldPersonTO != null && oldPersonTO.getDepartment() != null) {
                     if (!oldPersonTO.getDepartment().getId().equals(newPersonTO.getDepartment().getId())) {
@@ -859,6 +834,13 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
 
                         EnrollmentOfficeTO enrollmentOfficeTO = enrollmentOfficeDAO.
                                 fetchOfficeByIdAndManagerId(oldPersonTO.getDepartment().getId(), oldPersonTO.getId());
+
+                        EnrollmentOfficeTO newEnrollmentOfficeTO = enrollmentOfficeDAO.
+                                findEnrollmentOfficeById(newPersonTO.getDepartment().getId());
+
+                        if(newEnrollmentOfficeTO == null){
+                            throw new ServiceException(BizExceptionCode.PSI_084, BizExceptionCode.PSI_084_MSG);
+                        }
 
                         if (enrollmentOfficeTO != null) {
 
