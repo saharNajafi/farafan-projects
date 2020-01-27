@@ -68,7 +68,7 @@ public class NewExactTest {
             temp = verCode[i].trim();
             if (Pattern.compile("^\\d+((\\.\\d+))*$").matcher(temp).matches()
                     ||
-                    Pattern.compile("^\\d+((\\.\\d))*+(.\\*)$").matcher(temp).matches()) {
+                    Pattern.compile("^\\d+((\\.\\d+))*+(.\\*)$").matcher(temp).matches()) {
                 stringBuilder.append(temp).append(",");
             }
         }
