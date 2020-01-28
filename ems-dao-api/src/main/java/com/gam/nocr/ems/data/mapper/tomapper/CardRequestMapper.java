@@ -305,7 +305,7 @@ public class CardRequestMapper {
         if (czi.getReligion() != null) {
             wto.setReligionId(czi.getReligion().getId());
         }else {
-            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
+            wto.setReligionId(Long.valueOf(ReligionEnum.ISLAM.getCode()));
         }
         wto.setPostCode(czi.getPostcode());
         wto.setEmail(czi.getEmail());//15
@@ -488,6 +488,8 @@ public class CardRequestMapper {
         }
         if (citizenVTO.getReligionId() != null) {
             czi.setReligion(new ReligionTO(citizenVTO.getReligionId()));
+        }else {
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
         czi.setMobile(citizenVTO.getCellNo());
 

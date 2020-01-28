@@ -1,7 +1,9 @@
 package com.gam.nocr.ems.data.util;
 
 import com.gam.commons.core.BaseException;
-import com.gam.nocr.ems.config.*;
+import com.gam.nocr.ems.config.ConstValues;
+import com.gam.nocr.ems.config.MapperExceptionCode;
+import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.domain.ws.PaymentWTO;
 import com.gam.nocr.ems.data.domain.ws.RegistrationPaymentWTO;
@@ -9,12 +11,12 @@ import com.gam.nocr.ems.data.domain.ws.SinglePreRegistrationWTO;
 import com.gam.nocr.ems.data.enums.CardRequestOrigin;
 import com.gam.nocr.ems.data.enums.GenderEnum;
 import com.gam.nocr.ems.data.enums.IPGProviderEnum;
+import com.gam.nocr.ems.data.enums.ReligionEnum;
 import com.gam.nocr.ems.util.CalendarUtil;
 import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NationalIDUtil;
 import gampooya.tools.date.DateFormatException;
-import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -77,7 +79,11 @@ public class PaymentUtil {
                 throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e,
                         new String[]{singlePreRegistrationWTO.getGender().toString()});
             }
-            czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
+            if (singlePreRegistrationWTO.getReligion() != null && singlePreRegistrationWTO.getReligion().getCode() != null) {
+                czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
+            } else {
+                czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
+            }
             czi.setMobile(singlePreRegistrationWTO.getCellphoneNumber());
             czi.setBirthCertificateSeries(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()));
             try {
