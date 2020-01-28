@@ -17,6 +17,7 @@ import com.gam.nocr.ems.data.domain.ws.SpouseWTO;
 import com.gam.nocr.ems.data.enums.CardRequestState;
 import com.gam.nocr.ems.data.enums.CardRequestType;
 import com.gam.nocr.ems.data.enums.Gender;
+import com.gam.nocr.ems.data.enums.ReligionEnum;
 import com.gam.nocr.ems.util.EmsUtil;
 import gampooya.tools.date.DateFormatException;
 import gampooya.tools.date.DateUtil;
@@ -300,6 +301,8 @@ public class CardRequestMapper {
 
         if (czi.getReligion() != null) {
             wto.setReligionId(czi.getReligion().getId());
+        }else {
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
         wto.setPostCode(czi.getPostcode());
         wto.setEmail(czi.getEmail());//15
