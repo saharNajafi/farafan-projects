@@ -35,7 +35,7 @@ public class CitizenInfoMapper {
         if (to.getReligion()!=null) {
             vto.setReligion(to.getReligion().getName());
         }else {
-            vto.setReligion(ReligionEnum.ISLAM.getCode());
+            vto.setReligion(ReligionEnum.ISLAM.getName());
         }
         vto.setAddress(to.getAddress());
         vto.setPhone(to.getPhone());
