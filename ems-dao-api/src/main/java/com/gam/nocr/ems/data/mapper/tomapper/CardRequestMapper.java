@@ -99,6 +99,9 @@ public class CardRequestMapper {
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
         }
+        else {
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
+        }
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(wto.getEmail());
         /* Decided to use birthCertificateIssuancePlace instead of birthCertPrvId
@@ -686,6 +689,9 @@ public class CardRequestMapper {
         }
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
+        }
+        else {
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(ConstValues.DEFAULT_NAMES_EN);
