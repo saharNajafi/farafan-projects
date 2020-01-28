@@ -819,11 +819,11 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
             // Department
             if (newPersonTO.getDepartment().getId() == null) {
                 throw new ServiceException(BizExceptionCode.PSI_018, BizExceptionCode.PSI_018_MSG);
-            }else if(newPersonTO.getDepartment().getId() != null){
+            }else if(oldPersonTO == null && newPersonTO.getDepartment().getId() != null){
                 EnrollmentOfficeDAO enrollmentOfficeDAO = getEnrollmentOfficeDAO();
                 EnrollmentOfficeTO enrollmentOfficeTO = enrollmentOfficeDAO.
                         findEnrollmentOfficeById(newPersonTO.getDepartment().getId());
-                if(enrollmentOfficeTO == null){
+                if(enrollmentOfficeTO != null && enrollmentOfficeTO.getDeleted()){
                     throw new ServiceException(BizExceptionCode.PSI_084, BizExceptionCode.PSI_084_MSG);
                 }
             }
@@ -838,7 +838,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
                         EnrollmentOfficeTO newEnrollmentOfficeTO = enrollmentOfficeDAO.
                                 findEnrollmentOfficeById(newPersonTO.getDepartment().getId());
 
-                        if(newEnrollmentOfficeTO == null){
+                        if(newEnrollmentOfficeTO != null && newEnrollmentOfficeTO.getDeleted()){
                             throw new ServiceException(BizExceptionCode.PSI_084, BizExceptionCode.PSI_084_MSG);
                         }
 
