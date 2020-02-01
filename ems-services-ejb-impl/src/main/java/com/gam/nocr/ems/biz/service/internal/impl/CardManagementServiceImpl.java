@@ -2338,16 +2338,6 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
     }
 
     /**
-     * This method fetch lost cards which are confirmed by manager in 3s
-     *
-     * @author ganjyar
-     */
-    @Override
-    public List<CardDispatchInfoVTO> fetchCardLostTempList(
-            GeneralCriteria criteria) throws BaseException {
-        try {
-            return getCardDAO().fetchCardLostTempList(criteria);
-    /**
 	 * this method is used to unconfirm lost card in 3s
 	 * @author Namjoofar
 	 */
@@ -2564,9 +2554,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * @author ganjyar
      */
     @Override
-    public ImsCitizenInfoResponseWTO doImsVerificationInDelivery(
-            ImsCitizenInfoRequestWTO imsCitizenInfoRequest)
-            throws BaseException {
+    public ImsCitizenInfoResponseWTO doImsVerificationInDelivery(ImsCitizenInfoRequestWTO imsCitizenInfoRequest) throws BaseException {
         try {
             Long reqId = imsCitizenInfoRequest.getRequestId();
             if (reqId != null) {
@@ -2693,8 +2681,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * @throws BaseException
      * @author ganjyar
      */
-    private void notifyUnsuccessfulDeliveryForCutFingersChanged(Long requestID,
-                                                                UnSuccessfulDeliveryRequestReason reason) throws BaseException {
+    private void notifyUnsuccessfulDeliveryForCutFingersChanged(Long requestID, UnSuccessfulDeliveryRequestReason reason) throws BaseException {
         CardRequestTO cardRequestTO = getCardRequestDAO().find(
                 CardRequestTO.class, requestID);
         if (cardRequestTO == null) {
