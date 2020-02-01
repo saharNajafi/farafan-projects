@@ -23,7 +23,7 @@ import java.util.List;
                 name = "EnrollmentOfficeTO.findEnrollmentOfficeById",
                 query = " select eof" +
                         " from EnrollmentOfficeTO eof" +
-                        " where eof.id =:eofId and eof.deleted = false "
+                        " where eof.id =:eofId "
         )
 })
 @PrimaryKeyJoinColumn(name = "EOF_ID", referencedColumnName = "DEP_ID")

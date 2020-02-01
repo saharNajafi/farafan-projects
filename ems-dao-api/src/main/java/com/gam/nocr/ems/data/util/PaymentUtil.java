@@ -79,14 +79,11 @@ public class PaymentUtil {
                 throw new BaseException(MapperExceptionCode.CRM_005, MapperExceptionCode.CRM_005_MSG, e,
                         new String[]{singlePreRegistrationWTO.getGender().toString()});
             }
-
             if (singlePreRegistrationWTO.getReligion() != null && singlePreRegistrationWTO.getReligion().getCode() != null) {
                 czi.setReligion(new ReligionTO(Long.valueOf(singlePreRegistrationWTO.getReligion().getCode())));
             } else {
                 czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
             }
-
-
             czi.setMobile(singlePreRegistrationWTO.getCellphoneNumber());
             czi.setBirthCertificateSeries(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()));
             try {

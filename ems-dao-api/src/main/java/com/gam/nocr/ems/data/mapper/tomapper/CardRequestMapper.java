@@ -96,13 +96,12 @@ public class CardRequestMapper {
                 throw new BaseException(MapperExceptionCode.CRM_011, MapperExceptionCode.CRM_005_MSG, e, new String[]{wto.getGender()});
             }
         }
-
         if (wto.getReligionId() != null) {
             czi.setReligion(new ReligionTO(wto.getReligionId()));
-        } else {
+        }
+        else {
             czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
-
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(wto.getEmail());
         /* Decided to use birthCertificateIssuancePlace instead of birthCertPrvId
@@ -302,7 +301,7 @@ public class CardRequestMapper {
 
         if (czi.getReligion() != null) {
             wto.setReligionId(czi.getReligion().getId());
-        }else{
+        }else {
             wto.setReligionId(Long.valueOf(ReligionEnum.ISLAM.getCode()));
         }
         wto.setPostCode(czi.getPostcode());
@@ -486,6 +485,8 @@ public class CardRequestMapper {
         }
         if (citizenVTO.getReligionId() != null) {
             czi.setReligion(new ReligionTO(citizenVTO.getReligionId()));
+        }else {
+            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
         czi.setMobile(citizenVTO.getCellNo());
 
