@@ -2,7 +2,6 @@ package com.gam.nocr.ems.data.mapper.tomapper;
 
 import com.gam.nocr.ems.data.domain.CitizenInfoTO;
 import com.gam.nocr.ems.data.domain.vol.CitizenInfoVTO;
-import com.gam.nocr.ems.data.enums.ReligionEnum;
 
 /**
  * Created by hossein on 12/21/2015.
@@ -34,8 +33,6 @@ public class CitizenInfoMapper {
         }
         if (to.getReligion()!=null) {
             vto.setReligion(to.getReligion().getName());
-        }else {
-            vto.setReligion(ReligionEnum.ISLAM.getName());
         }
         vto.setAddress(to.getAddress());
         vto.setPhone(to.getPhone());
