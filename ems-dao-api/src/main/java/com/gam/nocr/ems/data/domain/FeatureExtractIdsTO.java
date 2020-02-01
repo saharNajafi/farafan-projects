@@ -67,10 +67,10 @@ public class FeatureExtractIdsTO extends ExtEntityTO{
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof ReligionTO)) {
+        if (!(obj instanceof FeatureExtractIdsTO)) {
             return false;
         }
-        ReligionTO other = (ReligionTO) obj;
+        FeatureExtractIdsTO other = (FeatureExtractIdsTO) obj;
         if (this.getId() == null ||
                 other.getId() == null) {
             return false;
