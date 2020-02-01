@@ -691,9 +691,6 @@ public class CardRequestMapper {
         } else {
             czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
         }
-        else {
-            czi.setReligion(new ReligionTO(Long.valueOf(ReligionEnum.ISLAM.getCode())));
-        }
         czi.setPostcode(wto.getPostCode());
         czi.setEmail(ConstValues.DEFAULT_NAMES_EN);
         czi.setBirthCertificateIssuancePlace(wto.getBirthCertPrvName());
