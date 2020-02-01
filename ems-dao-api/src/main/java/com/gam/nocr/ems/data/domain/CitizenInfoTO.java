@@ -86,6 +86,51 @@ public class CitizenInfoTO extends ExtEntityTO implements JSONable {
         this.livingCity = livingCity;
     }
 
+    public CitizenInfoTO(CitizenInfoTO citizenInfoTO) {
+        this.citizen = citizenInfoTO.citizen;
+        this.firstNameEnglish = citizenInfoTO.firstNameEnglish;
+        this.surnameEnglish = citizenInfoTO.surnameEnglish;
+        this.birthDateGregorian = citizenInfoTO.birthDateGregorian;
+        this.birthDateSolar = citizenInfoTO.birthDateSolar;
+        this.birthDateLunar = citizenInfoTO.birthDateLunar;
+        this.fatherFirstNamePersian = citizenInfoTO.fatherFirstNamePersian;
+        this.fatherFirstNameEnglish = citizenInfoTO.fatherFirstNameEnglish;
+        this.gender = citizenInfoTO.gender;
+        this.birthCertificateIssuancePlaceProvince = citizenInfoTO.birthCertificateIssuancePlaceProvince;
+        this.fatherNationalID = citizenInfoTO.fatherNationalID;
+        this.motherFirstNamePersian = citizenInfoTO.motherFirstNamePersian;
+        this.motherNationalID = citizenInfoTO.motherNationalID;
+        this.identityChanged = citizenInfoTO.identityChanged;
+        this.email = citizenInfoTO.email;
+        this.fatherBirthDateSolar = citizenInfoTO.fatherBirthDateSolar;
+        this.motherBirthDateSolar = citizenInfoTO.motherBirthDateSolar;
+        this.religion = citizenInfoTO.religion;
+        this.postcode = citizenInfoTO.postcode;
+        this.birthCertificateId = citizenInfoTO.birthCertificateId;
+        this.birthCertificateSeries = citizenInfoTO.birthCertificateSeries;
+        this.living = citizenInfoTO.living;
+        this.livingCity = citizenInfoTO.livingCity;
+        this.fatherFatherName = citizenInfoTO.fatherFatherName;
+        this.fatherSurname = citizenInfoTO.fatherSurname;
+        this.fatherBirthCertificateId = citizenInfoTO.fatherBirthCertificateId;
+        this.fatherBirthCertificateSeries = citizenInfoTO.fatherBirthCertificateSeries;
+        this.motherSurname = citizenInfoTO.motherSurname;
+        this.motherFatherName = citizenInfoTO.motherFatherName;
+        this.motherBirthCertificateId = citizenInfoTO.motherBirthCertificateId;
+        this.motherBirthCertificateSeries = citizenInfoTO.motherBirthCertificateSeries;
+        this.address = citizenInfoTO.address;
+        this.phone = citizenInfoTO.phone;
+        this.mobile = citizenInfoTO.mobile;
+        this.afisState = citizenInfoTO.afisState;
+        this.birthCertificateIssuancePlace = citizenInfoTO.birthCertificateIssuancePlace;
+        this.faceDisabilityStatus = citizenInfoTO.faceDisabilityStatus;
+        this.spouses = citizenInfoTO.spouses;
+        this.children = citizenInfoTO.children;
+        this.biometrics = citizenInfoTO.biometrics;
+        this.documents = citizenInfoTO.documents;
+        this.setId(this.citizen.getId());
+    }
+
     @Id
     public Long getId() {
         return super.getId();
