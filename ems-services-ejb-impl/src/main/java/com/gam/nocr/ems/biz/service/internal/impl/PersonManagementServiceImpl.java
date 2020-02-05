@@ -1,38 +1,7 @@
 package com.gam.nocr.ems.biz.service.internal.impl;
 
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_ENROLLMENT_OFFICE;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_PERSON;
-import static com.gam.nocr.ems.config.EMSLogicalNames.DAO_PERSON_TOKEN;
-import static com.gam.nocr.ems.config.EMSLogicalNames.SRV_GAAS;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getDaoJNDIName;
-import static com.gam.nocr.ems.config.EMSLogicalNames.getExternalServiceJNDIName;
-
 import com.farafan.customLog.enums.CustomLogAction;
 import com.farafan.customLog.enums.CustomLogEntity;
-import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
-import com.gam.nocr.ems.biz.service.interfaces.PersonPasswordChange;
-import gampooya.tools.vlp.ListException;
-import gampooya.tools.vlp.ValueListHandler;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.transaction.UserTransaction;
-
-import org.apache.commons.validator.EmailValidator;
-import org.displaytag.exception.ListHandlerException;
-import org.nocr.NIN;
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.delegator.DelegatorException;
@@ -45,6 +14,8 @@ import com.gam.commons.core.data.dao.factory.DAOFactoryException;
 import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
 import com.gam.commons.core.data.domain.SearchResult;
 import com.gam.nocr.ems.biz.service.*;
+import com.gam.nocr.ems.biz.service.annotations.CustomLoggable;
+import com.gam.nocr.ems.biz.service.interfaces.PersonPasswordChange;
 import com.gam.nocr.ems.config.BizExceptionCode;
 import com.gam.nocr.ems.config.EMSLogicalNames;
 import com.gam.nocr.ems.config.EMSValueListProvider;
@@ -193,6 +164,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
     @Override
     @CustomLoggable(logAction = CustomLogAction.CHANGE_PASSWORD, logEntityName = CustomLogEntity.PERSON)
     public void needChangePassword(Long userId) {
+        return;
     }
 
     @Override
