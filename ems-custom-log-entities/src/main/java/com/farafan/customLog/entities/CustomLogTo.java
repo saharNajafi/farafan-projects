@@ -28,10 +28,6 @@ public class CustomLogTo extends ExtEntityTO {
     private Boolean isActionSuccess;
 
 
-    private String actionNameStr;
-    private String entityNameStr;
-    private String status;
-
     public CustomLogTo() {
     }
 
@@ -132,38 +128,6 @@ public class CustomLogTo extends ExtEntityTO {
     public void setActionSuccess(Boolean actionSuccess) {
         this.isActionSuccess = actionSuccess;
     }
-
-    @Transient
-    @JSON(include = false)
-    public String getActionNameStr() {
-        return actionNameStr;
-    }
-
-    public void setActionNameStr(String actionNameStr) {
-        this.actionNameStr = actionNameStr;
-    }
-
-    @Transient
-    @JSON(include = false)
-    public String getEntityNameStr() {
-        return entityNameStr;
-    }
-
-    public void setEntityNameStr(String entityNameStr) {
-        this.entityNameStr = entityNameStr;
-    }
-
-    @Transient
-    @JSON(include = false)
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
 
     @Override
     public String toString() {

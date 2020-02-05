@@ -51,6 +51,7 @@ public class UserManagementServiceImpl extends EMSAbstractService implements Use
     @Override
     @CustomLoggable(logAction = CustomLogAction.CHANGE_PASSWORD, logEntityName = CustomLogEntity.PERSON)
     public void needChangePassword(Long userId) {
+        return;
     }
 
     @Override

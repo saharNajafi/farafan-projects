@@ -1,8 +1,6 @@
 package com.gam.nocr.ems.biz.service.aspects;
 
 import com.farafan.customLog.entities.CustomLogTo;
-import com.farafan.customLog.enums.CustomLogAction;
-import com.farafan.customLog.enums.CustomLogEntity;
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.biz.service.AbstractService;
@@ -35,7 +33,7 @@ import java.util.Date;
 public class CustomSystemLogger {
 
     private static final Logger logger = BaseLog.getLogger("CustomSystemLogger");
-    private static final String DEFAULT_ENTITY_ID = " ";
+    private static final String DEFAULT_ENTITY_ID = "";
     private static final String INPUT_VALUE = "input:";
     private static final String OUTPUT_VALUE = "output:";
     private static final String NULL_VALUE = "null";
@@ -47,7 +45,7 @@ public class CustomSystemLogger {
     public void customLogAfterReturning(CustomLoggable logData,
                                         JoinPoint thisJoinPoint,
                                         Object returnValue) {
-        //Object returnValue) throws BaseException {
+        //Object returnValue throws BaseException {
         try {
             CustomLogTo customLogTo = prepareLogFields(logData, thisJoinPoint);
             String additionalData = customLogTo.getAdditionalData();
