@@ -19,7 +19,7 @@ import javax.ejb.*;
 @Remote(CustomLogServiceRemote.class)
 public class CustomLogServiceImpl extends EMSAbstractService implements CustomLogServiceRemote, CustomLogServiceLocal {
 
-    private static final Logger logger = BaseLog.getLogger("CustomLogger");
+    private static final Logger logger = BaseLog.getLogger("CustomSystemLogger");
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
