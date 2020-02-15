@@ -4650,10 +4650,6 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             createCardRequestHistory(crqIds,
                     imsUpdateResultVTO.getRequestID(), result,
                     CardRequestHistoryAction.AFIS_RECEIVE_ERROR);
-
-            if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
-                createImsResultErrorMessage(crq, imsUpdateResultVTO);
-            }
         }
     }
 
