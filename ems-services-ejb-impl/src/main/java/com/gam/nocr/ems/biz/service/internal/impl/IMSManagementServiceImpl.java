@@ -4545,7 +4545,9 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
-
+            if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
+                createImsResultErrorMessage(crq, imsUpdateResultVTO);
+            }
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000021")) // Delete
         // IMAGE
         {
@@ -4558,7 +4560,9 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
 
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
-
+            if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
+                createImsResultErrorMessage(crq, imsUpdateResultVTO);
+            }
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000022")) // Delete
         // Finger
         {
@@ -4603,7 +4607,9 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             getCardRequestHistoryDAO().create(crq,
                     imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_REJECT, null);
-
+            if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
+                createImsResultErrorMessage(crq, imsUpdateResultVTO);
+            }
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000004")) {
 
             String result;
@@ -4644,10 +4650,6 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             createCardRequestHistory(crqIds,
                     imsUpdateResultVTO.getRequestID(), result,
                     CardRequestHistoryAction.AFIS_RECEIVE_ERROR);
-
-            if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
-                createImsResultErrorMessage(crq, imsUpdateResultVTO);
-            }
         }
     }
 
@@ -4660,7 +4662,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             for (IMSErrorInfo errorCode : errorCodes) {
                 createCardRequestHistory(crqIds,
                         imsUpdateResultVTO.getRequestID(), errorCode.toString(),
-                        CardRequestHistoryAction.AFIS_RECEIVE_ERROR);
+                        CardRequestHistoryAction.AFIS_REJECT);
             }
         }
     }
