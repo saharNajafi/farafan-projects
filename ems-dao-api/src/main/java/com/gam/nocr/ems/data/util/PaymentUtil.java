@@ -17,6 +17,7 @@ import com.gam.nocr.ems.util.Configuration;
 import com.gam.nocr.ems.util.EmsUtil;
 import com.gam.nocr.ems.util.NationalIDUtil;
 import gampooya.tools.date.DateFormatException;
+import gampooya.tools.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -87,7 +88,7 @@ public class PaymentUtil {
             czi.setMobile(singlePreRegistrationWTO.getCellphoneNumber());
             czi.setBirthCertificateSeries(String.valueOf(singlePreRegistrationWTO.getCertSerialNo()));
             try {
-                czi.setFatherBirthDateSolar(gampooya.tools.date.DateUtil.convert(ConstValues.DEFAULT_DATE, gampooya.tools.date.DateUtil.JALALI));
+                czi.setFatherBirthDateSolar(gampooya.tools.date.DateUtil.convert(ConstValues.DEFAULT_DATE, DateUtil.JALALI));
             } catch (DateFormatException e) {
                 throw new BaseException(MapperExceptionCode.CRM_006, MapperExceptionCode.GLB_001_MSG, e);
             }
@@ -95,7 +96,7 @@ public class PaymentUtil {
             czi.setMotherNationalID("0000000000");
             czi.setMotherFirstNamePersian(singlePreRegistrationWTO.getMotherName());
             try {
-                czi.setMotherBirthDateSolar(gampooya.tools.date.DateUtil.convert(ConstValues.DEFAULT_DATE, gampooya.tools.date.DateUtil.JALALI));
+                czi.setMotherBirthDateSolar(gampooya.tools.date.DateUtil.convert(ConstValues.DEFAULT_DATE,DateUtil.JALALI));
             } catch (DateFormatException e) {
                 throw new BaseException(MapperExceptionCode.CRM_007, MapperExceptionCode.GLB_001_MSG, e);
             }
