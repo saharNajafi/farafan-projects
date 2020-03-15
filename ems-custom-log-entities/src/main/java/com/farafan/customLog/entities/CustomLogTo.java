@@ -14,8 +14,8 @@ import java.sql.Timestamp;
  */
 
 @Entity
-@Table(name = "EMST_CUSTOME_LOG")
-@SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CUSTOME_LOG", allocationSize = 1)
+@Table(name = "EMST_CUSTOM_LOG")
+@SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CUSTOM_LOG", allocationSize = 1)
 public class CustomLogTo extends ExtEntityTO {
 
     private Timestamp date;

@@ -428,6 +428,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String DSI_080 = "EMS_D_DSI_080";
     public static final String DSI_081 = "EMS_D_DSI_081";
     public static final String DSI_082 = "EMS_D_DSI_082";
+    public static final String DSI_083 = "EMS_D_DSI_083";
     //Adldoost : messages for essential exceptions in triggers
     public static final String DSI_054_MSG = "Received cards count should not be larger than total count";
     public static final String DSI_056_MSG = "Received cards count should be larger than zero";
