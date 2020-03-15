@@ -1,5 +1,10 @@
 package com.gam.nocr.ems.data.dao.impl;
 
+import com.gam.commons.core.biz.service.ServiceException;
+import com.gam.commons.core.data.dao.factory.DAOFactoryException;
+import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
+import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import com.gam.nocr.ems.data.domain.*;
 import com.gam.nocr.ems.data.enums.*;
 import gampooya.tools.date.DateUtil;
@@ -699,8 +704,12 @@ public class CardRequestDAOImpl extends EmsBaseDAOImpl<CardRequestTO> implements
             if (selectedRequest == null) {
                 throw new DAOException(DataExceptionCode.DSI_070, DataExceptionCode.DSI_070_MSG);
             }
+
+            if (selectedRequest.getSelectDeliveryOfficeId() != null) {
+                selectedRequest.setDeliveredOfficeId(selectedRequest.getSelectDeliveryOfficeId());
+            }
             //			CardRequestTO selectedRequest = request.get(0);
-            if (selectedRequest.getEnrollmentOffice().getType() == EnrollmentOfficeType.OFFICE &&
+            else if (selectedRequest.getEnrollmentOffice().getType() == EnrollmentOfficeType.OFFICE &&
                     selectedRequest.getEnrollmentOffice().getDeliver() == EnrollmentOfficeDeliverStatus.DISABLED) {
                 selectedRequest.setDeliveredOfficeId(selectedRequest.getEnrollmentOffice().getSuperiorOffice().getId());
             } else
