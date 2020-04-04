@@ -73,5 +73,6 @@ public enum CardRequestHistoryAction {
     UNSUCCESSFUL_DELIVERY_BECAUSE_OF_FINGER, // if user tried 14 times and finger print didn't match
     PRIORITY_IS_CHANGED,
     AFTER_DELIVERY_SUSPEND,
-    AFTER_DELIVERY_RESUME
+    AFTER_DELIVERY_RESUME,
+    Delivery_Office_Change
 }
