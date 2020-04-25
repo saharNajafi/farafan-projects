@@ -1269,13 +1269,12 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
                     em.flush();
                 } else {
                     em.createQuery(
-                            "update DispatchInfoTO dpi set dpi.receiveDate = :sn"
+                            "update DispatchInfoTO dpi set dpi.receiveDate = :date"
                                     + " where dpi.containerId = :batchId and dpi.containerType = :type")
                             .setParameter("type",
                                     DepartmentDispatchSendType.BATCH)
                             .setParameter("batchId", batch.getId())
-                            .setParameter("date", minReceiveDate.get(0))
-                            .setParameter("sn", null).executeUpdate();
+                            .setParameter("date", null).executeUpdate();
                     em.flush();
                 }
             }
