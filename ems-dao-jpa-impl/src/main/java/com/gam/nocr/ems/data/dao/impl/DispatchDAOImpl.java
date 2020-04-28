@@ -2090,7 +2090,7 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
     /**
      * getEnrollmentOfficeDAO
      *
-     * @return an instance of type CardDAO
+     * @return an instance of type EnrollmentOfficeDAO
      * @throws {@link BaseException}
      */
     private EnrollmentOfficeDAO getEnrollmentOfficeDAO() throws BaseException {

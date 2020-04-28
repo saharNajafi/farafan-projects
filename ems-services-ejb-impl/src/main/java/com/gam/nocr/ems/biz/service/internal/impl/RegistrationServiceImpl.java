@@ -954,7 +954,7 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
         if (citizens.size() == 0) {// then citizen with this nid does not yet exist
             CitizenTO newCitizen = citizenDAO.create(newCardRequest.getCitizen());
             newCardRequest.setCitizen(newCitizen);
-        } else {// then citizen withcitizenInfoLoadedFromDb this nid exists
+        } else {// then citizen with this nid exists
             if (newCardRequest.getId() == null) {// Do this check when saving new request - not when updating
                 checkPreviousCardStateValid(citizens);
             }

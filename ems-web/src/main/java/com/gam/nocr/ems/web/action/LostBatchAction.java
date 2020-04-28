@@ -1,11 +1,5 @@
 package com.gam.nocr.ems.web.action;
 
-import gampooya.tools.security.BusinessSecurityException;
-
-import java.util.List;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.web.struts2.extJsController.ActionException;
@@ -13,6 +7,10 @@ import com.gam.commons.core.web.struts2.extJsController.ListControllerImpl;
 import com.gam.nocr.ems.biz.delegator.CardRequestDelegator;
 import com.gam.nocr.ems.config.WebExceptionCode;
 import com.gam.nocr.ems.data.domain.vol.BatchDispatchInfoVTO;
+import gampooya.tools.security.BusinessSecurityException;
+import org.slf4j.Logger;
+
+import java.util.List;
 /**
  * this is a class used in lost batch cartable in 3S
  * @author ganjyar
@@ -72,10 +70,10 @@ public class LostBatchAction extends ListControllerImpl<BatchDispatchInfoVTO> {
 			logger.info("Unconfirming lost batch with id : " + getBatchId());
 			return SUCCESS_RESULT;
 		} catch (BusinessSecurityException e) {
-			throw new ActionException(WebExceptionCode.LBA_001,
+			throw new ActionException(WebExceptionCode.LBA_003,
 					WebExceptionCode.GLB_001_MSG, e);
 		} catch (Exception e) {
-			throw new ActionException(WebExceptionCode.LBA_002,
+			throw new ActionException(WebExceptionCode.LBA_004,
 					WebExceptionCode.GLB_003_MSG, e);
 		}
 	}
