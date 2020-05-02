@@ -41,7 +41,7 @@ Ext.define('Ems.view.lostCard.Grid', {
                             tooltip: 'عدم تایید',
                             action: 'unconfirmLostCard',
                             stateful: true,
-                            stateId: this.stateId + 'LostCard'
+                            stateId: this.stateId + 'UnconfirmLostCard'
                         }
                     ],
     getColumns: function () {

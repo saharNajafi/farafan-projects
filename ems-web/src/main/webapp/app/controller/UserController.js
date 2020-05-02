@@ -745,7 +745,7 @@ Ext.define('Ems.controller.UserController', {
                     return;
                 } else if (record.reasonDeleteToken === 'N') {
                     if (Tools.UserRequestToken.hasActiveToken.indexOf(record.tokenType) >= 0) {
-                        Tools.errorMessageClient("اولین صدور این توکن برای این کاربر نیست. لطفا دلیل درست را انتخاب نمایید.");
+                        Tools.errorMessageClient("این نوع توکن قبلا برای کاربر صادر شده است،لطفا دلیل صدور را به درستی انتخاب نمایید");
                         Tools.UserRequestToken.RegisterRequestToken++;
                         return;
                     }

@@ -1,17 +1,5 @@
 package com.gam.nocr.ems.data.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.slf4j.Logger;
-
 import com.gam.commons.core.BaseException;
 import com.gam.commons.core.BaseLog;
 import com.gam.commons.core.data.DataException;
@@ -22,6 +10,16 @@ import com.gam.nocr.ems.data.domain.PersonTokenTO;
 import com.gam.nocr.ems.data.enums.TokenState;
 import com.gam.nocr.ems.data.enums.TokenType;
 import com.gam.nocr.ems.util.EmsUtil;
+import org.slf4j.Logger;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Saeed Jalilian (jalilian@gamelectronics.com)
@@ -267,6 +265,7 @@ public class PersonTokenDAOImpl extends EmsBaseDAOImpl<PersonTokenTO> implements
 	    		if(token.getState() == TokenState.SUSPENDED)
 	    		{
 	    			token.setState(TokenState.DELIVERED);
+                    token.setDeliverDate(new Date());
 	    			create(token);
 	    		}
 	    		else

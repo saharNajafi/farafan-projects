@@ -485,7 +485,7 @@ public class PersonManagementServiceImpl extends EMSAbstractService implements P
         } catch (BaseException e) {
             throw e;
         } catch (Exception e) {
-            throw new ServiceException(BizExceptionCode.PSI_053, BizExceptionCode.GLB_008_MSG, e);
+            throw new ServiceException(BizExceptionCode.PSI_085, BizExceptionCode.GLB_008_MSG, e);
         }
     }
 

@@ -764,6 +764,7 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PSI_082 = "EMS_S_PSI_082";
     public static final String PSI_083 = "EMS_S_PSI_083";
     public static final String PSI_084 = "EMS_S_PSI_084";
+    public static final String PSI_085 = "EMS_S_PSI_085";
     public static final String PSI_002_MSG = "There should be a person to persist, it couldn't be null";
     public static final String PSI_003_MSG = "personId couldn't be null, please insert an ID";
     public static final String PSI_006_MSG = "invalid input entry, birth certificate number is empty";
