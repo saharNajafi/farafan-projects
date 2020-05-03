@@ -26,7 +26,7 @@ comment on column gam_main_ems.emst_registration_payment.rpy_payment_type is '0=
 
 
 
-  CREATE TABLE "EMS_LOG"."EMST_CUSTOME_LOG"
+  CREATE TABLE "EMS_LOG"."EMST_CUSTOM_LOG"
    (	"CTL_ID" NUMBER(19,0) NOT NULL ENABLE,
 	"CTL_ACTION" VARCHAR2(255 CHAR) NOT NULL ENABLE,
 	"CTL_IS_ACTION_SUCCESS" NUMBER(1,0),

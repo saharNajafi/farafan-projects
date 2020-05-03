@@ -17,6 +17,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.gam.commons.core.biz.service.ServiceException;
+import com.gam.commons.core.data.dao.factory.DAOFactoryException;
+import com.gam.commons.core.data.dao.factory.DAOFactoryProvider;
+import com.gam.nocr.ems.config.BizExceptionCode;
+import com.gam.nocr.ems.config.EMSLogicalNames;
+import com.gam.nocr.ems.data.dao.EnrollmentOfficeDAO;
 import org.slf4j.Logger;
 
 import com.gam.commons.core.BaseException;
@@ -1263,13 +1269,12 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
                     em.flush();
                 } else {
                     em.createQuery(
-                            "update DispatchInfoTO dpi set dpi.receiveDate = :sn"
+                            "update DispatchInfoTO dpi set dpi.receiveDate = :date"
                                     + " where dpi.containerId = :batchId and dpi.containerType = :type")
                             .setParameter("type",
                                     DepartmentDispatchSendType.BATCH)
                             .setParameter("batchId", batch.getId())
-                            .setParameter("date", minReceiveDate.get(0))
-                            .setParameter("sn", null).executeUpdate();
+                            .setParameter("date", null).executeUpdate();
                     em.flush();
                 }
             }
@@ -1600,9 +1605,11 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
                                 .setMaxResults(1).getResultList();
                         if (requestList != null && !requestList.isEmpty()) {
                             selectedRequest = requestList.get(0);
-                            selectedOffice = selectedRequest
-                                    .getEnrollmentOffice();
-
+                            if (selectedRequest.getSelectDeliveryOfficeId() != null) {
+                                selectedOffice = getEnrollmentOfficeDAO().find(EnrollmentOfficeTO.class, selectedRequest.getSelectDeliveryOfficeId());
+                            } else {
+                                selectedOffice = selectedRequest.getEnrollmentOffice();
+                            }
                             DispatchInfoTO dispatchInfo = new DispatchInfoTO();
                             dispatchInfo.setContainerId(box.getId());
                             dispatchInfo.setContainerType(DepartmentDispatchSendType.BOX);
@@ -2079,5 +2086,24 @@ public class DispatchDAOImpl extends EmsBaseDAOImpl<CardContainerTO> implements
 
         return null;
     }
+
+    /**
+     * getEnrollmentOfficeDAO
+     *
+     * @return an instance of type EnrollmentOfficeDAO
+     * @throws {@link BaseException}
+     */
+    private EnrollmentOfficeDAO getEnrollmentOfficeDAO() throws BaseException {
+        try {
+            return DAOFactoryProvider.getDAOFactory().getDAO(EMSLogicalNames.getDaoJNDIName(EMSLogicalNames.DAO_ENROLLMENT_OFFICE));
+        } catch (DAOFactoryException e) {
+            throw new ServiceException(
+                    DataExceptionCode.DSI_083,
+                    DataExceptionCode.GLB_009_MSG,
+                    e,
+                    EMSLogicalNames.DAO_CARD.split(","));
+        }
+    }
+
 
 }

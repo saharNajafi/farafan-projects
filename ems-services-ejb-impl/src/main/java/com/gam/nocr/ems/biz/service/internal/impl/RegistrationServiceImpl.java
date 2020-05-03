@@ -961,20 +961,16 @@ public class RegistrationServiceImpl extends EMSAbstractService implements
             CitizenTO citizenLoadedFromDb = citizens.get(0);
             CitizenInfoTO citizenInfoLoadedFromDb = citizenLoadedFromDb.getCitizenInfo();
             citizenInfoDAO = getCitizenInfoDAO();
+            if (citizenInfoLoadedFromDb != null) {// Information for this citizen is currently in the db
+                citizenLoadedFromDb.setCitizenInfo(null);
+                citizenInfoLoadedFromDb.setCitizen(null);
+                citizenInfoDAO.delete(citizenInfoLoadedFromDb); // Cascade on remove should be implemented in the database
+            }
             CitizenInfoTO newCitizenInfo = newCardRequest.getCitizen().getCitizenInfo();
             newCitizenInfo.setCitizen(citizenLoadedFromDb);
-
-            if (citizenInfoLoadedFromDb != null) {// Information for this citizen is currently in the db
-                citizenInfoLoadedFromDb = new CitizenInfoTO(newCitizenInfo);
-                citizenInfoDAO.update(citizenInfoLoadedFromDb);
-//                citizenLoadedFromDb.setCitizenInfo(null);
-//                citizenInfoLoadedFromDb.setCitizen(null);
-//                citizenInfoDAO.delete(citizenInfoLoadedFromDb); // Cascade on remove should be implemented in the database
-            } else {
-                newCitizenInfo.setId(null);
-                citizenInfoDAO.create(newCitizenInfo);
-                citizenLoadedFromDb.setCitizenInfo(newCitizenInfo);
-            }
+            newCitizenInfo.setId(null);
+            citizenInfoDAO.create(newCitizenInfo);
+            citizenLoadedFromDb.setCitizenInfo(newCitizenInfo);
 
             CitizenTO newCitizen = newCardRequest.getCitizen();
             citizenLoadedFromDb.setFirstNamePersian(newCitizen.getFirstNamePersian());

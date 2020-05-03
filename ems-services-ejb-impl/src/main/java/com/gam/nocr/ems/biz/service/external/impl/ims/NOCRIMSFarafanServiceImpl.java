@@ -587,7 +587,7 @@ public class NOCRIMSFarafanServiceImpl extends AbstractService implements NOCRIM
             logger.error("Invalid XML Encoding for sending to EQC (IMS request Id: " + imsRequestId + ")");
         } catch (ValidationException ve) {
             ImsLogger.error("Error in XSD Validation for sending to EQC (IMS request Id: " + imsRequestId + ") and card requests: " + cardRequestTOList.get(0), ve);
-            throw ve;
+            throw new ServiceException(BizExceptionCode.NIF_024, ve.getCause().getMessage(), ve);
         }
         ImsLogger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");
         logger.info("\n################## Preparing Xml lasts: " + ((new Date().getTime()) - writeDate) + " ##################");

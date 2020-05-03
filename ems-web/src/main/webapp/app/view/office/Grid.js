@@ -45,11 +45,7 @@ Ext.define('Ems.view.office.Grid', {
                 stateful: true,
                 stateId: this.stateId + 'UserList',
                 getClass: function (value, metadata, record) {
-                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
-                        return 'girdAction-UserList-icon';
-                    } else {
-                        return 'grid-action-hidden';
-                    }
+                    return 'girdAction-UserList-icon';
                 }
             },
             {
@@ -58,13 +54,8 @@ Ext.define('Ems.view.office.Grid', {
                 stateful: true,
                 stateId: this.stateId + 'CancelToken',
                 getClass: function (value, metadata, record) {
-                    if (EmsObjectName.officeNewEdit.accessViewAndChangeOfficeSetting) {
-                        return 'girdAction-forbidden-icon';
-                    } else {
-                        return 'grid-action-hidden';
-                    }
+                    return 'girdAction-forbidden-icon';
                 }
-
 //                getClass: function (value, metadata, record) {
 //                    var deleteToken = record.get(EmsObjectName.officeNewEdit.tokenStatus);
 //                    var officeType = record.get(EmsObjectName.officeNewEdit.officeType);
@@ -349,11 +340,11 @@ Ext.define('Ems.view.office.Grid', {
                 getClass: function (value, metadata, record) {
                     if (EmsObjectName.officeNewEdit.accessToViewAndChangeOfFeIdSetting) {
                         return 'girdAction-OfficeSetting-icon';
-                        } else {
-                            return 'grid-action-hidden';
-                        }
+                    } else {
+                        return 'grid-action-hidden';
                     }
                 }
+            }
         ],
 
         contextMenu: ['gam.add'],
@@ -479,18 +470,18 @@ Ext.define('Ems.view.office.Grid', {
                                     value: '2',
                                     label: 'دفتر پست'
                                 }/*,
-                                {
-                                    value: 'NOCR',
-                                    label: 'اداره ثبت احوال'
-                                },
-                                {
-                                    value: 'OFFICE',
-                                    label: 'دفتر پیشخوان'
-                                },
-                                {
-                                    value: 'POST',
-                                    label: 'دفتر پست'
-                                }*/
+                                 {
+                                 value: 'NOCR',
+                                 label: 'اداره ثبت احوال'
+                                 },
+                                 {
+                                 value: 'OFFICE',
+                                 label: 'دفتر پیشخوان'
+                                 },
+                                 {
+                                 value: 'POST',
+                                 label: 'دفتر پست'
+                                 }*/
                             ]
                         },
                         queryMode: 'local',

@@ -41,7 +41,7 @@ Ext.define('Ems.view.lostBatch.Grid', {
 	                            tooltip: 'عدم تایید',
 	                            action: 'unconfirmlostbatch',
 	                            stateful: true,
-	                            stateId: this.stateId + 'ConfirmLostbatch'
+	                            stateId: this.stateId + 'Unconfirmlostbatch'
 	                        }
 	                    ],
     getColumns: function () {
