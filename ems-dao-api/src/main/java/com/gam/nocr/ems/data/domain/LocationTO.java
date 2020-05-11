@@ -6,6 +6,7 @@ import com.gam.nocr.ems.util.JSONable;
 import flexjson.JSON;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author <a href="mailto:saadat@gamelectronics.com">Alireza Saadat</a>
@@ -22,6 +23,7 @@ public class LocationTO extends ExtEntityTO implements JSONable {
     private String type;
     private String state;
     private Boolean modified;
+    private ProvinceCodeTO provinceCodeTO;
 
     public LocationTO() {
     }
@@ -130,6 +132,17 @@ public class LocationTO extends ExtEntityTO implements JSONable {
 
     public void setModified(Boolean modified) {
         this.modified = modified;
+    }
+
+    @NotNull
+    @JoinColumn(name = "LOC_PROVINCE_ID", referencedColumnName = "PRO_GEO_ID",insertable = false,updatable = false)
+    @ManyToOne(optional = false)
+    public ProvinceCodeTO getProvinceCodeTO() {
+        return provinceCodeTO;
+    }
+
+    public void setProvinceCodeTO(ProvinceCodeTO provinceCodeTO) {
+        this.provinceCodeTO = provinceCodeTO;
     }
 
     /**

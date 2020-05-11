@@ -6,11 +6,14 @@ package com.gam.nocr.ems.util;
  * @see <a href="http://en.wikipedia.org/wiki/Dihedral_group">Dihedral Group</a>
  * @see <a href="http://mathworld.wolfram.com/DihedralGroupD5.html">Dihedral Group Order 10</a>
  */
-public class Verhoeff {
+public class VerhoefUtil {
 
 
-    // The multiplication table
-    static int[][] d = new int[][]
+
+    /**
+     * The multiplication table.
+     */
+    private static int[][] d  = new int[][]
             {
                     {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
                     {1, 2, 3, 4, 0, 6, 7, 8, 9, 5},
@@ -24,8 +27,10 @@ public class Verhoeff {
                     {9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
             };
 
-    // The permutation table
-    static int[][] p = new int[][]
+    /**
+     * The permutation table.
+     */
+    private static int[][] p = new int[][]
             {
                     {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
                     {1, 5, 7, 6, 2, 8, 3, 0, 9, 4},
@@ -37,18 +42,20 @@ public class Verhoeff {
                     {7, 0, 4, 6, 9, 1, 3, 2, 5, 8}
             };
 
-    // The inverse table
-    static int[] inv = {0, 4, 3, 2, 1, 5, 6, 7, 8, 9};
-
-
-    /*
-     * For a given number generates a Verhoeff digit
-     *
+    /**
+     * The inverse table.
      */
-    public static String generateVerhoeff(String num) {
+    private static int[] inv = {0, 4, 3, 2, 1, 5, 6, 7, 8, 9};
+
+
+    /**
+     * Generates the Verhoeff digit for the provided numeric string.
+     * @return The generated Verhoeff digit for the provided numeric string.
+     */
+    public static String GenerateVerhoeffDigit(String num) {
 
         int c = 0;
-        int[] myArray = stringToReversedIntArray(num);
+        int[] myArray = StringToReversedIntArray(num);
 
         for (int i = 0; i < myArray.length; i++) {
             c = d[c][p[((i + 1) % 8)][myArray[i]]];
@@ -58,14 +65,17 @@ public class Verhoeff {
     }
 
 
-    /*
+
+    /**
      * Validates that an entered number is Verhoeff compliant.
      * NB: Make sure the check digit is the last one.
+     * @param num The numeric string data for Verhoeff compliance check.
+     * @return TRUE if the provided number is Verhoeff compliant.
      */
-    public static boolean validateVerhoeff(String num) {
+    public static boolean ValidateVerhoeff(String num) {
 
         int c = 0;
-        int[] myArray = stringToReversedIntArray(num);
+        int[] myArray = StringToReversedIntArray(num);
 
         for (int i = 0; i < myArray.length; i++) {
             c = d[c][p[(i % 8)][myArray[i]]];
@@ -74,11 +84,13 @@ public class Verhoeff {
         return (c == 0);
     }
 
-
-    /*
+    /**
      * Converts a string to a reversed integer array.
+     * @param num The numeric string data converted to reversed int array.
+     * @return Integer array containing the digits in the numeric string
+     * provided in reverse.
      */
-    private static int[] stringToReversedIntArray(String num) {
+    private static int[] StringToReversedIntArray(String num) {
 
         int[] myArray = new int[num.length()];
 
@@ -92,10 +104,13 @@ public class Verhoeff {
 
     }
 
-    /*
-     * Reverses an int array
+    /**
+     * Reverses an int array.
+     * @param myArray The input array which needs to be reversed
+     * @return The array provided in reverse order.
      */
     private static int[] reverse(int[] myArray) {
+
         int[] reversed = new int[myArray.length];
 
         for (int i = 0; i < myArray.length; i++) {
@@ -104,5 +119,4 @@ public class Verhoeff {
 
         return reversed;
     }
-
 }

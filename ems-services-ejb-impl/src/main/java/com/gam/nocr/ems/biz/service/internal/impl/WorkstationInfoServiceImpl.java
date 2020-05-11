@@ -34,7 +34,7 @@ import java.util.List;
 public class WorkstationInfoServiceImpl extends EMSAbstractService
         implements WorkstationInfoServiceLocal, WorkstationInfoServiceRemote {
 
-    public final static String WORKSTATION_INFO_PERIOD_DEFAULT_VALUE = "40";//AS DAY
+    public  static final String WORKSTATION_INFO_PERIOD_DEFAULT_VALUE = "40";//AS DAY
     private static final Logger workstationInfoLogger = BaseLog.getLogger("WorkstationInfoLogger");
 
     public WorkstationInfoDAO getWorkstationInfoDAO() throws BaseException {

@@ -5,5 +5,5 @@ import com.gam.commons.core.biz.service.Service;
 
 public interface PaymentCodeService extends Service {
 
-    String fetchPaymentCode(Long eofId, String code) throws BaseException;
+    String fetchPaymentCode(Long officeId, String serviceCode ,String paymentAmount) throws BaseException;
 }

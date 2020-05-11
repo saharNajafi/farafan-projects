@@ -1,31 +1,19 @@
 package com.gam.nocr.ems.util;
 
-import java.math.BigInteger;
-import java.util.Random;
+public class VerhoefPaymentUtil {
 
-public class VerhoeffForPaymentCode {
-
-    public static String generate(String num) throws Exception {
+    public static String generate(String num, String paymentAmount) throws Exception {
         if (!isValidNumber(num)) {
             throw new Exception("it's not valid number:" + num);
         }
 
-        String firstVerhoeff = Verhoeff.generateVerhoeff(num);
-        String secondVerhoeff = Verhoeff.generateVerhoeff(reverseString(num));
+        String firstVerhoeff = VerhoefUtil.GenerateVerhoeffDigit(num + org.apache.commons.lang3.StringUtils.leftPad(paymentAmount, 15, "0"));
+        String secondVerhoeff = VerhoefUtil.GenerateVerhoeffDigit(reverseString(num)+reverseString(org.apache.commons.lang3.StringUtils.leftPad(paymentAmount, 15, "0")));
         return firstVerhoeff + secondVerhoeff;
     }
 
     private static String reverseString(String input) {
-        byte[] strAsByteArray = input.getBytes();
-
-        byte[] result =
-                new byte[strAsByteArray.length];
-
-        for (int i = 0; i < strAsByteArray.length; i++)
-            result[i] =
-                    strAsByteArray[strAsByteArray.length - i - 1];
-
-        return new String(result);
+        return new StringBuilder(input).reverse().toString();
     }
 
     private static boolean isValidNumber(String str) {
@@ -43,7 +31,7 @@ public class VerhoeffForPaymentCode {
         try {
             for (int i = 5000; i < 100000; i++) {
                 BigInteger b = new BigInteger(i, new Random());
-                result = VerhoeffForPaymentCode.generate(String.valueOf(b));
+                result = VerhoefPaymentUtil.generate(String.valueOf(b));
                 if (result.length() != 2) {
                     hasBug = true;
                     break;

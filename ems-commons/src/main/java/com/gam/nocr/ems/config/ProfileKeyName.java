@@ -262,9 +262,20 @@ public class ProfileKeyName {
     public static final String KEY_WORKSTATION_INFO_CHECK_PERIOD = EMS_PROFILE_ROOT + ".workstationCheckPeriod";
 
     //PaymentCodeServiceImpl
-    public static final String KEY_CPI_DEPOSIT_ID = EMS_PROFILE_ROOT + ".CPIDepositId";
+    public static final String KEY_CPI_DEPOSIT_ID = EMS_PROFILE_ROOT + ".cpiDepositId";
     public static final String KEY_ORGANIZATION_PAYMENT_CODE = EMS_PROFILE_ROOT + ".organizationPaymentCode";
-    public static final String KEY_CPI_INCOME_CODE = EMS_PROFILE_ROOT + ".CPIIncomeCode";
+    public static final String KEY_CPI_INCOME_CODE = EMS_PROFILE_ROOT + ".cpiIncomeCode";
+
+
+    //PaymentCodeServiceCode
+    public static final String KEY_FIRSTCARD_PAYMENT_SERVICE_CODE = EMS_PROFILE_ROOT + ".firstCardPaymentServiceCode";
+    public static final String KEY_FIRSTREPLICACARD_PAYMENT_SERVICE_CODE = EMS_PROFILE_ROOT + ".firstReplicaCardPaymentServiceCode";
+    public static final String KEY_SECONDREPLICACARD_PAYMENT_SERVICE_CODE = EMS_PROFILE_ROOT + ".secondReplicaCardPaymentServiceCode";
+    public static final String KEY_THIRDREPLICACARD_PAYMENT_SERVICE_CODE = EMS_PROFILE_ROOT + ".thirdReplicaCardPaymentServiceCode";
+    public static final String KEY_REPLACECARD_PAYMENT_SERVICE_CODE = EMS_PROFILE_ROOT + ".replaceCardPaymentServiceCode";
+    public static final String KEY_EXTENDCARD_PAYMENT_SERVICE_CODE = EMS_PROFILE_ROOT + ".extendCardPaymentServiceCode";
+
+
 
 
 }

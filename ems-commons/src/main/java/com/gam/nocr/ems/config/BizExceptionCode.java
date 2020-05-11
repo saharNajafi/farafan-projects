@@ -3063,9 +3063,11 @@ public class BizExceptionCode extends BaseRuntimeExceptionCode {
     public static final String PYC_003 = "EMS_S_PYC_003";
     public static final String PYC_004 = "EMS_S_PYC_004";
     public static final String PYC_005 = "EMS_S_PYC_005";
-    public static final String PYC_006 = "EMS_S_PYC_006";
-    public static final String PYC_001_MSG = "provinceCode is null";
-    public static final String PYC_006_MSG = "department is null";
+    public static final String PYC_001_MSG = "unHandled exception occur in get province Code";
+    public static final String PYC_002_MSG = "unHandled exception occur in fetch Payment Code";
+    public static final String PYC_003_MSG = "enrollmentOfficeTO is null";
+    public static final String PYC_004_MSG = "unHandled exception occur in generating from sequence";
+    public static final String PYC_005_MSG = "unHandled exception occur in generating verhoef code";
 
 
 }
