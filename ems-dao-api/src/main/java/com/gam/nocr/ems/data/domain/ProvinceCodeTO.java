@@ -20,14 +20,14 @@ public class ProvinceCodeTO extends ExtEntityTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @Column(name = "PRO_CODE_ID")
+    @Column(name = "PLM_ID")
     public Long getId() {
         return super.getId();
     }
 
     @Id
     @NotNull
-    @Column(name = "PRO_GEO_ID")
+    @Column(name = "PLM_LOC_ID")
     public Long getGeoId() {
         return geoId;
     }
@@ -36,7 +36,7 @@ public class ProvinceCodeTO extends ExtEntityTO {
         this.geoId = geoId;
     }
 
-    @Column(name = "PRO_PROVINCE_NAME", length = 255)
+    @Column(name = "PLM_PROVINCE_NAME", length = 255)
     public String getProvinceName() {
         return provinceName;
     }
@@ -45,7 +45,7 @@ public class ProvinceCodeTO extends ExtEntityTO {
         this.provinceName = provinceName;
     }
 
-    @Column(name = "PRO_PROVINCE_CODE")
+    @Column(name = "PLM_PROVINCE_CODE")
     public Integer getProvinceCode() {
         return provinceCode;
     }
