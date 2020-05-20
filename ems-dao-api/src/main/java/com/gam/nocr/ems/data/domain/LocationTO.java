@@ -135,10 +135,7 @@ public class LocationTO extends ExtEntityTO implements JSONable {
     }
 
     @NotNull
-    @JoinColumns({
-            @JoinColumn(name = "LOC_PROVINCE_ID", referencedColumnName = "PLM_LOC_ID",insertable = false,updatable = false),
-            @JoinColumn(name = "LOC_PROVINCE_ID", referencedColumnName = "PLM_ID")
-    })
+    @JoinColumn(name = "LOC_PROVINCE_ID", referencedColumnName = "PLM_LOC_ID",insertable = false,updatable = false)
     @ManyToOne(optional = false)
     public ProvinceCodeTO getProvinceCodeTO() {
         return provinceCodeTO;

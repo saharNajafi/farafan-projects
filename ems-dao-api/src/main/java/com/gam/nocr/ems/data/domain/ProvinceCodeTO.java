@@ -18,7 +18,6 @@ public class ProvinceCodeTO extends ExtEntityTO {
     private String provinceName;
     private Integer provinceCode;
 
-    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @Column(name = "PLM_ID")
     public Long getId() {
