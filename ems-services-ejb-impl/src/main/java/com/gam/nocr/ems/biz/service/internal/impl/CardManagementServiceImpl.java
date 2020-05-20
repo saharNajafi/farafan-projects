@@ -2494,6 +2494,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
                         BizExceptionCode.CMS_115_MSG);
             }
             logger.info("unconfirming lost batch with id :" + batchId);
+            dispatchInfo.get(0).setLostDate(null);
             getCardDAO().unconfirmAllCardsOfBatch(batchId);
             return;
         } catch (BaseException e) {
