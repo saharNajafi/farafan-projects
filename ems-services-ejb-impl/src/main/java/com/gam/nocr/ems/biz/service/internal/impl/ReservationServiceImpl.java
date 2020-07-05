@@ -246,8 +246,8 @@ public class ReservationServiceImpl extends EMSAbstractService
             CitizenTO citizenTO = getCitizenService().addCitizen(reservationTO.getCardRequest().getCitizen());
             emsCardRequest.setCitizen(citizenTO);
             emsCardRequest.setType(CardRequestType.FIRST_CARD);
-            fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
             emsCardRequest.setEnrollmentOffice(reservationTO.getEnrollmentOffice());
+            fillRegistrationPayment(reservationTO, emsCardRequest, citizenTO);
             getCardRequestService().addCardRequest(emsCardRequest);
             Integer activeDate = Integer.valueOf(CalendarUtil.getDate(reservationTO.getDate(), LangUtil.LOCALE_FARSI).replace("/", ""));
             estelamCardRequestForTodayReservation(emsCardRequest, activeDate, true);
