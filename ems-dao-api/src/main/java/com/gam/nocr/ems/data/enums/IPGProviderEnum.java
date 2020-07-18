@@ -42,7 +42,7 @@ public enum IPGProviderEnum {
 
     @Override
     public String toString() {
-        return name;
+        return String.valueOf(this.ordinal());
     }
 
     public static IPGProviderEnum getProvider(String paidBankCode) {
