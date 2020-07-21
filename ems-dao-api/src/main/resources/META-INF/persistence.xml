@@ -44,7 +44,7 @@
             <property name="hibernate.jdbc.batch_size" value="50"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
-            <!--<property name="hibernate.hbm2ddl.auto" value="create"/>-->
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
         </properties>
         <!-- Properties for ORACLE -->
     </persistence-unit>

@@ -34,12 +34,12 @@ public class BpiInquiryServiceImpl extends AbstractService
     private static final String DEFAULT_NAMESPACE = "http://bpi.farafan.ir/";
     private static final Logger logger = BaseLog.getLogger(BpiInquiryServiceImpl.class);
     private static final Logger bpiLogger = BaseLog.getLogger("BpiLogger");
-    private static final String BPI_ERROR_SADAD_001 = "SADAD_001";
-    private static final String BPI_ERROR_SADAD_002 = "SADAD_002";
-    private static final String BPI_ERROR_SADAD_003 = "SADAD_003";
-    private static final String BPI_ERROR_SADAD_004 = "SADAD_004";
-    private static final String BPI_ERROR_SADAD_005 = "SADAD_005";
-    private static final String BPI_ERROR_SADAD_006 = "SADAD_006";
+    private static final String BPI_ERROR_SADAD_001 = "REST_SADAD_001";
+    private static final String BPI_ERROR_SADAD_002 = "REST_SADAD_002";
+    private static final String BPI_ERROR_SADAD_003 = "REST_SADAD_003";
+    private static final String BPI_ERROR_SADAD_004 = "REST_SADAD_004";
+    private static final String BPI_ERROR_SADAD_005 = "REST_SADAD_005";
+    private static final String BPI_ERROR_SADAD_006 = "REST_SADAD_006";
 
 
     @Override
@@ -59,10 +59,10 @@ public class BpiInquiryServiceImpl extends AbstractService
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_001, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG,
+                logger.error(BizExceptionCode.BPI_001,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
-                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                bpiLogger.error(BizExceptionCode.BPI_001,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
@@ -71,10 +71,10 @@ public class BpiInquiryServiceImpl extends AbstractService
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_002, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG,
+                logger.error(BizExceptionCode.BPI_002,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
-                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                bpiLogger.error(BizExceptionCode.BPI_002,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
@@ -83,10 +83,10 @@ public class BpiInquiryServiceImpl extends AbstractService
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_003, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG,
+                logger.error(BizExceptionCode.BPI_003,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
-                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                bpiLogger.error(BizExceptionCode.BPI_003,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
@@ -95,10 +95,10 @@ public class BpiInquiryServiceImpl extends AbstractService
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_004, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG,
+                logger.error(BizExceptionCode.BPI_004,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
-                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                bpiLogger.error(BizExceptionCode.BPI_004,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
@@ -107,10 +107,10 @@ public class BpiInquiryServiceImpl extends AbstractService
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_005, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG,
+                logger.error(BizExceptionCode.BPI_005,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
-                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                bpiLogger.error(BizExceptionCode.BPI_005,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
@@ -119,10 +119,10 @@ public class BpiInquiryServiceImpl extends AbstractService
                 ServiceException serviceException = new ServiceException(
                         BizExceptionCode.BPI_006, errorMessage, e,
                         EMSLogicalNames.SRV_BPI.split(","));
-                logger.error(BizExceptionCode.GLB_003_MSG,
+                logger.error(BizExceptionCode.BPI_006,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
-                bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+                bpiLogger.error(BizExceptionCode.BPI_006,
                         serviceException,
                         EMSLogicalNames.SRV_BPI.split(","));
                 throw serviceException;
@@ -131,9 +131,9 @@ public class BpiInquiryServiceImpl extends AbstractService
             ServiceException serviceException = new ServiceException(
                     BizExceptionCode.BPI_007, errorMessage, e,
                     EMSLogicalNames.SRV_BPI.split(","));
-            logger.error(BizExceptionCode.GLB_003_MSG, serviceException,
+            logger.error(BizExceptionCode.BPI_007, serviceException,
                     EMSLogicalNames.SRV_BPI.split(","));
-            bpiLogger.error(BizExceptionCode.GLB_003_MSG,
+            bpiLogger.error(BizExceptionCode.BPI_007,
                     serviceException,
                     EMSLogicalNames.SRV_BPI.split(","));
             throw serviceException;
