@@ -245,6 +245,8 @@ public class PersonAction extends ListControllerImpl<PersonVTO> {
                     reason = ReplicaReason.REPLICA;
                 if ("D".equals(getReason()))
                     reason = ReplicaReason.DAMAGE;
+                if ("E".equals(getReason()))
+                    reason = ReplicaReason.EXTEND;
 
                 personDelegator.replicateToken(getUserProfile(), Long.parseLong(getPersonId()), type, reason);
 
