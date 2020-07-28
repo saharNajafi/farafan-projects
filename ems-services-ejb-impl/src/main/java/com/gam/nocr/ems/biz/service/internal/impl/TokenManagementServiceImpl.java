@@ -604,7 +604,7 @@ public class TokenManagementServiceImpl extends EMSAbstractService implements
         } else if (reason == ReplicaReason.REPLICA) {
             newPersonTokenTO.setPtReason(TokenReason.REPLICA);
         }
-        if (reason == ReplicaReason.EXTEND) {
+        else if (reason == ReplicaReason.EXTEND) {
             newPersonTokenTO.setPtReason(TokenReason.EXTEND);
         } else {
             newPersonTokenTO.setPtReason(TokenReason.UNSPECIFIED);
