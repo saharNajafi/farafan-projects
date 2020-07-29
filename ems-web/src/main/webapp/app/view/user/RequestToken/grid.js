@@ -169,6 +169,9 @@ Ext.define('Ems.view.user.RequestToken.grid', {
                             case "REPLACED":
                                 return 'صدور مجدد به دلیل خرابی';
                                 break;
+                            case "EXTEND":
+                                return 'صدور به دلیل انقضاء';
+                                break;
                             default :
                                 return 'نا مشخص';
                                 break;

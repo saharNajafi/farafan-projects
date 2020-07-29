@@ -7,6 +7,7 @@ public enum ReplicaReason {
     REPLICA,
     DAMAGE,
     UNSPECIFIED,
+    EXTEND,
     
     //Adldoost
     RENEW

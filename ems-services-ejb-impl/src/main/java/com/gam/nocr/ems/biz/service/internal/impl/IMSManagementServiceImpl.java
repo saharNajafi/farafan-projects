@@ -4546,7 +4546,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
             if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
-                createImsResultErrorMessage(crq, imsUpdateResultVTO);
+                createImsResultErrorMessage(crq, imsUpdateResultVTO,CardRequestHistoryAction.AFIS_DOCUMENT_ERROR);
             }
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000021")) // Delete
         // IMAGE
@@ -4561,7 +4561,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
             crq.setReEnrolledDate(new Date());
             getCardRequestDAO().update(crq);
             if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
-                createImsResultErrorMessage(crq, imsUpdateResultVTO);
+                createImsResultErrorMessage(crq, imsUpdateResultVTO,CardRequestHistoryAction.AFIS_IMAGE_ERROR);
             }
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000022")) // Delete
         // Finger
@@ -4608,7 +4608,7 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
                     imsUpdateResultVTO.getErrorMessage(), SystemId.IMS, null,
                     CardRequestHistoryAction.AFIS_REJECT, null);
             if (imsUpdateResultVTO.getErrorCodes() != null && imsUpdateResultVTO.getErrorCodes().size() > 0) {
-                createImsResultErrorMessage(crq, imsUpdateResultVTO);
+                createImsResultErrorMessage(crq, imsUpdateResultVTO,CardRequestHistoryAction.AFIS_REJECT);
             }
         } else if (imsUpdateResultVTO.getErrorMessage().contains("UPDT-000004")) {
 
@@ -4653,16 +4653,15 @@ public class IMSManagementServiceImpl extends EMSAbstractService implements
         }
     }
 
-    private void createImsResultErrorMessage(CardRequestTO crq, IMSUpdateResultVTO imsUpdateResultVTO) throws BaseException {
+    private void createImsResultErrorMessage(CardRequestTO crq, IMSUpdateResultVTO imsUpdateResultVTO,CardRequestHistoryAction cardRequestHistoryAction) throws BaseException {
         List<IMSErrorInfo> errorCodes = imsUpdateResultVTO.getErrorCodes();
         List<Long> crqIds = new ArrayList<Long>();
         crqIds.add(crq.getId());
-        crq.setState(CardRequestState.IMS_ERROR);
         if (errorCodes != null) {
             for (IMSErrorInfo errorCode : errorCodes) {
                 createCardRequestHistory(crqIds,
                         imsUpdateResultVTO.getRequestID(), errorCode.toString(),
-                        CardRequestHistoryAction.AFIS_REJECT);
+                        cardRequestHistoryAction);
             }
         }
     }

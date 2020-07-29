@@ -25,6 +25,11 @@ Ext.define('Ems.store.userRequestTokenReasonIssuanceStore', {
             id: 3,
             code: 'R',
             name: 'صدورالمثنی'
+        },
+        {
+            id: 4,
+            code: 'E',
+            name: 'صدور به دلیل انقضاء'
         }
     ]
 

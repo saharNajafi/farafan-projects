@@ -153,6 +153,10 @@ Ext.define('Ems.view.tokenRequestList.Grid', {
                             {
                                 value: 'REPLACED',
                                 label: "صدور مجدد به دلیل خرابی"
+                            },
+                            {
+                                value: 'EXTEND',
+                                label: "صدور به دلیل انقضاء"
                             }
                         ]
                     },
@@ -174,6 +178,9 @@ Ext.define('Ems.view.tokenRequestList.Grid', {
                                 break;
                             case "REPLACED":
                                 return 'صدور مجدد به دلیل خرابی';
+                                break;
+                            case "EXTEND":
+                                return 'صدور به دلیل انقضاء';
                                 break;
                             default :
                                 return 'نا مشخص';
