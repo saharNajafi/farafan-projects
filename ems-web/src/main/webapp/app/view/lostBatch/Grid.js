@@ -38,7 +38,7 @@ Ext.define('Ems.view.lostBatch.Grid', {
 	                            var confirmType = record.get( EmsObjectName.lostBatch.isConfirm);
 	                            return( confirmType==0 ? 'girdAction-lost-noconfirm-icon' : 'x-hide-display');
 	                            },
-	                            tooltip: 'عدم تایید',
+	                            tooltip: 'عدم تایید گمشدگی دسته',
 	                            action: 'unconfirmlostbatch',
 	                            stateful: true,
 	                            stateId: this.stateId + 'Unconfirmlostbatch'

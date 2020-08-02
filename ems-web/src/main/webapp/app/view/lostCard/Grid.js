@@ -38,7 +38,7 @@ Ext.define('Ems.view.lostCard.Grid', {
                             var confirmType = record.get( EmsObjectName.lostCard.isConfirm);
                             return( confirmType==0 ? 'girdAction-unconfirm-icon' : 'x-hide-display');
                             },
-                            tooltip: 'عدم تایید',
+                            tooltip: 'عدم تایید گمشدگی کارت',
                             action: 'unconfirmLostCard',
                             stateful: true,
                             stateId: this.stateId + 'UnconfirmLostCard'
