@@ -21,28 +21,7 @@ Ext.define('Ems.view.lostCard.Grid', {
         this.callParent(arguments);
     },
     actionColumnItems: [
-                        {
-                            getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                            	
-                            var confirmType = record.get( EmsObjectName.lostCard.isConfirm);
-                            return( confirmType==0 ? 'girdAction-losttaeed-icon' : 'x-hide-display');
-                            },
-                            tooltip: 'تایید',
-                            action: 'confirmlostcard',
-                            stateful: true,
-                            stateId: this.stateId + 'LostCard'
-                        },
-                        {
-                            getClass: function (value, metaData, record, rowIndex, colIndex, store) {
 
-                            var confirmType = record.get( EmsObjectName.lostCard.isConfirm);
-                            return( confirmType==0 ? 'girdAction-unconfirm-icon' : 'x-hide-display');
-                            },
-                            tooltip: 'عدم تایید',
-                            action: 'unconfirmLostCard',
-                            stateful: true,
-                            stateId: this.stateId + 'UnconfirmLostCard'
-                        }
                     ],
     getColumns: function () {
         return ([
@@ -188,7 +167,42 @@ Ext.define('Ems.view.lostCard.Grid', {
 
             },
 
+            this.LostCardActionColumn()
         ]);
+    },
+    LostCardActionColumn:function () {
+        return({
+            xtype: 'gam.actioncolumn',
+            width: 100,
+            text: 'عملیات',
+            cls:'x-column-header-text',
+            dataIndex: EmsObjectName.lostCard.isConfirm,
+            id: EmsObjectName.lostCard.isConfirm,
+            items:[
+                {
+                    getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+
+                        var confirmType = record.get( EmsObjectName.lostCard.isConfirm);
+                        return( confirmType==0 ? 'girdAction-losttaeed-icon' : 'x-hide-display');
+                    },
+                    tooltip: 'تایید گمشدگی کارت',
+                    action: 'confirmlostcard',
+                    stateful: true,
+                    stateId: this.stateId + 'LostCard'
+                },
+                {
+                    getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+
+                        var confirmType = record.get( EmsObjectName.lostCard.isConfirm);
+                        return( confirmType==0 ? 'girdAction-unconfirm-icon' : 'x-hide-display');
+                    },
+                    tooltip: 'عدم تایید گمشدگی کارت',
+                    action: 'unconfirmLostCard',
+                    stateful: true,
+                    stateId: this.stateId + 'UnconfirmLostCard'
+                }
+            ]
+                })
     }
 
 });

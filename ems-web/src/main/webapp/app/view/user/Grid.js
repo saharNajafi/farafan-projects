@@ -24,34 +24,7 @@ Ext.define('Ems.view.user.Grid', {
 //        'gam.delete'
     ],
     actionColumnItems: [
-        {
-            getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                // if(record.get('userName')!==Tools.trim('gaasadmin'))
-                return 'grid-edit-action-icon';
-            },
-            tooltip: 'ویرایش',
-            action: 'editing',
-            stateful: true,
-            stateId: this.stateId + 'Editing'
-        },
-        {
-            getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-                return 'grid-view-action-icon';
-            },
-            tooltip: 'مشاهده', action: 'viewing',
-            stateful: true,
-            stateId: this.stateId + 'Viewing'
-        }
-        //  'edit->userdialog',
-        // 'view->userdialog'
-        ,
-        {
-            icon: 'resources/themes/images/TokenIcon/management.gif',
-            tooltip: 'مدیریت توکن', action: 'tokenManagement',
-            stateful: true,
-            stateId: this.stateId + 'TokenManagement'
 
-        }
     ], tbar: [
               'gam.add'
               , {
@@ -161,7 +134,8 @@ Ext.define('Ems.view.user.Grid', {
                     ]
                 }
             },
-            this.OnActiveInActiveUserActionColumn()
+            this.OnActiveInActiveUserActionColumn(),
+            this.OperationUSerColumn()
         ]);
     },
 
@@ -197,6 +171,43 @@ Ext.define('Ems.view.user.Grid', {
                         var userActive = record.get(EmsObjectName.userForm.userActive);
                         return(userActive === 'F' && (Tools.trim(record.get(EmsObjectName.userForm.userName)) != 'gaasadmin') ) ? 'girdAction-userInActive-icon' : 'x-hide-display';
                     }
+                }
+            ]
+        });
+    },
+    OperationUSerColumn:function () {
+        return({
+            xtype: 'gam.actioncolumn',
+            text: 'عملیات',
+            cls:'x-column-header-text',
+            items: [
+                {
+                    getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+                        // if(record.get('userName')!==Tools.trim('gaasadmin'))
+                        return 'grid-edit-action-icon';
+                    },
+                    tooltip: 'ویرایش',
+                    action: 'editing',
+                    stateful: true,
+                    stateId: this.stateId + 'Editing'
+                },
+                {
+                    getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+                        return 'grid-view-action-icon';
+                    },
+                    tooltip: 'مشاهده', action: 'viewing',
+                    stateful: true,
+                    stateId: this.stateId + 'Viewing'
+                }
+                //  'edit->userdialog',
+                // 'view->userdialog'
+                ,
+                {
+                    icon: 'resources/themes/images/TokenIcon/management.gif',
+                    tooltip: 'مدیریت توکن', action: 'tokenManagement',
+                    stateful: true,
+                    stateId: this.stateId + 'TokenManagement'
+
                 }
             ]
         });
