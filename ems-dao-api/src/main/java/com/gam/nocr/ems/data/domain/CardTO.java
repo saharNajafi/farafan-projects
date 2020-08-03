@@ -15,6 +15,12 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "EMST_CARD")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD", allocationSize = 1)
+@NamedQueries(
+        @NamedQuery( name = "CardTO.countCardLostDate"
+                , query = " select count(*) from CardTO crd " +
+                "where crd.batch.id = :batchId " +
+                " and crd.lostDate is not null")
+)
 public class CardTO extends ExtEntityTO implements JSONable {
 
     private CardState state;

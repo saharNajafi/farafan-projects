@@ -75,4 +75,5 @@ public interface CardDAO extends EmsBaseDAO<CardTO> {
 	 */
 	void unconfirmAllCardsOfBatch(Long batchId) throws BaseException;
 
+    Integer countCardLostDate(Long batchId) throws BaseException;
 }

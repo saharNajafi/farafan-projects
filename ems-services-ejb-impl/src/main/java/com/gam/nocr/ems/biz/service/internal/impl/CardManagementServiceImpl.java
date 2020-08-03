@@ -2366,7 +2366,12 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
             }
 			logger.info("unconfirming lost card with id :" + cardId);
             card.setLostDate(null);
-			return;
+            Long batchId = card.getBatch().getId();
+            Integer lostDate = getCardDAO().countCardLostDate(batchId);
+            if (lostDate == 0){
+                List<DispatchInfoTO> dispatchInfo = getDispatchDAO().findByContainerId(batchId);
+                dispatchInfo.get(0).setLostDate(null);
+            }
 		} catch (BaseException e) {
 			throw e;
 		} catch (Exception e) {
