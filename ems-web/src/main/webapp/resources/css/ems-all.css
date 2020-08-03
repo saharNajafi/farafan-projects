@@ -324,3 +324,6 @@
 .ems-direction-ltr div {
     text-align: left !important;
 }
+.x-column-header-text{
+ margin-right: 2px !important;
+}

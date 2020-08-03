@@ -175,6 +175,7 @@ Ext.define('Ems.view.lostCard.Grid', {
             xtype: 'gam.actioncolumn',
             width: 100,
             text: 'عملیات',
+            cls:'x-column-header-text',
             dataIndex: EmsObjectName.lostCard.isConfirm,
             id: EmsObjectName.lostCard.isConfirm,
             items:[

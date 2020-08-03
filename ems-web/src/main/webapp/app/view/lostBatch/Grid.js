@@ -146,6 +146,7 @@ Ext.define('Ems.view.lostBatch.Grid', {
             xtype: 'gam.actioncolumn',
             width: 100,
             text: 'عملیات',
+            cls:'x-column-header-text',
             dataIndex: EmsObjectName.lostBatch.isConfirm,
             id: EmsObjectName.lostBatch.isConfirm,
             items:[
