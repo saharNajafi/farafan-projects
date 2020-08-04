@@ -137,45 +137,41 @@ Ext.define('Ems.view.lostBatch.Grid', {
                 }
 
             },
-            this.LostBatchActionColumn()
+            {
+                xtype: 'gam.actioncolumn',
+                width: 100,
+                text: 'عملیات',
+                cls:'x-column-header-text',
+                dataIndex: EmsObjectName.lostBatch.isConfirm,
+                id: EmsObjectName.lostBatch.isConfirm,
+                items:[
+                    {
+                        getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+
+                            var confirmType = record.get( EmsObjectName.lostBatch.isConfirm);
+                            return( confirmType==0 ? 'girdAction-losttaeed-icon' : 'x-hide-display');
+                        },
+                        tooltip: 'تایید',
+                        action: 'confirmlostbatch',
+                        stateful: true,
+                        stateId: this.stateId + 'ConfirmLostbatch'
+                    }
+                    ,{
+                        getClass: function (value, metaData, record, rowIndex, colIndex, store) {
+
+                            var confirmType = record.get( EmsObjectName.lostBatch.isConfirm);
+                            return( confirmType==0 ? 'girdAction-lost-noconfirm-icon' : 'x-hide-display');
+                        },
+                        tooltip: 'عدم تایید',
+                        action: 'unconfirmlostbatch',
+                        stateful: true,
+                        stateId: this.stateId + 'Unconfirmlostbatch'
+                    }
+                ]
+            }
 
         ]);
-    },
-    LostBatchActionColumn:function () {
-        return ({
-            xtype: 'gam.actioncolumn',
-            width: 100,
-            text: 'عملیات',
-            cls:'x-column-header-text',
-            dataIndex: EmsObjectName.lostBatch.isConfirm,
-            id: EmsObjectName.lostBatch.isConfirm,
-            items:[
-                {
-                    getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-
-                        var confirmType = record.get( EmsObjectName.lostBatch.isConfirm);
-                        return( confirmType==0 ? 'girdAction-losttaeed-icon' : 'x-hide-display');
-                    },
-                    tooltip: 'تایید گمشدگی دسته',
-                    action: 'confirmlostbatch',
-                    stateful: true,
-                    stateId: this.stateId + 'ConfirmLostbatch'
-                }
-                ,{
-                    getClass: function (value, metaData, record, rowIndex, colIndex, store) {
-
-                        var confirmType = record.get( EmsObjectName.lostBatch.isConfirm);
-                        return( confirmType==0 ? 'girdAction-lost-noconfirm-icon' : 'x-hide-display');
-                    },
-                    tooltip: 'عدم تایید گمشدگی دسته',
-                    action: 'unconfirmlostbatch',
-                    stateful: true,
-                    stateId: this.stateId + 'Unconfirmlostbatch'
-                }
-            ]
-        })
     }
-
 });
 
 
