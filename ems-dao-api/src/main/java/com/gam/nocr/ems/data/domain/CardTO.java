@@ -16,8 +16,8 @@ import java.sql.Timestamp;
 @Table(name = "EMST_CARD")
 @SequenceGenerator(name = "seq", sequenceName = "SEQ_EMS_CARD", allocationSize = 1)
 @NamedQueries(
-        @NamedQuery( name = "CardTO.countCardLostDate"
-                , query = " select count(*) from CardTO crd " +
+        @NamedQuery( name = "CardTO.countCardLostInBatch"
+                , query = " select count(crd.id) from CardTO crd " +
                 "where crd.batch.id = :batchId " +
                 " and crd.lostDate is not null")
 )

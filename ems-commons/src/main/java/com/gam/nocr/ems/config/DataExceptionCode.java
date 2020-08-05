@@ -21,7 +21,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String GLB_008_MSG = "The parsing operation could not be done successfully.";
     public static final String GLB_009_MSG = "Cannot create dao with name {}";
     public static final String GLB_010_MSG = "The {} was not provided in the IMS sent XML";
-    public static final String GLB_011_MSG = "he count operation could not be executed";
+    public static final String GLB_011_MSG = "The count operation could not be executed";
     public static final String GLB_ERR_MSG = "\nException was happened in the middle of the process. The stack trace is : ";
 
     // com.gam.nocr.ems.data.mapper.xmlmapper.CardRequestCMSMapper
@@ -83,6 +83,7 @@ public class DataExceptionCode extends BaseRuntimeExceptionCode {
     public static final String TPM_025 = "EMS_D_TPM_025";
     public static final String TPM_026 = "EMS_D_TPM_026";
     public static final String TPM_027 = "EMS_D_TPM_027";
+    public static final String TPM_028 = "EMS_D_TPM_028";
 
     // com.gam.nocr.ems.data.mapper.xmlmapper.IMSUpdateCitizenInfoMapper
     public static final String IUC_001 = "EMS_D_IUC_001";

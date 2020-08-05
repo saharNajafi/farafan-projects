@@ -537,12 +537,18 @@ public class PKIServiceImpl extends AbstractService implements PKIServiceLocal, 
         /**
          * Signing the request
          */
+        try {
+            logger.error("renewal request xml:>>"+new String(byteRequest, "UTF-8")+"<<");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         String signedRequest = signRequest(byteRequest, certificateTO);
 
         /**
          * Sending the request
          */
         result = sendPKIRequest(signedRequest);
+        logger.error("result of renewal request:>>"+result+"<<");
 
         /**
          * Verifying the response

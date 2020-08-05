@@ -1358,7 +1358,7 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
      * The method notifyCardsHandedOut is used to be sent the report of handing out a specified card by EMS
      *
      * @param from is an instance of type {@link Integer}, which represents the first record to be processed
-     * @param to   is an instance of type {@link Integer}, which represents the last record to be processed
+     * @param to  is an instance of type {@link Integer}, which represents the last record to be processed
      * @return an instance of type {@link Boolean}, which specifies by the value of true or false, whether the process
      * of calling the method will be replicated or not
      * @throws {@link BaseException}
@@ -2367,11 +2367,12 @@ public class CardManagementServiceImpl extends EMSAbstractService implements Car
 			logger.info("unconfirming lost card with id :" + cardId);
             card.setLostDate(null);
             Long batchId = card.getBatch().getId();
-            Integer lostDate = getCardDAO().countCardLostDate(batchId);
-            if (lostDate == 0){
+            Long lostCount = getCardDAO().countCardLostDate(batchId);
+            if (lostCount != null && lostCount == 0L){
                 List<DispatchInfoTO> dispatchInfo = getDispatchDAO().findByContainerId(batchId);
                 dispatchInfo.get(0).setLostDate(null);
             }
+            return;
 		} catch (BaseException e) {
 			throw e;
 		} catch (Exception e) {

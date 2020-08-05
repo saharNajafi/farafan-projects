@@ -479,16 +479,19 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
     }
 
     @Override
-    public Integer countCardLostDate(Long batchId) throws BaseException {
-        Number count;
+    public Long countCardLostDate(Long batchId) throws BaseException {
+        List<Long> countCardLostInBatchList  ;
         try {
-            count = (Number) em.createNamedQuery("CardTO.countCardLostDate")
+            countCardLostInBatchList =  em.createNamedQuery("CardTO.countCardLostInBatch")
                     .setParameter("batchId", batchId)
-                    .getSingleResult();
+                    .getResultList();
+            if(EmsUtil.checkListSize(countCardLostInBatchList)){
+                return countCardLostInBatchList.get(0);
+            }
         } catch (Exception e) {
             throw new DataException(DataExceptionCode.CAI_019,
                     DataExceptionCode.GLB_011_MSG, e);
         }
-        return  count.intValue();
+        return  null;
     }
 }
