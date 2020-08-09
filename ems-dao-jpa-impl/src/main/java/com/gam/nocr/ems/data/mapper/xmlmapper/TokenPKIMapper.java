@@ -720,6 +720,8 @@ public class TokenPKIMapper implements XMLMapper {
             throw new DataException(DataExceptionCode.TPM_013, e);
         } catch (XPathExpressionException e) {
             throw new DataException(DataExceptionCode.TPM_014, e);
+        }catch (Exception e){
+            throw new DataException(DataExceptionCode.TPM_028, e);
         }
         return null;
     }

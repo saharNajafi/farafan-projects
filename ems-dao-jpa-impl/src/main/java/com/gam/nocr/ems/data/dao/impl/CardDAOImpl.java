@@ -79,7 +79,7 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
     @Override
     public void updateCardsState(List<Long> cardIdList, CardState cardState) throws BaseException {
         try {
-        	List<CardTO> cardList = em.createQuery("select crd from CardTO crd where crd.id in(:idList) and crd.state <> :state", CardTO.class).setParameter("idList", cardIdList).setParameter("state", CardState.MISSED).getResultList();
+            List<CardTO> cardList = em.createQuery("select crd from CardTO crd where crd.id in(:idList) and crd.state <> :state", CardTO.class).setParameter("idList", cardIdList).setParameter("state", CardState.MISSED).getResultList();
             em.createQuery("update CardTO crt " +
                     "set crt.state = :CARD_STATE" +
                     " where crt.id in (:ID_LIST)")
@@ -88,8 +88,8 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
                     .executeUpdate();
             em.flush();
             //Adldoost
-            if(cardState == CardState.MISSED)
-            	dispatchDAO.notifyCardMissed(cardList);
+            if (cardState == CardState.MISSED)
+                dispatchDAO.notifyCardMissed(cardList);
         } catch (Exception e) {
             String err = e.getMessage();
             if (e.getCause() != null) {
@@ -206,274 +206,292 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
         }
     }
 
-	@Override
-	public void updateDeliverDate(Long requestId, Date date)
-			throws BaseException {
-		try {
-	        em.createQuery("update CardTO crt " +
-	                "set crt.deliverDate = :DELIVER_DATE" +
-	                " where crt.id = (SELECT CRQ.card.id FROM CardRequestTO CRQ where CRQ.id = :requestId)")
-	                .setParameter("DELIVER_DATE", date)
-	                .setParameter("requestId", requestId)
-	                .executeUpdate();
-	        em.flush();
+    @Override
+    public void updateDeliverDate(Long requestId, Date date)
+            throws BaseException {
+        try {
+            em.createQuery("update CardTO crt " +
+                    "set crt.deliverDate = :DELIVER_DATE" +
+                    " where crt.id = (SELECT CRQ.card.id FROM CardRequestTO CRQ where CRQ.id = :requestId)")
+                    .setParameter("DELIVER_DATE", date)
+                    .setParameter("requestId", requestId)
+                    .executeUpdate();
+            em.flush();
         } catch (Exception e) {
             throw new DataException(DataExceptionCode.CAI_011, DataExceptionCode.GLB_006_MSG, e);
         }
-	}
-	/**
-	 * this method fetches cards which are lost
-	 * 
-	 * @author ganjyar
-	 */
-	@Override
-	public List<CardDispatchInfoVTO> fetchCardLostTempList(
-			GeneralCriteria criteria) throws BaseException {
+    }
 
-		try {
-			StringBuffer stringBuffer = new StringBuffer(
-					"select distinct crd_id,crd_batch_id, crd_crn, crd_lost_date, crd_lostconfirm, ci.CTZ_FIRST_NAME_FA fname,ci.CTZ_SURNAME_FA lname, ci.CTZ_NATIONAL_ID nid "
-							+"from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci, emst_batch bc" 
-							+" where ci.CTZ_ID=cr.CRQ_CITIZEN_ID "
-							+" and  dis.dpi_container_id=crd.crd_batch_id" 
-							+" and  crd.crd_batch_id=bc.bat_id"
-							+" and cr.crq_card_id=crd.crd_id"
-							+" and (( dis.dpi_lost_date is null and crd_lost_date is not null and" 
-							+" crd.crd_state = :cardState) or (dis.dpi_lost_date is not null "
-							+" and bc.bat_state= :batchState"
-							+" and crd_lost_date is not null"
-							+" and crd.crd_state = :cardState)) ");
+    /**
+     * this method fetches cards which are lost
+     *
+     * @author ganjyar
+     */
+    @Override
+    public List<CardDispatchInfoVTO> fetchCardLostTempList(
+            GeneralCriteria criteria) throws BaseException {
 
-			if (criteria.getParameters() != null) {
-				Set<String> keySet = criteria.getParameters().keySet();
-				if (keySet != null) {
-					if (keySet.contains("checkSecurity")) {
-						stringBuffer
-								.append(" and cr.crq_enroll_office_id in" +
-										" (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
-										"with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id="+criteria.getParameters().get("perid") +
-										" union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
-										"prior e.eof_id=e.eof_superior_office start with" +
-										" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+criteria.getParameters().get("perid")+" ))) ");
-					}
-					for (String key : keySet) {
-						if ("crn".equals(key)) {
-							stringBuffer.append(" and crd.crd_crn like '"
-									+ criteria.getParameters().get(key) + "'");
-						}
-						if ("fromLostDate".equals(key)) {
-							stringBuffer
-									.append(" and crd.crd_lost_date > to_date('"
-											+ criteria.getParameters().get(key)
-											+ "', 'YYYY/MM/DD HH24:MI')");
-						}
-						if ("toLostDate".equals(key)) {
-							stringBuffer
-									.append(" and crd.crd_lost_date < to_date('"
-											+ criteria.getParameters().get(key)
-											+ "', 'YYYY/MM/DD HH24:MI')");
-						}
-						if ("waitingToConfirmed".equals(key)) {
-							stringBuffer
-									.append(" and (crd.CRD_LOSTCONFIRM ="+criteria.getParameters().get(key)
-											+" or crd.CRD_LOSTCONFIRM is null)");
-						}
-						if ("confirmed".equals(key)) {
-							stringBuffer
-									.append(" and crd.CRD_LOSTCONFIRM ="+criteria.getParameters().get(key));
-						}
-					}
+        try {
+            StringBuffer stringBuffer = new StringBuffer(
+                    "select distinct crd_id,crd_batch_id, crd_crn, crd_lost_date, crd_lostconfirm, ci.CTZ_FIRST_NAME_FA fname,ci.CTZ_SURNAME_FA lname, ci.CTZ_NATIONAL_ID nid "
+                            + "from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci, emst_batch bc"
+                            + " where ci.CTZ_ID=cr.CRQ_CITIZEN_ID "
+                            + " and  dis.dpi_container_id=crd.crd_batch_id"
+                            + " and  crd.crd_batch_id=bc.bat_id"
+                            + " and cr.crq_card_id=crd.crd_id"
+                            + " and (( dis.dpi_lost_date is null and crd_lost_date is not null and"
+                            + " crd.crd_state = :cardState) or (dis.dpi_lost_date is not null "
+                            + " and bc.bat_state= :batchState"
+                            + " and crd_lost_date is not null"
+                            + " and crd.crd_state = :cardState)) ");
 
-				}
-			}
+            if (criteria.getParameters() != null) {
+                Set<String> keySet = criteria.getParameters().keySet();
+                if (keySet != null) {
+                    if (keySet.contains("checkSecurity")) {
+                        stringBuffer
+                                .append(" and cr.crq_enroll_office_id in" +
+                                        " (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
+                                        "with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=" + criteria.getParameters().get("perid") +
+                                        " union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
+                                        "prior e.eof_id=e.eof_superior_office start with" +
+                                        " e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=" + criteria.getParameters().get("perid") + " ))) ");
+                    }
+                    for (String key : keySet) {
+                        if ("crn".equals(key)) {
+                            stringBuffer.append(" and crd.crd_crn like '"
+                                    + criteria.getParameters().get(key) + "'");
+                        }
+                        if ("fromLostDate".equals(key)) {
+                            stringBuffer
+                                    .append(" and crd.crd_lost_date > to_date('"
+                                            + criteria.getParameters().get(key)
+                                            + "', 'YYYY/MM/DD HH24:MI')");
+                        }
+                        if ("toLostDate".equals(key)) {
+                            stringBuffer
+                                    .append(" and crd.crd_lost_date < to_date('"
+                                            + criteria.getParameters().get(key)
+                                            + "', 'YYYY/MM/DD HH24:MI')");
+                        }
+                        if ("waitingToConfirmed".equals(key)) {
+                            stringBuffer
+                                    .append(" and (crd.CRD_LOSTCONFIRM =" + criteria.getParameters().get(key)
+                                            + " or crd.CRD_LOSTCONFIRM is null)");
+                        }
+                        if ("confirmed".equals(key)) {
+                            stringBuffer
+                                    .append(" and crd.CRD_LOSTCONFIRM =" + criteria.getParameters().get(key));
+                        }
+                    }
 
-			if (EmsUtil.checkString(criteria.getOrderBy())) {
-				String orderBy = criteria.getOrderBy();
-				String sortKey = "crd.crd_id";
-				String dir = "asc";
-				String[] split = orderBy.split(" ");
-				if (split.length >= 2) {
-					sortKey = split[0].trim();
-					dir = split[1].trim();
-				}
+                }
+            }
 
-				if ("crn".equals(sortKey)) {
-					sortKey = "crd.crd_crn";
-				} else if ("batchId".equals(sortKey)) {
-					sortKey = "crd.crd_batch_id";
-				} else if ("isConfirm".equals(sortKey)) {
-					sortKey = "crd.crd_lostconfirm";
-				} else if ("cardLostDate".equals(sortKey)) {
-					sortKey = "crd.crd_lost_date";
-				}
+            if (EmsUtil.checkString(criteria.getOrderBy())) {
+                String orderBy = criteria.getOrderBy();
+                String sortKey = "crd.crd_id";
+                String dir = "asc";
+                String[] split = orderBy.split(" ");
+                if (split.length >= 2) {
+                    sortKey = split[0].trim();
+                    dir = split[1].trim();
+                }
 
-				stringBuffer.append(" order by ").append(sortKey).append(" ")
-						.append(dir);
-			} else {
-				stringBuffer.append(" order by crd.crd_id asc ");
-			}
+                if ("crn".equals(sortKey)) {
+                    sortKey = "crd.crd_crn";
+                } else if ("batchId".equals(sortKey)) {
+                    sortKey = "crd.crd_batch_id";
+                } else if ("isConfirm".equals(sortKey)) {
+                    sortKey = "crd.crd_lostconfirm";
+                } else if ("cardLostDate".equals(sortKey)) {
+                    sortKey = "crd.crd_lost_date";
+                }
 
-			Query query = em.createNativeQuery(stringBuffer.toString());
-			query.setParameter("batchState", CardState.RECEIVED.toString());
-			query.setParameter("cardState", CardState.SHIPPED.toString());
-			query.setMaxResults(criteria.getPageSize()).setFirstResult(
-					criteria.getPageNo() * criteria.getPageSize());
+                stringBuffer.append(" order by ").append(sortKey).append(" ")
+                        .append(dir);
+            } else {
+                stringBuffer.append(" order by crd.crd_id asc ");
+            }
 
-			List resultList = query.getResultList();
-			List<CardDispatchInfoVTO> result = new ArrayList<CardDispatchInfoVTO>();
-			if (resultList != null) {
-				for (Object record : resultList) {
-					Object[] data = (Object[]) record;
-					CardDispatchInfoVTO obj = new CardDispatchInfoVTO();
-					obj.setId(((BigDecimal) data[0]).longValue());
-					obj.setBatchId(((BigDecimal) data[1]).toString());
-					obj.setCrn((String) data[2]);
-					obj.setCardLostDate((Timestamp) data[3]);
-					if (data[4] == null)
-						obj.setIsConfirm("0");
-					else
-						obj.setIsConfirm(((BigDecimal) data[4]).toString());
-					obj.setFname((String) data[5]);
-					obj.setLname((String) data[6]);
-					obj.setNationalId((String) data[7]);
-					result.add(obj);
-				}
-			}
-			return result;
+            Query query = em.createNativeQuery(stringBuffer.toString());
+            query.setParameter("batchState", CardState.RECEIVED.toString());
+            query.setParameter("cardState", CardState.SHIPPED.toString());
+            query.setMaxResults(criteria.getPageSize()).setFirstResult(
+                    criteria.getPageNo() * criteria.getPageSize());
 
-		} catch (Exception e) {
-			throw new DataException(DataExceptionCode.CAI_017,
-					DataExceptionCode.GLB_006_MSG, e);
-		}
-	}
+            List resultList = query.getResultList();
+            List<CardDispatchInfoVTO> result = new ArrayList<CardDispatchInfoVTO>();
+            if (resultList != null) {
+                for (Object record : resultList) {
+                    Object[] data = (Object[]) record;
+                    CardDispatchInfoVTO obj = new CardDispatchInfoVTO();
+                    obj.setId(((BigDecimal) data[0]).longValue());
+                    obj.setBatchId(((BigDecimal) data[1]).toString());
+                    obj.setCrn((String) data[2]);
+                    obj.setCardLostDate((Timestamp) data[3]);
+                    if (data[4] == null)
+                        obj.setIsConfirm("0");
+                    else
+                        obj.setIsConfirm(((BigDecimal) data[4]).toString());
+                    obj.setFname((String) data[5]);
+                    obj.setLname((String) data[6]);
+                    obj.setNationalId((String) data[7]);
+                    result.add(obj);
+                }
+            }
+            return result;
 
-	/**
-	 * this method fetches cards which are lost
-	 * 
-	 * @author ganjyar
-	 */
-	@Override
-	public Integer countCardLostTemp(GeneralCriteria criteria)
-			throws BaseException {
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CAI_017,
+                    DataExceptionCode.GLB_006_MSG, e);
+        }
+    }
 
-		try {
-			StringBuffer stringBuffer = new StringBuffer("select count(*) "
-					+"from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci, emst_batch bc" 
-					+" where ci.CTZ_ID=cr.CRQ_CITIZEN_ID "
-					+" and  dis.dpi_container_id=crd.crd_batch_id" 
-					+" and  crd.crd_batch_id=bc.bat_id"
-					+" and cr.crq_card_id=crd.crd_id"
-					+" and ((dis.dpi_lost_date is null and crd_lost_date is not null and" 
-					+" crd.crd_state = :cardState) or (dis.dpi_lost_date is not null "
-					+" and bc.bat_state= :batchState"
-					+" and crd_lost_date is not null"
-					+" and crd.crd_state = :cardState))");
+    /**
+     * this method fetches cards which are lost
+     *
+     * @author ganjyar
+     */
+    @Override
+    public Integer countCardLostTemp(GeneralCriteria criteria)
+            throws BaseException {
 
-			if (criteria.getParameters() != null) {
-				Set<String> keySet = criteria.getParameters().keySet();
-				if (keySet != null) {
-					if (keySet.contains("checkSecurity")) {
-						stringBuffer
-								.append(" and cr.crq_enroll_office_id in" +
-										" (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
-										"with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id="+criteria.getParameters().get("perid") +
-										" union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
-										"prior e.eof_id=e.eof_superior_office start with" +
-										" e.eof_id in (select p.per_dep_id from emst_person p where p.per_id="+criteria.getParameters().get("perid")+" ))) ");
-					}
-					for (String key : keySet) {
-						if ("crn".equals(key)) {
-							stringBuffer.append(" and crd.crd_crn like '"
-									+ criteria.getParameters().get(key) + "'");
-						}
-						if ("fromLostDate".equals(key)) {
-							stringBuffer
-									.append(" and crd.crd_lost_date > to_date('"
-											+ criteria.getParameters().get(key)
-											+ "', 'YYYY/MM/DD HH24:MI')");
-						}
-						if ("toLostDate".equals(key)) {
-							stringBuffer
-									.append(" and crd.crd_lost_date < to_date('"
-											+ criteria.getParameters().get(key)
-											+ "', 'YYYY/MM/DD HH24:MI')");
-						}
-						if ("waitingToConfirmed".equals(key)) {
-							stringBuffer
-									.append(" and (crd.CRD_LOSTCONFIRM ="+criteria.getParameters().get(key)
-											+" or crd.CRD_LOSTCONFIRM is null)");
-						}
-						if ("confirmed".equals(key)) {
-							stringBuffer
-									.append(" and crd.CRD_LOSTCONFIRM ="+criteria.getParameters().get(key));
-						}
-					}
+        try {
+            StringBuffer stringBuffer = new StringBuffer("select count(*) "
+                    + "from emst_card crd ,emst_card_request cr,emst_dispatch_info dis, EMST_CITIZEN ci, emst_batch bc"
+                    + " where ci.CTZ_ID=cr.CRQ_CITIZEN_ID "
+                    + " and  dis.dpi_container_id=crd.crd_batch_id"
+                    + " and  crd.crd_batch_id=bc.bat_id"
+                    + " and cr.crq_card_id=crd.crd_id"
+                    + " and ((dis.dpi_lost_date is null and crd_lost_date is not null and"
+                    + " crd.crd_state = :cardState) or (dis.dpi_lost_date is not null "
+                    + " and bc.bat_state= :batchState"
+                    + " and crd_lost_date is not null"
+                    + " and crd.crd_state = :cardState))");
 
-				}
-			}
+            if (criteria.getParameters() != null) {
+                Set<String> keySet = criteria.getParameters().keySet();
+                if (keySet != null) {
+                    if (keySet.contains("checkSecurity")) {
+                        stringBuffer
+                                .append(" and cr.crq_enroll_office_id in" +
+                                        " (select dp.dep_id from emst_department dp connect by prior dp.dep_id=dp.dep_parent_dep_id start " +
+                                        "with dp.dep_id in (select pr.per_dep_id from emst_person pr where pr.per_id=" + criteria.getParameters().get("perid") +
+                                        " union select e.eof_id from emst_enrollment_office e where e.eof_is_deleted = 0 connect by " +
+                                        "prior e.eof_id=e.eof_superior_office start with" +
+                                        " e.eof_id in (select p.per_dep_id from emst_person p where p.per_id=" + criteria.getParameters().get("perid") + " ))) ");
+                    }
+                    for (String key : keySet) {
+                        if ("crn".equals(key)) {
+                            stringBuffer.append(" and crd.crd_crn like '"
+                                    + criteria.getParameters().get(key) + "'");
+                        }
+                        if ("fromLostDate".equals(key)) {
+                            stringBuffer
+                                    .append(" and crd.crd_lost_date > to_date('"
+                                            + criteria.getParameters().get(key)
+                                            + "', 'YYYY/MM/DD HH24:MI')");
+                        }
+                        if ("toLostDate".equals(key)) {
+                            stringBuffer
+                                    .append(" and crd.crd_lost_date < to_date('"
+                                            + criteria.getParameters().get(key)
+                                            + "', 'YYYY/MM/DD HH24:MI')");
+                        }
+                        if ("waitingToConfirmed".equals(key)) {
+                            stringBuffer
+                                    .append(" and (crd.CRD_LOSTCONFIRM =" + criteria.getParameters().get(key)
+                                            + " or crd.CRD_LOSTCONFIRM is null)");
+                        }
+                        if ("confirmed".equals(key)) {
+                            stringBuffer
+                                    .append(" and crd.CRD_LOSTCONFIRM =" + criteria.getParameters().get(key));
+                        }
+                    }
 
-			Query query = em.createNativeQuery(stringBuffer.toString());
-			query.setParameter("batchState", CardState.RECEIVED.toString());
-			query.setParameter("cardState", CardState.SHIPPED.toString());
+                }
+            }
 
-			Number number = (Number) query.getSingleResult();
+            Query query = em.createNativeQuery(stringBuffer.toString());
+            query.setParameter("batchState", CardState.RECEIVED.toString());
+            query.setParameter("cardState", CardState.SHIPPED.toString());
 
-			if (number != null) {
-				return number.intValue();
-			}
+            Number number = (Number) query.getSingleResult();
 
-		} catch (Exception e) {
-			throw new DataException(DataExceptionCode.CAI_016,
-					DataExceptionCode.GLB_006_MSG, e);
-		}
+            if (number != null) {
+                return number.intValue();
+            }
 
-		return null;
-	}
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CAI_016,
+                    DataExceptionCode.GLB_006_MSG, e);
+        }
 
-	/**
-	 * this method used to update all cards of a batch when a lost batch is confirmed by 3s.
-	 * then all cards of the batch must confirm.
-	 * @author ganjyar
-	 * 
-	 */
-	@Override
-	public void updateLostConfirmBytBatchConfirm(Long batchId)
-			throws BaseException {
+        return null;
+    }
 
-		try {
-			em.createQuery(
-					"update CardTO crt "
-							+ "set crt.isLostCardConfirmed = :confirm"
-							+ " where crt.batch.id = :batchId")
-					.setParameter("batchId", batchId)
-					.setParameter("confirm", true).executeUpdate();
-			em.flush();
-		} catch (Exception e) {
-			throw new DataException(DataExceptionCode.CAI_013,
-					DataExceptionCode.GLB_006_MSG, e);
-		}
+    /**
+     * this method used to update all cards of a batch when a lost batch is confirmed by 3s.
+     * then all cards of the batch must confirm.
+     *
+     * @author ganjyar
+     */
+    @Override
+    public void updateLostConfirmBytBatchConfirm(Long batchId)
+            throws BaseException {
 
-	}
+        try {
+            em.createQuery(
+                    "update CardTO crt "
+                            + "set crt.isLostCardConfirmed = :confirm"
+                            + " where crt.batch.id = :batchId")
+                    .setParameter("batchId", batchId)
+                    .setParameter("confirm", true).executeUpdate();
+            em.flush();
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CAI_013,
+                    DataExceptionCode.GLB_006_MSG, e);
+        }
 
-	/**
-	 * this method used to update all cards of a batch when a lost batch is unconfirmed by 3s.
-	 * then all cards lost-date will be null.
-	 * @author ٔNamjoofar
-	 *
-	 */
-	@Override
-	public void unconfirmAllCardsOfBatch(Long batchId) throws BaseException {
-		try {
-			em.createQuery(
-					"update CardTO crt "
-							+ "set crt.lostDate = :lostDate"
-							+ " where crt.batch.id = :batchId")
-					.setParameter("batchId", batchId)
-					.setParameter("lostDate", null).executeUpdate();
-			em.flush();
-		} catch (Exception e) {
-			throw new DataException(DataExceptionCode.CAI_018,
-					DataExceptionCode.GLB_006_MSG, e);
-		}
-	}
+    }
+
+    /**
+     * this method used to update all cards of a batch when a lost batch is unconfirmed by 3s.
+     * then all cards lost-date will be null.
+     *
+     * @author ٔNamjoofar
+     */
+    @Override
+    public void unconfirmAllCardsOfBatch(Long batchId) throws BaseException {
+        try {
+            em.createQuery(
+                    "update CardTO crt "
+                            + "set crt.lostDate = :lostDate"
+                            + " where crt.batch.id = :batchId")
+                    .setParameter("batchId", batchId)
+                    .setParameter("lostDate", null).executeUpdate();
+            em.flush();
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CAI_018,
+                    DataExceptionCode.GLB_006_MSG, e);
+        }
+    }
+
+    @Override
+    public Long countCardLostDate(Long batchId) throws BaseException {
+        List<Long> countCardLostInBatchList  ;
+        try {
+            countCardLostInBatchList =  em.createNamedQuery("CardTO.countCardLostInBatch")
+                    .setParameter("batchId", batchId)
+                    .getResultList();
+            if(EmsUtil.checkListSize(countCardLostInBatchList)){
+                return countCardLostInBatchList.get(0);
+            }
+        } catch (Exception e) {
+            throw new DataException(DataExceptionCode.CAI_019,
+                    DataExceptionCode.GLB_011_MSG, e);
+        }
+        return  null;
+    }
 }
