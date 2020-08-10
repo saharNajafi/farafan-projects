@@ -591,7 +591,7 @@ public class TokenManagementServiceImpl extends EMSAbstractService implements
                     BizExceptionCode.TMS_021_MSG);
         }
 
-        if (oldPersonTokenTO.getState() != TokenState.REVOKED && reason != ReplicaReason.EXTEND) {
+        if (oldPersonTokenTO.getState() != TokenState.REVOKED) {
             revokeAndUpdatePersonTokenTO(oldPersonTokenTO, "");
         }
 
