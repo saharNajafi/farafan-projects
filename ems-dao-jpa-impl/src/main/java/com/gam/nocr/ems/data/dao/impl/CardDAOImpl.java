@@ -283,6 +283,18 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
                             stringBuffer
                                     .append(" and crd.CRD_LOSTCONFIRM =" + criteria.getParameters().get(key));
                         }
+                        if ("fname".equals(key)) {
+                            stringBuffer.append(" and ci.CTZ_FIRST_NAME_FA like '"
+                                    + criteria.getParameters().get(key) + "'");
+                        }
+                        if ("lname".equals(key)) {
+                            stringBuffer.append(" and ci.CTZ_SURNAME_FA like '"
+                                    + criteria.getParameters().get(key) + "'");
+                        }
+                        if ("nationalId".equals(key)) {
+                            stringBuffer.append(" and ci.CTZ_NATIONAL_ID like '"
+                                    + criteria.getParameters().get(key) + "'");
+                        }
                     }
 
                 }
@@ -480,18 +492,18 @@ public class CardDAOImpl extends EmsBaseDAOImpl<CardTO> implements CardDAOLocal,
 
     @Override
     public Long countCardLostDate(Long batchId) throws BaseException {
-        List<Long> countCardLostInBatchList  ;
+        List<Long> countCardLostInBatchList;
         try {
-            countCardLostInBatchList =  em.createNamedQuery("CardTO.countCardLostInBatch")
+            countCardLostInBatchList = em.createNamedQuery("CardTO.countCardLostInBatch")
                     .setParameter("batchId", batchId)
                     .getResultList();
-            if(EmsUtil.checkListSize(countCardLostInBatchList)){
+            if (EmsUtil.checkListSize(countCardLostInBatchList)) {
                 return countCardLostInBatchList.get(0);
             }
         } catch (Exception e) {
             throw new DataException(DataExceptionCode.CAI_019,
                     DataExceptionCode.GLB_011_MSG, e);
         }
-        return  null;
+        return null;
     }
 }

@@ -84,7 +84,10 @@ public class CardProcessor extends EMSVLPListProcessor {
 		HashMap parameters = new HashMap();
 		String fromLostDate=paramProvider.getFilter("fromSentDate");
 		String isConfirm=paramProvider.getFilter("isConfirm");
-		String toLostDate=paramProvider.getFilter("toSendDate");
+		String fname = paramProvider.getFilter("fname");
+		String lname = paramProvider.getFilter("lname");
+		String nationalId = paramProvider.getFilter("nationalId");
+		String toLostDate = paramProvider.getFilter("toSendDate");
 		String crnStr = paramProvider.getFilter("crn");
 		
 		// If user's department is not MARKAZ (which its id is 1), limit his
@@ -112,7 +115,15 @@ public class CardProcessor extends EMSVLPListProcessor {
 			throw new ListReaderException(
 					"The user department loaded from database is null");
 		}
-		
+		if (EmsUtil.checkString(fname)) {
+			parameters.put("fname", "%" + fname + "%");
+		}
+		if (EmsUtil.checkString(lname)) {
+			parameters.put("lname", "%" + lname + "%");
+		}
+		if (EmsUtil.checkString(nationalId)) {
+			parameters.put("nationalId", "%" + nationalId + "%");
+		}
 		if (crnStr != null && crnStr.trim().length() != 0) {
 			parameters.put("crn", "%" + crnStr + "%");
 		}
